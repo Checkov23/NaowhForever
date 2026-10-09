@@ -7,7 +7,7 @@ ns.Journal.AddDungeon("RazorfenKraul", {
     entrance = { map = 1413, x = 42.2, y = 89.8 },
     wings = {
         { bosses = {
-            { npc = 4424, name = "Aggem Thorncurse", model = 6097, encounters = { 2774 }, loot = { 6681, 1975, 2549, 274158, 274159 }, chance = { 47, 6, 1, 0, 0 } },
+            { npc = 4424, name = "Aggem Thorncurse", model = 6097, encounters = { 2774 }, loot = { 6681, 274158, 274159 }, chance = { 53, 0, 0 } },
             { npc = 4428, name = "Death Speaker Jargba", model = 4644, encounters = { 2775 }, loot = { 6685, 6682, 2816 }, chance = { 44, 42, 10 } },
             { npc = 4420, name = "Overlord Ramtusk", model = 4652, encounters = { 2776 }, loot = { 6686, 6687, 274161 }, chance = { 62, 34, 0 } },
             { npc = 4422, name = "Agathelos the Raging", model = 2450, encounters = { 2777 }, loot = { 6690, 6691, 274158, 274160 }, chance = { 63, 33, 0, 0 } },
@@ -15,8 +15,8 @@ ns.Journal.AddDungeon("RazorfenKraul", {
             { npc = 4425, name = "Blind Hunter", model = 4735, rare = true, loot = { 6697, 6696, 6695 }, chance = { 34, 32, 27 } },
             { npc = 4842, name = "Earthcaller Halmgar", model = 6102, rare = true, loot = { 6689, 6688 }, chance = { 48, 46 } },
             { npc = 4438, name = "Razorfen Spearhide", model = 6078, rare = true, loot = { 6679 }, chance = { 61 } },
-            { npc = 6168, name = "Roogug", model = 6110, optional = true, encounters = { 2773 }, loot = { 274152, 274155 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 6679, 6681, 3569, 776, 1488, 1727, 1975, 1976, 1978, 2039, 2264, 2549, 4438 }, chance = { 61, 53, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+            { npc = 6168, name = "Roogug", model = 6110, optional = true, encounters = { 2773 }, loot = { 274149, 274152, 274155 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 6679, 3569, 776, 1488, 1727, 1975, 1976, 1978, 2039, 2264, 2549, 4438 }, chance = { 61, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
         } },
     },
 })

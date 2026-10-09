@@ -3,6 +3,7 @@ local ns = _G.NaowhForever
 
 ns.Journal.AddDungeon("ScarletMonasteryCathedral", {
     name = "Scarlet Monastery - Cathedral",
+    closed = true,
     zone = "Tirisfal Glades", territory = "Horde",
     entrance = { map = 1420, x = 83.9, y = 31.6 },
     wings = {

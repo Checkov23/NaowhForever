@@ -20,6 +20,15 @@
       "quality": "rare",
       "slot": "waist",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 27,
+      "name": "Spiked Shell Band",
+      "new": true,
+      "quality": "rare",
+      "slot": "finger",
+      "type": null
      }
     ],
     "name": "Ghamoo-ra"
@@ -218,7 +227,7 @@
       "level": 25,
       "name": "Scholarly Robes",
       "new": false,
-      "quality": "uncommon",
+      "quality": "rare",
       "slot": "chest",
       "type": "cloth"
      },
@@ -5003,6 +5012,15 @@
       "quality": "rare",
       "slot": "finger",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 33,
+      "name": "Golemsight Long Gun",
+      "new": false,
+      "quality": "rare",
+      "slot": "ranged",
+      "type": "gun"
      }
     ],
     "name": "Relic Guardian"
@@ -5072,19 +5090,19 @@
      },
      {
       "chance": 31.9,
-      "level": null,
+      "level": 34,
       "name": "Electrocutioner Lagnut",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "finger",
       "type": null
      },
      {
       "chance": 39.6,
-      "level": null,
+      "level": 34,
       "name": "Spidertank Oilrag",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "wrist",
       "type": "cloth"
      }
@@ -5110,6 +5128,15 @@
       "quality": "rare",
       "slot": "feet",
       "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 34,
+      "name": "Thermaplugg Medal of Honor",
+      "new": true,
+      "quality": "rare",
+      "slot": "neck",
+      "type": null
      }
     ],
     "name": "Crowd Pummeler 9-60"
@@ -5150,37 +5177,37 @@
     "items": [
      {
       "chance": 32.0,
-      "level": null,
+      "level": 36,
       "name": "Thermaplugg's Central Core",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "off hand",
       "type": "shield"
      },
      {
       "chance": 18.3,
-      "level": null,
+      "level": 36,
       "name": "Thermaplugg's Left Arm",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "two-hand",
       "type": "axe"
      },
      {
       "chance": 32.9,
-      "level": null,
+      "level": 36,
       "name": "Charged Gear",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "finger",
       "type": null
      },
      {
       "chance": 9.7,
-      "level": null,
+      "level": 36,
       "name": "Electromagnetic Gigaflux Reactivator",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "head",
       "type": "cloth"
      }
@@ -5917,28 +5944,28 @@
     "items": [
      {
       "chance": 32.1,
-      "level": null,
+      "level": 42,
       "name": "Carapace of Tuten'kash",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "chest",
       "type": "plate"
      },
      {
       "chance": 34.1,
-      "level": null,
+      "level": 42,
       "name": "Silky Spider Cape",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "back",
       "type": "cloth"
      },
      {
       "chance": 30.3,
-      "level": null,
+      "level": 42,
       "name": "Arachnid Gloves",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "hands",
       "type": "leather"
      }
@@ -5949,19 +5976,19 @@
     "items": [
      {
       "chance": 32.2,
-      "level": null,
+      "level": 41,
       "name": "Glowing Eye of Mordresh",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "neck",
       "type": null
      },
      {
       "chance": 33.0,
-      "level": null,
+      "level": 41,
       "name": "Mordresh's Lifeless Skull",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "held in off-hand",
       "type": null
      },
@@ -5981,10 +6008,10 @@
     "items": [
      {
       "chance": 50.0,
-      "level": null,
+      "level": 42,
       "name": "Glutton's Cleaver",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "axe"
      },
@@ -6168,10 +6195,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Thoughtcast Boots",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "feet",
       "type": "cloth"
      },
@@ -6253,6 +6280,15 @@
       "quality": "rare",
       "slot": "two-hand",
       "type": "axe"
+     },
+     {
+      "chance": null,
+      "level": 34,
+      "name": "Quillord Mail Leggings",
+      "new": true,
+      "quality": "rare",
+      "slot": "legs",
+      "type": "mail"
      }
     ],
     "name": "Overlord Ramtusk"
@@ -6285,6 +6321,15 @@
       "quality": "rare",
       "slot": "two-hand",
       "type": "staff"
+     },
+     {
+      "chance": null,
+      "level": 36,
+      "name": "Quilrager Throwing Axe",
+      "new": true,
+      "quality": "rare",
+      "slot": "thrown",
+      "type": "thrown"
      }
     ],
     "name": "Agathelos the Raging"
@@ -6485,15 +6530,6 @@
       "quality": "uncommon",
       "slot": "two-hand",
       "type": "polearm"
-     },
-     {
-      "chance": 53.3,
-      "level": 32,
-      "name": "Thornspike",
-      "new": false,
-      "quality": "rare",
-      "slot": "one-hand",
-      "type": "dagger"
      }
     ],
     "name": "Trash"
@@ -6508,9 +6544,50 @@
       "quality": "rare",
       "slot": "trinket",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 30,
+      "name": "Thornweaver Drape",
+      "new": true,
+      "quality": "rare",
+      "slot": "back",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 30,
+      "name": "Geomancer Headdress",
+      "new": true,
+      "quality": "rare",
+      "slot": "head",
+      "type": "leather"
      }
     ],
     "name": "Roogug"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": 33,
+      "name": "Thorncursed Grips",
+      "new": true,
+      "quality": "rare",
+      "slot": "hands",
+      "type": "leather"
+     },
+     {
+      "chance": 53.3,
+      "level": 32,
+      "name": "Thornspike",
+      "new": false,
+      "quality": "rare",
+      "slot": "one-hand",
+      "type": "dagger"
+     }
+    ],
+    "name": "Aggem Thorncurse"
    }
   ],
   "name": "Razorfen Kraul",
@@ -6751,10 +6828,10 @@
     "items": [
      {
       "chance": 13.8,
-      "level": null,
+      "level": 42,
       "name": "Ravager",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "two-hand",
       "type": "axe"
      },
@@ -6769,10 +6846,10 @@
      },
      {
       "chance": 32.3,
-      "level": null,
+      "level": 42,
       "name": "Raging Berserker's Helm",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "head",
       "type": "mail"
      }
@@ -6783,10 +6860,10 @@
     "items": [
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Swampchill Fetish",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "held in off-hand",
       "type": null
      },
@@ -6801,10 +6878,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Sliverblade",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "dagger"
      },
@@ -6855,10 +6932,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Fight Club",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "mace"
      },
@@ -6891,19 +6968,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Flintrock Shoulders",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "leather"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Windweaver Staff",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "two-hand",
       "type": "staff"
      },
@@ -6918,19 +6995,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Archon Chestpiece",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "chest",
       "type": "mail"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Warchief Kilt",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "legs",
       "type": "leather"
      },
@@ -6963,10 +7040,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 36,
       "name": "Tainted Pierce",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "sword"
      },
@@ -7142,10 +7219,10 @@
     "items": [
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Swampchill Fetish",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "held in off-hand",
       "type": null
      },
@@ -7160,10 +7237,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Sliverblade",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "dagger"
      },
@@ -7214,10 +7291,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Fight Club",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "mace"
      },
@@ -7250,19 +7327,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Flintrock Shoulders",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "leather"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Windweaver Staff",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "two-hand",
       "type": "staff"
      },
@@ -7277,19 +7354,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Archon Chestpiece",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "chest",
       "type": "mail"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Warchief Kilt",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "legs",
       "type": "leather"
      },
@@ -7322,10 +7399,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 36,
       "name": "Tainted Pierce",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "sword"
      },
@@ -7420,6 +7497,15 @@
       "quality": "rare",
       "slot": "one-hand",
       "type": "fist weapon"
+     },
+     {
+      "chance": null,
+      "level": 34,
+      "name": "Painwalker Buckler",
+      "new": true,
+      "quality": "rare",
+      "slot": "off hand",
+      "type": "shield"
      }
     ],
     "name": "Interrogator Vishas"
@@ -7443,6 +7529,15 @@
       "quality": "rare",
       "slot": "held in off-hand",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 36,
+      "name": "Polished Skullcap",
+      "new": true,
+      "quality": "rare",
+      "slot": "head",
+      "type": "mail"
      }
     ],
     "name": "Bloodmage Thalnos"
@@ -7579,10 +7674,10 @@
     "items": [
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Swampchill Fetish",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "held in off-hand",
       "type": null
      },
@@ -7597,10 +7692,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Sliverblade",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "dagger"
      },
@@ -7651,10 +7746,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Fight Club",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "mace"
      },
@@ -7687,19 +7782,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Flintrock Shoulders",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "leather"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Windweaver Staff",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "two-hand",
       "type": "staff"
      },
@@ -7714,19 +7809,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Archon Chestpiece",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "chest",
       "type": "mail"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Warchief Kilt",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "legs",
       "type": "leather"
      },
@@ -7759,10 +7854,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 36,
       "name": "Tainted Pierce",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "sword"
      },
@@ -7907,6 +8002,15 @@
       "quality": "rare",
       "slot": "main hand",
       "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": 39,
+      "name": "Spellsever Crossbow",
+      "new": true,
+      "quality": "rare",
+      "slot": "ranged",
+      "type": "crossbow"
      }
     ],
     "name": "Arcanist Doan"
@@ -7915,10 +8019,10 @@
     "items": [
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Swampchill Fetish",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "held in off-hand",
       "type": null
      },
@@ -7933,10 +8037,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Sliverblade",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "dagger"
      },
@@ -7987,10 +8091,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Fight Club",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "mace"
      },
@@ -8023,19 +8127,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Flintrock Shoulders",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "leather"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 37,
       "name": "Windweaver Staff",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "two-hand",
       "type": "staff"
      },
@@ -8050,19 +8154,19 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 38,
       "name": "Archon Chestpiece",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "chest",
       "type": "mail"
      },
      {
       "chance": null,
-      "level": null,
+      "level": 39,
       "name": "Warchief Kilt",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "legs",
       "type": "leather"
      },
@@ -8095,10 +8199,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 36,
       "name": "Tainted Pierce",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "sword"
      },
@@ -11948,37 +12052,37 @@
     "items": [
      {
       "chance": 22.9,
-      "level": null,
+      "level": 42,
       "name": "Revelosh's Boots",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "feet",
       "type": "plate"
      },
      {
       "chance": 21.2,
-      "level": null,
+      "level": 42,
       "name": "Revelosh's Armguards",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "wrist",
       "type": "mail"
      },
      {
       "chance": 23.4,
-      "level": null,
+      "level": 42,
       "name": "Revelosh's Spaulders",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "leather"
      },
      {
       "chance": 21.5,
-      "level": null,
+      "level": 42,
       "name": "Revelosh's Gloves",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "hands",
       "type": "cloth"
      }
@@ -12040,10 +12144,10 @@
     "items": [
      {
       "chance": 38.0,
-      "level": null,
+      "level": 42,
       "name": "Stoneweaver Leggings",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "legs",
       "type": "cloth"
      },
@@ -12058,10 +12162,10 @@
      },
      {
       "chance": 37.6,
-      "level": null,
+      "level": 42,
       "name": "Ironaya's Bracers",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "wrist",
       "type": "mail"
      }
@@ -12254,10 +12358,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 41,
       "name": "Monolithic Bow",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "ranged",
       "type": "bow"
      },

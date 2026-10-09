@@ -17,7 +17,7 @@ ns.Journal.AddDungeon("Dalaran", {
             { npc = 247032, name = "Lyn the Ignored", model = 130235, rare = true, encounters = { 3310 } },
             { npc = 246931, name = "Mana Wraith", model = 130220, optional = true, encounters = { 3312 } },
             { npc = 246008, name = "Mana Devourer", model = 129895, optional = true, encounters = { 3300 } },
-            { npc = 246016, name = "Arcanic Enigma", model = 129900, optional = true, encounters = { 3301 }, loot = { 273045 } },
+            { npc = 246016, name = "Arcanic Enigma", model = 129900, optional = true, encounters = { 3301 } },
         } },
     },
 })

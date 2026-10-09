@@ -3,6 +3,7 @@ local ns = _G.NaowhForever
 
 ns.Journal.AddDungeon("Gnomeregan", {
     name = "Gnomeregan",
+    closed = true,
     zone = "Dun Morogh", territory = "Alliance",
     entrance = { map = 1426, x = 24.0, y = 40.0 },
     wings = {
@@ -10,7 +11,7 @@ ns.Journal.AddDungeon("Gnomeregan", {
             { npc = 7361, name = "Grubbis", model = 144378, encounters = { 2768 }, loot = { 9445, 274043 }, chance = { 8, 0 } },
             { npc = 7079, name = "Viscous Fallout", model = 5497, encounters = { 2769 }, loot = { 9454, 9452, 9453 }, chance = { 60, 20, 18 } },
             { npc = 6235, name = "Electrocutioner 6000", model = 6915, encounters = { 2770 }, loot = { 9448, 9447, 9446 }, chance = { 40, 32, 16 } },
-            { npc = 6229, name = "Crowd Pummeler 9-60", model = 6774, encounters = { 2771 }, loot = { 9450, 9449 }, chance = { 65, 33 } },
+            { npc = 6229, name = "Crowd Pummeler 9-60", model = 6774, encounters = { 2771 }, loot = { 9450, 9449, 274068 }, chance = { 65, 33, 0 } },
             { npc = 7800, name = "Mekgineer Thermaplugg", model = 6980, encounters = { 2772 }, loot = { 9461, 9458, 9459, 9492 }, chance = { 33, 32, 18, 10 } },
             { npc = 6228, name = "Dark Iron Ambassador", model = 6669, rare = true, loot = { 9455, 9456, 9457 }, chance = { 43, 34, 20 } },
             { npc = 6231, name = "Techbot", model = 7288, optional = true },

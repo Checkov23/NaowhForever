@@ -4,6 +4,7 @@ local ns = _G.NaowhForever
 ns.Journal.AddDungeon("ExcavationSite", {
     name = "Excavation Site: Wetlands",
     new = true,
+    closed = true,
     zone = "Wetlands", territory = "Contested",
     entrance = { map = 1437, x = 53.4, y = 65.3 },
     wings = {
