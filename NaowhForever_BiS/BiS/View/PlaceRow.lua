@@ -101,7 +101,7 @@ local function FirstSpot(place, list)
 end
 
 local function SlotName(slot)
-    return ns.L(Items.SLOT_NAME[slot])
+    return Items.SlotName(slot)
 end
 
 local function Part(place, dungeon, slot, boss, name, spot, who, seen)

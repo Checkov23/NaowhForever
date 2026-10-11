@@ -53,6 +53,7 @@ L["Attach"] = true
 L["AuraBuffs"] = true
 L["Auras"] = true
 L["Back"] = true
+L["Back (slot)"] = "Back"
 L["Battlegrounds"] = true
 L["BiS List"] = true
 L["Blessings"] = true

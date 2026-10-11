@@ -35,7 +35,7 @@ local FilterLabel = B.View.Memo("%s %d")
 local function SegmentEnter(segment)
     local slot, bis = segment.slot, segment.bis
     if not Tip(segment, "ANCHOR_BOTTOM") then return end
-    GameTooltip:SetText(ns.L(Items.SLOT_NAME[slot]), TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
+    GameTooltip:SetText(Items.SlotName(slot), TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
     if bis then GameTooltip:AddLine(Items.QualityHex(bis) .. Items.Name(bis) .. TEXT_STAR_GAP .. STAR_MARK) end
     local color = segment.state == "worn" and HAVE_RGB or T.muted
     GameTooltip:AddLine(STATE_WORDS[segment.state], color.r, color.g, color.b)

@@ -68,7 +68,7 @@ local function EnchantEnter(button)
     local slot = button:GetParent().slot
     local a = Enchants.Advise(slot)
     if not Tip(button, "ANCHOR_RIGHT") then return end
-    GameTooltip:SetText(TEXT_ENCHANTS .. ns.L(ns.Shared.Items.SLOT_NAME[slot]), TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
+    GameTooltip:SetText(TEXT_ENCHANTS .. ns.Shared.Items.SlotName(slot), TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
     OnItNow(a)
     if a.now and a.now ~= a.onIt then
         Heading(ItemLevelText(a.itemLevel, ""))

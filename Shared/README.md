@@ -326,6 +326,9 @@ What a comment in the code used to say, in short. The house rules behind it are 
 - `Items.ClassCanUse` reads an item's facts as `ItemFacts` holds them: `{ class, subclass, item
   level, required level, quality }`, class 2 a weapon, subclass 0 no armor type, 6 a shield.
 - `Items.SlotsFor` returns shared tables: read them, never change them.
+- `Items.SlotName` names a slot in the player's language. The cloak slot's catalog key is
+  "Back (slot)", because "Back" alone is also the Back button; `enUS.lua` gives it its English
+  text.
 
 ### Bags, tooltips, maps and /played
 

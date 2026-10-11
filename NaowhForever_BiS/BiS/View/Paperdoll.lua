@@ -132,7 +132,7 @@ local function SlotEnter(button)
     doll.onHover(button.slot)
     local slot = button.slot
     local picks = B.Picks(doll.list, slot, doll.picks)
-    local label = ns.L(Items.SLOT_NAME[slot])
+    local label = Items.SlotName(slot)
     if not Tip(button, "ANCHOR_RIGHT") then return end
     if not picks[1] then return EmptyTip(label) end
     if doll.look == "now" and slot ~= RANGED then TryOn(doll.model, slot, picks[1]) end

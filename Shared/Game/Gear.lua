@@ -13,8 +13,8 @@ local FACT_CLASS, FACT_SUBCLASS, FACT_REQUIRED = 1, 2, 4
 local TWO_HAND = "INVTYPE_2HWEAPON"
 
 local GEAR_SLOTS = {
-    { 1, "Head" }, { 2, "Neck" }, { 3, "Shoulder" }, { 15, "Back" }, { 5, "Chest" }, { 9, "Wrist" },
-    { 10, "Hands" }, { 6, "Waist" }, { 7, "Legs" }, { 8, "Feet" },
+    { 1, "Head" }, { 2, "Neck" }, { 3, "Shoulder" }, { 15, "Back", "Back (slot)" }, { 5, "Chest" },
+    { 9, "Wrist" }, { 10, "Hands" }, { 6, "Waist" }, { 7, "Legs" }, { 8, "Feet" },
     { 11, "Ring 1" }, { 12, "Ring 2" }, { 13, "Trinket 1" }, { 14, "Trinket 2" },
     { 16, "Main Hand" }, { 17, "Off Hand" }, { 18, "Ranged" },
 }
@@ -79,8 +79,13 @@ end
 
 Items.GEAR_SLOTS = GEAR_SLOTS
 Items.SLOT_NAME = {}
-for _, s in ipairs(GEAR_SLOTS) do Items.SLOT_NAME[s[1]] = s[2] end
+local SLOT_KEY = {}
+for _, s in ipairs(GEAR_SLOTS) do Items.SLOT_NAME[s[1]], SLOT_KEY[s[1]] = s[2], s[3] or s[2] end
 Items.ONE_HAND_ONLY = ONE_HAND_ONLY
+
+function Items.SlotName(slot)
+    return SLOT_KEY[slot] and ns.L(SLOT_KEY[slot])
+end
 
 function Items.SlotsFor(itemID)
     local _, _, _, equipLoc = GetItemInfoInstant(itemID)

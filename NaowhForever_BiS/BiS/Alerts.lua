@@ -55,7 +55,7 @@ end
 local function ChatLine(link, rank, event)
     local slot = B.Lists.SlotOf(Items.IDFrom(link))
     local detail = TEXT_DETAIL:format(WHAT[event], RANK_WORDS[rank] or TEXT_PICK:format(rank),
-        slot and TEXT_FOR .. ns.L(Items.SLOT_NAME[slot]) or "")
+        slot and TEXT_FOR .. Items.SlotName(slot) or "")
     return Tag() .. GAP .. RankMark(rank) .. GAP .. link .. ns.Color("muted", detail)
 end
 

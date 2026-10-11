@@ -61,7 +61,7 @@ local function Detail(id, rank, event, slot)
     if S.Get("bisToastRank") then
         parts[#parts + 1] = ns.Color(Parts.RankColor(rank), RANK_WORDS[rank] or TEXT_PICK:format(rank))
     end
-    if S.Get("bisToastSlot") and slot then parts[#parts + 1] = ns.L(Items.SLOT_NAME[slot]) end
+    if S.Get("bisToastSlot") and slot then parts[#parts + 1] = Items.SlotName(slot) end
     if S.Get("bisToastSource") then AddSource(id) end
     local gain = S.Get("bisToastGain") and Gain(id, slot)
     if gain then parts[#parts + 1] = St.UPGRADE_CODE .. "+" .. math.floor(gain + ROUND) .. "%|r" end

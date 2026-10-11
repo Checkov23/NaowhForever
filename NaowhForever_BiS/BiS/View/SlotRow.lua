@@ -66,7 +66,7 @@ local function SlotTipEnter(zone)
     local row = zone:GetParent()
     if row.bis then return ItemTipEnter(zone, row) end
     if not Tip(zone, "ANCHOR_TOP") then return end
-    GameTooltip:SetText(ns.L(Items.SLOT_NAME[row.slot]), TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
+    GameTooltip:SetText(Items.SlotName(row.slot), TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
     GameTooltip:AddLine(TEXT_PICK_IT, T.accentSoft.r, T.accentSoft.g, T.accentSoft.b)
     GameTooltip:Show()
 end
@@ -186,7 +186,7 @@ local function Set(row, slot, bis, count, open)
     row.hover:Hide()
     row.add:Hide()
     row.stripe:SetShown(view.striped)
-    row.slotName:SetText(ns.L(Items.SLOT_NAME[slot]))
+    row.slotName:SetText(Items.SlotName(slot))
     local gain = bis and view.gains and view.gains[slot]
     Cells.PaintGain(row.gain, gain, view.mostGain)
     row.name:SetPoint("RIGHT", gain and row.gain or row.meta, "LEFT", -GAP, 0)
