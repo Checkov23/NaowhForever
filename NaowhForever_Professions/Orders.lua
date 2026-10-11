@@ -43,9 +43,9 @@ local TEXT_MATERIAL = "%dx %s"
 local TEXT_OF = " (of %d)"
 local TEXT_TIP = "Tip: %s."
 local TEXT_UNKNOWN = "?"
-local TEXT_SENT = "Asked %s %sfor %s."
-local TEXT_IN_INSTANCE, TEXT_IN_PARTY = "in instance chat ", "in party chat "
-local TEXT_ONE_CRAFT, TEXT_CRAFTS = "1 craft", " crafts"
+local TEXT_SENT = ns.L("Asked %s %sfor %s.")
+local TEXT_IN_INSTANCE, TEXT_IN_PARTY = ns.L("in instance chat "), ns.L("in party chat ")
+local TEXT_ONE_CRAFT, TEXT_CRAFTS = ns.L("1 craft"), ns.L(" crafts")
 
 local byCrafter = {}
 local lastPick = {}

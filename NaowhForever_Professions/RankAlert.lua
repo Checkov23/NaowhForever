@@ -16,15 +16,15 @@ local NO_ID = 0
 local ANY_SIDE = "AH"
 local CHECK_DELAY = 1
 local LOGIN_DELAY = 5
-local TEXT_BOOK = "its book"
-local TEXT_QUEST = "its quest"
-local TEXT_NEXT_RANK = "the next rank of %s (cap %d)"
-local TEXT_READ = "Buy and read %s%s|r (%s)"
-local TEXT_DO_QUEST = "Do the quest %s%s|r"
-local TEXT_TRAIN = "Train it for %s"
-local TEXT_READY = "%s is ready for %s%s|r. %s%s. Open %s for a waypoint."
-local TEXT_FROM = " from "
-local TEXT_NONE_READY = "No profession is ready for its next rank yet."
+local TEXT_BOOK = ns.L("its book")
+local TEXT_QUEST = ns.L("its quest")
+local TEXT_NEXT_RANK = ns.L("the next rank of %s (cap %d)")
+local TEXT_READ = ns.L("Buy and read %s%s|r (%s)")
+local TEXT_DO_QUEST = ns.L("Do the quest %s%s|r")
+local TEXT_TRAIN = ns.L("Train it for %s")
+local TEXT_READY = ns.L("%s is ready for %s%s|r. %s%s. Open %s for a waypoint.")
+local TEXT_FROM = ns.L(" from ")
+local TEXT_NONE_READY = ns.L("No profession is ready for its next rank yet.")
 
 local charKey
 local gathered = {}

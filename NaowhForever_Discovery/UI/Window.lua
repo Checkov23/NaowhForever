@@ -25,15 +25,15 @@ local FILTERS = {
     { key = "books", label = "Library Books", tip = "Every book for your faction, a tick on those handed in." },
     { key = "bag", label = "Sleeping Bag", tip = "The Cozy Sleeping Bag's hidden quest chain, step by step." },
 }
-local TEXT_TITLE = "Discovery"
-local TEXT_ABOUT = "Library books to find around Azeroth, and who to hand them to."
-local TEXT_STEPS = "Steps"
-local TEXT_OPTIONAL = "Optional"
-local TEXT_NOT_FOUND = "Not found yet"
-local TEXT_NOBODY = "Nobody has found this one on Forever yet."
-local TEXT_NO_BOOKS = "No books for your faction yet."
+local TEXT_TITLE = ns.L("Discovery")
+local TEXT_ABOUT = ns.L("Library books to find around Azeroth, and who to hand them to.")
+local TEXT_STEPS = ns.L("Steps")
+local TEXT_OPTIONAL = ns.L("Optional")
+local TEXT_NOT_FOUND = ns.L("Not found yet")
+local TEXT_NOBODY = ns.L("Nobody has found this one on Forever yet.")
+local TEXT_NO_BOOKS = ns.L("No books for your faction yet.")
 local TEXT_SEPARATOR = "  -  "
-local TEXT_FOR_FACTION = " books for your faction"
+local TEXT_FOR_FACTION = ns.L(" books for your faction")
 
 local window, scroll, view
 local filter = "books"

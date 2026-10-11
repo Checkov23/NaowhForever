@@ -7,11 +7,11 @@ local ROUTE_MIN_STOPS = 2
 local STOP_FIELDS = 6
 local TOMTOM_FROM = "Naowh Forever"
 local TEXT_SPOT = "%s%s: %s %.1f, %.1f"
-local TEXT_TOMTOM = "TomTom waypoint for "
-local TEXT_PLACED = "Waypoint for "
-local TEXT_ROUTE_STOP = "%s, stop %d of %d: %s%s"
-local TEXT_NO_WAYPOINTS = "That map does not take waypoints."
-local TEXT_LATER = " (placed when you close the map)"
+local TEXT_TOMTOM = ns.L("TomTom waypoint for ")
+local TEXT_PLACED = ns.L("Waypoint for ")
+local TEXT_ROUTE_STOP = ns.L("%s, stop %d of %d: %s%s")
+local TEXT_NO_WAYPOINTS = ns.L("That map does not take waypoints.")
+local TEXT_LATER = ns.L(" (placed when you close the map)")
 
 ns.WAYPOINT_HOLD = 4
 

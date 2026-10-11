@@ -8,9 +8,9 @@ local Style = Discovery.Style
 local Bag = Discovery.Bag
 local V = Discovery.View
 
-local WORDS = { done = "Done", now = "Next", optional = "Optional", later = "Later" }
-local TEXT_SHARE = "Share where it is"
-local TEXT_HINT = "Pin: waypoint    Right-click it: Share"
+local WORDS = { done = ns.L("Done"), now = ns.L("Next"), optional = ns.L("Optional"), later = ns.L("Later") }
+local TEXT_SHARE = ns.L("Share where it is")
+local TEXT_HINT = ns.L("Pin: waypoint    Right-click it: Share")
 
 local function StepPin(button, mouse)
     local row = button:GetParent()

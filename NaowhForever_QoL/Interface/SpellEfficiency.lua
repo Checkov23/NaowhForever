@@ -35,8 +35,8 @@ local PREVIEW_SPELL = 2053
 local SHOW_HEAL, SHOW_DAMAGE = "heal", "damage"
 local STYLE_SHORT = "short"
 local SEPARATOR = "  ||  "
-local LONG_FIRST = { "%s %s per mana", "%s %s per second", "%s %s per mana per second" }
-local LONG_NEXT = { "%s per mana", "%s per second", "%s per mana per second" }
+local LONG_FIRST = { ns.L("%s %s per mana"), ns.L("%s %s per second"), ns.L("%s %s per mana per second") }
+local LONG_NEXT = { ns.L("%s per mana"), ns.L("%s per second"), ns.L("%s per mana per second") }
 local SHORT_PIECE = "%s %s"
 local SHORT_LABELS = {
     [HEAL] = { "HPM", "HPS", "HPM/s" },
@@ -52,14 +52,14 @@ local MOCK_ROWS = 3
 local TITLE_SIZE, TEXT_SIZE = 13, 11
 local SAMPLE_POWER = 100
 local SAMPLES = {
-    { name = "Sample Heal", kind = HEAL, amount = 450, coefficient = 0.857, mana = 300, cast = 2.5 },
-    { name = "Sample Bolt", kind = DAMAGE, amount = 400, coefficient = 0.857, mana = 200, cast = 3 },
+    { name = ns.L("Sample Heal"), kind = HEAL, amount = 450, coefficient = 0.857, mana = 300, cast = 2.5 },
+    { name = ns.L("Sample Bolt"), kind = DAMAGE, amount = 400, coefficient = 0.857, mana = 200, cast = 3 },
 }
-local TEXT_MANA = "%d Mana"
-local TEXT_CAST = "%s sec cast"
-local TEXT_SAMPLE_POWER = "Sample spells with %d spell power."
-local TEXT_SAMPLE_BASE = "Sample spells, base numbers only."
-local TEXT_OFF = "Turn on Mana Efficiency to add this line to your tooltips."
+local TEXT_MANA = ns.L("%d Mana")
+local TEXT_CAST = ns.L("%s sec cast")
+local TEXT_SAMPLE_POWER = ns.L("Sample spells with %d spell power.")
+local TEXT_SAMPLE_BASE = ns.L("Sample spells, base numbers only.")
+local TEXT_OFF = ns.L("Turn on Mana Efficiency to add this line to your tooltips.")
 local STATES = { { key = "sample", label = "Sample" } }
 
 local NUMBER_FORMATS = {}

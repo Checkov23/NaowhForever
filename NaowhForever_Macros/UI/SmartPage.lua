@@ -22,20 +22,20 @@ local LEAD_W, USE_ICON, USE_ICON_X, USE_TEXT_GAP, COUNT_GAP = 34, 20, 36, 8, 6
 local HINT_BOTTOM = 10
 local OFF_ALPHA = 0.6
 
-local TEXT_DRAG_HINT = "Drag the icon to a bar"
-local TEXT_USES, TEXT_THEN = "Uses", "then"
-local TEXT_SUMMARY = "%d of %d Smart Macros on."
-local TEXT_ITEM = "Item %d"
-local TEXT_TRINKET, TEXT_NO_TRINKET = "Your trinket", "No trinket worn"
-local TEXT_FOCUS = "Mouseover, else target"
-local TEXT_ACCEPT = "Clicks Yes on popups"
-local TEXT_NOTHING = "Nothing in your bags"
-local COUNT, SLOT = "x%d", "slot %s"
+local TEXT_DRAG_HINT = ns.L("Drag the icon to a bar")
+local TEXT_USES, TEXT_THEN = ns.L("Uses"), ns.L("then")
+local TEXT_SUMMARY = ns.L("%d of %d Smart Macros on.")
+local TEXT_ITEM = ns.L("Item %d")
+local TEXT_TRINKET, TEXT_NO_TRINKET = ns.L("Your trinket"), ns.L("No trinket worn")
+local TEXT_FOCUS = ns.L("Mouseover, else target")
+local TEXT_ACCEPT = ns.L("Clicks Yes on popups")
+local TEXT_NOTHING = ns.L("Nothing in your bags")
+local COUNT, SLOT = "x%d", ns.L("slot %s")
 
-local NOTES = { health = "Healthstone and potions", healthstone = "Best healthstone", healthPotion = "Best healing potion",
-    mana = "Best mana potion", food = "Conjured food first", drink = "Conjured drink first",
-    bandage = "On yourself", trinket1 = "Top trinket slot", trinket2 = "Bottom trinket slot",
-    focus = "Marks and announces", acceptPopup = "Ready checks, summons" }
+local NOTES = { health = ns.L("Healthstone and potions"), healthstone = ns.L("Best healthstone"), healthPotion = ns.L("Best healing potion"),
+    mana = ns.L("Best mana potion"), food = ns.L("Conjured food first"), drink = ns.L("Conjured drink first"),
+    bandage = ns.L("On yourself"), trinket1 = ns.L("Top trinket slot"), trinket2 = ns.L("Bottom trinket slot"),
+    focus = ns.L("Marks and announces"), acceptPopup = ns.L("Ready checks, summons") }
 
 local function ItemUse(id)
     return { icon = C_Item.GetItemIconByID(id) or QUESTION,

@@ -15,24 +15,24 @@ local NOTE_LINES, NOTE_MAX = 3, 200
 local LINK_GAP = 10
 local WAITING = "..."
 local TREES = "%d/%d/%d"
-local POINTS = "%d points"
-local NAOWH_BUILD = "Naowh's %s build"
-local NO_TALENTS = "No talents yet"
-local NOT_SHOWN = "Not shown"
-local ITEM_LEVEL, UNENCHANTED, EMPTY_SLOTS = "Item level", "Unenchanted", "Empty slots"
-local NONE_TEXT = "None"
-local NO_GUILD = "No guild"
+local POINTS = ns.L("%d points")
+local NAOWH_BUILD = ns.L("Naowh's %s build")
+local NO_TALENTS = ns.L("No talents yet")
+local NOT_SHOWN = ns.L("Not shown")
+local ITEM_LEVEL, UNENCHANTED, EMPTY_SLOTS = ns.L("Item level"), ns.L("Unenchanted"), ns.L("Empty slots")
+local NONE_TEXT = ns.L("None")
+local NO_GUILD = ns.L("No guild")
 local GEAR_ROWS = { "level", "check", "empty" }
-local FRIEND, GUILDMATE = "Friend", "Guildmate"
-local GROUPED_ONCE, GROUPED = "Grouped once", "Grouped %d times"
-local NO_NOTE = "No note on them"
-local NOTE_TITLE = "Your note on %s"
+local FRIEND, GUILDMATE = ns.L("Friend"), ns.L("Guildmate")
+local GROUPED_ONCE, GROUPED = ns.L("Grouped once"), ns.L("Grouped %d times")
+local NO_NOTE = ns.L("No note on them")
+local NOTE_TITLE = ns.L("Your note on %s")
 local ROLE = {
-    ["protection-warrior"] = "Tank", ["protection-paladin"] = "Tank",
-    ["holy-paladin"] = "Healer", ["discipline-priest"] = "Healer", ["holy-priest"] = "Healer",
-    ["restoration-druid"] = "Healer", ["restoration-shaman"] = "Healer",
+    ["protection-warrior"] = ns.L("Tank"), ["protection-paladin"] = ns.L("Tank"),
+    ["holy-paladin"] = ns.L("Healer"), ["discipline-priest"] = ns.L("Healer"), ["holy-priest"] = ns.L("Healer"),
+    ["restoration-druid"] = ns.L("Healer"), ["restoration-shaman"] = ns.L("Healer"),
 }
-local DAMAGE = "Damage"
+local DAMAGE = ns.L("Damage")
 local NONE = {}
 
 local body, rows
@@ -296,14 +296,14 @@ local function TagMenu(owner)
     if not (guid and H and H.SetNote) then return end
     menuGUID = guid
     MenuUtil.CreateContextMenu(owner, function(_, root)
-        root:CreateTitle("Tag")
+        root:CreateTitle(ns.L("Tag"))
         for _, tag in ipairs(type(H.TAGS) == "table" and H.TAGS or NONE) do
             root:CreateRadio(ns.PlainText(tag.label, NOTE_MAX), IsTag, SetTag, tag.key)
         end
-        root:CreateRadio("No tag", IsTag, SetTag, false)
+        root:CreateRadio(ns.L("No tag"), IsTag, SetTag, false)
         if H.Note(guid) then
             root:CreateDivider()
-            root:CreateButton("Clear note", ClearNote)
+            root:CreateButton(ns.L("Clear note"), ClearNote)
         end
     end)
 end
@@ -315,7 +315,7 @@ local function Build()
     rows.points, y = Line(y)
     rows.build, y = Line(y)
     Color(rows.build.left, T.accentSoft)
-    y = Section(y + SECTION_GAP, "THEIR GEAR")
+    y = Section(y + SECTION_GAP, ns.L("THEIR GEAR"))
     rows.level, y = Line(y)
     rows.check, y = Line(y)
     rows.empty, y = Line(y)
@@ -340,7 +340,7 @@ local function Build()
     Parts.SetLink(edit, "Note")
     edit:SetPoint("TOPRIGHT", 0, 0)
     local tag = Parts.Link(note, TagMenu)
-    Parts.SetLink(tag, "Tag")
+    Parts.SetLink(tag, ns.L("Tag"))
     tag:SetPoint("RIGHT", edit, "LEFT", -LINK_GAP, 0)
     rows.tag = ns.Font(note, LINE_SIZE, nil, T.fg)
     rows.tag:SetPoint("TOPLEFT", 0, -top)

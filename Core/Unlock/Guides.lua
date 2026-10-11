@@ -15,7 +15,7 @@ local OUTLINE_ALPHA = 0.45
 local TAB_W, TAB_H, TAB_HIT = 10, 7, 4
 local TAB_SIDES = { "TOP", "LEFT", "RIGHT", "BOTTOM" }
 local EDGE_PAIRS_FIRST, EDGE_PAIRS_LAST, EDGE_PAIRS_STEP = 1, 4, 3
-local TEXT_TAB_HELP = "Anchors to this side."
+local TEXT_TAB_HELP = ns.L("Anchors to this side.")
 
 local overlay, tabs
 

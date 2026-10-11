@@ -49,34 +49,34 @@ local BAR_GAP, NOTE_GAP = 14, 10
 local GOLD_GAP, SIXTY_GAP, SIXTY_TEXT_GAP = 10, 14, 6
 local FONT_LABEL, FONT_COUNT, FONT_SIXTY, FONT_GOLD, FONT_COST = 12, 13, 16, 22, 30
 local FONT_TICK = 11
-local TEXT_TITLE = "Training Planner"
-local TEXT_SUBTITLE = "%s, level %d"
-local TEXT_MINI = "Mini"
-local TIP_MINI = "Swap the window for a small bar with your next visit and your gold, to leave up while you level. "
-    .. "Move it by dragging."
-local TEXT_SPELLS, TIP_SPELLS = "Spells", "What you can train now and what each level brings."
-local TEXT_BUILDS, TIP_BUILDS = "Builds", "Talent builds, level by level."
-local TEXT_SEARCH = "Search spells"
-local TEXT_SHOW_LEARNED, TEXT_HIDE_LEARNED = "Show Learned", "Hide Learned"
-local TEXT_ALL_LEVELS = "All Levels"
-local TEXT_IMPORT, TIP_IMPORT = "Import a Build", "Paste a build someone shared with you."
-local TEXT_IMPORT_LABEL = "Import"
-local TEXT_PASTE = "Paste a Naowh Forever talent build"
-local TEXT_SAVE, TIP_SAVE = "Save My Talents", "Keep the talents you have now as a build "
-    .. "you can export. The game does not keep the order you took them in, so it lists them row by row."
-local TEXT_NAME_TALENTS = "Name for your current talents"
-local TEXT_NEW, TIP_NEW = "New Build", "Start an empty build for the class shown and "
-    .. "click its talents in the order they are taken, level by level."
-local TEXT_NAME_BUILD = "Name the new build"
-local TEXT_WAYPOINT = "Waypoint to nearest trainer"
-local TEXT_VISIT = "NEXT TRAINER VISIT"
-local TEXT_GOLD = "YOUR GOLD"
-local TEXT_TO_SIXTY = "LEFT TO 60"
-local TEXT_ROAD = "YOUR ROAD TO 60"
-local TEXT_ROAD_HINT = "Click a level to see what it brings"
-local TEXT_YOU = "YOU"
-local TEXT_NOTHING_LEFT, TEXT_NOTHING_NOTE = "NOTHING LEFT TO LEARN", "You know every spell your class trains"
-local TEXT_FOOTER = "Prices from your trainer"
+local TEXT_TITLE = ns.L("Training Planner")
+local TEXT_SUBTITLE = ns.L("%s, level %d")
+local TEXT_MINI = ns.L("Mini")
+local TIP_MINI = ns.L("Swap the window for a small bar with your next visit and your gold, to leave up while you level. "
+    .. "Move it by dragging.")
+local TEXT_SPELLS, TIP_SPELLS = "Spells", ns.L("What you can train now and what each level brings.")
+local TEXT_BUILDS, TIP_BUILDS = "Builds", ns.L("Talent builds, level by level.")
+local TEXT_SEARCH = ns.L("Search spells")
+local TEXT_SHOW_LEARNED, TEXT_HIDE_LEARNED = ns.L("Show Learned"), ns.L("Hide Learned")
+local TEXT_ALL_LEVELS = ns.L("All Levels")
+local TEXT_IMPORT, TIP_IMPORT = ns.L("Import a Build"), ns.L("Paste a build someone shared with you.")
+local TEXT_IMPORT_LABEL = ns.L("Import")
+local TEXT_PASTE = ns.L("Paste a Naowh Forever talent build")
+local TEXT_SAVE, TIP_SAVE = ns.L("Save My Talents"), ns.L("Keep the talents you have now as a build "
+    .. "you can export. The game does not keep the order you took them in, so it lists them row by row.")
+local TEXT_NAME_TALENTS = ns.L("Name for your current talents")
+local TEXT_NEW, TIP_NEW = ns.L("New Build"), ns.L("Start an empty build for the class shown and "
+    .. "click its talents in the order they are taken, level by level.")
+local TEXT_NAME_BUILD = ns.L("Name the new build")
+local TEXT_WAYPOINT = ns.L("Waypoint to nearest trainer")
+local TEXT_VISIT = ns.L("NEXT TRAINER VISIT")
+local TEXT_GOLD = ns.L("YOUR GOLD")
+local TEXT_TO_SIXTY = ns.L("LEFT TO 60")
+local TEXT_ROAD = ns.L("YOUR ROAD TO 60")
+local TEXT_ROAD_HINT = ns.L("Click a level to see what it brings")
+local TEXT_YOU = ns.L("YOU")
+local TEXT_NOTHING_LEFT, TEXT_NOTHING_NOTE = ns.L("NOTHING LEFT TO LEARN"), ns.L("You know every spell your class trains")
+local TEXT_FOOTER = ns.L("Prices from your trainer")
 local WINDOW_EVENTS = { "PLAYER_MONEY", "SPELL_DATA_LOAD_RESULT", "TRAIT_CONFIG_UPDATED" }
 
 local window

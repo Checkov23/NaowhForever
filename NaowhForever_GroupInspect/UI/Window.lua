@@ -17,13 +17,13 @@ local PERCENT, ROUND = GI.C.PERCENT, GI.C.ROUND
 local WINDOW_KEY = "groupInspectWindow"
 
 local MODE_WORDS = UI.MODE_WORDS
-local NF_COUNT = "%d of %d run Naowh Forever"
-local TEXT_TITLE = "Group Inspect"
-local TEXT_TITLE_TIP = "Your group's Naowh Score, gear, talents and stats."
-local TEXT_REFRESH = "Inspect everyone again"
-local TEXT_REFRESH_TIP = "Reads every member's gear and talents again."
-local TEXT_REFRESH_LABEL = "Refresh"
-local TURNED_ON = "Group Inspect turned on. Turn it off on its settings page."
+local NF_COUNT = ns.L("%d of %d run Naowh Forever")
+local TEXT_TITLE = ns.L("Group Inspect")
+local TEXT_TITLE_TIP = ns.L("Your group's Naowh Score, gear, talents and stats.")
+local TEXT_REFRESH = ns.L("Inspect everyone again")
+local TEXT_REFRESH_TIP = ns.L("Reads every member's gear and talents again.")
+local TEXT_REFRESH_LABEL = ns.L("Refresh")
+local TURNED_ON = ns.L("Group Inspect turned on. Turn it off on its settings page.")
 
 local window, board, list, raidBar
 local listening = false

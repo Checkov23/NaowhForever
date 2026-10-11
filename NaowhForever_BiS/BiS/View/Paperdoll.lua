@@ -26,18 +26,18 @@ local RIGHT_SLOTS = { 10, 6, 7, 8, 11, 12, 13, 14 }
 local BOTTOM_SLOTS = { 16, 17, 18 }
 local COLUMN_H = #RIGHT_SLOTS * (SLOT + SLOT_GAP) - SLOT_GAP
 local DOLL_H = TOP_H + COLUMN_H + MODEL_GAP + SLOT + GAINS_H
-local COSMETIC = { [4] = "Shirt", [19] = "Tabard" }
+local COSMETIC = { [4] = ns.L("Shirt"), [19] = ns.L("Tabard") }
 local HAND = { [16] = "MAINHANDSLOT", [17] = "SECONDARYHANDSLOT" }
 local LOOKS = { { key = "bis", label = "Your BiS" }, { key = "now", label = "Now" } }
 local HIGHLIGHT = "Interface\\Buttons\\ButtonHilight-Square"
 local FOREVER_KIND = C.FOREVER_KIND
-local TEXT_NO_STATS = "No stats: wear what you like."
-local TEXT_PICK_BIS = "Click to pick your BiS."
-local TEXT_YOUR_PICKS = "Your %s picks"
-local TEXT_OFF_HAND_IDLE = "Unused while your main hand's BiS is a two-hander."
-local TEXT_NOT_YOURS = "Not yours yet."
-local TEXT_CHANGE = "Click to change them."
-local TEXT_HINT = "Drag to turn" .. PLACE_DOT .. "Scroll to zoom" .. PLACE_DOT .. "Right-click to reset"
+local TEXT_NO_STATS = ns.L("No stats: wear what you like.")
+local TEXT_PICK_BIS = ns.L("Click to pick your BiS.")
+local TEXT_YOUR_PICKS = ns.L("Your %s picks")
+local TEXT_OFF_HAND_IDLE = ns.L("Unused while your main hand's BiS is a two-hander.")
+local TEXT_NOT_YOURS = ns.L("Not yours yet.")
+local TEXT_CHANGE = ns.L("Click to change them.")
+local TEXT_HINT = ns.L("Drag to turn") .. PLACE_DOT .. ns.L("Scroll to zoom") .. PLACE_DOT .. ns.L("Right-click to reset")
 local BLANK = " "
 
 local function TryOn(model, slot, id)

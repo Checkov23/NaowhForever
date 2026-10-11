@@ -34,35 +34,35 @@ local MAKE_W, KEEP_W = 40, 34
 local ADD_W = 90
 local ADD_DROP = 4
 local ADD_OVERHANG = 4
-local TEXT_TITLE = "Shopping List"
-local TEXT_HINT = "Choose a recipe, set how many crafts and click Add to List: its materials "
+local TEXT_TITLE = ns.L("Shopping List")
+local TEXT_HINT = ns.L("Choose a recipe, set how many crafts and click Add to List: its materials "
     .. "land here. At the auction house the list shows beside it, to check the prices and "
-    .. "buy it all."
-local TEXT_CRAFTS, TEXT_MATERIALS, TEXT_MADE = "Crafts", "Materials", "Make First"
-local TEXT_CLEAR = "Clear"
+    .. "buy it all.")
+local TEXT_CRAFTS, TEXT_MATERIALS, TEXT_MADE = ns.L("Crafts"), ns.L("Materials"), ns.L("Make First")
+local TEXT_CLEAR = ns.L("Clear")
 local TEXT_ROW = "%dx %s"
 local TEXT_UNKNOWN = "?"
-local TEXT_ITEM = "item "
-local TEXT_NO_PRICE = "no price"
+local TEXT_ITEM = ns.L("item ")
+local TEXT_NO_PRICE = ns.L("no price")
 local TEXT_ABOUT = "~"
-local TEXT_PARTS_BOUGHT = "parts bought"
-local TEXT_SAVES = "saves ~"
-local TEXT_NO_AH_PRICE = "no AH price"
-local TEXT_UNPRICED = "unpriced"
-local TEXT_ADD = "Add to List"
-local TEXT_MAKE, TEXT_BUY = "Make", "Buy"
-local TIP_CLEAR_HELP = "Empties the shopping list."
-local TIP_REMOVE, TIP_REMOVE_HELP = "Remove", "Takes this craft and its materials off the list."
-local TIP_MORE, TIP_MORE_HELP = "One More", "Adds the materials for one more craft."
-local TIP_FEWER, TIP_FEWER_HELP = "One Fewer", "Takes the materials for one craft off the list."
-local TIP_MAKE, TIP_MAKE_HELP = "Make It", "Buys its cheaper parts instead, to make it yourself."
-local TIP_KEEP, TIP_KEEP_HELP = "Buy It", "Buys it as it is instead of its parts."
-local TIP_ADD = "Add to Shopping List"
-local TIP_ADD_HELP = "Puts the materials for that many crafts on your "
+local TEXT_PARTS_BOUGHT = ns.L("parts bought")
+local TEXT_SAVES = ns.L("saves ~")
+local TEXT_NO_AH_PRICE = ns.L("no AH price")
+local TEXT_UNPRICED = ns.L("unpriced")
+local TEXT_ADD = ns.L("Add to List")
+local TEXT_MAKE, TEXT_BUY = ns.L("Make"), ns.L("Buy")
+local TIP_CLEAR_HELP = ns.L("Empties the shopping list.")
+local TIP_REMOVE, TIP_REMOVE_HELP = ns.L("Remove"), ns.L("Takes this craft and its materials off the list.")
+local TIP_MORE, TIP_MORE_HELP = ns.L("One More"), ns.L("Adds the materials for one more craft.")
+local TIP_FEWER, TIP_FEWER_HELP = ns.L("One Fewer"), ns.L("Takes the materials for one craft off the list.")
+local TIP_MAKE, TIP_MAKE_HELP = ns.L("Make It"), ns.L("Buys its cheaper parts instead, to make it yourself.")
+local TIP_KEEP, TIP_KEEP_HELP = ns.L("Buy It"), ns.L("Buys it as it is instead of its parts.")
+local TIP_ADD = ns.L("Add to Shopping List")
+local TIP_ADD_HELP = ns.L("Puts the materials for that many crafts on your "
     .. "shopping list: every checked reagent that vendors do not sell, whatever is in your "
     .. "bags. Uncheck a reagent to leave it out. At the auction house the list shows beside "
-    .. "it, to check the prices and buy it all."
-local TIP_CRAFTS, TIP_CRAFTS_HELP = "Crafts", "How many crafts Add to List adds the materials for."
+    .. "it, to check the prices and buy it all.")
+local TIP_CRAFTS, TIP_CRAFTS_HELP = ns.L("Crafts"), ns.L("How many crafts Add to List adds the materials for.")
 
 local side
 local crafts, craftPool, madeList, madePool = {}, {}, {}, {}

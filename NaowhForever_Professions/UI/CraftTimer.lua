@@ -32,7 +32,7 @@ local SIDES = { "LEFT", "RIGHT" }
 local CAST_EVENTS = { "UNIT_SPELLCAST_START", "UNIT_SPELLCAST_SUCCEEDED", "UNIT_SPELLCAST_INTERRUPTED",
     "UNIT_SPELLCAST_FAILED" }
 local TEXT_CLOCK = "%d:%02d"
-local TEXT_DONE = "%d / %d crafted"
+local TEXT_DONE = ns.L("%d / %d crafted")
 
 local job
 local bar, watch

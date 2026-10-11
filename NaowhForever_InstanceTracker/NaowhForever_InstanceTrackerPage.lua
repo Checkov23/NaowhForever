@@ -72,7 +72,7 @@ end
 
 local function OffText()
     if ns.InstanceTracker.Enabled() then return "" end
-    return "Instance Tracker is off, so nothing new is recorded. "
+    return ns.L("Instance Tracker is off, so nothing new is recorded. ")
 end
 
 local function ClassName(name, class)
@@ -99,7 +99,7 @@ end
 local function SheetLine(char)
     local parts = {}
     if type(char.durability) == "number" then
-        parts[#parts + 1] = char.durability .. "% durability"
+        parts[#parts + 1] = char.durability .. ns.L("% durability")
     end
     return JoinMuted(parts)
 end
@@ -149,15 +149,15 @@ function ns.BuildInstanceHourPage(parent, y)
     local W, IT = UI.Widgets, ns.InstanceTracker
     local _, h
     _, h = W:Note(parent, OffText()
-        .. "New dungeon and raid instances "
+        .. ns.L("New dungeon and raid instances "
         .. "on this account count toward one 10-per-hour cap. "
         .. "Walking back into one you have not reset does not count. The chat warning is set "
-        .. "under Instance Tracker settings.", y); y = y - h
+        .. "under Instance Tracker settings."), y); y = y - h
     _, h = W:SectionHeader(parent, "THIS HOUR", y); y = y - h
 
     local count, cap, frees = IT.Hour()
-    local summary = string.format("Account this hour: %d of %d", count, cap)
-    if count > 0 then summary = summary .. "   next frees in " .. IT.Duration(frees) end
+    local summary = string.format(ns.L("Account this hour: %d of %d"), count, cap)
+    if count > 0 then summary = summary .. ns.L("   next frees in ") .. IT.Duration(frees) end
     local left = cap - count
     if count > 0 and left <= IT.WarnDistance() then
         summary = HourPaint(left, summary)
@@ -169,7 +169,7 @@ function ns.BuildInstanceHourPage(parent, y)
     else
         for i = 1, #hourRows do
             local row = hourRows[i]
-            y = Line(parent, y, string.format("%s   frees in %s", row.name or "",
+            y = Line(parent, y, string.format(ns.L("%s   frees in %s"), row.name or "",
                 IT.Duration(IT.EntryLeft(row))))
         end
         y = y - GROUP_GAP
@@ -201,13 +201,13 @@ function ns.BuildInstanceHistoryPage(parent, y)
     local W, IT = UI.Widgets, ns.InstanceTracker
     local _, h
     _, h = W:Note(parent, OffText()
-        .. "Each dungeon or raid visit while Instance Tracker is on: how long you were "
+        .. ns.L("Each dungeon or raid visit while Instance Tracker is on: how long you were "
         .. "inside, the coins you looted and the experience you gained. Reputation gained "
         .. "is listed under the visit. Coming back to the same group within "
         .. "the hour, before you reset it, continues that visit, and the time outside "
         .. "is not counted. Other characters stay saved, and show here when Track Alts is on. "
         .. "Repairs and vendor sales are not counted. "
-        .. "Older visits drop off the end of the list.", y); y = y - h
+        .. "Older visits drop off the end of the list."), y); y = y - h
     _, h = W:Button(parent, "Clear History", y, function()
         ns.Confirm(ns.L("Clear instance history?"), function()
             IT.ClearHistory()
@@ -219,7 +219,7 @@ function ns.BuildInstanceHistoryPage(parent, y)
     local open = IT.Open()
     if open and open.instance then
         local elapsed = IT.Duration(IT.Elapsed(open))
-        y = Line(parent, y, "In progress   " .. ClassName(open.name or "?", open.class)
+        y = Line(parent, y, ns.L("In progress   ") .. ClassName(open.name or "?", open.class)
             .. "   " .. IT.PlaceName(open.instance, open.difficulty) .. "   " .. elapsed
             .. "   " .. IT.Coins(open.loot) .. "   " .. BreakUpLargeNumbers(open.xp or 0) .. " XP")
         y = RepLine(parent, y, open.rep)
@@ -237,7 +237,7 @@ function ns.BuildInstanceHistoryPage(parent, y)
         y = RepLine(parent, y, runs[i].rep)
     end
     if #runs > shown then
-        _, h = W:Note(parent, "Showing the latest " .. shown .. " of " .. #runs .. ".", y)
+        _, h = W:Note(parent, ns.L("Showing the latest %d of %d."):format(shown, #runs), y)
         y = y - h
     end
     return y
@@ -247,9 +247,9 @@ end
 local Settings = ns.Shared and ns.Shared.Settings
 if not Settings then return end
 
-local OFF = "Turn on Instance Tracker"
+local OFF = ns.L("Turn on Instance Tracker")
 local WHERE = { { self = "Your Chat", group = "Group" }, { "self", "group" } }
-local RAID_WHY = "Choose Group above"
+local RAID_WHY = ns.L("Choose Group above")
 
 local function Enabled()
     return S.Get("enabled") == true
@@ -272,29 +272,29 @@ end
 
 local function Headline()
     local IT = ns.InstanceTracker
-    if not IT.Enabled() then return "Instance Tracker is off" end
+    if not IT.Enabled() then return ns.L("Instance Tracker is off") end
     local open = IT.Open()
     if open and open.instance then return "In " .. IT.PlaceName(open.instance, open.difficulty) end
     local count, cap = IT.Hour()
-    return string.format("%d of %d instances on this account", count, cap)
+    return string.format(ns.L("%d of %d instances on this account"), count, cap)
 end
 
 local function Detail()
     local IT = ns.InstanceTracker
-    if not IT.Enabled() then return "Turn it on to record visits." end
+    if not IT.Enabled() then return ns.L("Turn it on to record visits.") end
     local open = IT.Open()
-    if open and open.instance then return IT.Duration(IT.Elapsed(open)) .. " in this visit." end
+    if open and open.instance then return IT.Duration(IT.Elapsed(open)) .. ns.L(" in this visit.") end
     local count, _, frees = IT.Hour()
-    if count > 0 then return "The next one frees in " .. IT.Duration(frees) .. "." end
-    return "No new instances this hour."
+    if count > 0 then return ns.L("The next one frees in ") .. IT.Duration(frees) .. "." end
+    return ns.L("No new instances this hour.")
 end
 
 local function LeaveSummary(store)
-    return store.Get("leaveWhere") == "group" and "Sent to the group" or "Your chat only"
+    return store.Get("leaveWhere") == "group" and ns.L("Sent to the group") or ns.L("Your chat only")
 end
 
 local function WindowSummary(store)
-    return ("%d%% opacity"):format(math.floor((store.Get("windowAlpha") or 1) * 100 + 0.5))
+    return (ns.L("%d%% opacity")):format(math.floor((store.Get("windowAlpha") or 1) * 100 + 0.5))
 end
 
 local page = Settings.Page("Instance Tracker/Settings", S)
@@ -318,19 +318,19 @@ page:Card({
 page:Card({
     id = "timer", name = "Run Timer", order = 20, switch = "showFrame",
     help = "Shows this visit's time, coins, and experience.",
-    summary = function() return "Inside a dungeon or raid" end,
+    summary = function() return ns.L("Inside a dungeon or raid") end,
 })
 
 page:Card({
     id = "enter", name = "Chat on Enter", order = 30, switch = "enterChat",
     help = "Prints in your chat when you enter an instance.",
-    summary = function() return "Your chat only" end,
+    summary = function() return ns.L("Your chat only") end,
 })
 
 page:Card({
     id = "alts", name = "Track Alts", order = 40, switch = "trackAlts",
     help = "Shows your other characters' visits.",
-    summary = function() return "Other characters stay listed" end,
+    summary = function() return ns.L("Other characters stay listed") end,
 })
 
 page:Card({
@@ -359,7 +359,7 @@ page:Card({
 page:Card({
     id = "reset", name = "When You Reset", order = 60, switch = "resetChat",
     help = "Posts the reset in group chat when you are leading.",
-    summary = function() return "Posted in group chat" end,
+    summary = function() return ns.L("Posted in group chat") end,
 })
 
 page:Card({

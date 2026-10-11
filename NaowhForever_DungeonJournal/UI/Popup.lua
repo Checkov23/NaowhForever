@@ -11,10 +11,10 @@ local CURSOR_OFFSET = 12
 local VIEW_TOP = 4
 local CARD_INSET = 4
 
-local TEXT_HOVER = "Hover or target a boss, then press the key again."
-local TEXT_UNREADABLE = "That is not a boss the Dungeon Journal can read right now."
-local TEXT_UNKNOWN = "%s is not a boss the Dungeon Journal knows."
-local TEXT_THAT = "That"
+local TEXT_HOVER = ns.L("Hover or target a boss, then press the key again.")
+local TEXT_UNREADABLE = ns.L("That is not a boss the Dungeon Journal can read right now.")
+local TEXT_UNKNOWN = ns.L("%s is not a boss the Dungeon Journal knows.")
+local TEXT_THAT = ns.L("That")
 
 local popup, view
 

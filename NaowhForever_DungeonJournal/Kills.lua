@@ -20,7 +20,7 @@ local EACH_LINE = "[^\n]+"
 local LINK_AND_ROLLS = "^(.-)\t(.*)$"
 local EVENTS = { "ENCOUNTER_START", "ENCOUNTER_END", "PLAYER_ENTERING_WORLD" }
 
-local TEXT_RECORD = "New record on %s: %s, was %s."
+local TEXT_RECORD = ns.L("New record on %s: %s, was %s.")
 
 local byEncounter, dungeonOf
 local spare = {}

@@ -8,7 +8,7 @@ local S = Discovery.Settings
 local CHECK = "|TInterface\\RaidFrame\\ReadyCheck-Ready:0|t"
 local TIER_TITLE = "|cff%02x%02x%02x(%d)|r %s"
 local COLOR_MAX = 255
-local TEXT_MAP = "map "
+local TEXT_MAP = ns.L("map ")
 local TEXT_COORDS = "(%.1f, %.1f)"
 
 local Library = {}

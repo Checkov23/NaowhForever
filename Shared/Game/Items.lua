@@ -15,9 +15,9 @@ local LINK_ID = "item[:=](%d+)"
 local BARE_ID = "^%s*(%d+)%s*$"
 local LOOT_LINK = "(|c[^|]*|Hitem:(%d+).-|h|r)"
 local LINE_START = "^(.-)%%s"
-local TEXT_UNLOADED = "item "
-local TEXT_IN_BAG = "In Bag"
-local TEXT_IN_BANK = "In Bank"
+local TEXT_UNLOADED = ns.L("item ")
+local TEXT_IN_BAG = ns.L("In Bag")
+local TEXT_IN_BANK = ns.L("In Bank")
 
 local KEPT_CODE = ("|cff%02x%02x%02x"):format(St.HAVE_RGB.r * KEPT_SHADE, St.HAVE_RGB.g * KEPT_SHADE,
     St.HAVE_RGB.b * KEPT_SHADE)

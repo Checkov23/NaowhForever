@@ -14,7 +14,7 @@ local GEAR_SLOTS = Items.GEAR_SLOTS
 local STATS = UI.STATS
 local WAITING = UI.WAITING
 
-local NO_TALENTS = "Not known yet"
+local NO_TALENTS = ns.L("Not known yet")
 
 local shown = {}
 

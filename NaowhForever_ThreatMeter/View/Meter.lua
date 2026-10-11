@@ -36,11 +36,11 @@ local MIN_FONT = C.MIN_FONT
 local SHORT_M, SHORT_K = 1000000, 1000
 local ROUND = C.ROUND
 
-local TEXT_KICKER = "THREAT"
-local TEXT_EMPTY = "Waiting for threat"
-local TEXT_HOLDING = "HOLDING AGGRO"
-local TEXT_TO_PULL = "YOU %.0f%% TO PULL"
-local TEXT_NO_THREAT = "NO PLAYER THREAT"
+local TEXT_KICKER = ns.L("THREAT")
+local TEXT_EMPTY = ns.L("Waiting for threat")
+local TEXT_HOLDING = ns.L("HOLDING AGGRO")
+local TEXT_TO_PULL = ns.L("YOU %.0f%% TO PULL")
+local TEXT_NO_THREAT = ns.L("NO PLAYER THREAT")
 local TEXT_LINE_RANK = "-"
 local SHORT_M_TEXT, SHORT_K_TEXT, PERCENT_TEXT = "%.1fm", "%.1fk", "%.0f%%"
 

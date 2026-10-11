@@ -34,35 +34,38 @@ local VIEW_SPARE = 8
 local SUMMARY_SIZE = 12
 local LAST_BAG = NUM_TOTAL_EQUIPPED_BAG_SLOTS or NUM_BAG_SLOTS
 local EVENTS = { "BAG_UPDATE_DELAYED", "PLAYER_LEVEL_UP", "EQUIPMENT_SETS_CHANGED" }
-local EMPTY_NOTE = "Nothing marked. Alt-click an item in your bags to mark it."
-local NO_MATCH = "No scrap item matches your search."
-local TAGS = { account = "Account", char = "Character" }
-local TAG_TIPS = { account = "Marked on every character; click for this character only.",
-    char = "Marked on this character only; click for every character." }
-local RULE_TAG, RULE_TIP = "Rule", "Picked by a rule; the X keeps it."
+local EMPTY_NOTE = ns.L("Nothing marked. Alt-click an item in your bags to mark it.")
+local NO_MATCH = ns.L("No scrap item matches your search.")
+local TAGS = { account = ns.L("Account"), char = ns.L("Character") }
+local TAG_TIPS = { account = ns.L("Marked on every character; click for this character only."),
+    char = ns.L("Marked on this character only; click for every character.") }
+local RULE_TAG, RULE_TIP = ns.L("Rule"), ns.L("Picked by a rule; the X keeps it.")
 local IMPORT_PATTERN = "^%s*NFSCRAP:1:([%d,%s]*)$"
 
-local TEXT_IN_BAGS = " in your bags"
-local TEXT_NOT_CARRIED = "Not in your bags"
-local TEXT_ITEMS = "%d item%s"
-local TEXT_KEEP, TEXT_UNMARK = "Keep it", "Unmark"
-local TEXT_CLEAR_ASK = "Unmark every item marked as scrap?"
-local TEXT_NOTHING_MARKED = "Nothing marked to export."
-local TEXT_TITLE = "Scrap List"
-local TEXT_SUBTITLE = "Sold at the next vendor. Drop an item here to mark it."
-local TEXT_ADD = "Add %d item%s to your scrap list: %s%s?"
-local TEXT_MORE = " and %d more"
-local TEXT_RARE = "%d of these %s Rare or better"
-local TEXT_UNCOMMON = "%d of these %s Uncommon"
-local TEXT_WORTH = "%d sell%s for %s or more"
-local TEXT_WORTH_ALONE = "%d of these sell%s for %s or more"
-local TEXT_NOT_A_LIST = "That isn't a Scrap List string."
-local TEXT_NOTHING_NEW = "Nothing new to add from that list."
-local TEXT_PASTE = "Paste a Scrap List"
-local TEXT_IMPORT, TEXT_IMPORT_TIP = "Import a list", "Paste a shared list to add its items."
-local TEXT_EXPORT, TEXT_EXPORT_TIP = "Export this list", "A string to share it with."
-local TEXT_SEARCH = "Search"
-local TEXT_CLEAR = "Clear All"
+local TEXT_IN_BAGS = ns.L(" in your bags")
+local TEXT_NOT_CARRIED = ns.L("Not in your bags")
+local TEXT_ITEM, TEXT_ITEMS = ns.L("%d item"), ns.L("%d items")
+local TEXT_KEEP, TEXT_UNMARK = ns.L("Keep it"), ns.L("Unmark")
+local TEXT_CLEAR_ASK = ns.L("Unmark every item marked as scrap?")
+local TEXT_NOTHING_MARKED = ns.L("Nothing marked to export.")
+local TEXT_TITLE = ns.L("Scrap List")
+local TEXT_SUBTITLE = ns.L("Sold at the next vendor. Drop an item here to mark it.")
+local TEXT_ADD_ONE = ns.L("Add %d item to your scrap list: %s%s?")
+local TEXT_ADD = ns.L("Add %d items to your scrap list: %s%s?")
+local TEXT_MORE = ns.L(" and %d more")
+local TEXT_RARE_ONE, TEXT_RARE = ns.L("%d of these is Rare or better"), ns.L("%d of these are Rare or better")
+local TEXT_UNCOMMON_ONE, TEXT_UNCOMMON = ns.L("%d of these is Uncommon"), ns.L("%d of these are Uncommon")
+local TEXT_WORTH_ONE, TEXT_WORTH = ns.L("%d sells for %s or more"), ns.L("%d sell for %s or more")
+local TEXT_WORTH_ALONE_ONE = ns.L("%d of these sells for %s or more")
+local TEXT_WORTH_ALONE = ns.L("%d of these sell for %s or more")
+local TEXT_WARN_AND = ns.L("%s, and %s")
+local TEXT_NOT_A_LIST = ns.L("That isn't a Scrap List string.")
+local TEXT_NOTHING_NEW = ns.L("Nothing new to add from that list.")
+local TEXT_PASTE = ns.L("Paste a Scrap List")
+local TEXT_IMPORT, TEXT_IMPORT_TIP = ns.L("Import a list"), ns.L("Paste a shared list to add its items.")
+local TEXT_EXPORT, TEXT_EXPORT_TIP = ns.L("Export this list"), ns.L("A string to share it with.")
+local TEXT_SEARCH = ns.L("Search")
+local TEXT_CLEAR = ns.L("Clear All")
 
 local window, view, scroll, search, summary
 local filter = ""
@@ -143,14 +146,10 @@ local function Unscrap(id)
     Scrap.Unscrap(id)
 end
 
-local function Plural(n, word)
-    return n == 1 and "" or word
-end
-
 local function PaintSummary(count, total)
     if count == lastCount and total == lastTotal then return end
     lastCount, lastTotal = count, total
-    local text = TEXT_ITEMS:format(count, Plural(count, "s"))
+    local text = (count == 1 and TEXT_ITEM or TEXT_ITEMS):format(count)
     if total > 0 then text = text .. ", " .. Parts.Coins(total) .. TEXT_IN_BAGS end
     summary:SetText(text)
 end
@@ -243,7 +242,7 @@ local function AddText(add)
         names[i] = Items.QualityHex(add[i]) .. Items.Name(add[i]) .. "|r"
     end
     local more = #add - #names
-    return TEXT_ADD:format(#add, Plural(#add, "s"), table.concat(names, ", "),
+    return (#add == 1 and TEXT_ADD_ONE or TEXT_ADD):format(#add, table.concat(names, ", "),
         more > 0 and TEXT_MORE:format(more) or "")
 end
 
@@ -267,14 +266,14 @@ local function Warning(add)
     local rare, uncommon, valuable = Tally(add)
     local warn
     if rare > 0 then
-        warn = TEXT_RARE:format(rare, rare == 1 and "is" or "are")
+        warn = (rare == 1 and TEXT_RARE_ONE or TEXT_RARE):format(rare)
     elseif uncommon > 0 then
-        warn = TEXT_UNCOMMON:format(uncommon, uncommon == 1 and "is" or "are")
+        warn = (uncommon == 1 and TEXT_UNCOMMON_ONE or TEXT_UNCOMMON):format(uncommon)
     end
     if valuable == 0 then return warn end
-    local sells = valuable == 1 and "s" or ""
-    if warn then return warn .. ", and " .. TEXT_WORTH:format(valuable, sells, HIGH_VALUE_TEXT) end
-    return TEXT_WORTH_ALONE:format(valuable, sells, HIGH_VALUE_TEXT)
+    local one = valuable == 1
+    if warn then return TEXT_WARN_AND:format(warn, (one and TEXT_WORTH_ONE or TEXT_WORTH):format(valuable, HIGH_VALUE_TEXT)) end
+    return (one and TEXT_WORTH_ALONE_ONE or TEXT_WORTH_ALONE):format(valuable, HIGH_VALUE_TEXT)
 end
 
 local function ImportQuestion(add)

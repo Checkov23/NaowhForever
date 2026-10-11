@@ -10,10 +10,10 @@ local LAUNCHER_LABEL = "Naowh Forever"
 local MINIMAP_POS = 220
 local TIP_TITLE = { r = 1, g = 0.82, b = 0 }
 local TIP_TEXT = { r = 1, g = 1, b = 1 }
-local TEXT_CLICK = "Click to open settings."
-local TEXT_DRAG = "Drag to move the minimap button."
-local TEXT_MODULE_CLICK = "Click to open or close it on its own."
-local TEXT_SETTINGS_CLICK = "Click to open or close its settings."
+local TEXT_CLICK = ns.L("Click to open settings.")
+local TEXT_DRAG = ns.L("Drag to move the minimap button.")
+local TEXT_MODULE_CLICK = ns.L("Click to open or close it on its own.")
+local TEXT_SETTINGS_CLICK = ns.L("Click to open or close its settings.")
 
 local launcherEvents = CreateFrame("Frame")
 local function TipTitle(tooltip, text)
@@ -49,11 +49,11 @@ local function ModuleLauncher(account, mod)
     db.hide = not MinimapButtonOn(mod)
     local obj = LibStub("LibDataBroker-1.1"):NewDataObject(LAUNCHER_NAME .. mod.short, {
         type = "launcher",
-        label = mod.name,
+        label = ns.L(mod.name),
         icon = mod.icon,
         OnClick = function() OpenModule(mod) end,
         OnTooltipShow = function(tooltip)
-            TipTitle(tooltip, mod.name)
+            TipTitle(tooltip, ns.L(mod.name))
             TipLine(tooltip, ns.L(mod.open and TEXT_MODULE_CLICK or TEXT_SETTINGS_CLICK))
         end,
     })

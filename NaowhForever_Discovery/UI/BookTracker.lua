@@ -18,27 +18,27 @@ local FALLBACK_ZONE = { H = 1413, A = 1436 }
 local TURN_INS = { "librarian", "trainer" }
 local STORES = { "bags", "bank" }
 local OWN_KEYS = { enabled = true, tracker = true, trackerAlways = true, trackerZone = true }
-local TEXT_TITLE = "LIBRARY BOOKS"
-local TEXT_BOOKS = "Library Books"
-local TEXT_HANDED_IN = "%d of %d books handed in"
-local TEXT_CLAIMED = "Claimed"
-local TEXT_READY = "Ready to hand in"
-local TEXT_AT_LEVEL = "At level %d"
-local TEXT_TO_GO = "%d to go"
+local TEXT_TITLE = ns.L("LIBRARY BOOKS")
+local TEXT_BOOKS = ns.L("Library Books")
+local TEXT_HANDED_IN = ns.L("%d of %d books handed in")
+local TEXT_CLAIMED = ns.L("Claimed")
+local TEXT_READY = ns.L("Ready to hand in")
+local TEXT_AT_LEVEL = ns.L("At level %d")
+local TEXT_TO_GO = ns.L("%d to go")
 local TEXT_GOAL = "%s (%d)"
-local TEXT_OR = " or "
-local TEXT_HAND_IN = "Hand in to %s, %s"
-local TEXT_IN_BAGS = " waiting in your bags"
-local TEXT_IN_BANK = " waiting in your bank"
-local TEXT_READY_GOAL = "%s ready to hand in"
+local TEXT_OR = ns.L(" or ")
+local TEXT_HAND_IN = ns.L("Hand in to %s, %s")
+local TEXT_IN_BAGS = ns.L(" waiting in your bags")
+local TEXT_IN_BANK = ns.L(" waiting in your bank")
+local TEXT_READY_GOAL = ns.L("%s ready to hand in")
 local TEXT_PROGRESS = "%d / %d  %s"
-local TEXT_ALL_HANDED = "%d / %d books handed in"
-local TEXT_ONE_BOOK = "1 book"
-local TEXT_N_BOOKS = "%d books"
-local TEXT_IN_YOUR = "%s in your %s"
-local TEXT_NO_MORE = "No more books in this area."
-local TEXT_TRAINER = ", mage trainer"
-local TEXT_LEVEL = "Level %d"
+local TEXT_ALL_HANDED = ns.L("%d / %d books handed in")
+local TEXT_ONE_BOOK = ns.L("1 book")
+local TEXT_N_BOOKS = ns.L("%d books")
+local TEXT_IN_YOUR = { bags = ns.L("%s in your bags"), bank = ns.L("%s in your bank") }
+local TEXT_NO_MORE = ns.L("No more books in this area.")
+local TEXT_TRAINER = ns.L(", mage trainer")
+local TEXT_LEVEL = ns.L("Level %d")
 local TEXT_COUNT = "(%d)"
 
 local panel, zoneEvents, shownEvents
@@ -149,12 +149,12 @@ end
 
 local function BuildPanel()
     panel = Parts.TrackerPanel(TEXT_TITLE, {
-        onTitle = OpenBooks, titleTip = TEXT_BOOKS, titleHint = "Click to open the Books page.",
+        onTitle = OpenBooks, titleTip = TEXT_BOOKS, titleHint = ns.L("Click to open the Books page."),
         onClose = Close,
         bar = true,
         picker = { values = zoneNames, order = zoneOrder, get = PickedZone, set = PickZone },
-        settings = { page = SETTINGS_PAGE, card = "tracker", tip = "Library Books settings",
-            hint = "Opens the Library Books tracker's settings." },
+        settings = { page = SETTINGS_PAGE, card = "tracker", tip = ns.L("Library Books settings"),
+            hint = ns.L("Opens the Library Books tracker's settings.") },
         opacity = Opacity,
         load = LoadPosition, save = SavePosition, place = PLACE,
         mover = Mover,
@@ -285,7 +285,7 @@ local function AddCarried()
             if n then
                 local npc = ns.LibraryTurnIns[kind][L.Side()]
                 local books = n == 1 and TEXT_ONE_BOOK or TEXT_N_BOOKS:format(n)
-                local entry = Add(TEXT_IN_YOUR:format(books, place), Style.CARRIED_RGB)
+                local entry = Add(TEXT_IN_YOUR[place]:format(books), Style.CARRIED_RGB)
                 entry.sub = TEXT_HAND_IN:format(npc.name, npc.place)
                 entry.npc, entry.waypoint = npc, NpcWaypoint
             end

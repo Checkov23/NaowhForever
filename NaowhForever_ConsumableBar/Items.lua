@@ -5,23 +5,23 @@ local CB = ns.ConsumableBar
 local S, C, D = CB.S, CB.C, CB.Data
 
 local MAX_ITEM_ID = 2147483647
-local TEXT_PROMPT = "Item IDs or names, separated by commas"
-local TEXT_NOT_ONE = "%s is not a consumable. Only consumables go on the Consumable Bar."
-local TEXT_NOT_MANY = "%s are not consumables. Only consumables go on the Consumable Bar."
-local TEXT_NO_NAME = "No item called %s in your bags or loaded by the game. Try its ID, or shift-click it into the box."
-local TEXT_NONE_KNOWN = "No known item in that. Enter item IDs or names, such as 13446 or Major Healing Potion."
-local TEXT_ADDED = "Added %d consumable%s to the Consumable Bar."
-local TEXT_NOTHING_NEW = "No consumables in your bags that are not on the bar already."
-local TEXT_CLEAR = "Remove every item from the Consumable Bar?"
-local TEXT_ASK_AGAIN = "The Consumable Bar will ask about those items again."
+local TEXT_PROMPT = ns.L("Item IDs or names, separated by commas")
+local TEXT_NOT_ONE = ns.L("%s is not a consumable. Only consumables go on the Consumable Bar.")
+local TEXT_NOT_MANY = ns.L("%s are not consumables. Only consumables go on the Consumable Bar.")
+local TEXT_NO_NAME = ns.L("No item called %s in your bags or loaded by the game. Try its ID, or shift-click it into the box.")
+local TEXT_NONE_KNOWN = ns.L("No known item in that. Enter item IDs or names, such as 13446 or Major Healing Potion.")
+local TEXT_ADDED_ONE = ns.L("Added %d consumable to the Consumable Bar.")
+local TEXT_ADDED = ns.L("Added %d consumables to the Consumable Bar.")
+local TEXT_NOTHING_NEW = ns.L("No consumables in your bags that are not on the bar already.")
+local TEXT_CLEAR = ns.L("Remove every item from the Consumable Bar?")
+local TEXT_ASK_AGAIN = ns.L("The Consumable Bar will ask about those items again.")
 local LIST_JOIN = ", "
 local LOOK_FLAGS = { textOn = true, text = true, textFont = true, textSize = true, textColor = true,
     textPoint = true, textOutside = true, textX = true, textY = true }
 
-local TEXT_COVERED = "%s your best %s. Add %s too?"
-local TEXT_NO_MANA = "You don't use mana. Add %s anyway?"
-local TEXT_MIXED = "A Smart Macro already covers some of these, or they need mana: %s. Add them anyway?"
-local TEXT_NEEDS_MANA = "You don't use mana, so that button would do nothing."
+local TEXT_NO_MANA = ns.L("You don't use mana. Add %s anyway?")
+local TEXT_MIXED = ns.L("A Smart Macro already covers some of these, or they need mana: %s. Add them anyway?")
+local TEXT_NEEDS_MANA = ns.L("You don't use mana, so that button would do nothing.")
 
 local function FoodOnly()
     local M = ns.MacroSettings
@@ -33,16 +33,18 @@ local function NotADrinkForFoodOnly(itemID)
 end
 
 local COVERS = {
-    ["macro:food"] = { name = "NF Food already uses", kind = "food and drink", category = "food",
-        also = NotADrinkForFoodOnly },
-    ["macro:drink"] = { name = "NF Drink already uses", kind = "drink", category = "food", also = ns.IsDrink },
-    ["macro:health"] = { name = "NF Health already uses", kind = "healthstone or healing potion",
+    ["macro:food"] = { ask = ns.L("NF Food already uses your best food and drink. Add %s too?"),
+        category = "food", also = NotADrinkForFoodOnly },
+    ["macro:drink"] = { ask = ns.L("NF Drink already uses your best drink. Add %s too?"), category = "food",
+        also = ns.IsDrink },
+    ["macro:health"] = { ask = ns.L("NF Health already uses your best healthstone or healing potion. Add %s too?"),
         category = "healthstone", list = "HEALING_POTIONS" },
-    ["macro:healthstone"] = { name = "NF Healthstone already uses", kind = "healthstone", category = "healthstone" },
-    ["macro:healthPotion"] = { name = "NF Health Potion already uses", kind = "healing potion",
+    ["macro:healthstone"] = { ask = ns.L("NF Healthstone already uses your best healthstone. Add %s too?"),
+        category = "healthstone" },
+    ["macro:healthPotion"] = { ask = ns.L("NF Health Potion already uses your best healing potion. Add %s too?"),
         list = "HEALING_POTIONS" },
-    ["macro:mana"] = { name = "NF Mana already uses", kind = "mana potion", list = "MANA_POTIONS" },
-    ["macro:bandage"] = { name = "NF Bandage already uses", kind = "bandage", category = "bandage" },
+    ["macro:mana"] = { ask = ns.L("NF Mana already uses your best mana potion. Add %s too?"), list = "MANA_POTIONS" },
+    ["macro:bandage"] = { ask = ns.L("NF Bandage already uses your best bandage. Add %s too?"), category = "bandage" },
 }
 
 function CB.Category(itemID)
@@ -153,7 +155,7 @@ local function Question(by, manaOnly, names)
     if by and manaOnly then return TEXT_MIXED:format(list) end
     if manaOnly then return TEXT_NO_MANA:format(list) end
     local cover = COVERS[by]
-    return TEXT_COVERED:format(cover.name, cover.kind, list)
+    return cover.ask:format(list)
 end
 
 function CB.AddAsked(ids, at)
@@ -304,7 +306,7 @@ function CB.ScanBags()
     end
     local added = CB.AddItems(wanted)
     if added > 0 then
-        ns.Print(TEXT_ADDED:format(added, added == 1 and "" or "s"))
+        ns.Print((added == 1 and TEXT_ADDED_ONE or TEXT_ADDED):format(added))
     else
         ns.Print(TEXT_NOTHING_NEW)
     end

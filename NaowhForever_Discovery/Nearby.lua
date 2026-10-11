@@ -10,7 +10,7 @@ local INTERVAL = 1
 local REARM = 1.5
 local BOOK, SPOT, WORLD = 1, 2, 3
 local CHANNEL = "Master"
-local TEXT_NEARBY = "Library book nearby: %s, %d yards%s"
+local TEXT_NEARBY = ns.L("Library book nearby: %s, %d yards%s")
 local TEXT_PLACE = " - %s"
 
 local ticker, zoneEvents, bagEvents, moveEvents

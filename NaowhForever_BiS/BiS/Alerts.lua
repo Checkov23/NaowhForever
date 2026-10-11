@@ -14,14 +14,14 @@ local SOUND_CHANNEL = "Master"
 local ROLL_KEY = "roll"
 local GAP = "  "
 local TEXT_DETAIL = "  %s: %s%s"
-local TEXT_PICK = "your #%d pick"
-local TEXT_FOR = " for "
-local RANK_WORDS = { "your BiS", "your second pick" }
-local WHAT = { roll = "up for a roll", dropped = "dropped", yours = "is yours" }
+local TEXT_PICK = ns.L("your #%d pick")
+local TEXT_FOR = ns.L(" for ")
+local RANK_WORDS = { ns.L("your BiS"), ns.L("your second pick") }
+local WHAT = { roll = ns.L("up for a roll"), dropped = "dropped", yours = ns.L("is yours") }
 local ALERT_FOR = { bis = 1, top2 = 2, all = math.huge }
 local GAME_SOUNDS = { [RAID_WARNING] = SOUNDKIT.RAID_WARNING,
     [EPIC_LOOT] = SOUNDKIT.UI_EPICLOOT_TOAST or SOUNDKIT.RAID_WARNING }
-local GAME_SOUND_NAMES = { [RAID_WARNING] = "Raid Warning (game)", [EPIC_LOOT] = "Epic Loot (game)" }
+local GAME_SOUND_NAMES = { [RAID_WARNING] = ns.L("Raid Warning (game)"), [EPIC_LOOT] = ns.L("Epic Loot (game)") }
 local LOOT_EVENTS = { "LOOT_READY", "START_LOOT_ROLL" }
 
 local seen, said = {}, {}

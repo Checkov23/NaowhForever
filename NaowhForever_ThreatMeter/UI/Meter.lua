@@ -23,13 +23,13 @@ local CARD = C.PAGE .. ":meter"
 local THREAT_EVENTS = { "UNIT_THREAT_LIST_UPDATE", "UNIT_THREAT_SITUATION_UPDATE" }
 local SWITCHED = { PLAYER_TARGET_CHANGED = "target", PLAYER_FOCUS_CHANGED = "focus" }
 
-local TEXT_TARGET, TEXT_FOCUS = "Target", "Focus"
+local TEXT_TARGET, TEXT_FOCUS = ns.L("Target"), ns.L("Focus")
 local TEXT_LOCKED, TEXT_UNLOCKED = "L", "U"
-local TEXT_PREVIEW = "PREVIEW"
-local TEXT_NO_TARGET = "No target"
+local TEXT_PREVIEW = ns.L("PREVIEW")
+local TEXT_NO_TARGET = ns.L("No target")
 local TEXT_MOVER = "Threat Meter"
-local TEXT_OFF = "Enable Threat Meter first."
-local TEXT_IN_COMBAT = "Preview is available outside combat."
+local TEXT_OFF = ns.L("Enable Threat Meter first.")
+local TEXT_IN_COMBAT = ns.L("Preview is available outside combat.")
 
 local frame, pendingUpdate, followTicker, unlocked
 local renderedTitle, renderedPlayer
@@ -155,13 +155,13 @@ end
 local function NewButtons()
     frame.source = ns.Button(frame.header, TEXT_TARGET, SOURCE_W, BUTTON_H, SwitchSource)
     frame.source:SetPoint("TOPRIGHT", SOURCE_X, SOURCE_Y)
-    ns.Tooltip(frame.source, "Threat Source", "Click to switch between your target and focus.")
+    ns.Tooltip(frame.source, ns.L("Threat Source"), ns.L("Click to switch between your target and focus."))
     frame.lock = ns.Button(frame.header, TEXT_LOCKED, SMALL_W, BUTTON_H, ToggleLock)
     frame.lock:SetPoint("BOTTOMRIGHT", LOCK_X, BUTTON_Y)
-    ns.Tooltip(frame.lock, "Window Lock", "Unlock to drag the header and resize with the bottom-right grip.")
+    ns.Tooltip(frame.lock, ns.L("Window Lock"), ns.L("Unlock to drag the header and resize with the bottom-right grip."))
     local settings = ns.Button(frame.header, "...", SMALL_W, BUTTON_H, OpenSettings)
     settings:SetPoint("BOTTOMRIGHT", SETTINGS_X, BUTTON_Y)
-    ns.Tooltip(settings, "Threat Meter Settings")
+    ns.Tooltip(settings, ns.L("Threat Meter Settings"))
 end
 
 local function NewGrip()
@@ -172,7 +172,7 @@ local function NewGrip()
     frame.grip:SetNormalTexture(GRIP_UP)
     frame.grip:SetHighlightTexture(GRIP_HIGHLIGHT)
     frame.grip:SetPushedTexture(GRIP_DOWN)
-    ns.Tooltip(frame.grip, "Resize Threat Meter", "Drag to resize. Turn off Lock Window first; resizing is available outside combat.")
+    ns.Tooltip(frame.grip, ns.L("Resize Threat Meter"), ns.L("Drag to resize. Turn off Lock Window first; resizing is available outside combat."))
     frame.grip:SetScript("OnMouseDown", OnGripDown)
     frame.grip:SetScript("OnMouseUp", OnGripUp)
 end

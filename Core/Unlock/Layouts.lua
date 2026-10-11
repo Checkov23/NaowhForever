@@ -7,14 +7,14 @@ local Grouped, Anchors, Marks, ReapplyAll = H.Grouped, H.Anchors, H.Marks, H.Rea
 local Snapshot, Checkpoint, Restore, ShowSelection = H.Snapshot, H.Checkpoint, H.Restore, H.ShowSelection
 
 local LAYOUT_LETTERS = 20
-local TEXT_LAYOUTS = "Layouts"
-local TEXT_NEW_NAME = "Name the new layout"
-local TEXT_RENAME = "Rename this layout"
-local TEXT_REPLACE = "Replace the layout %s with where everything is now?"
-local TEXT_NAME_TAKEN = "There is already a layout named %s."
-local TEXT_DELETE = "Delete the layout %s? Everything stays where it is now."
-local TEXT_SAVE_TO, TEXT_SAVE_NEW = "Save to ", "Save as New Layout"
-local TEXT_RENAME_ITEM, TEXT_DELETE_ITEM = "Rename ", "Delete "
+local TEXT_LAYOUTS = ns.L("Layouts")
+local TEXT_NEW_NAME = ns.L("Name the new layout")
+local TEXT_RENAME = ns.L("Rename this layout")
+local TEXT_REPLACE = ns.L("Replace the layout %s with where everything is now?")
+local TEXT_NAME_TAKEN = ns.L("There is already a layout named %s.")
+local TEXT_DELETE = ns.L("Delete the layout %s? Everything stays where it is now.")
+local TEXT_SAVE_TO, TEXT_SAVE_NEW = ns.L("Save to "), ns.L("Save as New Layout")
+local TEXT_RENAME_ITEM, TEXT_DELETE_ITEM = ns.L("Rename "), ns.L("Delete ")
 
 local function ByLower(a, b) return a:lower() < b:lower() end
 

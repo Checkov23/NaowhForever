@@ -21,30 +21,30 @@ local RING_ALPHA = 0.25
 local BAR_W = Style.BAR_W
 local MAX_LATER = 12
 local STATES = { "now", "rank", "soon", "later", "talent", "ignored" }
-local TEXT_LEVEL = "Level "
-local TEXT_SEE = "Click to see them."
-local TEXT_DOT = "%d spell%s, %s; %d learned"
-local TEXT_VISIT, TEXT_VISIT_AT = "NEXT TRAINER VISIT", "NEXT TRAINER VISIT, LEVEL "
-local TEXT_NOTHING_LEFT = "Nothing left to learn"
-local TEXT_ONE_SPELL, TEXT_SPELLS = "1 spell", " spells"
-local TEXT_READY = " ready to train"
-local TEXT_ENOUGH_AT, TEXT_ENOUGH = "You have enough already, with ", "Enough for all of it, with "
-local TEXT_SPARE = " to spare."
-local TEXT_SHORT = " short."
-local TEXT_PANEL_HELPS = " The trainer panel learns what you can afford."
-local TEXT_LEVEL_HEAD = "LEVEL "
-local TEXT_AVAILABLE, TEXT_AVAILABLE_NOTE = "AVAILABLE NOW", "Skip one to leave it out of your totals"
-local TEXT_RANK, TEXT_RANK_NOTE = "NEEDS AN EARLIER RANK", "Train the rank before it first"
-local TEXT_LEARN_FIRST = "Learn %s first"
-local TEXT_RANK_BEFORE = "the rank before"
-local TEXT_SOON, TEXT_SOON_NOTE = "COMING SOON", "Within %d levels, %s"
-local TEXT_LATER, TEXT_LATER_NOTE = "LATER", "Click a level, or a dot above"
-local TEXT_MORE_LEVELS = "and %d more levels on the road above"
-local TEXT_TALENT, TEXT_TALENT_NOTE = "NEEDS A TALENT", "Shows up once you take the talent"
-local TEXT_SKIPPED, TEXT_SKIPPED_NOTE = "SKIPPED", "Skipping these saves "
-local TEXT_LEARNED, TEXT_LEARNED_NOTE = "LEARNED", "About %s spent"
-local TEXT_NO_MATCH, TEXT_NO_MATCH_NOTE = "NO SPELLS MATCH", "Try part of a spell's name"
-local TEXT_RESULTS, TEXT_RESULTS_NOTE = "RESULTS", "Learned ones are dimmed"
+local TEXT_LEVEL = ns.L("Level ")
+local TEXT_SEE = ns.L("Click to see them.")
+local TEXT_DOT_ONE, TEXT_DOT = ns.L("%d spell, %s; %d learned"), ns.L("%d spells, %s; %d learned")
+local TEXT_VISIT, TEXT_VISIT_AT = ns.L("NEXT TRAINER VISIT"), ns.L("NEXT TRAINER VISIT, LEVEL ")
+local TEXT_NOTHING_LEFT = ns.L("Nothing left to learn")
+local TEXT_ONE_SPELL, TEXT_SPELLS = ns.L("1 spell"), ns.L(" spells")
+local TEXT_READY = ns.L(" ready to train")
+local TEXT_ENOUGH_AT, TEXT_ENOUGH = ns.L("You have enough already, with "), ns.L("Enough for all of it, with ")
+local TEXT_SPARE = ns.L(" to spare.")
+local TEXT_SHORT = ns.L(" short.")
+local TEXT_PANEL_HELPS = ns.L(" The trainer panel learns what you can afford.")
+local TEXT_LEVEL_HEAD = ns.L("LEVEL ")
+local TEXT_AVAILABLE, TEXT_AVAILABLE_NOTE = ns.L("AVAILABLE NOW"), ns.L("Skip one to leave it out of your totals")
+local TEXT_RANK, TEXT_RANK_NOTE = ns.L("NEEDS AN EARLIER RANK"), ns.L("Train the rank before it first")
+local TEXT_LEARN_FIRST = ns.L("Learn %s first")
+local TEXT_RANK_BEFORE = ns.L("the rank before")
+local TEXT_SOON, TEXT_SOON_NOTE = ns.L("COMING SOON"), ns.L("Within %d levels, %s")
+local TEXT_LATER, TEXT_LATER_NOTE = ns.L("LATER"), ns.L("Click a level, or a dot above")
+local TEXT_MORE_LEVELS = ns.L("and %d more levels on the road above")
+local TEXT_TALENT, TEXT_TALENT_NOTE = ns.L("NEEDS A TALENT"), ns.L("Shows up once you take the talent")
+local TEXT_SKIPPED, TEXT_SKIPPED_NOTE = ns.L("SKIPPED"), ns.L("Skipping these saves ")
+local TEXT_LEARNED, TEXT_LEARNED_NOTE = ns.L("LEARNED"), ns.L("About %s spent")
+local TEXT_NO_MATCH, TEXT_NO_MATCH_NOTE = ns.L("NO SPELLS MATCH"), ns.L("Try part of a spell's name")
+local TEXT_RESULTS, TEXT_RESULTS_NOTE = ns.L("RESULTS"), ns.L("Learned ones are dimmed")
 
 local Spells = {}
 Training.Spells = Spells
@@ -112,7 +112,7 @@ local function DrawDot(plan, level, group, most)
         if plan.known[entry[SPELL]] then learned = learned + 1 end
     end
     d.level = level
-    d.summary = TEXT_DOT:format(#group, #group == 1 and "" or "s", Training.Coins(cost), learned)
+    d.summary = (#group == 1 and TEXT_DOT_ONE or TEXT_DOT):format(#group, Training.Coins(cost), learned)
     d:SetSize(size, size)
     d:SetPoint("CENTER", V.window.road.track, "LEFT", RoadX(level), 0)
     local edge, inside = DotColors(learned, #group, level, plan)

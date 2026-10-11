@@ -17,9 +17,9 @@ local EMPTY_LINK_GAP = 6
 local EMPTY_RAISE = 12
 local OFF_ALPHA = 0.35
 local FIRST_SLOT = 1
-local TEXT_OFF_NOTE = "On-Screen Alert is off: Drop Alert plays its chat line and sounds only."
-local TEXT_EMPTY_NOTE = "Pick your BiS to see your alert here."
-local TEXT_OPEN = "Open BiS List"
+local TEXT_OFF_NOTE = ns.L("On-Screen Alert is off: Drop Alert plays its chat line and sounds only.")
+local TEXT_EMPTY_NOTE = ns.L("Pick your BiS to see your alert here.")
+local TEXT_OPEN = ns.L("Open BiS List")
 local STATES = { { key = "roll", label = "Up for a roll" }, { key = "dropped", label = "Dropped" },
     { key = "yours", label = "Yours!" } }
 

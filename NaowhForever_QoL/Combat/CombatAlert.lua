@@ -14,7 +14,7 @@ local TEXT_RANGE = { 10, 72, 1 }
 local ENTER, LEAVE = "combatEnter", "combatLeave"
 local MOVER_LABEL = "Combat Alert"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Combat", "QoL/Combat:combatAlert"
-local SUMMARY = "%s and %s"
+local SUMMARY = ns.L("%s and %s")
 
 local frame, fade, unlocked
 
@@ -160,10 +160,10 @@ boot:SetScript("OnEvent", Apply)
 
 local Group = ns.Shared.Settings.Group
 local AUDIO = { { none = "None", sound = "Sound", tts = "Text to Speech" }, { "none", "sound", "tts" } }
-local AUDIO_HELP = "A sound, or the Speech text read aloud. Text to Speech can stutter on some PCs, "
-    .. "as the game waits while Windows speaks it; a Sound costs nothing."
-local VOICE_HELP = "Game Default speaks in the voice the rest of the addon uses."
-local SPEAKS_WHY = "Needs Text to Speech"
+local AUDIO_HELP = ns.L("A sound, or the Speech text read aloud. Text to Speech can stutter on some PCs, "
+    .. "as the game waits while Windows speaks it; a Sound costs nothing.")
+local VOICE_HELP = ns.L("Game Default speaks in the voice the rest of the addon uses.")
+local SPEAKS_WHY = ns.L("Needs Text to Speech")
 
 local function Voices()
     return ns.TTSVoiceChoices()
@@ -171,33 +171,45 @@ end
 
 local rows = {}
 
-local function Side(prefix, name, verb)
+local function Side(prefix, t)
     local function OwnColour() return not S.Get(prefix .. "ClassColor") end
     local function PlaysSound() return S.Get(prefix .. "Audio") == "sound" end
     local function Speaks() return S.Get(prefix .. "Audio") == "tts" end
     local list = {
-        Group(name .. " Combat"),
-        { key = prefix .. "Text", label = name .. " Text", text = true, help = "What it shows as you " .. verb .. " combat." },
-        { key = prefix .. "ClassColor", label = name .. " Class Color", toggle = true },
-        { key = prefix .. "Color", label = name .. " Color", colour = true, needs = OwnColour,
+        Group(t.combat),
+        { key = prefix .. "Text", label = t.text, text = true, help = t.textHelp },
+        { key = prefix .. "ClassColor", label = t.classColor, toggle = true },
+        { key = prefix .. "Color", label = t.color, colour = true, needs = OwnColour,
           why = "Class color is on" },
-        { key = prefix .. "Audio", label = name .. " Audio", choice = AUDIO, help = AUDIO_HELP },
-        { key = prefix .. "Sound", label = name .. " Sound", sound = true, needs = PlaysSound,
-          why = name .. " Audio is not Sound" },
-        { key = prefix .. "Voice", label = name .. " Voice", choice = Voices, help = VOICE_HELP, needs = Speaks,
+        { key = prefix .. "Audio", label = t.audio, choice = AUDIO, help = AUDIO_HELP },
+        { key = prefix .. "Sound", label = t.sound, sound = true, needs = PlaysSound,
+          why = t.notSound },
+        { key = prefix .. "Voice", label = t.voice, choice = Voices, help = VOICE_HELP, needs = Speaks,
           why = SPEAKS_WHY },
-        { key = prefix .. "Volume", label = name .. " Volume", slider = VOLUME_RANGE, needs = Speaks,
+        { key = prefix .. "Volume", label = t.volume, slider = VOLUME_RANGE, needs = Speaks,
           why = SPEAKS_WHY },
-        { key = prefix .. "Rate", label = name .. " Speech Rate", slider = SPEECH_RATE_RANGE, needs = Speaks,
+        { key = prefix .. "Rate", label = t.rate, slider = SPEECH_RATE_RANGE, needs = Speaks,
           why = SPEAKS_WHY },
-        { key = prefix .. "Speech", label = name .. " Speech", text = true, needs = Speaks, why = SPEAKS_WHY,
-          help = "Read aloud as you " .. verb .. " combat." },
+        { key = prefix .. "Speech", label = t.speech, text = true, needs = Speaks, why = SPEAKS_WHY,
+          help = t.speechHelp },
     }
     for _, row in ipairs(list) do rows[#rows + 1] = row end
 end
 
-Side(ENTER, "Entering", "enter")
-Side(LEAVE, "Leaving", "leave")
+Side(ENTER, {
+    combat = "Entering Combat", text = "Entering Text", textHelp = "What it shows as you enter combat.",
+    classColor = "Entering Class Color", color = "Entering Color", audio = "Entering Audio",
+    sound = "Entering Sound", notSound = "Entering Audio is not Sound", voice = "Entering Voice",
+    volume = "Entering Volume", rate = "Entering Speech Rate", speech = "Entering Speech",
+    speechHelp = "Read aloud as you enter combat.",
+})
+Side(LEAVE, {
+    combat = "Leaving Combat", text = "Leaving Text", textHelp = "What it shows as you leave combat.",
+    classColor = "Leaving Class Color", color = "Leaving Color", audio = "Leaving Audio",
+    sound = "Leaving Sound", notSound = "Leaving Audio is not Sound", voice = "Leaving Voice",
+    volume = "Leaving Volume", rate = "Leaving Speech Rate", speech = "Leaving Speech",
+    speechHelp = "Read aloud as you leave combat.",
+})
 rows[#rows + 1] = ns.Shared.Settings.Look("combatAlert", { text = true, size = TEXT_RANGE, background = "card" })
 
 local function Summary(store)

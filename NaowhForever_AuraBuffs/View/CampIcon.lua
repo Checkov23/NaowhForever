@@ -18,8 +18,8 @@ local ROUND_ART = { "tex", "plate", "ring" }
 local ROUND_EXTRAS = { "timer", "drain", "track", "label", "buffs" }
 local JUSTIFY = { right = "LEFT", left = "RIGHT" }
 
-local TEXT_REFRESH = "Refresh Camp"
-local TEXT_RESTING = "Resting"
+local TEXT_REFRESH = ns.L("Refresh Camp")
+local TEXT_RESTING = ns.L("Resting")
 
 local Look = {}
 A.CampIcon = Look

@@ -4,11 +4,11 @@ local ns = _G.NaowhForever
 local MINUTE, HOUR, DAY = 60, 3600, 86400
 local WEEK_DAYS = 7
 local DATE_FORMAT = "%d %b %Y"
-local TEXT_JUST_NOW = "just now"
-local TEXT_MINUTES = "%d min ago"
-local TEXT_HOURS = "%d h ago"
-local TEXT_YESTERDAY = "yesterday"
-local TEXT_DAYS = "%d days ago"
+local TEXT_JUST_NOW = ns.L("just now")
+local TEXT_MINUTES = ns.L("%d min ago")
+local TEXT_HOURS = ns.L("%d h ago")
+local TEXT_YESTERDAY = ns.L("yesterday")
+local TEXT_DAYS = ns.L("%d days ago")
 local PIN_SCALE = 1.5
 local LAST_PIN_ORDER = 50
 

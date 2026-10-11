@@ -46,28 +46,28 @@ local SCALE_RANGE, FADE_NEAR_RANGE = St.SCALE_RANGE, { 0, 100, 5 }
 local PERCENT_SCALE = St.PERCENT_SCALE
 local GAME_PARTS = { "Icon", "Arrow", "DistanceText", "IconBorder" }
 local SHAPE_CHOICES = { { hex = "Hex", diamond = "Diamond", dot = "Dot" }, { "hex", "diamond", "dot" } }
-local SAMPLE = { name = "Mage Trainer", yards = 312, seconds = 45 }
+local SAMPLE = { name = ns.L("Mage Trainer"), yards = 312, seconds = 45 }
 local STATES = {
     { key = "world", label = "On Screen", tip = "The spot ahead of you, 312 yards away." },
     { key = "edge", label = "Off Screen", tip = "The spot off to your right." },
     { key = "arrived", label = "Arrived", tip = "You reached it." },
 }
 
-local TEXT_YARDS = " yd"
-local TEXT_WALK = "about %d:%02d"
-local TEXT_ARRIVED = "Arrived"
-local TEXT_CLEAR = "Clear the waypoint"
-local TEXT_MAP_PIN = "Map Pin"
-local TEXT_QUEST = "Quest"
-local TEXT_CORPSE = "Your Corpse"
-local TEXT_WAYPOINT = "Waypoint"
+local TEXT_YARDS = ns.L(" yd")
+local TEXT_WALK = ns.L("about %d:%02d")
+local TEXT_ARRIVED = ns.L("Arrived")
+local TEXT_CLEAR = ns.L("Clear the waypoint")
+local TEXT_MAP_PIN = ns.L("Map Pin")
+local TEXT_QUEST = ns.L("Quest")
+local TEXT_CORPSE = ns.L("Your Corpse")
+local TEXT_WAYPOINT = ns.L("Waypoint")
 local TEXT_NAVIGATOR = "Waypoint Navigator"
-local TEXT_BEHIND = "Behind you"
-local TEXT_STOP = "%s%s%d of %d"
-local TEXT_NEXT = "Next: "
-local TEXT_DONE = " done"
-local TEXT_NO_NAVIGATION = "Waypoint Pin needs the game's navigation, which this client does not have."
-local TEXT_PIN = " pin"
+local TEXT_BEHIND = ns.L("Behind you")
+local TEXT_STOP = ns.L("%s%s%d of %d")
+local TEXT_NEXT = ns.L("Next: ")
+local TEXT_DONE = ns.L(" done")
+local TEXT_NO_NAVIGATION = ns.L("Waypoint Pin needs the game's navigation, which this client does not have.")
+local TEXT_PIN = ns.L(" pin")
 
 local function On()
     return S.Get("enabled") and S.Get("waypoints")
@@ -265,7 +265,7 @@ local shown = {}
 local dirty = true
 local paintedMode, paintedSide, paintedYards, paintedSeconds
 local knownSpeed = 0
-local NavSample = { name = "Mage Trainer", sub = "Thunder Bluff", yards = 312, mode = "world", angle = math.pi / 2 }
+local NavSample = { name = ns.L("Mage Trainer"), sub = "Thunder Bluff", yards = 312, mode = "world", angle = math.pi / 2 }
 local events = CreateFrame("Frame")
 
 local function NoteText(note)

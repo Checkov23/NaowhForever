@@ -124,7 +124,7 @@ local St = setmetatable({
 
     ROLE_ATLAS = { T = "UI-LFG-RoleIcon-Tank-Micro", H = "UI-LFG-RoleIcon-Healer-Micro",
         D = "UI-LFG-RoleIcon-DPS-Micro" },
-    ROLE_NAME = { T = "Tank", H = "Healer", D = "Damage" },
+    ROLE_NAME = { T = ns.L("Tank"), H = ns.L("Healer"), D = ns.L("Damage") },
 }, { __index = Shared.Style })
 
 St.DONE_MARK = Tinted(St.CHECK, St.HAVE_RGB)

@@ -12,7 +12,7 @@ local TEST_STEP = 2.5
 local TEST_W, TEST_H, TEST_ICON = 260, 44, 32
 local TEST_TOP = 180
 local ICON_X, TEXT_X, TEXT_Y = 6, 8, 2
-local TEXT_TEST_ROLL = "Test roll"
+local TEXT_TEST_ROLL = ns.L("Test roll")
 local PLAIN_LINK = "|cffffffff|Hitem:%d::|h[%s]|h|r"
 
 local preview, testLink, testRank

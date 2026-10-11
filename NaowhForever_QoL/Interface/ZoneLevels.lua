@@ -7,7 +7,7 @@ local SECTION_ORDER = 12
 local TEXT_SIZE = 16
 local TEXT_GAP = 2
 local BELOW_RANGE = 2
-local TEXT_RANGE, TEXT_LEVEL = "Level %d-%d", "Level %d"
+local TEXT_RANGE, TEXT_LEVEL = ns.L("Level %d-%d"), ns.L("Level %d")
 
 local LEVELS = ns.ZoneLevels
 

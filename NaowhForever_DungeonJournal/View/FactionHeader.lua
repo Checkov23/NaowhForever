@@ -24,21 +24,21 @@ local FOREVER_SIZE = 12
 local RANK_CITY = { Alliance = "Stormwind", Horde = "Orgrimmar" }
 
 local TEXT_CODE_END = "|r"
-local TEXT_QUARTERMASTER_IN = "Quartermaster in "
+local TEXT_QUARTERMASTER_IN = ns.L("Quartermaster in ")
 local TEXT_FOREVER = "Forever|r"
-local TEXT_RANK = "Rank "
-local TEXT_SEASON = "Season "
-local TEXT_ENDS_IN = "Ends in "
-local TEXT_VENDOR_IN = "Rank vendor in "
+local TEXT_RANK = ns.L("Rank ")
+local TEXT_SEASON = ns.L("Season ")
+local TEXT_ENDS_IN = ns.L("Ends in ")
+local TEXT_VENDOR_IN = ns.L("Rank vendor in ")
 local TEXT_CURRENCY = "|T%d:%d:%d:0:0|t %s %s"
-local TEXT_RANK_SELLS = "PvP rank rewards"
+local TEXT_RANK_SELLS = ns.L("PvP rank rewards")
 local TEXT_QUARTERMASTER = " quartermaster"
 local TEXT_NOTE = " (%s)"
-local TEXT_SHARE_VENDOR = "Share the rank vendor"
-local TEXT_SHARE_QUARTERMASTER = "Share the quartermaster"
-local TEXT_SHOW_QUARTERMASTER = "Show the quartermaster on your map"
-local TEXT_SHOW_VENDOR = "Show where your side's rank rewards are sold on your map"
-local TEXT_SHARE_HINT = "Right-click to share it in chat, or copy it."
+local TEXT_SHARE_VENDOR = ns.L("Share the rank vendor")
+local TEXT_SHARE_QUARTERMASTER = ns.L("Share the quartermaster")
+local TEXT_SHOW_QUARTERMASTER = ns.L("Show the quartermaster on your map")
+local TEXT_SHOW_VENDOR = ns.L("Show where your side's rank rewards are sold on your map")
+local TEXT_SHARE_HINT = ns.L("Right-click to share it in chat, or copy it.")
 
 local whereLines = {}
 
@@ -174,13 +174,13 @@ local function NewPin(row)
 end
 
 local function NewStats(row)
-    row.bis = Parts.Stat(row, "BiS", "You have %d of the %d BiS from your list among its rewards",
-        "You have every BiS among its rewards", STAR, BIS_RGB, STAT_ICON_GAP)
-    row.bis.noneTip = "None of your BiS is among its rewards"
+    row.bis = Parts.Stat(row, "BiS", ns.L("You have %d of the %d BiS from your list among its rewards"),
+        ns.L("You have every BiS among its rewards"), STAR, BIS_RGB, STAT_ICON_GAP)
+    row.bis.noneTip = ns.L("None of your BiS is among its rewards")
     Parts.OpensBisList(row.bis)
-    row.looks = Parts.Stat(row, "Transmog", "You have %d of the %d looks among its rewards",
-        "You have every look among its rewards", HANGER, LOOK_RGB, STAT_ICON_GAP, LOOK_DROP)
-    row.looks.noneTip = "None of its rewards listed has a look to collect"
+    row.looks = Parts.Stat(row, "Transmog", ns.L("You have %d of the %d looks among its rewards"),
+        ns.L("You have every look among its rewards"), HANGER, LOOK_RGB, STAT_ICON_GAP, LOOK_DROP)
+    row.looks.noneTip = ns.L("None of its rewards listed has a look to collect")
     row.honor, row.points = Currency(row), Currency(row)
     row.rankStats, row.factionStats = { row.points, row.honor }, { row.looks, row.bis }
 end

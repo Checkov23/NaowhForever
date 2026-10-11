@@ -8,97 +8,94 @@ local SPELL_QUEUE = "SpellQueueWindow"
 local SPELL_QUEUE_MAX = 400
 local SPELL_QUEUE_RANGE = { 0, SPELL_QUEUE_MAX, 1 }
 
-local TEXT_COMBAT = "Game settings can only be changed out of combat."
-local TEXT_RELOAD = "Some settings only take effect after a reload. Reload UI now?"
-local TEXT_APPLIED = "Applied %d recommended setting%s. Restore All puts yours back."
-local TEXT_RESTORED = "Restored %d setting%s."
-local TEXT_NOTHING_BACK = " was already at this value before, so there is nothing to put back."
-local TEXT_RESTORE_ALL = "Put back every setting this page has changed?"
-local TEXT_ROW_HELP = "Recommended: %s.|n|nOn sets it; off puts back the value you had before. Now: %s."
-local TEXT_SUMMARY = "%d of %d recommended settings in use"
+local TEXT_COMBAT = ns.L("Game settings can only be changed out of combat.")
+local TEXT_RELOAD = ns.L("Some settings only take effect after a reload. Reload UI now?")
+local TEXT_APPLIED_ONE = ns.L("Applied %d recommended setting. Restore All puts yours back.")
+local TEXT_APPLIED = ns.L("Applied %d recommended settings. Restore All puts yours back.")
+local TEXT_RESTORED_ONE, TEXT_RESTORED = ns.L("Restored %d setting."), ns.L("Restored %d settings.")
+local TEXT_NOTHING_BACK = ns.L(" was already at this value before, so there is nothing to put back.")
+local TEXT_RESTORE_ALL = ns.L("Put back every setting this page has changed?")
+local TEXT_ROW_HELP = ns.L("Recommended: %s.|n|nOn sets it; off puts back the value you had before. Now: %s.")
+local TEXT_SUMMARY = ns.L("%d of %d recommended settings in use")
 
 local CATEGORIES = {
     { name = "Render & Display", cvars = {
-        { "renderScale", "1", "Render Scale", "100%, native resolution" },
-        { "VSync", "0", "VSync", "Off, for the highest frame rate" },
-        { "MSAAQuality", "0", "Multisampling", "None" },
-        { "LowLatencyMode", "3", "Low Latency Mode", "Reflex + Boost" },
-        { "ffxAntiAliasingMode", "4", "Anti-Aliasing", "Advanced (CMAA2)" },
+        { "renderScale", "1", ns.L("Render Scale"), ns.L("100%, native resolution") },
+        { "VSync", "0", "VSync", ns.L("Off, for the highest frame rate") },
+        { "MSAAQuality", "0", "Multisampling", ns.L("None") },
+        { "LowLatencyMode", "3", ns.L("Low Latency Mode"), "Reflex + Boost" },
+        { "ffxAntiAliasingMode", "4", "Anti-Aliasing", ns.L("Advanced (CMAA2)") },
     } },
     { name = "Graphics Quality", cvars = {
-        { "graphicsShadowQuality", "1", "Shadow Quality", "Fair" },
-        { "graphicsLiquidDetail", "2", "Liquid Detail", "Good" },
-        { "graphicsParticleDensity", "3", "Particle Density", "Good" },
-        { "graphicsSSAO", "0", "SSAO", "Off" },
-        { "graphicsDepthEffects", "0", "Depth Effects", "Off" },
-        { "graphicsComputeEffects", "0", "Compute Effects", "Off" },
-        { "graphicsOutlineMode", "2", "Outline Mode", "High" },
-        { "graphicsTextureResolution", "2", "Texture Resolution", "High" },
-        { "graphicsSpellDensity", "0", "Spell Density", "Essential" },
-        { "graphicsProjectedTextures", "1", "Projected Textures", "On" },
+        { "graphicsShadowQuality", "1", ns.L("Shadow Quality"), ns.L("Fair") },
+        { "graphicsLiquidDetail", "2", ns.L("Liquid Detail"), ns.L("Good") },
+        { "graphicsParticleDensity", "3", ns.L("Particle Density"), ns.L("Good") },
+        { "graphicsSSAO", "0", "SSAO", ns.L("Off") },
+        { "graphicsDepthEffects", "0", ns.L("Depth Effects"), ns.L("Off") },
+        { "graphicsComputeEffects", "0", ns.L("Compute Effects"), ns.L("Off") },
+        { "graphicsOutlineMode", "2", ns.L("Outline Mode"), ns.L("High") },
+        { "graphicsTextureResolution", "2", ns.L("Texture Resolution"), ns.L("High") },
+        { "graphicsSpellDensity", "0", ns.L("Spell Density"), ns.L("Essential") },
+        { "graphicsProjectedTextures", "1", ns.L("Projected Textures"), ns.L("On") },
     } },
     { name = "View Distance & Detail", cvars = {
-        { "graphicsViewDistance", "3", "View Distance", "Level 4" },
-        { "graphicsEnvironmentDetail", "3", "Environment Detail", "Level 4" },
-        { "graphicsGroundClutter", "0", "Ground Clutter", "Level 1" },
+        { "graphicsViewDistance", "3", ns.L("View Distance"), ns.L("Level 4") },
+        { "graphicsEnvironmentDetail", "3", ns.L("Environment Detail"), ns.L("Level 4") },
+        { "graphicsGroundClutter", "0", ns.L("Ground Clutter"), ns.L("Level 1") },
     } },
     { name = "Raid Graphics", cvars = {
-        { "RAIDsettingsEnabled", "1", "Separate Raid Settings", "On" },
-        { "raidGraphicsShadowQuality", "0", "Raid Shadow Quality", "Low" },
-        { "raidGraphicsLiquidDetail", "0", "Raid Liquid Detail", "Low" },
-        { "raidGraphicsParticleDensity", "3", "Raid Particle Density", "Good" },
-        { "raidGraphicsSSAO", "0", "Raid SSAO", "Off" },
-        { "raidGraphicsDepthEffects", "0", "Raid Depth Effects", "Off" },
-        { "raidGraphicsComputeEffects", "0", "Raid Compute Effects", "Off" },
-        { "raidGraphicsOutlineMode", "2", "Raid Outline Mode", "High" },
-        { "raidGraphicsTextureResolution", "2", "Raid Texture Resolution", "High" },
-        { "raidGraphicsSpellDensity", "0", "Raid Spell Density", "Essential" },
-        { "raidGraphicsProjectedTextures", "1", "Raid Projected Textures", "On" },
-        { "raidGraphicsViewDistance", "0", "Raid View Distance", "Level 1" },
-        { "raidGraphicsEnvironmentDetail", "0", "Raid Environment Detail", "Level 1" },
-        { "raidGraphicsGroundClutter", "0", "Raid Ground Clutter", "Level 1" },
+        { "RAIDsettingsEnabled", "1", ns.L("Separate Raid Settings"), ns.L("On") },
+        { "raidGraphicsShadowQuality", "0", ns.L("Raid Shadow Quality"), ns.L("Low") },
+        { "raidGraphicsLiquidDetail", "0", ns.L("Raid Liquid Detail"), ns.L("Low") },
+        { "raidGraphicsParticleDensity", "3", ns.L("Raid Particle Density"), ns.L("Good") },
+        { "raidGraphicsSSAO", "0", ns.L("Raid SSAO"), ns.L("Off") },
+        { "raidGraphicsDepthEffects", "0", ns.L("Raid Depth Effects"), ns.L("Off") },
+        { "raidGraphicsComputeEffects", "0", ns.L("Raid Compute Effects"), ns.L("Off") },
+        { "raidGraphicsOutlineMode", "2", ns.L("Raid Outline Mode"), ns.L("High") },
+        { "raidGraphicsTextureResolution", "2", ns.L("Raid Texture Resolution"), ns.L("High") },
+        { "raidGraphicsSpellDensity", "0", ns.L("Raid Spell Density"), ns.L("Essential") },
+        { "raidGraphicsProjectedTextures", "1", ns.L("Raid Projected Textures"), ns.L("On") },
+        { "raidGraphicsViewDistance", "0", ns.L("Raid View Distance"), ns.L("Level 1") },
+        { "raidGraphicsEnvironmentDetail", "0", ns.L("Raid Environment Detail"), ns.L("Level 1") },
+        { "raidGraphicsGroundClutter", "0", ns.L("Raid Ground Clutter"), ns.L("Level 1") },
     } },
     { name = "Advanced", cvars = {
-        { "GxMaxFrameLatency", "2", "Triple Buffering", "Off" },
-        { "TextureFilteringMode", "5", "Texture Filtering", "16x Anisotropic" },
-        { "shadowRt", "0", "Ray Traced Shadows", "Off" },
-        { "ResampleQuality", "3", "Resample Quality", "FidelityFX SR 1.0" },
-        { "GxApi", "D3D12", "Graphics API", "DirectX 12, after a game restart" },
-        { "physicsLevel", "1", "Physics Integration", "Player Only" },
+        { "GxMaxFrameLatency", "2", ns.L("Triple Buffering"), ns.L("Off") },
+        { "TextureFilteringMode", "5", ns.L("Texture Filtering"), ns.L("16x Anisotropic") },
+        { "shadowRt", "0", ns.L("Ray Traced Shadows"), ns.L("Off") },
+        { "ResampleQuality", "3", ns.L("Resample Quality"), "FidelityFX SR 1.0" },
+        { "GxApi", "D3D12", ns.L("Graphics API"), ns.L("DirectX 12, after a game restart") },
+        { "physicsLevel", "1", ns.L("Physics Integration"), ns.L("Player Only") },
     } },
     { name = "Frame Rate Limits", cvars = {
-        { "useMaxFPS", "1", "Frame Rate Cap", "On" },
-        { "maxFPS", "200", "Max Frame Rate", "200" },
-        { "useTargetFPS", "0", "Target Frame Rate", "Off" },
-        { "useMaxFPSBk", "1", "Background Frame Rate Cap", "On" },
-        { "maxFPSBk", "30", "Background Frame Rate", "30, while the game is not in focus" },
-        { "maxFPSLoading", "30", "Loading Screen Frame Rate", "30" },
+        { "useMaxFPS", "1", ns.L("Frame Rate Cap"), ns.L("On") },
+        { "maxFPS", "200", ns.L("Max Frame Rate"), "200" },
+        { "useTargetFPS", "0", ns.L("Target Frame Rate"), ns.L("Off") },
+        { "useMaxFPSBk", "1", ns.L("Background Frame Rate Cap"), ns.L("On") },
+        { "maxFPSBk", "30", ns.L("Background Frame Rate"), ns.L("30, while the game is not in focus") },
+        { "maxFPSLoading", "30", ns.L("Loading Screen Frame Rate"), "30" },
     } },
     { name = "Post Processing & Effects", cvars = {
-        { "ResampleSharpness", "0", "Resample Sharpness", "0, neutral" },
-        { "ResampleAlwaysSharpen", "1", "Always Sharpen", "On" },
-        { "cameraShake", "0", "Camera Shake", "Off" },
-        { "ffxDeath", "0", "Death Effect", "Off" },
-        { "ffxGlow", "0", "Glow Effect", "Off" },
-        { "overrideScreenFlash", "1", "Override Screen Flash", "On" },
-        { "ShakeStrengthCamera", "0", "Camera Shake Strength", "Off" },
-        { "ShakeStrengthUI", "0", "UI Shake Strength", "Off" },
+        { "ResampleSharpness", "0", ns.L("Resample Sharpness"), "0, neutral" },
+        { "ResampleAlwaysSharpen", "1", ns.L("Always Sharpen"), ns.L("On") },
+        { "cameraShake", "0", ns.L("Camera Shake"), ns.L("Off") },
+        { "ffxDeath", "0", ns.L("Death Effect"), ns.L("Off") },
+        { "ffxGlow", "0", ns.L("Glow Effect"), ns.L("Off") },
+        { "overrideScreenFlash", "1", ns.L("Override Screen Flash"), ns.L("On") },
+        { "ShakeStrengthCamera", "0", ns.L("Camera Shake Strength"), ns.L("Off") },
+        { "ShakeStrengthUI", "0", ns.L("UI Shake Strength"), ns.L("Off") },
     } },
     { name = "Network, Logging & Interface", cvars = {
-        { "advancedCombatLogging", "1", "Advanced Combat Logging", "On" },
-        { "disableServerNagle", "1", "Disable Server Nagle", "On, for lower latency" },
-        { "AutoPushSpellToActionBar", "0", "Auto Push Spells to Bars", "Off" },
-        { "cameraDistanceMaxZoomFactor", "2.6", "Max Camera Zoom", "2.6x" },
-        { "nameplateShowFriendlyClassColor", "1", "Friendly Class Colors", "On" },
-        { "UnitNameFriendlyPlayerName", "1", "Friendly Player Names", "On" },
+        { "advancedCombatLogging", "1", ns.L("Advanced Combat Logging"), ns.L("On") },
+        { "disableServerNagle", "1", ns.L("Disable Server Nagle"), ns.L("On, for lower latency") },
+        { "AutoPushSpellToActionBar", "0", ns.L("Auto Push Spells to Bars"), ns.L("Off") },
+        { "cameraDistanceMaxZoomFactor", "2.6", ns.L("Max Camera Zoom"), "2.6x" },
+        { "nameplateShowFriendlyClassColor", "1", ns.L("Friendly Class Colors"), ns.L("On") },
+        { "UnitNameFriendlyPlayerName", "1", ns.L("Friendly Player Names"), ns.L("On") },
     } },
 }
 
 local cvarRows, rows = {}, {}
-
-local function Plural(count)
-    return count == 1 and "" or "s"
-end
 
 local function Backups()
     local account = ns.AccountSettings()
@@ -152,7 +149,7 @@ local function ApplyAll()
             if Exists(c[1]) and SetRecommended(c[1], c[2]) then count = count + 1 end
         end
     end
-    ns.Print(TEXT_APPLIED:format(count, Plural(count)))
+    ns.Print((count == 1 and TEXT_APPLIED_ONE or TEXT_APPLIED):format(count))
     UI:RefreshPage(true)
     if count > 0 then OfferReload() end
 end
@@ -163,7 +160,7 @@ local function RestoreAll()
     for cvar in pairs(Backups()) do
         if Restore(cvar) then count = count + 1 end
     end
-    ns.Print(TEXT_RESTORED:format(count, Plural(count)))
+    ns.Print((count == 1 and TEXT_RESTORED_ONE or TEXT_RESTORED):format(count))
     UI:RefreshPage(true)
     if count > 0 then OfferReload() end
 end

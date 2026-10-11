@@ -25,16 +25,16 @@ local HISTORY_RANGE = { 1, HISTORY_MAX, 1 }
 local DEFAULT_POS = { x = -811, y = 3 }
 local FORMAT = { MILLIONS = "%.1fm", THOUSANDS = "%.1fk", HOURS = "%.1fh", MINUTES = "m",
     CLOCK_DAYS = "%dd %dh %dm", CLOCK_HOURS = "%d:%02d:%02d", CLOCK_MINUTES = "%d:%02d", REACHED = 1 }
-local UNIT, PAUSED, EMPTY, NONE = "xp/hr", "paused", "no XP yet", "--"
-local DING, LEVEL, PERCENT, DOT, PARTIAL = "Ding", "Level %d", "%d%%", St.PLACE_DOT, "+"
-local PLAYED = "Played"
-local TIP_TITLE = "XP per Hour"
-local PACE_TIP = { you = "You", ahead = "%s ahead", behind = "%s behind", unknown = "Unknown",
-    head = "Your characters at level %d", headPart = "Your characters at level %d (%s)", atLevel = " at level %d",
-    none = "None of your other characters has reached level %d yet." }
-local PAUSE_TIP, PAUSE_HINT = "Pause", "Stops the clock and the XP count."
-local START_TIP, START_HINT = "Start", "Carries on from where you paused."
-local RESET_TIP, RESET_HINT = "Reset", "Starts the session again from zero."
+local UNIT, PAUSED, EMPTY, NONE = ns.L("xp/hr"), ns.L("paused"), ns.L("no XP yet"), "--"
+local DING, LEVEL, PERCENT, DOT, PARTIAL = ns.L("Ding"), ns.L("Level %d"), "%d%%", St.PLACE_DOT, "+"
+local PLAYED = ns.L("Played")
+local TIP_TITLE = ns.L("XP per Hour")
+local PACE_TIP = { you = ns.L("You"), ahead = ns.L("%s ahead"), behind = ns.L("%s behind"), unknown = ns.L("Unknown"),
+    head = ns.L("Your characters at level %d"), headPart = ns.L("Your characters at level %d (%s)"), atLevel = ns.L(" at level %d"),
+    none = ns.L("None of your other characters has reached level %d yet.") }
+local PAUSE_TIP, PAUSE_HINT = ns.L("Pause"), ns.L("Stops the clock and the XP count.")
+local START_TIP, START_HINT = ns.L("Start"), ns.L("Carries on from where you paused.")
+local RESET_TIP, RESET_HINT = ns.L("Reset"), ns.L("Starts the session again from zero.")
 
 local ticker, clock, clockRate, unlocked
 local sessionStart, sessionXP = 0, 0
@@ -991,12 +991,12 @@ for i = 1, #SAMPLE_KEYS do
     SAMPLE_PACE.reached[level] = SAMPLE_PACE.reached[level + 1] - SAMPLE_LEVELS[level].total
 end
 local NO_KEYS = {}
-local HINT = "Wheel: text size. Click a line to hide it. Right-click for more."
-local OFF_HINT = "Turn on XP per Hour to edit it here."
-local HIDDEN_NOTE = "Hide While Resting is on: hidden in cities and inns."
-local SUMMARY = { base = "Rate and time to level", some = "Rate, time to level and %s",
-    splits = "Rate, time to level%s, this level and the last %d", played = "played time",
-    pace = "played time against your characters" }
+local HINT = ns.L("Wheel: text size. Click a line to hide it. Right-click for more.")
+local OFF_HINT = ns.L("Turn on XP per Hour to edit it here.")
+local HIDDEN_NOTE = ns.L("Hide While Resting is on: hidden in cities and inns.")
+local SUMMARY = { base = ns.L("Rate and time to level"), some = ns.L("Rate, time to level and %s"),
+    splits = ns.L("Rate, time to level%s, this level and the last %d"), played = ns.L("played time"),
+    pace = ns.L("played time against your characters") }
 local STATES = {
     { key = "levelling", label = "Levelling", tip = "Out in the world, earning experience." },
     { key = "starting", label = "Starting", tip = "A new session, before any experience." },
@@ -1005,12 +1005,12 @@ local STATES = {
 }
 local BACKGROUNDS, OUTLINES = Parts.HUD_BACKGROUNDS, Parts.HUD_OUTLINES
 local LINE_TOGGLES = {
-    { "xpTickerPlayed", "Show Played Time" },
-    { "xpTickerPace", "Compare Characters" },
-    { "xpTickerLevel", "Show Ding Time" },
-    { "xpTickerElapsed", "Show Time" },
-    { "xpTickerSplits", "Level History" },
-    { "xpTickerSplitPlayed", "Show Played at Ding" },
+    { "xpTickerPlayed", ns.L("Show Played Time") },
+    { "xpTickerPace", ns.L("Compare Characters") },
+    { "xpTickerLevel", ns.L("Show Ding Time") },
+    { "xpTickerElapsed", ns.L("Show Time") },
+    { "xpTickerSplits", ns.L("Level History") },
+    { "xpTickerSplitPlayed", ns.L("Show Played at Ding") },
 }
 
 local function Toggled(key)
@@ -1042,17 +1042,17 @@ local function SetOutline(outline)
 end
 
 local function CardMenu(_, root)
-    root:CreateTitle("XP per Hour")
+    root:CreateTitle(ns.L("XP per Hour"))
     AddToggles(root, LINE_TOGGLES)
     root:CreateDivider()
-    root:CreateTitle("Background")
+    root:CreateTitle(ns.L("Background"))
     local order = BACKGROUNDS[2]
     for i = 1, #order do root:CreateRadio(BACKGROUNDS[1][order[i]], PickedBackground, SetBackground, order[i]) end
-    root:CreateTitle("Outline")
+    root:CreateTitle(ns.L("Outline"))
     order = OUTLINES[2]
     for i = 1, #order do root:CreateRadio(OUTLINES[1][order[i]], PickedOutline, SetOutline, order[i]) end
     root:CreateDivider()
-    root:CreateButton("Reset XP per Hour", ResetClicked)
+    root:CreateButton(ns.L("Reset XP per Hour"), ResetClicked)
 end
 
 local function Wheel(f, delta)

@@ -18,16 +18,16 @@ local ALPHA_RANGE = St.ALPHA_RANGE
 local FONT_RANGE = { 10, 20, 1 }
 local OPACITY_RANGE = St.OPACITY_RANGE
 local TO_FRACTION = St.PERCENT_SCALE
-local BIS_OFF = "Turn on the BiS List"
+local BIS_OFF = ns.L("Turn on the BiS List")
 local NEEDS_LOOKS = { "bis", "bisToast" }
-local TEXT_HEADLINE = "Your list: %s%s"
-local TEXT_NOTHING_PICKED = "Nothing picked yet: open it and pick each slot's BiS, or import a list."
-local TEXT_HAVE = "You have %d of your %d BiS.%s"
-local TEXT_RUN_NEXT = " Run next: %s, for %d."
-local TEXT_MARKS_BOTH, TEXT_MARKS_TIPS = "On tooltips and in your bags", "On tooltips"
-local TEXT_MARKS_BAGS, TEXT_MARKS_NONE = "In your bags", "Only in its window"
-local TEXT_ON_SCREEN, TEXT_IN_CHAT = ", on screen", ", in chat"
-local TEXT_OPACITY = "%d%% opacity"
+local TEXT_HEADLINE = ns.L("Your list: %s%s")
+local TEXT_NOTHING_PICKED = ns.L("Nothing picked yet: open it and pick each slot's BiS, or import a list.")
+local TEXT_HAVE = ns.L("You have %d of your %d BiS.%s")
+local TEXT_RUN_NEXT = ns.L(" Run next: %s, for %d.")
+local TEXT_MARKS_BOTH, TEXT_MARKS_TIPS = ns.L("On tooltips and in your bags"), ns.L("On tooltips")
+local TEXT_MARKS_BAGS, TEXT_MARKS_NONE = ns.L("In your bags"), ns.L("Only in its window")
+local TEXT_ON_SCREEN, TEXT_IN_CHAT = ns.L(", on screen"), ns.L(", in chat")
+local TEXT_OPACITY = ns.L("%d%% opacity")
 
 local function Headline()
     local list, spec = L.List(), L.CurrentSpec()
@@ -44,7 +44,7 @@ local function Detail()
 end
 
 local ALERT_FOR = { { bis = "Your BiS only", top2 = "Your top two", all = "Every pick" }, { "bis", "top2", "all" } }
-local STARS = { { icon = "On the icon, left", iconRight = "On the icon, right", name = "Before the name",
+local STARS = { { icon = "On the icon, left", iconRight = "On the icon, right", name = ns.L("Before the name"),
     none = "Hidden" }, { "icon", "iconRight", "name", "none" } }
 local BORDERS = { { none = "None", black = "Black", quality = "The item's quality",
     rank = "Your rank's color (BiS orange)" }, { "none", "black", "quality", "rank" } }
@@ -99,7 +99,7 @@ end
 
 local function AlertSummary(store)
     local which = ALERT_FOR[1][store.Get("bisAlertFor")] or ALERT_FOR[1].all
-    return which .. (store.Get("bisToast") and TEXT_ON_SCREEN or "") .. (store.Get("bisAlertChat") and TEXT_IN_CHAT or "")
+    return ns.L(which) .. (store.Get("bisToast") and TEXT_ON_SCREEN or "") .. (store.Get("bisAlertChat") and TEXT_IN_CHAT or "")
 end
 
 local function ListsSummary()

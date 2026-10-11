@@ -18,8 +18,8 @@ local TEXT_SIZE, SUB_SIZE, BAR_TEXT_SIZE = 13, St.SMALL_SIZE, St.TEXT_SIZE
 local TITLE_HIT = 4
 local PICKER_LEVEL = 3
 local CENTER = { "CENTER", "CENTER", 0, 0 }
-local TEXT_PIN = "Waypoint"
-local TEXT_PIN_HINT = "Click to mark it on your map."
+local TEXT_PIN = ns.L("Waypoint")
+local TEXT_PIN_HINT = ns.L("Click to mark it on your map.")
 
 local Tracker = {}
 

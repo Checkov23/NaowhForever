@@ -15,8 +15,8 @@ local B = {
     NOBODY = "-",
     PERCENT = 100,
     ROUND = 0.5,
-    AURA_TIP = "Left-click: cast your aura.\nRight-click: choose it.",
-    FURY_TIP = "Left-click: cast it on yourself.",
+    AURA_TIP = ns.L("Left-click: cast your aura.\nRight-click: choose it."),
+    FURY_TIP = ns.L("Left-click: cast it on yourself."),
     others = {},
 }
 ns.Blessings = B

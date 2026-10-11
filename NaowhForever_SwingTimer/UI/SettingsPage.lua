@@ -12,7 +12,7 @@ if not Settings then return end
 local Group = Settings.Group
 
 local TEXT_HEROIC_STRIKE = "Heroic Strike"
-local OFF = "Turn on the Swing Timer"
+local OFF = ns.L("Turn on the Swing Timer")
 local STAGE_H = 120
 local NOTE_Y, NOTE_SIZE = ns.Shared.Style.STAGE_NOTE_Y, ns.Shared.Style.STAGE_NOTE_SIZE
 local STAGE_MARGIN = ns.Shared.Style.STAGE_MARGIN
@@ -147,11 +147,11 @@ local function PaintPreview(preview, state)
     Fit(preview, math.max(n, 1))
     local note = ""
     if n == 0 then
-        note = "No bar for this is switched on."
+        note = ns.L("No bar for this is switched on.")
     elseif sample.autoShot and not Hunter() then
-        note = "Hunters only."
+        note = ns.L("Hunters only.")
     elseif state == "parry" then
-        note = "A parry by your target took 40% off its swing."
+        note = ns.L("A parry by your target took 40% off its swing.")
     end
     preview.note:SetText(note)
 end
@@ -186,35 +186,35 @@ local CAST_STATES = {
 
 local function Shown()
     local names = {}
-    if S.Get("showMH") then names[#names + 1] = "Main Hand" end
-    if S.Get("showOH") then names[#names + 1] = "Off Hand" end
-    if S.Get("showR") then names[#names + 1] = "Ranged" end
-    if S.Get("targetSwing") then names[#names + 1] = "Target" end
+    if S.Get("showMH") then names[#names + 1] = ns.L("Main Hand") end
+    if S.Get("showOH") then names[#names + 1] = ns.L("Off Hand") end
+    if S.Get("showR") then names[#names + 1] = ns.L("Ranged") end
+    if S.Get("targetSwing") then names[#names + 1] = ns.L("Target") end
     return names
 end
 
 local function Headline()
-    if not ST.SUPPORTED then return "This client has no swing event" end
-    if not S.Get("enabled") then return "Swing Timer is off" end
+    if not ST.SUPPORTED then return ns.L("This client has no swing event") end
+    if not S.Get("enabled") then return ns.L("Swing Timer is off") end
     local names = Shown()
-    if #names == 0 then return "No bars switched on" end
-    return "Bars for " .. table.concat(names, ", ")
+    if #names == 0 then return ns.L("No bars switched on") end
+    return ns.L("Bars for ") .. table.concat(names, ", ")
 end
 
 local function Detail()
-    if not ST.SUPPORTED then return "The swing timer needs WoW: Forever's own swing event." end
+    if not ST.SUPPORTED then return ns.L("The swing timer needs WoW: Forever's own swing event.") end
     local aids = {}
-    if S.Get("swingWindow") then aids[#aids + 1] = "Swing End Window" end
-    if S.Get("autoShotWindow") then aids[#aids + 1] = "Auto Shot Window" end
-    if S.Get("castClip") then aids[#aids + 1] = "Cast Clip Marker" end
-    local shown = S.Get("visibility") == "always" and "Shown all the time." or "Shown in combat."
-    if #aids == 0 then return shown .. " Move the bars in the HUD Editor." end
-    return shown .. " With " .. table.concat(aids, ", ") .. "."
+    if S.Get("swingWindow") then aids[#aids + 1] = ns.L("Swing End Window") end
+    if S.Get("autoShotWindow") then aids[#aids + 1] = ns.L("Auto Shot Window") end
+    if S.Get("castClip") then aids[#aids + 1] = ns.L("Cast Clip Marker") end
+    local shown = S.Get("visibility") == "always" and ns.L("Shown all the time.") or ns.L("Shown in combat.")
+    if #aids == 0 then return shown .. ns.L(" Move the bars in the HUD Editor.") end
+    return shown .. ns.L(" With ") .. table.concat(aids, ", ") .. "."
 end
 
 local function BarsSummary(store)
-    return ("%d by %d, %s"):format(store.Get("width"), store.Get("rowHeight"),
-        store.Get("visibility") == "always" and "always shown" or "in combat")
+    return (ns.L("%d by %d, %s")):format(store.Get("width"), store.Get("rowHeight"),
+        store.Get("visibility") == "always" and ns.L("always shown") or ns.L("in combat"))
 end
 
 local SHOW = { { always = "Always", combat = "In Combat" }, { "always", "combat" } }

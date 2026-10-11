@@ -13,14 +13,14 @@ local MAX_WORTH = SW.MAX_WORTH
 local MAX_NAME = 40
 local CLASS_KEY, RANGED_DPS = "class", "rangeddps"
 local HUNTER = "HUNTER"
-local TEXT_PICK_SPEC = "Pick your spec first."
-local TEXT_OTHER_CLASS = "Those weights are for a %s."
-local TEXT_NO_STAT = "Those weights name no stat it can read."
-local TEXT_SIM_IMPORTED = "%s imported for %s."
-local TEXT_THE_WEIGHTS = "The weights"
-local TEXT_NOT_A_LINE = "That is not a Naowh stat weights line, nor a simulator's export."
-local TEXT_BAD_WEIGHT = "That line has a weight it cannot read: %s."
-local TEXT_IMPORTED = "Weights for %s imported."
+local TEXT_PICK_SPEC = ns.L("Pick your spec first.")
+local TEXT_OTHER_CLASS = ns.L("Those weights are for a %s.")
+local TEXT_NO_STAT = ns.L("Those weights name no stat it can read.")
+local TEXT_SIM_IMPORTED = ns.L("%s imported for %s.")
+local TEXT_THE_WEIGHTS = ns.L("The weights")
+local TEXT_NOT_A_LINE = ns.L("That is not a Naowh stat weights line, nor a simulator's export.")
+local TEXT_BAD_WEIGHT = ns.L("That line has a weight it cannot read: %s.")
+local TEXT_IMPORTED = ns.L("Weights for %s imported.")
 local SIM_KEYS = {
     strength = "str", agility = "agi", stamina = "sta", intellect = "int", spirit = "spi",
     ap = "ap", rap = "rap", dps = "dps", meleedps = "dps", mainhanddps = "dps", onehanddps = "dps",

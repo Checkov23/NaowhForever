@@ -23,8 +23,8 @@ local DENSE_NAME_TOP = 1
 local TALL_LINES = 2
 local LINE_BREAKS = "%s*[\r\n]+%s*"
 
-local TEXT_LINK_HINT = "Shift-click: link"
-local TEXT_SPELL = "Spell "
+local TEXT_LINK_HINT = ns.L("Shift-click: link")
+local TEXT_SPELL = ns.L("Spell ")
 
 local oneLine = {}
 

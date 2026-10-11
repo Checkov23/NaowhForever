@@ -5,12 +5,12 @@ local S = ns.QoLSettings
 
 local ASK_DELAY = 2
 local STYLE_OFF = "off"
-local RELOAD_OFF = "EllesmereUI's %s is off, so Naowh's can take over. Reload now to switch?"
-local RELOAD_ON = "EllesmereUI's %s is back on. Reload now to switch?"
-local ASK = "EllesmereUI's %s is on. Naowh's is recommended, as it comes with more features. "
-    .. "Use Naowh's instead?"
-local TAKEN = "Naowh's %s takes over from EllesmereUI's after your next reload."
-local TEXT_USE_OURS, TEXT_KEEP_THEIRS = "Use Naowh's", "Keep EllesmereUI's"
+local RELOAD_OFF = ns.L("EllesmereUI's %s is off, so Naowh's can take over. Reload now to switch?")
+local RELOAD_ON = ns.L("EllesmereUI's %s is back on. Reload now to switch?")
+local ASK = ns.L("EllesmereUI's %s is on. Naowh's is recommended, as it comes with more features. "
+    .. "Use Naowh's instead?")
+local TAKEN = ns.L("Naowh's %s takes over from EllesmereUI's after your next reload.")
+local TEXT_USE_OURS, TEXT_KEEP_THEIRS = ns.L("Use Naowh's"), ns.L("Keep EllesmereUI's")
 
 local rivals = {}
 local newcomer
@@ -119,7 +119,7 @@ function CP.Rival(r)
 end
 
 local sheet = CP.Rival({ key = "characterPanel", winKey = "charsheet", dbKey = "themedCharacterSheet",
-    name = "character panel" })
+    name = ns.L("character panel") })
 
 CP.EllesmereSheet = sheet.Styled
 CP.On = sheet.On

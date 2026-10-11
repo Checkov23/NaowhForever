@@ -16,7 +16,7 @@ local BAR_H = 28
 local BAR_ALPHA = 0.55
 local MIN_SCALE = 0.1
 
-local TEXT_UP = "Right-click: "
+local TEXT_UP = ns.L("Right-click: ")
 
 local overlay, overlayView
 

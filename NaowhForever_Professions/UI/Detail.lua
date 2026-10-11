@@ -30,20 +30,20 @@ local PROFIT_BOTTOM = 44
 local EDGE = Style.PANEL_EDGE
 local CREATE_W, CREATE_ALL_W = 90, 120
 local USABLE_DELAY = 0.5
-local TEXT_REQUIRES = "Requires: "
-local TEXT_COOLDOWN = "Cooldown: "
-local TEXT_BAG_ROOM = "Bags: room for %d of %d.|r"
-local TEXT_CREATE, TEXT_CREATE_ALL = "Create", "Create All"
-local TEXT_CREATE_ALL_COUNT = "Create All (%d)"
-local TEXT_SEARCH = "Search AH"
-local TEXT_TRACK = _G.PROFESSIONS_TRACK_RECIPE or "Track Recipe"
-local TIP_FAVORITE = "Favorite"
-local TIP_FAVORITE_HELP = "Makes this recipe a favourite, or no longer one. Favourites "
+local TEXT_REQUIRES = ns.L("Requires: ")
+local TEXT_COOLDOWN = ns.L("Cooldown: ")
+local TEXT_BAG_ROOM = ns.L("Bags: room for %d of %d.|r")
+local TEXT_CREATE, TEXT_CREATE_ALL = ns.L("Create"), ns.L("Create All")
+local TEXT_CREATE_ALL_COUNT = ns.L("Create All (%d)")
+local TEXT_SEARCH = ns.L("Search AH")
+local TEXT_TRACK = _G.PROFESSIONS_TRACK_RECIPE or ns.L("Track Recipe")
+local TIP_FAVORITE = ns.L("Favorite")
+local TIP_FAVORITE_HELP = ns.L("Makes this recipe a favourite, or no longer one. Favourites "
     .. "get a star in the list, and the Filter menu's Favorites shows only them. Right-click "
-    .. "a recipe in the list does the same."
-local TIP_SEARCH_HELP = "Searches the auction house for the item this recipe makes."
-local TIP_TRACK_HELP = "Shows this recipe's reagents in your objective tracker, with how many "
-    .. "you have of each."
+    .. "a recipe in the list does the same.")
+local TIP_SEARCH_HELP = ns.L("Searches the auction house for the item this recipe makes.")
+local TIP_TRACK_HELP = ns.L("Shows this recipe's reagents in your objective tracker, with how many "
+    .. "you have of each.")
 
 local EMPTY = {}
 local lines, parts = {}, {}

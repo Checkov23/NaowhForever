@@ -35,21 +35,21 @@ local GLOW_EVENTS = { "ACTIONBAR_SLOT_CHANGED", "ACTIONBAR_PAGE_CHANGED", "UPDAT
 
 local SETTINGS_PAGE = "QoL/XP"
 local TEXT_GLOW_RANKS, TEXT_GLOW, TEXT_RANKS, TEXT_LISTS =
-    "Glows new abilities, offers rank swaps", "Glows new abilities", "Offers rank swaps", "Lists what you learned"
-local TEXT_NEW = "New Abilities"
-local TEXT_LOWER = "Lower Ranks on Your Bars"
-local TEXT_MORE = "+%d more"
-local TEXT_KEPT = "  (kept)"
-local TEXT_HOLD = "%d bar slot(s) hold a lower rank: %s"
-local TEXT_UPDATED = "updated %d bar slot(s): %s"
+    ns.L("Glows new abilities, offers rank swaps"), ns.L("Glows new abilities"), ns.L("Offers rank swaps"), ns.L("Lists what you learned")
+local TEXT_NEW = ns.L("New Abilities")
+local TEXT_LOWER = ns.L("Lower Ranks on Your Bars")
+local TEXT_MORE = ns.L("+%d more")
+local TEXT_KEPT = ns.L("  (kept)")
+local TEXT_HOLD = ns.L("%d bar slot(s) hold a lower rank: %s")
+local TEXT_UPDATED = ns.L("updated %d bar slot(s): %s")
 local TEXT_COUNT = "%s (x%d)"
-local TEXT_DRAG = "Drag onto your bars to place it."
-local TEXT_UNKEEP = "Right-click to let Update Bars swap it again."
-local TEXT_KEEP = "Right-click to leave it as it is on your bars when you update them."
-local TEXT_COMBAT = "leave combat, then check your bars again."
-local TEXT_ALL_TOP = "every spell on your bars is at its highest rank."
-local TEXT_UPDATE = "Update Bars"
-local TEXT_LATER = "Later"
+local TEXT_DRAG = ns.L("Drag onto your bars to place it.")
+local TEXT_UNKEEP = ns.L("Right-click to let Update Bars swap it again.")
+local TEXT_KEEP = ns.L("Right-click to leave it as it is on your bars when you update them.")
+local TEXT_COMBAT = ns.L("leave combat, then check your bars again.")
+local TEXT_ALL_TOP = ns.L("every spell on your bars is at its highest rank.")
+local TEXT_UPDATE = ns.L("Update Bars")
+local TEXT_LATER = ns.L("Later")
 local TEXT_CLOSE = "X"
 
 local learned = {}

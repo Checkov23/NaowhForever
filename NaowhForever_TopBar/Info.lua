@@ -12,10 +12,10 @@ local ROUND = C.ROUND
 local TEXT_HOURS = "%d:%02d:%02d"
 local TEXT_MINUTES = "%d:%02d"
 local TEXT_PROGRESS = "%s %d/%d"
-local TEXT_DAYS_LEFT, TEXT_HOURS_LEFT, TEXT_MINUTES_LEFT = "%dd %dh", "%dh %dm", "%dm"
-local TEXT_NOT_SAVED = "You are not saved to any instance."
-local TEXT_SAVED = "Saved instances:"
-local TEXT_RESETS = "   %s: resets in %s"
+local TEXT_DAYS_LEFT, TEXT_HOURS_LEFT, TEXT_MINUTES_LEFT = ns.L("%dd %dh"), "%dh %dm", "%dm"
+local TEXT_NOT_SAVED = ns.L("You are not saved to any instance.")
+local TEXT_SAVED = ns.L("Saved instances:")
+local TEXT_RESETS = ns.L("   %s: resets in %s")
 
 local lockoutsAt = 0
 

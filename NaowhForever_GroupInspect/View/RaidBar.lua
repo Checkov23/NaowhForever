@@ -16,24 +16,25 @@ local VIEWS = {
 }
 local SORTS_LIST = { { "score", "Naowh Score" }, { "ilvl", "Item Level" }, { "name", "Name" },
     { "class", "Class" }, { "role", "Role" } }
+local TEXT_SORT = ns.L("Sort: %s")
 local SORT_LABELS = {}
-for _, sort in ipairs(SORTS_LIST) do SORT_LABELS[sort[1]] = "Sort: " .. sort[2] end
-local FILTERS, FILTERS_N = "Filters", "Filters (%d)"
+for _, sort in ipairs(SORTS_LIST) do SORT_LABELS[sort[1]] = TEXT_SORT:format(ns.L(sort[2])) end
+local FILTERS, FILTERS_N = ns.L("Filters"), ns.L("Filters (%d)")
 
 local FILTER_GROUPS = {
-    { title = "Class", items = {} },
-    { title = "Role", items = { { group = "role", value = "TANK", label = "Tank" },
-        { group = "role", value = "HEALER", label = "Healer" }, { group = "role", value = "DAMAGER", label = "Damage" } } },
-    { title = "Armor", items = { { group = "armor", value = "Cloth", label = "Cloth" },
-        { group = "armor", value = "Leather", label = "Leather" }, { group = "armor", value = "Mail", label = "Mail" },
-        { group = "armor", value = "Plate", label = "Plate" } } },
+    { title = ns.L("Class"), items = {} },
+    { title = ns.L("Role"), items = { { group = "role", value = "TANK", label = ns.L("Tank") },
+        { group = "role", value = "HEALER", label = ns.L("Healer") }, { group = "role", value = "DAMAGER", label = ns.L("Damage") } } },
+    { title = ns.L("Armor"), items = { { group = "armor", value = ns.L("Cloth"), label = ns.L("Cloth") },
+        { group = "armor", value = ns.L("Leather"), label = ns.L("Leather") }, { group = "armor", value = ns.L("Mail"), label = ns.L("Mail") },
+        { group = "armor", value = ns.L("Plate"), label = ns.L("Plate") } } },
 }
 for _, class in ipairs(UI.CLASS_ORDER) do
     local items = FILTER_GROUPS[1].items
     items[#items + 1] = { group = "class", value = class, label = UI.CLASS_NAMES[class] }
 end
-local NF_ITEM = { group = "nf", label = "Runs Naowh Forever" }
-local BARE_ITEM = { group = "bare", label = "Missing enchants" }
+local NF_ITEM = { group = "nf", label = ns.L("Runs Naowh Forever") }
+local BARE_ITEM = { group = "bare", label = ns.L("Missing enchants") }
 
 local IsFiltered, ToggleFilter = Order.IsFiltered, UI.ToggleFilter
 
@@ -59,8 +60,8 @@ local function SetSort(key)
 end
 
 local function SortMenu(_, root)
-    root:CreateTitle("Sort by")
-    for _, sort in ipairs(SORTS_LIST) do root:CreateRadio(sort[2], IsSort, SetSort, sort[1]) end
+    root:CreateTitle(ns.L("Sort by"))
+    for _, sort in ipairs(SORTS_LIST) do root:CreateRadio(ns.L(sort[2]), IsSort, SetSort, sort[1]) end
 end
 
 local function SortClicked(link)
@@ -77,7 +78,7 @@ local function FilterMenu(_, root)
     root:CreateCheckbox(BARE_ITEM.label, IsFiltered, ToggleFilter, BARE_ITEM)
     if Order.FilterCount() > 0 then
         root:CreateDivider()
-        root:CreateButton("Clear filters", UI.ClearFilters)
+        root:CreateButton(ns.L("Clear filters"), UI.ClearFilters)
     end
 end
 
@@ -92,7 +93,7 @@ end
 function UI.RaidBar(parent)
     bar = CreateFrame("Frame", nil, parent)
     bar:SetSize(VIEWS_W + 2 * BAR_SPACE + BAR_ROOM, St.TAB_H)
-    bar.filter = Parts.BarButton(bar, St.FUNNEL, "Filters", "Shows only part of the raid.", FilterClicked, FILTERS)
+    bar.filter = Parts.BarButton(bar, St.FUNNEL, "Filters", ns.L("Shows only part of the raid."), FilterClicked, FILTERS)
     bar.filter:SetPoint("RIGHT")
     bar.sort = Parts.Link(bar, SortClicked, true)
     bar.sort:SetPoint("RIGHT", bar.filter, "LEFT", -BAR_SPACE, 0)

@@ -1127,7 +1127,7 @@ local function NitIncoming(text, sender, realm, normalized, roster)
     if type(instance) ~= "string" or instance == "" then return end
     local line
     if cmd ~= "instanceReset" then
-        line = instance .. " has been reset by the group leader (" .. (NitWho(sender) or sender) .. ")."
+        line = instance .. ns.L(" has been reset by the group leader (") .. (NitWho(sender) or sender) .. ")."
     end
     return instance, line
 end
@@ -1654,7 +1654,7 @@ end
 
 local function HourLine()
     local count, cap, frees = HourSnapshot()
-    local text = string.format("Account this hour: %d of %d", count, cap)
+    local text = string.format(ns.L("Account this hour: %d of %d"), count, cap)
     if count > 0 then text = text .. "   " .. FormatDuration(frees) end
     local left = cap - count
     if count > 0 and left <= WarnDistance() then
@@ -1669,11 +1669,11 @@ local function Paint()
     if open then
         frame.title:SetText(Where(open))
         body.time:SetText(FormatDuration(Elapsed(open)))
-        body.stats:SetText(Coins(open.loot) .. "   " .. BreakUpLargeNumbers(open.xp or 0) .. " XP")
+        body.stats:SetText(Coins(open.loot) .. "   " .. BreakUpLargeNumbers(open.xp or 0) .. ns.L(" XP"))
     else
-        frame.title:SetText("Instance")
+        frame.title:SetText(ns.L("Instance"))
         body.time:SetText("0:00")
-        body.stats:SetText(Coins(0) .. "   0 XP")
+        body.stats:SetText(Coins(0) .. ns.L("   0 XP"))
     end
     body.hour:SetText(HourLine())
     body:SetHeight(BODY_H)
@@ -1694,14 +1694,14 @@ local function Tick()
 end
 
 local function Build()
-    frame = ns.Shared.Parts.TrackerPanel("Instance", {
+    frame = ns.Shared.Parts.TrackerPanel(ns.L("Instance"), {
         onTitle = OpenWindow,
         titleTip = "Instance Tracker",
-        titleHint = "Click to open this hour and history.",
+        titleHint = ns.L("Click to open this hour and history."),
         onClose = CloseTimer,
         newBody = NewBody,
-        settings = { page = SETTINGS_PAGE, card = TIMER_CARD, tip = "Instance Tracker settings",
-            hint = "Opens the Run Timer settings." },
+        settings = { page = SETTINGS_PAGE, card = TIMER_CARD, tip = ns.L("Instance Tracker settings"),
+            hint = ns.L("Opens the Run Timer settings.") },
         load = LoadPosition, save = SavePosition,
         place = { "TOP", "TOP", 0, DEFAULT_Y },
         mover = Mover,

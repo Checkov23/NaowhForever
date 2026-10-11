@@ -14,23 +14,23 @@ local DOT, DOT_RIM, DOT_HIT, DOT_IN = 6, 2, 14, 3
 local DOT_LIFT = 5
 local RIM_ALPHA = 0.85
 local ASK = "LF Enchanter: %s (%s), will tip"
-local TEXT_ENCHANTS = "Enchants: "
-local TEXT_NOTHING_ON = "Nothing on it yet."
-local TEXT_HAS_BEST = "It has the best for its level."
-local TEXT_ON_NOW = "On it now: "
-local TEXT_ON_NOW_ELSEWHERE = "On it now: an enchant from elsewhere."
-local TEXT_ALSO = "Also worth a look"
-local TEXT_CLICK = "Click: ask for it in Trade, or copy the message"
-local TEXT_KNOWN = "You know it."
-local TEXT_ENCHANTING = "Enchanting "
-local TEXT_ON_AVERAGE = " on average"
-local TEXT_ENCHANT = "Enchant "
-local TEXT_ASK_FOR = "Ask for "
+local TEXT_ENCHANTS = ns.L("Enchants: ")
+local TEXT_NOTHING_ON = ns.L("Nothing on it yet.")
+local TEXT_HAS_BEST = ns.L("It has the best for its level.")
+local TEXT_ON_NOW = ns.L("On it now: ")
+local TEXT_ON_NOW_ELSEWHERE = ns.L("On it now: an enchant from elsewhere.")
+local TEXT_ALSO = ns.L("Also worth a look")
+local TEXT_CLICK = ns.L("Click: ask for it in Trade, or copy the message")
+local TEXT_KNOWN = ns.L("You know it.")
+local TEXT_ENCHANTING = ns.L("Enchanting ")
+local TEXT_ON_AVERAGE = ns.L(" on average")
+local TEXT_ENCHANT = ns.L("Enchant ")
+local TEXT_ASK_FOR = ns.L("Ask for ")
 local BLANK = " "
-local LEARN = { trainer = "trainers teach it", vendor = "a vendor sells the formula",
-    drop = "its formula drops", quest = "from a quest" }
+local LEARN = { trainer = ns.L("trainers teach it"), vendor = ns.L("a vendor sells the formula"),
+    drop = ns.L("its formula drops"), quest = ns.L("from a quest") }
 
-local ItemLevelText = B.View.Memo("Best for this level %d item%s")
+local ItemLevelText = B.View.Memo(ns.L("Best for this level %d item%s"))
 
 local function SpellName(spell)
     return C_Spell.GetSpellName(spell) or (TEXT_ENCHANT .. spell)

@@ -19,8 +19,8 @@ local CLEAR_ICON = 10
 local CLEAR_BOX = 18
 local CLEAR_DROP = 1
 
-local TEXT_SHOW_LOOT = "Show their loot"
-local TEXT_TURNS_OFF = "Turns off %s."
+local TEXT_SHOW_LOOT = ns.L("Show their loot")
+local TEXT_TURNS_OFF = ns.L("Turns off %s.")
 local TEXT_BLANK = " "
 
 local function ChipEnter(chip)

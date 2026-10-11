@@ -20,11 +20,11 @@ local TITLE_SIZE, GROUP_SIZE, ROW_TEXT_SIZE = 14, 10, 12
 local GROUP_TITLE_DROP = 6
 local PANEL_NAME = "NaowhForeverHudElements"
 local OTHER_GROUP = "Other"
-local TEXT_TITLE = "Elements"
-local TEXT_FIND = "Find an element"
-local TEXT_HIDDEN = " hidden"
-local TEXT_LOCK, TEXT_UNLOCK = "Lock in place", "Unlock"
-local TEXT_HIDE, TEXT_SHOW = "Hide while editing", "Show while editing"
+local TEXT_TITLE = ns.L("Elements")
+local TEXT_FIND = ns.L("Find an element")
+local TEXT_HIDDEN = ns.L(" hidden")
+local TEXT_LOCK, TEXT_UNLOCK = ns.L("Lock in place"), ns.L("Unlock")
+local TEXT_HIDE, TEXT_SHOW = ns.L("Hide while editing"), ns.L("Show while editing")
 
 local panel, panelQueued
 local RefreshPanel

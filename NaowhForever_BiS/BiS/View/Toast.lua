@@ -30,10 +30,10 @@ local GLOW_TEXTURE = St.WHITE
 local HOLDER_NAME = "NaowhForeverBiSDropAlert"
 local MOVER_LABEL = "BiS Drop Alert"
 local PAGE, CARD = "BiS List/Settings", "BiS List/Settings:dropAlert"
-local TEXT_PICK = "Your #%d pick"
-local RANK_WORDS = { "Your BiS", "Your second pick" }
+local TEXT_PICK = ns.L("Your #%d pick")
+local RANK_WORDS = { ns.L("Your BiS"), ns.L("Your second pick") }
 local EVENTS = {
-    roll = { "Up for a roll", T.accentSoft }, dropped = { "Dropped", T.fg }, yours = { "Yours!", St.HAVE_RGB },
+    roll = { ns.L("Up for a roll"), T.accentSoft }, dropped = { ns.L("Dropped"), T.fg }, yours = { ns.L("Yours!"), St.HAVE_RGB },
 }
 
 local parts = {}

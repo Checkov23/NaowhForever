@@ -15,7 +15,7 @@ local LEVEL_STRIP_Y = 2
 local SIDE_TABS, SIDEBAR_TABS = 6, 3
 local TEXTURE = CP.C.TEXTURE
 local SIDE_TAB, SIDEBAR_TAB = "CharacterFrameModeTab", "PaperDollSidebarTab"
-local TEXT_BIS_LIST = " BiS List"
+local TEXT_BIS_LIST = ns.L(" BiS List")
 local TAB_RGB, HOVER_ALPHA = CP.C.TAB_RGB, CP.C.HOVER_ALPHA
 local MODEL_ART = { "BackgroundTopLeft", "BackgroundTopRight", "BackgroundBotLeft", "BackgroundBotRight",
     "BackgroundOverlay" }

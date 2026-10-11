@@ -15,8 +15,8 @@ local BADGE_LIFT = 10
 local STARRED = 2
 local ROLL_FRAMES = 4
 local ROLL_FRAME = "GroupLootFrame"
-local BADGE_WORDS = { "Your BiS", "Your second pick" }
-local TEXT_PICK = "Your #%d pick"
+local BADGE_WORDS = { ns.L("Your BiS"), ns.L("Your second pick") }
+local TEXT_PICK = ns.L("Your #%d pick")
 
 local badges = {}
 

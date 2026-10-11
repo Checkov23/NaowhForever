@@ -15,7 +15,7 @@ local Secret = CB.Secret
 local NONE_COLOR = St.RED_RGB
 local BG_COLOR = St.BORDER_RGB
 local TIMER_LIFT = 2
-local TEXT_NONE = "NONE"
+local TEXT_NONE = ns.L("NONE")
 local CUSTOM_POINT = "TOP"
 
 function CB.Decorate(cell)

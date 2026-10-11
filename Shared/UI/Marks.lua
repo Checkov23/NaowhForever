@@ -29,11 +29,11 @@ local SHADE_SHARE, SHADE_ALPHA = 0.5, 0.8
 local MARK_STAR_DROP = -1
 local MARK_UP = 14
 local BADGE_SIZE, BADGE_ART, BADGE_ALPHA, BADGE_IN = 14, 12, 0.75, 1
-local TEXT_BIS = "Your BiS"
-local TEXT_SECOND = "Your second pick"
-local TEXT_RANKED = "#%d on your BiS list"
-local TEXT_UPGRADE = "% upgrade|r"
-local TEXT_NEW = "New in WoW Forever|r"
+local TEXT_BIS = ns.L("Your BiS")
+local TEXT_SECOND = ns.L("Your second pick")
+local TEXT_RANKED = ns.L("#%d on your BiS list")
+local TEXT_UPGRADE = ns.L("% upgrade|r")
+local TEXT_NEW = ns.L("New in WoW Forever|r")
 
 local marks = {}
 local foreverText = {}

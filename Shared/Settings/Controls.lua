@@ -13,10 +13,10 @@ local TEXT_GROW, TEXT_INSET = 2, 6
 local TEXT_BOX = { inset = TEXT_INSET, border = SS.BORDER_RGB, hover = false }
 local NO_SOUND = "none"
 local CHOICE_KINDS = { choice = true, font = true, texture = true, sound = true }
-local TEXT_NONE = "None"
-local TEXT_ON, TEXT_OFF = "On", "Off"
-local TEXT_EMPTY = "empty"
-local TEXT_GO = "Go"
+local TEXT_NONE = ns.L("None")
+local TEXT_ON, TEXT_OFF = ns.L("On"), ns.L("Off")
+local TEXT_EMPTY = ns.L("empty")
+local TEXT_GO = ns.L("Go")
 local NO_ORDER = {}
 
 local Makers = {}

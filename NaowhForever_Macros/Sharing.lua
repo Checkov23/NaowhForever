@@ -11,21 +11,26 @@ local VERSION = 1
 local SHOWN_COMMANDS = 4
 local DECODE_LIMITS = { maxChars = 100000, maxBytes = 1048576, maxDepth = 8, maxValues = 20000 }
 
-local TEXT_NOT_A_STRING = "That is not a Naowh Forever macro string."
-local TEXT_ADD = "Add %d %s as character macros?%s"
-local TEXT_IN_COMBAT = "Macros can be added once the fight is over."
-local TEXT_ADDED = "Added %d."
-local TEXT_ADDED_SOME = "Added %d of %d: %s."
-local TEXT_TAKEN = " a name you already have"
-local TEXT_FULL = "character macros are full"
-local TEXT_SCRIPT = "run%s a script"
-local TEXT_WARNING = " %s %s: read %s in /macro before you use %s."
-local TEXT_PROMPT = "Paste a Naowh Forever macro string"
+local TEXT_NOT_A_STRING = ns.L("That is not a Naowh Forever macro string.")
+local TEXT_ADD_ONE = ns.L("Add %d macro as character macros?%s")
+local TEXT_ADD = ns.L("Add %d macros as character macros?%s")
+local TEXT_IN_COMBAT = ns.L("Macros can be added once the fight is over.")
+local TEXT_ADDED = ns.L("Added %d.")
+local TEXT_ADDED_SOME = ns.L("Added %d of %d: %s.")
+local TEXT_TAKEN_ONE, TEXT_TAKEN = ns.L("%d uses a name you already have"), ns.L("%d use a name you already have")
+local TEXT_FULL = ns.L("character macros are full")
+local TEXT_SCRIPT_ONE, TEXT_SCRIPT = ns.L("runs a script"), ns.L("run a script")
+local TEXT_WARNING_ONE = ns.L(" One %s: read it in /macro before you use it.")
+local TEXT_WARNING = ns.L(" Some %s: read them in /macro before you use them.")
+local TEXT_AND = ns.L(" and ")
+local TEXT_PROMPT = ns.L("Paste a Naowh Forever macro string")
 
 local COMMAND_KINDS = {
-    { kind = "own", text = "use%s Naowh Forever's own commands (%s)" },
-    { kind = "addon", text = "use%s other addons' commands (%s)" },
-    { kind = "unknown", text = "use%s commands the game does not know (%s)" },
+    { kind = "own", one = ns.L("uses Naowh Forever's own commands (%s)"),
+      many = ns.L("use Naowh Forever's own commands (%s)") },
+    { kind = "addon", one = ns.L("uses other addons' commands (%s)"), many = ns.L("use other addons' commands (%s)") },
+    { kind = "unknown", one = ns.L("uses commands the game does not know (%s)"),
+      many = ns.L("use commands the game does not know (%s)") },
 }
 
 local foundCommands = { own = {}, addon = {}, unknown = {} }
@@ -88,7 +93,7 @@ end
 
 local function Joined(pieces)
     if #pieces == 1 then return pieces[1] end
-    return table.concat(pieces, ", ", 1, #pieces - 1) .. " and " .. pieces[#pieces]
+    return table.concat(pieces, ", ", 1, #pieces - 1) .. TEXT_AND .. pieces[#pieces]
 end
 
 local function CommandWarning(macros)
@@ -100,15 +105,14 @@ local function CommandWarning(macros)
         if hit then flagged = flagged + 1 end
     end
     if flagged == 0 then return "" end
-    local s = flagged == 1 and "s" or ""
+    local one = flagged == 1
     local pieces = {}
-    if script then pieces[1] = TEXT_SCRIPT:format(s) end
+    if script then pieces[1] = one and TEXT_SCRIPT_ONE or TEXT_SCRIPT end
     for _, k in ipairs(COMMAND_KINDS) do
         local list = foundCommands[k.kind]
-        if #list > 0 then pieces[#pieces + 1] = k.text:format(s, table.concat(list, ", ")) end
+        if #list > 0 then pieces[#pieces + 1] = (one and k.one or k.many):format(table.concat(list, ", ")) end
     end
-    local it = flagged == 1 and "it" or "them"
-    return TEXT_WARNING:format(flagged == 1 and "One" or "Some", Joined(pieces), it, it)
+    return (one and TEXT_WARNING_ONE or TEXT_WARNING):format(Joined(pieces))
 end
 
 local function AddAll(macros)
@@ -125,7 +129,7 @@ local function AddAll(macros)
         end
     end
     local why = {}
-    if taken > 0 then why[#why + 1] = taken .. (taken == 1 and " uses" or " use") .. TEXT_TAKEN end
+    if taken > 0 then why[#why + 1] = (taken == 1 and TEXT_TAKEN_ONE or TEXT_TAKEN):format(taken) end
     if full > 0 then why[#why + 1] = TEXT_FULL end
     ns.Print(added == #macros and TEXT_ADDED:format(added)
         or TEXT_ADDED_SOME:format(added, #macros, table.concat(why, ", ")))
@@ -135,7 +139,7 @@ end
 function ns.ImportMacroString(text)
     local macros = Decode(text)
     if not macros then ns.Print(TEXT_NOT_A_STRING) return end
-    ns.Confirm(TEXT_ADD:format(#macros, #macros == 1 and "macro" or "macros", CommandWarning(macros)),
+    ns.Confirm((#macros == 1 and TEXT_ADD_ONE or TEXT_ADD):format(#macros, CommandWarning(macros)),
         function() AddAll(macros) end)
 end
 

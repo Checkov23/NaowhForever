@@ -33,20 +33,21 @@ local SERVICE_LEVEL = 4
 local FONT_SMALL, FONT, FONT_ROW, FONT_TITLE = Style.FONT_SMALL, Style.FONT, Style.FONT_ROW, 15
 local TRAINER_ADDON = "Blizzard_TrainerUI"
 local PANEL_EVENTS = { "TRAINER_SHOW", "TRAINER_UPDATE", "TRAINER_CLOSED", "PLAYER_MONEY", "ADDON_LOADED" }
-local TEXT_TITLE = "Train Now"
+local TEXT_TITLE = ns.L("Train Now")
 local TEXT_CLOSE = "x"
-local TEXT_LEARN_ALL = "Learn All"
-local TEXT_BARS = "Put the New Ranks on My Bars"
-local TEXT_LEVEL = "Level "
-local TEXT_LEAVE_OUT = "Click to leave it out of Learn All."
-local TEXT_PICKED = "%d of %d picked"
-local TEXT_PICKED_COST = "Picked  "
-local TEXT_LEAVES = "Leaves "
-local TEXT_SHORT = " short"
-local TEXT_LEARN_AFFORD = "Learn All I Can Afford (%d)  %s"
-local TEXT_NOTHING_AFFORD = "Nothing You Can Afford"
-local TEXT_LEARNED = "Learned %d spell%s. Nothing else to train here for now."
-local TEXT_NOTHING = "Nothing to train here for now."
+local TEXT_LEARN_ALL = ns.L("Learn All")
+local TEXT_BARS = ns.L("Put the New Ranks on My Bars")
+local TEXT_LEVEL = ns.L("Level ")
+local TEXT_LEAVE_OUT = ns.L("Click to leave it out of Learn All.")
+local TEXT_PICKED = ns.L("%d of %d picked")
+local TEXT_PICKED_COST = ns.L("Picked  ")
+local TEXT_LEAVES = ns.L("Leaves ")
+local TEXT_SHORT = ns.L(" short")
+local TEXT_LEARN_AFFORD = ns.L("Learn All I Can Afford (%d)  %s")
+local TEXT_NOTHING_AFFORD = ns.L("Nothing You Can Afford")
+local TEXT_LEARNED_ONE = ns.L("Learned %d spell. Nothing else to train here for now.")
+local TEXT_LEARNED = ns.L("Learned %d spells. Nothing else to train here for now.")
+local TEXT_NOTHING = ns.L("Nothing to train here for now.")
 
 local panel
 local unpicked = {}
@@ -283,7 +284,7 @@ end
 local function FillFooter(any, shown)
     local hasBars = learned > 0 and ns.TrainerRankCheck ~= nil
     panel.done:SetShown(not any)
-    panel.done:SetText(learned > 0 and TEXT_LEARNED:format(learned, learned == 1 and "" or "s") or TEXT_NOTHING)
+    panel.done:SetText(learned > 0 and (learned == 1 and TEXT_LEARNED_ONE or TEXT_LEARNED):format(learned) or TEXT_NOTHING)
     panel.total:SetShown(any)
     panel.note:SetShown(any)
     panel.learn:SetShown(any)

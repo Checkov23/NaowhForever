@@ -6,7 +6,7 @@ local S = A.Settings
 local Capture = A.Capture
 local Import = A.Import
 
-local TEXT_PLACED = "%s is on your bars where %s keeps it."
+local TEXT_PLACED = ns.L("%s is on your bars where %s keeps it.")
 
 local events = CreateFrame("Frame")
 

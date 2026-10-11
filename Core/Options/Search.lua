@@ -2,7 +2,7 @@
 local ns = _G.NaowhForever
 local UI = ns.UI
 
-local TEXT_SEARCH_HINT = "Search settings"
+local TEXT_SEARCH_HINT = ns.L("Search settings")
 local NONE = {}
 local NOT_LETTERS, LETTER = "[^%w\128-\255]+", "[%w\128-\255]"
 

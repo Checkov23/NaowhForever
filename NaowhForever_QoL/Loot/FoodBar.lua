@@ -10,15 +10,15 @@ local DEFAULT_Y = -210
 local BAR_BUTTONS = 2
 local GAP = 4
 local GROW, PER_ROW = "RIGHT", 2
-local MOVER_LABEL = "Food & Drink"
+local MOVER_LABEL = ns.L("Food & Drink")
 local CONSUMABLE_PAGE, LOOT_PAGE = "Consumable Bar/Settings", "QoL/Loot & Items"
 local CARD_ID = "foodBar"
 local ORDER_CONSUMABLE, ORDER_LOOT = 35, 55
-local SUMMARY = "%d px buttons"
-local BAR_NAME = "Food & Drink Bar"
+local SUMMARY = ns.L("%d px buttons")
+local BAR_NAME = ns.L("Food & Drink Bar")
 
-local EMPTY = { { icon = 133971, text = "No food in your bags" },
-    { icon = 132794, text = "No drink in your bags" } }
+local EMPTY = { { icon = 133971, text = ns.L("No food in your bags") },
+    { icon = 132794, text = ns.L("No drink in your bags") } }
 local STAGE_H = 100
 local ICON_RANGE = { 20, 70, 1 }
 local BUTTON_NAMES = { "NaowhForeverFoodBarFood", "NaowhForeverFoodBarDrink" }

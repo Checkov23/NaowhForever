@@ -1,10 +1,10 @@
 -- Disband.lua: removing everyone from your group (ns.DisbandGroup), for the Disband button.
 local ns = _G.NaowhForever
 
-local TEXT_NO_GROUP = "You are not in a group."
-local TEXT_NOT_LEADER = "Only the group leader can disband the group."
-local TEXT_DISBAND = "Remove everyone from your group?"
-local TEXT_IN_COMBAT = "The group can be disbanded once the fight is over."
+local TEXT_NO_GROUP = ns.L("You are not in a group.")
+local TEXT_NOT_LEADER = ns.L("Only the group leader can disband the group.")
+local TEXT_DISBAND = ns.L("Remove everyone from your group?")
+local TEXT_IN_COMBAT = ns.L("The group can be disbanded once the fight is over.")
 
 local function Disband()
     if InCombatLockdown() then

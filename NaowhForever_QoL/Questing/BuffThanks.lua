@@ -5,19 +5,19 @@ local S = ns.QoLSettings
 local Parts = ns.Shared.Parts
 
 local FAMILIES = {
-    { key = "buffThanksIntellect", label = "Intellect Lines", what = "Arcane Intellect and Brilliance",
+    { key = "buffThanksIntellect", label = "Intellect Lines", what = ns.L("Arcane Intellect and Brilliance"),
       ids = { 10157, 10156, 1461, 1460, 1459, 23028 } },
-    { key = "buffThanksStamina", label = "Fortitude Lines", what = "Power Word: Fortitude and its Prayer",
+    { key = "buffThanksStamina", label = "Fortitude Lines", what = ns.L("Power Word: Fortitude and its Prayer"),
       ids = { 10938, 10937, 2791, 1245, 1244, 1243, 21564, 21562 } },
-    { key = "buffThanksSpirit", label = "Spirit Lines", what = "Divine Spirit and its Prayer",
+    { key = "buffThanksSpirit", label = "Spirit Lines", what = ns.L("Divine Spirit and its Prayer"),
       ids = { 27841, 14819, 14818, 14752, 27681 } },
-    { key = "buffThanksShadow", label = "Shadow Protection Lines", what = "Shadow Protection and its Prayer",
+    { key = "buffThanksShadow", label = "Shadow Protection Lines", what = ns.L("Shadow Protection and its Prayer"),
       ids = { 976, 10957, 10958, 27683 } },
-    { key = "buffThanksWild", label = "Wild Lines", what = "Mark and Gift of the Wild",
+    { key = "buffThanksWild", label = "Wild Lines", what = ns.L("Mark and Gift of the Wild"),
       ids = { 9885, 9884, 8907, 5234, 6756, 5232, 1126, 21850, 21849 } },
     { key = "buffThanksThorns", label = "Thorns Lines", what = "Thorns",
       ids = { 467, 782, 1075, 8914, 9756, 9910 } },
-    { key = "buffThanksBlessing", label = "Blessing Lines", what = "every Paladin blessing",
+    { key = "buffThanksBlessing", label = "Blessing Lines", what = ns.L("every Paladin blessing"),
       ids = { 25291, 19838, 19837, 19836, 19835, 19834, 19740, 25916, 25782,
           25290, 19854, 19853, 19852, 19850, 19742, 25918, 25894,
           20217, 25898, 1038, 25895, 19979, 19978, 19977, 25890,
@@ -236,7 +236,7 @@ end
 
 local rows = {
     { key = "buffThanksText", label = "Whisper Lines", buttonText = "Edit",
-      button = function() EditLines("buffThanksText", "Whisper Lines") end,
+      button = function() EditLines("buffThanksText", ns.L("Whisper Lines")) end,
       help = "One whisper per line, picked at random; {buff} and {name} are filled in." },
     { key = "buffThanksCooldown", label = "Once Per Player Every", slider = COOLDOWN_RANGE, unit = "m",
       help = "The shortest time between two thanks to the same player." },
@@ -248,7 +248,7 @@ local rows = {
 for _, family in ipairs(FAMILIES) do
     rows[#rows + 1] = { key = family.key, label = family.label, buttonText = "Edit", hidden = PerBuffOff,
         button = function() EditLines(family.key, family.label) end,
-        help = "Whispers for " .. family.what .. "." }
+        help = ns.L("Whispers for ") .. family.what .. "." }
 end
 rows[#rows + 1] = Group("Unknown Casters")
 rows[#rows + 1] = { key = "buffThanksEmote", label = "Thank With an Emote", toggle = true,

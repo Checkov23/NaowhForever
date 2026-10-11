@@ -16,11 +16,11 @@ local STATES = {
     { key = "party", label = "Party", tip = "A party of five, a card each." },
     { key = "raid", label = "Raid", tip = "A raid, a row each." },
 }
-local NOT_GROUPED = "Not in a group"
+local NOT_GROUPED = ns.L("Not in a group")
 local PARTY, RAID = UI.MODE_WORDS.party, UI.MODE_WORDS.raid
-local RUNS_ONE, RUNS = "1 runs Naowh Forever", "%d run Naowh Forever"
-local GROUPED_DETAIL = "Everyone's Naowh Score, gear, talents and stats, side by side."
-local SOLO_DETAIL = "Join a party or raid to use it; the preview below shows how it looks."
+local RUNS_ONE, RUNS = ns.L("1 runs Naowh Forever"), ns.L("%d run Naowh Forever")
+local GROUPED_DETAIL = ns.L("Everyone's Naowh Score, gear, talents and stats, side by side.")
+local SOLO_DETAIL = ns.L("Join a party or raid to use it; the preview below shows how it looks.")
 
 local function Hidden(preview)
     preview.state = nil
@@ -115,11 +115,11 @@ local function Open()
 end
 
 local function ShareSummary(store)
-    return store.Get("groupInspectShare") and "Sharing with your group" or "Not sharing"
+    return store.Get("groupInspectShare") and ns.L("Sharing with your group") or ns.L("Not sharing")
 end
 
 local function WindowSummary(store)
-    return ("%d%% opacity"):format(math.floor((store.Get("groupInspectAlpha") or 1) * PERCENT + ROUND))
+    return (ns.L("%d%% opacity")):format(math.floor((store.Get("groupInspectAlpha") or 1) * PERCENT + ROUND))
 end
 
 local page = Settings.Page(UI.PAGE, S)

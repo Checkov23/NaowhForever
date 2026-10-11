@@ -12,15 +12,15 @@ local LIST = { W = 440, H = 500, ROW = 30, HOVER_ALPHA = 0.12, ICON = 24, INSET 
     SCROLL_BOTTOM = 100, SEARCH_Y = 44, SEARCH_H = 24, DROP_H = 34, DROP_Y = 54,
     BUTTON_W = 100, BUTTON_H = 26, BUTTON_X = 56, BUTTON_Y = 16, DATE = "%d %b" }
 local TEXT = {
-    LIST_HEAD = "Bag Space: Ignored Items (%d)",
+    LIST_HEAD = ns.L("Bag Space: Ignored Items (%d)"),
     WHITE_CODE = "|cffffffff",
-    ITEM = "Item ",
+    ITEM = ns.L("Item "),
     CARRIED = "x",
-    NOTHING_IGNORED = "Nothing ignored yet. Middle-click an icon on the Bag Space row, or drop "
-        .. "an item below.",
-    NO_MATCH = "No ignored item matches your search.",
+    NOTHING_IGNORED = ns.L("Nothing ignored yet. Middle-click an icon on the Bag Space row, or drop "
+        .. "an item below."),
+    NO_MATCH = ns.L("No ignored item matches your search."),
     SEARCH = "Search",
-    DROP = "Drop an item here to ignore it",
+    DROP = ns.L("Drop an item here to ignore it"),
     CLEAR_ALL = "Clear All",
     CLEAR_ASK = "Offer every item you ignored again?",
     DONE = "Done",

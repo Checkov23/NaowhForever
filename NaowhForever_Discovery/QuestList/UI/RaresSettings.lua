@@ -28,14 +28,14 @@ local FONT_SIZE = { 10, 20, 1 }
 local PIN_SIZE = ns.Shared.Style.PIN_SIZE_RANGE
 local PERCENT_SCALE = ns.Shared.Style.PERCENT_SCALE
 local ORDER_RARES, ORDER_ALERT = 10, 20
-local TEXT_OFF = "Turn on Discovery"
-local TEXT_SOUND_OFF = "Needs Play a Sound"
-local TEXT_PINS_OFF = "Turn on Rares"
-local TEXT_PROGRESS = "%d of %d rares killed"
-local TEXT_ZONE = "%s: %d of %d."
-local TEXT_EVERY_RARE = "Every rare of every zone, and which of them you have killed."
-local TEXT_WARNING = "A warning when a rare is near"
-local TEXT_WITH_SOUND = ", a sound"
+local TEXT_OFF = ns.L("Turn on Discovery")
+local TEXT_SOUND_OFF = ns.L("Needs Play a Sound")
+local TEXT_PINS_OFF = ns.L("Turn on Rares")
+local TEXT_PROGRESS = ns.L("%d of %d rares killed")
+local TEXT_ZONE = ns.L("%s: %d of %d.")
+local TEXT_EVERY_RARE = ns.L("Every rare of every zone, and which of them you have killed.")
+local TEXT_WARNING = ns.L("A warning when a rare is near")
+local TEXT_WITH_SOUND = ns.L(", a sound")
 
 local page = Settings.Page(PAGE, S)
 

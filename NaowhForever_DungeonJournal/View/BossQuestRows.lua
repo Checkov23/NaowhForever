@@ -18,11 +18,11 @@ local TICK_GAP = 4
 local STATE_GAP = 6
 local CHIP_FILL = 0.04
 local STATE = {
-    prereq = "Prerequisite", prereqLog = "Prerequisite", low = "Level %d to pick up", pickup = "To pick up",
-    next = "Next step", active = "In log", ready = "Complete", done = "Done",
+    prereq = ns.L("Prerequisite"), prereqLog = ns.L("Prerequisite"), low = ns.L("Level %d to pick up"), pickup = ns.L("To pick up"),
+    next = ns.L("Next step"), active = ns.L("In log"), ready = ns.L("Complete"), done = ns.L("Done"),
 }
 
-local TEXT_QUESTS = "QUESTS"
+local TEXT_QUESTS = ns.L("QUESTS")
 local TEXT_CODE_END = "|r"
 
 local function NameText(quest, kind)

@@ -11,8 +11,8 @@ local Parts, Items = ns.Shared.Parts, ns.Shared.Items
 
 local BORDER_RGB, WARN_RGB, TITLE_RGB = St.BORDER_RGB, St.WARN_RGB, St.TIP_TITLE_RGB
 local BIS_RANK = 1
-local NO_ENCHANT, EMPTY = "No enchant", "Empty"
-local THEIR_BIS = "Their BiS"
+local NO_ENCHANT, EMPTY = ns.L("No enchant"), ns.L("Empty")
+local THEIR_BIS = ns.L("Their BiS")
 local BARE = { color = WARN_RGB, tip = NO_ENCHANT }
 
 local emptyArt = {}
@@ -34,7 +34,7 @@ local function GearEnter(icon)
         if entry.bis then GameTooltip:AddLine(TheirBis()) end
         if entry.enchanted == false then GameTooltip:AddLine(NO_ENCHANT, WARN_RGB.r, WARN_RGB.g, WARN_RGB.b) end
     else
-        GameTooltip:SetText(Items.SLOT_NAME[icon.slot] or "", TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
+        GameTooltip:SetText(Items.SlotName(icon.slot) or "", TITLE_RGB.r, TITLE_RGB.g, TITLE_RGB.b)
         GameTooltip:AddLine(rec and rec.gear and EMPTY or UI.NOT_READ, T.muted.r, T.muted.g, T.muted.b)
     end
     GameTooltip:Show()

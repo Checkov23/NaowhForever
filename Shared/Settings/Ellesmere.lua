@@ -7,8 +7,8 @@ local ESSENTIALS = "EllesmereUIForeverEssentials"
 local QUESTS = "EllesmereUIQuestTracker"
 local DB = "EllesmereUIDB"
 local QUEST_DB = "_EQT_DB"
-local TEXT_ON = "EllesmereUI has it on"
-local TEXT_OFF = "EllesmereUI has it off"
+local TEXT_ON = ns.L("EllesmereUI has it on")
+local TEXT_OFF = ns.L("EllesmereUI has it off")
 local TRACKER_ON = { path = { QUEST_DB, "profile", "questTracker", "enabled" }, default = true }
 
 local OVERLAPS = {

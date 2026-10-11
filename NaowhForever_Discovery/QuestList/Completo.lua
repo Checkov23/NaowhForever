@@ -4,7 +4,7 @@ local ns = _G.NaowhForever
 local F = ns.FEATURES.completo
 local D = ns.DiscoverySettings
 local OLD_ADDON = "NaowhForever_Completo"
-local TEXT_OLD_FOLDER = "Completo is part of Discovery now. Its old folder has been turned off; reload to finish."
+local TEXT_OLD_FOLDER = ns.L("Completo is part of Discovery now. Its old folder has been turned off; reload to finish.")
 
 local S = ns.UI.ModuleSettings("completo", {
     enabled = F.enabled, hideDone = false, windowAlpha = 1, windowScale = 1,

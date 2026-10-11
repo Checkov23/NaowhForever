@@ -7,10 +7,10 @@ local C = M.C
 local Smart = M.Smart
 local Commands = M.Commands
 
-local TEXT_BAD = "A profile macro needs a name (1-16 characters) and body (1-255 characters)."
-local TEXT_TAKEN = "A different macro already uses that name; rename it before adding the profile macro."
-local TEXT_MAY_FAIL = "%s may not work: %s"
-local TEXT_SCRIPT = "%s runs a script from a shared profile. Hover its icon to read it first. Create it?"
+local TEXT_BAD = ns.L("A profile macro needs a name (1-16 characters) and body (1-255 characters).")
+local TEXT_TAKEN = ns.L("A different macro already uses that name; rename it before adding the profile macro.")
+local TEXT_MAY_FAIL = ns.L("%s may not work: %s")
+local TEXT_SCRIPT = ns.L("%s runs a script from a shared profile. Hover its icon to read it first. Create it?")
 
 local function Fits(entry)
     return type(entry.name) == "string" and #entry.name >= 1 and #entry.name <= C.NAME_MAX

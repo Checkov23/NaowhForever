@@ -24,14 +24,14 @@ local AXES = { "X", "Y" }
 local SIDES = { "TOP", "LEFT", "RIGHT", "BOTTOM" }
 local SIDE_NAMES = { TOP = "Top", LEFT = "Left", RIGHT = "Right", BOTTOM = "Bottom" }
 local ACROSS = { TOP = "y", BOTTOM = "y", LEFT = "x", RIGHT = "x" }
-local TEXT_MOVES_WITH = "%s already moves with %s."
-local TEXT_ANCHOR, TEXT_UNANCHOR = "Anchor", "Unanchor"
-local TEXT_ANCHORED = "Anchored to %s. Lets go of it; it stays where it is."
-local TEXT_ANCHOR_HELP = "Click another element to anchor to. It then moves with that element."
-local TEXT_CENTER, TEXT_CENTER_HELP = "Center", "Moves it to the middle of the screen, left to right."
-local TEXT_SETTINGS, TEXT_SETTINGS_HELP = "Settings", "Opens its settings and leaves the HUD Editor."
-local TEXT_SIDE, TEXT_GAP = "Side", "Gap"
-local TEXT_SIDE_HELP = "Sits off this side of what it is anchored to, keeping the gap."
+local TEXT_MOVES_WITH = ns.L("%s already moves with %s.")
+local TEXT_ANCHOR, TEXT_UNANCHOR = ns.L("Anchor"), ns.L("Unanchor")
+local TEXT_ANCHORED = ns.L("Anchored to %s. Lets go of it; it stays where it is.")
+local TEXT_ANCHOR_HELP = ns.L("Click another element to anchor to. It then moves with that element.")
+local TEXT_CENTER, TEXT_CENTER_HELP = ns.L("Center"), ns.L("Moves it to the middle of the screen, left to right.")
+local TEXT_SETTINGS, TEXT_SETTINGS_HELP = ns.L("Settings"), ns.L("Opens its settings and leaves the HUD Editor.")
+local TEXT_SIDE, TEXT_GAP = ns.L("Side"), ns.L("Gap")
+local TEXT_SIDE_HELP = ns.L("Sits off this side of what it is anchored to, keeping the gap.")
 
 local function CenterAcross(item)
     local x = Position(item)

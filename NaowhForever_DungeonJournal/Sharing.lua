@@ -25,21 +25,21 @@ local GUID_PATTERN = "^Player%-%d+%-%x+$"
 local ID_PATTERN = "^%d%d?%d?%d?%d?%d?%d?$"
 local NAME_PART = "^([^%-]+)"
 
-local TEXT_NO_ANSWER = "%s did not answer: they need Naowh Forever with its Dungeon Journal on."
-local TEXT_NO_ONE = "No one else in your group can share %s."
-local TEXT_LOCKED = "The game is not passing addon messages right now (in an encounter): ask again after it."
-local TEXT_ASKING = "Asking %s to share %s with you..."
-local TEXT_STILL_WAITING = "Still waiting on %s for %s."
-local TEXT_ASKED_NOT_ON = "%s asked you to share a quest you are not on."
-local TEXT_ASKED_NOT_PUSHABLE = "%s asked you to share %s, but the game does not let it be shared."
-local TEXT_ASKED_TOO_SOON = "%s asked you to share %s: you shared one a moment ago."
-local TEXT_ASKED_SHARED = "%s asked you to share %s: shared it with your group."
-local TEXT_A_QUEST = "a quest"
+local TEXT_NO_ANSWER = ns.L("%s did not answer: they need Naowh Forever with its Dungeon Journal on.")
+local TEXT_NO_ONE = ns.L("No one else in your group can share %s.")
+local TEXT_LOCKED = ns.L("The game is not passing addon messages right now (in an encounter): ask again after it.")
+local TEXT_ASKING = ns.L("Asking %s to share %s with you...")
+local TEXT_STILL_WAITING = ns.L("Still waiting on %s for %s.")
+local TEXT_ASKED_NOT_ON = ns.L("%s asked you to share a quest you are not on.")
+local TEXT_ASKED_NOT_PUSHABLE = ns.L("%s asked you to share %s, but the game does not let it be shared.")
+local TEXT_ASKED_TOO_SOON = ns.L("%s asked you to share %s: you shared one a moment ago.")
+local TEXT_ASKED_SHARED = ns.L("%s asked you to share %s: shared it with your group.")
+local TEXT_A_QUEST = ns.L("a quest")
 local ANSWERS = {
-    S = "%s shared %s with you: accept it in the window the game opens.",
-    N = "%s is not on %s any more.",
-    P = "%s cannot share %s: the game does not let it be shared.",
-    W = "%s shared a quest a moment ago: ask again in a few seconds.",
+    S = ns.L("%s shared %s with you: accept it in the window the game opens."),
+    N = ns.L("%s is not on %s any more."),
+    P = ns.L("%s cannot share %s: the game does not let it be shared."),
+    W = ns.L("%s shared a quest a moment ago: ask again in a few seconds."),
 }
 
 local frame, prefixed

@@ -17,11 +17,11 @@ local TEXT_NUDGE = 1
 local MOUNT_SPELL = 2
 local FIRST_LINE = "^[^\n]+"
 
-local TEXT_REWARD = "Reward"
-local TEXT_COLLECTED = "   %sCollected|r"
+local TEXT_REWARD = ns.L("Reward")
+local TEXT_COLLECTED = ns.L("   %sCollected|r")
 local KIND_WORDS = {
-    { "mountID", "Mount" }, { "titleMaskID", "Title" }, { "transmogSetID", "Appearance set" },
-    { "transmogID", "Appearance" }, { "transmogIllusionSourceID", "Illusion" }, { "spellID", "Spell" },
+    { "mountID", ns.L("Mount") }, { "titleMaskID", ns.L("Title") }, { "transmogSetID", ns.L("Appearance set") },
+    { "transmogID", ns.L("Appearance") }, { "transmogIllusionSourceID", ns.L("Illusion") }, { "spellID", ns.L("Spell") },
 }
 
 local described = {}

@@ -14,8 +14,8 @@ local SCROLL_GAP = 4
 local TOP_Y = -6
 local PERCENT, ROUND = B.PERCENT, B.ROUND
 local WINDOW_KEY = "blessingsWindow"
-local TEXT_TITLE = "Blessings"
-local TEXT_TITLE_TIP = "Paladin blessings by class and player, shared with the group's paladins."
+local TEXT_TITLE = ns.L("Blessings")
+local TEXT_TITLE_TIP = ns.L("Paladin blessings by class and player, shared with the group's paladins.")
 
 local window, scroll, content
 local queued

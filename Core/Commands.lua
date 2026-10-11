@@ -10,27 +10,27 @@ local MODULE_ARGS = { bars = "ActionBarsCommand" }
 local TIP_TITLE = { r = 1, g = 0.82, b = 0 }
 local TIP_TEXT = { r = 1, g = 1, b = 1 }
 local TEXT_BRAND = "Naowh Forever"
-local TEXT_CLICK = "Click to open settings."
-local TEXT_SWITCHED_OFF = "%s is switched off. Turn it on under Settings > Modules."
-local TEXT_HELP_TITLE = "Commands:"
-local TEXT_HELP_MODULE = "%s%s: opens %s"
-local TEXT_HELP_ALIAS = "%s%s or %s%s: opens %s"
-local TEXT_HELP_BADGES = "/nf badges id: your badge claim code"
+local TEXT_CLICK = ns.L("Click to open settings.")
+local TEXT_SWITCHED_OFF = ns.L("%s is switched off. Turn it on under Settings > Modules.")
+local TEXT_HELP_TITLE = ns.L("Commands:")
+local TEXT_HELP_MODULE = ns.L("%s%s: opens %s")
+local TEXT_HELP_ALIAS = ns.L("%s%s or %s%s: opens %s")
+local TEXT_HELP_BADGES = ns.L("/nf badges id: your badge claim code")
 local HELP_LINES = {
-    "/nf: opens the settings",
+    ns.L("/nf: opens the settings"),
     "/nf help: this list",
-    "/nf move (or /nf hud): opens or closes the HUD Editor",
-    "/nf bars save, restore, test or delete <name>: your action bar sets; /nf bars list lists them",
-    "/nf ab <name>: imports a saved action bar set; /nf ab lists them",
-    "/nf xp start, pause or reset: the XP ticker",
-    "/nf lockouts: your raid and dungeon lockouts",
-    "/nf ranks: higher ranks to put on your bars",
-    "/nf trainer: a waypoint to your nearest class trainer",
+    ns.L("/nf move (or /nf hud): opens or closes the HUD Editor"),
+    ns.L("/nf bars save, restore, test or delete <name>: your action bar sets; /nf bars list lists them"),
+    ns.L("/nf ab <name>: imports a saved action bar set; /nf ab lists them"),
+    ns.L("/nf xp start, pause or reset: the XP ticker"),
+    ns.L("/nf lockouts: your raid and dungeon lockouts"),
+    ns.L("/nf ranks: higher ranks to put on your bars"),
+    ns.L("/nf trainer: a waypoint to your nearest class trainer"),
     "/nf profrank: your professions' next ranks",
-    "/nf scrap: the Scrap List",
-    "/nf quiz: the WoW quiz",
+    ns.L("/nf scrap: the Scrap List"),
+    ns.L("/nf quiz: the WoW quiz"),
     "/nf setup: the onboarding",
-    "/nfquests (or /nfcompleto): the Quest List, in Discovery",
+    ns.L("/nfquests (or /nfcompleto): the Quest List, in Discovery"),
 }
 
 function _G.NaowhForever_OnCompartmentClick()
@@ -67,21 +67,21 @@ local function PrintHelp()
 end
 
 BINDING_HEADER_NAOWHFOREVER = "Naowh Forever"
-BINDING_NAME_NAOWHFOREVER_JOURNAL = "Open Dungeon Journal"
-BINDING_NAME_NAOWHFOREVER_BOSSLOOT = "Boss Loot at Cursor"
-BINDING_NAME_NAOWHFOREVER_BIS = "Open BiS List"
-BINDING_NAME_NAOWHFOREVER_GROUPINSPECT = "Open Group Inspect"
-BINDING_NAME_NAOWHFOREVER_COMPLETO = "Open Quest List"
-BINDING_NAME_NAOWHFOREVER_BAGSPACE_PICKUP = "Pick Up Cheapest Item"
-BINDING_NAME_NAOWHFOREVER_HUD = "Open or Close the HUD Editor"
-BINDING_NAME_NAOWHFOREVER_TRAINING = "Open Training Planner"
-_G["BINDING_NAME_CLICK NaowhForeverBlessNext:LeftButton"] = "Next Blessing"
-_G["BINDING_NAME_CLICK NaowhForeverBlessNextGreater:LeftButton"] = "Next Greater Blessing"
-_G["BINDING_NAME_CLICK NaowhForeverFoodBarFood:LeftButton"] = "Use Best Food"
-_G["BINDING_NAME_CLICK NaowhForeverFoodBarDrink:LeftButton"] = "Use Best Drink"
+BINDING_NAME_NAOWHFOREVER_JOURNAL = ns.L("Open Dungeon Journal")
+BINDING_NAME_NAOWHFOREVER_BOSSLOOT = ns.L("Boss Loot at Cursor")
+BINDING_NAME_NAOWHFOREVER_BIS = ns.L("Open BiS List")
+BINDING_NAME_NAOWHFOREVER_GROUPINSPECT = ns.L("Open Group Inspect")
+BINDING_NAME_NAOWHFOREVER_COMPLETO = ns.L("Open Quest List")
+BINDING_NAME_NAOWHFOREVER_BAGSPACE_PICKUP = ns.L("Pick Up Cheapest Item")
+BINDING_NAME_NAOWHFOREVER_HUD = ns.L("Open or Close the HUD Editor")
+BINDING_NAME_NAOWHFOREVER_TRAINING = ns.L("Open Training Planner")
+_G["BINDING_NAME_CLICK NaowhForeverBlessNext:LeftButton"] = ns.L("Next Blessing")
+_G["BINDING_NAME_CLICK NaowhForeverBlessNextGreater:LeftButton"] = ns.L("Next Greater Blessing")
+_G["BINDING_NAME_CLICK NaowhForeverFoodBarFood:LeftButton"] = ns.L("Use Best Food")
+_G["BINDING_NAME_CLICK NaowhForeverFoodBarDrink:LeftButton"] = ns.L("Use Best Drink")
 
 local function SwitchedOff(name)
-    return function() ns.Print(TEXT_SWITCHED_OFF:format(name)) end
+    return function() ns.Print(TEXT_SWITCHED_OFF:format(ns.L(name))) end
 end
 NaowhForever_ToggleJournal = SwitchedOff("Dungeon Journal")
 NaowhForever_BossLoot = SwitchedOff("Dungeon Journal")

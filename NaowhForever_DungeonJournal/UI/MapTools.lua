@@ -35,17 +35,17 @@ local PINS_CLOSE = "        },"
 local MAP_CLOSE = "    },"
 local COPY_TITLE = "%s: Data/Maps.lua"
 
-local TEXT_OWN_PICTURE = "%s: the addon's own picture, until the game has art for it"
-local TEXT_ART = "%s (%s): %s, data says %d"
-local TEXT_FLOORS = "floors "
-local TEXT_NO_ART = "no art"
-local TEXT_OTHER_NAMES = "%s, other names tried: %s"
-local TEXT_FOUND = "%s (floors %s)"
-local TEXT_NONE_FOUND = "none found"
-local TEXT_PORTRAITS = "Portraits: %s. Your position in here: %s."
-local TEXT_YES, TEXT_NO = "yes", "no"
-local TEXT_PLACING_ON = "Placing map pins: drag them, then Copy. /nf mappins again to stop."
-local TEXT_PLACING_OFF = "Placing map pins: off."
+local TEXT_OWN_PICTURE = ns.L("%s: the addon's own picture, until the game has art for it")
+local TEXT_ART = ns.L("%s (%s): %s, data says %d")
+local TEXT_FLOORS = ns.L("floors ")
+local TEXT_NO_ART = ns.L("no art")
+local TEXT_OTHER_NAMES = ns.L("%s, other names tried: %s")
+local TEXT_FOUND = ns.L("%s (floors %s)")
+local TEXT_NONE_FOUND = ns.L("none found")
+local TEXT_PORTRAITS = ns.L("Portraits: %s. Your position in here: %s.")
+local TEXT_YES, TEXT_NO = ns.L("yes"), ns.L("no")
+local TEXT_PLACING_ON = ns.L("Placing map pins: drag them, then Copy. /nf mappins again to stop.")
+local TEXT_PLACING_OFF = ns.L("Placing map pins: off.")
 local MAPCHECK = "mapcheck"
 
 local probe

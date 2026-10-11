@@ -9,8 +9,8 @@ local Parts = ns.Shared.Parts
 
 local TITLE_RGB, WARN_RGB = St.TIP_TITLE_RGB, St.WARN_RGB
 local VERSION_MAX = 24
-local RUNS_NF, VERSION = "Runs Naowh Forever", "Version %s"
-local OLDER = "Older than yours (%s): ask them to update."
+local RUNS_NF, VERSION = ns.L("Runs Naowh Forever"), ns.L("Version %s")
+local OLDER = ns.L("Older than yours (%s): ask them to update.")
 local NF = "NF"
 
 local parts = {}

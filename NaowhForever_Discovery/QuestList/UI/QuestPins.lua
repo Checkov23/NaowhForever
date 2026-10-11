@@ -12,11 +12,11 @@ local BANG_FILE = "Interface\\GossipFrame\\AvailableQuestIcon"
 local PERCENT = Completo.C.PERCENT
 local EVENTS = { "QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED", "PLAYER_LEVEL_UP" }
 local OWN_KEYS = { enabled = true, mapPins = true, mapGrey = true, mapChainsOnly = true, mapPinSize = true }
-local TEXT_GIVER = "Quest giver"
-local TEXT_DROPS = "Drops %s, which begins:"
-local TEXT_LEVEL = "Level %d"
-local TEXT_REPEATABLE = "Repeatable, "
-local TEXT_WAYPOINT = "Click for a waypoint."
+local TEXT_GIVER = ns.L("Quest giver")
+local TEXT_DROPS = ns.L("Drops %s, which begins:")
+local TEXT_LEVEL = ns.L("Level %d")
+local TEXT_REPEATABLE = ns.L("Repeatable, ")
+local TEXT_WAYPOINT = ns.L("Click for a waypoint.")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events

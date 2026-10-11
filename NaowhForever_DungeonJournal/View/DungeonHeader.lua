@@ -30,18 +30,18 @@ local FOREVER_W = FOREVER_H * 2
 local STATS = { "quests", "bis", "looks" }
 local CONTESTED = "Contested"
 
-local TEXT_CLICK_BIS = "Click to see your BiS."
-local TEXT_SHOW_ENTRANCE = "Show the entrance on your map"
-local TEXT_SHARE_ENTRANCE = "Right-click to share it in chat, or copy it."
-local TEXT_SHARE_TITLE = "Share the entrance"
+local TEXT_CLICK_BIS = ns.L("Click to see your BiS.")
+local TEXT_SHOW_ENTRANCE = ns.L("Show the entrance on your map")
+local TEXT_SHARE_ENTRANCE = ns.L("Right-click to share it in chat, or copy it.")
+local TEXT_SHARE_TITLE = ns.L("Share the entrance")
 local TEXT_ENTRANCE = " entrance"
-local TEXT_PLAYERS = " players"
-local TEXT_LEVEL = "Level "
+local TEXT_PLAYERS = ns.L(" players")
+local TEXT_LEVEL = ns.L("Level ")
 local TEXT_COUNT = "%s/%s"
 local TEXT_CODE_END = "|r"
 local TERRITORY_TIP = {
-    Alliance = "Alliance territory", Horde = "Horde territory",
-    Contested = "Contested territory: both factions",
+    Alliance = ns.L("Alliance territory"), Horde = ns.L("Horde territory"),
+    Contested = ns.L("Contested territory: both factions"),
 }
 
 local function StatEnter(stat)
@@ -210,16 +210,16 @@ end
 
 local function NewStats(row)
     local stats = {
-        quests = Stat(row, "Quests", "You have handed in %d of your %d quests here",
-            "Every quest here is done", BANG, nil, 0, BANG_DROP),
-        bis = Stat(row, "BiS", "You have %d of the %d BiS from your list that drop here",
-            "You have every BiS that drops here", STAR, BIS_RGB, STAT_ICON_GAP),
-        looks = Stat(row, "Transmog", "You have %d of the %d looks here", "You have every look here",
+        quests = Stat(row, "Quests", ns.L("You have handed in %d of your %d quests here"),
+            ns.L("Every quest here is done"), BANG, nil, 0, BANG_DROP),
+        bis = Stat(row, "BiS", ns.L("You have %d of the %d BiS from your list that drop here"),
+            ns.L("You have every BiS that drops here"), STAR, BIS_RGB, STAT_ICON_GAP),
+        looks = Stat(row, "Transmog", ns.L("You have %d of the %d looks here"), ns.L("You have every look here"),
             HANGER, LOOK_RGB, STAT_ICON_GAP, BANG_DROP),
     }
-    stats.bis.noneTip = "None of your BiS drops here"
+    stats.bis.noneTip = ns.L("None of your BiS drops here")
     OpensBisList(stats.bis)
-    stats.looks.noneTip = "Nothing listed here has a look to collect"
+    stats.looks.noneTip = ns.L("Nothing listed here has a look to collect")
     return stats
 end
 

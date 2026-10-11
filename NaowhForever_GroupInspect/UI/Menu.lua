@@ -6,7 +6,7 @@ local GI = ns.GroupInspect
 local UI = GI.UI
 
 local MENU_TAGS = { "MENU_UNIT_PARTY", "MENU_UNIT_RAID_PLAYER", "MENU_UNIT_RAID" }
-local MENU_TEXT = "Group Inspect"
+local MENU_TEXT = ns.L("Group Inspect")
 local menuHandles
 
 local function OpenFromMenu()

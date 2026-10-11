@@ -9,18 +9,19 @@ local Items = M.Items
 local QUESTION = C.QUESTION
 local TRINKET_TOP, TRINKET_BOTTOM = 13, 14
 
-local TEXT_FULL = "%s macros are full, so %s could not be made. Delete one and it will be added."
-local TEXT_IN_COMBAT = "Move macros outside combat."
-local TEXT_ENABLE_FIRST = "Enable Macros first."
-local TEXT_NO_ROOM = "Make room in General macros first."
-local TEXT_TOO_LONG = "%s with your extra lines is over %d characters, so they were left out."
-local TEXT_EXTRA_SCRIPT = "%s's extra lines run a script, so they were left out. Write scripts in /macro."
-local TEXT_REMOVE_IN_COMBAT = "Remove macros outside combat."
-local TEXT_HEADLINE = "%d of %d macros kept current for you"
-local TEXT_OFF = "Turn on Macros to keep them current."
-local TEXT_NO_CLASS_MACROS = "Your profile has no class macros for your %s."
-local TEXT_CLASS_MACROS = "%d class macro%s from your profile for your %s."
-local TEXT_ON_BAR = "%s is on the Consumable Bar. Take it off the bar first (Consumable Bar > Settings)."
+local TEXT_FULL_CHARACTER = ns.L("Character macros are full, so %s could not be made. Delete one and it will be added.")
+local TEXT_FULL_GENERAL = ns.L("General macros are full, so %s could not be made. Delete one and it will be added.")
+local TEXT_IN_COMBAT = ns.L("Move macros outside combat.")
+local TEXT_ENABLE_FIRST = ns.L("Enable Macros first.")
+local TEXT_NO_ROOM = ns.L("Make room in General macros first.")
+local TEXT_TOO_LONG = ns.L("%s with your extra lines is over %d characters, so they were left out.")
+local TEXT_EXTRA_SCRIPT = ns.L("%s's extra lines run a script, so they were left out. Write scripts in /macro.")
+local TEXT_REMOVE_IN_COMBAT = ns.L("Remove macros outside combat.")
+local TEXT_HEADLINE = ns.L("%d of %d macros kept current for you")
+local TEXT_OFF = ns.L("Turn on Macros to keep them current.")
+local TEXT_NO_CLASS_MACROS = ns.L("Your profile has no class macros for your %s.")
+local TEXT_CLASS_MACROS = ns.L("%d class macro%s from your profile for your %s.")
+local TEXT_ON_BAR = ns.L("%s is on the Consumable Bar. Take it off the bar first (Consumable Bar > Settings).")
 
 local MACROS = {
     { key = "health", name = "NF Health" },
@@ -174,7 +175,7 @@ local function WarnFull(m, perCharacter)
     local scope = perCharacter and "character" or "general"
     if warnedFull[scope] then return end
     warnedFull[scope] = true
-    ns.Print(TEXT_FULL:format(perCharacter and "Character" or "General", m.name))
+    ns.Print((perCharacter and TEXT_FULL_CHARACTER or TEXT_FULL_GENERAL):format(m.name))
 end
 
 local function Write(m, body, perCharacter)

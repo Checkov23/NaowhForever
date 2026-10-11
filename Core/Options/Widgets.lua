@@ -62,18 +62,18 @@ local RACIAL_VOICES = {
     ["voice:shadowmeld-ready"] = "shadowmeld-ready.ogg",
     ["voice:shadowmeld-preview"] = "shadowmeld-preview.ogg",
 }
-local TEXT_EDIT = "Edit"
-local TEXT_PLAY, TEXT_PLAY_HELP = "Play it", "Plays the sound picked here."
-local TEXT_PRESS_KEY, TEXT_NOT_BOUND = "Press a key...", "|cff808080Not bound|r"
-local TEXT_REBOUND = "%s is now bound to %s instead of %s."
-local TEXT_KEY_BINDING = "Key Binding"
-local TEXT_KEY_HELP = "Click, then press a key to bind it. Escape cancels; right-click clears. "
-    .. "The same binding as in Key Bindings > Naowh Forever."
-local TEXT_RELOAD = "Reload UI"
-local TEXT_ADDON_FONT = "Addon Font"
-local TEXT_UNAVAILABLE = " (unavailable)"
-local TEXT_NONE = "None"
-local TEXT_VOICE = "Voice: %s (English)"
+local TEXT_EDIT = ns.L("Edit")
+local TEXT_PLAY, TEXT_PLAY_HELP = ns.L("Play it"), ns.L("Plays the sound picked here.")
+local TEXT_PRESS_KEY, TEXT_NOT_BOUND = ns.L("Press a key..."), ns.L("|cff808080Not bound|r")
+local TEXT_REBOUND = ns.L("%s is now bound to %s instead of %s.")
+local TEXT_KEY_BINDING = ns.L("Key Binding")
+local TEXT_KEY_HELP = ns.L("Click, then press a key to bind it. Escape cancels; right-click clears. "
+    .. "The same binding as in Key Bindings > Naowh Forever.")
+local TEXT_RELOAD = ns.L("Reload UI")
+local TEXT_ADDON_FONT = ns.L("Addon Font")
+local TEXT_UNAVAILABLE = ns.L(" (unavailable)")
+local TEXT_NONE = ns.L("None")
+local TEXT_VOICE = ns.L("Voice: %s (English)")
 
 local UI = {}
 ns.UI = UI
@@ -1560,11 +1560,11 @@ ns.UnlockModeSettings = UI.ModuleSettings("unlockMode", { guides = true, hidden 
     elementsPanel = true, anchoredTo = {} })
 
 local bundledVoices = {
-    { key = "voice:dispel-me", text = "Dispel me", file = "dispel-me.ogg" },
-    { key = "voice:move-out", text = "Move out", file = "move-out.ogg" },
-    { key = "voice:use-a-defensive", text = "Use a defensive", file = "use-a-defensive.ogg" },
+    { key = "voice:dispel-me", text = ns.L("Dispel me"), file = "dispel-me.ogg" },
+    { key = "voice:move-out", text = ns.L("Move out"), file = "move-out.ogg" },
+    { key = "voice:use-a-defensive", text = ns.L("Use a defensive"), file = "use-a-defensive.ogg" },
     { key = "voice:combat", text = "Combat", file = "combat.ogg" },
-    { key = "voice:safe", text = "Safe", file = "safe.ogg" },
+    { key = "voice:safe", text = ns.L("Safe"), file = "safe.ogg" },
 }
 
 function UI.BuildAlertSoundTables()

@@ -11,10 +11,10 @@ local ZONE_H = 44
 local ZONE_BAR_W = 180
 local BAR_GAP = 8
 local TEXT_COUNT = "%d / %d  (%d%%)"
-local TEXT_RARES = "%d of %d rares killed"
-local TEXT_QUESTS = "%d of %d quests done"
-local TEXT_SEE_RARES = "Click to see its rares."
-local TEXT_SEE_QUESTS = "Click to see its quests."
+local TEXT_RARES = ns.L("%d of %d rares killed")
+local TEXT_QUESTS = ns.L("%d of %d quests done")
+local TEXT_SEE_RARES = ns.L("Click to see its rares.")
+local TEXT_SEE_QUESTS = ns.L("Click to see its quests.")
 
 local function ZoneEnter(row)
     row.hover:Show()

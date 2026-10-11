@@ -24,13 +24,13 @@ local WING_H = 20
 local WING_BOTTOM = 4
 local DOWN_KEY = 100
 
-local TEXT_KILLED = "Killed this run"
+local TEXT_KILLED = ns.L("Killed this run")
 local TEXT_INDENT = "  "
-local TEXT_BIS = "%d of your BiS, %d of them yours"
-local TEXT_NOT_PLACED = "Not on the map yet."
-local TEXT_CLICK = "Click for its loot."
-local TEXT_BOSSES = "Bosses"
-local TEXT_DOWN = "   %d of %d down"
+local TEXT_BIS = ns.L("%d of your BiS, %d of them yours")
+local TEXT_NOT_PLACED = ns.L("Not on the map yet.")
+local TEXT_CLICK = ns.L("Click for its loot.")
+local TEXT_BOSSES = ns.L("Bosses")
+local TEXT_DOWN = ns.L("   %d of %d down")
 
 local NO_EVENTS = {}
 local quests = {}

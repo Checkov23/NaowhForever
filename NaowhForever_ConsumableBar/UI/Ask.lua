@@ -9,10 +9,10 @@ local Parts, St = Shared.Parts, Shared.Style
 local ASK_W, ASK_ICON, ASK_FONT, ASK_BUTTON_W, BUTTON_H = 340, 36, 13, 90, 24
 local ASK_GAP, ASK_TEXT_GAP = 4, 10
 local ASK_ABOVE, ASK_TOP = 14, -180
-local TEXT_TITLE = "Consumable Bar"
-local TEXT_QUESTION = "Add %s to the Consumable Bar?"
-local TEXT_ADD, TEXT_NO = "Add", "No"
-local TEXT_NEVER, TEXT_NEVER_TIP = "Never Ask", "Never asks about this item again."
+local TEXT_TITLE = ns.L("Consumable Bar")
+local TEXT_QUESTION = ns.L("Add %s to the Consumable Bar?")
+local TEXT_ADD, TEXT_NO = ns.L("Add"), ns.L("No")
+local TEXT_NEVER, TEXT_NEVER_TIP = ns.L("Never Ask"), ns.L("Never asks about this item again.")
 
 local ask, known
 local asking = {}

@@ -4,16 +4,18 @@ local UI = ns.UI
 
 local PROFILES_PAGE = "Profiles"
 local QOL = "QoL"
-local TEXT_QOL = "Quality of Life"
-local TEXT_AND = " and "
-local TEXT_SWITCH = "%s %s?"
-local TEXT_ENABLE, TEXT_DISABLE = "Enable", "Disable"
-local TEXT_NEEDS_THEM = " It needs %s, so %s will be %sd."
-local TEXT_NEEDED_BY = " %s needs it, so %s will be %sd."
-local TEXT_BOTH, TEXT_ALL_OF_THEM = "both", "all of them"
-local TEXT_YES_BOTH, TEXT_YES_ALL = " Both", " All"
-local TEXT_CANCEL = "Cancel"
-local TEXT_RELOAD = "%s will be %sd when you reload. Reload now?"
+local TEXT_QOL = ns.L("Quality of Life")
+local TEXT_AND = ns.L(" and ")
+local TEXT_ENABLE_ASK, TEXT_DISABLE_ASK = ns.L("Enable %s?"), ns.L("Disable %s?")
+local TEXT_ENABLE, TEXT_DISABLE = ns.L("Enable"), ns.L("Disable")
+local TEXT_ENABLE_BOTH, TEXT_DISABLE_BOTH = ns.L("Enable Both"), ns.L("Disable Both")
+local TEXT_ENABLE_ALL, TEXT_DISABLE_ALL = ns.L("Enable All"), ns.L("Disable All")
+local TEXT_NEEDS_THEM = ns.L(" It needs %s, so %s will be enabled.")
+local TEXT_NEEDED_BY = ns.L(" %s needs it, so %s will be disabled.")
+local TEXT_BOTH, TEXT_ALL_OF_THEM = ns.L("both"), ns.L("all of them")
+local TEXT_CANCEL = ns.L("Cancel")
+local TEXT_RELOAD_ON = ns.L("%s will be enabled when you reload. Reload now?")
+local TEXT_RELOAD_OFF = ns.L("%s will be disabled when you reload. Reload now?")
 
 local SYSTEM_PAGES = {
     { name = "Settings", build = "BuildSettingsPage", terms = "SettingsSearchTerms", reuse = true,
@@ -220,19 +222,24 @@ local function NameList(mods)
     return table.concat(names, ", ", 1, #names - 1) .. TEXT_AND .. names[#names]
 end
 
-local function SwitchQuestion(mod, mods, on, verb)
-    local text = TEXT_SWITCH:format(on and TEXT_ENABLE or TEXT_DISABLE, DisplayName(mod))
+local function SwitchQuestion(mod, mods, on)
+    local text = (on and TEXT_ENABLE_ASK or TEXT_DISABLE_ASK):format(DisplayName(mod))
     if #mods == 1 then return text end
     local others = { unpack(mods, 2) }
     return text .. (on and TEXT_NEEDS_THEM or TEXT_NEEDED_BY)
-        :format(NameList(others), #mods == 2 and TEXT_BOTH or TEXT_ALL_OF_THEM, verb)
+        :format(NameList(others), #mods == 2 and TEXT_BOTH or TEXT_ALL_OF_THEM)
+end
+
+local function SwitchButton(mods, on)
+    if #mods == 2 then return on and TEXT_ENABLE_BOTH or TEXT_DISABLE_BOTH end
+    if #mods > 2 then return on and TEXT_ENABLE_ALL or TEXT_DISABLE_ALL end
+    return on and TEXT_ENABLE or TEXT_DISABLE
 end
 
 local function SwitchModuleAddon(mod, on)
     local mods = Linked(mod, on)
-    local verb = on and "enable" or "disable"
-    local text = SwitchQuestion(mod, mods, on, verb)
-    local yes = (on and TEXT_ENABLE or TEXT_DISABLE) .. (#mods == 2 and TEXT_YES_BOTH or #mods > 2 and TEXT_YES_ALL or "")
+    local text = SwitchQuestion(mod, mods, on)
+    local yes = SwitchButton(mods, on)
     ns.Confirm(text, function()
         for _, m in ipairs(mods) do
             if on then C_AddOns.EnableAddOn(m.addon) else C_AddOns.DisableAddOn(m.addon) end
@@ -240,7 +247,7 @@ local function SwitchModuleAddon(mod, on)
             if store then store.Set(m.enabledKey or "enabled", true) end
         end
         UI:RefreshPage(true)
-        ns.ConfirmReload(TEXT_RELOAD:format(NameList(mods), verb))
+        ns.ConfirmReload((on and TEXT_RELOAD_ON or TEXT_RELOAD_OFF):format(NameList(mods)))
     end, function() UI:RefreshPage(true) end, yes, TEXT_CANCEL)
 end
 

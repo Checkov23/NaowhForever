@@ -21,11 +21,11 @@ local ACTIONS = 3
 local ACTIONS_W = -(St.ACTION + ACTION_GAP) * ACTIONS
 local UP, DOWN = -1, 1
 local MARK_GAP = "  "
-local TEXT_REMOVE, TEXT_DOWN, TEXT_UP = "Remove", "Move down", "Move up"
+local TEXT_REMOVE, TEXT_DOWN, TEXT_UP = ns.L("Remove"), ns.L("Move down"), ns.L("Move up")
 local WOWHEAD_KIND = B.C.WOWHEAD_KIND
-local HINT = { list = "Right-click: Wowhead link" .. PLACE_DOT .. "Shift-click: link",
-    own = "Right-click: Wowhead link" .. PLACE_DOT .. "Shift-click: link",
-    add = "Click: add it" .. PLACE_DOT .. "Right-click: Wowhead link" }
+local HINT = { list = ns.L("Right-click: Wowhead link") .. PLACE_DOT .. ns.L("Shift-click: link"),
+    own = ns.L("Right-click: Wowhead link") .. PLACE_DOT .. ns.L("Shift-click: link"),
+    add = ns.L("Click: add it") .. PLACE_DOT .. ns.L("Right-click: Wowhead link") }
 
 local orders = {}
 

@@ -41,11 +41,11 @@ local PLAYER_EVENTS = { "PLAYER_FLAGS_CHANGED", "UNIT_SPELLCAST_SENT", "UNIT_SPE
     "UNIT_SPELLCAST_CHANNEL_STOP", "UNIT_SPELLCAST_DELAYED", "UNIT_SPELLCAST_CHANNEL_UPDATE" }
 local RESET_MELEE = { PLAYER_TARGET_CHANGED = true, SPELLS_CHANGED = true, UPDATE_SHAPESHIFT_FORM = true }
 
-local TEXT_NO_CAST = "Cast Sweep is off: only your global cooldown sweeps."
-local TEXT_NO_SWEEP = "GCD Sweep is off: nothing sweeps around the ring."
-local TEXT_FADED = "Idle Opacity is 0%: the ring fades out completely."
-local TEXT_SUMMARY = "%s, %d px%s%s"
-local TEXT_GCD, TEXT_TRAIL = ", GCD sweep", ", trail"
+local TEXT_NO_CAST = ns.L("Cast Sweep is off: only your global cooldown sweeps.")
+local TEXT_NO_SWEEP = ns.L("GCD Sweep is off: nothing sweeps around the ring.")
+local TEXT_FADED = ns.L("Idle Opacity is 0%: the ring fades out completely.")
+local TEXT_SUMMARY = ns.L("%s, %d px%s%s")
+local TEXT_GCD, TEXT_TRAIL = ns.L(", GCD sweep"), ns.L(", trail")
 
 local sparkleColors = {}
 for i = 1, SPARKLES do
@@ -720,7 +720,7 @@ local function PaintPreview(preview, moment)
 end
 
 local function Summary(store)
-    return TEXT_SUMMARY:format(SHAPE[1][store.Get("mouseShape")] or SHAPE[1]["ring.tga"],
+    return TEXT_SUMMARY:format(ns.L(SHAPE[1][store.Get("mouseShape")] or SHAPE[1]["ring.tga"]),
         store.Get("mouseSize"), store.Get("mouseGCD") and TEXT_GCD or "", store.Get("mouseTrail") and TEXT_TRAIL or "")
 end
 

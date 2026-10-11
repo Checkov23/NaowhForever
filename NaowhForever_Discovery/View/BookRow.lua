@@ -9,14 +9,14 @@ local Style = Discovery.Style
 local Library = Discovery.Library
 local V = Discovery.View
 
-local TEXT_HANDED_IN = "Handed in"
-local TEXT_IN_BAGS = "In bags"
-local TEXT_IN_BANK = "In bank"
-local TEXT_MISSING = "Missing"
-local TEXT_SHARE = "Share where it is"
-local TEXT_HAND_IN_TO = "Hand in to"
-local TEXT_STATUS = "Status"
-local TEXT_HINT = "Pin: waypoint    Right-click: Share"
+local TEXT_HANDED_IN = ns.L("Handed in")
+local TEXT_IN_BAGS = ns.L("In bags")
+local TEXT_IN_BANK = ns.L("In bank")
+local TEXT_MISSING = ns.L("Missing")
+local TEXT_SHARE = ns.L("Share where it is")
+local TEXT_HAND_IN_TO = ns.L("Hand in to")
+local TEXT_STATUS = ns.L("Status")
+local TEXT_HINT = ns.L("Pin: waypoint    Right-click: Share")
 
 local function Status(book)
     if Library.Done(book) then return TEXT_HANDED_IN, T.muted end

@@ -14,9 +14,9 @@ local SHOWTOOLTIP = "^#showtooltip"
 local RESTORABLE = { spell = true, macro = true, item = true, equipmentset = true }
 
 local function Describe(entry)
-    if entry.kind == "spell" then return entry.name or ("spell " .. entry.id) end
-    if entry.kind == "macro" then return "macro " .. entry.name end
-    if entry.kind == "item" then return C_Item.GetItemNameByID(entry.id) or ("item " .. entry.id) end
+    if entry.kind == "spell" then return entry.name or (ns.L("spell ") .. entry.id) end
+    if entry.kind == "macro" then return ns.L("macro ") .. entry.name end
+    if entry.kind == "item" then return C_Item.GetItemNameByID(entry.id) or (ns.L("item ") .. entry.id) end
     return ("%s %s"):format(entry.kind, tostring(entry.id))
 end
 

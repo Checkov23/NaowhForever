@@ -18,11 +18,11 @@ local VALUE_DROP = 2
 local CAP_LINE_H = 18
 local ROUND_HALF = J.C.ROUND_HALF
 
-local TEXT_TOP_RANK = "The highest rank this season"
-local TEXT_NEXT = "Next  "
-local TEXT_RANK = "Rank "
+local TEXT_TOP_RANK = ns.L("The highest rank this season")
+local TEXT_NEXT = ns.L("Next  ")
+local TEXT_RANK = ns.L("Rank ")
 local TEXT_OF = " / "
-local TEXT_CAP = "This week you can reach rank %d of %d; the faint ranks open in the weeks to come."
+local TEXT_CAP = ns.L("This week you can reach rank %d of %d; the faint ranks open in the weeks to come.")
 
 local function RankSegment(row)
     local seg = {}

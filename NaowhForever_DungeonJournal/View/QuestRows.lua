@@ -41,73 +41,73 @@ local HEX_BASE, BYTE = J.C.HEX_BASE, J.C.BYTE
 local HEX_CODE = "^|c%x%x(%x%x)(%x%x)(%x%x)"
 
 local STATUS = {
-    prereq = "Prerequisite", prereqLog = "Prerequisite", low = "Level %d to pick up", pickup = "To pick up",
-    tooHigh = "Too high (%d)", next = "Next step", active = "In log", ready = "Complete",
+    prereq = ns.L("Prerequisite"), prereqLog = ns.L("Prerequisite"), low = ns.L("Level %d to pick up"), pickup = ns.L("To pick up"),
+    tooHigh = ns.L("Too high (%d)"), next = ns.L("Next step"), active = ns.L("In log"), ready = ns.L("Complete"),
 }
 local CHAIN_STATE = {
-    active = QUEST_CODE.active .. "In log|r", done = QUEST_CODE.done .. "Finished|r",
-    todo = QUEST_CODE.done .. "Not done|r",
+    active = QUEST_CODE.active .. ns.L("In log|r"), done = QUEST_CODE.done .. ns.L("Finished|r"),
+    todo = QUEST_CODE.done .. ns.L("Not done|r"),
 }
-local SIDE = { A = "Alliance", H = "Horde", B = "Alliance and Horde" }
+local SIDE = { A = ns.L("Alliance"), H = ns.L("Horde"), B = ns.L("Alliance and Horde") }
 local SAID_BELOW = { prereq = true, prereqLog = true }
 
 local TEXT_CODE_END = "|r"
-local TEXT_CHAIN_TITLE = "%s: step %d of %d"
-local TEXT_CHAIN_HINT = "Click a step for a waypoint."
+local TEXT_CHAIN_TITLE = ns.L("%s: step %d of %d")
+local TEXT_CHAIN_HINT = ns.L("Click a step for a waypoint.")
 local TEXT_STEP = "%d.  %s  %s"
 local TEXT_STEP_DONE = "%d.  %s|r  "
-local TEXT_DUNGEON_QUEST = "(dungeon quest)"
-local TEXT_TRACK = "Track in Quest Log"
-local TEXT_NO_CHAT = "Join a group, or open your chat box first."
-local TEXT_CHAT_LOCKED = "Chat is locked right now."
-local TEXT_PARTY, TEXT_CHAT = "Party", "Chat"
-local TEXT_LINK_IN = "Link in "
-local TEXT_WAYPOINT = "Waypoint"
-local TEXT_SHOW_CHAIN = "Show Chain"
-local TEXT_COPY_WOWHEAD = "Copy Wowhead Link"
-local TEXT_QUEST_ID = "Quest ID"
-local TEXT_LEVEL = "Level"
-local TEXT_PICKED_UP = "   picked up from %d"
-local TEXT_FOR = "For"
-local TEXT_EVERYONE = "everyone"
-local TEXT_STARTS = "Starts"
-local TEXT_CHAIN = "Chain"
-local TEXT_AFTER, TEXT_THEN = "after ", "then "
-local TEXT_STEP_OF = "step %d of %d"
-local TEXT_SHARING = "Sharing"
-local TEXT_SHAREABLE = "can be shared with your party"
-local TEXT_NOT_SHAREABLE = "cannot be shared"
-local TEXT_YOUR_PARTY = "Your party"
-local TEXT_HAS_IT = "has it"
-local TEXT_NOT_CLASS = "not their class"
-local TEXT_TOO_LOW = "level %d, needs %d"
-local TEXT_NOT_ON_IT = "not on it"
+local TEXT_DUNGEON_QUEST = ns.L("(dungeon quest)")
+local TEXT_TRACK = ns.L("Track in Quest Log")
+local TEXT_NO_CHAT = ns.L("Join a group, or open your chat box first.")
+local TEXT_CHAT_LOCKED = ns.L("Chat is locked right now.")
+local TEXT_PARTY, TEXT_CHAT = ns.L("Party"), "Chat"
+local TEXT_LINK_IN = ns.L("Link in ")
+local TEXT_WAYPOINT = ns.L("Waypoint")
+local TEXT_SHOW_CHAIN = ns.L("Show Chain")
+local TEXT_COPY_WOWHEAD = ns.L("Copy Wowhead Link")
+local TEXT_QUEST_ID = ns.L("Quest ID")
+local TEXT_LEVEL = ns.L("Level")
+local TEXT_PICKED_UP = ns.L("   picked up from %d")
+local TEXT_FOR = ns.L("For")
+local TEXT_EVERYONE = ns.L("everyone")
+local TEXT_STARTS = ns.L("Starts")
+local TEXT_CHAIN = ns.L("Chain")
+local TEXT_AFTER, TEXT_THEN = ns.L("after "), ns.L("then ")
+local TEXT_STEP_OF = ns.L("step %d of %d")
+local TEXT_SHARING = ns.L("Sharing")
+local TEXT_SHAREABLE = ns.L("can be shared with your party")
+local TEXT_NOT_SHAREABLE = ns.L("cannot be shared")
+local TEXT_YOUR_PARTY = ns.L("Your party")
+local TEXT_HAS_IT = ns.L("has it")
+local TEXT_NOT_CLASS = ns.L("not their class")
+local TEXT_TOO_LOW = ns.L("level %d, needs %d")
+local TEXT_NOT_ON_IT = ns.L("not on it")
 local TEXT_UNKNOWN = "?"
-local TEXT_REP_EACH = "+%d reputation each time you hand it in"
-local TEXT_HELD_ONCE = "Your bags hold enough to hand it in once"
-local TEXT_HELD_TIMES = "Your bags hold enough to hand it in %d times"
-local TEXT_TAKES = "It takes"
+local TEXT_REP_EACH = ns.L("+%d reputation each time you hand it in")
+local TEXT_HELD_ONCE = ns.L("Your bags hold enough to hand it in once")
+local TEXT_HELD_TIMES = ns.L("Your bags hold enough to hand it in %d times")
+local TEXT_TAKES = ns.L("It takes")
 local TEXT_TAKE_LINE = "|T%d:0|t %d %s"
-local TEXT_ITEM = "item "
-local TEXT_IN_BAGS = "%d in your bags"
-local TEXT_FROM = "Where to get them"
-local TEXT_MORE = " and %d more"
-local TEXT_HAND_IN_HINT = "Pin: a waypoint to who takes it    Right-click: Share, Link"
-local TEXT_SHARE_HINT = "Right-click: Share, Link"
-local TEXT_TOO_HARD = "It is level %d, five or more above you, so it will be hard for now."
-local TEXT_CLICK_DETAILS = "Click: details    "
-local TEXT_MENU_HINT = "Right-click: Share, Link, Track"
-local TEXT_PIN_HINT = "    Pin: waypoint"
-local TEXT_SHARE_WAYPOINT = "Share the waypoint"
-local TEXT_NO_ONE = "No one else in your group is on this quest"
-local TEXT_IN_GROUP = "In your group on this quest"
-local TEXT_ASK_SHARE = "Click to ask them, one at a time, to share it (they need Naowh Forever)."
-local TEXT_WAYPOINT_HINT = "Right-click to share it in chat, or copy it."
-local TEXT_BAG_ENOUGH = "In your bags: enough to hand it in %d %s"
-local TEXT_TIME, TEXT_TIMES = "time", "times"
-local TEXT_BAG_SHORT = "In your bags: not enough to hand it in yet"
-local TEXT_CHAIN_STEP = "Chain: step %d of %d"
-local TEXT_ALONE = "On its own: no quest leads to it or follows it"
+local TEXT_ITEM = ns.L("item ")
+local TEXT_IN_BAGS = ns.L("%d in your bags")
+local TEXT_FROM = ns.L("Where to get them")
+local TEXT_MORE = ns.L(" and %d more")
+local TEXT_HAND_IN_HINT = ns.L("Pin: a waypoint to who takes it    Right-click: Share, Link")
+local TEXT_SHARE_HINT = ns.L("Right-click: Share, Link")
+local TEXT_TOO_HARD = ns.L("It is level %d, five or more above you, so it will be hard for now.")
+local TEXT_CLICK_DETAILS = ns.L("Click: details    ")
+local TEXT_MENU_HINT = ns.L("Right-click: Share, Link, Track")
+local TEXT_PIN_HINT = ns.L("    Pin: waypoint")
+local TEXT_SHARE_WAYPOINT = ns.L("Share the waypoint")
+local TEXT_NO_ONE = ns.L("No one else in your group is on this quest")
+local TEXT_IN_GROUP = ns.L("In your group on this quest")
+local TEXT_ASK_SHARE = ns.L("Click to ask them, one at a time, to share it (they need Naowh Forever).")
+local TEXT_WAYPOINT_HINT = ns.L("Right-click to share it in chat, or copy it.")
+local TEXT_BAG_ENOUGH = ns.L("In your bags: enough to hand it in %d %s")
+local TEXT_TIME, TEXT_TIMES = ns.L("time"), ns.L("times")
+local TEXT_BAG_SHORT = ns.L("In your bags: not enough to hand it in yet")
+local TEXT_CHAIN_STEP = ns.L("Chain: step %d of %d")
+local TEXT_ALONE = ns.L("On its own: no quest leads to it or follows it")
 local TEXT_FRACTION = "%s/%s"
 local TEXT_ONE_OF_ONE = "1/1"
 local TEXT_SPACER = "  "
@@ -286,7 +286,7 @@ end
 
 local function ForWhom(quest)
     local class = quest.class
-    if class then return (class:sub(1, 1) .. class:sub(2):lower()) .. "s" end
+    if class then return ns.L((class:sub(1, 1) .. class:sub(2):lower()) .. "s") end
     return SIDE[quest[QUEST.SIDE]] or TEXT_EVERYONE
 end
 

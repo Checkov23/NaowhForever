@@ -33,7 +33,7 @@ local GEAR_Y = SCORE_Y + CP.BADGE_H + SECTION_GAP
 local NARROW = { w = St.PARTY_W, slot = St.SLOT, slotGap = St.SLOT_GAP, cellGap = NARROW_CELL_GAP }
 local WIDE = { w = St.PARTY_WIDE_W, slot = St.WIDE_SLOT, slotGap = St.WIDE_SLOT_GAP, cellGap = WIDE_CELL_GAP, long = true }
 
-local SCORE_SHARED, SCORE_READ, SCORE_YOURS = "Shared by their Naowh Forever", "Read from their gear", "Yours"
+local SCORE_SHARED, SCORE_READ, SCORE_YOURS = ns.L("Shared by their Naowh Forever"), ns.L("Read from their gear"), ns.L("Yours")
 local TEXT_SCORE = "Naowh Score"
 
 local function Measure(l)
@@ -124,7 +124,7 @@ function UI.PartyCard(board)
     card.score:SetPoint("TOPLEFT", PAD, -SCORE_Y)
     card.score:SetScript("OnEnter", ScoreEnter)
     card.score:SetScript("OnLeave", GameTooltip_Hide)
-    local ilvlKicker = UI.Kicker(card, "ITEM LEVEL")
+    local ilvlKicker = UI.Kicker(card, ns.L("ITEM LEVEL"))
     ilvlKicker:SetPoint("TOPRIGHT", -PAD, -SCORE_Y)
     card.ilvl = ns.Font(card, ILVL_SIZE, nil, T.fg)
     card.ilvl:SetPoint("TOPRIGHT", ilvlKicker, "BOTTOMRIGHT", 0, -ILVL_GAP)

@@ -16,16 +16,16 @@ local REDRAW_DELAY = 0.15
 local ITEM_ID_RETURN = 6
 local TURN_IN_WHO = 4
 
-local TEXT_QUEST = "QUEST"
-local TEXT_HAND_IN = "Hand in: "
-local TEXT_OBJECTIVES = "Objectives"
-local TEXT_DESCRIPTION = "Description"
-local TEXT_REWARDS = "Rewards"
-local TEXT_CHOOSE = "Choose one of these:"
-local TEXT_ALSO = "And also:"
-local TEXT_EXPERIENCE = " experience"
-local TEXT_TRACK, TEXT_UNTRACK = "Track", "Untrack"
-local TEXT_ABANDON = "Abandon %s?"
+local TEXT_QUEST = ns.L("QUEST")
+local TEXT_HAND_IN = ns.L("Hand in: ")
+local TEXT_OBJECTIVES = ns.L("Objectives")
+local TEXT_DESCRIPTION = ns.L("Description")
+local TEXT_REWARDS = ns.L("Rewards")
+local TEXT_CHOOSE = ns.L("Choose one of these:")
+local TEXT_ALSO = ns.L("And also:")
+local TEXT_EXPERIENCE = ns.L(" experience")
+local TEXT_TRACK, TEXT_UNTRACK = ns.L("Track"), ns.L("Untrack")
+local TEXT_ABANDON = ns.L("Abandon %s?")
 
 local EMPTY = {}
 local panel, view

@@ -14,14 +14,14 @@ local SCORE_LEVELS = 256
 local TREE_COUNT, TREE_BASE = C.TREE_COUNT, 64
 local ENCHANT_BASE = 64
 local BYTE = 255
-local STATE_WORDS = { queued = "Queued", inspecting = "Inspecting...", out_of_range = "Out of range",
-    offline = "Offline", self = "You" }
+local STATE_WORDS = { queued = ns.L("Queued"), inspecting = "Inspecting...", out_of_range = ns.L("Out of range"),
+    offline = ns.L("Offline"), self = ns.L("You") }
 local AWAY = { out_of_range = true, offline = true }
-local PERCENT, LEVEL = "%.1f%%", "Level %d %s"
-local TREES, POINTS = "%d/%d/%d", "%d points"
-local FROM_NF, FROM_GEAR, YOURS = "From their Naowh Forever", "From gear", "Yours"
-local EVERYONE, INSPECTED = "Everyone inspected", "Inspected %d of %d"
-local OUT_N, OFFLINE_N = ", %d out of range", ", %d offline"
+local PERCENT, LEVEL = "%.1f%%", ns.L("Level %d %s")
+local TREES, POINTS = "%d/%d/%d", ns.L("%d points")
+local FROM_NF, FROM_GEAR, YOURS = ns.L("From their Naowh Forever"), ns.L("From gear"), ns.L("Yours")
+local EVERYONE, INSPECTED = ns.L("Everyone inspected"), ns.L("Inspected %d of %d")
+local OUT_N, OFFLINE_N = ns.L(", %d out of range"), ns.L(", %d offline")
 local ENCHANTED = " " .. ns.Color("muted", "enchanted")
 local HAVE_CODE = ("|cff%02x%02x%02x"):format(St.HAVE_RGB.r * BYTE, St.HAVE_RGB.g * BYTE, St.HAVE_RGB.b * BYTE)
 

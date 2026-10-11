@@ -3,7 +3,7 @@ local ns = _G.NaowhForever
 
 local S = ns.QoLSettings
 
-local TEXT_AFTER_COMBAT = "Gear set equips when combat ends."
+local TEXT_AFTER_COMBAT = ns.L("Gear set equips when combat ends.")
 local SWAP_KEYS = { "gearMounted", "gearResting" }
 
 local pending

@@ -15,20 +15,20 @@ local LOOT_WINDOW = 15 * MINUTE
 local STRIPE_EVERY = J.C.STRIPE_EVERY
 local ITEM_ID = "|Hitem:(%d+)"
 
-local TEXT_GROUP = "Group"
-local TEXT_NOT_KEPT = "Not kept for this one."
-local TEXT_NO_ROLL = "Picked up without a roll"
-local TEXT_ALL_PASSED = "Everyone passed"
-local TEXT_LOOT = "Loot"
-local TEXT_TOOK = "took "
-local TEXT_RECORD = "Record|r  "
-local TEXT_LOOTED = "looted"
-local TEXT_KILLS = "Kills"
-local TEXT_NOTHING_YET = "Nothing yet on this character. Kills and loot count while the Dungeon Journal is on."
-local TEXT_LATEST = "The latest %d kills. First counted: %s."
-local TEXT_RAID_NOT_OPEN = "The game does not name this fight yet: its kills count once the raid opens."
-local TEXT_NOT_A_FIGHT = "In a dungeon the game keeps secret which creature died, and only names boss fights. "
-    .. "This one is no boss fight to the game, so its kills cannot be counted."
+local TEXT_GROUP = ns.L("Group")
+local TEXT_NOT_KEPT = ns.L("Not kept for this one.")
+local TEXT_NO_ROLL = ns.L("Picked up without a roll")
+local TEXT_ALL_PASSED = ns.L("Everyone passed")
+local TEXT_LOOT = ns.L("Loot")
+local TEXT_TOOK = ns.L("took ")
+local TEXT_RECORD = ns.L("Record|r  ")
+local TEXT_LOOTED = ns.L("looted")
+local TEXT_KILLS = ns.L("Kills")
+local TEXT_NOTHING_YET = ns.L("Nothing yet on this character. Kills and loot count while the Dungeon Journal is on.")
+local TEXT_LATEST = ns.L("The latest %d kills. First counted: %s.")
+local TEXT_RAID_NOT_OPEN = ns.L("The game does not name this fight yet: its kills count once the raid opens.")
+local TEXT_NOT_A_FIGHT = ns.L("In a dungeon the game keeps secret which creature died, and only names boss fights. "
+    .. "This one is no boss fight to the game, so its kills cannot be counted.")
 
 local EMPTY = {}
 local panel, view

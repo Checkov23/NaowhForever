@@ -65,9 +65,9 @@ local SCROLL_GAP, TOOLBAR_DROP = St.SCROLL_GAP, 4
 
 UI.PAGE = "Group Inspect/Settings"
 UI.WAITING = "..."
-UI.NOT_READ = "Not inspected yet"
-UI.REFRESH_TIP = "Inspect them again"
-UI.MODE_WORDS = { party = "Party of %d", raid = "Raid of %d" }
+UI.NOT_READ = ns.L("Not inspected yet")
+UI.REFRESH_TIP = ns.L("Inspect them again")
+UI.MODE_WORDS = { party = ns.L("Party of %d"), raid = ns.L("Raid of %d") }
 UI.CONTENT_W = St.WINDOW_W - 2 * INSET
 UI.LIST_W = UI.CONTENT_W - SCROLLBAR - SCROLL_GAP
 UI.TOOLBAR_TOP = HEADER + PAD + TOOLBAR_DROP
@@ -79,11 +79,11 @@ UI.CLASS_NAMES = { WARRIOR = "Warrior", PALADIN = "Paladin", HUNTER = "Hunter", 
 UI.CLASS_ORDER = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID" }
 UI.ARMOR = { MAGE = "Cloth", PRIEST = "Cloth", WARLOCK = "Cloth", ROGUE = "Leather", DRUID = "Leather",
     HUNTER = "Mail", SHAMAN = "Mail", WARRIOR = "Plate", PALADIN = "Plate" }
-UI.ROLE_WORDS = { TANK = "Tank", HEALER = "Healer", DAMAGER = "Damage" }
+UI.ROLE_WORDS = { TANK = ns.L("Tank"), HEALER = ns.L("Healer"), DAMAGER = ns.L("Damage") }
 UI.STATS = {
-    { key = "STR", name = "Strength", short = "STR" }, { key = "AGI", name = "Agility", short = "AGI" },
-    { key = "STA", name = "Stamina", short = "STA" }, { key = "INT", name = "Intellect", short = "INT" },
-    { key = "SPI", name = "Spirit", short = "SPI" }, { key = "AP", name = "Attack Power", card = "Atk Power", short = "AP" },
-    { key = "SP", name = "Spell Power", short = "SP" }, { key = "CRIT", name = "Crit", short = "Crit", percent = true },
-    { key = "HIT", name = "Hit", short = "Hit", percent = true }, { key = "ARMOR", name = "Armor", short = "Armor" },
+    { key = "STR", name = ns.L("Strength"), short = "STR" }, { key = "AGI", name = ns.L("Agility"), short = "AGI" },
+    { key = "STA", name = ns.L("Stamina"), short = "STA" }, { key = "INT", name = ns.L("Intellect"), short = "INT" },
+    { key = "SPI", name = ns.L("Spirit"), short = "SPI" }, { key = "AP", name = ns.L("Attack Power"), card = ns.L("Atk Power"), short = "AP" },
+    { key = "SP", name = ns.L("Spell Power"), short = "SP" }, { key = "CRIT", name = ns.L("Crit"), short = ns.L("Crit"), percent = true },
+    { key = "HIT", name = ns.L("Hit"), short = ns.L("Hit"), percent = true }, { key = "ARMOR", name = ns.L("Armor"), short = ns.L("Armor") },
 }

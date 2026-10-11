@@ -9,29 +9,33 @@ local Pending = A.Pending
 
 local Plural = A.Plural
 
-local TEXT_OFF = "Action Bars is switched off."
-local TEXT_IN_COMBAT = "Bar sets can be %s out of combat."
-local TEXT_SAVED = "Saved your bars, macros and keybinds as %s."
-local TEXT_NO_SET = "No bar set called %s for your class."
+local TEXT_OFF = ns.L("Action Bars is switched off.")
+local TEXT_SAVE_IN_COMBAT = ns.L("Bar sets can be saved out of combat.")
+local TEXT_IMPORT_IN_COMBAT = ns.L("Bar sets can be imported out of combat.")
+local TEXT_NEW_MACRO, TEXT_NEW_MACROS = ns.L("%d new macro"), ns.L("%d new macros")
+local TEXT_KEYBIND, TEXT_KEYBINDS = ns.L("%d keybind"), ns.L("%d keybinds")
+local TEXT_MACRO, TEXT_MACROS = ns.L("%d macro"), ns.L("%d macros")
+local TEXT_SAVED = ns.L("Saved your bars, macros and keybinds as %s.")
+local TEXT_NO_SET = ns.L("No bar set called %s for your class.")
 local TEXT_IMPORTED = "%s %s: %s."
-local TEXT_IMPORTED_VERB, TEXT_TESTED_VERB = "Imported", "Test import of"
-local TEXT_ACTIONS = "%d of %d actions"
-local TEXT_NO_ROOM = "   No room for %s: %s"
-local TEXT_SLOT = "Slot %d: %s"
-local TEXT_WOULD_BE_EMPTY = "   These slots would be left empty:"
-local TEXT_WERE_EMPTY = "   These slots were left empty:"
+local TEXT_IMPORTED_VERB, TEXT_TESTED_VERB = ns.L("Imported"), ns.L("Test import of")
+local TEXT_ACTIONS = ns.L("%d of %d actions")
+local TEXT_NO_ROOM = ns.L("   No room for %s: %s")
+local TEXT_SLOT = ns.L("Slot %d: %s")
+local TEXT_WOULD_BE_EMPTY = ns.L("   These slots would be left empty:")
+local TEXT_WERE_EMPTY = ns.L("   These slots were left empty:")
 local TEXT_SLOT_LINE = "      "
-local TEXT_LATER = "   Spells you learn later go into their slots then."
-local TEXT_DELETED = "Deleted the bar set %s."
-local TEXT_TAKEN = "There is already a bar set called %s."
-local TEXT_SETS = "Bar sets: "
-local TEXT_NO_SETS = "No bar sets saved for your class."
-local TEXT_DELETE = "Delete the bar set %s?"
-local TEXT_HEADLINE_NONE = "No bar sets saved for your %s yet"
-local TEXT_HEADLINE = "%d bar set%s saved for your %s"
-local TEXT_DETAIL_OFF = "Turn on Action Bars to save and import your bars."
-local TEXT_DETAIL_LAST = "This character last used %s. Import any set from the window, out of combat."
-local TEXT_DETAIL = "Save your bars from the window, or with /nf bars save and a name."
+local TEXT_LATER = ns.L("   Spells you learn later go into their slots then.")
+local TEXT_DELETED = ns.L("Deleted the bar set %s.")
+local TEXT_TAKEN = ns.L("There is already a bar set called %s.")
+local TEXT_SETS = ns.L("Bar sets: ")
+local TEXT_NO_SETS = ns.L("No bar sets saved for your class.")
+local TEXT_DELETE = ns.L("Delete the bar set %s?")
+local TEXT_HEADLINE_NONE = ns.L("No bar sets saved for your %s yet")
+local TEXT_HEADLINE = ns.L("%d bar set%s saved for your %s")
+local TEXT_DETAIL_OFF = ns.L("Turn on Action Bars to save and import your bars.")
+local TEXT_DETAIL_LAST = ns.L("This character last used %s. Import any set from the window, out of combat.")
+local TEXT_DETAIL = ns.L("Save your bars from the window, or with /nf bars save and a name.")
 
 local AUTO_IMPORT_LEVEL, AUTO_IMPORT_XP = 1, 0
 local AUTO_STORE = "barSetAuto"
@@ -42,14 +46,14 @@ local COMMANDS = { save = true, import = true, restore = true, test = true, dele
 
 local logoutCopy, copyQueued
 
-local function Ready(what)
+local function Ready(inCombat)
     if not S.Get("enabled") then ns.Print(TEXT_OFF) return false end
-    if InCombatLockdown() then ns.Print(TEXT_IN_COMBAT:format(what)) return false end
+    if InCombatLockdown() then ns.Print(inCombat) return false end
     return true
 end
 
 local function Save(name, choices)
-    if not Ready("saved") then return end
+    if not Ready(TEXT_SAVE_IN_COMBAT) then return end
     local key = A.Find(name) or name
     local sets = A.Sets()
     sets[key] = Capture.Snapshot(choices or (sets[key] and sets[key].choices))
@@ -69,8 +73,8 @@ end
 local function Summary(result)
     local parts = { TEXT_ACTIONS:format(result.placed, result.actions) }
     local made = Count(result.macros, "new")
-    if made > 0 then parts[#parts + 1] = Plural(made, "new macro") end
-    if result.bound then parts[#parts + 1] = Plural(result.bound, "keybind") end
+    if made > 0 then parts[#parts + 1] = Plural(made, TEXT_NEW_MACRO, TEXT_NEW_MACROS) end
+    if result.bound then parts[#parts + 1] = Plural(result.bound, TEXT_KEYBIND, TEXT_KEYBINDS) end
     return table.concat(parts, ", ")
 end
 
@@ -79,7 +83,7 @@ local function PrintFull(result)
     for _, m in ipairs(result.macros) do
         if m.fate == "full" then full[#full + 1] = m.name end
     end
-    if #full > 0 then print(TEXT_NO_ROOM:format(Plural(#full, "macro"), table.concat(full, ", "))) end
+    if #full > 0 then print(TEXT_NO_ROOM:format(Plural(#full, TEXT_MACRO, TEXT_MACROS), table.concat(full, ", "))) end
 end
 
 local function PrintEmpty(result, test)
@@ -96,7 +100,7 @@ local function PrintEmpty(result, test)
 end
 
 local function ImportSet(name, test)
-    if not Ready("imported") then return end
+    if not Ready(TEXT_IMPORT_IN_COMBAT) then return end
     local key = A.Find(name)
     if not key then ns.Print(TEXT_NO_SET:format(name)) return end
     local result = Import.Run(A.Sets()[key], test)

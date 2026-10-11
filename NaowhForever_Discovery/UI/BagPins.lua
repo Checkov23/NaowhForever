@@ -19,9 +19,9 @@ local BADGE_LEVEL = 2
 local BADGE_SIZE = 9
 local BADGE_ALPHA = 0.9
 local OWN_KEYS = { enabled = true, bagMapPins = true, bagMapPinSize = true }
-local TEXT_STEP = "Sleeping Bag, step %d"
-local TEXT_LATER = "A later step."
-local TEXT_WAYPOINT = "Click for a waypoint."
+local TEXT_STEP = ns.L("Sleeping Bag, step %d")
+local TEXT_LATER = ns.L("A later step.")
+local TEXT_WAYPOINT = ns.L("Click for a waypoint.")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events

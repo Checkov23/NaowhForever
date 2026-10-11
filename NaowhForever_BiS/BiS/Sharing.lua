@@ -14,10 +14,10 @@ local LIMITS = { maxChars = 100000, maxBytes = 1048576, maxDepth = 8, maxValues 
 local MAX_ID = 2 ^ 31
 local NAME_MAX = C.NAME_MAX
 local BODY_PATTERN = "^%s*" .. PREFIX:gsub("!", "%%!") .. "(%S+)%s*$"
-local TEXT_IMPORTED_NAME = "Imported BiS"
-local TEXT_NOT_A_LIST = "That is not a Naowh BiS list."
-local TEXT_IMPORTED = "Imported %s: %d items."
-local TEXT_ASK = "Add %s (%d items) as a new BiS list?"
+local TEXT_IMPORTED_NAME = ns.L("Imported BiS")
+local TEXT_NOT_A_LIST = ns.L("That is not a Naowh BiS list.")
+local TEXT_IMPORTED = ns.L("Imported %s: %d items.")
+local TEXT_ASK = ns.L("Add %s (%d items) as a new BiS list?")
 local NONE = {}
 
 local function Codec()

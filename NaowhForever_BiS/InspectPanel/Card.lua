@@ -6,14 +6,14 @@ local S = ns.QoLSettings
 local IP = ns.InspectPanel
 local CP = ns.CharacterPanel
 
-local YOU = "You "
+local YOU = ns.L("You ")
 local PLATE_LEVEL = 10
 local BADGES_LIVE = ns.BADGES_LIVE
 local TITLE_RGB = CP.C.TITLE_RGB
 local TIP_TITLE = "Naowh Score"
-local TIP_THEM, TIP_YOU = "Them", "You"
-local TIP_GOAL = "Level %d goal"
-local TIP_BEST = "Best in the game"
+local TIP_THEM, TIP_YOU = ns.L("Them"), ns.L("You")
+local TIP_GOAL = ns.L("Level %d goal")
+local TIP_BEST = ns.L("Best in the game")
 
 local card, plate
 local last = {}

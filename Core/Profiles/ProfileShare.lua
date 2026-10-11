@@ -16,8 +16,8 @@ local ITEM_ID_LIMIT = 2147483648
 local MAX_PICKS = 50
 local ZERO = "\0"
 local DEFAULT_PROFILE = "Default"
-local IMPORTED_PROFILE = "Imported Profile"
-local IMPORTED_BUILD, IMPORTED_SPEC = "Imported Build", "Imported"
+local IMPORTED_PROFILE = ns.L("Imported Profile")
+local IMPORTED_BUILD, IMPORTED_SPEC = ns.L("Imported Build"), ns.L("Imported")
 local SR_KEY, MACROS_KEY = "tankReminder", "macros"
 local OLD_CONSUMABLES_KEYS = { "smartReminders", "reminders" }
 local CONSUMABLE_CATEGORIES = { food = true, flask = true, scroll = true, battle = true, guardian = true }
@@ -29,38 +29,38 @@ local GEAR_SLOT = { [1] = true, [2] = true, [3] = true, [5] = true, [6] = true, 
 local OWN = { qol = { "characterPanelAsked", "characterPanelTookOver", "inspectPanelAsked", "inspectPanelTookOver" } }
 local PARTS = {
     { key = "settings", label = "Settings", help = "Every module's settings and positions",
-      share = "Every module's settings and where its frames sit." },
+      share = ns.L("Every module's settings and where its frames sit.") },
     { key = "macros", label = "Macros", help = "Your class macros and the Macros settings",
-      share = "Your class macros and the Macros settings." },
+      share = ns.L("Your class macros and the Macros settings.") },
     { key = "library", label = "Macro Library", help = "Added next to your Library, never over it",
-      share = "The macros you saved to the Forge's Library." },
+      share = ns.L("The macros you saved to the Forge's Library.") },
     { key = "consumables", label = "Consumables", help = "The consumables your reminders watch",
       share = "The consumables your reminders watch." },
     { key = "builds", label = "Talent Builds", help = "Added next to your saved builds",
-      share = "The talent builds you saved in the Training Planner." },
+      share = ns.L("The talent builds you saved in the Training Planner.") },
     { key = "bisLists", label = "BiS Lists", help = "Added next to your own lists, never over them",
-      share = "Your BiS lists, for every class." },
+      share = ns.L("Your BiS lists, for every class.") },
     { key = "look", label = "Look", help = "Skin, theme colors, font and window scale, for every profile",
-      share = "Skin, theme colors, font and window scale." },
+      share = ns.L("Skin, theme colors, font and window scale.") },
 }
 local API_PARTS = { settings = true, macros = true, library = true, consumables = true, builds = true,
     bisLists = true, look = true }
-local LIST_NOUN = { bisLists = "lists", library = "macros", builds = "builds" }
-local TEXT_NO_LIBRARIES = "The serializer libraries are missing from this build."
-local TEXT_TOO_BIG_PROFILE = "This profile is too big to share."
-local TEXT_TICK_PART = "Tick a part to share."
-local TEXT_NOTHING_TO_EXPORT = "There is nothing to export yet."
-local TEXT_NOT_PROFILE = "This is not a Naowh Forever profile string."
-local TEXT_NO_PACKS = "Reminder Packs are no longer supported."
-local TEXT_TOO_BIG = "This string is too big."
-local TEXT_DAMAGED = "The string is damaged: copy it again in full."
-local TEXT_NEWER = "This string is from a newer Naowh Forever: update first."
-local TEXT_MODULES = "%d modules"
-local TEXT_CLASS_MACROS = "%d class macros"
-local TEXT_NOTHING_TO_READ = "Nothing to read."
-local TEXT_IMPORT_FAILED = "Naowh Forever import failed: "
-local TEXT_SPEC_SWITCH_OFF = "Per-spec profile switching is off while every character shares '%s'; your spec "
-    .. "choices are kept if you switch it back on."
+local LIST_NOUN = { bisLists = ns.L("lists"), library = ns.L("macros"), builds = ns.L("builds") }
+local TEXT_NO_LIBRARIES = ns.L("The serializer libraries are missing from this build.")
+local TEXT_TOO_BIG_PROFILE = ns.L("This profile is too big to share.")
+local TEXT_TICK_PART = ns.L("Tick a part to share.")
+local TEXT_NOTHING_TO_EXPORT = ns.L("There is nothing to export yet.")
+local TEXT_NOT_PROFILE = ns.L("This is not a Naowh Forever profile string.")
+local TEXT_NO_PACKS = ns.L("Reminder Packs are no longer supported.")
+local TEXT_TOO_BIG = ns.L("This string is too big.")
+local TEXT_DAMAGED = ns.L("The string is damaged: copy it again in full.")
+local TEXT_NEWER = ns.L("This string is from a newer Naowh Forever: update first.")
+local TEXT_MODULES = ns.L("%d modules")
+local TEXT_CLASS_MACROS = ns.L("%d class macros")
+local TEXT_NOTHING_TO_READ = ns.L("Nothing to read.")
+local TEXT_IMPORT_FAILED = ns.L("Naowh Forever import failed: ")
+local TEXT_SPEC_SWITCH_OFF = ns.L("Per-spec profile switching is off while every character shares '%s'; your spec "
+    .. "choices are kept if you switch it back on.")
 
 local Profiles = {}
 ns.Profiles = Profiles

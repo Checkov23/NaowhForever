@@ -13,7 +13,7 @@ local NONE = "-"
 local PLAYER_BATCH = 200
 local MAX_PLAYER_CHOICES = 40
 local BATCH_DELAY = 1
-local TEXT_UPDATED = " updated your blessings."
+local TEXT_UPDATED = ns.L(" updated your blessings.")
 
 local pending = {}
 local sentPlayers, broadcastAfterCombat, broadcastQueued, syncQueued

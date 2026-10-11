@@ -17,22 +17,22 @@ local COIN_SIZE = 12
 local WHITE = ns.QoLConstants.WHITE_RGB
 local REALM_JOIN = "-"
 local function Tag() return ns.Color("accent", "Naowh AH") end
-local TEXT_SCAN = "Scan Prices"
-local TEXT_SCANNING = "Scanning..."
-local TEXT_PROGRESS = "Scanning %d%%"
-local TEXT_NO_SCAN = "No scan yet for this realm and faction"
-local TEXT_NO_SCAN_SHORT = "No scan yet"
-local TEXT_SCAN_LINE = "Last scan %s ago: %s items priced"
-local TEXT_AGE = "Last scan %s ago%s"
-local TEXT_NEXT = ", next in %dm"
-local TEXT_EMPTY = "The auction house returned no listings. Try again in a moment."
-local TEXT_WAIT = "%s: Blizzard allows one full scan every 15 minutes. Next scan in %dm."
-local TEXT_TIMEOUT = "no answer from the auction house. A full scan can only run once every 15 minutes."
-local TEXT_CLOSED = "scan stopped: the auction house closed."
-local TEXT_TIP = "Reads every listing on the auction house and keeps the lowest buyout for "
+local TEXT_SCAN = ns.L("Scan Prices")
+local TEXT_SCANNING = ns.L("Scanning...")
+local TEXT_PROGRESS = ns.L("Scanning %d%%")
+local TEXT_NO_SCAN = ns.L("No scan yet for this realm and faction")
+local TEXT_NO_SCAN_SHORT = ns.L("No scan yet")
+local TEXT_SCAN_LINE = ns.L("Last scan %s ago: %s items priced")
+local TEXT_AGE = ns.L("Last scan %s ago%s")
+local TEXT_NEXT = ns.L(", next in %dm")
+local TEXT_EMPTY = ns.L("The auction house returned no listings. Try again in a moment.")
+local TEXT_WAIT = ns.L("%s: Blizzard allows one full scan every 15 minutes. Next scan in %dm.")
+local TEXT_TIMEOUT = ns.L("no answer from the auction house. A full scan can only run once every 15 minutes.")
+local TEXT_CLOSED = ns.L("scan stopped: the auction house closed.")
+local TEXT_TIP = ns.L("Reads every listing on the auction house and keeps the lowest buyout for "
     .. "each item, shown on item tooltips. Blizzard allows one full scan every 15 "
-    .. "minutes.\n\n"
-local TEXT_EACH = " |cff808080each, %s ago|r"
+    .. "minutes.\n\n")
+local TEXT_EACH = ns.L(" |cff808080each, %s ago|r")
 local MINUTES, HOURS, DAYS = "m", "h", "d"
 
 local button, scanning, scanGen = nil, nil, 0

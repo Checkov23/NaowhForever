@@ -25,10 +25,10 @@ local WIDTH_RANGE, TEXT_RANGE, HEIGHT_RANGE = { 200, 480, 5 }, { BAR.TEXT_MIN, 1
 local MINUTES_RANGE, ICON_RANGE, BUFF_TEXT_RANGE = { 1, 59, 1 }, { 24, 110, 1 }, { 8, 28, 1 }
 local TO_FRACTION = St.PERCENT_SCALE
 local ORDER_CAMPFIRE, ORDER_NEARBY = 20, 30
-local SAMPLE_BUFFS = "+Rested\n+Crit"
-local SIMPLE_HINT = "Drag the right edge for width. Wheel: text size (Shift: height). Click a bonus or the time "
-    .. "to show or hide it. Right-click for more."
-local SIMPLE_OFF_HINT = "Turn on the Campfire reminder to edit the bar here."
+local SAMPLE_BUFFS = ns.L("+Rested\n+Crit")
+local SIMPLE_HINT = ns.L("Drag the right edge for width. Wheel: text size (Shift: height). Click a bonus or the time "
+    .. "to show or hide it. Right-click for more.")
+local SIMPLE_OFF_HINT = ns.L("Turn on the Campfire reminder to edit the bar here.")
 local SAMPLES = { up = 2400, low = 720, sitting = 35, unread = 2400, alert = 100 }
 local STYLES = { { round = "Round", simple = "Simple" }, { "round", "simple" } }
 local BUFF_MODES = { { off = "Off", always = "Always", hover = "On Mouseover" }, { "off", "always", "hover" } }
@@ -37,12 +37,12 @@ local SIDES = { { below = "Below", above = "Above", left = "Left", right = "Righ
 local PERCENT, SECONDS = A.C.PERCENT, A.C.SECONDS
 local ALERT_KEYS = { campAlertScale = true, campAlertFade = true }
 
-local OFF = "Turn on AuraBuffs"
-local NEEDS_CAMP = "Needs the Campfire reminder"
-local ALERT_HINT = "Wheel: size. Right-click for more."
-local TEXT_HIDDEN = "Show Only When Low: hidden until under %d min."
-local TEXT_HOVER = "The buffs show while you hover the icon."
-local TEXT_BONUS_HELP = "Shows this bonus on the bar: %s."
+local OFF = ns.L("Turn on AuraBuffs")
+local NEEDS_CAMP = ns.L("Needs the Campfire reminder")
+local ALERT_HINT = ns.L("Wheel: size. Right-click for more.")
+local TEXT_HIDDEN = ns.L("Show Only When Low: hidden until under %d min.")
+local TEXT_HOVER = ns.L("The buffs show while you hover the icon.")
+local TEXT_BONUS_HELP = ns.L("Shows this bonus on the bar: %s.")
 
 local BAR_KEYS = { campSimpleWidth = true, campSimpleHeight = true, campSimpleTextSize = true,
     campBarOutline = true, campBonusIcons = true, campHiddenBonuses = true }
@@ -108,19 +108,19 @@ local function BarWheel(_, delta)
 end
 
 local function BarMenu(_, root)
-    root:CreateTitle("Style")
-    root:CreateRadio("Round", StylePicked, PickStyle, "round")
-    root:CreateRadio("Simple", StylePicked, PickStyle, "simple")
+    root:CreateTitle(ns.L("Style"))
+    root:CreateRadio(ns.L("Round"), StylePicked, PickStyle, "round")
+    root:CreateRadio(ns.L("Simple"), StylePicked, PickStyle, "simple")
     root:CreateDivider()
-    root:CreateCheckbox("Bonus Icons", Toggled, Toggle, "campBonusIcons")
-    root:CreateCheckbox("Show Timer", Toggled, Toggle, "campTimer")
-    local list = root:CreateButton("Bonuses")
+    root:CreateCheckbox(ns.L("Bonus Icons"), Toggled, Toggle, "campBonusIcons")
+    root:CreateCheckbox(ns.L("Show Timer"), Toggled, Toggle, "campTimer")
+    local list = root:CreateButton(ns.L("Bonuses"))
     for _, feature in ipairs(FEATURES) do
         list:CreateCheckbox(feature.name and feature.short .. St.PLACE_DOT .. feature.name or feature.short,
             BonusShown, ToggleBonus, feature)
     end
     root:CreateDivider()
-    root:CreateButton("Reset Bar", ResetBar)
+    root:CreateButton(ns.L("Reset Bar"), ResetBar)
 end
 
 local function NewPreview(stage)
@@ -294,10 +294,10 @@ local function ResetAlert()
 end
 
 local function AlertMenu(_, root)
-    root:CreateTitle("Camp Nearby")
-    root:CreateCheckbox("Fade", Toggled, Toggle, "campAlertFade")
+    root:CreateTitle(ns.L("Camp Nearby"))
+    root:CreateCheckbox(ns.L("Fade"), Toggled, Toggle, "campAlertFade")
     root:CreateDivider()
-    root:CreateButton("Reset", ResetAlert)
+    root:CreateButton(ns.L("Reset"), ResetAlert)
 end
 
 local function NewAlert(stage)
@@ -336,21 +336,21 @@ end
 
 local function CampSummary(store)
     if store.Get("campStyle") == "simple" then
-        local parts = { "Simple bar", store.Get("campTimer") and "timer" or "no timer" }
-        if store.Get("campBonusIcons") then parts[#parts + 1] = "bonus icons" end
-        if store.Get("campSound") then parts[#parts + 1] = "a sound to refresh" end
+        local parts = { ns.L("Simple bar"), store.Get("campTimer") and "timer" or ns.L("no timer") }
+        if store.Get("campBonusIcons") then parts[#parts + 1] = ns.L("bonus icons") end
+        if store.Get("campSound") then parts[#parts + 1] = ns.L("a sound to refresh") end
         return table.concat(parts, ", ")
     end
-    local parts = { store.Get("campTimer") and "Timer" or "No timer" }
+    local parts = { store.Get("campTimer") and ns.L("Timer") or ns.L("No timer") }
     local mode = ns.CampBuffMode()
-    if mode == "always" then parts[#parts + 1] = "camp buffs"
-    elseif mode == "hover" then parts[#parts + 1] = "camp buffs on mouseover" end
-    if store.Get("campSound") then parts[#parts + 1] = "a sound to refresh" end
+    if mode == "always" then parts[#parts + 1] = ns.L("camp buffs")
+    elseif mode == "hover" then parts[#parts + 1] = ns.L("camp buffs on mouseover") end
+    if store.Get("campSound") then parts[#parts + 1] = ns.L("a sound to refresh") end
     return table.concat(parts, ", ")
 end
 
 local function AlertSummary(store)
-    return ("Under %d min"):format(store.Get("campNearbyMinutes"))
+    return (ns.L("Under %d min")):format(store.Get("campNearbyMinutes"))
 end
 
 local function StageHeight()

@@ -13,8 +13,8 @@ local RING, SWORDS, OFF = "talents-warmode-ring", "pvptalents-warmode-swords", "
 local CRESTS = { Alliance = "MountJournalIcons-Alliance", Horde = "MountJournalIcons-Horde" }
 local MACRO = "/pvp"
 local KEYS = { enabled = true, flagButton = true, flagButtonSize = true, flagButtonPos = true }
-local TEXT_ON, TEXT_OFF = "PvP Flag: On", "PvP Flag: Off"
-local TEXT_TURN_ON, TEXT_TURN_OFF = "Click to flag yourself for PvP.", "Click to stop flagging yourself."
+local TEXT_ON, TEXT_OFF = ns.L("PvP Flag: On"), ns.L("PvP Flag: Off")
+local TEXT_TURN_ON, TEXT_TURN_OFF = ns.L("Click to flag yourself for PvP."), ns.L("Click to stop flagging yourself.")
 
 local button, moving, pending
 local events = CreateFrame("Frame")

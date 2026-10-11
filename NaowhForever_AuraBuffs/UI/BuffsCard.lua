@@ -25,12 +25,12 @@ local STATES = {
       needs = "hideResting" },
 }
 
-local OFF = "Turn on AuraBuffs"
-local NEEDS_RAID = "Needs Raid Buff Reminders"
-local NEEDS_PERSONAL = "Needs Personal Buff Reminders"
-local TEXT_NOTHING = "Nothing to remind you of here."
-local TEXT_SAMPLE = "Sample icons: add the consumables to watch in the AuraBuffs window."
-local TEXT_BLESSINGS = "Off by default: the Blessings module covers them."
+local OFF = ns.L("Turn on AuraBuffs")
+local NEEDS_RAID = ns.L("Needs Raid Buff Reminders")
+local NEEDS_PERSONAL = ns.L("Needs Personal Buff Reminders")
+local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
+local TEXT_SAMPLE = ns.L("Sample icons: add the consumables to watch in the AuraBuffs window.")
+local TEXT_BLESSINGS = ns.L("Off by default: the Blessings module covers them.")
 
 local PERSONAL = {}
 local _, playerClass = UnitClass("player")
@@ -126,9 +126,9 @@ end
 
 local function Summary(store)
     local n = #(store.Get("consumableEntries") or {})
-    local parts = { n == 1 and "1 consumable" or (n .. " consumables") }
-    if store.Get("raidBuffs") then parts[#parts + 1] = "raid buffs" end
-    if store.Get("personalBuffs") and #PERSONAL > 0 then parts[#parts + 1] = "personal buffs" end
+    local parts = { n == 1 and ns.L("1 consumable") or ns.L("%d consumables"):format(n) }
+    if store.Get("raidBuffs") then parts[#parts + 1] = ns.L("raid buffs") end
+    if store.Get("personalBuffs") and #PERSONAL > 0 then parts[#parts + 1] = ns.L("personal buffs") end
     return table.concat(parts, ", ")
 end
 

@@ -5,7 +5,7 @@ local B = ns.BiS
 local S = B.Settings
 local Items, Parts = ns.Shared.Items, ns.Shared.Parts
 
-local TEXT_REMOVED = "Removed %s from your BiS list."
+local TEXT_REMOVED = ns.L("Removed %s from your BiS list.")
 
 local function OnItemTooltip(tooltip, data)
     local id = data and data.id

@@ -6,8 +6,8 @@ local S = Completo.Settings
 
 local ACTION, DEFAULT_KEY = "NAOWHFOREVER_COMPLETO", "SHIFT-L"
 local KEY_SET_STORE = "completoKeySet"
-local TEXT_BOUND = "Shift-L now opens the Quest List. Change it under Discovery > Quest List or Key Bindings."
-local TEXT_TAKEN = "Shift-L is already %s, so the Quest List has no key. Pick one under Discovery > Quest List."
+local TEXT_BOUND = ns.L("Shift-L now opens the Quest List. Change it under Discovery > Quest List or Key Bindings.")
+local TEXT_TAKEN = ns.L("Shift-L is already %s, so the Quest List has no key. Pick one under Discovery > Quest List.")
 
 local function FirstTime()
     local account = ns.AccountSettings()

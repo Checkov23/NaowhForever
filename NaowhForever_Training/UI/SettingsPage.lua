@@ -10,21 +10,21 @@ local PERCENT, ROUND = Training.C.PERCENT, Training.C.ROUND
 local OPACITY_RANGE, PERCENT_SCALE = Style.OPACITY_RANGE, Style.PERCENT_SCALE
 local ORDER_ON_THE_WAY, ORDER_WINDOW, ORDER_BUILDS = 10, 20, 30
 local BUILDS_TAB = "builds"
-local TEXT_OFF = "Turn on the Training Planner"
-local TEXT_BUILDS_SEARCH = "talents talent points follow import export share auto spend"
+local TEXT_OFF = ns.L("Turn on the Training Planner")
+local TEXT_BUILDS_SEARCH = ns.L("talents talent points follow import export share auto spend")
 local TEXT_OPEN = "Open Training Planner"
-local TEXT_TRAIN_NOW = "%d %s to train now, %s"
-local TEXT_SPELL, TEXT_SPELLS = "spell", "spells"
-local TEXT_NEW_AT = "New spells at level "
-local TEXT_KNOW_ALL = "You know every spell your class trains"
-local TEXT_DETAIL = "%s left to pay on the road to 60. %d talent %s for your class."
-local TEXT_BUILD, TEXT_BUILDS = "build", "builds"
+local TEXT_TRAIN_NOW = ns.L("%d %s to train now, %s")
+local TEXT_SPELL, TEXT_SPELLS = ns.L("spell"), ns.L("spells")
+local TEXT_NEW_AT = ns.L("New spells at level ")
+local TEXT_KNOW_ALL = ns.L("You know every spell your class trains")
+local TEXT_DETAIL = ns.L("%s left to pay on the road to 60. %d talent %s for your class.")
+local TEXT_BUILD, TEXT_BUILDS = ns.L("build"), ns.L("builds")
 local TEXT_BOTH, TEXT_TOAST, TEXT_PANEL, TEXT_NOTHING =
-    "Level-up toast and trainer panel", "Level-up toast", "Trainer panel", "Nothing on the way"
-local TEXT_WINDOW = "%d%% opacity%s"
-local TEXT_MINI_SHOWN = ", mini bar shown"
-local TEXT_FOLLOWING = "Following: %s"
-local TEXT_NOT_FOLLOWING = "Not following a build"
+    ns.L("Level-up toast and trainer panel"), ns.L("Level-up toast"), ns.L("Trainer panel"), ns.L("Nothing on the way")
+local TEXT_WINDOW = ns.L("%d%% opacity%s")
+local TEXT_MINI_SHOWN = ns.L(", mini bar shown")
+local TEXT_FOLLOWING = ns.L("Following: %s")
+local TEXT_NOT_FOLLOWING = ns.L("Not following a build")
 
 local function Headline(plan)
     if #plan.now > 0 then

@@ -14,12 +14,12 @@ local EVENTS = { "EQUIPMENT_SETS_CHANGED", "EQUIPMENT_SWAP_FINISHED", "PLAYER_EQ
 local SWAP_EVENTS = { PLAYER_MOUNT_DISPLAY_CHANGED = true, PLAYER_UPDATE_RESTING = true, PLAYER_ENTERING_WORLD = true }
 local QUIET_KEYS = { gearPos = true, gearWindowAlpha = true }
 
-local TEXT_EQUIPPED = "Equipped"
-local TEXT_MISSING = "%d item%s missing"
-local TEXT_HINT = "Click to equip. Shift-click to save what you wear into it. Ctrl-click to "
-    .. "rename it. Right-click to change its icon."
-local TEXT_ADD = "New Gear Set"
-local TEXT_ADD_TIP = "Saves what you are wearing now as a new set."
+local TEXT_EQUIPPED = ns.L("Equipped")
+local TEXT_MISSING_ONE, TEXT_MISSING = ns.L("%d item missing"), ns.L("%d items missing")
+local TEXT_HINT = ns.L("Click to equip. Shift-click to save what you wear into it. Ctrl-click to "
+    .. "rename it. Right-click to change its icon.")
+local TEXT_ADD = ns.L("New Gear Set")
+local TEXT_ADD_TIP = ns.L("Saves what you are wearing now as a new set.")
 local TEXT_MOVER = "Gear Sets"
 
 local bar, buttons, addButton, unlocked, inCombat, layoutQueued
@@ -31,7 +31,7 @@ local function SetTooltip(btn)
     GameTooltip:SetText(set.name, NAME_RGB.r, NAME_RGB.g, NAME_RGB.b)
     if set.equipped then GameTooltip:AddLine(TEXT_EQUIPPED, EQUIPPED_RGB.r, EQUIPPED_RGB.g, EQUIPPED_RGB.b) end
     if set.lost > 0 then
-        GameTooltip:AddLine(TEXT_MISSING:format(set.lost, set.lost == 1 and "" or "s"),
+        GameTooltip:AddLine((set.lost == 1 and TEXT_MISSING_ONE or TEXT_MISSING):format(set.lost),
             MISSING_RGB.r, MISSING_RGB.g, MISSING_RGB.b)
     end
     GameTooltip:AddLine(TEXT_HINT, HINT_RGB.r, HINT_RGB.g, HINT_RGB.b, true)

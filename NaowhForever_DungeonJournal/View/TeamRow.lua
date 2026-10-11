@@ -14,7 +14,7 @@ local ROLE_GAP = 4
 local ROLE_DROP = 1
 local ROLE_ICON = 14
 
-local YOU = ns.Color("muted", " (you)")
+local YOU = ns.Color("muted", ns.L(" (you)"))
 
 local function ClassColor(class)
     return class and C_ClassColor.GetClassColor(class) or T.fg

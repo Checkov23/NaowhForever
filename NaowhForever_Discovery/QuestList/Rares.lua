@@ -15,12 +15,12 @@ local ROUND_HALF = C.ROUND_HALF
 local GOLD_RGB = { r = 1, g = 0.82, b = 0 }
 local WHITE = { r = 1, g = 1, b = 1 }
 local KILLS_STORE, DROPS_STORE = "completoRareKills", "completoRareDrops"
-local TEXT_DROPS = "Drops"
-local TEXT_GOT_IT = "(you got it)"
-local TEXT_MORE = "And %d more"
+local TEXT_DROPS = ns.L("Drops")
+local TEXT_GOT_IT = ns.L("(you got it)")
+local TEXT_MORE = ns.L("And %d more")
 local TEXT_UNKNOWN_LEVEL = "??"
-local TEXT_KILLED = "Killed"
-local TEXT_KILLED_TIMES = "Killed %d times"
+local TEXT_KILLED = ns.L("Killed")
+local TEXT_KILLED_TIMES = ns.L("Killed %d times")
 local NONE = {}
 
 local mine, kills, drops, byMap

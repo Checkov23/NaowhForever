@@ -21,23 +21,23 @@ local DEFAULT_X, DEFAULT_Y = -260, 120
 local ALERT_ORDER = 1
 local CARD = A.PAGE .. ":campfire"
 local NEARBY_CARD = A.PAGE .. ":campNearby"
-local UNLOCK_TEXT = "+Rested\n+Crit"
-local DISMISS_TIP = "Right-click to dismiss until you leave the campfire."
+local UNLOCK_TEXT = ns.L("+Rested\n+Crit")
+local DISMISS_TIP = ns.L("Right-click to dismiss until you leave the campfire.")
 local TEXT_MOVER = "Campfire"
 local TEXT_NEARBY = "Camp Nearby"
 local TEXT_TITLE = "Camp Benefits"
-local TEXT_UPCOMING = "You'll get:"
-local TEXT_RESTING = "Resting at a campfire"
-local TEXT_LANDS_IN = "Camp Benefits in"
-local TEXT_NO_BONUSES = "Camp Benefits is up, but it lists no bonuses: this camp may have no features, or they "
-    .. "can't be read yet."
-local TEXT_TIME_LEFT = "Time left"
-local TEXT_REFRESH_NOW = "Refresh now"
-local TEXT_REFRESH_IN = "Refresh in "
-local TEXT_NONE = "No Camp Benefits"
-local TEXT_SIT = "Sit at a campfire to refresh"
-local TEXT_IN_RANGE = "A campfire is in range"
-local MINUTES, SECONDS_LEFT = "%d min", "%d sec"
+local TEXT_UPCOMING = ns.L("You'll get:")
+local TEXT_RESTING = ns.L("Resting at a campfire")
+local TEXT_LANDS_IN = ns.L("Camp Benefits in")
+local TEXT_NO_BONUSES = ns.L("Camp Benefits is up, but it lists no bonuses: this camp may have no features, or they "
+    .. "can't be read yet.")
+local TEXT_TIME_LEFT = ns.L("Time left")
+local TEXT_REFRESH_NOW = ns.L("Refresh now")
+local TEXT_REFRESH_IN = ns.L("Refresh in ")
+local TEXT_NONE = ns.L("No Camp Benefits")
+local TEXT_SIT = ns.L("Sit at a campfire to refresh")
+local TEXT_IN_RANGE = ns.L("A campfire is in range")
+local MINUTES, SECONDS_LEFT = ns.L("%d min"), ns.L("%d sec")
 
 local Spot = { DEFAULT = { point = "CENTER", relPoint = "CENTER", x = DEFAULT_X, y = DEFAULT_Y } }
 Spot.CORNERS = { TOPLEFT = { 1, -1 }, TOP = { 0, -1 }, TOPRIGHT = { -1, -1 }, RIGHT = { -1, 0 },

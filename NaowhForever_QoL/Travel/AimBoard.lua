@@ -29,18 +29,18 @@ local DAY_SECONDS = 86400
 local EVENTS = { "CHAT_MSG_ADDON", "GROUP_ROSTER_UPDATE", "PLAYER_REGEN_ENABLED" }
 
 local ALL, GUILD = "all", "guild"
-local YOU = "You"
+local YOU = ns.L("You")
 local NO_VALUE = "--"
-local SHARING_OFF = ", sharing is off"
-local NO_SCORES = "No scores yet. Play a round, and meet\nother players running Naowh Forever."
-local NO_GUILD = "No scores from your guild yet."
+local SHARING_OFF = ns.L(", sharing is off")
+local NO_SCORES = ns.L("No scores yet. Play a round, and meet\nother players running Naowh Forever.")
+local NO_GUILD = ns.L("No scores from your guild yet.")
 local KICKER = "LEADERBOARD"
-local TEXT_RECORD_RANK = "New personal best, rank #%d of %d"
-local TEXT_RANK = "Rank #%d of %d"
-local TEXT_PLAYER, TEXT_PLAYERS = "%d player%s", "%d players%s"
+local TEXT_RECORD_RANK = ns.L("New personal best, rank #%d of %d")
+local TEXT_RANK = ns.L("Rank #%d of %d")
+local TEXT_PLAYER, TEXT_PLAYERS = ns.L("%d player%s"), ns.L("%d players%s")
 local TEXT_RANK_NUMBER, TEXT_ACCURACY = "%d", "%d%%"
-local HEAD_RANK, HEAD_NAME, HEAD_SCORE, HEAD_ACC = "#", "Name", "Score", "Acc."
-local TEXT_BACK = "Back"
+local HEAD_RANK, HEAD_NAME, HEAD_SCORE, HEAD_ACC = "#", ns.L("Name"), ns.L("Score"), ns.L("Acc.")
+local TEXT_BACK = ns.L("Back")
 local NAME_JOIN = " "
 
 local VIEW_W, VIEW_PAD, VIEW_GAP, VIEW_ALPHA = 300, 12, 8, 0.97

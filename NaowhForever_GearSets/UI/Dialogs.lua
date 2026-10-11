@@ -18,13 +18,13 @@ local ICON_CROP, ICON_INSET, BLACK = St.ICON_CROP, St.ICON_INSET, St.BLACK
 local CELL_STEP = ICON_SIZE + ICON_GAP
 local DIALOG = "gearIcon"
 
-local TEXT_NEW = "Name the new gear set"
-local TEXT_PICK = "Pick an icon for "
-local TEXT_RENAME = "Rename "
-local TEXT_EXISTS = "A gear set called %s already exists."
-local TEXT_SAVE = "Save what you are wearing now into %s?"
-local TEXT_DELETE = "Delete the gear set %s?"
-local TEXT_CANCEL = "Cancel"
+local TEXT_NEW = ns.L("Name the new gear set")
+local TEXT_PICK = ns.L("Pick an icon for ")
+local TEXT_RENAME = ns.L("Rename ")
+local TEXT_EXISTS = ns.L("A gear set called %s already exists.")
+local TEXT_SAVE = ns.L("Save what you are wearing now into %s?")
+local TEXT_DELETE = ns.L("Delete the gear set %s?")
+local TEXT_CANCEL = ns.L("Cancel")
 
 local function CellEnter(cell)
     cell.border:SetColor(T.accent.r, T.accent.g, T.accent.b, 1)

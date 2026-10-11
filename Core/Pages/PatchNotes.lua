@@ -3,9 +3,9 @@ local ns = _G.NaowhForever
 
 local TITLE_MAX = 60
 local UNRELEASED = "Unreleased"
-local TEXT_CHANGES = "%d changes"
-local TEXT_IN_TESTING = "In testing, "
-local TEXT_LATEST = "Latest, "
+local TEXT_CHANGES = ns.L("%d changes")
+local TEXT_IN_TESTING = ns.L("In testing, ")
+local TEXT_LATEST = ns.L("Latest, ")
 local TEXT_NEXT_RELEASE = "Next Release"
 
 local NOTES = {

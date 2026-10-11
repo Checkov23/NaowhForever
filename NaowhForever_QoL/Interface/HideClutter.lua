@@ -13,7 +13,7 @@ local APPLY_KEYS = { enabled = true, hideErrors = true, hideTutorials = true, hi
     skipCinematics = true, hideBagBar = true }
 local BAG_BUTTONS = { "MainMenuBarBackpackButton", "CharacterBag0Slot", "CharacterBag1Slot", "CharacterBag2Slot",
     "CharacterBag3Slot", "KeyRingButton", "BagBarExpandToggle" }
-local SUMMARY = "%d of %d on"
+local SUMMARY = ns.L("%d of %d on")
 
 local errorsHidden, screenshotHidden, movieHooked = false, false, false
 local bagBarHidden = false

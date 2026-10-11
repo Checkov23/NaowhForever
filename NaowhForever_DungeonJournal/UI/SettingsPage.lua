@@ -14,27 +14,27 @@ local PERCENT = J.C.PERCENT
 local ROUND_HALF = J.C.ROUND_HALF
 local ORDER_FIRST, ORDER_THIRD, ORDER_FOURTH, ORDER_LAST = 10, 20, 30, 90
 
-local TEXT_JOURNAL_OFF = "Turn on the Dungeon Journal"
-local TEXT_BIS_OFF = "Needs the BiS List"
-local TEXT_ENTRANCES_OFF = "Turn on Dungeon and Raid Entrances"
-local TEXT_EVERY_DUNGEON = "Every dungeon and raid: what drops, your quests, and more."
-local TEXT_YOU_ARE_IN = "You are in %s."
-local TEXT_FOR_YOUR_LEVEL = "%s is for your level (%s)."
-local TEXT_TO_PICK_UP = "%d to pick up"
-local TEXT_IN_LOG = "%d in your log"
-local TEXT_YOUR_QUESTS = "Your quests there: %s."
+local TEXT_JOURNAL_OFF = ns.L("Turn on the Dungeon Journal")
+local TEXT_BIS_OFF = ns.L("Needs the BiS List")
+local TEXT_ENTRANCES_OFF = ns.L("Turn on Dungeon and Raid Entrances")
+local TEXT_EVERY_DUNGEON = ns.L("Every dungeon and raid: what drops, your quests, and more.")
+local TEXT_YOU_ARE_IN = ns.L("You are in %s.")
+local TEXT_FOR_YOUR_LEVEL = ns.L("%s is for your level (%s).")
+local TEXT_TO_PICK_UP = ns.L("%d to pick up")
+local TEXT_IN_LOG = ns.L("%d in your log")
+local TEXT_YOUR_QUESTS = ns.L("Your quests there: %s.")
 local TEXT_LIST = ", "
-local TEXT_ONE_FILTER = ", 1 filter on"
-local TEXT_FILTERS = ", %d filters on"
-local TEXT_OPACITY = "%d%% opacity"
-local TEXT_OFF = "Off"
+local TEXT_ONE_FILTER = ns.L(", 1 filter on")
+local TEXT_FILTERS = ns.L(", %d filters on")
+local TEXT_OPACITY = ns.L("%d%% opacity")
+local TEXT_OFF = ns.L("Off")
 local FACTION_VALUES = { both = "Both Factions", Alliance = "Alliance Ground", Horde = "Horde Ground" }
 local FACTION_ORDER = { "both", "Alliance", "Horde" }
-local MAP_SUMMARY = { both = "Dungeons and zones", panel = "In dungeons", factions = "In zones", none = "Nothing beside the map" }
-local SHARE_SUMMARY = { both = "Asks and accepts shared quests", ask = "Asks for shared quests",
-    accept = "Accepts shared quests" }
-local TRACKER_EVERYWHERE, TRACKER_INSIDE, TRACKER_OUTSIDE = "everywhere", "in dungeons", "outside dungeons"
-local TEXT_TRACKER, TEXT_AND_TRACKER = "Tracker ", ", tracker "
+local MAP_SUMMARY = { both = ns.L("Dungeons and zones"), panel = ns.L("In dungeons"), factions = ns.L("In zones"), none = ns.L("Nothing beside the map") }
+local SHARE_SUMMARY = { both = ns.L("Asks and accepts shared quests"), ask = ns.L("Asks for shared quests"),
+    accept = ns.L("Accepts shared quests") }
+local TRACKER_EVERYWHERE, TRACKER_INSIDE, TRACKER_OUTSIDE = ns.L("everywhere"), ns.L("in dungeons"), ns.L("outside dungeons")
+local TEXT_TRACKER, TEXT_AND_TRACKER = ns.L("Tracker "), ns.L(", tracker ")
 
 local function ForYou()
     local here = J.Current()
@@ -116,7 +116,7 @@ local function ListSummary(store)
     for _, option in ipairs(J.OPTION_GROUPS[1].options) do
         if option.hides ~= nil and store.Get(option.key) == option.hides then hiding = hiding + 1 end
     end
-    return FACTION_VALUES[FactionGet()] .. (hiding == 1 and TEXT_ONE_FILTER or TEXT_FILTERS:format(hiding))
+    return ns.L(FACTION_VALUES[FactionGet()]) .. (hiding == 1 and TEXT_ONE_FILTER or TEXT_FILTERS:format(hiding))
 end
 
 local function MapSummary(store)
@@ -274,7 +274,7 @@ local function DeclareMapPins()
         .. "waypoint.")
     entrances.store, entrances.always = S, true
     table.insert(ns.Shared.MapPins, {
-        title = "Dungeons & Raids", store = S, switch = "mapEntrances",
+        title = ns.L("Dungeons & Raids"), store = S, switch = "mapEntrances",
         rows = {
             entrances,
             { key = "mapEntranceScale", label = "Entrance Icon Size", slider = { ICON_MIN, ICON_MAX, ICON_STEP },

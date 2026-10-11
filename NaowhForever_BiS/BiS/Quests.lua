@@ -6,7 +6,7 @@ local Items = ns.Shared.Items
 
 local QUEST_ID, QUEST_LEVEL, QUEST_MAP = 1, 3, 7
 local RACE_ID = 3
-local TEXT_ELSEWHERE = "Elsewhere"
+local TEXT_ELSEWHERE = ns.L("Elsewhere")
 local RACE_BITS = { [1] = 0, [2] = 1, [3] = 2, [4] = 3, [5] = 4, [6] = 5, [7] = 6, [8] = 7, [95] = 32, [96] = 33 }
 
 local zones = {}

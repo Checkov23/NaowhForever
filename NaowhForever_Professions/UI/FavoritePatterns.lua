@@ -28,33 +28,33 @@ local EVENTS = { "AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "PLAYER_MONEY", "
     "AUCTION_HOUSE_SHOW_ERROR" }
 local ALONE = { none = true, bought = true, unconfirmed = true }
 local WHITE_CODE = "|cffffffff"
-local TEXT_TITLE = "Favorite Patterns"
+local TEXT_TITLE = ns.L("Favorite Patterns")
 local TEXT_BUY = "Buy"
 local TEXT_UNKNOWN = "?"
-local TEXT_NONE_LISTED = "none listed"
-local TEXT_SCAN = "scan "
-local TEXT_NOT_LISTED = "not listed"
-local TEXT_NO_SCAN = "no scan yet"
-local TEXT_MORE = "+%d more"
-local TEXT_PATTERN = "the pattern"
-local TEXT_ACCEPT, TEXT_CANCEL, TEXT_CLOSE = "Accept", "Cancel", "Close"
-local TEXT_TRY_AGAIN, TEXT_SEARCH = "Try Again", "Search"
-local TEXT_LOOKING = "Looking for the cheapest"
-local TEXT_BUYOUT = "Buyout auction for:"
+local TEXT_NONE_LISTED = ns.L("none listed")
+local TEXT_SCAN = ns.L("scan ")
+local TEXT_NOT_LISTED = ns.L("not listed")
+local TEXT_NO_SCAN = ns.L("no scan yet")
+local TEXT_MORE = ns.L("+%d more")
+local TEXT_PATTERN = ns.L("the pattern")
+local TEXT_ACCEPT, TEXT_CANCEL, TEXT_CLOSE = ns.L("Accept"), ns.L("Cancel"), ns.L("Close")
+local TEXT_TRY_AGAIN, TEXT_SEARCH = ns.L("Try Again"), ns.L("Search")
+local TEXT_LOOKING = ns.L("Looking for the cheapest")
+local TEXT_BUYOUT = ns.L("Buyout auction for:")
 local TEXT_PRICE = "%s  %s%s|r"
-local TEXT_NO_GOLD = "You do not have enough gold.|r"
-local TEXT_NONE_NOW = "None with a buyout listed right now."
-local TEXT_NO_ANSWER = "No answer from the auction house."
-local TEXT_THROTTLED = "Searches are limited to a few a second.|r"
-local TEXT_BY_AMOUNT = "Sold by amount, not as single listings."
-local TEXT_BY_AMOUNT_HELP = "Search shows it on the Buy tab.|r"
-local TEXT_BUYING = "Buying"
-local TEXT_FAILED = "The purchase failed."
-local TEXT_FAILED_HELP = "Someone may have bought it first.|r"
-local TEXT_UNCONFIRMED = "No answer to the purchase yet."
-local TEXT_CHECK_MAIL = "Check your mailbox before buying it again.|r"
-local TEXT_BOUGHT = "Bought "
-local TEXT_IN_MAIL = "It is on its way to your mailbox.|r"
+local TEXT_NO_GOLD = ns.L("You do not have enough gold.|r")
+local TEXT_NONE_NOW = ns.L("None with a buyout listed right now.")
+local TEXT_NO_ANSWER = ns.L("No answer from the auction house.")
+local TEXT_THROTTLED = ns.L("Searches are limited to a few a second.|r")
+local TEXT_BY_AMOUNT = ns.L("Sold by amount, not as single listings.")
+local TEXT_BY_AMOUNT_HELP = ns.L("Search shows it on the Buy tab.|r")
+local TEXT_BUYING = ns.L("Buying")
+local TEXT_FAILED = ns.L("The purchase failed.")
+local TEXT_FAILED_HELP = ns.L("Someone may have bought it first.|r")
+local TEXT_UNCONFIRMED = ns.L("No answer to the purchase yet.")
+local TEXT_CHECK_MAIL = ns.L("Check your mailbox before buying it again.|r")
+local TEXT_BOUGHT = ns.L("Bought ")
+local TEXT_IN_MAIL = ns.L("It is on its way to your mailbox.|r")
 
 local market
 local buy

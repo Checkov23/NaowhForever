@@ -7,13 +7,13 @@ local T = ns.THEME
 local VALUE_RGB = { r = 0.85, g = 0.89, b = 0.93 }
 local PREVIEW_SPELL = 133
 local LINE_BREAK = "\n"
-local TEXT_NOTHING = "No copyable text found."
-local TEXT_GLOBAL_COPY = "Global Copy"
-local TEXT_COPY_HINT = ": copy ID or Wowhead link"
-local TEXT_HIDDEN = "Hidden"
-local TEXT_PREVIEW_TITLE = "Fireball - Preview"
-local SUMMARY_IDS = "%d of %d IDs"
-local SUMMARY_COPIES = "%d of %d IDs, %s copies"
+local TEXT_NOTHING = ns.L("No copyable text found.")
+local TEXT_GLOBAL_COPY = ns.L("Global Copy")
+local TEXT_COPY_HINT = ns.L(": copy ID or Wowhead link")
+local TEXT_HIDDEN = ns.L("Hidden")
+local TEXT_PREVIEW_TITLE = ns.L("Fireball - Preview")
+local SUMMARY_IDS = ns.L("%d of %d IDs")
+local SUMMARY_COPIES = ns.L("%d of %d IDs, %s copies")
 
 local keyboard
 local Apply
@@ -114,9 +114,9 @@ local function Accessible(value)
 end
 
 local TYPES = {
-    [Enum.TooltipDataType.Spell] = { kind = "spell", label = "Spell ID", setting = "tooltipSpellID" },
-    [Enum.TooltipDataType.Item] = { kind = "item", label = "Item ID", setting = "tooltipItemID" },
-    [Enum.TooltipDataType.Unit] = { kind = "npc", label = "NPC ID", setting = "tooltipNPCID" },
+    [Enum.TooltipDataType.Spell] = { kind = "spell", label = ns.L("Spell ID"), setting = "tooltipSpellID" },
+    [Enum.TooltipDataType.Item] = { kind = "item", label = ns.L("Item ID"), setting = "tooltipItemID" },
+    [Enum.TooltipDataType.Unit] = { kind = "npc", label = ns.L("NPC ID"), setting = "tooltipNPCID" },
 }
 
 local function DisplayOn()

@@ -68,7 +68,7 @@ read_globals = {
     "EditMacro",
     "COMBATLOG_XPGAIN_FIRSTPERSON_UNNAMED", "CommunitiesFrame", "FRIENDS_BUTTON_TYPE_BNET", "FRIENDS_BUTTON_TYPE_WOW", "FriendsFrame_UpdateFriendButton", "FriendsTooltip", "InspectUnit", "PlayerSpellsFrame", "GameTooltipText", "WOW_PROJECT_ID", "EncounterJournal", "Enum", "EnumerateFrames", "ERR_BAG_FULL", "ERR_INV_FULL", "ERR_QUEST_PUSH_BUSY_S", "ERR_QUEST_PUSH_SUCCESS_S",
     "EventRegistry", "EventToastManagerFrame", "EventUtil", "ScrollBoxListMixin",
-    "FACTION_STANDING_INCREASED", "GameFontHighlight", "GameFontNormal", "GameTooltip",
+    "FACTION_ALLIANCE", "FACTION_HORDE", "FACTION_STANDING_INCREASED", "GameFontHighlight", "GameFontNormal", "GameTooltip",
     "GameTooltipTextLeft1", "GameTooltip_Hide", "GetActionInfo", "GetActionText", "GetActiveTitle",
     "GetActionTexture", "GetAddOnMemoryUsage", "GetBinding", "GetBindingAction", "GetBindingKey", "GetBindingName", "GetBuildInfo",
     "GetBindingText", "GetBindLocation", "GetChannelList", "GetClassInfo", "GetCurrentBindingSet",

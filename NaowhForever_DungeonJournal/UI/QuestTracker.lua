@@ -18,17 +18,17 @@ local PLACE = { "RIGHT", "RIGHT", -60, 60 }
 local SETTINGS_PAGE = "Dungeon Journal/Quest Tracker"
 local EVENTS = { "PLAYER_ENTERING_WORLD", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS" }
 
-local TEXT_TITLE = "DUNGEON QUEST TRACKER"
-local TEXT_TITLE_TIP = "Dungeon Quest Tracker"
-local TEXT_TITLE_HINT = "Click to open the Dungeon Journal settings."
-local TEXT_SETTINGS_TIP = "Dungeon Quest Tracker settings"
-local TEXT_SETTINGS_HINT = "Opens the Dungeon Journal's Quest Tracker settings."
-local TEXT_SHARE_ALL = "Share All"
-local TEXT_SHARE = "Share Quests"
-local TEXT_SHARE_HELP = "Shares your quests for this dungeon with your group, one at a time."
-local TEXT_NO_GROUP = "You are not in a group."
-local TEXT_NONE = "None of your quests here can be shared."
-local TEXT_COUNT = "%d to share."
+local TEXT_TITLE = ns.L("DUNGEON QUEST TRACKER")
+local TEXT_TITLE_TIP = ns.L("Dungeon Quest Tracker")
+local TEXT_TITLE_HINT = ns.L("Click to open the Dungeon Journal settings.")
+local TEXT_SETTINGS_TIP = ns.L("Dungeon Quest Tracker settings")
+local TEXT_SETTINGS_HINT = ns.L("Opens the Dungeon Journal's Quest Tracker settings.")
+local TEXT_SHARE_ALL = ns.L("Share All")
+local TEXT_SHARE = ns.L("Share Quests")
+local TEXT_SHARE_HELP = ns.L("Shares your quests for this dungeon with your group, one at a time.")
+local TEXT_NO_GROUP = ns.L("You are not in a group.")
+local TEXT_NONE = ns.L("None of your quests here can be shared.")
+local TEXT_COUNT = ns.L("%d to share.")
 local TEXT_RANGE = "%s  %s"
 
 local panel, view

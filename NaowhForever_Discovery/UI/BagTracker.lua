@@ -13,9 +13,9 @@ local Parts = ns.Shared.Parts
 local SETTINGS_PAGE = "Discovery/Sleeping Bag"
 local PLACE = { "RIGHT", "RIGHT", -260, 120 }
 local EVENTS = { "QUEST_ACCEPTED", "QUEST_TURNED_IN", "PLAYER_LEVEL_UP", "PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA" }
-local TEXT_TITLE = "SLEEPING BAG"
+local TEXT_TITLE = ns.L("SLEEPING BAG")
 local TEXT_NAME = "Sleeping Bag"
-local TEXT_STEPS = "%d / %d  steps"
+local TEXT_STEPS = ns.L("%d / %d  steps")
 local TEXT_STEP = "%d. %s"
 
 local panel, events, refreshQueued, dismissedZone
@@ -65,11 +65,11 @@ end
 local function BuildPanel()
     panel = Parts.TrackerPanel(TEXT_TITLE, {
         onTitle = OpenSteps, titleTip = TEXT_NAME,
-        titleHint = "Click to see every step in the Discovery window.",
+        titleHint = ns.L("Click to see every step in the Discovery window."),
         onClose = Close,
         bar = true,
-        settings = { page = SETTINGS_PAGE, card = "bagtracker", tip = "Sleeping Bag settings",
-            hint = "Opens the Sleeping Bag tracker's settings." },
+        settings = { page = SETTINGS_PAGE, card = "bagtracker", tip = ns.L("Sleeping Bag settings"),
+            hint = ns.L("Opens the Sleeping Bag tracker's settings.") },
         opacity = Opacity,
         load = LoadPosition, save = SavePosition, place = PLACE,
         mover = Mover,

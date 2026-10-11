@@ -25,14 +25,14 @@ local TIP_ROOM = 10
 local NOTE_GAP = 12
 local NOTE_MIN = 40
 
-local TEXT_MENU_HINT = "Right-click: Wowhead Link"
-local TEXT_FILTERED = "+%d filtered"
-local TEXT_FILTERED_LINE = "%d of its items hidden by your filters (top right)."
-local TEXT_SHOW_ALL = "Click to show all its loot again"
-local TEXT_SHOW_BEST = "Click to show only its BiS and upgrades"
-local TEXT_WOWHEAD = "Wowhead Link"
-local TEXT_NOTHING_FOR_CLASS = "Nothing for your class"
-local TEXT_NO_LOOT = "No boss loot known yet"
+local TEXT_MENU_HINT = ns.L("Right-click: Wowhead Link")
+local TEXT_FILTERED = ns.L("+%d filtered")
+local TEXT_FILTERED_LINE = ns.L("%d of its items hidden by your filters (top right).")
+local TEXT_SHOW_ALL = ns.L("Click to show all its loot again")
+local TEXT_SHOW_BEST = ns.L("Click to show only its BiS and upgrades")
+local TEXT_WOWHEAD = ns.L("Wowhead Link")
+local TEXT_NOTHING_FOR_CLASS = ns.L("Nothing for your class")
+local TEXT_NO_LOOT = ns.L("No boss loot known yet")
 
 local function TipEnter(button)
     button.icon:SetVertexColor(T.fg.r, T.fg.g, T.fg.b)

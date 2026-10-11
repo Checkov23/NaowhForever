@@ -10,12 +10,12 @@ local Picks, Store = B.Picks, B.Store
 
 local NAME_MAX = C.NAME_MAX
 local TEXT_DEFAULT_NAME = "My BiS"
-local TEXT_NOT_FITTED = "Your BiS list now keeps a ranked list per slot. These did not fit: "
-local TEXT_NAME_EMPTY = "the name is empty"
-local TEXT_NAME_TAKEN = "that name is taken"
-local TEXT_NOT_GEAR = "That is not an item you can equip."
-local TEXT_ADDED = "Added %s to your BiS %s."
-local TEXT_ADDED_AS = "Added %s to your BiS %s as #%d."
+local TEXT_NOT_FITTED = ns.L("Your BiS list now keeps a ranked list per slot. These did not fit: ")
+local TEXT_NAME_EMPTY = ns.L("the name is empty")
+local TEXT_NAME_TAKEN = ns.L("that name is taken")
+local TEXT_NOT_GEAR = ns.L("That is not an item you can equip.")
+local TEXT_ADDED = ns.L("Added %s to your BiS %s.")
+local TEXT_ADDED_AS = ns.L("Added %s to your BiS %s as #%d.")
 local FREE_NAME = "%s %d"
 local NONE = {}
 
@@ -105,7 +105,7 @@ local function List()
     for _, l in ipairs(store.lists) do
         if l.id == account.bisActive[key] then list = l end
     end
-    list = list or store.lists[1] or AddList(store, { name = TEXT_DEFAULT_NAME })
+    list = list or store.lists[1] or AddList(store, { name = ns.L(TEXT_DEFAULT_NAME) })
     account.bisActive[key] = list.id
     list.extra = list.extra or {}
     if not list.slots then SlotItems(list) end
@@ -318,9 +318,9 @@ function ns.AddBisItem(value)
     local slot = FreeSlot(list.slots, id)
     ns.AddBisPick(slot or fits[1], id)
     if slot then
-        ns.Print(TEXT_ADDED:format(Items.Name(id), SLOT_NAME[slot]))
+        ns.Print(TEXT_ADDED:format(Items.Name(id), Items.SlotName(slot)))
     else
-        ns.Print(TEXT_ADDED_AS:format(Items.Name(id), SLOT_NAME[fits[1]], #Picks(list, fits[1])))
+        ns.Print(TEXT_ADDED_AS:format(Items.Name(id), Items.SlotName(fits[1]), #Picks(list, fits[1])))
     end
 end
 

@@ -21,16 +21,16 @@ local NEXT_W, NEXT_H = 130, 26
 local SCORE_BOTTOM = 14
 local DEFAULT_Y = 120
 
-local TEXT_TITLE = "Naowh Quiz"
-local TEXT_SCORE = "%d / %d right   |   streak %d   |   best %d"
-local TEXT_RIGHT = "|cff4dd17aCorrect!|r"
-local TEXT_WRONG = St.RED_CODE .. "Not quite.|r"
-local TEXT_NEXT = "Next Question"
+local TEXT_TITLE = ns.L("Naowh Quiz")
+local TEXT_SCORE = ns.L("%d / %d right   |   streak %d   |   best %d")
+local TEXT_RIGHT = ns.L("|cff4dd17aCorrect!|r")
+local TEXT_WRONG = St.RED_CODE .. ns.L("Not quite.|r")
+local TEXT_NEXT = ns.L("Next Question")
 local TEXT_CLOSE = "X"
-local TEXT_BOTH = "While flying and at the campfire"
-local TEXT_FLYING = "While flying"
-local TEXT_CAMP = "At the campfire"
-local TEXT_BY_HAND = "Only when you open it"
+local TEXT_BOTH = ns.L("While flying and at the campfire")
+local TEXT_FLYING = ns.L("While flying")
+local TEXT_CAMP = ns.L("At the campfire")
+local TEXT_BY_HAND = ns.L("Only when you open it")
 
 local quiz, deck, current
 local openedFor

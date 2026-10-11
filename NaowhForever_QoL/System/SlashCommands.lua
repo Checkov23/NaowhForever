@@ -13,33 +13,33 @@ local DEFAULTS = {
 
 local FRAMES = {
     { "Achievements", "AchievementFrame", "Blizzard_AchievementUI" },
-    { "Addon List", "AddonList" },
+    { ns.L("Addon List"), "AddonList" },
     { "Auction House", "AuctionHouseFrame", "Blizzard_AuctionHouseUI" },
     { "Calendar", "CalendarFrame", "Blizzard_Calendar" },
     { "Channels", "ChannelFrame", "Blizzard_Channels" },
-    { "Chat Config", "ChatConfigFrame" },
-    { "Click Binding", "ClickBindingFrame", "Blizzard_ClickBindingUI" },
+    { ns.L("Chat Config"), "ChatConfigFrame" },
+    { ns.L("Click Binding"), "ClickBindingFrame", "Blizzard_ClickBindingUI" },
     { "Collections", "CollectionsJournal", "Blizzard_Collections" },
     { "Communities", "CommunitiesFrame", "Blizzard_Communities" },
-    { "Cooldown Viewer", "CooldownViewerSettings", "Blizzard_CooldownViewer" },
-    { "Death Recap", "DeathRecapFrame", "Blizzard_DeathRecap" },
-    { "Dress Up", "DressUpFrame" },
+    { ns.L("Cooldown Viewer"), "CooldownViewerSettings", "Blizzard_CooldownViewer" },
+    { ns.L("Death Recap"), "DeathRecapFrame", "Blizzard_DeathRecap" },
+    { ns.L("Dress Up"), "DressUpFrame" },
     { "Dungeon Journal", "EncounterJournal", "Blizzard_EncounterJournal" },
-    { "Edit Mode", "EditModeManagerFrame", "Blizzard_EditMode" },
-    { "Game Menu", "GameMenuFrame" },
+    { ns.L("Edit Mode"), "EditModeManagerFrame", "Blizzard_EditMode" },
+    { ns.L("Game Menu"), "GameMenuFrame" },
     { "Group Finder", "PVEFrame" },
-    { "Guild Bank", "GuildBankFrame", "Blizzard_GuildBankUI" },
+    { ns.L("Guild Bank"), "GuildBankFrame", "Blizzard_GuildBankUI" },
     { "Help", "HelpFrame", "Blizzard_HelpFrame" },
-    { "Loot History", "GroupLootHistoryFrame", "Blizzard_GroupLootHistoryFrame" },
+    { ns.L("Loot History"), "GroupLootHistoryFrame", "Blizzard_GroupLootHistoryFrame" },
     { "Macros", "MacroFrame", "Blizzard_MacroUI" },
-    { "Pet Stable", "StableFrame", "Blizzard_StableUI" },
-    { "Quick Keybind", "QuickKeybindFrame", "Blizzard_QuickKeybind" },
-    { "Raid Manager", "CompactRaidFrameManager", "Blizzard_CompactRaidFrames" },
+    { ns.L("Pet Stable"), "StableFrame", "Blizzard_StableUI" },
+    { ns.L("Quick Keybind"), "QuickKeybindFrame", "Blizzard_QuickKeybind" },
+    { ns.L("Raid Manager"), "CompactRaidFrameManager", "Blizzard_CompactRaidFrames" },
     { "Settings", "SettingsPanel" },
     { "Spellbook / Talents", "PlayerSpellsFrame", "Blizzard_PlayerSpells" },
     { "Stopwatch", "StopwatchFrame" },
-    { "Time Manager", "TimeManagerFrame", "Blizzard_TimeManager" },
-    { "World Map", "WorldMapFrame", "Blizzard_WorldMap" },
+    { ns.L("Time Manager"), "TimeManagerFrame", "Blizzard_TimeManager" },
+    { ns.L("World Map"), "WorldMapFrame", "Blizzard_WorldMap" },
 }
 
 local ACTION_VALUES = { frame = "Open a Window", command = "Run a Command" }
@@ -54,29 +54,29 @@ local EDITOR_W, EDITOR_PAD, EDITOR_TOP, EDITOR_ROW, EDITOR_FOOT = 460, 20, 52, 3
 local EDITOR_NAME_W, EDITOR_GAP, EDITOR_REMOVE_W, EDITOR_BUTTON_H = 90, 10, 76, 22
 local FOOT_BUTTON_W, FOOT_RESTORE_W, FOOT_BUTTON_H, FOOT_Y = 100, 150, 26, 16
 
-local TEXT_SECURE = " can't be run from a custom command. Put it in a macro instead."
-local TEXT_UNKNOWN = " isn't a command this can run."
-local TEXT_NO_RELOAD = "A custom command can't reload. Type /reload."
-local TEXT_COMBAT = "Windows cannot be opened or closed by a command in combat."
-local TEXT_GAMEPAD = "Windows cannot be opened or closed by a command with a gamepad."
-local TEXT_TAKEN = " already belongs to another addon, so it was skipped."
-local TEXT_RUNS, TEXT_OPENS, TEXT_MISSING = "runs ", "opens ", " (not in this game)"
-local TEXT_ADD_TITLE = "Add Slash Command"
-local TEXT_NAME_LABEL = "Command name, such as r for /r"
-local TEXT_ACTION_LABEL = "It should"
-local TEXT_WINDOW = "Window"
-local TEXT_COMMAND_LABEL = "Command to run, such as /dance. What you type after your command is added to it."
-local TEXT_BAD_NAME = "A command name can only use letters, numbers and underscores."
-local TEXT_PICK_WINDOW = "Pick a window to open."
-local TEXT_TYPE_COMMAND = "Type a command to run."
-local TEXT_ALREADY = " is already one of your commands."
-local TEXT_SAVE, TEXT_CANCEL = "Save", "Cancel"
-local TEXT_EDITOR_TITLE = "Custom Slash Commands"
-local TEXT_NONE = "No commands yet. Add one, or restore the defaults."
-local TEXT_REMOVE, TEXT_ADD, TEXT_RESTORE, TEXT_CLOSE = "Remove", "Add", "Restore Defaults", "Close"
-local TEXT_RESTORE_ASK = "Replace your commands with the defaults?"
-local TEXT_SUMMARY = "%d %s, %d on"
-local TEXT_ONE, TEXT_MANY = "command", "commands"
+local TEXT_SECURE = ns.L(" can't be run from a custom command. Put it in a macro instead.")
+local TEXT_UNKNOWN = ns.L(" isn't a command this can run.")
+local TEXT_NO_RELOAD = ns.L("A custom command can't reload. Type /reload.")
+local TEXT_COMBAT = ns.L("Windows cannot be opened or closed by a command in combat.")
+local TEXT_GAMEPAD = ns.L("Windows cannot be opened or closed by a command with a gamepad.")
+local TEXT_TAKEN = ns.L(" already belongs to another addon, so it was skipped.")
+local TEXT_RUNS, TEXT_OPENS, TEXT_MISSING = ns.L("runs "), ns.L("opens "), ns.L(" (not in this game)")
+local TEXT_ADD_TITLE = ns.L("Add Slash Command")
+local TEXT_NAME_LABEL = ns.L("Command name, such as r for /r")
+local TEXT_ACTION_LABEL = ns.L("It should")
+local TEXT_WINDOW = ns.L("Window")
+local TEXT_COMMAND_LABEL = ns.L("Command to run, such as /dance. What you type after your command is added to it.")
+local TEXT_BAD_NAME = ns.L("A command name can only use letters, numbers and underscores.")
+local TEXT_PICK_WINDOW = ns.L("Pick a window to open.")
+local TEXT_TYPE_COMMAND = ns.L("Type a command to run.")
+local TEXT_ALREADY = ns.L(" is already one of your commands.")
+local TEXT_SAVE, TEXT_CANCEL = ns.L("Save"), ns.L("Cancel")
+local TEXT_EDITOR_TITLE = ns.L("Custom Slash Commands")
+local TEXT_NONE = ns.L("No commands yet. Add one, or restore the defaults.")
+local TEXT_REMOVE, TEXT_ADD, TEXT_RESTORE, TEXT_CLOSE = ns.L("Remove"), ns.L("Add"), ns.L("Restore Defaults"), ns.L("Close")
+local TEXT_RESTORE_ASK = ns.L("Replace your commands with the defaults?")
+local TEXT_SUMMARY = ns.L("%d %s, %d on")
+local TEXT_ONE, TEXT_MANY = ns.L("command"), ns.L("commands")
 
 local ADDON_FOR, FRAME_NAME = {}, {}
 for _, f in ipairs(FRAMES) do

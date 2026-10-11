@@ -16,8 +16,8 @@ local OBJECTIVE_H, OBJECTIVE_BAR_H, OBJECTIVE_BAR_BOTTOM = 26, 3, 4
 local COUNT_TOP, COUNT_ROOM = 4, 12
 local LEADING_COUNT = "^%d+%s*/%s*%d+%s+"
 
-local TEXT_COMPLETE = "Complete|r"
-local TEXT_IN_LOG = "In log|r"
+local TEXT_COMPLETE = ns.L("Complete|r")
+local TEXT_IN_LOG = ns.L("In log|r")
 local TEXT_COUNT = "%s/%s"
 local CHECK_ICON = "|T" .. CHECK .. ":0|t "
 

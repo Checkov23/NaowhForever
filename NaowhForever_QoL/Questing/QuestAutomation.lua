@@ -9,17 +9,17 @@ local AUTO_EVENTS = { "QUEST_DETAIL", "QUEST_ACCEPT_CONFIRM", "QUEST_PROGRESS", 
     "QUEST_GREETING", "GOSSIP_SHOW" }
 local MODIFIER = { { ALT = "Alt", CTRL = "Ctrl", SHIFT = "Shift" }, { "ALT", "CTRL", "SHIFT" } }
 local MODIFIER_MODE = { { SKIP = "Skips", TRIGGER = "Triggers" }, { "SKIP", "TRIGGER" } }
-local DOING = { { "questAccept", "accepts" }, { "questTurnIn", "turns in" }, { "questGossip", "picks from NPCs" },
+local DOING = { { "questAccept", "accepts" }, { "questTurnIn", ns.L("turns in") }, { "questGossip", ns.L("picks from NPCs") },
     { "questShare", "shares" } }
 
 local GOSSIP_ICON_PATHS = { "VendorGossipIcon", "TrainerGossipIcon", "BankerGossipIcon",
     "AuctioneerGossipIcon", "StableMasterGossipIcon" }
 local GOSSIP_ICON_DIR = "Interface\\GossipFrame\\"
 
-local TEXT_CLEARED = "Cleared the saved reward for %s."
-local TEXT_SAVED = "%s is your reward for %s in this profile."
-local TEXT_ITEM = "item "
-local TEXT_BY_HAND = "All by hand"
+local TEXT_CLEARED = ns.L("Cleared the saved reward for %s.")
+local TEXT_SAVED = ns.L("%s is your reward for %s in this profile.")
+local TEXT_ITEM = ns.L("item ")
+local TEXT_BY_HAND = ns.L("All by hand")
 
 local hooked = {}
 local sharedWithMe

@@ -13,10 +13,10 @@ local BOOK_ICON = "Interface\\Icons\\INV_Misc_Book_11"
 local TURN_IN_ICON = "Interface\\Icons\\INV_Misc_Book_07"
 local CROP_LOW, CROP_HIGH = Style.ICON_CROP, Style.ICON_CROP_HIGH
 local OWN_KEYS = { enabled = true, mapPins = true, mapPinSize = true, mapTurnIn = true }
-local TEXT_HAND_IN = "Hand in to %s, %s"
-local TEXT_TAKES_ONE = "Takes the book you carry."
-local TEXT_TAKES = "Takes the %d books you carry."
-local TEXT_WAYPOINT = "Click for a waypoint."
+local TEXT_HAND_IN = ns.L("Hand in to %s, %s")
+local TEXT_TAKES_ONE = ns.L("Takes the book you carry.")
+local TEXT_TAKES = ns.L("Takes the %d books you carry.")
+local TEXT_WAYPOINT = ns.L("Click for a waypoint.")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events

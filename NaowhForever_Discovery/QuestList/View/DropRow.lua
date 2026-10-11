@@ -13,9 +13,9 @@ local DROP_H = 22
 local TICK_GAP = 6
 local CHANCE_RIGHT = Style.PIN_RIGHT + Style.ACTION + Style.ARROW_GAP * 2 + Style.ARROW_SIZE
 local NAME_RIGHT = V.NAME_X + Style.DROP_ICON + Style.ICON_GAP + Style.STATUS_W + Style.PIN_RIGHT
-local TEXT_NONE = "No special drops: no rare or epic items, nor recipes"
-local TEXT_DROPPED = "This rare dropped it for you."
-local TEXT_WOWHEAD = "Right-click: Wowhead link"
+local TEXT_NONE = ns.L("No special drops: no rare or epic items, nor recipes")
+local TEXT_DROPPED = ns.L("This rare dropped it for you.")
+local TEXT_WOWHEAD = ns.L("Right-click: Wowhead link")
 
 local function DropEnter(row)
     row.hover:Show()

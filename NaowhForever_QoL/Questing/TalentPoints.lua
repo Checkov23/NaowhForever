@@ -14,8 +14,8 @@ local TEXT_ALERT = "Talent Points"
 local SAMPLE_POINTS = 2
 local TEXT_RANGE = { 10, 48, 1 }
 
-local TEXT_ONE = "1 Unspent Talent Point"
-local TEXT_MANY = "%d Unspent Talent Points"
+local TEXT_ONE = ns.L("1 Unspent Talent Point")
+local TEXT_MANY = ns.L("%d Unspent Talent Points")
 
 local EVENTS = { "PLAYER_LEVEL_UP", "TRAIT_CONFIG_UPDATED", "TRAIT_TREE_CURRENCY_INFO_UPDATED",
     "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED", "PLAYER_ENTERING_WORLD" }

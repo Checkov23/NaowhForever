@@ -12,16 +12,16 @@ local TEXT_MAX, NAME_MAX = 200, 40
 local META_GAP = 6
 local TEXT_GAP = 2
 local MINUTE, HOUR = 60, 60
-local NO_HISTORY = "No history with them yet."
-local NOT_GROUPED = "Not grouped yet."
-local GROUPED_ONCE, GROUPED = "Grouped once", "Grouped %d times"
-local DUNGEON, DUNGEONS, RAID, RAIDS = "1 dungeon", "%d dungeons", "1 raid", "%d raids"
-local LAST_SEEN = " Last seen %s."
-local PARTY_PLACE, RAID_PLACE = "Party", "Raid"
-local SHORT, MINUTES, HOURS = "under a minute", "%d min", "%d h %d min"
+local NO_HISTORY = ns.L("No history with them yet.")
+local NOT_GROUPED = ns.L("Not grouped yet.")
+local GROUPED_ONCE, GROUPED = ns.L("Grouped once"), ns.L("Grouped %d times")
+local DUNGEON, DUNGEONS, RAID, RAIDS = ns.L("1 dungeon"), ns.L("%d dungeons"), ns.L("1 raid"), ns.L("%d raids")
+local LAST_SEEN = ns.L(" Last seen %s.")
+local PARTY_PLACE, RAID_PLACE = ns.L("Party"), ns.L("Raid")
+local SHORT, MINUTES, HOURS = ns.L("under a minute"), ns.L("%d min"), ns.L("%d h %d min")
 local PLACE = "%s, %s"
-local YOU = "You"
-local CHANNEL = { WHISPER = "whisper", PARTY = "party", RAID = "raid", INSTANCE_CHAT = "instance" }
+local YOU = ns.L("You")
+local CHANNEL = { WHISPER = ns.L("whisper"), PARTY = ns.L("party"), RAID = ns.L("raid"), INSTANCE_CHAT = ns.L("instance") }
 local META = "%s, %s"
 local NONE = {}
 

@@ -39,7 +39,7 @@ local function Note()
     local IT = ns.InstanceTracker
     if not IT then return "" end
     local count, cap = IT.Hour()
-    return string.format("%d of %d on this account", count, cap)
+    return string.format(ns.L("%d of %d on this account"), count, cap)
 end
 
 local function Paint()
@@ -78,7 +78,7 @@ local function Build()
     window = Parts.Window(WIDTH, HEIGHT, "instanceTrackerWindow")
     window.backdrop:Card(CARD, HEADER + CARD, CARD, FOOTER + CARD)
     local close = Parts.TitleBar(window, "Instance Tracker",
-        "Visits, and this hour's instances.", PAGE)
+        ns.L("Visits, and this hour's instances."), PAGE)
     local _, opacity = Parts.Opacity(window, close, Opacity, SetOpacity)
     window.opacity = opacity
     Parts.FooterBrand(window, PAGE)

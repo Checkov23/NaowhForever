@@ -11,8 +11,8 @@ local WAIT = 5
 
 local TEXT_DONE = "Item probe: %d items load, %d are not in Forever. /reload to save them, then run "
     .. "Tools/sources/items_in_game.py."
-local TEXT_RUNNING = "Item probe: still running."
-local TEXT_ASKING = "Item probe: asking for %d items."
+local TEXT_RUNNING = ns.L("Item probe: still running.")
+local TEXT_ASKING = ns.L("Item probe: asking for %d items.")
 
 local frame, queue, pending, loads, refused, at, waiting, generation
 local running = false

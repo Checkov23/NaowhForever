@@ -16,25 +16,25 @@ local TREE_UP, TREE_GAP, TREE_ALPHA, ELBOW = 6, 4, 0.5, 8
 local TITLE_GAP = 4
 local ICON_DROP = Style.ROW_ICON_DROP
 local STATE = {
-    done = { "Done", "muted" }, log = { "In your log", "log" }, low = { "Needs level %d", "red" },
-    later = { "Needs an earlier quest", "muted" }, open = { "Not done", "fg" },
-    held = { "Not offered yet", "muted" },
+    done = { ns.L("Done"), "muted" }, log = { ns.L("In your log"), "log" }, low = { ns.L("Needs level %d"), "red" },
+    later = { ns.L("Needs an earlier quest"), "muted" }, open = { ns.L("Not done"), "fg" },
+    held = { ns.L("Not offered yet"), "muted" },
 }
-local TEXT_REPEATABLE = "Repeatable"
-local TEXT_PIN_HINT = "To who gives the quest."
-local TEXT_WAYPOINT = "Waypoint"
-local TEXT_LEVEL = "Level"
-local TEXT_REQUIRES = "Requires level"
-local TEXT_STATUS = "Status"
-local TEXT_CHAIN = "Chain"
-local TEXT_CHAIN_STEPS = "%d steps, %s"
-local TEXT_EVERY_STEP = "every step done"
-local TEXT_ON_STEP = "on step %d"
-local TEXT_PIN_TIP = "Pin: waypoint    "
-local TEXT_WOWHEAD = "Right-click: Wowhead link"
-local TEXT_CHAIN_DONE = "Quest chain of %d, all done"
-local TEXT_CHAIN_AT = "Quest chain of %d, on step %d"
-local TEXT_STEP_OF = "Step %d of %d in %s"
+local TEXT_REPEATABLE = ns.L("Repeatable")
+local TEXT_PIN_HINT = ns.L("To who gives the quest.")
+local TEXT_WAYPOINT = ns.L("Waypoint")
+local TEXT_LEVEL = ns.L("Level")
+local TEXT_REQUIRES = ns.L("Requires level")
+local TEXT_STATUS = ns.L("Status")
+local TEXT_CHAIN = ns.L("Chain")
+local TEXT_CHAIN_STEPS = ns.L("%d steps, %s")
+local TEXT_EVERY_STEP = ns.L("every step done")
+local TEXT_ON_STEP = ns.L("on step %d")
+local TEXT_PIN_TIP = ns.L("Pin: waypoint    ")
+local TEXT_WOWHEAD = ns.L("Right-click: Wowhead link")
+local TEXT_CHAIN_DONE = ns.L("Quest chain of %d, all done")
+local TEXT_CHAIN_AT = ns.L("Quest chain of %d, on step %d")
+local TEXT_STEP_OF = ns.L("Step %d of %d in %s")
 
 local function StateText(id, state)
     if state == "open" and Q.Repeatable(id) then return TEXT_REPEATABLE, Style.REPEAT_RGB end

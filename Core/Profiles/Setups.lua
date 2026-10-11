@@ -5,16 +5,16 @@ local S = ns.QoLSettings
 local P = ns.PRESETS
 local Settings = ns.Shared.Settings
 
-local ASK = "Apply %s to every setting and position? Your lists, notes and saved picks stay. Cannot be undone."
-local DONE = "Every setting now follows %s. Reload now to finish?"
-local ON, OFF, SAME = "%s turns on: %s", "%s turns off: %s", "%s is what you have now."
+local ASK = ns.L("Apply %s to every setting and position? Your lists, notes and saved picks stay. Cannot be undone.")
+local DONE = ns.L("Every setting now follows %s. Reload now to finish?")
+local ON, OFF, SAME = ns.L("%s turns on: %s"), ns.L("%s turns off: %s"), ns.L("%s is what you have now.")
 local RIVALS = { "characterPanel", "inspectPanel" }
 local KEEP = {
     qol = { "questRewards", "bagSpaceIgnore", "slashList", "equipEnchantRules" },
     auraBuffs = { "campHiddenBonuses" },
     unlockMode = { "layouts" },
 }
-local APPLY = "Apply"
+local APPLY = ns.L("Apply")
 local KEEP_ROOT = "tankReminder"
 local LINE_BREAK, LIST_JOIN = "\n", ", "
 

@@ -5,10 +5,10 @@ local S = ns.QoLSettings
 local P = ns.PRESETS
 local Settings = ns.Shared.Settings
 
-local CUSTOM = "Custom"
-local RESTORE_ASK = "Put every setting back to how it was before the onboarding?"
-local RESTORED = "Your settings are back. Reload now to finish?"
-local RESTORE = "Restore"
+local CUSTOM = ns.L("Custom")
+local RESTORE_ASK = ns.L("Put every setting back to how it was before the onboarding?")
+local RESTORED = ns.L("Your settings are back. Reload now to finish?")
+local RESTORE = ns.L("Restore")
 local PARAGRAPH = "\n\n"
 
 local function Tip()

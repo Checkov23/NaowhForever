@@ -22,8 +22,8 @@ local STATES = {
     { key = "none", label = "None in Bags", tip = "Your health under the threshold, with nothing to drink or eat." },
 }
 
-local OFF = "Turn on AuraBuffs"
-local TEXT_NOTE = "Shown below %d%% health, in combat too."
+local OFF = ns.L("Turn on AuraBuffs")
+local TEXT_NOTE = ns.L("Shown below %d%% health, in combat too.")
 
 local Enabled = A.Enabled
 local SoundOn = A.Needs("lowHealthSound")
@@ -64,7 +64,7 @@ local function PaintPreview(shot, state)
 end
 
 local function Summary(store)
-    return ("Below %d%%, %s"):format(store.Get("lowHealthBelow"), ITEMS[1][store.Get("lowHealthItem")] or "")
+    return (ns.L("Below %d%%, %s")):format(store.Get("lowHealthBelow"), ns.L(ITEMS[1][store.Get("lowHealthItem")] or ""))
 end
 
 Settings.Page(A.PAGE, S):Card({

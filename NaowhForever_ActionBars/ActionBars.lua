@@ -9,7 +9,6 @@ local S = ns.UI.ModuleSettings("actionBars", {
 })
 ns.ActionBarSettings = S
 
-local PLURAL = "%d %s%s"
 
 local A = { Settings = S }
 ns.ActionBars = A
@@ -64,8 +63,8 @@ function A.SortedNames()
     return names
 end
 
-function A.Plural(n, word)
-    return PLURAL:format(n, word, n == 1 and "" or "s")
+function A.Plural(n, one, many)
+    return (n == 1 and one or many):format(n)
 end
 
 function A.Refresh()

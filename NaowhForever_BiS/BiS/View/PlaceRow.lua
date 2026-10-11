@@ -18,20 +18,20 @@ local PIN_Y, LINK_Y, LINK_H = 4, 2, 16
 local COLUMN_GAP = 10
 local DETAIL_Y = 3
 local STAR_MARK = Parts.RankMark(1, CARD_DROP)
-local TEXT_UNKNOWN = "World drop"
-local TEXT_BACK = "Back to BiS List"
-local TEXT_YOUR_BIS = "your BiS"
-local TEXT_SELLS, TEXT_DROPS = " sells", " drops"
+local TEXT_UNKNOWN = ns.L("World drop")
+local TEXT_BACK = ns.L("Back to BiS List")
+local TEXT_YOUR_BIS = ns.L("your BiS")
+local TEXT_SELLS, TEXT_DROPS = ns.L(" sells"), ns.L(" drops")
 local TEXT_WHERE = "%s %.1f, %.1f"
-local TEXT_AROUND, TEXT_AT = "around", "at"
-local TEXT_HAS_IT = "%s it %s."
-local TEXT_IN = "in "
-local TEXT_OPEN_HINT = "Click to open it in the Dungeon Journal."
-local TEXT_WAYPOINT_HINT = "Click to put a waypoint on %s."
-local TEXT_MAP_HINT = "Click to show %s on your map."
-local TEXT_QUEST, TEXT_QUESTS = "quest", "quests"
-local TEXT_OPEN, TEXT_WAYPOINT, TEXT_MAP = "Open", "Waypoint", "Map"
-local VIA_LINKS = { quest = "Quest", recipe = "Recipe", faction = "Open" }
+local TEXT_AROUND, TEXT_AT = ns.L("around"), ns.L("at")
+local TEXT_HAS_IT = ns.L("%s it %s.")
+local TEXT_IN = ns.L("in ")
+local TEXT_OPEN_HINT = ns.L("Click to open it in the Dungeon Journal.")
+local TEXT_WAYPOINT_HINT = ns.L("Click to put a waypoint on %s.")
+local TEXT_MAP_HINT = ns.L("Click to show %s on your map.")
+local TEXT_QUEST, TEXT_QUESTS = ns.L("quest"), ns.L("quests")
+local TEXT_OPEN, TEXT_WAYPOINT, TEXT_MAP = ns.L("Open"), ns.L("Waypoint"), ns.L("Map")
+local VIA_LINKS = { quest = ns.L("Quest"), recipe = ns.L("Recipe"), faction = ns.L("Open") }
 local VIA_WORDS = { quest = "Rewards ", recipe = "Crafts ", faction = "Sells " }
 
 local QuestsText = B.View.Memo("%d %s")

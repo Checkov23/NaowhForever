@@ -23,12 +23,12 @@ local BLACK, MISSING_RGB = St.BLACK, St.MISSING_RGB
 local EVENTS = { "EQUIPMENT_SETS_CHANGED", "PLAYER_EQUIPMENT_CHANGED", "EQUIPMENT_SWAP_FINISHED" }
 local WINDOW_KEY = "gearSetsWindow"
 
-local TEXT_TITLE = "Gear Sets"
-local TEXT_TITLE_TIP = "Your equipment sets, the same ones the character sheet keeps."
-local TEXT_NEW = "New Gear Set"
-local TEXT_NEW_TIP = "Saves what you are wearing now as a new set."
-local TEXT_NO_SETS = "No gear sets yet. New Gear Set saves what you wear now as one."
-local TEXT_EQUIPPED = "Equipped"
+local TEXT_TITLE = ns.L("Gear Sets")
+local TEXT_TITLE_TIP = ns.L("Your equipment sets, the same ones the character sheet keeps.")
+local TEXT_NEW = ns.L("New Gear Set")
+local TEXT_NEW_TIP = ns.L("Saves what you are wearing now as a new set.")
+local TEXT_NO_SETS = ns.L("No gear sets yet. New Gear Set saves what you wear now as one.")
+local TEXT_EQUIPPED = ns.L("Equipped")
 
 local window, scroll, view, kinds
 
@@ -40,11 +40,11 @@ local ACTIONS = {
     { "Delete", function(set) ns.DeleteGearSet(set.id, set.name) end },
 }
 local ACTION_TIPS = {
-    Equip = "Puts this set on. In combat, it goes on when the fight ends.",
-    Save = "Saves what you are wearing now into this set.",
-    Rename = "Renames the set; Wear While Mounted and Resting follow it.",
-    Icon = "Picks a new icon for the set.",
-    Delete = "Deletes the set. Asks first.",
+    Equip = ns.L("Puts this set on. In combat, it goes on when the fight ends."),
+    Save = ns.L("Saves what you are wearing now into this set."),
+    Rename = ns.L("Renames the set; Wear While Mounted and Resting follow it."),
+    Icon = ns.L("Picks a new icon for the set."),
+    Delete = ns.L("Deletes the set. Asks first."),
 }
 
 local function Opacity()
@@ -55,8 +55,12 @@ local function SetOpacity(value)
     S.Set("gearWindowAlpha", value / PERCENT)
 end
 
+local TEXT_ITEM, TEXT_ITEMS = ns.L("%d item"), ns.L("%d items")
+local TEXT_SET, TEXT_SETS = ns.L("%d set"), ns.L("%d sets")
+local TEXT_MISSING = ns.L("%d missing")
+
 local function Count(n, one, many)
-    return n == 1 and ("1 " .. one) or (n .. " " .. many)
+    return (n == 1 and one or many):format(n)
 end
 
 local function NewActions(row)
@@ -98,9 +102,9 @@ local function NewSet(parent)
 end
 
 local function Status(set)
-    if set.lost > 0 then return set.lost .. " missing", MISSING_RGB end
+    if set.lost > 0 then return TEXT_MISSING:format(set.lost), MISSING_RGB end
     if set.equipped then return TEXT_EQUIPPED, St.HAVE_RGB end
-    return Count(set.items, "item", "items"), T.muted
+    return Count(set.items, TEXT_ITEM, TEXT_ITEMS), T.muted
 end
 
 local function SetSet(row, set, stripe)
@@ -124,7 +128,7 @@ function Draw:Redraw()
     local sets = G.Sets()
     for i, set in ipairs(sets) do self:Add("set", set, i % 2 == 0) end
     if #sets == 0 then self:Note(TEXT_NO_SETS) end
-    window.note.text:SetText(Count(#sets, "set", "sets"))
+    window.note.text:SetText(Count(#sets, TEXT_SET, TEXT_SETS))
     window.note:SetWidth(math.max(1, math.ceil(window.note.text:GetStringWidth())))
     self:Fit(EVENTS)
 end

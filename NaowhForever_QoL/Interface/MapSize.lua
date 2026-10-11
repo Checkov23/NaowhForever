@@ -21,10 +21,10 @@ local KEEP_ON_SCREEN = 60
 local SECTION_ORDER = 10
 local TEXT_SECTION = "Map"
 local TEXT_TITLE = "Map Window"
-local TEXT_TIP = "Drag to make the map bigger or smaller.\nRight-click: back to 100%."
-local TEXT_HELP = "Makes the windowed world map bigger or smaller and lets you move it: drag the grip in "
+local TEXT_TIP = ns.L("Drag to make the map bigger or smaller.\nRight-click: back to 100%.")
+local TEXT_HELP = ns.L("Makes the windowed world map bigger or smaller and lets you move it: drag the grip in "
     .. "its bottom right corner or set the size here, and drag its title bar to move it (right-click "
-    .. "the title bar puts it back). The full screen map keeps its size and place."
+    .. "the title bar puts it back). The full screen map keeps its size and place.")
 local TEXT_SCALE = "Map Scale"
 
 local grip, handle

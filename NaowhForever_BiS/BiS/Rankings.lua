@@ -16,7 +16,7 @@ local TRASH_CHANCE = -1
 local RUN_NEXT_MAX = 3
 local SOURCE_SEP = " \194\183 "
 local PLACE_PATTERN = "^(.*)" .. SOURCE_SEP .. "(.+)$"
-local TEXT_TRASH = "Trash drop"
+local TEXT_TRASH = ns.L("Trash drop")
 local DUAL_WIELD = { WARRIOR = true, ROGUE = true, HUNTER = true }
 local NOT_A_PLACE = { Crafted = true, Quest = true, ["Quest (Horde)"] = true, ["Quest (Alliance)"] = true,
     ["Quest Reward"] = true, ["World drop"] = true, Reputation = true }

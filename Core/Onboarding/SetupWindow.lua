@@ -53,48 +53,48 @@ local PROFILE_ICONS = { minimalist = "essentials", recommended = "everything", [
 local PROFILE_ICON_ANY = "everything"
 local SUMMARY_ICONS = { skin = "interface", on = "changes", off = "none" }
 local LIST_JOIN = ", "
-local TEXT_BACK, TEXT_NEXT, TEXT_APPLY = "Back", "Next", "Apply"
+local TEXT_BACK, TEXT_NEXT, TEXT_APPLY = ns.L("Back"), ns.L("Next"), ns.L("Apply")
 
-local TITLE = "Naowh Forever: Onboarding"
-local WELCOME_SUB = "Welcome"
-local WELCOME_FOR = "Just for %s"
-local WELCOME = "Welcome, and thank you for joining us"
-local TAGLINE_1, TAGLINE_2A, TAGLINE_2B = "One addon", "to rule", "them all."
-local SITE_LINE = "New here? Every feature is shown on our website:"
+local TITLE = ns.L("Naowh Forever: Onboarding")
+local WELCOME_SUB = ns.L("Welcome")
+local WELCOME_FOR = ns.L("Just for %s")
+local WELCOME = ns.L("Welcome, and thank you for joining us")
+local TAGLINE_1, TAGLINE_2A, TAGLINE_2B = ns.L("One addon"), ns.L("to rule"), ns.L("them all.")
+local SITE_LINE = ns.L("New here? Every feature is shown on our website:")
 local SITE_LINK = "naowh.gg/forever"
-local SITE_TITLE = "Naowh Forever on naowh.gg"
+local SITE_TITLE = ns.L("Naowh Forever on naowh.gg")
 local SITE_URL = "https://naowh.gg/forever/"
-local THANKS = "This is a new adventure for all of us. Naowh Forever is crafted by a small, dedicated team with "
-    .. "a lot of passion, and we hope you enjoy every bit of it."
+local THANKS = ns.L("This is a new adventure for all of us. Naowh Forever is crafted by a small, dedicated team with "
+    .. "a lot of passion, and we hope you enjoy every bit of it.")
 local PROMISES = {
-    { "Four quick steps", "About a minute.", "questions" },
-    { "Review it all", "Nothing changes before you apply.", "review" },
-    { "Undo any time", "Restore it from the Profiles page.", "undo" },
+    { ns.L("Four quick steps"), ns.L("About a minute."), "questions" },
+    { ns.L("Review it all"), ns.L("Nothing changes before you apply."), "review" },
+    { ns.L("Undo any time"), ns.L("Restore it from the Profiles page."), "undo" },
 }
-local START = "Let's start"
-local KEEP = "or keep my setup as it is"
-local STEP_OF = "Step %d of %d"
-local TEXT_PROFILE = { title = "Where do you want to start?", hint = "You can change everything afterwards.",
-    keepName = "Keep mine", keepBlurb = "Your settings stay as they are." }
-local TEXT_SKIN = { title = "How should Naowh Forever look?", hint = "For every character on this computer.",
-    previewTitle = "Naowh Forever", previewBody = "Every window looks like this.", previewButton = "Start" }
+local START = ns.L("Let's start")
+local KEEP = ns.L("or keep my setup as it is")
+local STEP_OF = ns.L("Step %d of %d")
+local TEXT_PROFILE = { title = ns.L("Where do you want to start?"), hint = ns.L("You can change everything afterwards."),
+    keepName = ns.L("Keep mine"), keepBlurb = ns.L("Your settings stay as they are.") }
+local TEXT_SKIN = { title = ns.L("How should Naowh Forever look?"), hint = ns.L("For every character on this computer."),
+    previewTitle = "Naowh Forever", previewBody = ns.L("Every window looks like this."), previewButton = ns.L("Start") }
 local SKIN_NAMES = { [Setup.SKIN_NAOWH] = "Naowh", [Setup.SKIN_CLASSIC] = "Classic+" }
-local SKIN_BLURBS = { [Setup.SKIN_NAOWH] = "Naowh's dark look, with his blue.",
-    [Setup.SKIN_CLASSIC] = "The game's own look, in gold and bronze." }
-local TEXT_MODULES = { title = "Which modules do you want?", hint = "Click a module to turn it on or off.",
-    hintFor = "Click a module to turn it on or off, for %s only.", count = "%d of %d on" }
-local TEXT_SUMMARY = { title = "Here's your setup", hint = "Nothing changes until you apply it.",
-    profile = "Profile", skin = "Skin", on = "Turns on", off = "Turns off", stays = "Your settings stay.",
-    sameSkin = "%s, as now" }
-local IN_COMBAT = "Apply after your fight."
-local DONE_RELOAD = "Your setup is ready. Reload now to finish?"
-local DONE = "Your setup is ready."
+local SKIN_BLURBS = { [Setup.SKIN_NAOWH] = ns.L("Naowh's dark look, with his blue."),
+    [Setup.SKIN_CLASSIC] = ns.L("The game's own look, in gold and bronze.") }
+local TEXT_MODULES = { title = ns.L("Which modules do you want?"), hint = ns.L("Click a module to turn it on or off."),
+    hintFor = ns.L("Click a module to turn it on or off, for %s only."), count = ns.L("%d of %d on") }
+local TEXT_SUMMARY = { title = ns.L("Here's your setup"), hint = ns.L("Nothing changes until you apply it."),
+    profile = ns.L("Profile"), skin = ns.L("Skin"), on = ns.L("Turns on"), off = ns.L("Turns off"), stays = ns.L("Your settings stay."),
+    sameSkin = ns.L("%s, as now") }
+local IN_COMBAT = ns.L("Apply after your fight.")
+local DONE_RELOAD = ns.L("Your setup is ready. Reload now to finish?")
+local DONE = ns.L("Your setup is ready.")
 local TEXT_CHOICE = {
-    head = "Welcome, %s!",
-    text = "You've played Naowh Forever on %s. Share %s's settings, or give %s its own?",
-    sameName = "Same as %s", sameBlurb = "%s uses %s's settings; a change on one shows on both.",
-    ownName = "Set Up %s", ownBlurb = "A few quick steps for %s only, its own modules included.",
-    sameDone = "%s now uses the same settings as %s.",
+    head = ns.L("Welcome, %s!"),
+    text = ns.L("You've played Naowh Forever on %s. Share %s's settings, or give %s its own?"),
+    sameName = ns.L("Same as %s"), sameBlurb = ns.L("%s uses %s's settings; a change on one shows on both."),
+    ownName = ns.L("Set Up %s"), ownBlurb = ns.L("A few quick steps for %s only, its own modules included."),
+    sameDone = ns.L("%s now uses the same settings as %s."),
 }
 
 local window, step, picks, plan, modules, forCharacter
@@ -539,7 +539,7 @@ local function BuildProfile()
         local preset = ns.PRESETS[key]
         tile.key, tile.onPick = key, PickProfile
         tile.name:SetText(preset and preset.name or TEXT_PROFILE.keepName)
-        tile.blurb:SetText(preset and preset.about or TEXT_PROFILE.keepBlurb)
+        tile.blurb:SetText(preset and ns.L(preset.about) or TEXT_PROFILE.keepBlurb)
         SetGlyph(tile.icon.tex, PROFILE_ICONS[key] or PROFILE_ICON_ANY)
     end
     return page

@@ -9,15 +9,15 @@ if not Settings then return end
 
 local BADGES_LIVE = ns.BADGES_LIVE
 local MARK_KEYS = { "characterPanelLevels", "characterPanelMarks", "characterPanelEnchants" }
-local MARKS_OFF = "Turn on Slot Marks or the Naowh Character Panel"
-local TEXT_THEIRS_IN_USE = "EllesmereUI's panel is in use: switch this off and on for this one"
-local TEXT_TAKES_OVER = "Takes over from EllesmereUI's panel, after a reload"
-local TEXT_BADGE_AND_SCORE = "With your badge and Naowh Score"
-local TEXT_BADGE = "With your badge"
-local TEXT_SCORE = "With your Naowh Score"
-local TEXT_PLAIN = "The slots and stats only"
-local TEXT_ON_PANEL = "On the Naowh Character Panel"
-local TEXT_MARKS = "%d of %d marks"
+local MARKS_OFF = ns.L("Turn on Slot Marks or the Naowh Character Panel")
+local TEXT_THEIRS_IN_USE = ns.L("EllesmereUI's panel is in use: switch this off and on for this one")
+local TEXT_TAKES_OVER = ns.L("Takes over from EllesmereUI's panel, after a reload")
+local TEXT_BADGE_AND_SCORE = ns.L("With your badge and Naowh Score")
+local TEXT_BADGE = ns.L("With your badge")
+local TEXT_SCORE = ns.L("With your Naowh Score")
+local TEXT_PLAIN = ns.L("The slots and stats only")
+local TEXT_ON_PANEL = ns.L("On the Naowh Character Panel")
+local TEXT_MARKS = ns.L("%d of %d marks")
 local STATS_SHOWN = { { spec = "Your Spec", all = "All Stats" }, { "spec", "all" } }
 
 local function MarksOn()

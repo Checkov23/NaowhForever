@@ -18,11 +18,11 @@ local SHARE = St.ACTION
 local BUBBLE = "Interface\\GossipFrame\\GossipGossipIcon"
 
 local TIP_TEXT = "Naowh's tip for %s: %s"
-local TEXT_SHARE_TITLE = "Share Naowh's tip"
-local TEXT_COPY_TITLE = "Naowh's tip: "
-local TEXT_TIP = "Naowh's tip"
-local TEXT_CLICK_SHARE = "Click: share in chat"
-local TEXT_SHARE_BUTTON = "Share Naowh's tip in chat"
+local TEXT_SHARE_TITLE = ns.L("Share Naowh's tip")
+local TEXT_COPY_TITLE = ns.L("Naowh's tip: ")
+local TEXT_TIP = ns.L("Naowh's tip")
+local TEXT_CLICK_SHARE = ns.L("Click: share in chat")
+local TEXT_SHARE_BUTTON = ns.L("Share Naowh's tip in chat")
 local TEXT_BLANK = " "
 
 local function TipMessage(boss, tip)

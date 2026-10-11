@@ -36,16 +36,16 @@ local REAGENTS_GAP = 14
 local FOOT_ROOM = 36
 local HINT_BOTTOM = 10
 local PROFIT_GAP = 8
-local TEXT_RECIPE = "Recipe "
-local TEXT_SEARCH, TEXT_SEARCH_RECIPE = "Search AH", "Search Recipe"
-local TEXT_HINT = "Click a trainer or vendor to set a waypoint."
-local TEXT_WAYPOINT = "Click to set a waypoint."
-local TIP_FAVORITE = "Favorite"
-local TIP_FAVORITE_HELP = "Makes this recipe a favourite, or no longer one. With Train "
+local TEXT_RECIPE = ns.L("Recipe ")
+local TEXT_SEARCH, TEXT_SEARCH_RECIPE = ns.L("Search AH"), ns.L("Search Recipe")
+local TEXT_HINT = ns.L("Click a trainer or vendor to set a waypoint.")
+local TEXT_WAYPOINT = ns.L("Click to set a waypoint.")
+local TIP_FAVORITE = ns.L("Favorite")
+local TIP_FAVORITE_HELP = ns.L("Makes this recipe a favourite, or no longer one. With Train "
     .. "Favorites on, a trainer who teaches it offers it when you visit; with Search Favorites "
-    .. "AH on, its pattern, plans or manual is listed at the auction house to search for."
-local TIP_SEARCH_HELP = "Searches the auction house for the item this recipe makes."
-local TIP_SEARCH_RECIPE_HELP = "Searches the auction house for the recipe itself, to learn it."
+    .. "AH on, its pattern, plans or manual is listed at the auction house to search for.")
+local TIP_SEARCH_HELP = ns.L("Searches the auction house for the item this recipe makes.")
+local TIP_SEARCH_RECIPE_HELP = ns.L("Searches the auction house for the recipe itself, to learn it.")
 
 local win
 

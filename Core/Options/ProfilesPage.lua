@@ -35,37 +35,37 @@ local IMPORT_GAP = 12
 local DIM = 0.4
 local NAME_MAX = 40
 local TEXT_NEW_PROFILE = "New Profile"
-local TEXT_COPY_OF = "Copy "
-local TEXT_REPLACE_ASK = "Replace %s with a profile at default settings? Cannot be undone."
-local TEXT_OVERWRITE_ASK = "Overwrite %s with a copy of %s? Cannot be undone."
-local TEXT_RESET_ASK = "Reset %s to default settings? Cannot be undone."
-local TEXT_DELETE_ASK = "Delete %s? Characters using it move to the account's default profile."
-local TEXT_REPLACE, TEXT_OVERWRITE, TEXT_RESET, TEXT_DELETE = "Replace", "Overwrite", "Reset", "Delete"
-local TEXT_AND_MORE = "%s and %d more"
-local TEXT_AND = " and "
-local TEXT_IN_USE_HERE = "In use on this character"
-local TEXT_IN_USE_HERE_AND = "In use on this character and on "
-local TEXT_NOT_IN_USE = "Not in use on any character"
-local TEXT_IN_USE_ON = "In use on "
-local TEXT_ALSO_IN_USE = "Also in use on"
-local TEXT_LAST_PROFILE = "The last profile cannot be deleted."
+local TEXT_COPY_OF = ns.L("Copy ")
+local TEXT_REPLACE_ASK = ns.L("Replace %s with a profile at default settings? Cannot be undone.")
+local TEXT_OVERWRITE_ASK = ns.L("Overwrite %s with a copy of %s? Cannot be undone.")
+local TEXT_RESET_ASK = ns.L("Reset %s to default settings? Cannot be undone.")
+local TEXT_DELETE_ASK = ns.L("Delete %s? Characters using it move to the account's default profile.")
+local TEXT_REPLACE, TEXT_OVERWRITE, TEXT_RESET, TEXT_DELETE = ns.L("Replace"), ns.L("Overwrite"), "Reset", "Delete"
+local TEXT_AND_MORE = ns.L("%s and %d more")
+local TEXT_AND = ns.L(" and ")
+local TEXT_IN_USE_HERE = ns.L("In use on this character")
+local TEXT_IN_USE_HERE_AND = ns.L("In use on this character and on ")
+local TEXT_NOT_IN_USE = ns.L("Not in use on any character")
+local TEXT_IN_USE_ON = ns.L("In use on ")
+local TEXT_ALSO_IN_USE = ns.L("Also in use on")
+local TEXT_LAST_PROFILE = ns.L("The last profile cannot be deleted.")
 local TEXT_COPY, TEXT_USE = "Copy", "Use"
-local TEXT_COPY_HELP = "Copy this profile into a new one and switch to it."
-local TEXT_RESET_HELP = "Put every setting in this profile back to its default."
-local TEXT_NOTHING_SAVED = "Nothing saved yet"
+local TEXT_COPY_HELP = ns.L("Copy this profile into a new one and switch to it.")
+local TEXT_RESET_HELP = ns.L("Put every setting in this profile back to its default.")
+local TEXT_NOTHING_SAVED = ns.L("Nothing saved yet")
 local TEXT_EXPORT = "Export"
-local TEXT_PARTS_GO = "%d of %d parts of %s go in the string."
-local TEXT_PICK_PART = "Pick a part to share."
-local TEXT_PASTE_HERE = "Paste a profile, macro, talent build or BiS list string here."
+local TEXT_PARTS_GO = ns.L("%d of %d parts of %s go in the string.")
+local TEXT_PICK_PART = ns.L("Pick a part to share.")
+local TEXT_PASTE_HERE = ns.L("Paste a profile, macro, talent build or BiS list string here.")
 local TEXT_IMPORT = "Import"
-local TEXT_IMPORT_NOTE = "You see what it holds and pick the parts before anything changes."
-local TEXT_PROFILES = "Profiles"
-local TEXT_ONE_PROFILE, TEXT_N_PROFILES = "1 profile on this account", " profiles on this account"
-local TEXT_OTHER_PROFILES = "OTHER PROFILES"
-local TEXT_SHARE = "Share"
-local TEXT_SHARE_SUMMARY = "Pick what goes in the string you give someone."
-local TEXT_PICK_ALL, TEXT_PICK_NONE = "Pick All", "Pick None"
-local TEXT_IMPORT_SUMMARY = "Profiles, Forge macros, talent builds and BiS lists."
+local TEXT_IMPORT_NOTE = ns.L("You see what it holds and pick the parts before anything changes.")
+local TEXT_PROFILES = ns.L("Profiles")
+local TEXT_ONE_PROFILE, TEXT_N_PROFILES = ns.L("1 profile on this account"), ns.L(" profiles on this account")
+local TEXT_OTHER_PROFILES = ns.L("OTHER PROFILES")
+local TEXT_SHARE = ns.L("Share")
+local TEXT_SHARE_SUMMARY = ns.L("Pick what goes in the string you give someone.")
+local TEXT_PICK_ALL, TEXT_PICK_NONE = ns.L("Pick All"), ns.L("Pick None")
+local TEXT_IMPORT_SUMMARY = ns.L("Profiles, Forge macros, talent builds and BiS lists.")
 local UNKNOWN = "?"
 
 local wanted = {}
@@ -417,11 +417,11 @@ end
 local function SetTile(tile, part, state, detail)
     local T = ns.THEME
     tile.key, tile.ready = part.key, state == "ready"
-    tile.name:SetText(part.label)
+    tile.name:SetText(ns.L(part.label))
     Paint(tile.name, T.fg, tile.ready and 1 or DIM)
-    tile.detail:SetText(state == "empty" and TEXT_NOTHING_SAVED or detail or (part.share:gsub("%.$", "")))
+    tile.detail:SetText(state == "empty" and TEXT_NOTHING_SAVED or detail or (ns.L(part.share):gsub("%.$", "")))
     Paint(tile.detail, T.muted, tile.ready and 1 or DIM)
-    tile.tip = part.share
+    tile.tip = ns.L(part.share)
     tile.switch._refreshValue()
     SetUsable(tile.switch, tile.ready)
     return TILE_H

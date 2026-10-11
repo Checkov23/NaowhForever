@@ -35,9 +35,9 @@ local HEAD_X, SUB_HEAD_X = 4, 14
 local COUNT_X, COUNT_GAP, ICON_X = 4, 6, 24
 local TEXT_HEAD = "%s (%d)"
 local TEXT_OPEN, TEXT_CLOSED = "-  ", "+  "
-local TEXT_RECIPE = "Recipe "
+local TEXT_RECIPE = ns.L("Recipe ")
 local TEXT_SEPARATOR = " | "
-local TEXT_REQUIRED = "Required skill: %d  (%s)"
+local TEXT_REQUIRED = ns.L("Required skill: %d  (%s)")
 
 local win
 local rows = {}

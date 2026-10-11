@@ -15,25 +15,25 @@ local CLASS_ICON_PATH = B.Look.CLASS_ICON_PATH
 local AURA_COLUMN = B.AURA_COLUMN
 local AURA_ICON = "devotion"
 
-local TEXT_INTRO = "Every paladin in your group running Naowh Forever, and the blessing "
+local TEXT_INTRO = ns.L("Every paladin in your group running Naowh Forever, and the blessing "
     .. "they give each class. Click an icon to change it: your own row always, anyone's while "
     .. "you lead the group or are an assistant. Only what that paladin has learned is offered, "
-    .. "and changes reach them straight away."
-local TEXT_LEAD_ONLY = "Only the group leader or an assistant can plan every paladin's blessings."
-local TEXT_REPLACE = "Replace every paladin's blessings and auras with an automatic plan?"
-local TEXT_NO_PRESET = "No preset saved yet."
-local TEXT_LOAD = "Load the saved preset for the paladins here now?"
-local TEXT_NOBODY = "Nobody in the preset is in your group."
-local TEXT_SAVED = "Blessings preset saved."
-local TEXT_NO_PALADINS = "No paladins running Naowh Forever to save a plan for."
-local TEXT_REPLACE_PRESET = "Replace the saved preset?"
-local TEXT_NO_GROUP_PALADINS = "No paladins in your group."
-local TEXT_NO_ADDON = "Not running Naowh Forever"
-local TEXT_YOU = "  (you)"
-local TEXT_AURA = "Aura"
-local TEXT_NOTHING = "Nothing assigned"
-local TEXT_CHANGE = "\nClick to change."
-local TEXT_NONE = "None"
+    .. "and changes reach them straight away.")
+local TEXT_LEAD_ONLY = ns.L("Only the group leader or an assistant can plan every paladin's blessings.")
+local TEXT_REPLACE = ns.L("Replace every paladin's blessings and auras with an automatic plan?")
+local TEXT_NO_PRESET = ns.L("No preset saved yet.")
+local TEXT_LOAD = ns.L("Load the saved preset for the paladins here now?")
+local TEXT_NOBODY = ns.L("Nobody in the preset is in your group.")
+local TEXT_SAVED = ns.L("Blessings preset saved.")
+local TEXT_NO_PALADINS = ns.L("No paladins running Naowh Forever to save a plan for.")
+local TEXT_REPLACE_PRESET = ns.L("Replace the saved preset?")
+local TEXT_NO_GROUP_PALADINS = ns.L("No paladins in your group.")
+local TEXT_NO_ADDON = ns.L("Not running Naowh Forever")
+local TEXT_YOU = ns.L("  (you)")
+local TEXT_AURA = ns.L("Aura")
+local TEXT_NOTHING = ns.L("Nothing assigned")
+local TEXT_CHANGE = ns.L("\nClick to change.")
+local TEXT_NONE = ns.L("None")
 
 local function NewCell(parent)
     local btn = CreateFrame("Button", nil, parent)
@@ -220,18 +220,18 @@ function ns.BuildBlessingAssignmentsPage(parent, y)
 end
 
 function B.Headline()
-    if not IsInGroup() then return B.IsPaladin() and "Just you for now" or "Not in a group" end
+    if not IsInGroup() then return B.IsPaladin() and ns.L("Just you for now") or ns.L("Not in a group") end
     local n = PaladinCount()
-    if n == 0 then return "No paladins in your group" end
-    return n == 1 and "1 paladin in your group" or ("%d paladins in your group"):format(n)
+    if n == 0 then return ns.L("No paladins in your group") end
+    return n == 1 and ns.L("1 paladin in your group") or (ns.L("%d paladins in your group")):format(n)
 end
 
 function B.Detail()
-    if not B.IsPaladin() then return "The group's paladins and the blessing each gives every class." end
+    if not B.IsPaladin() then return ns.L("The group's paladins and the blessing each gives every class.") end
     local planned, classes = 0, B.Store().classes
     for _, class in ipairs(B.CLASSES) do
         if classes[class] then planned = planned + 1 end
     end
     return ("Your blessings: %d of %d classes planned%s"):format(planned, #B.CLASSES,
-        B.HasPreset() and ", preset saved" or "")
+        B.HasPreset() and ns.L(", preset saved") or "")
 end

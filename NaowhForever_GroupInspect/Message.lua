@@ -19,11 +19,11 @@ local TENTHS = { CRIT = true, HIT = true }
 local TENTH_SCALE = C.TENTHS
 local CHANNELS = { PARTY = true, RAID = true, INSTANCE_CHAT = true }
 local ROLE = {
-    ["protection-warrior"] = "Tank", ["protection-paladin"] = "Tank",
-    ["holy-paladin"] = "Healer", ["discipline-priest"] = "Healer", ["holy-priest"] = "Healer",
-    ["restoration-druid"] = "Healer", ["restoration-shaman"] = "Healer",
+    ["protection-warrior"] = ns.L("Tank"), ["protection-paladin"] = ns.L("Tank"),
+    ["holy-paladin"] = ns.L("Healer"), ["discipline-priest"] = ns.L("Healer"), ["holy-priest"] = ns.L("Healer"),
+    ["restoration-druid"] = ns.L("Healer"), ["restoration-shaman"] = ns.L("Healer"),
 }
-local DAMAGE = "Damage"
+local DAMAGE = ns.L("Damage")
 
 local mine = GI.OwnStats.values
 local version = type(ns.CODE_BUILD) == "string" and #ns.CODE_BUILD <= MAX_VERSION

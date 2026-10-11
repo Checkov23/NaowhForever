@@ -62,22 +62,22 @@ local LINKS = {
     { "GitHub", "github", function() return "https://github.com/naowh-gaming/NaowhForever" end },
 }
 local SYSTEM_NAV = { { "Settings", "settings" }, { UI.PROFILES_PAGE, "person" }, { "Patch Notes", "notes" }, { "Credits", "heart" } }
-local TEXT_VERSION, TEXT_UNKNOWN = "v", "unknown"
-local TEXT_COMING_SOON = "Coming soon"
-local TEXT_ENABLE = "Enable %s"
-local TEXT_OPEN = "Open %s"
+local TEXT_VERSION, TEXT_UNKNOWN = "v", ns.L("unknown")
+local TEXT_COMING_SOON = ns.L("Coming soon")
+local TEXT_ENABLE = ns.L("Enable %s")
+local TEXT_OPEN = ns.L("Open %s")
 local TEXT_BRAND = "Naowh Forever"
 local TEXT_CLOSE = "X"
-local TEXT_HUD_EDITOR = "HUD Editor"
-local TEXT_SUB_COMMAND = "%s  (/nf%s)"
-local TEXT_HUD_HELP = "Place and size each display. Exit Config returns to this window."
-local TEXT_RELOAD = "Reload UI"
-local TEXT_MODULE, TEXT_MODULE_HELP = "Module", "Turn this module on or off. Your settings are kept."
-local TEXT_BACK = "Back to Settings"
-local TEXT_ON = "On. Click to turn the whole module off."
-local TEXT_OFF = "Off. Click to turn it back on."
-local TEXT_SWITCHED_OFF = "%s is switched off. Turn it on under Settings > Modules."
-local TEXT_NO_MATCH = "Nothing on this page matches the search."
+local TEXT_HUD_EDITOR = ns.L("HUD Editor")
+local TEXT_SUB_COMMAND = ns.L("%s  (/nf%s)")
+local TEXT_HUD_HELP = ns.L("Place and size each display. Exit Config returns to this window.")
+local TEXT_RELOAD = ns.L("Reload UI")
+local TEXT_MODULE, TEXT_MODULE_HELP = ns.L("Module"), ns.L("Turn this module on or off. Your settings are kept.")
+local TEXT_BACK = ns.L("Back to Settings")
+local TEXT_ON = ns.L("On. Click to turn the whole module off.")
+local TEXT_OFF = ns.L("Off. Click to turn it back on.")
+local TEXT_SWITCHED_OFF = ns.L("%s is switched off. Turn it on under Settings > Modules.")
+local TEXT_NO_MATCH = ns.L("Nothing on this page matches the search.")
 
 ns.LINKS, ns.LINK_ICONS = LINKS, LINK_ICONS
 

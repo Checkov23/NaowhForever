@@ -25,25 +25,25 @@ local DISABLED_ALPHA = 0.4
 
 local CLASSES = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID" }
 
-local TEXT_TOO_BIG = "%s is not a macro the game can hold: a name is 1 to 16 bytes, its text 1 to 255."
-local TEXT_IN_COMBAT = "Macros can be added once the fight is over."
-local TEXT_NAME_TAKEN = "You already have a different macro called %s. Rename it to add this one."
-local TEXT_FULL = "Character macros are full. Delete one to make room."
-local TEXT_ADDED = "Added %s to this character. Drag it to a bar from the game's macro window (/macro)."
-local TEXT_HAVE = "%s is already one of this character's macros."
-local TEXT_SCRIPT = "%s runs a script from a shared pack. Its text is on the card. Add it?"
-local TEXT_REMOVE = "Remove %s from your Library? Macros already made from it stay."
-local TEXT_COUNT = "%d macros"
-local TEXT_YOURS = "YOURS"
+local TEXT_TOO_BIG = ns.L("%s is not a macro the game can hold: a name is 1 to 16 bytes, its text 1 to 255.")
+local TEXT_IN_COMBAT = ns.L("Macros can be added once the fight is over.")
+local TEXT_NAME_TAKEN = ns.L("You already have a different macro called %s. Rename it to add this one.")
+local TEXT_FULL = ns.L("Character macros are full. Delete one to make room.")
+local TEXT_ADDED = ns.L("Added %s to this character. Drag it to a bar from the game's macro window (/macro).")
+local TEXT_HAVE = ns.L("%s is already one of this character's macros.")
+local TEXT_SCRIPT = ns.L("%s runs a script from a shared pack. Its text is on the card. Add it?")
+local TEXT_REMOVE = ns.L("Remove %s from your Library? Macros already made from it stay.")
+local TEXT_COUNT = ns.L("%d macros")
+local TEXT_YOURS = ns.L("YOURS")
 local TEXT_NAOWH = GOLD_CODE .. "NAOWH|r"
-local TEXT_SAVED = "Saved %s to your Library, for every %s you play."
-local TEXT_UPDATED = "Updated %s in your Library."
-local TEXT_REPLACE = "%s is already in your Library with other text. Replace it?"
-local TEXT_NO_GAME_MACROS = "You have no game macros to save."
-local TEXT_ACCOUNT_MACROS = "Account macros"
-local TEXT_CHARACTER_MACROS = "This character's macros"
-local TEXT_MINE = "Macros for your class. Add one to this character to use it, or save one of yours here."
-local TEXT_THEIRS = "Another class's macros, to read. Add them on a character of that class."
+local TEXT_SAVED = ns.L("Saved %s to your Library, for every %s you play.")
+local TEXT_UPDATED = ns.L("Updated %s in your Library.")
+local TEXT_REPLACE = ns.L("%s is already in your Library with other text. Replace it?")
+local TEXT_NO_GAME_MACROS = ns.L("You have no game macros to save.")
+local TEXT_ACCOUNT_MACROS = ns.L("Account macros")
+local TEXT_CHARACTER_MACROS = ns.L("This character's macros")
+local TEXT_MINE = ns.L("Macros for your class. Add one to this character to use it, or save one of yours here.")
+local TEXT_THEIRS = ns.L("Another class's macros, to read. Add them on a character of that class.")
 
 local libClass
 local entries = {}

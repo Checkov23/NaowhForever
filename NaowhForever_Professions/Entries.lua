@@ -7,14 +7,14 @@ local W = P.State
 local Filters = P.Filters
 
 local OTHER_ORDER = 999
-local TEXT_OTHER = OTHER or "Other"
+local TEXT_OTHER = OTHER or ns.L("Other")
 
-local LEARNED = { name = "Learned", key = "profLearnedCollapsed", closed = false }
-local UNLEARNED = { name = "Unlearned", key = "profUnlearnedCollapsed", closed = false }
+local LEARNED = { name = ns.L("Learned"), key = "profLearnedCollapsed", closed = false }
+local UNLEARNED = { name = ns.L("Unlearned"), key = "profUnlearnedCollapsed", closed = false }
 local UNLEARNED_GROUPS = {
-    { status = "ready", name = "Learnable now", key = "profUnlearnedReadyCollapsed", closed = false, sub = true },
-    { status = "later", name = "Needs more skill", key = "profUnlearnedLaterCollapsed", closed = true, sub = true },
-    { status = "rank", name = "Needs next rank", key = "profUnlearnedRankCollapsed", closed = true, sub = true },
+    { status = "ready", name = ns.L("Learnable now"), key = "profUnlearnedReadyCollapsed", closed = false, sub = true },
+    { status = "later", name = ns.L("Needs more skill"), key = "profUnlearnedLaterCollapsed", closed = true, sub = true },
+    { status = "rank", name = ns.L("Needs next rank"), key = "profUnlearnedRankCollapsed", closed = true, sub = true },
 }
 
 local EMPTY = {}

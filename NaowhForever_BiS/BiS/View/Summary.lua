@@ -18,17 +18,17 @@ local COUNT_Y = 2
 local LABEL_X, LABEL_Y = 6, 2
 local EMPTY_ALPHA = 0.35
 local HAVE_RGB, TITLE_RGB = St.HAVE_RGB, St.TIP_TITLE_RGB
-local TEXT_BIS_YOURS = "BiS yours"
+local TEXT_BIS_YOURS = ns.L("BiS yours")
 local TEXT_STAR_GAP = "|r  "
 local STAR_MARK = Parts.RankMark(1, Parts.CARD_DROP)
 local FILTER_ITEMS = {
-    { key = "all", word = "All", tip = "Every slot." },
-    { key = "get", word = "To get", tip = "Your BiS you do not have yet: where to go next." },
-    { key = "wear", word = "In bag", tip = "Your BiS in your bags or bank: put it on." },
-    { key = "enchant", word = "To enchant", tip = "What you wear that takes a better enchant for your level." },
+    { key = "all", word = "All", tip = ns.L("Every slot.") },
+    { key = "get", word = "To get", tip = ns.L("Your BiS you do not have yet: where to go next.") },
+    { key = "wear", word = "In bag", tip = ns.L("Your BiS in your bags or bank: put it on.") },
+    { key = "enchant", word = "To enchant", tip = ns.L("What you wear that takes a better enchant for your level.") },
 }
-local STATE_WORDS = { worn = "You wear it", kept = "In your bags or bank", get = "Not yours yet",
-    none = "Nothing picked" }
+local STATE_WORDS = { worn = ns.L("You wear it"), kept = ns.L("In your bags or bank"), get = ns.L("Not yours yet"),
+    none = ns.L("Nothing picked") }
 
 local FilterLabel = B.View.Memo("%s %d")
 
@@ -74,10 +74,10 @@ local function Segment(row, slot)
 end
 
 local function PaintFilters(row, filter, counts)
-    FILTER_ITEMS[1].label = FILTER_ITEMS[1].word
+    FILTER_ITEMS[1].label = ns.L(FILTER_ITEMS[1].word)
     for i = 2, #FILTER_ITEMS do
         local item = FILTER_ITEMS[i]
-        item.label = FilterLabel(item.word, counts[item.key])
+        item.label = FilterLabel(ns.L(item.word), counts[item.key])
     end
     Parts.SetTabs(row.tabs, FILTER_ITEMS)
     Parts.PaintTabs(row.tabs, filter)

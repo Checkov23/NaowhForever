@@ -74,45 +74,45 @@ local MS_PER_SECOND = 1000
 local TENTHS = ns.QoLConstants.TENTHS
 local TEXT = {
     NO_VALUE = "--",
-    IN_COMBAT = "The Aim Trainer can't open in combat.",
+    IN_COMBAT = ns.L("The Aim Trainer can't open in combat."),
     TITLE = "Aim Trainer",
     MODE = "Mode",
-    TIP_MODE = "Switch between Gridshot, Hexakill and Reflex.",
+    TIP_MODE = ns.L("Switch between Gridshot, Hexakill and Reflex."),
     BOARD = "Leaderboard",
-    TIP_BOARD = "The best scores of the players you have met, in this mode.",
+    TIP_BOARD = ns.L("The best scores of the players you have met, in this mode."),
     AGAIN = "Play Again",
     CLOSE = "Close",
-    START = "Click to Start",
-    REFLEX = "Reflex: one target at a time, gone in %.2gs. %ds rounds.",
-    HEXA = "Hexakill: six targets at once. %ds rounds.",
-    GRID = "Gridshot: three targets at once. %ds rounds.",
-    NO_BEST = "No best yet",
+    START = ns.L("Click to Start"),
+    REFLEX = ns.L("Reflex: one target at a time, gone in %.2gs. %ds rounds."),
+    HEXA = ns.L("Hexakill: six targets at once. %ds rounds."),
+    GRID = ns.L("Gridshot: three targets at once. %ds rounds."),
+    NO_BEST = ns.L("No best yet"),
     BEST = "Best ",
-    BEST_ACCURACY = "Best %s, best accuracy %d%%",
-    NEW_BEST = "New Best!",
-    ROUND_OVER = "Round Over",
+    BEST_ACCURACY = ns.L("Best %s, best accuracy %d%%"),
+    NEW_BEST = ns.L("New Best!"),
+    ROUND_OVER = ns.L("Round Over"),
     TIME = "%.1f",
     COUNT = "%d",
     PERCENT = "%d%%",
     MS = "%d ms",
     COMBO = "x%d",
     BEST_LINE = "%s, %d%%",
-    OFF = "The Aim Trainer is off. Turn it on in /nf, QoL, Travel.",
+    OFF = ns.L("The Aim Trainer is off. Turn it on in /nf, QoL, Travel."),
     RESET = "Clear your Aim Trainer records?",
     CLEAR_BOARD = "Clear the Aim Trainer leaderboard? Your own records stay.",
     SUMMARY = "%s, %s",
     SUMMARY_BEST = "best ",
-    SUMMARY_NO_BEST = "no best yet",
+    SUMMARY_NO_BEST = ns.L("no best yet"),
     FLIGHT = "flight",
     NO_SOUND = "none",
 }
 
-local HUD_LABELS = { "Time", "Score", "Accuracy", "Combo" }
-local RESULT_LABELS = { "Hits", "Misses", "Accuracy", "Reaction", "Best Combo", "Score", "Best" }
+local HUD_LABELS = { ns.L("Time"), ns.L("Score"), ns.L("Accuracy"), ns.L("Combo") }
+local RESULT_LABELS = { ns.L("Hits"), ns.L("Misses"), ns.L("Accuracy"), ns.L("Reaction"), ns.L("Best Combo"), ns.L("Score"), ns.L("Best") }
 local CARD_H = CARD_PAD + CARD_TITLE_H + ROW_H + #RESULT_LABELS * ROW_H + CARD_GAP + 2 * BTN_H + CARD_GAP + CARD_PAD
 
 local GAME_SOUNDS = { ["game:click"] = SOUNDKIT.IG_MAINMENU_OPTION, ["game:ping"] = SOUNDKIT.MAP_PING }
-local GAME_SOUND_NAMES = { ["game:click"] = "Click (game)", ["game:ping"] = "Ping (game)" }
+local GAME_SOUND_NAMES = { ["game:click"] = ns.L("Click (game)"), ["game:ping"] = ns.L("Ping (game)") }
 
 local panel, openedFor, faceIDs, lockTimer
 local state = IDLE
@@ -899,7 +899,7 @@ local STAGE_H, STAGE_MARGIN = 280, 12
 local SAMPLE_SPOTS = { { 0.22, 0.32 }, { 0.62, 0.62 }, { 0.8, 0.26 }, { 0.4, 0.78 }, { 0.12, 0.7 },
     { 0.5, 0.2 } }
 local SAMPLE_REFLEX_SHRINK = 0.7
-local SAMPLE_RANK = "Rank #3 of 42"
+local SAMPLE_RANK = ns.L("Rank #3 of 42")
 local SAMPLE = { left = 18.4, score = 2350, hits = 14, misses = 2, combo = 7, reaction = 412, bestCombo = 11 }
 local STATES = {
     { key = "playing", label = "Playing", tip = "A round in progress." },

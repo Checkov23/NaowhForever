@@ -37,7 +37,7 @@ IP.BODY_Y = CARD_GAP + CP.BADGE_H + BODY_GAP
 IP.BODY_W = PANE_W - 2 * EDGE
 
 local rival = CP.Rival({ key = "inspectPanel", winKey = "inspect", dbKey = "themedInspectSheet",
-    name = "inspect window" })
+    name = ns.L("inspect window") })
 IP.EllesmereSheet = rival.Styled
 IP.On = rival.On
 

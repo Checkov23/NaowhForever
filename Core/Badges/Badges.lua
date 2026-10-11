@@ -28,25 +28,25 @@ local PREVIEW_TITLE = "Lead Developer"
 local TEXT_BRAND = "NAOWH FOREVER"
 local TEXT_SITE = "naowh.gg"
 local TEXT_NAMED = "Naowh Forever "
-local TEXT_SINCE = "Supporter since %s %s"
-local TEXT_JOINED = "%s joined your %s"
-local TEXT_A_SUPPORTER, TEXT_A_TEAM_MEMBER = "A supporter", "A team member"
-local TEXT_RAID, TEXT_PARTY = "raid", "party"
-local TEXT_CODE_TITLE = "Your badge code"
-local TEXT_CHARACTER, TEXT_CHARACTERS = " character", " characters"
-local TEXT_CODE_SUPPORT = ". Ctrl+C to copy it, then send it in a support request on Discord to be added."
-local TEXT_CODE_TEAM = ". Ctrl+C to copy it, then send it to the team on Discord to be added."
-local TEXT_DISCORD, TEXT_CLOSE, TEXT_DISCORD_TITLE = "Discord", "Close", "Naowh's Discord"
-local TEXT_STAFF_ONLY = "Badge previews are for the Naowh Forever team."
-local TEXT_PREVIEW_NONE = "Preview on: you wear no badge until you reload, as a player without one sees it."
-local TEXT_PREVIEW_ON = "Preview on: your name wears the %s badge until you reload. Say something to see it."
-local TEXT_PREVIEW_OFF = "Preview off."
+local TEXT_SINCE = ns.L("Supporter since %s %s")
+local TEXT_JOINED = ns.L("%s joined your %s")
+local TEXT_A_SUPPORTER, TEXT_A_TEAM_MEMBER = ns.L("A supporter"), ns.L("A team member")
+local TEXT_RAID, TEXT_PARTY = ns.L("raid"), ns.L("party")
+local TEXT_CODE_TITLE = ns.L("Your badge code")
+local TEXT_CHARACTER, TEXT_CHARACTERS = ns.L(" character"), ns.L(" characters")
+local TEXT_CODE_SUPPORT = ns.L(". Ctrl+C to copy it, then send it in a support request on Discord to be added.")
+local TEXT_CODE_TEAM = ns.L(". Ctrl+C to copy it, then send it to the team on Discord to be added.")
+local TEXT_DISCORD, TEXT_CLOSE, TEXT_DISCORD_TITLE = ns.L("Discord"), ns.L("Close"), ns.L("Naowh's Discord")
+local TEXT_STAFF_ONLY = ns.L("Badge previews are for the Naowh Forever team.")
+local TEXT_PREVIEW_NONE = ns.L("Preview on: you wear no badge until you reload, as a player without one sees it.")
+local TEXT_PREVIEW_ON = ns.L("Preview on: your name wears the %s badge until you reload. Say something to see it.")
+local TEXT_PREVIEW_OFF = ns.L("Preview off.")
 local TEXT_USAGE = "/nf badges id || preview [%smoderator||developer||ellesmere||naowh||none] || preview off || toast"
 local TEXT_USAGE_PATRON = "legendary||epic||"
-local TEXT_SUMMARY = "%d of %d on"
+local TEXT_SUMMARY = ns.L("%d of %d on")
 local PATREON_LINK = { "Patreon", "patreon", function() return "https://www.patreon.com/naowh" end }
-local MONTHS = { "January", "February", "March", "April", "May", "June", "July", "August",
-    "September", "October", "November", "December" }
+local MONTHS = { ns.L("January"), ns.L("February"), ns.L("March"), ns.L("April"), ns.L("May"), ns.L("June"),
+    ns.L("July"), ns.L("August"), ns.L("September"), ns.L("October"), ns.L("November"), ns.L("December") }
 
 local function Setting(key)
     if PATRONS then return S.Get(key) end
@@ -56,7 +56,7 @@ end
 local TIERS = {
     naowh = {
         title = "Founder",
-        about = "The Man. The King.",
+        about = ns.L("The Man. The King."),
         label = "Naowh, the Founder",
         color = { r = 0xe6 / 255, g = 0xcc / 255, b = 0x80 / 255 },
         chat = MEDIA .. "BadgeNaowhChat.tga",
@@ -65,7 +65,7 @@ local TIERS = {
     },
     developer = {
         title = "Developer",
-        about = "Builds Naowh Forever.",
+        about = ns.L("Builds Naowh Forever."),
         color = { r = 0x00 / 255, g = 0x91 / 255, b = 0xed / 255 },
         chat = MEDIA .. "BadgeDeveloperChat.tga",
         large = MEDIA .. "BadgeDeveloperLarge.tga",
@@ -73,7 +73,7 @@ local TIERS = {
     },
     moderator = {
         title = "Moderator",
-        about = "Keeps the community running.",
+        about = ns.L("Keeps the community running."),
         color = { r = 0xe0 / 255, g = 0x38 / 255, b = 0x3e / 255 },
         chat = MEDIA .. "BadgeModeratorChat.tga",
         large = MEDIA .. "BadgeModeratorLarge.tga",
@@ -81,7 +81,7 @@ local TIERS = {
     },
     ellesmere = {
         title = "EllesmereUI Creator",
-        about = "Makes EllesmereUI.",
+        about = ns.L("Makes EllesmereUI."),
         label = "Ellesmere, creator of EllesmereUI",
         color = { r = 0x0e / 255, g = 0xd2 / 255, b = 0x9b / 255 },
         chat = MEDIA .. "BadgeEllesmereChat.tga",
@@ -90,7 +90,7 @@ local TIERS = {
     },
     legendary = {
         title = "Legendary Patron",
-        about = "Supports Naowh at the Legendary tier on Patreon.",
+        about = ns.L("Supports Naowh at the Legendary tier on Patreon."),
         color = { r = 0xff / 255, g = 0x80 / 255, b = 0x00 / 255 },
         chat = MEDIA .. "BadgeLegendaryChat.tga",
         large = MEDIA .. "BadgeLegendaryLarge.tga",
@@ -99,7 +99,7 @@ local TIERS = {
     },
     epic = {
         title = "Epic Patron",
-        about = "Supports Naowh at the Epic tier on Patreon.",
+        about = ns.L("Supports Naowh at the Epic tier on Patreon."),
         color = { r = 0xa3 / 255, g = 0x35 / 255, b = 0xee / 255 },
         chat = MEDIA .. "BadgeEpicChat.tga",
         large = MEDIA .. "BadgeEpicLarge.tga",
@@ -117,7 +117,7 @@ for _, tier in pairs(TIERS) do
     tier.hex = string.format("ff%02x%02x%02x", c.r * BYTE, c.g * BYTE, c.b * BYTE)
     tier.markup = ("|T%s:0:0:0:%d|t"):format(tier.chat, -BADGE_DROP)
     tier.tooltipLine = "|T" .. tier.chat .. ":16:16|t |c" .. tier.hex
-        .. (tier.label or (TEXT_NAMED .. tier.title)) .. "|r"
+        .. (tier.label or (TEXT_NAMED .. ns.L(tier.title))) .. "|r"
 end
 
 local issecretvalue = issecretvalue
@@ -168,7 +168,7 @@ local function TierOf(entry)
 end
 
 local function TitleOf(entry, tier)
-    return type(entry) == "table" and entry.title or tier.title
+    return ns.L(type(entry) == "table" and entry.title or tier.title)
 end
 
 local function SinceOf(entry)

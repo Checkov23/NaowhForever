@@ -8,7 +8,7 @@ local GOLD, SILVER = C.COPPER_PER_GOLD, C.COPPER_PER_SILVER
 local ROUND = C.ROUND
 local RGB_MAX = 255
 local HEX = "|cff%02x%02x%02x"
-local ALIGNED_GOLD, ALIGNED_SILVER, ALIGNED_COPPER = "%s%dg %02ds %02dc", "%s%ds %02dc", "%s%dc"
+local ALIGNED_GOLD, ALIGNED_SILVER, ALIGNED_COPPER = ns.L("%s%dg %02ds %02dc"), ns.L("%s%ds %02dc"), ns.L("%s%dc")
 
 local Text = {}
 P.Text = Text

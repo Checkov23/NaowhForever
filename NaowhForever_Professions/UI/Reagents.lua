@@ -30,21 +30,21 @@ local BRING_W = BRING_STEP + BRING_GAP + BRING_BOX + BRING_GAP + BRING_STEP
 local BRING_INSET = 2
 local BRING_LETTERS = 4
 local NAME_GAP = 8
-local TEXT_REAGENTS = "Reagents:"
-local TEXT_BANK, TEXT_BAGS = "Bank", "Bags"
+local TEXT_REAGENTS = ns.L("Reagents:")
+local TEXT_BANK, TEXT_BAGS = ns.L("Bank"), ns.L("Bags")
 local TEXT_COUNT = "%d/%d"
-local TEXT_BUY_MORE = "   %sbuy %d more|r"
-local TEXT_ORDER_COUNT = "%d needed   %s%d in bags|r"
-local TEXT_SOLD = " Sold by vendors"
-local TIP_BRING = "I bring this"
-local TIP_BRING_HELP = "Tick a material you hand the crafter: all the crafts need of it. "
-    .. "Use - and + beside it to bring only part."
-local TIP_COST = "Count in the cost"
-local TIP_COST_HELP = "Uncheck a reagent you already have: the crafting profit then leaves it "
-    .. "out, for every recipe that uses it."
-local TIP_MATERIALS = "Your Materials"
-local TIP_MATERIALS_HELP = "How many of this material you hand the crafter. "
-    .. "Ticking the box fills in all the crafts need; - and + change it by one."
+local TEXT_BUY_MORE = ns.L("   %sbuy %d more|r")
+local TEXT_ORDER_COUNT = ns.L("%d needed   %s%d in bags|r")
+local TEXT_SOLD = ns.L(" Sold by vendors")
+local TIP_BRING = ns.L("I bring this")
+local TIP_BRING_HELP = ns.L("Tick a material you hand the crafter: all the crafts need of it. "
+    .. "Use - and + beside it to bring only part.")
+local TIP_COST = ns.L("Count in the cost")
+local TIP_COST_HELP = ns.L("Uncheck a reagent you already have: the crafting profit then leaves it "
+    .. "out, for every recipe that uses it.")
+local TIP_MATERIALS = ns.L("Your Materials")
+local TIP_MATERIALS_HELP = ns.L("How many of this material you hand the crafter. "
+    .. "Ticking the box fills in all the crafts need; - and + change it by one.")
 
 local Reagents = {}
 P.Reagents = Reagents

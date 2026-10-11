@@ -15,27 +15,27 @@ local BUY_ALL_W = 110
 local COST_GAP = 8
 local ROW_DROP = 4
 local ROW_OVERHANG = 4
-local TEXT_BUY, TEXT_BUY_ALL = "Buy", "Buy All"
-local TEXT_BUY_ALL_COUNT = "Buy All (%d)"
-local TEXT_ALL_IT_HAS = "  (all it has)"
-local TEXT_TOTAL = "Total"
-local TEXT_ITEM = "Item "
+local TEXT_BUY, TEXT_BUY_ALL = ns.L("Buy"), ns.L("Buy All")
+local TEXT_BUY_ALL_COUNT = ns.L("Buy All (%d)")
+local TEXT_ALL_IT_HAS = ns.L("  (all it has)")
+local TEXT_TOTAL = ns.L("Total")
+local TEXT_ITEM = ns.L("Item ")
 local TEXT_LINE = "%dx %s"
-local TIP_VENDOR = "Buy at Vendor"
-local TIP_VENDOR_HELP = "Buys from this merchant, in one click, every checked reagent it "
+local TIP_VENDOR = ns.L("Buy at Vendor")
+local TIP_VENDOR_HELP = ns.L("Buys from this merchant, in one click, every checked reagent it "
     .. "sells, for that many crafts, whatever is already in your bags. Set the number "
-    .. "with the - and + beside it; uncheck a reagent to leave it out."
-local TIP_AH = "Buy on AH"
-local TIP_AH_HELP = "Buys on the auction house the materials for that many crafts, "
+    .. "with the - and + beside it; uncheck a reagent to leave it out.")
+local TIP_AH = ns.L("Buy on AH")
+local TIP_AH_HELP = ns.L("Buys on the auction house the materials for that many crafts, "
     .. "whatever is already in your bags: every checked reagent that vendors do not "
     .. "sell. Set the number with the - and + beside it; uncheck a reagent to leave it "
-    .. "out. Each material asks for the price now and waits for you to confirm."
-local TIP_CRAFTS = "Crafts to Buy For"
-local TIP_CRAFTS_HELP = "How many crafts Buy buys the materials for."
-local TIP_ALL = "Buy All at Vendor"
-local TIP_ALL_HELP = "Buys what your bags lack of this merchant's reagents for %d crafts, "
+    .. "out. Each material asks for the price now and waits for you to confirm.")
+local TIP_CRAFTS = ns.L("Crafts to Buy For")
+local TIP_CRAFTS_HELP = ns.L("How many crafts Buy buys the materials for.")
+local TIP_ALL = ns.L("Buy All at Vendor")
+local TIP_ALL_HELP = ns.L("Buys what your bags lack of this merchant's reagents for %d crafts, "
     .. "the orange number next to the recipe, so Create All can make them all. Uncheck a "
-    .. "reagent to leave it out."
+    .. "reagent to leave it out.")
 
 local win, buyRecipe
 

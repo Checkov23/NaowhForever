@@ -19,14 +19,14 @@ local FADED_ALPHA = 0.2
 local PERCENT = Completo.C.PERCENT
 local STAR_LEVEL, MORE_LEVEL = 1, 0
 local OWN_KEYS = { enabled = true, rarePins = true, rarePinsKilled = true, rarePinSize = true }
-local TEXT_RARE = "Rare"
-local TEXT_ELITE = "Rare elite"
-local TEXT_KIND_LEVEL = "%s, level %s"
-local TEXT_NOT_KILLED = "Not killed yet"
-local TEXT_PATROLS = "Patrols: the small stars are its way"
-local TEXT_SPAWNS = "Spawns at %d more spots, shown smaller"
-local TEXT_HINT = "Click for a waypoint, right-click to keep its spots shown."
-local TEXT_HINT_FOCUSED = "Click for a waypoint, right-click to let go."
+local TEXT_RARE = ns.L("Rare")
+local TEXT_ELITE = ns.L("Rare elite")
+local TEXT_KIND_LEVEL = ns.L("%s, level %s")
+local TEXT_NOT_KILLED = ns.L("Not killed yet")
+local TEXT_PATROLS = ns.L("Patrols: the small stars are its way")
+local TEXT_SPAWNS = ns.L("Spawns at %d more spots, shown smaller")
+local TEXT_HINT = ns.L("Click for a waypoint, right-click to keep its spots shown.")
+local TEXT_HINT_FOCUSED = ns.L("Click for a waypoint, right-click to let go.")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added

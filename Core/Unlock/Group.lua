@@ -19,14 +19,14 @@ local SEL_COUNT_W = 78
 local SEL_OFFSET = 6
 local VERTICAL_FIRST = 4
 local EDGES = { "left", "hcenter", "right", "top", "vcenter", "bottom" }
-local EDGE_TIPS = { left = "Line up left edges", hcenter = "Line up middles, left to right",
-    right = "Line up right edges", top = "Line up top edges", vcenter = "Line up middles, top to bottom",
-    bottom = "Line up bottom edges" }
+local EDGE_TIPS = { left = ns.L("Line up left edges"), hcenter = ns.L("Line up middles, left to right"),
+    right = ns.L("Line up right edges"), top = ns.L("Line up top edges"), vcenter = ns.L("Line up middles, top to bottom"),
+    bottom = ns.L("Line up bottom edges") }
 local ACROSS, DOWN = "across", "down"
-local TEXT_SELECTED = " selected"
-local TEXT_ACROSS, TEXT_DOWN = "Space evenly across", "Space evenly down"
-local TEXT_GAP = "Gap"
-local TEXT_LOCK_ALL, TEXT_UNLOCK_ALL = "Lock all", "Unlock all"
+local TEXT_SELECTED = ns.L(" selected")
+local TEXT_ACROSS, TEXT_DOWN = ns.L("Space evenly across"), ns.L("Space evenly down")
+local TEXT_GAP = ns.L("Gap")
+local TEXT_LOCK_ALL, TEXT_UNLOCK_ALL = ns.L("Lock all"), ns.L("Unlock all")
 
 local function GroupBox()
     local l, r, t, b

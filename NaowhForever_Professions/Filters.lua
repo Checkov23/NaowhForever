@@ -13,12 +13,12 @@ local BIND_INDEX = 14
 local BIND_NEVER = 0
 
 local FILTERS = {
-    { key = "filterFavorite", text = "Favorites" },
-    { key = "filterMaterials", text = "Have Materials" },
-    { key = "filterSkillUp", text = "Has Skill-Up" },
-    { key = "filterProfit", text = "Profitable", profit = true },
-    { key = "filterBoE", text = "Bind on Equip", bind = 2, divider = true },
-    { key = "filterBoP", text = "Bind on Pickup", bind = 1 },
+    { key = "filterFavorite", text = ns.L("Favorites") },
+    { key = "filterMaterials", text = ns.L("Have Materials") },
+    { key = "filterSkillUp", text = ns.L("Has Skill-Up") },
+    { key = "filterProfit", text = ns.L("Profitable"), profit = true },
+    { key = "filterBoE", text = ns.L("Bind on Equip"), bind = 2, divider = true },
+    { key = "filterBoP", text = ns.L("Bind on Pickup"), bind = 1 },
 }
 for _, f in ipairs(FILTERS) do FILTERS[f.key] = f end
 

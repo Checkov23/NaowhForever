@@ -31,8 +31,8 @@ local HEIGHT_RANGE = { 10, 80, 1 }
 local TEXT_RANGE = ns.Shared.Style.HUD_TEXT_RANGE
 local MOVER_LABEL = "Co-Tank"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Combat", "QoL/Combat:coTank"
-local SUMMARY = "%d by %d%s"
-local SUMMARY_DEBUFFS = ", with debuffs"
+local SUMMARY = ns.L("%d by %d%s")
+local SUMMARY_DEBUFFS = ns.L(", with debuffs")
 
 local DEBUFF_GROUPS = {
     { key = "all",         filter = "HARMFUL" },
@@ -494,7 +494,7 @@ local POSITION = { { top = "Above", bottom = "Below", left = "Left", right = "Ri
     { "top", "bottom", "left", "right", "topleft", "topright", "bottomleft", "bottomright", "center" } }
 local GROW = { { CENTER = "Centred", RIGHT = "Right", LEFT = "Left", UP = "Up", DOWN = "Down" },
     { "CENTER", "RIGHT", "LEFT", "UP", "DOWN" } }
-local FROM_ANCHOR = "From the centre of the anchor frame. Only used while anchored to a frame."
+local FROM_ANCHOR = ns.L("From the centre of the anchor frame. Only used while anchored to a frame.")
 
 local function OwnHealthColour() return not S.Get("coTankClassColor") end
 local function OwnNameColour() return S.Get("coTankName") and not S.Get("coTankNameClassColor") end

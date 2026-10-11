@@ -20,8 +20,8 @@ local SPEC_PICK = "spec"
 local EVENTS = { "PLAYER_EQUIPMENT_CHANGED", "COMBAT_RATING_UPDATE", "ADDON_RESTRICTION_STATE_CHANGED" }
 local UNIT_EVENTS = { "UNIT_STATS", "UNIT_ATTACK_POWER", "UNIT_RANGED_ATTACK_POWER", "UNIT_DAMAGE",
     "UNIT_ATTACK_SPEED", "UNIT_RESISTANCES" }
-local TEXT_YOUR_STATS = "YOUR STATS"
-local TEXT_WORTH = "WORTH"
+local TEXT_YOUR_STATS = ns.L("YOUR STATS")
+local TEXT_WORTH = ns.L("WORTH")
 local LABELS = { { key = "spec", label = "Your Spec" }, { key = "all", label = "All Stats" } }
 
 local switch, view, installed

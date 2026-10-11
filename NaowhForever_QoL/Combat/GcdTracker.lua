@@ -39,9 +39,9 @@ local SPACING_RANGE, TIMELINE_RANGE = { 0, 20, 1 }, { 1, 12, 1 }
 local PERCENT_SCALE = ns.Shared.Style.PERCENT_SCALE
 local MOVER_LABEL = "GCD Tracker"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Combat", "QoL/Combat:gcdTracker"
-local TEXT_DOWNTIME = "Downtime: %.1fs (%.1f%% of the fight)"
-local SUMMARY = "The last %ds, scrolling %s%s"
-local SUMMARY_COMBAT = ", in combat"
+local TEXT_DOWNTIME = ns.L("Downtime: %.1fs (%.1f%% of the fight)")
+local SUMMARY = ns.L("The last %ds, scrolling %s%s")
+local SUMMARY_COMBAT = ns.L(", in combat")
 
 local DIRECTIONS = {
     LEFT = { x = -1, y = 0, px = 0, py = -1 }, RIGHT = { x = 1, y = 0, px = 0, py = -1 },

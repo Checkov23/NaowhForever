@@ -27,11 +27,11 @@ local TAGS = {
     { key = "avoid", label = "Avoid", color = Style.RED_RGB },
 }
 
-local NOTE_LABEL = "Note"
-local TEXT_CLEAR_HISTORY = "Clear the history of every player? Your notes are kept."
-local TEXT_CLEAR_NOTES = "Delete every note you wrote on a player?"
-local TEXT_NOTHING = "Nothing recorded yet"
-local TEXT_SUMMARY = "%d players, %d notes"
+local NOTE_LABEL = ns.L("Note")
+local TEXT_CLEAR_HISTORY = ns.L("Clear the history of every player? Your notes are kept.")
+local TEXT_CLEAR_NOTES = ns.L("Delete every note you wrote on a player?")
+local TEXT_NOTHING = ns.L("Nothing recorded yet")
+local TEXT_SUMMARY = ns.L("%d players, %d notes")
 
 local TAG = {}
 for _, tag in ipairs(TAGS) do TAG[tag.key] = tag end

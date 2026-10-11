@@ -17,11 +17,11 @@ local TITLE_X, TITLE_Y = 8, -6
 local CLOSE_SIZE, CLOSE_INSET = 18, -4
 local NOBODY = B.NOBODY
 local ROW_NAME = "NaowhForeverBlessRow"
-local TEXT_DEFAULT = "Class default"
-local TEXT_BLESS = "Bless"
-local TEXT_BLESS_TIP = "Left-click: cast this player's blessing.\nRight-click: give "
-    .. "them their own blessing, or back to the class default."
-local TEXT_AFTER_COMBAT = "The player list opens after combat."
+local TEXT_DEFAULT = ns.L("Class default")
+local TEXT_BLESS = ns.L("Bless")
+local TEXT_BLESS_TIP = ns.L("Left-click: cast this player's blessing.\nRight-click: give "
+    .. "them their own blessing, or back to the class default.")
+local TEXT_AFTER_COMBAT = ns.L("The player list opens after combat.")
 local TEXT_CLOSE = "X"
 
 local flyout, rows, flyoutClass

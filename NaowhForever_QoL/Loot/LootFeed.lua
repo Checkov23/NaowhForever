@@ -41,20 +41,20 @@ local TSM_SOURCE = "dbminbuyout"
 local EVENTS = { "CHAT_MSG_LOOT", "CHAT_MSG_MONEY", "CHAT_MSG_COMBAT_XP_GAIN",
     "CHAT_MSG_COMBAT_FACTION_CHANGE", "QUEST_TURNED_IN", "BAG_UPDATE_DELAYED" }
 
-local TEXT_COINS = "Coins"
-local TEXT_PER_HOUR = "%dg %ds %dc/Hr"
+local TEXT_COINS = ns.L("Coins")
+local TEXT_PER_HOUR = ns.L("%dg %ds %dc/Hr")
 local TEXT_ITEM = "|c%s%s|r |cff20ff20x%d|r"
-local TEXT_QUEST = "Quest Complete"
-local TEXT_QUEST_XP = " XP|r"
-local TEXT_REP = " Rep|r"
+local TEXT_QUEST = ns.L("Quest Complete")
+local TEXT_QUEST_XP = ns.L(" XP|r")
+local TEXT_REP = ns.L(" Rep|r")
 local TEXT_MOVER = "Loot Feed"
-local TEXT_FADES = "Each line fades out after %ss."
-local TEXT_SUMMARY = "%d lines, %s%s"
-local TEXT_NO_BACKGROUND, TEXT_LIGHT, TEXT_DARK = "no background", "light", "dark"
-local TEXT_GPH = ", gold per hour"
-local TEXT_EDIT = "Edit the Feed"
-local TEXT_LINES_SHOW = "Lines Show"
-local TEXT_GLOW = "Glow"
+local TEXT_FADES = ns.L("Each line fades out after %ss.")
+local TEXT_SUMMARY = ns.L("%d lines, %s%s")
+local TEXT_NO_BACKGROUND, TEXT_LIGHT, TEXT_DARK = ns.L("no background"), ns.L("light"), ns.L("dark")
+local TEXT_GPH = ns.L(", gold per hour")
+local TEXT_EDIT = ns.L("Edit the Feed")
+local TEXT_LINES_SHOW = ns.L("Lines Show")
+local TEXT_GLOW = ns.L("Glow")
 
 local feed, gph, unlocked
 local rows, pool = {}, {}
@@ -91,8 +91,8 @@ local SAMPLE_PANTS, SAMPLE_CLOTH, SAMPLE_COINS, SAMPLE_PER_HOUR = 94, 39, 31250,
 local SAMPLE_PANTS_BAGS, SAMPLE_CLOTH_BAGS, SAMPLE_CLOTH_BANK = 1, 7, 27
 local PANTS_ICON = "Interface\\Icons\\INV_Pants_04"
 local CLOTH_ICON = "Interface\\Icons\\INV_Fabric_Linen_01"
-local SAMPLE_PANTS_NAME = "|cff1eff00Journeyman's Pants|r |cff20ff20x1|r"
-local SAMPLE_CLOTH_NAME = "|cffffffffLinen Cloth|r |cff20ff20x3|r"
+local SAMPLE_PANTS_NAME = ns.L("|cff1eff00Journeyman's Pants|r |cff20ff20x1|r")
+local SAMPLE_CLOTH_NAME = ns.L("|cffffffffLinen Cloth|r |cff20ff20x3|r")
 local VALUE_INSET, COIN_GAP, PAIR_GAP = 8, 2, 5
 local GPH_GAP = 10
 
@@ -604,30 +604,30 @@ local VALUE_PAD, VALUE_ROOM = 6, 48
 local HOVER_ALPHA = 0.12
 local WIDTH_RANGE, HEIGHT_RANGE, SPACING_RANGE = { 200, 600, 5 }, { 20, 64, 1 }, { -1, 20, 1 }
 local SIZE_RANGE, COUNT_RANGE = ns.Shared.Style.HUD_TEXT_RANGE, { 3, 12, 1 }
-local HINT = "Drag the right edge for width, a line's bottom for height. Wheel: text size (Shift: spacing, "
-    .. "Ctrl: lines). Right-click a line for what it shows."
-local OFF_HINT = "Turn on the Loot Feed to edit it here."
-local QOL_OFF_HINT = "Turn on QoL to edit the Loot Feed here."
+local HINT = ns.L("Drag the right edge for width, a line's bottom for height. Wheel: text size (Shift: spacing, "
+    .. "Ctrl: lines). Right-click a line for what it shows.")
+local OFF_HINT = ns.L("Turn on the Loot Feed to edit it here.")
+local QOL_OFF_HINT = ns.L("Turn on QoL to edit the Loot Feed here.")
 local TIP_VALUE = "%s (%d)"
 local STATES = {
     { key = "looting", label = "Looting", tip = "Lines as they come in, newest at the anchor." },
     { key = "fading", label = "Fading", tip = "Older lines fading out after the display time." },
 }
 local TIPS = {
-    { "width", "Drag the right edge", "Width", "lootFeedWidth" },
-    { "height", "Drag a line's bottom edge", "Line Height", "lootFeedHeight" },
-    { "lines", "Wheel", "Font Size", "lootFeedFontSize" },
-    { "lines", "Shift + wheel", "Spacing", "lootFeedSpacing" },
-    { "lines", "Ctrl + wheel", "Lines Shown", "lootFeedCount" },
-    { "value", "Click the value", "Show Item Value" },
-    { "bags", "Click the bag count", "Count Bank Items" },
-    { "lines", "Right-click a line", "What Lines Show" },
+    { "width", ns.L("Drag the right edge"), ns.L("Width"), "lootFeedWidth" },
+    { "height", ns.L("Drag a line's bottom edge"), ns.L("Line Height"), "lootFeedHeight" },
+    { "lines", ns.L("Wheel"), ns.L("Font Size"), "lootFeedFontSize" },
+    { "lines", ns.L("Shift + wheel"), ns.L("Spacing"), "lootFeedSpacing" },
+    { "lines", ns.L("Ctrl + wheel"), ns.L("Lines Shown"), "lootFeedCount" },
+    { "value", ns.L("Click the value"), ns.L("Show Item Value") },
+    { "bags", ns.L("Click the bag count"), ns.L("Count Bank Items") },
+    { "lines", ns.L("Right-click a line"), ns.L("What Lines Show") },
 }
 local LINE_TOGGLES = {
-    { "lootFeedMoney", "Show Money" },
-    { "lootFeedQuest", "Show Quest Rewards" },
-    { "lootFeedRep", "Show Reputation" },
-    { "lootFeedXP", "Show Kill Experience" },
+    { "lootFeedMoney", ns.L("Show Money") },
+    { "lootFeedQuest", ns.L("Show Quest Rewards") },
+    { "lootFeedRep", ns.L("Show Reputation") },
+    { "lootFeedXP", ns.L("Show Kill Experience") },
 }
 
 local function Choices(title, key, choice)

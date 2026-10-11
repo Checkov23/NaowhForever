@@ -36,7 +36,7 @@ local ONE_HAND_ONLY = { INVTYPE_WEAPONMAINHAND = "MH", INVTYPE_WEAPONOFFHAND = "
 local WEAPON_SHORT = {
     [0] = { "Axe", "1h" }, [1] = { "Axe", "2h" }, [2] = { "Bow" }, [3] = { "Gun" },
     [4] = { "Mace", "1h" }, [5] = { "Mace", "2h" }, [6] = { "Polearm" }, [7] = { "Sword", "1h" },
-    [8] = { "Sword", "2h" }, [10] = { "Staff" }, [13] = { "Fist Weapon" }, [15] = { "Dagger" },
+    [8] = { "Sword", "2h" }, [10] = { "Staff" }, [13] = { ns.L("Fist Weapon") }, [15] = { "Dagger" },
     [16] = { "Thrown" }, [18] = { "Crossbow" }, [19] = { "Wand" },
 }
 
@@ -120,7 +120,7 @@ function Items.WeaponName(subclass, equipLoc)
     local byHand = ByHand(subclass)
     local name = byHand[hand]
     if name then return name end
-    name = hand ~= "" and hand .. " " .. short[1] or short[1]
+    name = hand ~= "" and hand .. " " .. ns.L(short[1]) or ns.L(short[1])
     byHand[hand] = name
     return name
 end

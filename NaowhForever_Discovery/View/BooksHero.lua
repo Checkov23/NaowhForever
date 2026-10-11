@@ -24,21 +24,21 @@ local PIN_RIGHT = 10
 local WHO_GAP = 4
 local GREYED_ALPHA = 0.5
 local GOAL_STATE = {
-    claimed = { "Handed in", T.muted }, ready = { "Ready to hand in", Style.HAVE_RGB },
-    level = { "Enough books; at level %d", Style.STORED_RGB }, ahead = { "%d to go", T.fg },
+    claimed = { ns.L("Handed in"), T.muted }, ready = { ns.L("Ready to hand in"), Style.HAVE_RGB },
+    level = { ns.L("Enough books; at level %d"), Style.STORED_RGB }, ahead = { ns.L("%d to go"), T.fg },
 }
-local TEXT_KICKER = "FRIEND OF THE LIBRARY"
-local TEXT_YOU = "YOU"
-local TEXT_WAYPOINT = "Waypoint"
-local TEXT_PIN_HINT = "To who takes the books."
+local TEXT_KICKER = ns.L("FRIEND OF THE LIBRARY")
+local TEXT_YOU = ns.L("YOU")
+local TEXT_WAYPOINT = ns.L("Waypoint")
+local TEXT_PIN_HINT = ns.L("To who takes the books.")
 local TEXT_COUNT = "%d / %d"
-local TEXT_TO_GO = "%d to go for %s"
-local TEXT_ALL_EARNED = "Every reward earned"
-local TEXT_HAND_TO = "Hand them to "
-local TEXT_BOOKS = "%d books"
-local TEXT_NEEDS_LEVEL = "Needs level %d"
-local TEXT_REPORTED = "The book count is what players report; not confirmed yet."
-local TEXT_PICK = "Pick one of the rewards under it."
+local TEXT_TO_GO = ns.L("%d to go for %s")
+local TEXT_ALL_EARNED = ns.L("Every reward earned")
+local TEXT_HAND_TO = ns.L("Hand them to ")
+local TEXT_BOOKS = ns.L("%d books")
+local TEXT_NEEDS_LEVEL = ns.L("Needs level %d")
+local TEXT_REPORTED = ns.L("The book count is what players report; not confirmed yet.")
+local TEXT_PICK = ns.L("Pick one of the rewards under it.")
 
 local function LibrarianClicked()
     Library.WaypointNpc(Library.Librarian())

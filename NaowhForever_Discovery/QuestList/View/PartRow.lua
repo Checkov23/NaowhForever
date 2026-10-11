@@ -5,8 +5,8 @@ local Completo = ns.Completo
 local Parts = ns.Shared.Parts
 local V = Completo.View
 
-local TEXT_SEE_IN = "Click to see %s in %s."
-local TEXT_OPEN = "Click to open %s."
+local TEXT_SEE_IN = ns.L("Click to see %s in %s.")
+local TEXT_OPEN = ns.L("Click to open %s.")
 
 local function PartEnter(row)
     row.hover:Show()

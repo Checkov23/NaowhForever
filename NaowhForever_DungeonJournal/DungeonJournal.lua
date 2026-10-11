@@ -24,8 +24,8 @@ local SUBZONES = {
     ["Crusader's Chapel"] = "ScarletMonasteryCathedral",
 }
 
-local TEXT_TURNED_ON = "Dungeon Journal turned on. Turn it off in its settings page."
-local TEXT_ENTRANCE = " (entrance)"
+local TEXT_TURNED_ON = ns.L("Dungeon Journal turned on. Turn it off in its settings page.")
+local TEXT_ENTRANCE = ns.L(" (entrance)")
 
 local S = ns.UI.ModuleSettings("journal", {
     enabled = F.enabled,
@@ -67,7 +67,7 @@ local J = { Settings = S }
 ns.Journal = J
 
 J.OPTION_GROUPS = {
-    { title = "What it lists", options = {
+    { title = ns.L("What it lists"), options = {
         { key = "usableOnly", label = "My Class Only", hides = true,
           tooltip = "Only the loot your class can use. Off, the rest is listed faded." },
         { key = "myRecipes", label = "My Professions Only", hides = true,
@@ -82,11 +82,11 @@ J.OPTION_GROUPS = {
           tooltip = "Cosmetic items too: looks for transmog that any class can wear, with no stats." },
     } },
 }
-J.NEEDS_BIS = "Needs the BiS List module, which is off."
-J.NOT_YET = "Not in Forever yet"
+J.NEEDS_BIS = ns.L("Needs the BiS List module, which is off.")
+J.NOT_YET = ns.L("Not in Forever yet")
 J.CLOSED_NOTE = "Not open on Forever yet."
 J.FACT = { CLASS = 1, SUBCLASS = 2, ITEM_LEVEL = 3, REQUIRED = 4, QUALITY = 5, ICON = 6, NAME = 7 }
-J.RANK = { key = "PvPRank", name = "PvP Rank", tab = "pvp", rank = true }
+J.RANK = { key = "PvPRank", name = ns.L("PvP Rank"), tab = "pvp", rank = true }
 J.TABS = FACTION_TABS
 J.NotYet = {}
 J.CharacterData = ns.Shared.CharacterData

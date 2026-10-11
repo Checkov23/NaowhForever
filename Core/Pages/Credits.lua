@@ -14,7 +14,7 @@ local LINE_GAP, NAME_RISE, ROLE_GAP, ROLE_DROP = 6, 2, 8, 1
 local HERO_EMBLEM, HERO_EMBLEM_STEP = 34, 40
 local TEXT_LEFT = PAD + EMBLEM + PAD - NAME_RISE
 local TEXT_NAOWH, TEXT_FOREVER = "Naowh ", "Forever"
-local TEXT_VERSION = "Version %s, made by Naowh's team and the people who play it."
+local TEXT_VERSION = ns.L("Version %s, made by Naowh's team and the people who play it.")
 local UNKNOWN_BUILD = "?"
 
 local function Tier(key)
@@ -22,34 +22,34 @@ local function Tier(key)
 end
 
 local TEAM = {
-    { tier = "naowh", name = "Naowh", role = "Founder", line = "The name on it, and the community it is made for." },
-    { tier = "developer", name = "Glyalith", role = "Lead Developer", line = "Builds and ships Naowh Forever." },
-    { tier = "developer", name = "Dieman", role = "Lead Developer", line = "Builds and ships Naowh Forever." },
+    { tier = "naowh", name = "Naowh", role = "Founder", line = ns.L("The name on it, and the community it is made for.") },
+    { tier = "developer", name = "Glyalith", role = "Lead Developer", line = ns.L("Builds and ships Naowh Forever.") },
+    { tier = "developer", name = "Dieman", role = "Lead Developer", line = ns.L("Builds and ships Naowh Forever.") },
 }
 
 local THANKS = {
-    { tier = "ellesmere", name = "Ellesmere", role = "EllesmereUI", line = "Creator of EllesmereUI, for his help with Naowh Forever." },
-    { tier = "moderator", name = "Moderators", role = "Community", line = "Every moderator keeping the Naowh community running." },
-    { tier = "legendary", badges = true, name = "Legendary Supporters", role = "Supporters", line = "Everyone wearing the Legendary badge: you keep Naowh Forever going." },
-    { tier = "epic", badges = true, name = "Epic Supporters", role = "Supporters", line = "Everyone wearing the Epic badge: you keep Naowh Forever going too." },
-    { icon = "checklist", color = T.accentSoft, name = "Beta Testers", role = "Community", line = "Every bug report and screenshot made it better." },
+    { tier = "ellesmere", name = "Ellesmere", role = "EllesmereUI", line = ns.L("Creator of EllesmereUI, for his help with Naowh Forever.") },
+    { tier = "moderator", name = ns.L("Moderators"), role = "Community", line = ns.L("Every moderator keeping the Naowh community running.") },
+    { tier = "legendary", badges = true, name = ns.L("Legendary Supporters"), role = "Supporters", line = ns.L("Everyone wearing the Legendary badge: you keep Naowh Forever going.") },
+    { tier = "epic", badges = true, name = ns.L("Epic Supporters"), role = "Supporters", line = ns.L("Everyone wearing the Epic badge: you keep Naowh Forever going too.") },
+    { icon = "checklist", color = T.accentSoft, name = ns.L("Beta Testers"), role = "Community", line = ns.L("Every bug report and screenshot made it better.") },
 }
 
 local DATA = {
-    { icon = "search", color = GOLD, name = "Wowhead", role = "Data", line = "WoW Forever's items, quests and NPCs, and what is new in Forever." },
-    { icon = "trophy", color = GOLD, name = "wowsrc.com", role = "Data", line = "The BiS rankings behind the BiS List." },
-    { icon = "bars", color = GOLD, name = "WoWSims", role = "Data", line = "The stat weights each spec starts with." },
-    { icon = "map", color = GOLD, name = "Santiago Reyes", role = "Maps", line = "For his maps of the new Forever dungeons." },
-    { icon = "map", color = GOLD, name = "tr0tsky", role = "Data", line = "Ley lines and Elemental Convergences behind Skyborne Spots, from the Skyborne Ley Line & Convergence Marker addon." },
+    { icon = "search", color = GOLD, name = "Wowhead", role = "Data", line = ns.L("WoW Forever's items, quests and NPCs, and what is new in Forever.") },
+    { icon = "trophy", color = GOLD, name = "wowsrc.com", role = "Data", line = ns.L("The BiS rankings behind the BiS List.") },
+    { icon = "bars", color = GOLD, name = "WoWSims", role = "Data", line = ns.L("The stat weights each spec starts with.") },
+    { icon = "map", color = GOLD, name = "Santiago Reyes", role = "Maps", line = ns.L("For his maps of the new Forever dungeons.") },
+    { icon = "map", color = GOLD, name = "tr0tsky", role = "Data", line = ns.L("Ley lines and Elemental Convergences behind Skyborne Spots, from the Skyborne Ley Line & Convergence Marker addon.") },
 }
 
 local LIBRARIES = { "LibStub", "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0",
     "LibCustomGlow-1.0", "LibGetFrame-1.0", "LibDeflate", "LibSerialize" }
 
 local SECTIONS = {
-    { title = "The Team", people = TEAM },
-    { title = "Thank You", people = THANKS },
-    { title = "Built With", people = DATA, chips = LIBRARIES },
+    { title = ns.L("The Team"), people = TEAM },
+    { title = ns.L("Thank You"), people = THANKS },
+    { title = ns.L("Built With"), people = DATA, chips = LIBRARIES },
 }
 
 local function Smooth(texture, path)

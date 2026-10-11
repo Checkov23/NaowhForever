@@ -16,9 +16,9 @@ local TRINKET = "INVTYPE_TRINKET"
 local CARD = C.PAGE .. ":trinketBar"
 local WATCHED = { "PLAYER_REGEN_ENABLED", "PLAYER_REGEN_DISABLED", "PLAYER_EQUIPMENT_CHANGED" }
 
-local TEXT_NONE = "No spare trinkets in your bags."
-local TEXT_CLOSE = "Close"
-local TEXT_EMPTY = "Trinket %d - Empty"
+local TEXT_NONE = ns.L("No spare trinkets in your bags.")
+local TEXT_CLOSE = ns.L("Close")
+local TEXT_EMPTY = ns.L("Trinket %d - Empty")
 local TEXT_MOVER = "Trinkets"
 
 local trinkets, picker, moving

@@ -22,23 +22,23 @@ local DRAG_FADE = 0.4
 local PERCENT = 100
 local ITEM_PAGE = "Consumable Bar/Item"
 local POSITION_KEY = "consumableBarWindow"
-local TEXT_TITLE = "Consumable Bar"
-local TEXT_SUBTITLE = "Add your consumables, put them in order, set each one up."
-local TEXT_HINT = "Drag items onto it or click +; drag an icon to move it; right-click for its settings."
-local TEXT_WIDE_HINT = "Scroll the mouse wheel to see the rest; right-click an icon for its settings."
+local TEXT_TITLE = ns.L("Consumable Bar")
+local TEXT_SUBTITLE = ns.L("Add your consumables, put them in order, set each one up.")
+local TEXT_HINT = ns.L("Drag items onto it or click +; drag an icon to move it; right-click for its settings.")
+local TEXT_WIDE_HINT = ns.L("Scroll the mouse wheel to see the rest; right-click an icon for its settings.")
 local TEXT_PLUS = "+"
-local TEXT_ADD_TITLE = "Add Items"
-local TEXT_ADD_TIP = "Consumables by item ID or name, or dragged from your bags."
-local TEXT_HIDDEN_COMBAT = "Hidden in combat"
-local TEXT_HIDDEN_USED = "Hidden after use, out of combat"
-local TEXT_RIGHT_CLICK = "Right-click for its settings"
-local TEXT_RUNS = "Runs %s from Macros"
-local TEXT_ONE_ITEM, TEXT_ITEMS = "1 item on the bar", "%d items on the bar"
-local TEXT_REMOVE = "Remove From Bar"
-local TEXT_SAME_FONT = "Same as Count"
+local TEXT_ADD_TITLE = ns.L("Add Items")
+local TEXT_ADD_TIP = ns.L("Consumables by item ID or name, or dragged from your bags.")
+local TEXT_HIDDEN_COMBAT = ns.L("Hidden in combat")
+local TEXT_HIDDEN_USED = ns.L("Hidden after use, out of combat")
+local TEXT_RIGHT_CLICK = ns.L("Right-click for its settings")
+local TEXT_RUNS = ns.L("Runs %s from Macros")
+local TEXT_ONE_ITEM, TEXT_ITEMS = ns.L("1 item on the bar"), ns.L("%d items on the bar")
+local TEXT_REMOVE = ns.L("Remove From Bar")
+local TEXT_SAME_FONT = ns.L("Same as Count")
 local BUTTONS = {
-    { "Scan Bags", "ScanBags", "Adds the consumables in your bags that are not on the bar yet." },
-    { "Remove All", "Clear", "Takes every item off the bar, after asking." },
+    { "Scan Bags", "ScanBags", ns.L("Adds the consumables in your bags that are not on the bar yet.") },
+    { "Remove All", "Clear", ns.L("Takes every item off the bar, after asking.") },
 }
 local DEFAULTS = {
     combat = false, used = false, track = "buff", early = false, earlySeconds = C.EARLY_DEFAULT,

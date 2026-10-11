@@ -9,14 +9,14 @@ local Group = Settings.Group
 
 local OPACITY_RANGE, PERCENT_SCALE = ns.Shared.Style.OPACITY_RANGE, ns.Shared.Style.PERCENT_SCALE
 local ORDER_KEPT, ORDER_HEALTH, ORDER_FOOD, ORDER_EXTRA, ORDER_FOCUS, ORDER_WINDOW = 5, 20, 22, 25, 30, 40
-local MACROS_OFF = "Turn on Macros"
-local USED_BY_BAR = "Used by Consumable Bar"
+local MACROS_OFF = ns.L("Turn on Macros")
+local USED_BY_BAR = ns.L("Used by Consumable Bar")
 local BAR_PAGE, BAR_CARD = "Consumable Bar/Settings", "Consumable Bar/Settings:adding"
-local TEXT_KEPT = "%d of %d kept current"
-local TEXT_ANNOUNCES_MARKS = "Announces and marks your focus"
-local TEXT_ANNOUNCES = "Announces your focus"
-local TEXT_MARKS = "Marks your focus"
-local TEXT_JUST_FOCUS = "Just sets your focus"
+local TEXT_KEPT = ns.L("%d of %d kept current")
+local TEXT_ANNOUNCES_MARKS = ns.L("Announces and marks your focus")
+local TEXT_ANNOUNCES = ns.L("Announces your focus")
+local TEXT_MARKS = ns.L("Marks your focus")
+local TEXT_JUST_FOCUS = ns.L("Just sets your focus")
 
 local HEALTH_ORDER_VALUES = { stone = "Healthstone First", potion = "Potion First" }
 local HEALTH_ORDER_ORDER = { "stone", "potion" }

@@ -15,14 +15,14 @@ local KILL_PAD = 4
 local KILL_GAP = 3
 
 local TEXT_NOT_COUNTED = "-"
-local TEXT_LOOTED_HINT = "Click for what you looted from it."
-local TEXT_NOT_KILLED = "Not killed yet on this character."
-local TEXT_KILLED_ONCE = "Killed once on this character."
-local TEXT_KILLED_TIMES = "Killed %d times on this character."
-local TEXT_RECORD = "Record|r "
-local TEXT_LATEST = "The latest %d. First counted: %s."
-local TEXT_WHILE_ON = "Kills count while the Dungeon Journal is on."
-local TEXT_OPEN_HISTORY = "Click for each kill: who was with you, what dropped and who won it."
+local TEXT_LOOTED_HINT = ns.L("Click for what you looted from it.")
+local TEXT_NOT_KILLED = ns.L("Not killed yet on this character.")
+local TEXT_KILLED_ONCE = ns.L("Killed once on this character.")
+local TEXT_KILLED_TIMES = ns.L("Killed %d times on this character.")
+local TEXT_RECORD = ns.L("Record|r ")
+local TEXT_LATEST = ns.L("The latest %d. First counted: %s.")
+local TEXT_WHILE_ON = ns.L("Kills count while the Dungeon Journal is on.")
+local TEXT_OPEN_HISTORY = ns.L("Click for each kill: who was with you, what dropped and who won it.")
 local TEXT_BLANK = " "
 
 local function PaintKills(button)

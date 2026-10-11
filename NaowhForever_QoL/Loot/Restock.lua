@@ -59,25 +59,25 @@ local AMMO_RANGE, FOOD_BELOW_RANGE, FOOD_LEVEL_RANGE = { 50, 4000, 50 }, { 1, 40
 local BAGS_BELOW_RANGE, CARRY_RANGE = { 1, 20, 1 }, { 0, CARRY_MAX, 1 }
 local TEXT_RANGE = { 10, 32, 1 }
 local ITEM_PATTERN = "item:(%d+)"
-local CHECKS = { { "restockReagents", "reagents" }, { "restockAmmo", "ammo" }, { "restockFood", "food & drink" },
-    { "restockVendor", "junk & bags" } }
-local SAMPLE = { "Arcane Powder  3 / 20", "Rough Arrow  150 / 1000", "Junk to sell  6" }
+local CHECKS = { { "restockReagents", "reagents" }, { "restockAmmo", "ammo" }, { "restockFood", ns.L("food & drink") },
+    { "restockVendor", ns.L("junk & bags") } }
+local SAMPLE = { "Arcane Powder  3 / 20", "Rough Arrow  150 / 1000", ns.L("Junk to sell  6") }
 
-local TEXT_ITEM = "item "
-local TEXT_TITLE = "Restock"
+local TEXT_ITEM = ns.L("item ")
+local TEXT_TITLE = ns.L("Restock")
 local TEXT_SHORT = "%s  %d / %d"
-local TEXT_FOOD = "Food  %d left"
-local TEXT_DRINK = "Drink  %d left"
-local TEXT_JUNK = "Junk to sell  %d"
-local TEXT_BAGS = "Bags nearly full  %d free"
-local TEXT_NO_GOLD = "Not enough gold to repair ("
-local TEXT_REPAIRED = "Repaired for "
-local TEXT_RESTOCKED = "Restocked "
-local TEXT_FOR = " for "
+local TEXT_FOOD = ns.L("Food  %d left")
+local TEXT_DRINK = ns.L("Drink  %d left")
+local TEXT_JUNK = ns.L("Junk to sell  %d")
+local TEXT_BAGS = ns.L("Bags nearly full  %d free")
+local TEXT_NO_GOLD = ns.L("Not enough gold to repair (")
+local TEXT_REPAIRED = ns.L("Repaired for ")
+local TEXT_RESTOCKED = ns.L("Restocked ")
+local TEXT_FOR = ns.L(" for ")
 local TEXT_BOUGHT = "x "
-local CARRY_HELP = "How many to carry. 0 stops reminding you about it."
-local TEXT_NOTHING = "Nothing to check"
-local TEXT_BUYS = "; buys at vendors"
+local CARRY_HELP = ns.L("How many to carry. 0 stops reminding you about it.")
+local TEXT_NOTHING = ns.L("Nothing to check")
+local TEXT_BUYS = ns.L("; buys at vendors")
 
 local alert, flash
 local wasResting

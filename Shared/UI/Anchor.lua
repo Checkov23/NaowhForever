@@ -15,16 +15,16 @@ local OFFSET_RANGE = { -500, 500, 1 }
 local SCREEN = "UIParent"
 local EDIT_PAGE = "%s/Anchor"
 local POINT = { ItemBar.POINT_VALUES, ItemBar.POINT_ORDER }
-local TEXT_PICKER = "Anchor the %s"
-local TEXT_HINT = "Click one of your unit frames, or type its name. Esc cancels."
+local TEXT_PICKER = ns.L("Anchor the %s")
+local TEXT_HINT = ns.L("Click one of your unit frames, or type its name. Esc cancels.")
 local TEXT_ANCHOR, TEXT_CANCEL, TEXT_DONE = "Anchor", "Cancel", "Done"
-local TEXT_NO_FRAME = "No frame called %s. Frame names are case sensitive."
-local TEXT_REFUSED = "%s cannot hold the bar. Pick a unit frame; for a Naowh Forever element, use Anchor to an Element."
-local TEXT_ANCHORED = "%s anchored to %s."
-local TEXT_BACK = "%s is back on the screen."
-local TEXT_SWITCH_ON = "Switch the %s on to set where it sits."
-local TEXT_EDITING = "Anchor Settings"
-local TEXT_NOT_ANCHORED = "Anchor it to a frame first"
+local TEXT_NO_FRAME = ns.L("No frame called %s. Frame names are case sensitive.")
+local TEXT_REFUSED = ns.L("%s cannot hold the bar. Pick a unit frame; for a Naowh Forever element, use Anchor to an Element.")
+local TEXT_ANCHORED = ns.L("%s anchored to %s.")
+local TEXT_BACK = ns.L("%s is back on the screen.")
+local TEXT_SWITCH_ON = ns.L("Switch the %s on to set where it sits.")
+local TEXT_EDITING = ns.L("Anchor Settings")
+local TEXT_NOT_ANCHORED = ns.L("Anchor it to a frame first")
 
 local picker, editor
 

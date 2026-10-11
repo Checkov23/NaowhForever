@@ -47,23 +47,23 @@ local KEY_JOIN = "|"
 local TIP_GOLD = { r = 1, g = 0.82, b = 0 }
 local WHITE_RGB = ns.QoLConstants.WHITE_RGB
 local CLOCK = "%d:%02d"
-local TEXT_FLIGHT_TIME = "Flight Time"
-local TEXT_IN_FLIGHT = "In flight"
-local TEXT_VIA, TEXT_NEXT = "Via", "Next"
+local TEXT_FLIGHT_TIME = ns.L("Flight Time")
+local TEXT_IN_FLIGHT = ns.L("In flight")
+local TEXT_VIA, TEXT_NEXT = ns.L("Via"), ns.L("Next")
 local LIST_JOIN = ", "
-local TEXT_LAND, TEXT_GAMES = "Land", "Games"
-local TIP_LAND_TITLE, TIP_LAND = "Land Early", "Come down at the next stop on the way."
-local TIP_GAMES = "A game to pass the flight: the Quiz or the Aim Trainer. It closes when you land."
-local TEXT_MENU_TITLE, TEXT_QUIZ = "Pass the Flight", "Quiz"
+local TEXT_LAND, TEXT_GAMES = ns.L("Land"), ns.L("Games")
+local TIP_LAND_TITLE, TIP_LAND = ns.L("Land Early"), ns.L("Come down at the next stop on the way.")
+local TIP_GAMES = ns.L("A game to pass the flight: the Quiz or the Aim Trainer. It closes when you land.")
+local TEXT_MENU_TITLE, TEXT_QUIZ = ns.L("Pass the Flight"), ns.L("Quiz")
 local MOVER_LABEL = "Flight Timer"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Travel", "QoL/Travel:flightTimer"
-local SUMMARY = "Scale %d%%%s%s"
-local SUMMARY_BACKGROUND = ", %d%% background"
-local SUMMARY_LAND = ", Land Early button"
-local GAMES_OFF = "Off: no Games button"
-local GAMES_BUTTON = "Games button, nothing opens by itself"
-local GAMES_AIM_OFF = "Aim Trainer, but it is off: nothing opens"
-local GAMES_WHEN = " when a flight starts"
+local SUMMARY = ns.L("Scale %d%%%s%s")
+local SUMMARY_BACKGROUND = ns.L(", %d%% background")
+local SUMMARY_LAND = ns.L(", Land Early button")
+local GAMES_OFF = ns.L("Off: no Games button")
+local GAMES_BUTTON = ns.L("Games button, nothing opens by itself")
+local GAMES_AIM_OFF = ns.L("Aim Trainer, but it is off: nothing opens")
+local GAMES_WHEN = ns.L(" when a flight starts")
 
 local bar, poll, unlocked, Apply, FadeBlizzardStop, StyleText
 local stopFaded = false
@@ -524,9 +524,9 @@ function Look.Progress(f, fl, elapsed)
     if f.foot == "next" then Advance(f, elapsed) end
 end
 
-local AIM_OFF = "Turn on the Aim Trainer in QoL > Travel"
-local AIM_MODES = { { "gridshot", "Aim Trainer: Gridshot" }, { "hexakill", "Aim Trainer: Hexakill" },
-    { "reflex", "Aim Trainer: Reflex" } }
+local AIM_OFF = ns.L("Turn on the Aim Trainer in QoL > Travel")
+local AIM_MODES = { { "gridshot", ns.L("Aim Trainer: Gridshot") }, { "hexakill", ns.L("Aim Trainer: Hexakill") },
+    { "reflex", ns.L("Aim Trainer: Reflex") } }
 
 local function PickQuiz()
     if ns.AimDismiss then ns.AimDismiss() end
@@ -730,8 +730,8 @@ function FadeBlizzardStop()
     MainMenuBarVehicleLeaveButton:EnableMouse(not fade)
 end
 
-local SAMPLE = { { name = "Southshore", at = 0 }, { name = "Refuge Pointe", at = 50 },
-    { name = "Menethil Harbor", at = 95 }, { name = "Thelsamar", at = 150 } }
+local SAMPLE = { { name = ns.L("Southshore"), at = 0 }, { name = ns.L("Refuge Pointe"), at = 50 },
+    { name = ns.L("Menethil Harbor"), at = 95 }, { name = ns.L("Thelsamar"), at = 150 } }
 
 function Apply()
     MigrateGame()
@@ -787,7 +787,7 @@ if not Settings then return end
 local STAGE_H, STAGE_MARGIN = 150, St.STAGE_MARGIN
 local PREVIEW_ELAPSED = 66
 local PREVIEW = { from = "Darkshire", to = "Stormwind", known = 150,
-    points = { { name = "Darkshire", at = 0 }, { name = "Lakeshire", at = 95 }, { name = "Stormwind", at = 150 } } }
+    points = { { name = ns.L("Darkshire"), at = 0 }, { name = ns.L("Lakeshire"), at = 95 }, { name = ns.L("Stormwind"), at = 150 } } }
 local STATES = {
     { key = "flying", label = "Flying", tip = "Partway through a flight to Stormwind, 1:24 from landing." },
 }
@@ -853,7 +853,7 @@ local function GamesSummary()
     if game == "aim" and not (ns.AimTrainerOn and ns.AimTrainerOn()) then
         return GAMES_AIM_OFF
     end
-    return GAME_NAMES[game] .. GAMES_WHEN
+    return ns.L(GAME_NAMES[game]) .. GAMES_WHEN
 end
 
 Settings.Page("QoL/Travel", S):Card({

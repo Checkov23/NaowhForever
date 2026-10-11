@@ -19,7 +19,7 @@ local RAID_SIZE, PARTY_SIZE = ns.QoLConstants.RAID_SIZE, ns.QoLConstants.PARTY_S
 local PERMILLE, ROUND, TENTHS = ns.QoLConstants.PERMILLE, ns.QoLConstants.ROUND, ns.QoLConstants.TENTHS
 local PERCENT = ns.QoLConstants.PERCENT
 local PCT_FORMAT = "%.1f%%"
-local DEAD, OFFLINE, UNKNOWN = "Dead", "Offline", "--"
+local DEAD, OFFLINE, UNKNOWN = ns.L("Dead"), ns.L("Offline"), "--"
 local NO_RANK = math.huge
 local PLACE = { point = "LEFT", relPoint = "LEFT", x = 40, y = -120 }
 local UNIT_EVENTS = { "UNIT_POWER_UPDATE", "UNIT_MAXPOWER", "UNIT_DISPLAYPOWER", "UNIT_CONNECTION", "UNIT_AURA" }
@@ -27,9 +27,9 @@ local GROUP_EVENTS = { "GROUP_ROSTER_UPDATE", "PLAYER_ROLES_ASSIGNED", "PLAYER_E
 
 local MOVER_LABEL = "Healer Mana"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Combat", "QoL/Combat:healerMana"
-local TEXT_IN_GROUP = "Shown while you are in a group."
-local TEXT_IN_INSTANCES = "Shown in dungeons and raids."
-local SUMMARY = "%s, %d wide"
+local TEXT_IN_GROUP = ns.L("Shown while you are in a group.")
+local TEXT_IN_INSTANCES = ns.L("Shown in dungeons and raids.")
+local SUMMARY = ns.L("%s, %d wide")
 local STAGE_H = 150
 local NOTE_Y, NOTE_SIZE, STAGE_MARGIN = St.STAGE_NOTE_Y, St.STAGE_NOTE_SIZE, St.STAGE_MARGIN
 local WIDTH_RANGE = { 100, 300, 5 }

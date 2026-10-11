@@ -10,7 +10,7 @@ local COG_W = 380
 local TWO_COLUMNS_W = SS.TWO_COLUMNS_W
 local DRAG_WAIT = 0.05
 local NO_EVENTS = {}
-local TEXT_NO_MATCH = "Nothing on this page matches the search."
+local TEXT_NO_MATCH = ns.L("Nothing on this page matches the search.")
 
 local Draw = {}
 local watched = {}

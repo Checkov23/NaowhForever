@@ -38,16 +38,16 @@ local TABS = {
     { key = "pvp", label = "PvP" },
 }
 
-local TEXT_SUBTITLE = "Dungeons and raids, reputation and PvP: what drops, your quests, and more."
-local TEXT_SEARCH = "Search items, bosses or factions"
-local TEXT_SHOW_LIST = "Show the dungeon list"
-local TEXT_HIDE_LIST = "Hide the dungeon list"
-local TEXT_DATA = "Game data: WoW Forever "
-local TEXT_DATA_DATE = "That build came out on %s."
-local TEXT_DATA_HELP = "Faction rewards, their standings and prices, and the boss fights the kill counts follow, "
-    .. "are read from it. A daily check moves them on to each new build."
-local TEXT_DATA_NOTE = "Game data: build "
-local TEXT_BACK = "Back"
+local TEXT_SUBTITLE = ns.L("Dungeons and raids, reputation and PvP: what drops, your quests, and more.")
+local TEXT_SEARCH = ns.L("Search items, bosses or factions")
+local TEXT_SHOW_LIST = ns.L("Show the dungeon list")
+local TEXT_HIDE_LIST = ns.L("Hide the dungeon list")
+local TEXT_DATA = ns.L("Game data: WoW Forever ")
+local TEXT_DATA_DATE = ns.L("That build came out on %s.")
+local TEXT_DATA_HELP = ns.L("Faction rewards, their standings and prices, and the boss fights the kill counts follow, "
+    .. "are read from it. A daily check moves them on to each new build.")
+local TEXT_DATA_NOTE = ns.L("Game data: build ")
+local TEXT_BACK = ns.L("Back")
 
 local window, view, scroll, search, listFrame, factionFrame
 local listCard, contentCard
@@ -59,6 +59,12 @@ local picked = {}
 local shownQuery = ""
 local searchQueued = false
 local clearing = false
+
+local function DataDate(text)
+    local day, month, year = tostring(text or ""):match("^(%d+) (%a+) (%d+)$")
+    if not day then return text end
+    return ns.L("%d %s %d"):format(tonumber(day), ns.L(month), tonumber(year))
+end
 
 local function TabOf(page)
     return page.tab or DUNGEONS
@@ -226,7 +232,7 @@ local function DataEnter(frame)
     GameTooltip:SetOwner(frame, "ANCHOR_TOP")
     GameTooltip:SetText(TEXT_DATA .. J.DATA_BUILD, 1, 1, 1)
     if J.DATA_DATE ~= "" then
-        GameTooltip:AddLine(TEXT_DATA_DATE:format(J.DATA_DATE), T.muted.r, T.muted.g, T.muted.b)
+        GameTooltip:AddLine(TEXT_DATA_DATE:format(DataDate(J.DATA_DATE)), T.muted.r, T.muted.g, T.muted.b)
     end
     GameTooltip:AddLine(TEXT_DATA_HELP, T.muted.r, T.muted.g, T.muted.b, true)
     GameTooltip:Show()
@@ -267,7 +273,7 @@ end
 local function BuildFooter()
     Parts.FooterBrand(window, PAGE)
     if not J.DATA_BUILD then return end
-    Parts.FooterNote(window, TEXT_DATA_NOTE .. J.DATA_BUILD .. (J.DATA_DATE ~= "" and PLACE_DOT .. J.DATA_DATE or ""),
+    Parts.FooterNote(window, TEXT_DATA_NOTE .. J.DATA_BUILD .. (J.DATA_DATE ~= "" and PLACE_DOT .. DataDate(J.DATA_DATE) or ""),
         DataEnter)
 end
 

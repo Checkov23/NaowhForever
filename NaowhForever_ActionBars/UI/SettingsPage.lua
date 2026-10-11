@@ -8,11 +8,11 @@ local Settings = ns.Shared.Settings
 
 local OPACITY_RANGE, PERCENT_SCALE = ns.Shared.Style.OPACITY_RANGE, ns.Shared.Style.PERCENT_SCALE
 local ORDER_IMPORTING, ORDER_WINDOW = 10, 20
-local BARS_OFF = "Turn on Action Bars"
-local TEXT_HIGHEST, TEXT_SAVED = "Highest ranks", "Saved ranks"
-local TEXT_MACROS, TEXT_KEYBINDS = "macros", "keybinds"
-local TEXT_NONE = "None"
-local TEXT_FILLS, TEXT_SAVES = "fills in later", "saves on logout"
+local BARS_OFF = ns.L("Turn on Action Bars")
+local TEXT_HIGHEST, TEXT_SAVED = ns.L("Highest ranks"), ns.L("Saved ranks")
+local TEXT_MACROS, TEXT_KEYBINDS = ns.L("macros"), ns.L("keybinds")
+local TEXT_NONE = ns.L("None")
+local TEXT_FILLS, TEXT_SAVES = ns.L("fills in later"), ns.L("saves on logout")
 
 local On = A.On
 

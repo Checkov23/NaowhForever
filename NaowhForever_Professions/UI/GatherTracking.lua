@@ -11,8 +11,8 @@ local Parts = ns.Shared.Parts
 
 local FIND_HERBS, FIND_MINERALS, FIND_FISH = 2383, 2580, 43308
 local TRACKINGS = {
-    { spell = FIND_HERBS, label = "Herbs" },
-    { spell = FIND_MINERALS, label = "Minerals" },
+    { spell = FIND_HERBS, label = ns.L("Herbs") },
+    { spell = FIND_MINERALS, label = ns.L("Minerals") },
     { spell = FIND_FISH, label = "Fish", key = "gatherFish" },
 }
 local CLICKS = { { "1", "Left-click" }, { "2", "Right-click" }, { "3", "Middle-click" } }
@@ -25,8 +25,8 @@ local MOVER_LABEL = "Tracking"
 local EVENTS = { "MINIMAP_UPDATE_TRACKING", "SPELLS_CHANGED", "LEARNED_SPELL_IN_TAB",
     "PLAYER_ENTERING_WORLD", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED", "PLAYER_DEAD",
     "PLAYER_ALIVE", "PLAYER_UNGHOST", "PLAYER_CONTROL_LOST", "PLAYER_CONTROL_GAINED" }
-local TEXT_TRACK = "Track "
-local TEXT_NOT_TRACKING = "Not Tracking"
+local TEXT_TRACK = ns.L("Track ")
+local TEXT_NOT_TRACKING = ns.L("Not Tracking")
 local TEXT_CLICK = "%s: %s"
 
 local button, unlocked, pending

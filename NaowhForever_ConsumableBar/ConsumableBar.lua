@@ -3,7 +3,7 @@ local ns = _G.NaowhForever
 
 local S = ns.QoLSettings
 
-local ITEM_FALLBACK = "Item %d"
+local ITEM_FALLBACK = ns.L("Item %d")
 local BUTTON_ITEM = "NaowhForeverConsumableBarItem%s"
 local BUTTON_NAMED = "NaowhForeverConsumableBar%s"
 local BIND_CLICK = "CLICK %s:LeftButton"

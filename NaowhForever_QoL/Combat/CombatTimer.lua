@@ -16,12 +16,12 @@ local TEXT_RANGE = { 10, 72, 1 }
 local MOVER_LABEL = "Combat Timer"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Combat", "QoL/Combat:combatTimer"
 local CLOCK = "%d:%02d"
-local PREFIX = "COMBAT: "
-local REPORT = "You were in combat for: |cffffa300%s|r"
-local HOURS, MINUTES = "%d:%02d:%02d hours", "%d:%02d minutes"
-local SECONDS, PLURAL = "%d second%s", "s"
-local WHERE_INSTANCES, WHERE_EVERYWHERE = "In instances", "Everywhere"
-local SUMMARY_CHAT, SUMMARY_STICKY = ", reported to chat", ", kept after the fight"
+local PREFIX = ns.L("COMBAT: ")
+local REPORT = ns.L("You were in combat for: |cffffa300%s|r")
+local HOURS, MINUTES = ns.L("%d:%02d:%02d hours"), ns.L("%d:%02d minutes")
+local SECOND, SECONDS = ns.L("%d second"), ns.L("%d seconds")
+local WHERE_INSTANCES, WHERE_EVERYWHERE = ns.L("In instances"), ns.L("Everywhere")
+local SUMMARY_CHAT, SUMMARY_STICKY = ns.L(", reported to chat"), ns.L(", kept after the fight")
 
 local frame, clock, unlocked
 local started, last = nil, 0
@@ -63,7 +63,7 @@ local function Duration(seconds)
     local s = math.floor(seconds % SECONDS_PER_MINUTE)
     if h > 0 then return HOURS:format(h, m, s) end
     if m > 0 then return MINUTES:format(m, s) end
-    return SECONDS:format(s, s == 1 and "" or PLURAL)
+    return (s == 1 and SECOND or SECONDS):format(s)
 end
 
 local function Report(duration)

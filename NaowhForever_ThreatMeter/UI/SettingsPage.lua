@@ -10,12 +10,12 @@ local Settings = ns.Shared and ns.Shared.Settings
 if not Settings then return end
 local Group, Snap = Settings.Group, Settings.Snap
 
-local OFF = "Turn on the Threat Meter"
+local OFF = ns.L("Turn on the Threat Meter")
 local STAGE_H, STAGE_MARGIN = 300, ns.Shared.Style.STAGE_MARGIN
 local NOTE_ROOM, NOTE_BOTTOM, NOTE_SIZE = 28, 8, ns.Shared.Style.STAGE_NOTE_SIZE
-local HINT = "Drag the corner to resize. Wheel: row height (Shift: spacing, Ctrl: text). Right-click a row "
-    .. "for what it shows. Click the name or status line to change them."
-local OFF_HINT = "Turn on the Threat Meter to edit it here."
+local HINT = ns.L("Drag the corner to resize. Wheel: row height (Shift: spacing, Ctrl: text). Right-click a row "
+    .. "for what it shows. Click the name or status line to change them.")
+local OFF_HINT = ns.L("Turn on the Threat Meter to edit it here.")
 local EDIT_LEVEL, TOP_LEVEL = 10, 12
 local HOVER_ALPHA = 0.12
 local GRIP_SIZE, GRIP_INSET = 16, 2
@@ -33,25 +33,29 @@ local STATES = {
     { key = "pulling", label = "Pulling Aggro", tip = "Close to pulling aggro off the tank." },
 }
 local VISIBILITY = { always = "Always", threat = "With Threat", combat = "In Combat", group = "In a Group" }
+local SHOWN = { always = ns.L("Shown always"), threat = ns.L("Shown with threat"), combat = ns.L("Shown in combat"),
+    group = ns.L("Shown in a group") }
+local WHEN = { always = ns.L("always"), threat = ns.L("with threat"), combat = ns.L("in combat"),
+    group = ns.L("in a group") }
 local SHOW = { VISIBILITY, { "always", "threat", "combat", "group" } }
 local SOURCE = { { target = "Target", focus = "Focus" }, { "target", "focus" } }
 local PERCENT = { { pull = "Aggro Line", tank = "Tank Threat" }, { "pull", "tank" } }
 local STATUS = { { bottom = "Bottom", top = "Top" }, { "bottom", "top" } }
 local ROW_TOGGLES = {
-    { "showValue", "Show Threat" },
-    { "showPercent", "Show Percent" },
-    { "showIcons", "Class Icons" },
-    { "showRanks", "Rank Numbers" },
-    { "highlightPlayer", "Highlight Your Row" },
+    { "showValue", ns.L("Show Threat") },
+    { "showPercent", ns.L("Show Percent") },
+    { "showIcons", ns.L("Class Icons") },
+    { "showRanks", ns.L("Rank Numbers") },
+    { "highlightPlayer", ns.L("Highlight Your Row") },
 }
 local TIPS = {
-    { "grip", "Drag the corner", "Width and Height" },
-    { "header", "Click the name", "Show Target Name" },
-    { "status", "Click the status line", "Status Line" },
-    { "rows", "Wheel on the rows", "Row Height" },
-    { "rows", "Shift + wheel", "Row Spacing" },
-    { "rows", "Ctrl + wheel", "Font Size" },
-    { "rows", "Right-click a row", "What Rows Show" },
+    { "grip", ns.L("Drag the corner"), ns.L("Width and Height") },
+    { "header", ns.L("Click the name"), ns.L("Show Target Name") },
+    { "status", ns.L("Click the status line"), ns.L("Status Line") },
+    { "rows", ns.L("Wheel on the rows"), ns.L("Row Height") },
+    { "rows", ns.L("Shift + wheel"), ns.L("Row Spacing") },
+    { "rows", ns.L("Ctrl + wheel"), ns.L("Font Size") },
+    { "rows", ns.L("Right-click a row"), ns.L("What Rows Show") },
 }
 
 local function Enabled() return TM.On() and true or false end
@@ -76,7 +80,7 @@ end
 local function ShowTip(shot)
     local part, fg = shot.part, T.fg
     GameTooltip:SetOwner(shot.meter, "ANCHOR_RIGHT")
-    GameTooltip:AddLine("Edit the Meter", fg.r, fg.g, fg.b)
+    GameTooltip:AddLine(ns.L("Edit the Meter"), fg.r, fg.g, fg.b)
     for i = 1, #TIPS do
         local tip = TIPS[i]
         local c = tip[1] == part and T.accent or T.muted
@@ -141,7 +145,7 @@ local function Toggle(key)
 end
 
 local function RowMenu(_, root)
-    root:CreateTitle("Rows Show")
+    root:CreateTitle(ns.L("Rows Show"))
     for i = 1, #ROW_TOGGLES do
         local t = ROW_TOGGLES[i]
         root:CreateCheckbox(t[2], Toggled, Toggle, t[1])
@@ -325,19 +329,19 @@ local function PaintPreview(shot, state)
 end
 
 local function Headline()
-    if not TM.On() then return "Threat Meter is off" end
-    return TM.Watched() == "focus" and "Tracking threat on your focus" or "Tracking threat on your target"
+    if not TM.On() then return ns.L("Threat Meter is off") end
+    return TM.Watched() == "focus" and ns.L("Tracking threat on your focus") or ns.L("Tracking threat on your target")
 end
 
 local function Detail()
-    local shown = "Shown " .. (VISIBILITY[S.Get("visibility")] or VISIBILITY.threat):lower()
-    if S.Get("warnSound") then return ("%s, warns at %d%% of pulling aggro."):format(shown, S.Get("warnAt")) end
-    return shown .. ". Unlock its window to drag and resize it, or place it in the HUD Editor."
+    local shown = SHOWN[S.Get("visibility")] or SHOWN.threat
+    if S.Get("warnSound") then return (ns.L("%s, warns at %d%% of pulling aggro.")):format(shown, S.Get("warnAt")) end
+    return shown .. ns.L(". Unlock its window to drag and resize it, or place it in the HUD Editor.")
 end
 
 local function MeterSummary(store)
-    return ("%d by %d, %s"):format(store.Get("width"), store.Get("height"),
-        (VISIBILITY[store.Get("visibility")] or VISIBILITY.threat):lower())
+    return (ns.L("%d by %d, %s")):format(store.Get("width"), store.Get("height"),
+        WHEN[store.Get("visibility")] or WHEN.threat)
 end
 
 local function WarningSummary(store)

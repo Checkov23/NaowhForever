@@ -22,15 +22,15 @@ local WHITE = ns.QoLConstants.WHITE_RGB
 local ASK = "R"
 local MESSAGE = "2 %s %d %d %d"
 local MESSAGE_PATTERN = "^2 (%S+) (%d+) (%d+) (%d+)$"
-local TEXT_LEVEL, TEXT_NO_LEVEL = "Lv ", "Lv ?"
-local TEXT_NO_ADDON = "  |cff9ca3afno addon|r"
-local TEXT_MAX = "  Max"
-local TEXT_PROGRESS = "Lv %d  %.1f%%"
-local TEXT_IN_GROUP = "Shown while you are in a group."
+local TEXT_LEVEL, TEXT_NO_LEVEL = ns.L("Lv "), ns.L("Lv ?")
+local TEXT_NO_ADDON = ns.L("  |cff9ca3afno addon|r")
+local TEXT_MAX = ns.L("  Max")
+local TEXT_PROGRESS = ns.L("Lv %d  %.1f%%")
+local TEXT_IN_GROUP = ns.L("Shown while you are in a group.")
 local MOVER_LABEL = "Group XP"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/XP", "QoL/XP:groupXP"
-local SUMMARY = "%d wide%s"
-local SUMMARY_SELF = ", with you"
+local SUMMARY = ns.L("%d wide%s")
+local SUMMARY_SELF = ns.L(", with you")
 local STAGE_H = 130
 local NOTE_Y, NOTE_SIZE = ns.Shared.Style.STAGE_NOTE_Y, ns.Shared.Style.STAGE_NOTE_SIZE
 local STAGE_MARGIN = ns.Shared.Style.STAGE_MARGIN
@@ -178,9 +178,9 @@ function Look.Paint(row, name, class, level, data)
 end
 
 local SAMPLE = {
-    { name = "Tank", class = "WARRIOR", data = { level = 24, xp = 11000, max = 12200 } },
-    { name = "Healer", class = "PRIEST", data = { level = 25, xp = 3100, max = 13100 } },
-    { name = "Rogue", class = "ROGUE", level = 23 },
+    { name = ns.L("Tank"), class = "WARRIOR", data = { level = 24, xp = 11000, max = 12200 } },
+    { name = ns.L("Healer"), class = "PRIEST", data = { level = 25, xp = 3100, max = 13100 } },
+    { name = ns.L("Rogue"), class = "ROGUE", level = 23 },
 }
 
 function Look.Rows(owner, pool, list)

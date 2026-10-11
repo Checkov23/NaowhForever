@@ -36,9 +36,8 @@ local STATES = {
     { key = "inRange", label = "In Range", tip = "No target, or your target in melee range: the crosshair in its own colors." },
     { key = "outOfRange", label = "Out of Range", tip = "Your target out of melee range.", needs = "crossMelee" },
 }
-local SUMMARY = "%d %s%s%s%s"
-local ARM, ARMS_TEXT = "arm", "arms"
-local WITH_DOT, WITH_CIRCLE, COMBAT_ONLY = ", dot", ", circle", ", in combat only"
+local SUMMARY_ONE, SUMMARY = ns.L("%d arm%s%s%s"), ns.L("%d arms%s%s%s")
+local WITH_DOT, WITH_CIRCLE, COMBAT_ONLY = ns.L(", dot"), ns.L(", circle"), ns.L(", in combat only")
 
 local ARMS = {
     { key = "crossTop", base = 0 },
@@ -321,7 +320,7 @@ local function Summary(store)
     for _, def in ipairs(ARMS) do
         if store.Get(def.key) then arms = arms + 1 end
     end
-    return SUMMARY:format(arms, arms == 1 and ARM or ARMS_TEXT, store.Get("crossDot") and WITH_DOT or "",
+    return (arms == 1 and SUMMARY_ONE or SUMMARY):format(arms, store.Get("crossDot") and WITH_DOT or "",
         store.Get("crossCircle") and WITH_CIRCLE or "", store.Get("crossCombatOnly") and COMBAT_ONLY or "")
 end
 

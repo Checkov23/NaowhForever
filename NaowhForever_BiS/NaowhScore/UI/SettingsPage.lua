@@ -11,7 +11,7 @@ local C = Score.COMPARE
 local COMPARE = { { [C.MAX] = "Best in the Game", [C.LEVEL] = "Best for Their Level", [C.BOTH] = "Both" },
     { C.MAX, C.LEVEL, C.BOTH } }
 local ORDER_SCORE = 30
-local TEXT_YOURS_NOW = "Yours now: "
+local TEXT_YOURS_NOW = ns.L("Yours now: ")
 
 local function Summary()
     return TEXT_YOURS_NOW .. Score.Colored((Score.Unit("player")), UnitLevel("player"))

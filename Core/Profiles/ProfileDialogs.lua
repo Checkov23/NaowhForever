@@ -16,32 +16,32 @@ local BUTTON_GAP = 4
 local UNKNOWN = "?"
 local HANDOFFS = {
     { prefix = "!NFM1!", button = "Add Macros", module = "Macros", needs = "ImportMacroString",
-      what = "These are Forge macros. They are added as character macros on this character.",
+      what = ns.L("These are Forge macros. They are added as character macros on this character."),
       go = function(text) ns.ImportMacroString(text) end },
     { prefix = "!NFB1!", button = "Add Build", module = "Training Planner", needs = "Training",
-      what = "This is a talent build. It is added to your builds in the Training Planner.",
+      what = ns.L("This is a talent build. It is added to your builds in the Training Planner."),
       go = function(text) ns.Training.ImportBuild(text, function() end) end },
     { prefix = "!NBIS1!", button = "Add BiS List", module = "BiS List", needs = "ImportBisList",
-      what = "This is a BiS list. It is added next to your own lists.",
+      what = ns.L("This is a BiS list. It is added next to your own lists."),
       go = function(text) ns.ImportBisList(text) end },
 }
-local ACTING_LINE = "It also turns on settings that act for you: %s; they stay off unless you tick Also Import."
-local ACTING_HELP = "Turns those settings on in the new profile"
-local TEXT_EXPORT_TITLE, TEXT_IMPORT_TITLE = "Export Profile", "Import"
-local TEXT_PROFILE = "Profile: %s. %s."
-local TEXT_EXPORTED = "%d characters. Click the text, then Ctrl+A and Ctrl+C."
-local TEXT_CLOSE, TEXT_IMPORT, TEXT_CANCEL = "Close", "Import", "Cancel"
-local TEXT_TURN_ON = "Turn on %s under Settings > Modules to add this."
-local TEXT_PASTE = "Paste a profile, macro, talent build or BiS list string above."
-local TEXT_SHARED_BY = "%s, shared by %s on %s. Untick what you don't want."
-local TEXT_A_PROFILE, TEXT_SOMEONE = "A profile", "someone"
+local ACTING_LINE = ns.L("It also turns on settings that act for you: %s; they stay off unless you tick Also Import.")
+local ACTING_HELP = ns.L("Turns those settings on in the new profile")
+local TEXT_EXPORT_TITLE, TEXT_IMPORT_TITLE = ns.L("Export Profile"), ns.L("Import")
+local TEXT_PROFILE = ns.L("Profile: %s. %s.")
+local TEXT_EXPORTED = ns.L("%d characters. Click the text, then Ctrl+A and Ctrl+C.")
+local TEXT_CLOSE, TEXT_IMPORT, TEXT_CANCEL = ns.L("Close"), ns.L("Import"), ns.L("Cancel")
+local TEXT_TURN_ON = ns.L("Turn on %s under Settings > Modules to add this.")
+local TEXT_PASTE = ns.L("Paste a profile, macro, talent build or BiS list string above.")
+local TEXT_SHARED_BY = ns.L("%s, shared by %s on %s. Untick what you don't want.")
+local TEXT_A_PROFILE, TEXT_SOMEONE = ns.L("A profile"), ns.L("someone")
 local TEXT_ALSO_IMPORT = "Also Import"
-local TEXT_NEW_NAME = "New profile's name"
-local TEXT_LIBRARY_MACROS = " Library macros"
-local TEXT_TALENT_BUILDS = " talent builds"
-local TEXT_BIS_LISTS = " BiS lists"
-local TEXT_ADDED = " Added %s."
-local TEXT_IMPORTED = "Imported as %s and switched to it.%s Reload so every module picks it up?"
+local TEXT_NEW_NAME = ns.L("New profile's name")
+local TEXT_LIBRARY_MACROS = ns.L(" Library macros")
+local TEXT_TALENT_BUILDS = ns.L(" talent builds")
+local TEXT_BIS_LISTS = ns.L(" BiS lists")
+local TEXT_ADDED = ns.L(" Added %s.")
+local TEXT_IMPORTED = ns.L("Imported as %s and switched to it.%s Reload so every module picks it up?")
 
 local export, import
 
@@ -131,7 +131,7 @@ local function ShowHandoff(handoff)
     import.payload = nil
     import.nameRow:Hide()
     if handoff.needs and not ns[handoff.needs] then
-        import.preview:SetText(TEXT_TURN_ON:format(handoff.module))
+        import.preview:SetText(TEXT_TURN_ON:format(ns.L(handoff.module)))
         import.go:Hide()
         return
     end

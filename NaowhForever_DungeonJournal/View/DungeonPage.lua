@@ -12,18 +12,18 @@ local SECTION_SPACE = St.SECTION_SPACE
 local BOSS_LOOT_GAP = 4
 local TRASH_TOP, TRASH_GAP = 6, 16
 local EMPTY_BODY = 28
-local SKIPPED_TITLE = { missingBisOnly = "Nothing you're missing", upgradesOnly = "Nothing that beats your gear",
-    usableOnly = "Nothing for your class" }
+local SKIPPED_TITLE = { missingBisOnly = ns.L("Nothing you're missing"), upgradesOnly = ns.L("Nothing that beats your gear"),
+    usableOnly = ns.L("Nothing for your class") }
 
-local TEXT_QUESTS = "Dungeon Quests"
-local TEXT_TRACKER = "Tracker"
-local TEXT_NO_QUESTS = "No quests here."
-local TEXT_REPUTATION = "Reputation"
-local TEXT_NO_BOSSES = "No boss data for this dungeon yet. It fills in with a later version of the addon."
-local TEXT_BOSSES = "Bosses"
+local TEXT_QUESTS = ns.L("Dungeon Quests")
+local TEXT_TRACKER = ns.L("Tracker")
+local TEXT_NO_QUESTS = ns.L("No quests here.")
+local TEXT_REPUTATION = ns.L("Reputation")
+local TEXT_NO_BOSSES = ns.L("No boss data for this dungeon yet. It fills in with a later version of the addon.")
+local TEXT_BOSSES = ns.L("Bosses")
 local TEXT_MAP = "Map"
 local TEXT_COMING_SOON = "Coming soon"
-local TEXT_NO_MAP = "No map of this dungeon yet."
+local TEXT_NO_MAP = ns.L("No map of this dungeon yet.")
 local TEXT_TRASH = "Trash"
 
 local EMPTY = {}

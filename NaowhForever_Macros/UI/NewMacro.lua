@@ -17,13 +17,13 @@ local SCROLL_ROOM = 22
 local METER_Y, HELP_Y = 284, 304
 local BUTTON_W, BUTTON_H = 140, St.BUTTON_H
 
-local TEXT_TITLE = "New Macro"
-local TEXT_NAME = "Name"
-local TEXT_BODY = "Text"
-local TEXT_METER = "%d / %d bytes"
-local TEXT_HELP = "Kept in your Library for every %s you play. Save and Add also makes it one of this "
-    .. "character's macros."
-local TEXT_SAVE, TEXT_SAVE_ADD, TEXT_CANCEL = "Save to Library", "Save and Add", "Cancel"
+local TEXT_TITLE = ns.L("New Macro")
+local TEXT_NAME = ns.L("Name")
+local TEXT_BODY = ns.L("Text")
+local TEXT_METER = ns.L("%d / %d bytes")
+local TEXT_HELP = ns.L("Kept in your Library for every %s you play. Save and Add also makes it one of this "
+    .. "character's macros.")
+local TEXT_SAVE, TEXT_SAVE_ADD, TEXT_CANCEL = ns.L("Save to Library"), ns.L("Save and Add"), ns.L("Cancel")
 
 local dialog
 

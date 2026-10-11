@@ -5,7 +5,7 @@ local S = ns.QoLSettings
 local Settings = ns.Shared.Settings
 
 local ON, OFF = "1", "0"
-local SUMMARY = "%d of %d shown"
+local SUMMARY = ns.L("%d of %d shown")
 local NAMES = {
     { cvar = "UnitNamePlayerPVPTitle", label = "Player Titles", help = "Titles like Private or Scout with player names." },
     { cvar = "UnitNamePlayerGuild", label = "Guild Names", help = "The guild name under a player's name." },

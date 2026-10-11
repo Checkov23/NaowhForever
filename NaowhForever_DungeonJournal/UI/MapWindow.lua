@@ -39,19 +39,19 @@ local OVER_INSET = 40
 local OPEN_TURN = St.OPEN_TURN
 local MOVE_BUTTON = "LeftButton"
 
-local TEXT_COPY = "Copy"
-local TEXT_HINT = "Click a boss for its loot."
-local TEXT_PLACING = "   PLACING PINS"
-local TEXT_PINNED = "Pinned"
-local TEXT_PIN = "Pin the map"
-local TEXT_PINNED_HELP = "It stays open when the Journal closes. Click to unpin."
-local TEXT_PIN_HELP = "Keeps it open when the Journal closes."
-local TEXT_OPEN_JOURNAL = "Open in the Dungeon Journal"
-local TEXT_OPEN_HELP = "Its page: quests, bosses and loot."
-local TEXT_SHOW_PAGE = "Show the boss's page"
-local TEXT_FOLD_PAGE = "Map and bosses only"
-local TEXT_SHOW_PAGE_HELP = "The picked boss's loot and abilities, under the map."
-local TEXT_FOLD_PAGE_HELP = "Folds the boss's page away, to keep the map on screen."
+local TEXT_COPY = ns.L("Copy")
+local TEXT_HINT = ns.L("Click a boss for its loot.")
+local TEXT_PLACING = ns.L("   PLACING PINS")
+local TEXT_PINNED = ns.L("Pinned")
+local TEXT_PIN = ns.L("Pin the map")
+local TEXT_PINNED_HELP = ns.L("It stays open when the Journal closes. Click to unpin.")
+local TEXT_PIN_HELP = ns.L("Keeps it open when the Journal closes.")
+local TEXT_OPEN_JOURNAL = ns.L("Open in the Dungeon Journal")
+local TEXT_OPEN_HELP = ns.L("Its page: quests, bosses and loot.")
+local TEXT_SHOW_PAGE = ns.L("Show the boss's page")
+local TEXT_FOLD_PAGE = ns.L("Map and bosses only")
+local TEXT_SHOW_PAGE_HELP = ns.L("The picked boss's loot and abilities, under the map.")
+local TEXT_FOLD_PAGE_HELP = ns.L("Folds the boss's page away, to keep the map on screen.")
 
 local window, windowView, list, listView, page, lootView
 local owners = {}

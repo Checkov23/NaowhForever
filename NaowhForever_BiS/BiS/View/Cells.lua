@@ -17,11 +17,11 @@ local GAIN_BIG_RGB, GAIN_RGB, GAIN_SMALL_RGB = St.GAIN_BIG_RGB, St.GAIN_RGB, St.
 local SOURCE_H = 16
 local NO_LEVEL = 1
 local ROUND = B.C.ROUND
-local TEXT_UNKNOWN = "World drop"
+local TEXT_UNKNOWN = ns.L("World drop")
 local TEXT_QUEST = "Quest"
-local TEXT_LEVEL = "Level "
-local TEXT_ITEM = "Item "
-local OWN_QUEST = { Alliance = "Quest (Alliance)", Horde = "Quest (Horde)" }
+local TEXT_LEVEL = ns.L("Level ")
+local TEXT_ITEM = ns.L("Item ")
+local OWN_QUEST = { Alliance = ns.L("Quest (Alliance)"), Horde = ns.L("Quest (Horde)") }
 local FOREVER_KIND = B.C.FOREVER_KIND
 
 local gainWords = {}

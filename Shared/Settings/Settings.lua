@@ -19,9 +19,9 @@ local TEXT_OUTLINE = "Outline"
 local TEXT_BAR_TEXTURE = "Bar Texture"
 local TEXT_BG_ALPHA = "Background Opacity"
 local TEXT_PERCENT = "%"
-local TEXT_OUTLINE_HELP = "A black outline round the text, in place of the soft shadow."
-local TEXT_BACKGROUND_HELP = "A card behind the text, a soft dark fade, or nothing at all."
-local TEXT_NEEDS = "Needs %s"
+local TEXT_OUTLINE_HELP = ns.L("A black outline round the text, in place of the soft shadow.")
+local TEXT_BACKGROUND_HELP = ns.L("A card behind the text, a soft dark fade, or nothing at all.")
+local TEXT_NEEDS = ns.L("Needs %s")
 local ERROR_NO_KIND = "Settings: a row without a kind on "
 local ERROR_CARD = "Settings: a card needs an id and a name"
 local ERROR_TWO_CARDS = "Settings: two cards named "
@@ -229,7 +229,8 @@ end
 
 local function SearchText(spec)
     if not spec.search then return spec.help end
-    return (spec.help or "") .. " " .. spec.search
+    local help = Static(spec.help)
+    return help .. " " .. ns.L(help) .. " " .. spec.search
 end
 
 local function IndexCard(item, add)

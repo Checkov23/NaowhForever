@@ -11,12 +11,12 @@ local PERCENT, ROUND = A.C.PERCENT, A.C.ROUND
 local OPACITY_RANGE, TO_FRACTION = ns.Shared.Style.OPACITY_RANGE, ns.Shared.Style.PERCENT_SCALE
 local ORDER_WINDOW = 50
 
-local TEXT_OFF = "AuraBuffs is off"
-local TEXT_NOTHING = "No consumables to watch yet"
-local TEXT_DETAIL = "Add the consumables to watch in the AuraBuffs window."
-local TEXT_TO_WATCH = "%d %s to watch"
-local TEXT_CONSUMABLE, TEXT_CONSUMABLES = "consumable", "consumables"
-local TEXT_OPACITY = "%d%% opacity"
+local TEXT_OFF = ns.L("AuraBuffs is off")
+local TEXT_NOTHING = ns.L("No consumables to watch yet")
+local TEXT_DETAIL = ns.L("Add the consumables to watch in the AuraBuffs window.")
+local TEXT_TO_WATCH = ns.L("%d %s to watch")
+local TEXT_CONSUMABLE, TEXT_CONSUMABLES = ns.L("consumable"), ns.L("consumables")
+local TEXT_OPACITY = ns.L("%d%% opacity")
 
 local function Headline()
     if not S.Get("enabled") then return TEXT_OFF end

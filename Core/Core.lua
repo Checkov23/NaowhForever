@@ -337,7 +337,7 @@ ns.PRINT_LOGO = ("|T%s:0:0:0:%d|t"):format(PRINT_LOGO_PATH, -PRINT_LOGO_DROP)
 
 function ns.Print(msg)
     if issecretvalue and issecretvalue(msg) then
-        msg = ns.Color("accent", TEXT_SECRET)
+        msg = ns.Color("accent", ns.L(TEXT_SECRET))
     end
     print(ns.PRINT_LOGO .. " " .. ns.Color("accent", "Naowh") .. " Forever: " .. tostring(msg))
 end
@@ -348,7 +348,7 @@ local function OnLibraryCheck()
         if not (LibStub and LibStub(name, true)) then missing[#missing + 1] = name end
     end
     if #missing == 0 then return end
-    ns.Print(ns.Color(WARNING, TEXT_LIBRARIES_MISSING:format(table.concat(missing, ", "))))
+    ns.Print(ns.Color(WARNING, ns.L(TEXT_LIBRARIES_MISSING, table.concat(missing, ", "))))
 end
 
 local libCheck = CreateFrame("Frame")
@@ -389,7 +389,7 @@ local function CoverWithReload(btn)
 end
 
 local function ReloadBlocked()
-    ns.Print(TEXT_RELOAD_BLOCKED)
+    ns.Print(ns.L(TEXT_RELOAD_BLOCKED))
 end
 
 function ns.MakeReloadButton(btn)
@@ -1361,7 +1361,7 @@ end
 
 function ns.SwitchProfile(name)
     local sv = DB()
-    if type(sv.profiles[name]) ~= "table" then return false, ERR_NO_PROFILE end
+    if type(sv.profiles[name]) ~= "table" then return false, ns.L(ERR_NO_PROFILE) end
     sv.charActive[CharKey()] = name
     activeRoot = nil
     local spec = ns.CurrentSpec and ns.CurrentSpec()
@@ -1376,8 +1376,8 @@ end
 
 local function ValidName(name, allowExisting)
     name = Trimmed(name)
-    if name == "" then return nil, "the name is empty" end
-    if not allowExisting and DB().profiles[name] then return nil, "that name is taken" end
+    if name == "" then return nil, ns.L("the name is empty") end
+    if not allowExisting and DB().profiles[name] then return nil, ns.L("that name is taken") end
     return name
 end
 
@@ -1388,7 +1388,7 @@ end
 
 function ns.SetAccountProfile(name)
     local sv = DB()
-    if type(sv.profiles[name]) ~= "table" then return false, ERR_NO_PROFILE end
+    if type(sv.profiles[name]) ~= "table" then return false, ns.L(ERR_NO_PROFILE) end
     sv.defaultProfile = name
     for char in pairs(sv.charActive) do sv.charActive[char] = name end
     sv.charActive[CharKey()] = name
@@ -1422,7 +1422,7 @@ end
 
 function ns.CopyProfile(src, name, overwrite)
     local sv = DB()
-    if type(sv.profiles[src]) ~= "table" then return false, ERR_NO_PROFILE end
+    if type(sv.profiles[src]) ~= "table" then return false, ns.L(ERR_NO_PROFILE) end
     local err
     name, err = ValidName(name, overwrite)
     if not name then return false, err end
@@ -1436,7 +1436,7 @@ end
 
 function ns.ResetProfileNamed(name)
     local sv = DB()
-    if type(sv.profiles[name]) ~= "table" then return false, ERR_NO_PROFILE end
+    if type(sv.profiles[name]) ~= "table" then return false, ns.L(ERR_NO_PROFILE) end
     if name == sv.charActive[CharKey()] then
         ns.SettingsRoot().tankReminder = nil
         return true
@@ -1462,8 +1462,8 @@ end
 
 function ns.DeleteProfile(name)
     local sv = DB()
-    if type(sv.profiles[name]) ~= "table" then return false, ERR_NO_PROFILE end
-    if CountProfiles(sv) <= 1 then return false, "the last profile cannot be deleted" end
+    if type(sv.profiles[name]) ~= "table" then return false, ns.L(ERR_NO_PROFILE) end
+    if CountProfiles(sv) <= 1 then return false, ns.L("the last profile cannot be deleted") end
     local wasMine = sv.charActive[CharKey()] == name
     sv.profiles[name] = nil
     local fallback = FallbackProfile(sv)

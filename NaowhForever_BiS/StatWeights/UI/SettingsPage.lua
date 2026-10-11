@@ -9,9 +9,9 @@ if not Settings then return end
 
 local AUTO = "auto"
 local ORDER_STAT_WEIGHTS = 40
-local TEXT_AUTOMATIC = "Automatic"
-local TEXT_AUTOMATIC_FOR = "Automatic (%s)"
-local TEXT_ON_TOOLTIPS = ", upgrades on tooltips"
+local TEXT_AUTOMATIC = ns.L("Automatic")
+local TEXT_AUTOMATIC_FOR = ns.L("Automatic (%s)")
+local TEXT_ON_TOOLTIPS = ns.L(", upgrades on tooltips")
 
 local function SpecChoices()
     local talents = SW.TalentSpec()

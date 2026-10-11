@@ -35,8 +35,8 @@ local ENTRIES = "consumableEntries"
 local MIN_ID, MAX_ID = 1, 2147483647
 local LIST_PREFIX = "NFCONSUMABLES1:"
 local MAX_ENTRIES = 500
-local CATEGORY_NAMES = { food = "Food", flask = "Flask", scroll = "Scroll",
-    battle = "Battle Elixir", guardian = "Guardian Elixir" }
+local CATEGORY_NAMES = { food = ns.L("Food"), flask = ns.L("Flask"), scroll = ns.L("Scroll"),
+    battle = ns.L("Battle Elixir"), guardian = ns.L("Guardian Elixir") }
 local CATEGORY_ORDER = { "food", "flask", "scroll", "battle", "guardian" }
 
 local GetSetting, SetSetting = S.Get, S.Set

@@ -31,13 +31,13 @@ local DROP_SLOP = 12
 local EDIT_LEVEL = 10
 local SYS_DROP = C.SYS_DROP
 
-local HINT = "Drag to move, x to remove, + to add."
-local TIP_HINT = "Drag to move. Click x to remove."
-local TEXT_ADD_LEFT, TEXT_ADD_RIGHT = "Add to the Left Side", "Add to the Right Side"
-local TEXT_ALL_ON = "Everything is on the bar already."
-local TEXT_ON_BAR = "Already on the bar"
-local TEXT_ADD = "Add a Button"
-local TEXT_LEFT_SIDE, TEXT_RIGHT_SIDE = "On the left side.", "On the right side."
+local HINT = ns.L("Drag to move, x to remove, + to add.")
+local TIP_HINT = ns.L("Drag to move. Click x to remove.")
+local TEXT_ADD_LEFT, TEXT_ADD_RIGHT = ns.L("Add to the Left Side"), ns.L("Add to the Right Side")
+local TEXT_ALL_ON = ns.L("Everything is on the bar already.")
+local TEXT_ON_BAR = ns.L("Already on the bar")
+local TEXT_ADD = ns.L("Add a Button")
+local TEXT_LEFT_SIDE, TEXT_RIGHT_SIDE = ns.L("On the left side."), ns.L("On the right side.")
 
 local addKeys, addBrokers, addLabels, onBar = {}, {}, {}, {}
 local used

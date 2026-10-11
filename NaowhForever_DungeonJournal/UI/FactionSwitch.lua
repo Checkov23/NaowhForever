@@ -16,9 +16,9 @@ local RED_AT, GREEN_AT, BLUE_AT = 5, 7, 9
 local SIDES = { { faction = "Alliance", key = "showAlliance" }, { faction = "Horde", key = "showHorde" } }
 
 local TEXT_CODE_END = "|r"
-local TEXT_LISTED = "Listed: the dungeons on %s ground, and its battleground factions. Click to hide them."
-local TEXT_HIDDEN = "Hidden. Click to list them again."
-local TEXT_CONTESTED = "Contested dungeons are always listed."
+local TEXT_LISTED = ns.L("Listed: the dungeons on %s ground, and its battleground factions. Click to hide them.")
+local TEXT_HIDDEN = ns.L("Hidden. Click to list them again.")
+local TEXT_CONTESTED = ns.L("Contested dungeons are always listed.")
 
 local function Channel(code, at)
     return tonumber(code:sub(at, at + 1), HEX_BASE) / BYTE

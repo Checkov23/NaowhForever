@@ -7,7 +7,7 @@ local GAME_SOUNDS = Completo.AlertSounds
 local KEY, HOW, WHAT, LABEL = 1, 2, 3, 4
 local CHANNEL = "Master"
 local DEFAULT_SOUND = "file:gruntlinghorn"
-local GAME_SUFFIX = " (game)"
+local GAME_SUFFIX = ns.L(" (game)")
 local NONE = {}
 
 local Sounds = { DEFAULT = DEFAULT_SOUND }

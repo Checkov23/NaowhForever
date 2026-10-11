@@ -45,10 +45,10 @@ local PRICE_GAP = 3
 local PRICE_W = 32
 local LOW_SHARE = 0.1
 local QUEST_RGB = St.CARRIED_RGB
-local FREE_TEXT = "free"
-local OLD_TIP = ("Outlevelled: %d or more levels below you"):format(OUTLEVEL)
+local FREE_TEXT = ns.L("free")
+local OLD_TIP = (ns.L("Outlevelled: %d or more levels below you")):format(OUTLEVEL)
 local TIP_ICON, TIP_ICON_TINTED = "|A:%s:0:0:0:%d|a ", "|A:%s:0:0:0:%d:%d:%d:%d|a "
-local STACK_TEXT = "Stack +%d"
+local STACK_TEXT = ns.L("Stack +%d")
 local ROUND = ns.QoLConstants.ROUND
 local COLOR_MAX = 255
 local FULL_SLACK = 0.1
@@ -61,33 +61,34 @@ local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Loot & Items", "QoL/Loot & Items:bagSp
 local ITEM_CLASS = { CONSUMABLE = 0, REAGENT = 5, PROJECTILE = 6, QUIVER = 11, QUEST = 12, KEY = 13 }
 local NEED_PATTERNS = { "^(.-):%s*%d+%s*/%s*%d+", "^%d+%s*/%s*%d+%s+(.+)$" }
 local TEXT = {
-    HOLDING = "put down what you are holding first.",
-    MOVED = "that item moved in your bags; the row has been refreshed.",
+    HOLDING = ns.L("put down what you are holding first."),
+    MOVED = ns.L("that item moved in your bags; the row has been refreshed."),
     A_QUEST = "a quest",
     QUEST = "%s (%d/%d)",
-    CAREFUL = "careful: %s is needed for %s.",
-    ON_CURSOR = "%s (%s) is on your cursor: click the ground to delete it, or a bag slot to put it back.",
-    QUEST_DELETE = "%s is needed for %s. Ctrl-click it again within %d seconds to delete it anyway.",
-    DELETED = "deleted %s (%s).",
-    IGNORED = "%s is ignored and will not be offered again. Manage it under QoL > Loot > "
-        .. "Bag Space > Ignore List.",
+    CAREFUL = ns.L("careful: %s is needed for %s."),
+    ON_CURSOR = ns.L("%s (%s) is on your cursor: click the ground to delete it, or a bag slot to put it back."),
+    QUEST_DELETE = ns.L("%s is needed for %s. Ctrl-click it again within %d seconds to delete it anyway."),
+    DELETED = ns.L("deleted %s (%s)."),
+    IGNORED = ns.L("%s is ignored and will not be offered again. Manage it under QoL > Loot > "
+        .. "Bag Space > Ignore List."),
     COUNT = " x",
-    STACK_STOPPED = "stacking stopped: put down what you are holding, and wait for combat to end.",
-    STACKED = "stacked your bags: %d slot%s freed.",
-    PLURAL = "s",
-    VENDOR = "Vendor",
-    AUCTION = "Auction",
-    NEEDED_FOR = "Needed for ",
-    STACK_TITLE = "Stack Your Bags",
-    STACK_TIP = "Combines part-filled stacks of the same item, freeing %d slot%s. Nothing is deleted.",
-    BAG_SPACE = "Bag Space",
+    STACK_STOPPED = ns.L("stacking stopped: put down what you are holding, and wait for combat to end."),
+    STACKED_ONE = ns.L("stacked your bags: %d slot freed."),
+    STACKED = ns.L("stacked your bags: %d slots freed."),
+    VENDOR = ns.L("Vendor"),
+    AUCTION = ns.L("Auction"),
+    NEEDED_FOR = ns.L("Needed for "),
+    STACK_TITLE = ns.L("Stack Your Bags"),
+    STACK_TIP_ONE = ns.L("Combines part-filled stacks of the same item, freeing %d slot. Nothing is deleted."),
+    STACK_TIP = ns.L("Combines part-filled stacks of the same item, freeing %d slots. Nothing is deleted."),
+    BAG_SPACE = ns.L("Bag Space"),
     BAG = "Bag ",
-    BAG_FREE = "%d/%d free",
-    SPECIAL_BAGS = "Quivers and profession bags are not counted.",
-    SCRAP_FREE = "%d more free after the next vendor sells your scrap.",
+    BAG_FREE = ns.L("%d/%d free"),
+    SPECIAL_BAGS = ns.L("Quivers and profession bags are not counted."),
+    SCRAP_FREE = ns.L("%d more free after the next vendor sells your scrap."),
     STACK = "Stack",
     SCRAP = "+",
-    SUMMARY = "%d items, %s and below",
+    SUMMARY = ns.L("%d items, %s and below"),
     COMMON = "Common",
 }
 
@@ -415,7 +416,7 @@ local function MergeStep()
     if not src or mergeSteps > MERGE_STEPS then
         local freed = free - mergeStartFree
         if freed <= 0 then return StopMerge() end
-        return StopMerge(TEXT.STACKED:format(freed, freed == 1 and "" or TEXT.PLURAL))
+        return StopMerge((freed == 1 and TEXT.STACKED_ONE or TEXT.STACKED):format(freed))
     end
     if amount < src.count then
         C_Container.SplitContainerItem(src.bag, src.slot, amount)
@@ -461,7 +462,7 @@ end
 
 local function Worth(each, count)
     if count <= 1 then return Coins(each) end
-    return Coins(each * count) .. ("  " .. ns.Color("muted", "(%s each x%d)")):format(Coins(each), count)
+    return Coins(each * count) .. ("  " .. ns.Color("muted", ns.L("(%s each x%d)"))):format(Coins(each), count)
 end
 
 local oldLine, questMark
@@ -476,15 +477,15 @@ end
 local function AddHints(e, deleteHint, ignoreHint)
     if deleteHint then
         if e.quest then
-            GameTooltip:AddLine(ns.Color("accent", "Ctrl-click") .. "  twice to delete", 1, 1, 1)
+            GameTooltip:AddLine(ns.Color("accent", ns.L("Ctrl-click")) .. ns.L("  twice to delete"), 1, 1, 1)
         elseif e.quality > DIRECT_DELETE then
-            GameTooltip:AddLine(ns.Color("accent", "Ctrl-click") .. "  pick up to delete", 1, 1, 1)
+            GameTooltip:AddLine(ns.Color("accent", ns.L("Ctrl-click")) .. ns.L("  pick up to delete"), 1, 1, 1)
         else
-            GameTooltip:AddLine(ns.Color("accent", "Ctrl-click") .. "  delete now", 1, 1, 1)
+            GameTooltip:AddLine(ns.Color("accent", "Ctrl-click") .. ns.L("  delete now"), 1, 1, 1)
         end
-        if atMerchant then GameTooltip:AddLine(ns.Color("accent", "Click") .. "  sell", 1, 1, 1) end
+        if atMerchant then GameTooltip:AddLine(ns.Color("accent", ns.L("Click")) .. ns.L("  sell"), 1, 1, 1) end
     end
-    if ignoreHint then GameTooltip:AddLine(ns.Color("accent", "Middle-click") .. "  ignore this item", 1, 1, 1) end
+    if ignoreHint then GameTooltip:AddLine(ns.Color("accent", ns.L("Middle-click")) .. ns.L("  ignore this item"), 1, 1, 1) end
 end
 
 local function AddTipLines(e, ah)
@@ -494,7 +495,7 @@ local function AddTipLines(e, ah)
     if vendor or auction or deleteHint or ignoreHint or e.quest or e.old then GameTooltip:AddLine(" ") end
     if vendor then GameTooltip:AddDoubleLine(TEXT.VENDOR, Worth(e.vendor, e.count), 1, 1, 1, 1, 1, 1) end
     if auction then
-        GameTooltip:AddDoubleLine(TEXT.AUCTION, ah and Worth(ah, e.count) or ns.Color("muted", "unknown"), 1, 1, 1, 1, 1, 1)
+        GameTooltip:AddDoubleLine(TEXT.AUCTION, ah and Worth(ah, e.count) or ns.Color("muted", ns.L("unknown")), 1, 1, 1, 1, 1, 1)
     end
     if e.old then GameTooltip:AddLine(oldLine, St.WARN_RGB.r, St.WARN_RGB.g, St.WARN_RGB.b) end
     if e.quest then
@@ -516,9 +517,9 @@ local function StackTip(self)
     local saves = self.saves or 0
     GameTooltip:SetOwner(self, "ANCHOR_TOP")
     GameTooltip:SetText(TEXT.STACK_TITLE)
-    GameTooltip:AddLine(TEXT.STACK_TIP:format(saves, saves == 1 and "" or TEXT.PLURAL), 1, 1, 1, true)
+    GameTooltip:AddLine((saves == 1 and TEXT.STACK_TIP_ONE or TEXT.STACK_TIP):format(saves), 1, 1, 1, true)
     GameTooltip:AddLine(" ")
-    GameTooltip:AddLine(ns.Color("accent", "Click") .. "  stack now", 1, 1, 1)
+    GameTooltip:AddLine(ns.Color("accent", ns.L("Click")) .. ns.L("  stack now"), 1, 1, 1)
     GameTooltip:Show()
 end
 
@@ -928,15 +929,15 @@ local STATES = {
 }
 
 local function Samples()
-    local quest = { title = "Linen for Lakeshire", have = 2, need = 6 }
+    local quest = { title = ns.L("Linen for Lakeshire"), have = 2, need = 6 }
     local list = {
-        { name = "Worn Leather Pants", icon = "Interface\\Icons\\INV_Pants_04", quality = 2, count = 1, vendor = 150 },
-        { name = "Ruined Pelt", icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01", quality = 0, count = 4, vendor = 59 },
-        { name = "Tough Jerky", icon = "Interface\\Icons\\INV_Misc_Food_14", quality = 1, count = 20, vendor = 15,
+        { name = ns.L("Worn Leather Pants"), icon = "Interface\\Icons\\INV_Pants_04", quality = 2, count = 1, vendor = 150 },
+        { name = ns.L("Ruined Pelt"), icon = "Interface\\Icons\\INV_Misc_Pelt_Wolf_01", quality = 0, count = 4, vendor = 59 },
+        { name = ns.L("Tough Jerky"), icon = "Interface\\Icons\\INV_Misc_Food_14", quality = 1, count = 20, vendor = 15,
           old = true },
-        { name = "Linen Cloth", icon = "Interface\\Icons\\INV_Fabric_Linen_01", quality = 1, count = 7, vendor = 13,
+        { name = ns.L("Linen Cloth"), icon = "Interface\\Icons\\INV_Fabric_Linen_01", quality = 1, count = 7, vendor = 13,
           quest = quest },
-        { name = "Jade Ring", icon = "Interface\\Icons\\INV_Jewelry_Ring_03", quality = 3, count = 1, vendor = 920 },
+        { name = ns.L("Jade Ring"), icon = "Interface\\Icons\\INV_Jewelry_Ring_03", quality = 3, count = 1, vendor = 920 },
     }
     for i, e in ipairs(list) do
         e.bag, e.slot, e.value = 0, i, e.vendor * e.count

@@ -20,11 +20,11 @@ local SHOW = { { always = "Always", combat = "In Combat", nocombat = "Out of Com
     { "always", "combat", "nocombat" } }
 local PREVIEW_STATE = { { key = "bar", label = "Bar" } }
 
-local GEAR_OFF = "Turn on Gear & Trinkets"
-local TEXT_NO_SETS = "No gear sets yet: + saves what you wear as one."
-local TEXT_NONE = "None"
-local TEXT_NO_SETS_HEAD = "No gear sets yet"
-local TEXT_DETAIL = "The same sets as the character sheet's: equip, save, rename or delete them in the Gear Sets window."
+local GEAR_OFF = ns.L("Turn on Gear & Trinkets")
+local TEXT_NO_SETS = ns.L("No gear sets yet: + saves what you wear as one.")
+local TEXT_NONE = ns.L("None")
+local TEXT_NO_SETS_HEAD = ns.L("No gear sets yet")
+local TEXT_DETAIL = ns.L("The same sets as the character sheet's: equip, save, rename or delete them in the Gear Sets window.")
 
 local function GearOn() return S.Get("gearSets") == true end
 
@@ -89,15 +89,18 @@ local function SetChoices()
     return values, order
 end
 
+local TEXT_GEAR_SET, TEXT_GEAR_SETS = ns.L("%d gear set"), ns.L("%d gear sets")
+local TEXT_OPACITY = ns.L("%d%% opacity")
+
 local function SetsText(n)
-    return ("%d gear %s"):format(n, n == 1 and "set" or "sets")
+    return (n == 1 and TEXT_GEAR_SET or TEXT_GEAR_SETS):format(n)
 end
 
 local function Headline()
     local sets = G.Sets()
     if #sets == 0 then return TEXT_NO_SETS_HEAD end
     for _, set in ipairs(sets) do
-        if set.equipped then return SetsText(#sets) .. ", wearing " .. ns.Color("accentSoft", set.name) end
+        if set.equipped then return SetsText(#sets) .. ns.L(", wearing ") .. ns.Color("accentSoft", set.name) end
     end
     return SetsText(#sets)
 end
@@ -108,9 +111,9 @@ end
 
 local function SwapSummary(store)
     local mounted, resting = store.Get("gearMounted"), store.Get("gearResting")
-    if mounted ~= "" and resting ~= "" then return mounted .. " mounted, " .. resting .. " resting" end
-    if mounted ~= "" then return mounted .. " while mounted" end
-    if resting ~= "" then return resting .. " while resting" end
+    if mounted ~= "" and resting ~= "" then return mounted .. ns.L(" mounted, ") .. resting .. ns.L(" resting") end
+    if mounted ~= "" then return mounted .. ns.L(" while mounted") end
+    if resting ~= "" then return resting .. ns.L(" while resting") end
     return TEXT_NONE
 end
 
@@ -119,7 +122,7 @@ local function SizeSummary(key)
 end
 
 local function WindowSummary(store)
-    return ("%d%% opacity"):format(math.floor((store.Get("gearWindowAlpha") or 1) * PERCENT + ROUND))
+    return TEXT_OPACITY:format(math.floor((store.Get("gearWindowAlpha") or 1) * PERCENT + ROUND))
 end
 
 local function OpenWindow()

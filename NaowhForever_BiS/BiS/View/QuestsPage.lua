@@ -5,8 +5,8 @@ local B = ns.BiS
 local Q = B.Quests
 
 local QUEST_GAP = 4
-local TEXT_NONE = "No quest gives a pick on your list that you do not have yet."
-local TEXT_CHOICE = "A choice among its rewards: pick this one."
+local TEXT_NONE = ns.L("No quest gives a pick on your list that you do not have yet.")
+local TEXT_CHOICE = ns.L("A choice among its rewards: pick this one.")
 
 local function DrawRewards(view, id)
     for _, itemID in ipairs(Q.Rewards(id)) do

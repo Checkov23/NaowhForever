@@ -10,8 +10,8 @@ local Style = Discovery.Style
 local ICON_DROP = 1
 local TITLE_GAP = 4
 local BAG_GAP = 4
-local TEXT_WAYPOINT = "Waypoint"
-local TEXT_PIN_HINT = "Right-click to share it in chat."
+local TEXT_WAYPOINT = ns.L("Waypoint")
+local TEXT_PIN_HINT = ns.L("Right-click to share it in chat.")
 
 local V = { Kinds = Shared.View.NewKinds() }
 Discovery.View = V

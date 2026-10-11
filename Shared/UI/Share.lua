@@ -4,16 +4,16 @@ local Parts = ns.Shared.Parts
 
 local CHANNEL_FIELDS = 3
 local TRADE_NAME = "^Trade"
-local TEXT_SAY = "Say"
-local TEXT_TRADE = "Trade"
-local TEXT_PARTY = "Party"
-local TEXT_RAID = "Raid"
-local TEXT_GUILD = "Guild"
-local TEXT_WHISPER = "Whisper "
-local TEXT_WHISPER_TARGET = "Whisper your target"
-local TEXT_COPY = "Copy"
-local TEXT_LOCKED = "Chat is locked right now."
-local TEXT_NO_TRADE = "Trade chat is only available in cities."
+local TEXT_SAY = ns.L("Say")
+local TEXT_TRADE = ns.L("Trade")
+local TEXT_PARTY = ns.L("Party")
+local TEXT_RAID = ns.L("Raid")
+local TEXT_GUILD = ns.L("Guild")
+local TEXT_WHISPER = ns.L("Whisper ")
+local TEXT_WHISPER_TARGET = ns.L("Whisper your target")
+local TEXT_COPY = ns.L("Copy")
+local TEXT_LOCKED = ns.L("Chat is locked right now.")
+local TEXT_NO_TRADE = ns.L("Trade chat is only available in cities.")
 
 local function PartyChat()
     if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then return "INSTANCE_CHAT" end

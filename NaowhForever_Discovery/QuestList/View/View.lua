@@ -9,8 +9,8 @@ local Style = Completo.Style
 
 local HALF_TURN = math.pi / 2
 local PERCENT = Completo.C.PERCENT
-local TEXT_LEVEL = "Level %d"
-local TEXT_LEVELS = "Levels %d-%d"
+local TEXT_LEVEL = ns.L("Level %d")
+local TEXT_LEVELS = ns.L("Levels %d-%d")
 local TEXT_SEPARATOR = "  -  "
 
 local V = { Kinds = Shared.View.NewKinds() }

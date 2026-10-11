@@ -40,19 +40,19 @@ local STAT_ORDER = { "ITEM_MOD_STRENGTH_SHORT", "ITEM_MOD_AGILITY_SHORT", "ITEM_
     "ITEM_MOD_HIT_RATING_SHORT", "ITEM_MOD_CRIT_RATING_SHORT", "ITEM_MOD_MANA_REGENERATION_SHORT",
     "ITEM_MOD_DEFENSE_SKILL_RATING_SHORT", "ITEM_MOD_DODGE_RATING_SHORT", "ITEM_MOD_PARRY_RATING_SHORT",
     "ITEM_MOD_BLOCK_RATING_SHORT", "ITEM_MOD_DAMAGE_PER_SECOND_SHORT", "RESISTANCE0_NAME" }
-local TEXT_KICKER = "NAOWH SCORE"
-local TEXT_PICK_BIS = "Pick your BiS"
-local TEXT_NOW, TEXT_WITH_BIS = "now", "with your BiS"
-local TEXT_GAIN, TEXT_FROM = "+%.1f", "from %.1f"
-local TEXT_BIS_AFTER, TEXT_NOW_AFTER = "%.1f with your BiS", "%.1f now"
-local TEXT_LEVEL_BEST, TEXT_BEST = "Level %d best %%.1f", "Best %.1f"
-local TEXT_LEVEL_GOAL = "Level %d goal %%.1f"
-local TEXT_WHOLE = "You wear your whole BiS."
+local TEXT_KICKER = ns.L("NAOWH SCORE")
+local TEXT_PICK_BIS = ns.L("Pick your BiS")
+local TEXT_NOW, TEXT_WITH_BIS = ns.L("now"), ns.L("with your BiS")
+local TEXT_GAIN, TEXT_FROM = "+%.1f", ns.L("from %.1f")
+local TEXT_BIS_AFTER, TEXT_NOW_AFTER = ns.L("%.1f with your BiS"), ns.L("%.1f now")
+local TEXT_LEVEL_BEST, TEXT_BEST = ns.L("Level %d best %%.1f"), ns.L("Best %.1f")
+local TEXT_LEVEL_GOAL = ns.L("Level %d goal %%.1f")
+local TEXT_WHOLE = ns.L("You wear your whole BiS.")
 local TIP_TITLE = "Naowh Score"
-local TIP_NOW, TIP_WITH_BIS = "Now", "With your BiS"
-local TIP_GOAL = "Level %d goal"
-local TIP_BEST_LEVEL, TIP_BEST_GAME = "Best for your level", "Best in the game"
-local TIP_ABOUT = "Filled to what you wear, dimmer on to your BiS. A level's goal is a full set of blues for it."
+local TIP_NOW, TIP_WITH_BIS = ns.L("Now"), ns.L("With your BiS")
+local TIP_GOAL = ns.L("Level %d goal")
+local TIP_BEST_LEVEL, TIP_BEST_GAME = ns.L("Best for your level"), ns.L("Best in the game")
+local TIP_ABOUT = ns.L("Filled to what you wear, dimmer on to your BiS. A level's goal is a full set of blues for it.")
 local LEVEL_COMPARE, BOTH_COMPARE = ns.NaowhScore.COMPARE.LEVEL, ns.NaowhScore.COMPARE.BOTH
 
 local CORE = {}

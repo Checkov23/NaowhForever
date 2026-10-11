@@ -15,9 +15,9 @@ local LABEL_SIZE, NOTE_Y = 12, 8
 local LIT_ALPHA, IDLE_ALPHA, OFF_ALPHA = 1, 0.6, 0.3
 local STATES = { { key = "spells", label = "Spells" } }
 
-local TEXT_SHOWN = "Shown: click to hide it."
-local TEXT_HIDDEN = "Hidden: click to show it."
-local TEXT_NOTE = "%d of %d shown. Click a spell to show or hide it; hover for the spell."
+local TEXT_SHOWN = ns.L("Shown: click to hide it.")
+local TEXT_HIDDEN = ns.L("Hidden: click to show it.")
+local TEXT_NOTE = ns.L("%d of %d shown. Click a spell to show or hide it; hover for the spell.")
 
 local function Groups(entries)
     local groups, last = {}, nil

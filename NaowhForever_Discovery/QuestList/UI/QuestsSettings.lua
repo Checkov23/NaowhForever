@@ -9,11 +9,11 @@ local Settings = ns.Shared.Settings
 local PAGE = "Discovery/Quest List"
 local PIN_SIZE = ns.Shared.Style.PIN_SIZE_RANGE
 local ORDER_QUESTS = 10
-local TEXT_OFF = "Turn on Discovery"
-local TEXT_PINS_OFF = "Turn on Quest Givers"
-local TEXT_PROGRESS = "%d of %d zone quests done"
-local TEXT_ZONE = "%s: %d of %d."
-local TEXT_EVERY_QUEST = "Every quest of every zone, and where you are in each chain."
+local TEXT_OFF = ns.L("Turn on Discovery")
+local TEXT_PINS_OFF = ns.L("Turn on Quest Givers")
+local TEXT_PROGRESS = ns.L("%d of %d zone quests done")
+local TEXT_ZONE = ns.L("%s: %d of %d.")
+local TEXT_EVERY_QUEST = ns.L("Every quest of every zone, and where you are in each chain.")
 
 local page = Settings.Page(PAGE, S)
 
@@ -53,7 +53,7 @@ page:Card({
 })
 
 table.insert(ns.Shared.MapPins, {
-    title = "Quests", store = S, switch = "mapPins",
+    title = ns.L("Quests"), store = S, switch = "mapPins",
     rows = {
         { key = "mapPins", label = "Quest Givers", toggle = true, store = S, always = true, needs = On, why = TEXT_OFF,
           help = "A yellow ! on the world map at every quest giver with a quest you can pick up that still gives "

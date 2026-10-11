@@ -24,8 +24,8 @@ local BUTTON_ALPHA = 0.9
 local ICON_INSET = 4
 local SCROLL_W, SCROLL_IN = 4, 2
 
-local TEXT_TITLE = "Map Options and Pins"
-local TEXT_TIP = "Click to choose which pins and options show on the map."
+local TEXT_TITLE = ns.L("Map Options and Pins")
+local TEXT_TIP = ns.L("Click to choose which pins and options show on the map.")
 local TEXT_CLOSE = "x"
 local TEXT_TOWN, TEXT_TOWN_PINS, TEXT_TOWN_TIP = ns.TownPinTexts.group, ns.TownPinTexts.switch, ns.TownPinTexts.tip
 
@@ -126,7 +126,7 @@ local function MakeRow(parent, store, key, text, tip, needs)
     label:SetWordWrap(false)
     label:SetPoint("LEFT", PAD, 0)
     label:SetPoint("RIGHT", control, "LEFT", -LABEL_GAP, 0)
-    label:SetText(text)
+    label:SetText(ns.L(text))
     if tip then ns.Tooltip(frame, text, tip) end
     rows[#rows + 1] = { control = control, label = label, needs = needs, store = store }
 end

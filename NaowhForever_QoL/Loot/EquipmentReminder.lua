@@ -33,17 +33,17 @@ local LABEL_RGB = { r = 0.6, g = 0.6, b = 0.6 }
 local HAVE_RGB = { r = 1, g = 0.5, b = 0.5 }
 local EXPECTED_RGB = { r = 0.5, g = 0.8, b = 0.5 }
 local ENCHANTED = "Enchanted: (.+)"
-local TITLE = "Equipment Check"
+local TITLE = ns.L("Equipment Check")
 local CLOSE = "X"
-local SLOT_FALLBACK = "Slot "
-local EMPTY = " - Empty"
-local TEXT_ISSUES = "Enchant Issues"
-local TEXT_WRONG, TEXT_MISSING = "Wrong Enchant", "Missing"
-local TEXT_HAVE, TEXT_EXPECTED = "  Have:", "  Expected:"
-local TEXT_OK = "|cff4dd17aEnchants OK|r"
-local TEXT_COUNT = "|cffff6666%d Enchant Issue%s|r"
-local TEXT_CAPTURED = "Captured %d enchant%s from your gear. The enchant check expects these from now on."
-local PLURAL = "s"
+local SLOT_FALLBACK = ns.L("Slot ")
+local EMPTY = ns.L(" - Empty")
+local TEXT_ISSUES = ns.L("Enchant Issues")
+local TEXT_WRONG, TEXT_MISSING = ns.L("Wrong Enchant"), ns.L("Missing")
+local TEXT_HAVE, TEXT_EXPECTED = ns.L("  Have:"), ns.L("  Expected:")
+local TEXT_OK = ns.L("|cff4dd17aEnchants OK|r")
+local TEXT_COUNT_ONE, TEXT_COUNT = ns.L("|cffff6666%d Enchant Issue|r"), ns.L("|cffff6666%d Enchant Issues|r")
+local TEXT_CAPTURED_ONE = ns.L("Captured %d enchant from your gear. The enchant check expects these from now on.")
+local TEXT_CAPTURED = ns.L("Captured %d enchants from your gear. The enchant check expects these from now on.")
 
 local frame, hideTimer
 local buttons = {}
@@ -89,7 +89,8 @@ local function EnchantIssues()
         if GetInventoryItemID("player", slot) then
             local have = EnchantName(slot)
             if have ~= expected then
-                issues[#issues + 1] = { slot = ENCHANT_SLOTS[slot] or (SLOT_FALLBACK .. slot), have = have,
+                local name = ENCHANT_SLOTS[slot] and ns.Shared.Items.SlotName(slot)
+                issues[#issues + 1] = { slot = name or (SLOT_FALLBACK .. slot), have = have,
                     expected = expected }
             end
         end
@@ -103,7 +104,7 @@ local function SlotEnter(self)
     if GetInventoryItemID("player", self.slot.id) then
         GameTooltip:SetInventoryItem("player", self.slot.id)
     else
-        GameTooltip:SetText(self.slot.name .. EMPTY)
+        GameTooltip:SetText((ns.Shared.Items.SlotName(self.slot.id) or self.slot.name) .. EMPTY)
     end
     GameTooltip:Show()
 end
@@ -213,7 +214,7 @@ local function PaintStatus()
     if #issues == 0 then
         frame.status.text:SetText(TEXT_OK)
     else
-        frame.status.text:SetText(TEXT_COUNT:format(#issues, #issues > 1 and PLURAL or ""))
+        frame.status.text:SetText((#issues > 1 and TEXT_COUNT or TEXT_COUNT_ONE):format(#issues))
     end
 end
 
@@ -301,7 +302,7 @@ boot:SetScript("OnEvent", Apply)
 
 local function CaptureClicked()
     local count = ns.CaptureEnchants()
-    ns.Print(TEXT_CAPTURED:format(count, count == 1 and "" or PLURAL))
+    ns.Print((count == 1 and TEXT_CAPTURED_ONE or TEXT_CAPTURED):format(count))
 end
 
 local function ShowClicked()

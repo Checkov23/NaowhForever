@@ -16,30 +16,30 @@ local CUSTOM = "custom"
 local SKIN_CLASSIC = "classic"
 local DEFAULT_START = "default"
 local MINIMAP_NAME = "NaowhForever"
-local SWATCHES = { { "bg", "Background", "panel", "Panels" }, { "line", "Borders & Lines", "fg", "Text" },
-    { "muted", "Secondary Text", "accent", "Accent" } }
-local TEXT_SWITCHES_WITH = "|n|nSwitches with %s."
-local TEXT_NAOWH_DEFAULT = "Naowh (default)"
-local TEXT_BLIZZARD_DEFAULT = "Blizzard Default"
-local TEXT_FONT_OFF = "Off (Blizzard Default)"
-local TEXT_SAVED_RELOAD = " Saved for this computer.|n|nTakes effect after a /reload."
-local TEXT_CUSTOM = "Custom"
-local TEXT_CHOOSE = "Choose a theme..."
-local TEXT_REPLACE = "Replace your custom colors with %s?"
-local TEXT_COLORS_RELOAD = "Reload UI to apply your color changes."
-local TEXT_RXP_RELOAD = "Reload UI to apply your RestedXP changes."
+local SWATCHES = { { "bg", "Background", "panel", "Panels" }, { "line", ns.L("Borders & Lines"), "fg", "Text" },
+    { "muted", ns.L("Secondary Text"), "accent", "Accent" } }
+local TEXT_SWITCHES_WITH = ns.L("|n|nSwitches with %s.")
+local TEXT_NAOWH_DEFAULT = ns.L("Naowh (default)")
+local TEXT_BLIZZARD_DEFAULT = ns.L("Blizzard Default")
+local TEXT_FONT_OFF = ns.L("Off (Blizzard Default)")
+local TEXT_SAVED_RELOAD = ns.L(" Saved for this computer.|n|nTakes effect after a /reload.")
+local TEXT_CUSTOM = ns.L("Custom")
+local TEXT_CHOOSE = ns.L("Choose a theme...")
+local TEXT_REPLACE = ns.L("Replace your custom colors with %s?")
+local TEXT_COLORS_RELOAD = ns.L("Reload UI to apply your color changes.")
+local TEXT_RXP_RELOAD = ns.L("Reload UI to apply your RestedXP changes.")
 local TEXT_RXP_PICK_RELOAD = "Reload UI to pick a theme."
-local TEXT_SKIN_TIP = "Classic+ dresses the addon's windows like the game's own, in gold and bronze. "
+local TEXT_SKIN_TIP = ns.L("Classic+ dresses the addon's windows like the game's own, in gold and bronze. "
     .. "It has its own colors and uses the game's fonts unless you pick an Addon Font. Saved "
-    .. "for this computer.|n|nTakes effect after a /reload."
+    .. "for this computer.|n|nTakes effect after a /reload.")
 local TEXT_CLASSIC_PLUS = "Classic+"
 local SKINS = { [""] = TEXT_NAOWH_DEFAULT, [SKIN_CLASSIC] = TEXT_CLASSIC_PLUS }
 local SKIN_ORDER = { "", SKIN_CLASSIC }
-local TEXT_MINIMAP_TIP = "A minimap button that opens %s. /nf%s does the same, "
-    .. "and the Top Bar can carry it too. Saved for this computer."
-local TEXT_TURNED_OFF = "%s is turned off, so its settings are hidden. Turn it on under Modules below."
+local TEXT_MINIMAP_TIP = ns.L("A minimap button that opens %s. /nf%s does the same, "
+    .. "and the Top Bar can carry it too. Saved for this computer.")
+local TEXT_TURNED_OFF = ns.L("%s is turned off, so its settings are hidden. Turn it on under Modules below.")
 local NONE = {}
-local TEXT_ON_ITS_OWN, TEXT_ITS_SETTINGS = "%s on its own", "%s's settings"
+local TEXT_ON_ITS_OWN, TEXT_ITS_SETTINGS = ns.L("%s on its own"), ns.L("%s's settings")
 
 local colorsPending = false
 local rxpPending = false
@@ -61,7 +61,7 @@ local function NeedsTip(mod)
             if other.addon == addon then needs[i] = other end
         end
     end
-    return mod.subtitle .. TEXT_SWITCHES_WITH:format(NameList(needs))
+    return ns.L(mod.subtitle) .. TEXT_SWITCHES_WITH:format(NameList(needs))
 end
 
 local function ModuleRow(mod)
@@ -98,7 +98,7 @@ end
 
 local function ModuleButtonRow(mod)
     return { type = "toggle", text = mod.name,
-        tooltip = TEXT_MINIMAP_TIP:format((mod.open and TEXT_ON_ITS_OWN or TEXT_ITS_SETTINGS):format(mod.name),
+        tooltip = TEXT_MINIMAP_TIP:format((mod.open and TEXT_ON_ITS_OWN or TEXT_ITS_SETTINGS):format(O.DisplayName(mod)),
             mod.command),
         getValue = function() return MinimapButtonOn(mod) end,
         setValue = function(v) SetModuleButton(mod, v) end }
@@ -192,13 +192,13 @@ local function FontSection(W, parent, y)
           setValue = function(v)
               ns.AccountSettings().uiFont = v ~= "" and v or nil
           end },
-        GameFontDropdown("Game Font", "gameFont", "The font for the rest of the game: menus, "
-            .. "chat, tooltips and names. Off leaves the game's own fonts alone.")
+        GameFontDropdown("Game Font", "gameFont", ns.L("The font for the rest of the game: menus, "
+            .. "chat, tooltips and names. Off leaves the game's own fonts alone."))
     ); y = y - h
     _, h = W:DualRow(parent, y,
-        GameFontDropdown("Combat Text Font", "combatFont", "The font for damage and healing "
+        GameFontDropdown("Combat Text Font", "combatFont", ns.L("The font for damage and healing "
             .. "numbers, over enemies and over your character. Off leaves the game's own "
-            .. "font alone."),
+            .. "font alone.")),
         Empty()
     )
     return y - h

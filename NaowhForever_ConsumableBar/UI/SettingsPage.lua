@@ -12,12 +12,12 @@ local STAGE_MIN, STAGE_PAD = 90, 24
 local NOTE_FONT = 12
 local ASK = "Ask to Add New Consumables"
 local HEALTH, FOOD = "NF Health", "NF Food"
-local TEXT_NO_MANA = "You don't use mana"
+local TEXT_NO_MANA = ns.L("You don't use mana")
 local BAR_NAME = "Consumable Bar"
-local TEXT_EMPTY = "No items yet. Open Edit Items to add some."
-local TEXT_NONE, TEXT_ONE, TEXT_MANY = "No items on the bar yet", "1 item on the bar", "%d items on the bar"
-local TEXT_DETAIL = "Add consumables, put them in order, and set each one up."
-local TEXT_OFF = "Off"
+local TEXT_EMPTY = ns.L("No items yet. Open Edit Items to add some.")
+local TEXT_NONE, TEXT_ONE, TEXT_MANY = ns.L("No items on the bar yet"), ns.L("1 item on the bar"), ns.L("%d items on the bar")
+local TEXT_DETAIL = ns.L("Add consumables, put them in order, and set each one up.")
+local TEXT_OFF = ns.L("Off")
 local DIRECTION = { { RIGHT = "Right", LEFT = "Left", UP = "Up", DOWN = "Down" }, { "RIGHT", "LEFT", "UP", "DOWN" } }
 local SIZE_RANGE, SPACING_RANGE, PER_ROW_RANGE = { 20, 64, 1 }, { 0, 20, 1 }, { 1, 24, 1 }
 local BG_RANGE = { 0, 100, 5 }

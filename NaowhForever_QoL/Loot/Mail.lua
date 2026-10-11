@@ -15,30 +15,30 @@ local NO_SUBCLASS = -1
 local TRADE_GOODS = Enum.ItemClass.Tradegoods
 local GEAR = { [Enum.ItemClass.Weapon] = true, [Enum.ItemClass.Armor] = true }
 
-local TEXT_GOLD = "Gold on this realm: "
-local TEXT_NO_ALTS = "Log in on your other characters once and they appear here."
+local TEXT_GOLD = ns.L("Gold on this realm: ")
+local TEXT_NO_ALTS = ns.L("Log in on your other characters once and they appear here.")
 local TEXT_ALT = "%s  |cff808080%d|r  %s"
-local TEXT_FULL = "%s: %d %s didn't fit, all %d attachment slots are full. Send this one and attach again."
-local TEXT_STACK, TEXT_STACKS = "stack", "stacks"
-local TEXT_ALL_GOODS = "All trade goods"
-local TEXT_OTHER_GOODS = "Other trade goods"
-local TEXT_GEAR = "Unbound gear"
-local TEXT_ATTACH_TITLE = "Attach from your bags"
-local TEXT_NOTHING = "No trade goods or unbound gear in your bags."
+local TEXT_FULL = ns.L("%s: %d %s didn't fit, all %d attachment slots are full. Send this one and attach again.")
+local TEXT_STACK, TEXT_STACKS = ns.L("stack"), ns.L("stacks")
+local TEXT_ALL_GOODS = ns.L("All trade goods")
+local TEXT_OTHER_GOODS = ns.L("Other trade goods")
+local TEXT_GEAR = ns.L("Unbound gear")
+local TEXT_ATTACH_TITLE = ns.L("Attach from your bags")
+local TEXT_NOTHING = ns.L("No trade goods or unbound gear in your bags.")
 local TEXT_ATTACH_ROW = "%s (%d %s)"
-local TEXT_EXPIRED = "may have expired"
-local TEXT_UNDER_DAY = "less than a day"
+local TEXT_EXPIRED = ns.L("may have expired")
+local TEXT_UNDER_DAY = ns.L("less than a day")
 local TEXT_DAYS = "d"
-local TEXT_EXPIRING = ": mail expiring soon on "
-local TEXT_KEEP = ". Open the mailbox on those characters to keep it."
-local TEXT_ALTS = "Alts"
-local TEXT_ALTS_TIP = "Your Characters"
-local TEXT_ALTS_HELP = "Pick one of your characters on this realm and faction to fill the To box. Shows each "
-    .. "one's level and gold."
-local TEXT_ATTACH = "Attach"
-local TEXT_ATTACH_TIP = "Quick Attach"
-local TEXT_ATTACH_HELP = "Attach every trade good, one type of trade good, or your unbound gear from your bags, "
-    .. "up to the 12 attachment slots."
+local TEXT_EXPIRING = ns.L(": mail expiring soon on ")
+local TEXT_KEEP = ns.L(". Open the mailbox on those characters to keep it.")
+local TEXT_ALTS = ns.L("Alts")
+local TEXT_ALTS_TIP = ns.L("Your Characters")
+local TEXT_ALTS_HELP = ns.L("Pick one of your characters on this realm and faction to fill the To box. Shows each "
+    .. "one's level and gold.")
+local TEXT_ATTACH = ns.L("Attach")
+local TEXT_ATTACH_TIP = ns.L("Quick Attach")
+local TEXT_ATTACH_HELP = ns.L("Attach every trade good, one type of trade good, or your unbound gear from your bags, "
+    .. "up to the 12 attachment slots.")
 
 local altsButton, attachButton
 local qBag, qSlot, qItem = {}, {}, {}

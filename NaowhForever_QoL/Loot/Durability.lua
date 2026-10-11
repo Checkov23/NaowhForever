@@ -17,8 +17,8 @@ local TEXT_ALERT = "Durability"
 local PERCENT = ns.QoLConstants.PERCENT
 local WARN_RANGE = { 5, 100, 1 }
 local TEXT_RANGE = { 10, 48, 1 }
-local TEXT_LOW = "Low Durability: %d%%"
-local SUMMARY = "Warns below %d%%"
+local TEXT_LOW = ns.L("Low Durability: %d%%")
+local SUMMARY = ns.L("Warns below %d%%")
 
 local frame, unlocked, inCombat
 

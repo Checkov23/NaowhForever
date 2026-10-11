@@ -12,7 +12,7 @@ local LINKS_H, LINK_GAP = 22, 14
 local FIRST_GAP = 8
 local STANDING_GAP = 6
 
-local TEXT_NOT_MET = "not met"
+local TEXT_NOT_MET = ns.L("not met")
 local TEXT_VALUE = "%s / %s"
 
 local function LinkClicked(link)

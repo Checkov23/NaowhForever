@@ -17,12 +17,12 @@ local RAID_ICON = "raid"
 local FRAME_LEVEL = "PIN_FRAME_LEVEL_AREA_POI"
 local SPOT_KEY = "%s:%s:%s"
 
-local TEXT_ENTRANCE_NAME = "Entrance"
-local TEXT_RAID = "Raid, %d players"
-local TEXT_DUNGEON = "Dungeon"
+local TEXT_ENTRANCE_NAME = ns.L("Entrance")
+local TEXT_RAID = ns.L("Raid, %d players")
+local TEXT_DUNGEON = ns.L("Dungeon")
 local TEXT_KIND_LEVELS = "%s, %s"
-local TEXT_CLICK = "Click for a waypoint."
-local TEXT_ENTRANCE = " (entrance)"
+local TEXT_CLICK = ns.L("Click for a waypoint.")
+local TEXT_ENTRANCE = ns.L(" (entrance)")
 
 local provider, added, events
 local spots = {}

@@ -16,7 +16,7 @@ local INTERRUPTS = {
     PRIEST = { 15487 },
     DRUID = { 16979 },
 }
-local INTERRUPTED = "Interrupted"
+local INTERRUPTED = ns.L("Interrupted")
 local SAMPLE_SPELL, SAMPLE_NAME, SAMPLE_ICON = 116, "Frostbolt", 135846
 local SAMPLE_TOTAL, SAMPLE_LEFT, SAMPLE_KICK, SAMPLE_STOPPED = 2.5, 1.4, 2, 0.6
 local BLACK = ns.Shared.Style.BORDER_RGB
@@ -33,11 +33,11 @@ local TIME_FORMAT = "%.1f"
 local NOT_INTERRUPTIBLE_CAST, NOT_INTERRUPTIBLE_CHANNEL = 8, 7
 local MOVER_LABEL = "Focus Cast Bar"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Combat", "QoL/Combat:focusCastBar"
-local NOTE_NO_FADE = "Interrupted Fade is 0: the bar hides at once."
-local NOTE_HIDE_COOLDOWN = "Hide While Interrupt Is on Cooldown is on: the bar stays hidden."
-local NOTE_HIDE_NONINT = "Hide Uninterruptible Casts is on: the bar stays hidden."
-local SUMMARY = "%d by %d%s"
-local SUMMARY_SOUND, SUMMARY_SPEAKS = ", plays a sound", ", speaks"
+local NOTE_NO_FADE = ns.L("Interrupted Fade is 0: the bar hides at once.")
+local NOTE_HIDE_COOLDOWN = ns.L("Hide While Interrupt Is on Cooldown is on: the bar stays hidden.")
+local NOTE_HIDE_NONINT = ns.L("Hide Uninterruptible Casts is on: the bar stays hidden.")
+local SUMMARY = ns.L("%d by %d%s")
+local SUMMARY_SOUND, SUMMARY_SPEAKS = ns.L(", plays a sound"), ns.L(", speaks")
 local STAGE_H = 150
 local NOTE_Y, NOTE_SIZE = ns.Shared.Style.STAGE_NOTE_Y, ns.Shared.Style.STAGE_NOTE_SIZE
 local STAGE_MARGIN = ns.Shared.Style.STAGE_MARGIN
@@ -603,8 +603,8 @@ boot:SetScript("OnEvent", Apply)
 local Group = ns.Shared.Settings.Group
 local SIDE = { { LEFT = "Left", RIGHT = "Right", TOP = "Top", BOTTOM = "Bottom" }, { "LEFT", "RIGHT", "TOP", "BOTTOM" } }
 local AUDIO = { { none = "None", sound = "Sound", tts = "Text to Speech" }, { "none", "sound", "tts" } }
-local AUDIO_HELP = "A sound, or the Speech text read aloud, as each cast starts."
-local VOICE_HELP = "Game Default speaks in the voice the rest of the addon uses."
+local AUDIO_HELP = ns.L("A sound, or the Speech text read aloud, as each cast starts.")
+local VOICE_HELP = ns.L("Game Default speaks in the voice the rest of the addon uses.")
 local STATES = {
     { key = "ready", label = "Interrupt Ready", tip = "A cast while your interrupt is ready." },
     { key = "cooldown", label = "On Cooldown", tip = "A cast while your interrupt is on cooldown, with the tick where it comes back." },

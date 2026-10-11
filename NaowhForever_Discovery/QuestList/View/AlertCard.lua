@@ -21,15 +21,15 @@ local PORTRAIT_ZOOM = 1
 local MODEL_EDGE = 1
 local STAR_ATLAS = Style.STAR_ATLAS
 local DOT = "  \194\183  "
-local TEXT_WAYPOINT = "Waypoint"
-local TEXT_PIN_HINT = "To the rare: where it was seen, else its nearest spot."
-local TEXT_TAPPED = "Tapped by someone else"
-local TEXT_NOT_KILLED = "Not killed yet"
-local TEXT_KILLED_TIMES = "Killed %d times"
-local TEXT_KILLED_BEFORE = "Killed before"
-local TEXT_LEVEL = "Level %d"
-local TEXT_RARE = "Rare"
-local TEXT_ELITE = "Rare elite"
+local TEXT_WAYPOINT = ns.L("Waypoint")
+local TEXT_PIN_HINT = ns.L("To the rare: where it was seen, else its nearest spot.")
+local TEXT_TAPPED = ns.L("Tapped by someone else")
+local TEXT_NOT_KILLED = ns.L("Not killed yet")
+local TEXT_KILLED_TIMES = ns.L("Killed %d times")
+local TEXT_KILLED_BEFORE = ns.L("Killed before")
+local TEXT_LEVEL = ns.L("Level %d")
+local TEXT_RARE = ns.L("Rare")
+local TEXT_ELITE = ns.L("Rare elite")
 
 local parts = {}
 

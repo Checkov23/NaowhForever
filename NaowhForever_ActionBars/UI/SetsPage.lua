@@ -11,16 +11,19 @@ local STRIPE_ALPHA = 0.025
 local NAME_SIZE, SMALL_SIZE = 13, 11
 local NEW_NAME_MAX = 40
 local SAVED_DATE = "%d %b %Y"
+local TEXT_ACTION, TEXT_ACTIONS = ns.L("%d action"), ns.L("%d actions")
+local TEXT_MACRO, TEXT_MACROS = ns.L("%d macro"), ns.L("%d macros")
+local TEXT_KEYBIND, TEXT_KEYBINDS = ns.L("%d keybind"), ns.L("%d keybinds")
 
-local TEXT_SAVE = "Save Current Bars"
-local TEXT_HINT = "Bars, macros and keybinds, for every %s."
-local TEXT_HEADER = "SAVED SETS"
-local TEXT_EMPTY = "Nothing saved yet. Save your bars, macros and keybinds as they are now, then "
-    .. "import them on a fresh character, for another spec or a dungeon set-up."
-local TEXT_SAVED = "Saved "
-local TEXT_BY = " by "
-local TEXT_EDIT, TEXT_RENAME, TEXT_DELETE = "Edit and Save Again", "Rename", "Delete"
-local TEXT_NEW_NAME = "New name for "
+local TEXT_SAVE = ns.L("Save Current Bars")
+local TEXT_HINT = ns.L("Bars, macros and keybinds, for every %s.")
+local TEXT_HEADER = ns.L("SAVED SETS")
+local TEXT_EMPTY = ns.L("Nothing saved yet. Save your bars, macros and keybinds as they are now, then "
+    .. "import them on a fresh character, for another spec or a dungeon set-up.")
+local TEXT_SAVED = ns.L("Saved ")
+local TEXT_BY = ns.L(" by ")
+local TEXT_EDIT, TEXT_RENAME, TEXT_DELETE = ns.L("Edit and Save Again"), ns.L("Rename"), ns.L("Delete")
+local TEXT_NEW_NAME = ns.L("New name for ")
 
 local function NewStripe(parent)
     return ns.Solid(parent, "BACKGROUND", ns.THEME.fg, STRIPE_ALPHA)
@@ -39,11 +42,11 @@ end
 local function Contents(set)
     local actions, keys = 0, 0
     for _ in pairs(set.slots) do actions = actions + 1 end
-    local parts = { A.Plural(actions, "action") }
-    if set.macros then parts[#parts + 1] = A.Plural(#set.macros, "macro") end
+    local parts = { A.Plural(actions, TEXT_ACTION, TEXT_ACTIONS) }
+    if set.macros then parts[#parts + 1] = A.Plural(#set.macros, TEXT_MACRO, TEXT_MACROS) end
     if set.bindings then
         for _ in pairs(set.bindings) do keys = keys + 1 end
-        parts[#parts + 1] = A.Plural(keys, "keybind")
+        parts[#parts + 1] = A.Plural(keys, TEXT_KEYBIND, TEXT_KEYBINDS)
     end
     return table.concat(parts, ", ")
 end
@@ -68,7 +71,7 @@ local function SetRow(parent, y, key, set, stripe)
     name:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y - ROW_PAD)
     name:SetText(key)
     local saved = Line(parent, "barsSaved", SMALL_SIZE, T.muted, name,
-        TEXT_SAVED .. date(SAVED_DATE, set.saved) .. (set.by and (TEXT_BY .. set.by) or ""))
+        TEXT_SAVED .. date(ns.L(SAVED_DATE), set.saved) .. (set.by and (TEXT_BY .. set.by) or ""))
     local has = Line(parent, "barsHas", SMALL_SIZE, T.muted, saved, Contents(set))
     local h = ROW_PAD * 2 + math.ceil(name:GetStringHeight()) + LINE_GAP + math.ceil(saved:GetStringHeight())
         + LINE_GAP + math.ceil(has:GetStringHeight())

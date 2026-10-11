@@ -24,9 +24,9 @@ local EVENTS = { "UNIT_PET", "PET_BAR_UPDATE", "PLAYER_MOUNT_DISPLAY_CHANGED", "
     "PLAYER_UNGHOST", "SPELLS_CHANGED", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED", "PLAYER_ENTERING_WORLD",
     "PLAYER_CONTROL_LOST", "PLAYER_CONTROL_GAINED" }
 
-local TEXT_MISSING = "Missing"
-local TEXT_PASSIVE = ", passive"
-local TEXT_BELOW = ", below %d%%"
+local TEXT_MISSING = ns.L("Missing")
+local TEXT_PASSIVE = ns.L(", passive")
+local TEXT_BELOW = ns.L(", below %d%%")
 
 local frame, curve, unlocked, class
 local mounted, dismountTimer, sacrificed

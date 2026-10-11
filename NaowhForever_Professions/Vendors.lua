@@ -8,8 +8,8 @@ local Text = P.Text
 
 local UNLIMITED = -1
 local CLASS_INDEX = 12
-local TEXT_TOO_DEAR = "Buy at Vendor: that costs %s, more than you have."
-local TEXT_BOUGHT = "Bought %s for %s."
+local TEXT_TOO_DEAR = ns.L("Buy at Vendor: that costs %s, more than you have.")
+local TEXT_BOUGHT = ns.L("Bought %s for %s.")
 local TEXT_PART = "%dx %s"
 local MERCHANT_EVENTS = { "MERCHANT_SHOW", "MERCHANT_UPDATE", "MERCHANT_CLOSED" }
 local MERCHANT_KEYS = { enabled = true, vendorMaterials = true, craftProfit = true, buyVendor = true }

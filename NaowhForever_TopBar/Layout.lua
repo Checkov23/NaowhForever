@@ -10,7 +10,7 @@ local OLD_BUTTONS = { showFriends = true, showGuild = true, showHearth = false }
 local OLD_BROKERS = { "NaowhForeverJournal", "NaowhForeverBiS" }
 local OLD_DQ, JOURNAL = "NaowhForeverDQ", "NaowhForeverJournal"
 
-local BUILTIN = { friends = "Friends", guild = "Guild", hearth = "Hearthstone" }
+local BUILTIN = { friends = ns.L("Friends"), guild = ns.L("Guild"), hearth = "Hearthstone" }
 local BUILTIN_ORDER = { "friends", "guild", "hearth" }
 
 local function IndexOf(list, key)

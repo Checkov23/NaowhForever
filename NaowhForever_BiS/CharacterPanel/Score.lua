@@ -21,8 +21,8 @@ local NO_LEVEL = 0
 local TENTHS = 10
 local WAITING = "..."
 local LEVEL_COMPARE, BOTH_COMPARE = ns.NaowhScore.COMPARE.LEVEL, ns.NaowhScore.COMPARE.BOTH
-local TEXT_KICKER = "NAOWH SCORE"
-local TEXT_LEVEL_BEST, TEXT_BEST = "Level %d best %%.1f", "Best %.1f"
+local TEXT_KICKER = ns.L("NAOWH SCORE")
+local TEXT_LEVEL_BEST, TEXT_BEST = ns.L("Level %d best %%.1f"), ns.L("Best %.1f")
 
 local legends = {}
 

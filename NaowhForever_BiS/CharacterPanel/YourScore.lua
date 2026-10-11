@@ -12,10 +12,10 @@ local PANE_DROP = 68
 local BADGE_LIFT = 20
 local GOAL_RGB, TITLE_RGB = C.GOLD_RGB, C.TITLE_RGB
 local TIP_TITLE = "Naowh Score"
-local TIP_NOW, TIP_WITH_BIS = "Now", "With your BiS"
-local TIP_GOAL = "Level %d goal"
-local TIP_BEST = "Best in the game"
-local TIP_CLICK = "Click to open the BiS List."
+local TIP_NOW, TIP_WITH_BIS = ns.L("Now"), ns.L("With your BiS")
+local TIP_GOAL = ns.L("Level %d goal")
+local TIP_BEST = ns.L("Best in the game")
+local TIP_CLICK = ns.L("Click to open the BiS List.")
 
 local badge, installed
 local gains = { stats = {} }

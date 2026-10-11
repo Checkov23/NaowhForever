@@ -20,11 +20,11 @@ local QUEST_EVENTS = { QUEST_LOG_UPDATE = true, QUEST_DATA_LOAD_RESULT = true }
 local GROUP_EVENTS = { GROUP_ROSTER_UPDATE = true, UNIT_QUEST_LOG_CHANGED = true }
 local RANK_EVENTS = { "MAJOR_FACTION_RENOWN_LEVEL_CHANGED", "CURRENCY_DISPLAY_UPDATE" }
 
-local TEXT_YOUR_BIS = "Your BiS"
-local TEXT_TURN_ON_BIS = "Turn on the BiS List to see your BiS marked here."
-local TEXT_TURN_ON_BUTTON = "Turn On BiS List"
-local TEXT_BIS_EMPTY = "Your BiS list is empty"
-local TEXT_OPEN_BIS = "Open BiS List"
+local TEXT_YOUR_BIS = ns.L("Your BiS")
+local TEXT_TURN_ON_BIS = ns.L("Turn on the BiS List to see your BiS marked here.")
+local TEXT_TURN_ON_BUTTON = ns.L("Turn On BiS List")
+local TEXT_BIS_EMPTY = ns.L("Your BiS list is empty")
+local TEXT_OPEN_BIS = ns.L("Open BiS List")
 local BIS_ADDON = "NaowhForever_BiS"
 
 local EMPTY = {}

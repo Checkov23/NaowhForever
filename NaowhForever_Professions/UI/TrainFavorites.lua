@@ -19,11 +19,11 @@ local QUEUE_DELAY = P.C.QUEUE_DELAY
 local OPEN_TRIES = { 0.2, 0.6, 1.5 }
 local TRAINER_ADDON = "Blizzard_TrainerUI"
 local EVENTS = { "TRAINER_SHOW", "TRAINER_UPDATE", "TRAINER_CLOSED", "PLAYER_MONEY", "ADDON_LOADED" }
-local TEXT_TITLE = "Train Favorites"
+local TEXT_TITLE = ns.L("Train Favorites")
 local TEXT_LEARN = "Learn"
-local TEXT_LEARN_ALL = "Learn All"
-local TEXT_LEARN_ALL_COST = "Learn All (%s)"
-local TEXT_MORE = "+%d more"
+local TEXT_LEARN_ALL = ns.L("Learn All")
+local TEXT_LEARN_ALL_COST = ns.L("Learn All (%s)")
+local TEXT_MORE = ns.L("+%d more")
 
 local trainer
 local trainerOpen

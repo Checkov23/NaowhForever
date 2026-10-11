@@ -7,7 +7,7 @@ local C = TM.C
 
 local PERCENT = C.PERCENT
 local TANK_FORMS = { [5] = true, [8] = true, [18] = true }
-local YOU = "You"
+local YOU = ns.L("You")
 
 local entries = {}
 local list = {}

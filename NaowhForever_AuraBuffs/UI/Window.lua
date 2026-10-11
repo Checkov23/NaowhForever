@@ -18,8 +18,8 @@ local TOP_Y = -6
 local PERCENT, ROUND = A.C.PERCENT, A.C.ROUND
 local WINDOW_KEY = "auraBuffsWindow"
 
-local TEXT_TITLE = "AuraBuffs"
-local TEXT_TITLE_TIP = "The consumables your reminders watch."
+local TEXT_TITLE = ns.L("AuraBuffs")
+local TEXT_TITLE_TIP = ns.L("The consumables your reminders watch.")
 
 local TABS = {
     { key = "consumables", label = "Consumables", tip = "The items the Buffs & Consumables reminders watch." },
@@ -41,7 +41,7 @@ end
 
 local function Note()
     local n = #(S.Get("consumableEntries") or {})
-    return n == 1 and "1 consumable watched" or (n .. " consumables watched")
+    return n == 1 and ns.L("1 consumable watched") or (n .. ns.L(" consumables watched"))
 end
 
 local function Paint()

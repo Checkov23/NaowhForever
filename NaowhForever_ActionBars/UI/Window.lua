@@ -20,8 +20,8 @@ local PERCENT = 100
 local ROUND = 0.5
 
 local TEXT_TITLE = "Action Bars"
-local TEXT_SUBTITLE = "Save your bars, macros and keybinds, then import them on any character."
-local TEXT_BACK = "Saved Sets"
+local TEXT_SUBTITLE = ns.L("Save your bars, macros and keybinds, then import them on any character.")
+local TEXT_BACK = ns.L("Saved Sets")
 
 local W = {}
 local window, views, view

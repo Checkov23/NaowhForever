@@ -12,12 +12,12 @@ local BAR = St.CAMP_BAR
 local MIN_LABELS = St.CAMP_MIN_LABELS
 local TIME_SAMPLE, SIT_SAMPLE = St.CAMP_TIME_SAMPLE, St.CAMP_SIT_PREFIX .. "44s"
 
-local TEXT_CAMP = "Camp Active"
-local TEXT_NO_BONUSES = "no bonuses"
-local TEXT_RESTING = "Resting"
-local TEXT_REFRESH, TEXT_CAMP_WORD = "Refresh", " Camp"
-local TEXT_NEARBY, TEXT_SIT = "Camp Nearby", "sit to refresh"
-local TEXT_MORE = "+%d more"
+local TEXT_CAMP = ns.L("Camp Active")
+local TEXT_NO_BONUSES = ns.L("no bonuses")
+local TEXT_RESTING = ns.L("Resting")
+local TEXT_REFRESH, TEXT_REFRESH_CAMP = ns.L("Refresh (camp)"), ns.L("%s Camp")
+local TEXT_NEARBY, TEXT_SIT = ns.L("Camp Nearby"), ns.L("sit to refresh")
+local TEXT_MORE = ns.L("+%d more")
 
 local moreTexts = {}
 
@@ -189,7 +189,7 @@ end
 local function NewWords(f)
     f.campText = TEXT_CAMP .. ns.Color("muted", St.PLACE_DOT .. TEXT_NO_BONUSES)
     f.restText = TEXT_RESTING
-    f.refreshText = ns.Color("accent", TEXT_REFRESH) .. TEXT_CAMP_WORD
+    f.refreshText = TEXT_REFRESH_CAMP:format(ns.Color("accent", TEXT_REFRESH))
     f.nearbyText = f.bare and ns.Color("accent", TEXT_NEARBY)
         or ns.Color("accent", TEXT_NEARBY) .. ns.Color("muted", St.PLACE_DOT .. TEXT_SIT)
 end

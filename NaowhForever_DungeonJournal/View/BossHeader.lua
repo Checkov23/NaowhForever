@@ -15,18 +15,18 @@ local TITLE_LINE_PAD = 4
 local ABOUT_GAP = 10
 local ABOUT_RISE = 2
 local INFO_LOW, INFO_HIGH, INFO_KIND, INFO_TYPE, INFO_TITLE = 1, 2, 3, 4, 5
-local CLASSIFICATION = { [1] = "Elite", [2] = "Rare Elite", [3] = "Boss", [4] = "Rare" }
+local CLASSIFICATION = { [1] = ns.L("Elite"), [2] = ns.L("Rare Elite"), [3] = ns.L("Boss"), [4] = ns.L("Rare") }
 local CREATURE_TYPE = {
     [1] = "Beast", [2] = "Dragonkin", [3] = "Demon", [4] = "Elemental", [5] = "Giant", [6] = "Undead",
     [7] = "Humanoid", [8] = "Critter", [9] = "Mechanical", [11] = "Totem", [15] = "Aberration",
 }
 
 local TEXT_UNKNOWN_LEVEL = "??"
-local TEXT_LEVEL = "Level "
+local TEXT_LEVEL = ns.L("Level ")
 local TEXT_RANGE = "%s-%s"
-local TEXT_RARE = "Rare spawn"
-local TEXT_OPTIONAL = "Optional"
-local TEXT_QUEST_BOSS = "Quest boss"
+local TEXT_RARE = ns.L("Rare spawn")
+local TEXT_OPTIONAL = ns.L("Optional")
+local TEXT_QUEST_BOSS = ns.L("Quest boss")
 
 local parts = {}
 

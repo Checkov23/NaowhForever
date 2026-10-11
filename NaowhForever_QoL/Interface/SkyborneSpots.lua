@@ -22,18 +22,18 @@ local PIN_RANGE = ns.Shared.Style.PIN_SIZE_RANGE
 local SKYBORNE = "Skyborne"
 
 local KINDS = {
-    leyline = { name = "Ley Line", faction = "Alliance", racial = 1259705, buff = 1259691,
-        help = "Stand on it and cast Read Ley Line.",
+    leyline = { name = ns.L("Ley Line"), faction = "Alliance", racial = 1259705, buff = 1259691,
+        help = ns.L("Stand on it and cast Read Ley Line."),
         icon = "Interface\\Icons\\Spell_Arcane_Arcane04" },
-    convergence = { name = "Elemental Convergence", faction = "Horde", racial = 1259686, buff = 1270893,
-        help = "Cast Skysight here for Elemental Blessing.",
+    convergence = { name = ns.L("Elemental Convergence"), faction = "Horde", racial = 1259686, buff = 1270893,
+        help = ns.L("Cast Skysight here for Elemental Blessing."),
         icon = "Interface\\Icons\\Spell_Nature_LightningShield" },
 }
 
-local TEXT_SAVED = "%s saved on your map: %s %.1f, %.1f."
+local TEXT_SAVED = ns.L("%s saved on your map: %s %.1f, %.1f.")
 local TEXT_UNKNOWN_MAP = "?"
-local TEXT_CLICK = "Click for a waypoint."
-local TEXT_FORGET = "Right-click to forget this spot."
+local TEXT_CLICK = ns.L("Click for a waypoint.")
+local TEXT_FORGET = ns.L("Right-click to forget this spot.")
 local SECTION_ORDER = 60
 local TEXT_SECTION = "Skyborne"
 

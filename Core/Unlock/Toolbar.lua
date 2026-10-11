@@ -24,16 +24,16 @@ local SECTION_H = 18
 local OFF_ALPHA = 0.4
 local HISTORY_W, ELEMENTS_W = 64, 84
 local TOOLBAR_NAME = "NaowhForeverUnlockToolbar"
-local TEXT_TITLE = "HUD Editor"
-local TEXT_EXIT = "Exit Config"
-local TEXT_UNDO, TEXT_UNDO_HELP = "Undo", "Puts back the last change. Ctrl + Z."
-local TEXT_REDO, TEXT_REDO_HELP = "Redo", "Makes the change again. Ctrl + Y."
-local TEXT_REVERT, TEXT_REVERT_HELP = "Revert", "Puts back everything changed since the HUD Editor opened."
-local TEXT_ELEMENTS, TEXT_ELEMENTS_HELP = "Elements", "Shows or hides the list of every element."
-local TEXT_GUIDES = "Guides"
-local TEXT_GUIDES_HELP = "Lines a dragged element up with the others and the screen centre. Hold Alt to drag freely."
-local TEXT_LAYOUTS = "Layouts"
-local TEXT_LAYOUTS_HELP = "Saves where everything is under a name, to load again later."
+local TEXT_TITLE = ns.L("HUD Editor")
+local TEXT_EXIT = ns.L("Exit Config")
+local TEXT_UNDO, TEXT_UNDO_HELP = ns.L("Undo"), ns.L("Puts back the last change. Ctrl + Z.")
+local TEXT_REDO, TEXT_REDO_HELP = ns.L("Redo"), ns.L("Makes the change again. Ctrl + Y.")
+local TEXT_REVERT, TEXT_REVERT_HELP = ns.L("Revert"), ns.L("Puts back everything changed since the HUD Editor opened.")
+local TEXT_ELEMENTS, TEXT_ELEMENTS_HELP = ns.L("Elements"), ns.L("Shows or hides the list of every element.")
+local TEXT_GUIDES = ns.L("Guides")
+local TEXT_GUIDES_HELP = ns.L("Lines a dragged element up with the others and the screen centre. Hold Alt to drag freely.")
+local TEXT_LAYOUTS = ns.L("Layouts")
+local TEXT_LAYOUTS_HELP = ns.L("Saves where everything is under a name, to load again later.")
 
 local configActive, reopenWindowOnExit = false, false
 local configToolbar

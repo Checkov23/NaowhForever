@@ -21,9 +21,9 @@ local MENU_DROP = 6
 local COUNT_GAP = 2
 local BUTTON_PAD = 4
 
-local TEXT_ONE_ON = "Filters: 1 hiding loot or bosses"
-local TEXT_MANY_ON = "Filters: %d hiding loot or bosses"
-local TEXT_CLICK = "Click to choose what is listed and shown."
+local TEXT_ONE_ON = ns.L("Filters: 1 hiding loot or bosses")
+local TEXT_MANY_ON = ns.L("Filters: %d hiding loot or bosses")
+local TEXT_CLICK = ns.L("Click to choose what is listed and shown.")
 
 local window, button, menu
 

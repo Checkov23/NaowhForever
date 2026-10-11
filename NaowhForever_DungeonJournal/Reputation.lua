@@ -29,11 +29,11 @@ local BAND = { [1] = 36000, [2] = 3000, [3] = 3000, [4] = 3000, [5] = 6000, [6] 
 local STANDING_LABEL = "FACTION_STANDING_LABEL"
 local RANK_LABEL = "PVP_RANK_%d_%d"
 local TEXT_TENTHS = "%.1f"
-local TEXT_ABOUT = "about "
-local TEXT_TO_GO = " to go"
-local TEXT_DAY, TEXT_DAYS = "1 day", " days"
-local TEXT_HOUR, TEXT_HOURS = "1 hour", " hours"
-local TEXT_MINUTE, TEXT_MINUTES = "1 minute", " minutes"
+local TEXT_ABOUT = ns.L("about ")
+local TEXT_TO_GO = ns.L(" to go")
+local TEXT_DAY, TEXT_DAYS = ns.L("1 day"), ns.L(" days")
+local TEXT_HOUR, TEXT_HOURS = ns.L("1 hour"), ns.L(" hours")
+local TEXT_MINUTE, TEXT_MINUTES = ns.L("1 minute"), ns.L(" minutes")
 
 local labels = {}
 local short = {}

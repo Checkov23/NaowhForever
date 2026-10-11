@@ -24,9 +24,9 @@ local TABS_TOP_GAP = 4
 local SCROLL_TOP_GAP = 8
 local SCROLL_GAP = 4
 local PAGE = "Discovery/Quest List"
-local ALL_ZONES = "All Zones"
+local ALL_ZONES = ns.L("All Zones")
 local CONTINENTS = { [0] = "Eastern Kingdoms", [1] = "Kalimdor" }
-local ELSEWHERE = "Elsewhere"
+local ELSEWHERE = ns.L("Elsewhere")
 local CONTINENT_ORDER = { CONTINENTS[0], CONTINENTS[1], ELSEWHERE }
 local EVENTS = { "QUEST_TURNED_IN", "QUEST_ACCEPTED", "QUEST_REMOVED", "PLAYER_LEVEL_UP" }
 local NO_EVENTS = {}
@@ -35,27 +35,27 @@ local TABS = {
     { key = "quests", label = "Quests", tip = "Every quest of every zone, and where you are in each chain." },
     { key = "rares", label = "Rares", tip = "Every rare of every zone, and which of them you have killed." },
 }
-local SEARCH_HINT = { quests = "Search quests or quest givers", rares = "Search rares" }
-local TEXT_TITLE = "Quest List"
-local TEXT_ABOUT = "Everything there is to do, and how much of it you have done."
-local TEXT_ALL_ZONES = "All zones"
-local TEXT_KILLED_PERCENT = "%d%% killed"
-local TEXT_DONE_PERCENT = "%d%% done"
-local TEXT_QUESTS = "Quests"
+local SEARCH_HINT = { quests = "Search quests or quest givers", rares = ns.L("Search rares") }
+local TEXT_TITLE = ns.L("Quest List")
+local TEXT_ABOUT = ns.L("Everything there is to do, and how much of it you have done.")
+local TEXT_ALL_ZONES = ns.L("All zones")
+local TEXT_KILLED_PERCENT = ns.L("%d%% killed")
+local TEXT_DONE_PERCENT = ns.L("%d%% done")
+local TEXT_QUESTS = ns.L("Quests")
 local TEXT_RARES = "Rares"
 local TEXT_OPEN = "Open"
-local TEXT_QUESTS_DONE = "Every quest here is done."
-local TEXT_NO_QUESTS = "No quests here for your character."
-local TEXT_RARES_KILLED = "Every rare here is killed."
-local TEXT_NO_RARES = "No rares here for your character."
-local TEXT_NO_QUEST_FOUND = "No quest or quest giver for your character holds \"%s\"."
-local TEXT_NO_RARE_FOUND = "No rare for your character holds \"%s\"."
-local TEXT_FIRST_OF = "The first %d of %d; type more to narrow it down."
-local TEXT_RARES_PROGRESS = "%d of %d rares killed"
-local TEXT_QUESTS_PROGRESS = "%d of %d zone quests done"
-local TEXT_EVERYWHERE = "Everywhere"
-local TEXT_QUESTS_LINE = "Zone quests done"
-local TEXT_RARES_LINE = "Rares killed"
+local TEXT_QUESTS_DONE = ns.L("Every quest here is done.")
+local TEXT_NO_QUESTS = ns.L("No quests here for your character.")
+local TEXT_RARES_KILLED = ns.L("Every rare here is killed.")
+local TEXT_NO_RARES = ns.L("No rares here for your character.")
+local TEXT_NO_QUEST_FOUND = ns.L("No quest or quest giver for your character holds \"%s\".")
+local TEXT_NO_RARE_FOUND = ns.L("No rare for your character holds \"%s\".")
+local TEXT_FIRST_OF = ns.L("The first %d of %d; type more to narrow it down.")
+local TEXT_RARES_PROGRESS = ns.L("%d of %d rares killed")
+local TEXT_QUESTS_PROGRESS = ns.L("%d of %d zone quests done")
+local TEXT_EVERYWHERE = ns.L("Everywhere")
+local TEXT_QUESTS_LINE = ns.L("Zone quests done")
+local TEXT_RARES_LINE = ns.L("Rares killed")
 
 local window, scroll, view
 local opened = {}

@@ -61,7 +61,7 @@ Kinds.group = {
         row.icon:ClearAllPoints()
         row.icon:SetPoint("LEFT", onToggle and GROUP_ARROW + ARROW_GAP or 0, 0)
         row.icon:SetTexture(KIND_ICONS[kind])
-        row.label:SetText(title:upper() .. TEXT_COUNT .. ns.Color("muted", count))
+        row.label:SetText(ns.Upper(ns.L(title)) .. TEXT_COUNT .. ns.Color("muted", count))
         GroupColor(row, T.accentSoft)
         return GROUP_H
     end,

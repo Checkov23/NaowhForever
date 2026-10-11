@@ -19,19 +19,19 @@ local SEG_LABEL_PAD = 6
 local HIT_LIFT = 4
 local ROUND_HALF = J.C.ROUND_HALF
 
-local TEXT_UNLOCKS = "%d %s for you %s here"
-local TEXT_REWARD, TEXT_REWARDS = "reward", "rewards"
-local TEXT_UNLOCK_ONE, TEXT_UNLOCK_MANY = "unlocks", "unlock"
-local TEXT_NO_REWARDS = "No rewards for you here"
-local TEXT_NOT_MET = "You have not met them yet."
-local TEXT_HERE = "You are here."
-local TEXT_REACHED = "Reached."
-local TEXT_REPUTATION = " (reputation)"
-local TEXT_NOT_MET_YET = "Not met yet"
+local TEXT_UNLOCKS = ns.L("%d %s for you %s here")
+local TEXT_REWARD, TEXT_REWARDS = ns.L("reward"), ns.L("rewards")
+local TEXT_UNLOCK_ONE, TEXT_UNLOCK_MANY = ns.L("unlocks"), ns.L("unlock")
+local TEXT_NO_REWARDS = ns.L("No rewards for you here")
+local TEXT_NOT_MET = ns.L("You have not met them yet.")
+local TEXT_HERE = ns.L("You are here.")
+local TEXT_REACHED = ns.L("Reached.")
+local TEXT_REPUTATION = ns.L(" (reputation)")
+local TEXT_NOT_MET_YET = ns.L("Not met yet")
 local TEXT_FAR = "   %s"
-local TEXT_OF_TO = " / %s to %s"
-local TEXT_REWARD_COUNT = " reward"
-local TEXT_REWARD_COUNTS = " rewards"
+local TEXT_OF_TO = ns.L(" / %s to %s")
+local TEXT_REWARD_COUNT = ns.L(" reward")
+local TEXT_REWARD_COUNTS = ns.L(" rewards")
 
 local function RewardsLine(count)
     if count <= 0 then return TEXT_NO_REWARDS end

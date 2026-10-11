@@ -30,15 +30,15 @@ local BOOK_ORDER = { "PrimaryProfession1", "PrimaryProfession2", "SecondaryProfe
     "SecondaryProfession2", "SecondaryProfession3" }
 local SECONDARY_NAMES = { PROFESSIONS_COOKING or "Cooking", PROFESSIONS_FISHING or "Fishing",
     PROFESSIONS_FIRST_AID or "First Aid" }
-local TEXT_TITLE = TRADE_SKILLS or "Professions"
-local TEXT_PRIMARY = PROFESSIONS_FIRST_PROFESSION or "Primary Profession"
-local TEXT_NO_PRIMARY = PROFESSIONS_MISSING_PROFESSION or "Visit a profession trainer to learn one."
-local TEXT_NOT_LEARNED = "Not learned yet."
-local TEXT_READY = "%s%s|r is ready to learn."
+local TEXT_TITLE = TRADE_SKILLS or ns.L("Professions")
+local TEXT_PRIMARY = PROFESSIONS_FIRST_PROFESSION or ns.L("Primary Profession")
+local TEXT_NO_PRIMARY = PROFESSIONS_MISSING_PROFESSION or ns.L("Visit a profession trainer to learn one.")
+local TEXT_NOT_LEARNED = ns.L("Not learned yet.")
+local TEXT_READY = ns.L("%s%s|r is ready to learn.")
 local TEXT_WHERE = "%s - %s %.1f, %.1f"
-local TEXT_NO_TEACHER = "No teacher recorded for your faction."
-local TEXT_CLICK = "Click for a waypoint.|r"
-local TEXT_WAYPOINT = "Click to set a waypoint."
+local TEXT_NO_TEACHER = ns.L("No teacher recorded for your faction.")
+local TEXT_CLICK = ns.L("Click for a waypoint.|r")
+local TEXT_WAYPOINT = ns.L("Click to set a waypoint.")
 local TEXT_SKILL = "%d/%d%s"
 local TEXT_BONUS = " (+%d)"
 local TEXT_PRIMARY_STRIP = "%s %s\n%s%s|r%s"

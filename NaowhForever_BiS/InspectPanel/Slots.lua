@@ -13,7 +13,7 @@ local GetInventoryItemLink = GetInventoryItemLink
 local GetDetailedItemLevelInfo = C_Item.GetDetailedItemLevelInfo
 
 local MAIN, OFF = 16, 17
-local BARE_TIP = "No enchant"
+local BARE_TIP = ns.L("No enchant")
 local SLOT_BUTTON = "Inspect%sSlot"
 local NO_ITEM = IP.NO_ITEM
 local ROUND = 0.5

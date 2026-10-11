@@ -31,12 +31,12 @@ local BAR_LAYER = 1
 local BAR_DROP = Parts.CARD_DROP
 local STRIPED = 1
 local TITLE_RGB = C.TITLE_RGB
-local YOU_LINE = "You: %s"
+local YOU_LINE = ns.L("You: %s")
 local TOOLTIP_LINE = "GameTooltipTextLeft"
 local BLANK = " "
-local TEXT_YOU = "YOU"
-local TEXT_WEIGHTS = "Stat Weights"
-local TEXT_WEIGHTS_HINT = "What each stat is worth to your spec: change them as you like."
+local TEXT_YOU = ns.L("YOU")
+local TEXT_WEIGHTS = ns.L("Stat Weights")
+local TEXT_WEIGHTS_HINT = ns.L("What each stat is worth to your spec: change them as you like.")
 
 local NAME = Worth.NAME
 

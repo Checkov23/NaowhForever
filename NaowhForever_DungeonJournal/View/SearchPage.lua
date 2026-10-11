@@ -7,8 +7,8 @@ local ViewMixin = J.View.Mixin
 local SECTION_SPACE = J.Style.SECTION_SPACE
 
 local TEXT_OPEN = "Open"
-local TEXT_SEARCHING = "Searching..."
-local TEXT_NO_MATCH = "Nothing in the journal matches %s."
+local TEXT_SEARCHING = ns.L("Searching...")
+local TEXT_NO_MATCH = ns.L("Nothing in the journal matches %s.")
 
 local EMPTY = {}
 local lowerNames = {}

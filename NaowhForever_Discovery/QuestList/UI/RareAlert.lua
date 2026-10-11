@@ -18,8 +18,8 @@ local HOLDER_NAME, CARD_NAME = "NaowhForeverRareAlertHolder", "NaowhForeverRareA
 local MOVER_LABEL, MOVER_PAGE, MOVER_FEATURE = "Rare Alert", "Discovery/Rares", "Discovery/Rares:rareAlert"
 local RARE = { rare = true, rareelite = true }
 local LOOK_PREFIX = "^rareAlert"
-local TEXT_RARE = "Rare"
-local TEXT_CLOSE = "Right-click to close it."
+local TEXT_RARE = ns.L("Rare")
+local TEXT_CLOSE = ns.L("Right-click to close it.")
 
 local alert, holder
 local shownNpc, shownGuid

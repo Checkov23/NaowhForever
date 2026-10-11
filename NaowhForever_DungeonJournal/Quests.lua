@@ -20,18 +20,18 @@ local BOTH = "B"
 local SIDE_OF = { A = "Alliance", H = "Horde" }
 local PARTY = { "party1", "party2", "party3", "party4" }
 
-local TEXT_QUEST_GIVER = " (quest giver)"
+local TEXT_QUEST_GIVER = ns.L(" (quest giver)")
 local TEXT_SPOT = " (%s)"
-local TEXT_ENTRANCE = " (dungeon entrance)"
-local TEXT_TURN_IN = " (turn in: %s)"
-local TEXT_REQUIRES = "Requires%s: %s (%d/%d)"
-local TEXT_IN_LOG = " (in your log)"
-local TEXT_NO_START = "Where %s starts is not known."
-local TEXT_NO_ROUTE = "The game has no route for %s, and its quest giver's spot is not known."
-local TEXT_TRACKING = "Tracking %s. Press L to see it in your quest log."
-local TEXT_ALL_DONE = "Every quest here for you is handed in."
-local TEXT_NOT_YET = "None to pick up right now: the rest are not for your level yet."
-local TEXT_NONE_HERE = "None for you here. The rest: %s."
+local TEXT_ENTRANCE = ns.L(" (dungeon entrance)")
+local TEXT_TURN_IN = ns.L(" (turn in: %s)")
+local TEXT_REQUIRES = ns.L("Requires%s: %s (%d/%d)")
+local TEXT_IN_LOG = ns.L(" (in your log)")
+local TEXT_NO_START = ns.L("Where %s starts is not known.")
+local TEXT_NO_ROUTE = ns.L("The game has no route for %s, and its quest giver's spot is not known.")
+local TEXT_TRACKING = ns.L("Tracking %s. Press L to see it in your quest log.")
+local TEXT_ALL_DONE = ns.L("Every quest here for you is handed in.")
+local TEXT_NOT_YET = ns.L("None to pick up right now: the rest are not for your level yet.")
+local TEXT_NONE_HERE = ns.L("None for you here. The rest: %s.")
 local TEXT_COUNT = "%d %s"
 local TEXT_JOIN = ", "
 
@@ -440,7 +440,9 @@ function Q.NoneWhy(data)
     local faction = UnitFactionGroup("player")
     local other = CountOthers(quests, faction)
     wipe(noneParts)
-    if other > 0 then noneParts[1] = TEXT_COUNT:format(other, faction == "Horde" and "Alliance" or "Horde") end
+    if other > 0 then
+        noneParts[1] = TEXT_COUNT:format(other, faction == "Horde" and (FACTION_ALLIANCE or "Alliance") or (FACTION_HORDE or "Horde"))
+    end
     for _, class in ipairs(noneOrder) do
         noneParts[#noneParts + 1] = TEXT_COUNT:format(noneClasses[class], LOCALIZED_CLASS_NAMES_MALE[class] or class)
     end

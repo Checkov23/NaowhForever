@@ -6,7 +6,7 @@ ns.ThreatMeter.C = {
     MIN_WIDTH = 160, MIN_HEIGHT = 50, MAX_WIDTH = 520, MAX_HEIGHT = 700,
     MIN_BAR = 12, MAX_BAR = 72, MAX_SPACING = 16, MIN_FONT = 8, MAX_FONT = 24,
     INSET = 8, FOOTER = 24, HEADER = 48,
-    LINE_NAME = "Aggro Line",
+    LINE_NAME = ns.L("Aggro Line"),
     PERCENT = 100,
     ROUND = 0.5,
     GRIP_UP = "Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up",

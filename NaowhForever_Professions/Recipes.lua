@@ -7,8 +7,8 @@ local W = P.State
 local Links = P.Links
 
 local NO_ITEM = 0
-local TEXT_CRAFT_FAILED = "Could not craft: "
-local TEXT_ITEM = "Item "
+local TEXT_CRAFT_FAILED = ns.L("Could not craft: ")
+local TEXT_ITEM = ns.L("Item ")
 
 local EMPTY = {}
 local prof = {}

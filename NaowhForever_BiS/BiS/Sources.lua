@@ -7,17 +7,17 @@ local Shared = ns.Shared
 local Parts, Places = Shared.Parts, Shared.Places
 
 local FACTION_TABS = { "reputation", "pvp" }
-local TEXT_BACK = "Back to BiS List"
+local TEXT_BACK = ns.L("Back to BiS List")
 local HINTS = {
-    dungeon = "Click: open it in the Dungeon Journal",
-    quest = "Click: show the quest",
-    zone = "Click: show it on your map",
-    wowhead = "Click: copy its Wowhead link",
+    dungeon = ns.L("Click: open it in the Dungeon Journal"),
+    quest = ns.L("Click: show the quest"),
+    zone = ns.L("Click: show it on your map"),
+    wowhead = ns.L("Click: copy its Wowhead link"),
 }
-local TEXT_FACTION_HINT = "Click: open %s in the Dungeon Journal"
-local TEXT_NPC_HINT = "Click: a waypoint on %s"
-local TEXT_RECIPE_HINT = "Click: open the recipe"
-local TEXT_RECIPE_COPY_HINT = "Click: copy its recipe's Wowhead link"
+local TEXT_FACTION_HINT = ns.L("Click: open %s in the Dungeon Journal")
+local TEXT_NPC_HINT = ns.L("Click: a waypoint on %s")
+local TEXT_RECIPE_HINT = ns.L("Click: open the recipe")
+local TEXT_RECIPE_COPY_HINT = ns.L("Click: copy its recipe's Wowhead link")
 local EMPTY = {}
 
 local kinds, targets = {}, {}

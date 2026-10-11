@@ -6,10 +6,10 @@ local RXP_ADDON = "RXPGuides"
 local NAME_PREFIX = "NaowhForever:"
 local AUTHOR = "Naowh Forever"
 local DEFAULT_KEY, DEFAULT_NAME = "default", "Naowh"
-local CURRENT_KEY, CURRENT_NAME = "current", "Naowh (current)"
+local CURRENT_KEY, CURRENT_NAME = "current", ns.L("Naowh (current)")
 local RXP_DEFAULT = "Default"
-local TEXT_RXP_DEFAULT = "RestedXP (default)"
-local TEXT_CURRENT = "Current Theme"
+local TEXT_RXP_DEFAULT = ns.L("RestedXP (default)")
+local TEXT_CURRENT = ns.L("Current Theme")
 
 local RXP_TEXTURES = "Interface/AddOns/RXPGuides/Textures/"
 local TEXTURES = RXP_TEXTURES .. "DarkMode/"

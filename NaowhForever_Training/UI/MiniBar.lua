@@ -20,10 +20,10 @@ local COST_DROP = 8
 local GOLD_DROP = 9
 local BAR_H = 4
 local FONT_LABEL, FONT_GOLD, FONT_COST = 11, 13, 15
-local TEXT_VISIT_AT, TEXT_TRAIN_NOW, TEXT_VISIT = "NEXT VISIT, LEVEL ", "TRAIN NOW", "NEXT VISIT"
-local TEXT_ONE_SPELL, TEXT_SPELLS = " spell", " spells"
-local TEXT_NOTHING_LEFT = "Nothing left to learn"
-local TEXT_CLOSE, TEXT_OPEN = "x", "Open"
+local TEXT_VISIT_AT, TEXT_TRAIN_NOW, TEXT_VISIT = ns.L("NEXT VISIT, LEVEL "), ns.L("TRAIN NOW"), ns.L("NEXT VISIT")
+local TEXT_ONE_SPELL, TEXT_SPELLS = ns.L(" spell"), ns.L(" spells")
+local TEXT_NOTHING_LEFT = ns.L("Nothing left to learn")
+local TEXT_CLOSE, TEXT_OPEN = "x", ns.L("Open")
 
 local mini
 local miniCost = 0

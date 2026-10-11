@@ -12,23 +12,23 @@ local Style = P.Style
 local LABEL_W, VALUE_W, GAP = 58, 96, 8
 local NOTE_GAP = Style.NOTE_GAP
 local TEXT_NONE = "-|r"
-local TEXT_BUY, TEXT_SELL, TEXT_PROFIT = "Buy for:", "Sell for:", "Profit:"
-local TEXT_UNPRICED = "+ %d unpriced"
-local TEXT_NOT_LISTED = "not listed at the last scan"
-local TEXT_FOR = "for %d"
-local TEXT_NO_PRICES = "some reagents have no price"
-local TEXT_AFTER_CUT = "after the 5% cut"
-local TIP_TITLE = "Crafting Profit"
+local TEXT_BUY, TEXT_SELL, TEXT_PROFIT = ns.L("Buy for:"), ns.L("Sell for:"), ns.L("Profit:")
+local TEXT_UNPRICED = ns.L("+ %d unpriced")
+local TEXT_NOT_LISTED = ns.L("not listed at the last scan")
+local TEXT_FOR = ns.L("for %d")
+local TEXT_NO_PRICES = ns.L("some reagents have no price")
+local TEXT_AFTER_CUT = ns.L("after the 5% cut")
+local TIP_TITLE = ns.L("Crafting Profit")
 local TIP_PART = "%s x%d"
-local TIP_HAVE = "you have it"
-local TIP_VENDOR, TIP_AH = "  (vendor)", "  (AH)"
-local TIP_NO_PRICE = "no price"
-local TIP_TO_BUY, TIP_MATERIALS = "Materials to buy", "Materials"
-local TIP_SELLS = "Sells for, less 5% cut"
-local TIP_HELP = "Vendor prices are the ones last seen at a merchant; the rest are the "
+local TIP_HAVE = ns.L("you have it")
+local TIP_VENDOR, TIP_AH = ns.L("  (vendor)"), "  (AH)"
+local TIP_NO_PRICE = ns.L("no price")
+local TIP_TO_BUY, TIP_MATERIALS = ns.L("Materials to buy"), ns.L("Materials")
+local TIP_SELLS = ns.L("Sells for, less 5% cut")
+local TIP_HELP = ns.L("Vendor prices are the ones last seen at a merchant; the rest are the "
     .. "lowest buyouts at your last auction house scan. Uncheck a reagent you already have "
-    .. "to leave it out of the cost."
-local TEXT_ITEM = "Item "
+    .. "to leave it out of the cost.")
+local TEXT_ITEM = ns.L("Item ")
 
 local Lines = {}
 P.Lines = Lines

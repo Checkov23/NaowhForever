@@ -13,8 +13,8 @@ local SCORE_RIGHT, ILVL_RIGHT, STATE_RIGHT = St.RAID_SCORE_RIGHT, St.RAID_ILVL_R
 local NO_EVENTS = {}
 
 local VIEW_TITLES = { gear = "GEAR", talents = "TALENTS", stats = "STATS" }
-local STATS_TIP = "White: exact, from their Naowh Forever. Grey: added up from their gear."
-local NO_MATCH = "No one in the raid matches your filters."
+local STATS_TIP = ns.L("White: exact, from their Naowh Forever. Grey: added up from their gear.")
+local NO_MATCH = ns.L("No one in the raid matches your filters.")
 
 local kinds = UI.RaidKinds
 local Passes, SortValue, SORTS, ByScore = UI.Passes, Order.SortValue, Order.SORTS, Order.ByScore

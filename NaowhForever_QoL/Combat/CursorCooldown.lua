@@ -22,7 +22,7 @@ local TEXT_NUDGE = 1
 local TIME_UNITS = 2
 local ROUND = ns.QoLConstants.ROUND
 local SIZE_RANGE, TIME_RANGE = { 24, 72, 1 }, { 0.5, 4, 0.25 }
-local SUMMARY = "%d px, %.2gs"
+local SUMMARY = ns.L("%d px, %.2gs")
 
 local COOLDOWN_ERRORS = {}
 for _, name in ipairs({ "ERR_SPELL_COOLDOWN", "ERR_ABILITY_COOLDOWN", "ERR_ITEM_COOLDOWN" }) do

@@ -13,14 +13,14 @@ local FORMAT_NAME = "%%%d?%$?s"
 local MAGIC = "[%^%$%(%)%%%.%[%]%*%+%-%?]"
 local CAPTURE = "(.+)"
 
-local TEXT_BUSY = "Someone was busy for %s; sharing it again after the rest."
-local TEXT_NO_GROUP = "Stopped sharing: you are not in a group."
-local TEXT_DONE = "Done sharing."
-local TEXT_AFTER_COMBAT = "Sharing carries on after combat."
-local TEXT_JOIN = "Join a group to share quests."
-local TEXT_NONE = "None of your quests for this dungeon can be shared."
-local TEXT_ALREADY = "Those quests are being shared already."
-local TEXT_SHARING = "Sharing %s. Each one waits until your group has answered the one before."
+local TEXT_BUSY = ns.L("Someone was busy for %s; sharing it again after the rest.")
+local TEXT_NO_GROUP = ns.L("Stopped sharing: you are not in a group.")
+local TEXT_DONE = ns.L("Done sharing.")
+local TEXT_AFTER_COMBAT = ns.L("Sharing carries on after combat.")
+local TEXT_JOIN = ns.L("Join a group to share quests.")
+local TEXT_NONE = ns.L("None of your quests for this dungeon can be shared.")
+local TEXT_ALREADY = ns.L("Those quests are being shared already.")
+local TEXT_SHARING = ns.L("Sharing %s. Each one waits until your group has answered the one before.")
 local TEXT_LIST = ", "
 
 local EMPTY = {}

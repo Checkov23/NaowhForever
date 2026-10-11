@@ -28,16 +28,16 @@ local LIST_TEXT_X, LIST_TEXT_RIGHT = 10, 24
 local LIST_ARROW, LIST_ARROW_X = 12, 8
 local LIST_ARROW_TURN = -math.pi / 2
 local PAGE = "BiS List"
-local TEXT_TITLE = "BiS List"
-local TEXT_ABOUT = "Your best gear for every slot, where it drops, and where to go next."
-local TEXT_WEIGHTS = "Stat Weights"
-local TEXT_WEIGHTS_TIP = "What each stat is worth to your spec: the upgrade percents and enchants come from them. Set your own."
-local TEXT_EXPORT, TEXT_EXPORT_TIP = "Export this list", "A string to share it with."
-local TEXT_IMPORT, TEXT_IMPORT_TIP = "Import a list", "Paste a shared list: it is added as a new list."
-local TEXT_RANKED_FOR = "Ranked for %s. Each spec keeps its own picks on this list."
-local TEXT_UPDATED = "Rankings updated "
-local TEXT_QUESTS, TEXT_QUESTS_COUNT = "Quests", "Quests (%d)"
-local TEXT_TURNED_ON = "BiS List turned on. Turn it off in its settings page."
+local TEXT_TITLE = ns.L("BiS List")
+local TEXT_ABOUT = ns.L("Your best gear for every slot, where it drops, and where to go next.")
+local TEXT_WEIGHTS = ns.L("Stat Weights")
+local TEXT_WEIGHTS_TIP = ns.L("What each stat is worth to your spec: the upgrade percents and enchants come from them. Set your own.")
+local TEXT_EXPORT, TEXT_EXPORT_TIP = ns.L("Export this list"), ns.L("A string to share it with.")
+local TEXT_IMPORT, TEXT_IMPORT_TIP = ns.L("Import a list"), ns.L("Paste a shared list: it is added as a new list.")
+local TEXT_RANKED_FOR = ns.L("Ranked for %s. Each spec keeps its own picks on this list.")
+local TEXT_UPDATED = ns.L("Rankings updated ")
+local TEXT_QUESTS, TEXT_QUESTS_COUNT = ns.L("Quests"), ns.L("Quests (%d)")
+local TEXT_TURNED_ON = ns.L("BiS List turned on. Turn it off in its settings page.")
 local SPEC_SHORT = "^(.-)%s+%S+$"
 local PAGES = {
     { key = "list", label = "Your List", tip = "Your picks for every slot, and where to run next." },
@@ -51,6 +51,12 @@ local page = "list"
 local questsLabels = {}
 local awayFor
 local mapWatched
+
+local function DataDate(text)
+    local day, month, year = tostring(text or ""):match("^(%d+) (%a+) (%d+)$")
+    if not day then return text end
+    return ns.L("%d %s %d"):format(tonumber(day), ns.L(month), tonumber(year))
+end
 
 local function Opacity()
     return math.floor((S.Get("bisWindowAlpha") or 1) * PERCENT + ROUND)
@@ -98,7 +104,7 @@ end
 
 local function PaintUpdated(spec)
     local note = window.updated
-    note.text:SetText(spec and spec.updated and TEXT_UPDATED .. spec.updated or "")
+    note.text:SetText(spec and spec.updated and TEXT_UPDATED .. DataDate(spec.updated) or "")
     note:SetWidth(math.max(1, math.ceil(note.text:GetStringWidth())))
 end
 

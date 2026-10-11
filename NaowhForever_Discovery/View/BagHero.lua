@@ -15,13 +15,13 @@ local COUNT_TOP = 26
 local ABOUT_RIGHT = 80
 local REWARD = 36
 local REWARD_INSET = 16
-local TEXT_KICKER = "SLEEPING BAG"
+local TEXT_KICKER = ns.L("SLEEPING BAG")
 local TEXT_COUNT = "%d / %d"
-local TEXT_NEXT = "Next: %s"
-local TEXT_HAVE_BAG = "You have the Cozy Sleeping Bag"
-local TEXT_ABOUT = "A hidden quest chain across Azeroth: click each thing in the world in turn. It gives a lot "
-    .. "of experience, and ends in the Cozy Sleeping Bag; rest in it for a bonus to experience."
-local TEXT_NEEDS_LEVEL = " Needs level %d."
+local TEXT_NEXT = ns.L("Next: %s")
+local TEXT_HAVE_BAG = ns.L("You have the Cozy Sleeping Bag")
+local TEXT_ABOUT = ns.L("A hidden quest chain across Azeroth: click each thing in the world in turn. It gives a lot "
+    .. "of experience, and ends in the Cozy Sleeping Bag; rest in it for a bonus to experience.")
+local TEXT_NEEDS_LEVEL = ns.L(" Needs level %d.")
 
 local function NewReward(hero)
     local item = ns.SleepingBag.item

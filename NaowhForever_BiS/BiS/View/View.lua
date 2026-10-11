@@ -10,29 +10,29 @@ local St = B.Style
 local OFF_HAND = B.C.OFF_HAND
 local SECTION_SPACE = St.SECTION_SPACE
 local JOURNAL = "NaowhForever_DungeonJournal"
-local TEXT_TURN_ON_JOURNAL = "Turn On Dungeon Journal"
-local TEXT_RUN_NEXT = "Run next"
-local TEXT_RUN_NEXT_OFF = "Turn on the Dungeon Journal for each dungeon's levels and quests here."
-local TEXT_OFF_HAND_IDLE = "Unused while your main hand's BiS is a two-hander."
-local TEXT_YOUR_PICKS = "Your picks"
-local TEXT_NO_PICKS = "Nothing picked yet. Click an item below: the first is your BiS."
-local TEXT_RANKED = "Ranked"
-local TEXT_RANKED_FOR = "Ranked for "
-local TEXT_NOTHING_RANKED = "Nothing ranked for this slot."
-local TEXT_DROPS = "Dungeon drops"
-local TEXT_DROPS_NEAR = "Dungeon drops near your level"
-local TEXT_DROPS_OFF = "Turn on the Dungeon Journal to see what drops in dungeons for this slot."
-local TEXT_NEAR_LINK, TEXT_ALL_LINK = "Near My Level", "Show All"
-local TEXT_NO_DROPS = "No dungeon drops for this slot that you can use."
-local TEXT_NO_DROPS_NEAR = "No dungeon drops for this slot within 10 levels of yours."
-local TEXT_QUESTS = "Quests for your BiS"
-local TEXT_QUESTS_OFF = "Turn on the Dungeon Journal to see the quests that reward your picks, "
-    .. "with their chains and waypoints."
+local TEXT_TURN_ON_JOURNAL = ns.L("Turn On Dungeon Journal")
+local TEXT_RUN_NEXT = ns.L("Run next")
+local TEXT_RUN_NEXT_OFF = ns.L("Turn on the Dungeon Journal for each dungeon's levels and quests here.")
+local TEXT_OFF_HAND_IDLE = ns.L("Unused while your main hand's BiS is a two-hander.")
+local TEXT_YOUR_PICKS = ns.L("Your picks")
+local TEXT_NO_PICKS = ns.L("Nothing picked yet. Click an item below: the first is your BiS.")
+local TEXT_RANKED = ns.L("Ranked")
+local TEXT_RANKED_FOR = ns.L("Ranked for ")
+local TEXT_NOTHING_RANKED = ns.L("Nothing ranked for this slot.")
+local TEXT_DROPS = ns.L("Dungeon drops")
+local TEXT_DROPS_NEAR = ns.L("Dungeon drops near your level")
+local TEXT_DROPS_OFF = ns.L("Turn on the Dungeon Journal to see what drops in dungeons for this slot.")
+local TEXT_NEAR_LINK, TEXT_ALL_LINK = ns.L("Near My Level"), "Show All"
+local TEXT_NO_DROPS = ns.L("No dungeon drops for this slot that you can use.")
+local TEXT_NO_DROPS_NEAR = ns.L("No dungeon drops for this slot within 10 levels of yours.")
+local TEXT_QUESTS = ns.L("Quests for your BiS")
+local TEXT_QUESTS_OFF = ns.L("Turn on the Dungeon Journal to see the quests that reward your picks, "
+    .. "with their chains and waypoints.")
 local EVENTS = { "PLAYER_EQUIPMENT_CHANGED", "BAG_UPDATE_DELAYED", "PLAYER_LEVEL_UP" }
 local GROUPS = {
-    { title = "Armor", slots = { 1, 2, 3, 15, 5, 9, 10, 6, 7, 8 } },
-    { title = "Jewelry", slots = { 11, 12, 13, 14 } },
-    { title = "Weapons", slots = { 16, 17, 18 } },
+    { title = ns.L("Armor"), slots = { 1, 2, 3, 15, 5, 9, 10, 6, 7, 8 } },
+    { title = ns.L("Jewelry"), slots = { 11, 12, 13, 14 } },
+    { title = ns.L("Weapons"), slots = { 16, 17, 18 } },
 }
 local NOTHING_LEFT = {
     get = "Every BiS on your list is yours.",
@@ -64,7 +64,7 @@ local function Memo(format)
     end
 end
 
-local Yours = Memo("%d of %d yours")
+local Yours = Memo(ns.L("%d of %d yours"))
 
 local function ToggleDrops(view)
     view.allDrops = not view.allDrops

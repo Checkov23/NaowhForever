@@ -39,57 +39,57 @@ local EMPTY_X, EMPTY_DROP = 14, 50
 local EMPTY_SPACING = 2
 local SEND_W, CLEAR_W = 150, 80
 local TOTAL_X, TOTAL_GAP = 2, 8
-local TEXT_ADD, TEXT_REMOVE = "Add to Order", "Remove"
-local TEXT_CRAFTS = "Crafts:"
-local TEXT_YOUR_MATERIALS = "Your materials"
-local TEXT_INVITE = "Invite"
-local TEXT_ORDER_FOR = "Order for"
+local TEXT_ADD, TEXT_REMOVE = ns.L("Add to Order"), ns.L("Remove")
+local TEXT_CRAFTS = ns.L("Crafts:")
+local TEXT_YOUR_MATERIALS = ns.L("Your materials")
+local TEXT_INVITE = ns.L("Invite")
+local TEXT_ORDER_FOR = ns.L("Order for")
 local TEXT_ROW = "%dx %s"
-local TEXT_NO_MATERIALS = "No materials from you"
-local TEXT_ALL_MATERIALS = "You bring all materials"
-local TEXT_SOME_MATERIALS = "You bring %d of %d materials"
-local TEXT_EMPTY = "Choose a recipe, set how many crafts, tick the materials you bring and click Add to Order."
-local TEXT_TIPS = "Tips: %s"
-local TEXT_ASK_PARTY, TEXT_ASK_INSTANCE, TEXT_ASK_WHISPER = "Ask in Party", "Ask in Instance", "Ask by Whisper"
-local TEXT_CLEAR = "Clear"
-local TEXT_THEIRS = "Their materials:"
-local TEXT_UNPRICED = "+ %d unpriced"
-local TEXT_BRING_ALL = "you bring them all"
-local TEXT_YOUR_TIP = "Your tip:"
-local TEXT_SUGGESTED = "suggested %s"
-local TEXT_SUGGESTED_TIP = "Suggested tip:"
-local TEXT_SHARE = "their materials + %d%%"
-local TEXT_SCAN_FIRST = "scan the auction house first"
-local TIP_ADD_HELP = "Puts this recipe on the order on the right, with the "
+local TEXT_NO_MATERIALS = ns.L("No materials from you")
+local TEXT_ALL_MATERIALS = ns.L("You bring all materials")
+local TEXT_SOME_MATERIALS = ns.L("You bring %d of %d materials")
+local TEXT_EMPTY = ns.L("Choose a recipe, set how many crafts, tick the materials you bring and click Add to Order.")
+local TEXT_TIPS = ns.L("Tips: %s")
+local TEXT_ASK_PARTY, TEXT_ASK_INSTANCE, TEXT_ASK_WHISPER = ns.L("Ask in Party"), ns.L("Ask in Instance"), ns.L("Ask by Whisper")
+local TEXT_CLEAR = ns.L("Clear")
+local TEXT_THEIRS = ns.L("Their materials:")
+local TEXT_UNPRICED = ns.L("+ %d unpriced")
+local TEXT_BRING_ALL = ns.L("you bring them all")
+local TEXT_YOUR_TIP = ns.L("Your tip:")
+local TEXT_SUGGESTED = ns.L("suggested %s")
+local TEXT_SUGGESTED_TIP = ns.L("Suggested tip:")
+local TEXT_SHARE = ns.L("their materials + %d%%")
+local TEXT_SCAN_FIRST = ns.L("scan the auction house first")
+local TIP_ADD_HELP = ns.L("Puts this recipe on the order on the right, with the "
     .. "number of crafts and the materials you bring. Changes made here after adding it "
-    .. "change the order too. Up to %d recipes per order."
-local TIP_CRAFTS = "Crafts"
-local TIP_CRAFTS_HELP = "How many crafts to ask for."
-local TIP_INVITE_HELP = "Invites the crafter to your group, with a whisper saying "
+    .. "change the order too. Up to %d recipes per order.")
+local TIP_CRAFTS = ns.L("Crafts")
+local TIP_CRAFTS_HELP = ns.L("How many crafts to ask for.")
+local TIP_INVITE_HELP = ns.L("Invites the crafter to your group, with a whisper saying "
     .. "it is for crafts from their profession. Once they are in your "
     .. "party, Ask sends the order in party chat instead of whispering it. Greyed out once "
-    .. "they are in your group, or while you are in a group and not its leader or an assistant."
-local TIP_REMOVE_HELP = "Takes this craft off the order."
-local TIP_TIP = "Tip"
-local TIP_TIP_HELP = "What you pay the crafter for this craft, sent with the "
+    .. "they are in your group, or while you are in a group and not its leader or an assistant.")
+local TIP_REMOVE_HELP = ns.L("Takes this craft off the order.")
+local TIP_TIP = ns.L("Tip")
+local TIP_TIP_HELP = ns.L("What you pay the crafter for this craft, sent with the "
     .. "whisper. Filled in with the suggested tip; type your own as 2g 50s, 75s or 2.5 "
-    .. "(gold). Empty it to go back to the suggestion."
-local TIP_ASK = "Ask for the Order"
-local TIP_ASK_HELP = "Sends the crafter one message per craft: how "
+    .. "(gold). Empty it to go back to the suggestion.")
+local TIP_ASK = ns.L("Ask for the Order")
+local TIP_ASK_HELP = ns.L("Sends the crafter one message per craft: how "
     .. "many you want, the materials you bring and your tip. In party chat, starting with "
     .. "their name, when they are in your party; else as a whisper (also in a raid). The "
-    .. "order is emptied once sent."
-local TIP_CLEAR_HELP = "Empties the order without sending it."
-local TIP_TITLE = "Craft Order"
+    .. "order is emptied once sent.")
+local TIP_CLEAR_HELP = ns.L("Empties the order without sending it.")
+local TIP_TITLE = ns.L("Craft Order")
 local TIP_PART = "%s x%d"
-local TIP_YOU_BRING = "you bring it"
-local TIP_OF_THEIRS = "  (%d of theirs)"
-local TIP_NO_PRICE = "no price"
-local TIP_HELP = "The suggested tip pays back the crafter's materials plus %d%% of what "
+local TIP_YOU_BRING = ns.L("you bring it")
+local TIP_OF_THEIRS = ns.L("  (%d of theirs)")
+local TIP_NO_PRICE = ns.L("no price")
+local TIP_HELP = ns.L("The suggested tip pays back the crafter's materials plus %d%% of what "
     .. "the items sell for (of all the materials, for a recipe that makes no item), "
     .. "rounded, at least 1s. Set a tip of your own in the order list on the right. "
-    .. "Change the share in the Professions settings."
-local TEXT_ITEM = "Item "
+    .. "Change the share in the Professions settings.")
+local TEXT_ITEM = ns.L("Item ")
 
 local win
 

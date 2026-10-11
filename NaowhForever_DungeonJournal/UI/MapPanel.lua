@@ -19,12 +19,12 @@ local SCREEN_ROOM = 8
 local QUEST_LOG = "questLogOpen"
 local QUEST_LOG_SHOWN, QUEST_LOG_FOLDED = "1", "0"
 
-local TEXT_TITLE = "DUNGEON JOURNAL"
-local TEXT_OTHER_HALF = "Other half"
-local TEXT_OTHER_FACTION = "Other faction"
-local TEXT_BACK = "Back"
-local TEXT_MY_CLASS = "My class"
-local TEXT_ALL_CLASSES = "All classes"
+local TEXT_TITLE = ns.L("DUNGEON JOURNAL")
+local TEXT_OTHER_HALF = ns.L("Other half")
+local TEXT_OTHER_FACTION = ns.L("Other faction")
+local TEXT_BACK = ns.L("Back")
+local TEXT_MY_CLASS = ns.L("My class")
+local TEXT_ALL_CLASSES = ns.L("All classes")
 
 local panel, view
 local hooked, waitingForMap = false, false

@@ -4,9 +4,9 @@ local ns = _G.NaowhForever
 local M = ns.Macros
 local SCRIPT = M.C.SCRIPT_COMMANDS
 
-local TEXT_NOT_A_COMMAND = "Line %d does not start with / or #."
-local TEXT_UNKNOWN = "Line %d: %s is not a command the game knows."
-local TEXT_BRACKETS = "Line %d has %d [ but %d ]."
+local TEXT_NOT_A_COMMAND = ns.L("Line %d does not start with / or #.")
+local TEXT_UNKNOWN = ns.L("Line %d: %s is not a command the game knows.")
+local TEXT_BRACKETS = ns.L("Line %d has %d [ but %d ].")
 
 local known
 local own, addon = {}, {}

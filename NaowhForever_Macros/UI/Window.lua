@@ -31,21 +31,21 @@ local SAVE_W, NEW_W, TOOL_BUTTON_GAP = 120, 100, 6
 local PERCENT = 100
 local ROUND = 0.5
 
-local TEXT_NEW_MACRO = "New Macro"
-local TEXT_NEW_TIP = "Write a macro: a name and its text, kept in the Library under your class."
-local TEXT_SAVE_MACRO = "Save a Macro"
-local TEXT_SAVE_TIP = "Keeps a copy of one of your game macros in the Library under your class, for every character of that class."
-local TEXT_EXPORT_TIP = "Your game macros, not the Smart Macros, as one string to share."
-local TEXT_IMPORT_TIP = "Add macros someone shared with you."
-local TEXT_NOTHING_TO_EXPORT = "You have no macros to export yet."
-local TEXT_YOUR_MACROS = "Your macros"
-local TEXT_SMART_NOTE = "They keep themselves up to date from your bags and gear"
-local TEXT_SMART_HOW = "Each one is an account macro. Put it on a bar once and it keeps itself current: loot a "
+local TEXT_NEW_MACRO = ns.L("New Macro")
+local TEXT_NEW_TIP = ns.L("Write a macro: a name and its text, kept in the Library under your class.")
+local TEXT_SAVE_MACRO = ns.L("Save a Macro")
+local TEXT_SAVE_TIP = ns.L("Keeps a copy of one of your game macros in the Library under your class, for every character of that class.")
+local TEXT_EXPORT_TIP = ns.L("Your game macros, not the Smart Macros, as one string to share.")
+local TEXT_IMPORT_TIP = ns.L("Add macros someone shared with you.")
+local TEXT_NOTHING_TO_EXPORT = ns.L("You have no macros to export yet.")
+local TEXT_YOUR_MACROS = ns.L("Your macros")
+local TEXT_SMART_NOTE = ns.L("They keep themselves up to date from your bags and gear")
+local TEXT_SMART_HOW = ns.L("Each one is an account macro. Put it on a bar once and it keeps itself current: loot a "
     .. "better potion, conjure fresh food or pick up bandages and the macro is rewritten to use the best "
     .. "you carry.\n\nThe game does not let macros change mid-fight, so a change during combat waits "
-    .. "until it ends."
-local TEXT_FOOTER = "Smart Macros are account macros, for every character. A Library macro you add is for this character only."
-local TEXT_ACCOUNT = "Account "
+    .. "until it ends.")
+local TEXT_FOOTER = ns.L("Smart Macros are account macros, for every character. A Library macro you add is for this character only.")
+local TEXT_ACCOUNT = ns.L("Account ")
 
 local TABS = {
     { key = "smart", label = "Smart Macros", tip = "Macros that keep themselves up to date." },
@@ -196,7 +196,7 @@ local function BuildCards()
 end
 
 local function BuildSmartSide(sideArea)
-    Section(sideArea, "How They Work")
+    Section(sideArea, ns.L("How They Work"))
     window.smartSummary = P.Text(sideArea, TEXT_SIZE)
     window.smartSummary:SetPoint("TOPLEFT", PAD, -(SECTION_H + SIDE_TOP))
     window.smartSummary:SetPoint("RIGHT", -PAD, 0)

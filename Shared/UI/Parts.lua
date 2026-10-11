@@ -14,8 +14,8 @@ local UNDERLINE_DROP = 1
 local PILL_PAD, PILL_FILL = 4, St.TAB_FILL
 local WORN_W, WORN_OUT, WORN_END = 2, 2, 4
 local TIP_TITLE = 1
-local ID_LABELS = { item = "Item ID", spell = "Spell ID", quest = "Quest ID", npc = "NPC ID", object = "Object ID" }
-local TEXT_ID = "ID"
+local ID_LABELS = { item = ns.L("Item ID"), spell = ns.L("Spell ID"), quest = ns.L("Quest ID"), npc = ns.L("NPC ID"), object = ns.L("Object ID") }
+local TEXT_ID = ns.L("ID")
 local COPY_FIELD = "url"
 
 local function Tip(owner, anchor, x, y)

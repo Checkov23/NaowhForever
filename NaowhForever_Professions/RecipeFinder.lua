@@ -16,41 +16,42 @@ local HORDE, ALLIANCE, ANY = "H", "A", "-"
 local NPC_NAME, NPC_FACTION, NPC_MAP, NPC_X, NPC_Y, NPC_PRICE = C.NPC_NAME, C.NPC_FACTION, C.NPC_MAP, C.NPC_X,
     C.NPC_Y, C.NPC_PRICE
 local DROP_MOB, DROP_AREA, DROP_MIN, DROP_MAX, DROP_CHANCE = 1, 2, 3, 4, 5
-local SOURCE_TAG = { trainer = "Trainer", teacher = "Trainer", vendor = "Vendor", drop = "Drop",
-    quest = "Quest", unknown = "?" }
-local DEFAULT_PROFESSION = "First Aid"
+local SOURCE_TAG = { trainer = ns.L("Trainer"), teacher = ns.L("Trainer"), vendor = ns.L("Vendor"), drop = ns.L("Drop"),
+    quest = ns.L("Quest"), unknown = "?" }
+local DEFAULT_PROFESSION = ns.L("First Aid")
 local TEXT_FREE = "free"
 local TEXT_UNKNOWN = "?"
-local TEXT_MANUAL = "its manual"
+local TEXT_MANUAL = ns.L("its manual")
 local TEXT_NPC = "%s - %s %.1f, %.1f%s"
 local TEXT_RANK_BOOK = "Your cap is %d.\nFirst read %s (needs skill %d):"
+local TEXT_LEVEL_PART = ns.L("level %d, ")
 local TEXT_RANK_QUEST = "Your cap is %d.\nFirst do the quest %s%s|r (%sskill %d):"
 local TEXT_RANK_TRAIN = "Your cap is %d.\nFirst train %s (%s, needs skill %d):"
 local TEXT_RECIPE = "Recipe: "
-local TEXT_QUEST_OTHER = "A quest reward for the other faction; try the Auction House."
-local TEXT_QUEST_REWARD = "A reward from the quest "
-local TEXT_QUEST_GIVER = "  (quest giver)"
+local TEXT_QUEST_OTHER = ns.L("A quest reward for the other faction; try the Auction House.")
+local TEXT_QUEST_REWARD = ns.L("A reward from the quest ")
+local TEXT_QUEST_GIVER = ns.L("  (quest giver)")
 local TEXT_TRAINER = "Trainer: %s.%s Nearest:"
-local TEXT_ALSO_QUEST = " Also a reward from the quest "
+local TEXT_ALSO_QUEST = ns.L(" Also a reward from the quest ")
 local TEXT_TEACHER = "Taught for free by the Artisan doctor:"
 local TEXT_VENDOR_OTHER = "Recipe: %s\nOnly the other faction sells it; try the Auction House."
-local TEXT_SOLD_FOR = "Sold for "
-local TEXT_SOLD = "Sold"
+local TEXT_SOLD_FOR = ns.L("Sold for ")
+local TEXT_SOLD = ns.L("Sold")
 local TEXT_SOLD_BY = "Recipe: %s\n%s%s by:"
 local TEXT_NEEDS = " (needs "
 local TEXT_DROPS_FROM = "Recipe: %s\nDrops from:"
 local TEXT_BOSS = "%s - %s"
 local TEXT_WORLD_DROP = "Recipe: %s\nA world drop%s. Also try the Auction House."
-local TEXT_WORLD_LEVEL = ", from mobs around level "
-local TEXT_CHESTS, TEXT_FISHING, TEXT_PICKPOCKET = "chests and lockboxes", "fishing", "pickpocketing"
-local TEXT_MOB_KINDS = "A world drop from %d kinds of mob"
-local TEXT_FOUND = "Found"
+local TEXT_WORLD_LEVEL = ns.L(", from mobs around level ")
+local TEXT_CHESTS, TEXT_FISHING, TEXT_PICKPOCKET = ns.L("chests and lockboxes"), ns.L("fishing"), ns.L("pickpocketing")
+local TEXT_MOB_KINDS = ns.L("A world drop from %d kinds of mob")
+local TEXT_FOUND = ns.L("Found")
 local TEXT_THROUGH = " through "
-local TEXT_BEST_ODDS = " Best odds:"
+local TEXT_BEST_ODDS = ns.L(" Best odds:")
 local TEXT_DROP_LINE = "%s (%s) - %s, %.1f%%"
 local TEXT_DROP_RECIPE = "Recipe: %s\n%s%s.%s"
-local TEXT_NOT_RECORDED = "Where it comes from is not recorded yet; try the Auction House."
-local TEXT_REQUIREMENT = "%sRequires %s %d|r   %s(you: %d/%d)|r"
+local TEXT_NOT_RECORDED = ns.L("Where it comes from is not recorded yet; try the Auction House.")
+local TEXT_REQUIREMENT = ns.L("%sRequires %s %d|r   %s(you: %d/%d)|r")
 
 local list, state = {}, nil
 local current, EMPTY, skillOf = {}, {}, {}
@@ -217,7 +218,7 @@ local function DescribeRank(rank, out)
     elseif rank.quest then
         local title = QuestTitle(rank.quest[Faction()], rank.questName)
         Para(out, TEXT_RANK_QUEST:format(state.max, Hex(T.accent), title,
-            rank.level and ("level " .. rank.level .. ", ") or "", rank.skill))
+            rank.level and TEXT_LEVEL_PART:format(rank.level) or "", rank.skill))
         for _, v in ipairs(Nearest(rank.teachers, 1)) do NpcLine(out, v) end
     else
         Para(out, TEXT_RANK_TRAIN:format(state.max, rank.name, Money(rank.cost), rank.skill))
@@ -236,7 +237,7 @@ local function DescribeQuests(out, quests, recipe)
     end
     local names = {}
     for i, q in ipairs(mine) do names[i] = Hex(T.accent) .. QuestTitle(q.id, q.name) .. "|r" end
-    Para(out, RecipeLine(recipe) .. TEXT_QUEST_REWARD .. table.concat(names, " or ") .. ":")
+    Para(out, RecipeLine(recipe) .. TEXT_QUEST_REWARD .. table.concat(names, ns.L(" or ")) .. ":")
     for _, q in ipairs(mine) do
         if q.npc then NpcLine(out, q.npc, TEXT_QUEST_GIVER) end
     end

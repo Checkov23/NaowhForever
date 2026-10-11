@@ -43,16 +43,16 @@ local PLACE_ROUND = 1000
 local ROUND_HALF = C.ROUND_HALF
 local ENTRANCE_KEY = "entrance"
 local TAG_SHORT = { RARE = "R", OPTIONAL = "O", QUEST = "Q" }
-local TAG_WORDS = { RARE = "Rare", OPTIONAL = "Optional", QUEST = "Quest boss", CHEST = "Chest" }
+local TAG_WORDS = { RARE = ns.L("Rare"), OPTIONAL = ns.L("Optional"), QUEST = ns.L("Quest boss"), CHEST = ns.L("Chest") }
 local MASK = ns.MEDIA .. "circle_mask.tga"
 local MASK_WRAP = "CLAMPTOBLACKADDITIVE"
 
-local TEXT_ENTRANCE = "Entrance"
-local TEXT_CLICK_LOOT = "Click for its loot."
-local TEXT_ELSEWHERE = "On %s: drag it here to move it."
-local TEXT_MOVE = "Drag to move it, right-click to take it off."
-local TEXT_PLACE = "Drag to place it."
-local TEXT_FLOOR = "Floor %d"
+local TEXT_ENTRANCE = ns.L("Entrance")
+local TEXT_CLICK_LOOT = ns.L("Click for its loot.")
+local TEXT_ELSEWHERE = ns.L("On %s: drag it here to move it.")
+local TEXT_MOVE = ns.L("Drag to move it, right-click to take it off.")
+local TEXT_PLACE = ns.L("Drag to place it.")
+local TEXT_FLOOR = ns.L("Floor %d")
 local TEXT_DOWN, TEXT_UP = "<", ">"
 
 local Map = { placing = false, TAG_WORDS = TAG_WORDS }

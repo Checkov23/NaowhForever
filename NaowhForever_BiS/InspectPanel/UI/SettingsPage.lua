@@ -9,12 +9,12 @@ if not Settings then return end
 
 local BADGES_LIVE = ns.BADGES_LIVE
 local ORDER_INSPECT = 15
-local TEXT_THEIRS_IN_USE = "EllesmereUI's inspect window is in use: switch this off and on for this one"
-local TEXT_TAKES_OVER = "Takes over from EllesmereUI's inspect window, after a reload"
-local TEXT_BADGE_AND_SCORE = "With their badge and Naowh Score"
-local TEXT_BADGE = "With their badge"
-local TEXT_SCORE = "With their Naowh Score"
-local TEXT_PLAIN = "Their gear, talents and history"
+local TEXT_THEIRS_IN_USE = ns.L("EllesmereUI's inspect window is in use: switch this off and on for this one")
+local TEXT_TAKES_OVER = ns.L("Takes over from EllesmereUI's inspect window, after a reload")
+local TEXT_BADGE_AND_SCORE = ns.L("With their badge and Naowh Score")
+local TEXT_BADGE = ns.L("With their badge")
+local TEXT_SCORE = ns.L("With their Naowh Score")
+local TEXT_PLAIN = ns.L("Their gear, talents and history")
 
 local function Summary(store)
     if IP.EllesmereSheet() then

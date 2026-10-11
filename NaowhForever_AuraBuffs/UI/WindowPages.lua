@@ -9,24 +9,24 @@ local CATEGORY_NAMES, CATEGORY_ORDER, MAX_ENTRIES = A.CATEGORY_NAMES, A.CATEGORY
 local PROMPT_WIDTH = 240
 local PASTE_LIMIT = 0
 
-local TEXT_PROMPT = "Item ID, then buff spell ID(s) if not the item's own"
-local TEXT_INVALID = "Enter an item ID, then any buff spell IDs, separated by commas."
-local TEXT_CONSUMABLES = "Add an item ID, or import a list. Food counts any Well Fed "
+local TEXT_PROMPT = ns.L("Item ID, then buff spell ID(s) if not the item's own")
+local TEXT_INVALID = ns.L("Enter an item ID, then any buff spell IDs, separated by commas.")
+local TEXT_CONSUMABLES = ns.L("Add an item ID, or import a list. Food counts any Well Fed "
     .. "buff and other items their own buff; add buff spell IDs only for an item that gives another. "
     .. "Nothing is added automatically. Hover a reminder to choose a configured item from your bags. "
     .. "Reminders pause in combat; item menus work outside combat. When and where they show is on "
-    .. "AuraBuffs > Settings."
+    .. "AuraBuffs > Settings.")
 local TEXT_IDS = "Item ID, buff spell IDs optional"
 local TEXT_IMPORT = "Import a list or a profile's consumables"
-local TEXT_IMPORT_PROMPT = "Paste a consumables list or a profile string"
-local TEXT_NO_LIST = "That string holds no consumables list."
-local TEXT_ADDED = "Added %d consumables; %d were already listed or past the %d limit."
+local TEXT_IMPORT_PROMPT = ns.L("Paste a consumables list or a profile string")
+local TEXT_NO_LIST = ns.L("That string holds no consumables list.")
+local TEXT_ADDED = ns.L("Added %d consumables; %d were already listed or past the %d limit.")
 local TEXT_EXPORT = "Copy this profile's list"
-local TEXT_EXPORT_TITLE = "Consumables list"
-local TEXT_NOTHING_TO_EXPORT = "There are no consumables to export yet."
+local TEXT_EXPORT_TITLE = ns.L("Consumables list")
+local TEXT_NOTHING_TO_EXPORT = ns.L("There are no consumables to export yet.")
 local TEXT_BUFFS = "Buffs: "
-local TEXT_WELL_FED = "Buff: any Well Fed"
-local TEXT_OWN_BUFF = "Buff: the item's own"
+local TEXT_WELL_FED = ns.L("Buff: any Well Fed")
+local TEXT_OWN_BUFF = ns.L("Buff: the item's own")
 
 local function Entries()
     return S.Get("consumableEntries") or {}
@@ -112,10 +112,10 @@ end
 
 local function Category(parent, y, category)
     local W = UI.Widgets
-    local _, h = W:SectionHeader(parent, CATEGORY_NAMES[category]:upper(), y)
+    local _, h = W:SectionHeader(parent, ns.Upper(CATEGORY_NAMES[category]), y)
     y = y - h
     _, h = W:DualRow(parent, y,
-        { type = "button", text = "Add " .. CATEGORY_NAMES[category], buttonText = "Add",
+        { type = "button", text = ns.L("Add %s"):format(CATEGORY_NAMES[category]), buttonText = "Add",
             onClick = function() EditEntry(category) end },
         { type = "label", text = TEXT_IDS })
     y = y - h

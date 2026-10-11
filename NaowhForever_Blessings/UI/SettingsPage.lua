@@ -11,9 +11,9 @@ local Settings = ns.Shared and ns.Shared.Settings
 if not Settings then return end
 local Group = Settings.Group
 
-local BLESSINGS_OFF = "Turn on Blessings"
-local LABELS_OFF = "Turn on Blessings and Class Labels"
-local LABEL_STYLES = { values = { name = "Name", icon = "Class Icon" }, order = { "name", "icon" } }
+local BLESSINGS_OFF = ns.L("Turn on Blessings")
+local LABELS_OFF = ns.L("Turn on Blessings and Class Labels")
+local LABEL_STYLES = { values = { name = ns.L("Name"), icon = "Class Icon" }, order = { "name", "icon" } }
 local STAGE_H, STAGE_MARGIN, LABEL_ROOM, LABEL_SIDE = 160, St.STAGE_MARGIN, 14, 46
 local NOTE_Y, NOTE_SIZE, NOTE_LINE = St.STAGE_NOTE_Y, St.STAGE_NOTE_SIZE, 15
 local TEXT_ROOM = NOTE_Y + NOTE_LINE * 2
@@ -28,20 +28,20 @@ local SIZE_SLIDER, SPACING_SLIDER, GROUP_SLIDER = { 20, 70, 1 }, { 0, 30, 1 }, {
 local FONT_SLIDER = St.HUD_TEXT_RANGE
 local OPACITY_SLIDER, TO_FRACTION = St.OPACITY_RANGE, St.PERCENT_SCALE
 local ORDER_BAR, ORDER_WINDOW = 10, 20
-local AURA_LABEL, FURY_LABEL, GROUP_LABEL = "Aura Button", "Righteous Fury Button", "Aura / Class Gap"
-local HINT = "Right-click a class for its blessing. Wheel: size, Shift-wheel: spacing. x hides a button."
-local HINT_OFF = "Turn on Blessings to edit the bar here."
-local ADD_TITLE = "Add a Button"
-local ADD_AURA, ADD_FURY, ADD_BOTH = "Brings back the Aura button.", "Brings back the Righteous Fury button.",
-    "Choose which button to bring back."
-local GAP_TIP = "Drag left or right to change the gap between your aura and the class buttons."
-local GAP_TIP_VERTICAL = "Drag up or down to change the gap between your aura and the class buttons."
+local AURA_LABEL, FURY_LABEL, GROUP_LABEL = ns.L("Aura Button"), ns.L("Righteous Fury Button"), "Aura / Class Gap"
+local HINT = ns.L("Right-click a class for its blessing. Wheel: size, Shift-wheel: spacing. x hides a button.")
+local HINT_OFF = ns.L("Turn on Blessings to edit the bar here.")
+local ADD_TITLE = ns.L("Add a Button")
+local ADD_AURA, ADD_FURY, ADD_BOTH = ns.L("Brings back the Aura button."), ns.L("Brings back the Righteous Fury button."),
+    ns.L("Choose which button to bring back.")
+local GAP_TIP = ns.L("Drag left or right to change the gap between your aura and the class buttons.")
+local GAP_TIP_VERTICAL = ns.L("Drag up or down to change the gap between your aura and the class buttons.")
 local LAYOUT = { { horizontal = "Horizontal", vertical = "Vertical" }, { "horizontal", "vertical" } }
-local AURA_HERE = "Here: click to choose your aura. Its x hides the button."
-local SELF_HERE = "Here: its x hides the button."
-local CLASS_TIP = "On the bar, left-click blesses the next %s who needs it, missing first, skipping anyone "
-    .. "dead or out of range."
-local CLASS_HERE = "Here: right-click to choose its blessing."
+local AURA_HERE = ns.L("Here: click to choose your aura. Its x hides the button.")
+local SELF_HERE = ns.L("Here: its x hides the button.")
+local CLASS_TIP = ns.L("On the bar, left-click blesses the next %s who needs it, missing first, skipping anyone "
+    .. "dead or out of range.")
+local CLASS_HERE = ns.L("Here: right-click to choose its blessing.")
 local STATES = {
     { key = "group", label = "In a Group", tip = "Your group in range: who is missing a blessing, who is running out, "
         .. "and who only needs their own." },
@@ -54,14 +54,14 @@ local SAMPLE = {
     { class = "MAGE", blessing = "wisdom", missing = 0, left = 12 * 60 },
 }
 local NOTES = {
-    group = "Red: missing the class blessing. Yellow: running out. Blue: only players with their own.",
-    range = "Grey: nobody of that class in range. The number still counts who is missing it.",
+    group = ns.L("Red: missing the class blessing. Yellow: running out. Blue: only players with their own."),
+    range = ns.L("Grey: nobody of that class in range. The number still counts who is missing it."),
 }
-local THEMED_GROUP = "Accent: missing the class blessing. Lighter: running out. Deeper: only players with their own."
+local THEMED_GROUP = ns.L("Accent: missing the class blessing. Lighter: running out. Deeper: only players with their own.")
 local NONE = "none"
-local TEXT_NONE = "None"
-local TEXT_CLASS_HELP = "Which blessing you give this class: Might, Wisdom, Kings, Salvation or Light."
-local TEXT_CLASS_SEARCH = "blessing blessings greater"
+local TEXT_NONE = ns.L("None")
+local TEXT_CLASS_HELP = ns.L("Which blessing you give this class: Might, Wisdom, Kings, Salvation or Light.")
+local TEXT_CLASS_SEARCH = ns.L("blessing blessings greater")
 
 local function On() return S.Get("blessings") == true end
 local function OpenWindow() ns.OpenBlessingsWindow() end
@@ -427,9 +427,9 @@ local function PaintPreview(preview, state)
 end
 
 local function BarSummary(store)
-    return ("%d px buttons%s%s%s"):format(store.Get("blessBarSize"),
-        store.Get("blessLayout") == "vertical" and ", vertical" or "",
-        store.Get("blessShowAura") and ", aura" or "", store.Get("blessTimers") and ", minutes left" or "")
+    return (ns.L("%d px buttons%s%s%s")):format(store.Get("blessBarSize"),
+        store.Get("blessLayout") == "vertical" and ns.L(", vertical") or "",
+        store.Get("blessShowAura") and ns.L(", aura") or "", store.Get("blessTimers") and ns.L(", minutes left") or "")
 end
 
 local page = Settings.Page(B.PAGE, S)

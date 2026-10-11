@@ -17,10 +17,10 @@ local NOTE_ROOM, NOTE_Y = 24, 9
 local ROW_COUNT = 3
 local SAMPLE_ABSORB = 1240
 
-local TEXT_ROWS_OFF = "Every row is off: nothing shows."
-local TEXT_NONE_PASS = "Nothing in these samples passes your settings."
-local TEXT_FOCUS = "Your focus, set with NF Focus: their timers keep counting while you fight someone else."
-local TEXT_TARGET = "Your target in a fight: short buffs, crowd control, then your debuffs."
+local TEXT_ROWS_OFF = ns.L("Every row is off: nothing shows.")
+local TEXT_NONE_PASS = ns.L("Nothing in these samples passes your settings.")
+local TEXT_FOCUS = ns.L("Your focus, set with NF Focus: their timers keep counting while you fight someone else.")
+local TEXT_TARGET = ns.L("Your target in a fight: short buffs, crowd control, then your debuffs.")
 
 local SAMPLE_BUFFS = {
     { icon = "Spell_Holy_DivineIntervention", length = 12, magic = true, left = 9 },

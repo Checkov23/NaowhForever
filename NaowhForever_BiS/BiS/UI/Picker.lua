@@ -13,9 +13,9 @@ local PADS = 3
 local HINT_X = 7
 local FULL_OPACITY = 1
 local TEXT_ADD = "Add"
-local TEXT_HINT = "Item ID, link or Wowhead URL"
-local TEXT_NO_ITEM = "There is no item with that ID."
-local TEXT_WRONG_SLOT = "%s does not go in the %s slot."
+local TEXT_HINT = ns.L("Item ID, link or Wowhead URL")
+local TEXT_NO_ITEM = ns.L("There is no item with that ID.")
+local TEXT_WRONG_SLOT = ns.L("%s does not go in the %s slot.")
 
 local panel, box
 

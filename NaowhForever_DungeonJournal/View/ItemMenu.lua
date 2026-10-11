@@ -6,12 +6,12 @@ local Loot = J.Loot
 
 local BIS_ADDON = "NaowhForever_BiS"
 
-local TEXT_ITEM = "Item "
-local TEXT_TURN_ON = "Turn on BiS List"
-local TEXT_ADD = "Add to BiS List"
-local TEXT_PROMOTE = "Make it #1"
-local TEXT_REMOVE = "Remove from BiS List"
-local TEXT_WOWHEAD = "Wowhead Link"
+local TEXT_ITEM = ns.L("Item ")
+local TEXT_TURN_ON = ns.L("Turn on BiS List")
+local TEXT_ADD = ns.L("Add to BiS List")
+local TEXT_PROMOTE = ns.L("Make it #1")
+local TEXT_REMOVE = ns.L("Remove from BiS List")
+local TEXT_WOWHEAD = ns.L("Wowhead Link")
 
 local function AddBisButtons(root, itemID, Then, onChange)
     if not Loot.BisOn() then

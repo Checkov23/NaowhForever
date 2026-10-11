@@ -12,8 +12,8 @@ local PROFESSION_TITLES = {
     [197] = { "Tailor", "Clothier" }, [185] = { "Cooking" }, [129] = { "First Aid" }, [356] = { "Fishing" },
 }
 local CLASS_ICON = "Interface\\Icons\\ClassIcon_"
-local ROUTE_TITLE = "Training run"
-local TEXT_NO_TRAINER = "No trainer for your class is known for your faction."
+local ROUTE_TITLE = ns.L("Training run")
+local TEXT_NO_TRAINER = ns.L("No trainer for your class is known for your faction.")
 
 local function WorldPos(map, x, y)
     local ok, cont, pos = pcall(C_Map.GetWorldPosFromMapPos, map, CreateVector2D(x, y))

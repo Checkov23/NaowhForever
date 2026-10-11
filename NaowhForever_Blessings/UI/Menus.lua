@@ -6,10 +6,10 @@ local BLESSINGS, AURAS = B.BLESSINGS, B.AURAS
 local Store, Learned, SpellName, ClassName, Roster = B.Store, B.Learned, B.SpellName, B.ClassName, B.Roster
 
 local AURA_COLUMN = B.AURA_COLUMN
-local TEXT_AURA, TEXT_DEFAULT, TEXT_NONE = "Aura", "Default", "None"
-local TEXT_PLAYERS, TEXT_ASSIGNMENTS = "Players", "Assignments"
-local TEXT_OWN_ONE, TEXT_OWN_MANY = "1 player has their own blessing", "%d players have their own blessing"
-local TEXT_CLEAR_OWN = "Give them the class blessing"
+local TEXT_AURA, TEXT_DEFAULT, TEXT_NONE = ns.L("Aura"), ns.L("Default"), ns.L("None")
+local TEXT_PLAYERS, TEXT_ASSIGNMENTS = ns.L("Players"), ns.L("Assignments")
+local TEXT_OWN_ONE, TEXT_OWN_MANY = ns.L("1 player has their own blessing"), ns.L("%d players have their own blessing")
+local TEXT_CLEAR_OWN = ns.L("Give them the class blessing")
 
 local function OwnAura()
     return Store().aura

@@ -22,12 +22,12 @@ local BUTTONS_Y, BUTTON_H, BUTTON_GAP = -76, 26, 8
 local ID_BUTTON_W, LINK_BUTTON_W, CLASSIC_BUTTON_W = 170, 140, 90
 local WOWHEAD = "https://www.wowhead.com/"
 local WOWHEAD_FOREVER, WOWHEAD_CLASSIC = "forever/", "classic/"
-local TEXT_IN_COMBAT = "Copy cards are available outside combat."
-local TEXT_HINT = "Text selected. Press Ctrl+C to copy."
-local TEXT_NOTE = "Open the link in your browser. No page on Forever's Wowhead yet? Try Classic."
+local TEXT_IN_COMBAT = ns.L("Copy cards are available outside combat.")
+local TEXT_HINT = ns.L("Text selected. Press Ctrl+C to copy.")
+local TEXT_NOTE = ns.L("Open the link in your browser. No page on Forever's Wowhead yet? Try Classic.")
 local TEXT_ID_KICKER = "NAOWH  /  TOOLTIP COPY"
 local TEXT_LINE_KICKER = "NAOWH  /  COPY"
-local TEXT_LINK, TEXT_CLASSIC = "Wowhead Link", "Classic"
+local TEXT_LINK, TEXT_CLASSIC = ns.L("Wowhead Link"), ns.L("Classic")
 
 local function Accessible(value)
     if issecretvalue and issecretvalue(value) then return false end

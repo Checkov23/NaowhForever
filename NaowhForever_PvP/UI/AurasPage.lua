@@ -7,13 +7,13 @@ local SPELLS = ns.PvPSpells
 local Settings = ns.Shared.Settings
 local Group = Settings.Group
 
-local OFF = "Turn on PvP"
-local NEEDS_TIMER = "Needs Show Time Left"
-local NEEDS_WARN = "Needs Warn Before It Ends"
-local NEEDS_BUFFS = "Needs Short Buffs"
-local NEEDS_FOCUS = "Needs Focus Panel"
-local NEEDS_FORGE = "Needs Focus Panel and the Macros module"
-local TEXT_NOTHING = "Nothing shown"
+local OFF = ns.L("Turn on PvP")
+local NEEDS_TIMER = ns.L("Needs Show Time Left")
+local NEEDS_WARN = ns.L("Needs Warn Before It Ends")
+local NEEDS_BUFFS = ns.L("Needs Short Buffs")
+local NEEDS_FOCUS = ns.L("Needs Focus Panel")
+local NEEDS_FORGE = ns.L("Needs Focus Panel and the Macros module")
+local TEXT_NOTHING = ns.L("Nothing shown")
 local FORGE_VIEW = "smart"
 local SIZE_RANGE, WARN_RANGE, LENGTH_RANGE, MAX_RANGE = { 24, 64, 1 }, { 1, 10, 1 }, { 5, 120, 5 }, { 1, 10, 1 }
 
@@ -36,11 +36,11 @@ end
 
 local function Summary(store)
     wipe(summaryParts)
-    if store.Get("buffs") then summaryParts[#summaryParts + 1] = ("buffs up to %ds"):format(store.Get("buffLength")) end
-    if store.Get("cc") then summaryParts[#summaryParts + 1] = "crowd control" end
-    if store.Get("debuffs") then summaryParts[#summaryParts + 1] = "your debuffs" end
+    if store.Get("buffs") then summaryParts[#summaryParts + 1] = (ns.L("buffs up to %ds")):format(store.Get("buffLength")) end
+    if store.Get("cc") then summaryParts[#summaryParts + 1] = ns.L("crowd control") end
+    if store.Get("debuffs") then summaryParts[#summaryParts + 1] = ns.L("your debuffs") end
     if #summaryParts == 0 then return TEXT_NOTHING end
-    return "Your target's " .. table.concat(summaryParts, ", ") .. (store.Get("focus") and ", and your focus" or "")
+    return ns.L("Your target's ") .. table.concat(summaryParts, ", ") .. (store.Get("focus") and ns.L(", and your focus") or "")
 end
 
 local function SetAll(entries, prefix, value)
