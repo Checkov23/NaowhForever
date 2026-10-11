@@ -137,7 +137,7 @@ state.values = { enabled = true, characterPanel = false, inspectPanel = false, i
 
 local SCORE = { player = 26.4 }
 local COMPLETE = { player = true }
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent)

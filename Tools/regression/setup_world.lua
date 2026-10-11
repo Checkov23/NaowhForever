@@ -87,7 +87,8 @@ return function(opts)
     end
     local ns = opts.ns or {}
     ns.UI = ns.UI or {}
-    ns.L = ns.L or function(s) return s end
+    local locale = dofile("Tools/regression/locale_stub.lua")
+    ns.L, ns.Upper, ns.Lower = ns.L or locale.L, ns.Upper or locale.Upper, ns.Lower or locale.Lower
     ns.Color = ns.Color or function(_, text) return text end
     ns.Shared = ns.Shared or {}
     ns.Shared.Settings = ns.Shared.Settings or { pages = {} }

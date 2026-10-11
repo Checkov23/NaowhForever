@@ -149,7 +149,7 @@ local function Fixture()
         AccountSettings = function() return state.account end,
         Print = function(text) state.printed[#state.printed + 1] = text end,
         Color = function(_, text) return text end,
-        L = function(text) return text end,
+        L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         Font = function(parent) return Frame(parent) end,
         Solid = function(parent) return Frame(parent) end,
         -- As ns.Hairline and ns.PixelInset: whole-pixel sizing has no effect on these stubs.

@@ -20,7 +20,7 @@ local bound, printed, tooltips = {}, {}, {}
 local env = setmetatable({
     UI = {},
     CreateFrame = Frame,
-    ns = {
+    ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         MEDIA = dofile("Tools/regression/core_media.lua"),
         Button = function() local b = Frame(); b.label = Frame(); return b end,
         Tooltip = function(_, title, text) tooltips[#tooltips + 1] = { title, text } end,

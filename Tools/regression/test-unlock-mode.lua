@@ -223,7 +223,7 @@ local ns = {
     AccentBorder = function(b) return b end,
     StashOptionsWindow = function() return false end,
     UIFontPath = function() return "font" end,
-    L = function(text) return text end,
+    L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     Color = function(_, text) return text end,
     Print = function(msg) printed[#printed + 1] = msg end,
     PromptText = function(title, text, maxLetters, onAccept)

@@ -47,7 +47,7 @@ local function FontString()
 end
 
 local UI = {}
-local ns = { MEDIA = dofile("Tools/regression/core_media.lua"),
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
     Solid = function() return { SetAllPoints = function() end } end, Border = function() end,
     Font = function() return FontString() end }
 local cursor = { 500, 300 }

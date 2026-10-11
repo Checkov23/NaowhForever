@@ -124,6 +124,7 @@ end
 
 function UI.ShowWidgetTooltip(owner, text, opts)
     if type(text) == "function" then text = text() end
+    text = ns.L(text)
     if not text or text == "" then return end
     local t = Card()
     local fs = t.text
@@ -258,7 +259,7 @@ local function OpenDropdownMenu(btn)
     if desc.SetScrollMode then desc:SetScrollMode(menuHeight or MENU_HEIGHT) end
     for _, k in ipairs(DropdownKeys(btn)) do
         local key = k
-        desc:CreateRadio(btn._values[key] or tostring(key),
+        desc:CreateRadio(ns.L(btn._values[key] or tostring(key)),
             function() return btn._get() == key end,
             function()
                 btn._set(key)
@@ -316,7 +317,7 @@ function UI.BuildDropdownControl(parent, ddW, fLevel, values, order, get, set)
     btn._values, btn._order, btn._get, btn._set = values, order, get, set
     btn._refreshLabel = function()
         local v = btn._get()
-        lbl:SetText(btn._values[v] or tostring(v or ""))
+        lbl:SetText(ns.L(btn._values[v] or tostring(v or "")))
     end
     btn.HandlesGlobalMouseEvent = DropdownHandlesMouse
     btn:SetScript("OnMouseDown", OnDropdownMouseDown)
@@ -806,7 +807,7 @@ local function RegionLabel(rgn, control, cfg)
     end
     lbl:SetJustifyH("LEFT")
     lbl:SetWordWrap(false)
-    lbl:SetText(cfg.text or "")
+    lbl:SetText(ns.L(cfg.text) or "")
     return lbl
 end
 
@@ -836,7 +837,7 @@ local function BuildRegion(row, cfg, left, width)
     rgn._cfg = cfg
     rgn._refresh = function(newCfg)
         UpdateConfig(cfg, newCfg)
-        lbl:SetText(cfg.text or "")
+        lbl:SetText(ns.L(cfg.text) or "")
         Dim(cfg, lbl, control, Disabled(cfg))
         if control and control._refreshValue then control._refreshValue() end
     end
@@ -925,7 +926,7 @@ function W:SectionHeader(parent, text, yOffset)
     f._headerBuilt = true
     local lbl = ns.Font(f, LABEL_SIZE, nil, T.fg, true)
     lbl:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 0, HEADER_TEXT_Y)
-    lbl:SetText(text)
+    lbl:SetText(ns.L(text))
     local sep = ns.Solid(f, "ARTWORK", T.line, 1)
     sep:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 0, 0)
     sep:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, 0)
@@ -1072,7 +1073,7 @@ function UI.KeyField(rgn, action, label, tooltip)
     local capturing
     local function Show()
         local key = GetBindingKey(Resolve(action))
-        btn.label:SetText(capturing and TEXT_PRESS_KEY or key and GetBindingText(key) or TEXT_NOT_BOUND)
+        btn.label:SetText(capturing and ns.L(TEXT_PRESS_KEY) or key and GetBindingText(key) or ns.L(TEXT_NOT_BOUND))
         btn:SetAlpha(InCombatLockdown() and COMBAT_DIM or 1)
     end
     local function Stop()
@@ -1170,7 +1171,7 @@ local function NewColorRow(row, text, hasAlpha, count, banded)
     end
     local lbl = ns.Font(row, LABEL_SIZE, nil)
     lbl:SetPoint("LEFT", row, "LEFT", ROW_INSET, 0)
-    lbl:SetText(text)
+    lbl:SetText(ns.L(text))
     local swatchBtn = UI.BuildColorSwatchControl(row,
         function() return row._colorGet() end,
         function(...) return row._colorSet(...) end, hasAlpha)
@@ -1211,7 +1212,7 @@ function W:Note(parent, text, yOffset)
     local w = parent:GetWidth() or 0
     if w <= 0 then w = NOTE.fallbackW end
     fs:SetWidth(w - (CONTENT_PAD + NOTE.inset) * 2)
-    fs:SetText(text)
+    fs:SetText(ns.L(text))
     fs:Show()
     local h = math.ceil(fs:GetStringHeight()) + NOTE.room
     return Collapsed(parent, fs, h)

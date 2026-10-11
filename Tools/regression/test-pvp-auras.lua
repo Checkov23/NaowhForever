@@ -182,7 +182,7 @@ local function Fixture(qol, pvp)
         SetSpellByID = function(_, id) env.tip.spell = id end,
         AddLine = function(_, text) env.tip[#env.tip + 1] = text end }
 
-    local ns = { QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = Store(qol), THEME = { panel = {}, fg = {}, accentSoft = { r = 0, g = 0, b = 1 },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = Store(qol), THEME = { panel = {}, fg = {}, accentSoft = { r = 0, g = 0, b = 1 },
         accent = { r = 0, g = 0.5, b = 1 }, muted = {} }, Apply = none,
         ShowUnlockMode = none, HideUnlockMode = none }
     ns.UIFontPath = function() return "font" end

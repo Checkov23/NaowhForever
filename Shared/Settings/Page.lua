@@ -166,7 +166,7 @@ end
 local function OpenCog(icon, setting)
     CogPanel()
     cog.card, cog.label, cog.page = setting.card, setting.label, icon:GetParent():GetParent()
-    cog.title:SetText((setting.cog and setting.cog.title) or setting.label)
+    cog.title:SetText(ns.L((setting.cog and setting.cog.title) or setting.label))
     Watch(setting.card.store, cog.view)
     cog:Show()
     Settings.CogAnchored(icon, setting)

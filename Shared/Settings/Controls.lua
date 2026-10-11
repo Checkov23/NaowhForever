@@ -210,7 +210,7 @@ end
 
 function Control.Shown(setting, v)
     local kind = setting.kind
-    if kind == "toggle" then return v and TEXT_ON or TEXT_OFF end
+    if kind == "toggle" then return ns.L(v and TEXT_ON or TEXT_OFF) end
     if kind == "slider" and type(v) == "number" then
         if setting.scale then v = math.floor(v / setting.scale + 0.5) end
         return tostring(v) .. (setting.unit or "")
@@ -218,7 +218,7 @@ function Control.Shown(setting, v)
     if CHOICE_KINDS[kind] then
         local values = ChoiceValues(setting)
         local label = values and values[v]
-        return label and tostring(label) or nil
+        return label and ns.L(tostring(label)) or nil
     end
-    if kind == "text" and type(v) == "string" then return v == "" and TEXT_EMPTY or ('"' .. v .. '"') end
+    if kind == "text" and type(v) == "string" then return v == "" and ns.L(TEXT_EMPTY) or ('"' .. v .. '"') end
 end

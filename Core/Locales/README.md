@@ -26,6 +26,12 @@ Core/Locales/
 - Use `ns.L("English text")` for new player-facing text. It falls back to the English text when the
   active locale has not translated that key.
 - Spell and item logic stays on IDs; Blizzard supplies their localized names.
+- The shared parts translate what they show: settings rows, cards, groups and footers, tooltips,
+  dialogs, title bars, tabs, links, section titles, notes and the HUD Editor's element names.
+  Modules hand them the English text, which stays the key for saved data, caches, cog menus and
+  the search index; the search also indexes the shown words, so both languages find a row.
+- `ns.Upper` and `ns.Lower` change the case of accented letters too (Lua's own are byte-wise and
+  leave "ü" as it is), and `ns.Upper` writes "ß" as "SS".
 - A key that would mean two things gets its context in brackets, and `enUS.lua` gives its English
   text: `L["Back (slot)"] = "Back"` keeps the cloak slot apart from the Back button.
 - The repository is ASCII only, except the translations: `ruRU.lua` keeps its Cyrillic as UTF-8.

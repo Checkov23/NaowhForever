@@ -25,12 +25,12 @@ local ICON_REST, ICON_LIT, ICON_OFF = 0.4, 0.8, 0.12
 local INFO_TOP, INFO_GAP, INFO_BOTTOM = 10, 4, 10
 local TIP_TITLE = 1
 local TEXT_CHANGED = "Changed"
-local TEXT_DEFAULT_IS = "The default is "
-local TEXT_PUT_BACK = ". Click to put it back."
+local TEXT_DEFAULT_IS = "The default is %s. Click to put it back."
+local TEXT_DEFAULT_ONLY = "The default is %s."
 local TEXT_PUT_BACK_DEFAULT = "Click to put back the default."
 local TEXT_ONE_CHANGED = "1 setting changed from its default"
-local TEXT_MANY_CHANGED = " settings changed from their defaults"
-local TEXT_RESET = "Reset "
+local TEXT_MANY_CHANGED = "%d settings changed from their defaults"
+local TEXT_RESET = "Reset %s"
 local FOOT_GAP = 8
 local TEXT_OFF = "Off"
 local NOTE_GAP = ", "
@@ -86,10 +86,10 @@ local function DotEnter(dot)
     local setting = dot:GetParent().setting
     dot.mark:SetVertexColor(T.accent.r, T.accent.g, T.accent.b, 1)
     GameTooltip:SetOwner(dot, "ANCHOR_RIGHT")
-    GameTooltip:SetText(TEXT_CHANGED, TIP_TITLE, TIP_TITLE, TIP_TITLE)
+    GameTooltip:SetText(ns.L(TEXT_CHANGED), TIP_TITLE, TIP_TITLE, TIP_TITLE)
     local default = Control.Shown(setting, setting.store.Default(setting.key))
-    local putBack = dot.noReset and "." or TEXT_PUT_BACK
-    GameTooltip:AddLine(default and (TEXT_DEFAULT_IS .. default .. putBack) or TEXT_PUT_BACK_DEFAULT,
+    local defaultIs = dot.noReset and TEXT_DEFAULT_ONLY or TEXT_DEFAULT_IS
+    GameTooltip:AddLine(default and ns.L(defaultIs, default) or ns.L(TEXT_PUT_BACK_DEFAULT),
         T.muted.r, T.muted.g, T.muted.b, true)
     GameTooltip:Show()
 end
@@ -234,13 +234,13 @@ local function SetSetting(row, setting, split)
     row.setting = setting
     local control = ShowControl(row, setting.kind)
     Control.Bind(control, setting)
-    row.label:SetText(Marked(row, setting.label))
+    row.label:SetText(Marked(row, ns.L(setting.label)))
     row.hit.help = setting.help
     row.dot:SetShown(Settings.Changed(setting))
     row.split:SetShown(split)
     local off, why = Settings.Off(setting)
     Control.Dim(row, control, off)
-    PlaceLabel(row, SetIcons(row, setting, control, off), off and why or (setting.note and setting.note(setting)))
+    PlaceLabel(row, SetIcons(row, setting, control, off), off and ns.L(why) or (setting.note and setting.note(setting)))
     return ROW_H
 end
 
@@ -319,6 +319,7 @@ local function Summary(card)
     local summary = card.summary
     if type(summary) == "function" then summary = summary(card.store) end
     if off then summary = TEXT_OFF end
+    summary = summary and ns.L(summary)
     local note = card.note and card.note(card)
     if note and summary then return summary .. NOTE_GAP .. note end
     return note or summary
@@ -328,7 +329,7 @@ local function SetHead(head, card, isOpen, held)
     head.card, head.held = card, held
     head.setting = card.switchSetting
     head.dot:SetShown(head.setting ~= nil and Settings.Changed(head.setting))
-    head.name:SetText(Marked(head, card.name))
+    head.name:SetText(Marked(head, ns.L(card.name)))
     head.nameHit.help = card.help
     head.chevron:SetRotation(isOpen and OPEN_TURN or 0)
     head.chevron:SetShown(Settings.Openable(card) and not held)
@@ -352,7 +353,7 @@ end
 local function SetGroup(row, title)
     local label = groupLabels[title]
     if not label then
-        label = title:upper()
+        label = ns.Upper(ns.L(title))
         groupLabels[title] = label
     end
     row.text:SetText(label)
@@ -380,7 +381,7 @@ end
 local function ChangedText(changed)
     local text = changedText[changed]
     if text then return text end
-    text = changed == 1 and TEXT_ONE_CHANGED or (changed .. TEXT_MANY_CHANGED)
+    text = changed == 1 and ns.L(TEXT_ONE_CHANGED) or ns.L(TEXT_MANY_CHANGED, changed)
     changedText[changed] = text
     return text
 end
@@ -388,7 +389,7 @@ end
 local function SetFoot(foot, card, changed)
     foot.card = card
     foot.text:SetText(ChangedText(changed))
-    Parts.SetLink(foot.reset, TEXT_RESET .. card.name)
+    Parts.SetLink(foot.reset, ns.L(TEXT_RESET, ns.L(card.name)))
     return FOOT_H
 end
 
@@ -412,7 +413,7 @@ end
 
 local function SetInfoLine(row, line)
     local titled = line.title ~= nil
-    row.title:SetText(line.title or "")
+    row.title:SetText(ns.L(line.title) or "")
     row.where:SetText(line.where or "")
     row.text:ClearAllPoints()
     if titled then
@@ -421,7 +422,7 @@ local function SetInfoLine(row, line)
         row.text:SetPoint("TOPLEFT", PAD, -INFO_TOP)
     end
     row.text:SetWidth(row:GetWidth() - PAD * 2)
-    row.text:SetText(line.text or "")
+    row.text:SetText(ns.L(line.text) or "")
     local textH = line.text and math.ceil(row.text:GetStringHeight()) or 0
     local titleH = titled and (LABEL_SIZE + (line.text and INFO_GAP or 0)) or 0
     return INFO_TOP + titleH + textH + INFO_BOTTOM

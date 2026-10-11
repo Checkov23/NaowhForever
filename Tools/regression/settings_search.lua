@@ -6,7 +6,8 @@
 --   local Search = dofile("Tools/regression/settings_search.lua")({ ["QoL/Interface"] = { card } })
 --   local hits = Search("flight master")   -- { { label = "Flight Masters", card = "QoL/Interface:townMap" }, ... }
 return function(pages)
-    local ns = { THEME = {}, L = function(text) return text end, Color = function(_, text) return text end,
+    local ns = { THEME = {}, L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper,
+        Lower = string.lower, Color = function(_, text) return text end,
         Shared = { Style = dofile("Tools/regression/shared_style.lua") }, UI = {} }
     local env = setmetatable({ _G = { NaowhForever = ns } }, { __index = _G })
     for _, path in ipairs({ "Shared/Settings/Settings.lua", "Core/Options/Search.lua" }) do

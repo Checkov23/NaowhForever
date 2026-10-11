@@ -50,7 +50,7 @@ local function OpenSettings(item, owner)
     MenuUtil.CreateContextMenu(owner, function(_, root)
         root:CreateTitle(TEXT_SETTINGS)
         for _, choice in ipairs(choices) do
-            root:CreateButton(choice.name, function() OpenPage(choice.page, choice.feature) end)
+            root:CreateButton(ns.L(choice.name), function() OpenPage(choice.page, choice.feature) end)
         end
     end)
 end
@@ -120,7 +120,7 @@ local function PickTarget(target)
     placement.picking = nil
     if target ~= item then
         if AlreadyFollows(target, item) then
-            ns.Print(TEXT_MOVES_WITH:format(target.label, item.label))
+            ns.Print(ns.L(TEXT_MOVES_WITH, ns.L(target.label), ns.L(item.label)))
             H.ShowTag()
             return
         end

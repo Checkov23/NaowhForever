@@ -194,7 +194,7 @@ tooltip.IsForbidden = function(self) return self.forbidden == true end
 local MANAGER = { IsAnyMenuOpen = function() return false end }
 local menus = { modified = {} }
 local ns
-ns = { MEDIA = dofile("Tools/regression/core_media.lua"),
+ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     QoLSettings = S,
     GroupInspect = GI,

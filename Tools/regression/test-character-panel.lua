@@ -175,7 +175,7 @@ local ASSASSINATION = { name = "Assassination Rogue" }
 local WEIGHTS = { agi = 1, hit = 10, str = 0.5, int = 0 }
 local STATS = { 44, 80 }   -- your Strength and Agility
 
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent) return Frame(parent) end,

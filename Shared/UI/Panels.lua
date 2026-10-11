@@ -141,7 +141,7 @@ function Parts.Panel(title, windowLook)
     panel.title:SetPoint("RIGHT", -St.CLOSE_ROOM, 0)
     panel.title:SetJustifyH("LEFT")
     panel.title:SetWordWrap(false)
-    panel.title:SetText(title)
+    panel.title:SetText(ns.L(title))
     panel.close = ns.Button(panel, "x", St.CLOSE_SIZE, St.CLOSE_SIZE, function() panel:Hide() end)
     panel.close:SetPoint("TOPRIGHT", -St.CLOSE_IN, -St.CLOSE_IN)
     return panel

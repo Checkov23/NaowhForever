@@ -80,7 +80,7 @@ local S = {
     Get = function(k) return settings[k] end, Set = function(k, v) settings[k] = v end,
     Default = function(k) return defaults[k] end,
 }
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLSettings = S, Apply = noop,
     THEME = { muted = { r = 0.6, g = 0.6, b = 0.6 }, fg = { r = 1, g = 1, b = 1 }, accent = { r = 0, g = 0.5, b = 1 } },
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),

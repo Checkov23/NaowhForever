@@ -181,7 +181,7 @@ local function fixture(settings, noBis)
     end
     function S.OnChange(fn) listeners[#listeners + 1] = fn end
 
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         MEDIA = dofile("Tools/regression/core_media.lua"),
         THEME = setmetatable({}, { __index = function() return WHITE end }),
         UI = { ModuleSettings = function(_, defaults) state.defaults = defaults; return S end,

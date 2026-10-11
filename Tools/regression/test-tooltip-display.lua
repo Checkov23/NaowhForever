@@ -33,7 +33,7 @@ local function Frame()
     function f:AddDoubleLine(...) self.lines[#self.lines+1]={...} end
     frames[#frames+1]=f;return f
 end
-local ns={Shared={Style=dofile('Tools/regression/shared_style.lua')},THEME={accent={r=0,g=.7,b=1},muted={r=.5,g=.6,b=.7},bg={}},UI={},Print=noop,Apply=noop,
+local ns={ L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,Shared={Style=dofile('Tools/regression/shared_style.lua')},THEME={accent={r=0,g=.7,b=1},muted={r=.5,g=.6,b=.7},bg={}},UI={},Print=noop,Apply=noop,
  QoLConstants=dofile('Tools/regression/qol_constants.lua')}
 ns.QoLSettings={Get=function(k) return settings[k] end,Set=function(k,v) settings[k]=v end}
 ns.MakeModal=function() lastDimmer,lastPanel=Frame(),Frame();return lastDimmer,lastPanel end

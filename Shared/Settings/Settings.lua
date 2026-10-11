@@ -21,7 +21,7 @@ local TEXT_BG_ALPHA = "Background Opacity"
 local TEXT_PERCENT = "%"
 local TEXT_OUTLINE_HELP = "A black outline round the text, in place of the soft shadow."
 local TEXT_BACKGROUND_HELP = "A card behind the text, a soft dark fade, or nothing at all."
-local TEXT_NEEDS = "Needs "
+local TEXT_NEEDS = "Needs %s"
 local ERROR_NO_KIND = "Settings: a row without a kind on "
 local ERROR_CARD = "Settings: a card needs an id and a name"
 local ERROR_TWO_CARDS = "Settings: two cards named "
@@ -205,7 +205,7 @@ end
 
 local function Needing(row, key)
     local label = LabelOf(row.card, key)
-    return true, row.why or (label and (TEXT_NEEDS .. label))
+    return true, row.why or (label and ns.L(TEXT_NEEDS, ns.L(label)))
 end
 
 local function CountCards(page)

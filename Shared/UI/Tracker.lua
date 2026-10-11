@@ -112,8 +112,8 @@ local function TitleEnter(button)
     panel.title:SetTextColor(T.accent.r, T.accent.g, T.accent.b)
     if not opts.titleTip then return end
     GameTooltip:SetOwner(button, "ANCHOR_LEFT")
-    GameTooltip:SetText(opts.titleTip)
-    if opts.titleHint then GameTooltip:AddLine(opts.titleHint, T.accentSoft.r, T.accentSoft.g, T.accentSoft.b) end
+    GameTooltip:SetText(ns.L(opts.titleTip))
+    if opts.titleHint then GameTooltip:AddLine(ns.L(opts.titleHint), T.accentSoft.r, T.accentSoft.g, T.accentSoft.b) end
     GameTooltip:Show()
 end
 

@@ -26,7 +26,7 @@ local labels = {}
 local function Label(title, count)
     local byCount = labels[title]
     if not byCount then
-        byCount = { [false] = title:upper() }
+        byCount = { [false] = ns.Upper(ns.L(title)) }
         labels[title] = byCount
     end
     local key = count or false
@@ -96,7 +96,7 @@ end
 
 local function SetNote(row, text)
     row.text:SetWidth(row:GetWidth() - INDENT)
-    row.text:SetText(text)
+    row.text:SetText(ns.L(text))
     return math.ceil(row.text:GetStringHeight()) + NOTE_PAD
 end
 

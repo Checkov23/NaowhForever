@@ -43,8 +43,8 @@ function Parts.PaintSettingsCard(card, buttonText, onOpen, headline, detail)
     card.onOpen = onOpen
     card.open:SetShown(onOpen ~= nil)
     if onOpen then ns.SetButtonText(card.open, buttonText) end
-    card.headline:SetText(headline)
-    card.detail:SetText(detail or "")
+    card.headline:SetText(ns.L(headline))
+    card.detail:SetText(ns.L(detail) or "")
     card.detail:SetShown(detail ~= nil)
     local height = detail and HEADLINE_SIZE + CARD_LINE_GAP + DETAIL_SIZE or HEADLINE_SIZE
     local right, rightPoint = card.open, "LEFT"

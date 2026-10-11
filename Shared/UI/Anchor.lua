@@ -165,7 +165,7 @@ local function PickerUpdate(self)
         local light = self.highlight
         light:ClearAllPoints()
         if target and pcall(light.SetAllPoints, light, target) then
-            light.text:SetText(name)
+            light.text:SetText(ns.L(name))
             light:Show()
         else
             light:Hide()

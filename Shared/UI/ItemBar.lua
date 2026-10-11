@@ -58,7 +58,7 @@ local function TipEnter(button)
     if button.itemID then
         GameTooltip:SetItemByID(button.itemID)
     else
-        GameTooltip:SetText(button.emptyTip or "")
+        GameTooltip:SetText(ns.L(button.emptyTip) or "")
     end
     GameTooltip:Show()
 end

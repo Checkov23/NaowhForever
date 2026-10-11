@@ -117,7 +117,7 @@ function UI.AttachMover(frame, label, onMoved, page, feature, ownAnchor)
     mover._border = ns.Border(mover, C.BLACK)
     local text = ns.Shared.Parts.HudText(ns.Font(mover, MOVER_TEXT_SIZE))
     text:SetPoint("CENTER", mover, "CENTER")
-    text:SetText(label)
+    text:SetText(ns.L(label))
     mover.text = text
     mover._lock = mover:CreateTexture(nil, "OVERLAY")
     mover._lock:SetSize(LOCK_BADGE, LOCK_BADGE)

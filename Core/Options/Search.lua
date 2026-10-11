@@ -4,11 +4,18 @@ local UI = ns.UI
 
 local TEXT_SEARCH_HINT = "Search settings"
 local NONE = {}
+local NOT_LETTERS, LETTER = "[^%w\128-\255]+", "[%w\128-\255]"
 
 local carries = {}
 
 local function Words(text)
-    return " " .. text:lower():gsub("[^%w]+", " ") .. " "
+    return " " .. ns.Lower(text):gsub(NOT_LETTERS, " ") .. " "
+end
+
+local function Both(text)
+    if not text or text == "" then return "" end
+    local shown = ns.L(text)
+    return shown == text and text or (text .. " " .. shown)
 end
 
 local function Typed(query)
@@ -21,7 +28,7 @@ local function Place(page, cardName)
     local parts = {}
     local mod = page.module
     if mod and #mod.tabs > 1 then parts[#parts + 1] = ns.L(page.name) end
-    if cardName then parts[#parts + 1] = cardName end
+    if cardName then parts[#parts + 1] = ns.L(cardName) end
     return mod and ns.Options.DisplayName(mod) or ns.L(page.title or page.name), table.concat(parts, " / ")
 end
 
@@ -30,7 +37,7 @@ local function IndexInto(list, page, scope, Settings, settingsKey)
         local t, where = Place(page, cardName)
         list[#list + 1] = { page = page.key, card = card, label = label, tag = t, trail = where,
             isCard = cardName == nil, scope = scope,
-            words = Words(table.concat({ label, help or "", group or "", cardName or "" }, " ")) }
+            words = Words(table.concat({ Both(label), Both(help), Both(group), Both(cardName) }, " ")) }
     end)
 end
 
@@ -39,7 +46,7 @@ local function AddTerms(list, page, tag, scope)
     if not terms then return end
     terms(function(label, help, section, off)
         list[#list + 1] = { page = page.key, label = label, tag = tag, trail = section, scope = scope, off = off,
-            words = Words(table.concat({ label, help or "", section }, " ")) }
+            words = Words(table.concat({ Both(label), Both(help), Both(section) }, " ")) }
     end)
 end
 
@@ -119,7 +126,7 @@ local function Build(list, query)
 end
 
 local function StartsWord(lower, s)
-    return s == 1 or not lower:sub(s - 1, s - 1):find("%w")
+    return s == 1 or not lower:sub(s - 1, s - 1):find(LETTER)
 end
 
 local function LitLetters(filter, lower)
@@ -153,7 +160,7 @@ end
 
 local function Mark(filter, text)
     if not (filter and text) then return text end
-    local lit = LitLetters(filter, text:lower())
+    local lit = LitLetters(filter, ns.Lower(text))
     if not lit then return text end
     return Paint(text, lit)
 end

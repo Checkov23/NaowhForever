@@ -11,7 +11,7 @@ local cases = 0
 local function Check(ok, label) assert(ok, label); cases = cases + 1 end
 
 local ns = { THEME = { bg = {}, panel = {}, line = {}, fg = {}, muted = {}, accent = {}, grey = {} },
-    L = function(text) return text end, Color = function(_, text) return text end,
+    L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Color = function(_, text) return text end,
     Shared = { Style = dofile("Tools/regression/shared_style.lua") }, UI = { PROFILES_PAGE = "Profiles" } }
 ns.Options = { DisplayName = function(mod) return ns.L(mod.display or mod.name) end }
 local env = { _G = { NaowhForever = ns }, CreateFrame = function() return {} end }

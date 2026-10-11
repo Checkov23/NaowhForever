@@ -61,7 +61,7 @@ local function FillTabs(bar, items)
         local button = bar.buttons[i] or NewTab(bar)
         bar.buttons[i] = button
         button.key, button.label, button.tip = item.key, item.label, item.tip
-        button.text:SetText(item.label)
+        button.text:SetText(ns.L(item.label))
         button.want = math.ceil(button.text:GetStringWidth())
         words = words + button.want
         button:Show()

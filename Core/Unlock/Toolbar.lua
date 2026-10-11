@@ -56,7 +56,7 @@ local function BarSwitch(f, text, col, y, get, set)
     switch:SetPoint("TOPLEFT", f, "TOPLEFT", BAR_PAD + col * SWITCH_COL, -y)
     switch.label = ns.Font(f, C.LABEL_SIZE)
     switch.label:SetPoint("LEFT", switch, "RIGHT", LABEL_GAP, 0)
-    switch.label:SetText(text)
+    switch.label:SetText(ns.L(text))
     return switch
 end
 
@@ -176,7 +176,7 @@ local function BuildConfigToolbar()
 end
 
 local function PaintSwitches(f)
-    if f._section then f._section:SetText(toolbarSection()) end
+    if f._section then f._section:SetText(ns.L(toolbarSection())) end
     for i, c in ipairs(toolbarChecks) do
         local switch, on = f._switches[i], c.enabled()
         switch._refreshValue()

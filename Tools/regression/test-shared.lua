@@ -61,7 +61,7 @@ local coinCalls = 0
 local tooltip = Frame()
 tooltip.GetOwner = function() return nil end
 
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent) return Frame(parent) end,

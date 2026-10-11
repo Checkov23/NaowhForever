@@ -14,6 +14,7 @@ local frames = 0
 local ns
 ns = { THEME = { bg = {}, panel = {}, line = {}, fg = {}, muted = {}, accent = {}, grey = {} },
     L = function(text) return ns.translations and ns.translations[text] or text end,
+    Upper = string.upper, Lower = string.lower,
     Color = function(token, text) return "<" .. token .. ":" .. (text or "") .. ">" end, Shared = { Style = dofile("Tools/regression/shared_style.lua") }, UI = { PROFILES_PAGE = "Profiles" } }
 ns.Options = { DisplayName = function(mod) return ns.L(mod.display or mod.name) end }
 local env = { _G = { NaowhForever = ns }, CreateFrame = function() frames = frames + 1; return {} end }

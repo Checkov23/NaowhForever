@@ -53,6 +53,10 @@ local TEXT_LIBRARIES_MISSING = "Libraries missing (%s), so parts of the addon wi
 local TEXT_RELOAD_BLOCKED = "Can't reload from a button in combat. Type /reload."
 local TEXT_COPY_HINT = "Ctrl+A, Ctrl+C to copy"
 local TEXT_GAME_DEFAULT = "Game Default"
+local UTF8_LATIN = "\195"
+local LATIN_CAPITAL, LATIN_SMALL = "\195([\128-\158])", "\195([\160-\190])"
+local LATIN_CASE_STEP, LATIN_TIMES, LATIN_DIVIDE = 32, 151, 183
+local SHARP_S, SHARP_S_UPPER = "\195\159", "SS"
 
 local ns = {}
 _G.NaowhForever = ns
@@ -65,6 +69,26 @@ function ns.L(key, ...)
     if text == nil or text == true then text = key end
     if select("#", ...) > 0 then return text:format(...) end
     return text
+end
+
+local function LatinUpper(byte)
+    local b = byte:byte()
+    if b == LATIN_DIVIDE then return nil end
+    return UTF8_LATIN .. string.char(b - LATIN_CASE_STEP)
+end
+
+local function LatinLower(byte)
+    local b = byte:byte()
+    if b == LATIN_TIMES then return nil end
+    return UTF8_LATIN .. string.char(b + LATIN_CASE_STEP)
+end
+
+function ns.Upper(text)
+    return (text:upper():gsub(LATIN_SMALL, LatinUpper):gsub(SHARP_S, SHARP_S_UPPER))
+end
+
+function ns.Lower(text)
+    return (text:lower():gsub(LATIN_CAPITAL, LatinLower))
 end
 
 ns.CODE_BUILD = "1.1.6"
@@ -722,10 +746,11 @@ end
 local function ComposeTooltip(frame)
     local b = frame._tipBody
     if type(b) == "function" then b = b() end
+    local title = ns.L(frame._tipTitle)
     if b and b ~= "" then
-        return ns.Color("accent", frame._tipTitle) .. "\n" .. b
+        return ns.Color("accent", title) .. "\n" .. ns.L(b)
     end
-    return frame._tipTitle
+    return title
 end
 
 local TOOLTIP_OPTS = { anchor = "cursor", justify = "LEFT" }
@@ -907,7 +932,7 @@ function ns.PromptText(title, text, maxLetters, onAccept)
     local head = UI.KeepFont(panel, "head", DIALOG_HEAD_SIZE, "OUTLINE")
     head:SetPoint("TOP", 0, -DIALOG_PAD)
     head:SetWidth(PROMPT_TEXT_W)
-    head:SetText(title)
+    head:SetText(ns.L(title))
     panel:SetHeight(math.max(PROMPT_H, head:GetStringHeight() + PROMPT_ROOM))
     local box = UI.Keep(panel, "box", ns.NewEditBox)
     box:SetPoint("TOP", head, "BOTTOM", 0, -PROMPT_BOX_GAP)
@@ -950,10 +975,10 @@ function ns.ShowCopyBox(title, text, onClose)
     local dimmer, panel = ns.MakeModal(COPY_W, COPY_H, "copyBox")
     local head = UI.KeepFont(panel, "head", DIALOG_HEAD_SIZE, "OUTLINE", T.accent)
     head:SetPoint("TOPLEFT", DIALOG_PAD, -COPY_HEAD_Y)
-    head:SetText(title)
+    head:SetText(ns.L(title))
     local hint = UI.KeepFont(panel, "hint", COPY_HINT_SIZE, nil, T.muted)
     hint:SetPoint("TOPLEFT", head, "BOTTOMLEFT", 0, -COPY_HINT_GAP)
-    hint:SetText(TEXT_COPY_HINT)
+    hint:SetText(ns.L(TEXT_COPY_HINT))
     UI.KeepButton(panel, "close", "X", COPY_CLOSE_SIZE, COPY_CLOSE_SIZE, function() dimmer:Hide() end)
         :SetPoint("TOPRIGHT", -COPY_CLOSE_INSET, -COPY_CLOSE_INSET)
 
@@ -976,7 +1001,7 @@ local function ConfirmHead(UI, panel, text)
     local head = UI.KeepFont(panel, "head", CONFIRM_TEXT_SIZE, nil)
     head:SetPoint("TOP", 0, -CONFIRM_TEXT_Y)
     head:SetWidth(CONFIRM_TEXT_W)
-    head:SetText(text)
+    head:SetText(ns.L(text))
     return head
 end
 

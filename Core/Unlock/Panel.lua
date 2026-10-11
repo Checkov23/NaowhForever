@@ -33,14 +33,18 @@ local function GroupOf(item)
     return item.page and item.page:match("^[^/]+") or OTHER_GROUP
 end
 
-local function ByName(a, b) return a.name < b.name end
-local function ByLabel(a, b) return a.label < b.label end
+local function ByName(a, b) return ns.L(a.name) < ns.L(b.name) end
+local function ByLabel(a, b) return ns.L(a.label) < ns.L(b.label) end
+
+local function Matches(item, filter)
+    return filter == "" or ns.Lower(ns.L(item.label)):find(filter, 1, true) or item.label:lower():find(filter, 1, true)
+end
 
 local function PanelList()
-    local filter = panel.search:GetText():lower()
+    local filter = ns.Lower(panel.search:GetText())
     local groups, byName = {}, {}
     for _, item in ipairs(placement.items) do
-        if item.handle:IsShown() and (filter == "" or item.label:lower():find(filter, 1, true)) then
+        if item.handle:IsShown() and Matches(item, filter) then
             local name = GroupOf(item)
             local group = byName[name]
             if not group then
@@ -120,7 +124,7 @@ local function PaintRow(row, item)
     local St = ns.Shared.Style
     local hidden, locked, picked = IsHidden(item), IsLocked(item), item.selected == true
     row.item = item
-    row.label:SetText(item.label)
+    row.label:SetText(ns.L(item.label))
     row.label:SetTextColor(T.fg.r, T.fg.g, T.fg.b, hidden and ROW_HIDDEN_ALPHA or 1)
     row.fill:SetShown(picked)
     row.mark:SetShown(picked)
@@ -141,7 +145,7 @@ local function GroupTitle(g, name, y)
     end
     title:ClearAllPoints()
     title:SetPoint("TOPLEFT", PANEL_PAD, -(y + GROUP_H - GROUP_TITLE_DROP))
-    title:SetText(name:upper())
+    title:SetText(ns.Upper(ns.L(name)))
     title:Show()
 end
 

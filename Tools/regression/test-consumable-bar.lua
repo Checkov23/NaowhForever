@@ -156,7 +156,7 @@ local function fixture(settings, noMacros, class)
         s.actionButtons[#s.actionButtons + 1] = b
         return b
     end
-    local ns = { THEME = { bg = {}, line = {}, fg = { r = 0.94, g = 0.95, b = 0.95 }, panel = { r = 0, g = 0, b = 0 }, muted = { r = 0.5, g = 0.5, b = 0.5 },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, THEME = { bg = {}, line = {}, fg = { r = 0.94, g = 0.95, b = 0.95 }, panel = { r = 0, g = 0, b = 0 }, muted = { r = 0.5, g = 0.5, b = 0.5 },
             accent = { r = 0, g = 0.6, b = 1 } },
         Print = function(msg) s.printed = msg end,
         Apply = function() end,
