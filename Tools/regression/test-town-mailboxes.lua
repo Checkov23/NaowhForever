@@ -10,7 +10,7 @@ end
 local checks = 0
 local function Check(ok, label) assert(ok, label); checks = checks + 1 end
 
-local ns = {}
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 local chunk = assert(loadstring(Read("NaowhForever_QoL/Interface/TownMailboxes.lua")))
 setfenv(chunk, { _G = { NaowhForever = ns } })
 chunk()

@@ -4,7 +4,7 @@
 -- The list is read at `now`, its resets having last been reported at `updatedAt`.
 local function Fixture(saved, now, updatedAt)
     local clock = updatedAt
-    local ns = { TopBar = {}, Print = function() end }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TopBar = {}, Print = function() end }
     local env = {
         NaowhForever = ns,
         GetTime = function() return clock end,

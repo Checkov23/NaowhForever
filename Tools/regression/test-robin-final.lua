@@ -49,7 +49,7 @@ local function fixture(kind)
     end
     local S = { Get = function(k) return state.settings[k] end,
         Set = function(k, v) state.settings[k] = v end, OnChange = function() end }
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"), QoLSettings = S, Apply = function() end, Print = function() end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), QoLSettings = S, Apply = function() end, Print = function() end,
         ShowUnlockMode = function() end, HideUnlockMode = function() end,
         THEME = { bg = {}, accent = { r = 0, g = 1, b = 1 }, accentSoft = {} },
         UIFontPath = function() return 'font' end,

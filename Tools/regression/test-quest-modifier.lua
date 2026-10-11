@@ -25,7 +25,7 @@ end
 
 local S = { Get = function(key) return settings[key] end, DB = function() return {} end }
 local function Log(name) return function(...) calls[#calls + 1] = { name, ... } end end
-local ns = { QoLSettings = S, Print = function() end, cards = {} }
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = S, Print = function() end, cards = {} }
 ns.Shared = { Settings = { Page = function()
     return { Card = function(_, card) ns.cards[#ns.cards + 1] = card end }
 end } }

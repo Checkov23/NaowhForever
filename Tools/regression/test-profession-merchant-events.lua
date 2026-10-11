@@ -38,7 +38,7 @@ local function Fire(event)
 end
 
 local settings, applyHooks = {}, {}
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     UI = {
         ModuleSettings = function(_, defaults)
             local S, listeners = {}, {}

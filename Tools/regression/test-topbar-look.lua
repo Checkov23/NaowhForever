@@ -45,7 +45,7 @@ function Parts.HudFont(fs, font, size, outline, background)
     return fs
 end
 local UI = { FontPath = function(name) return "path:" .. name end }
-local ns = { UIFontPath = function() return "path:" end,
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, UIFontPath = function() return "path:" end,
     ThemeTint = function() return { r = 0, g = 0, b = 0 } end }
 
 local function Text()
@@ -145,7 +145,7 @@ local function Box(w)
 end
 local frame, left, right = Box(0), Box(60), Box(90)
 local clockText = { GetStringWidth = function() return 70 end }
-local features = { }
+local features = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, }
 do
     local env = setmetatable({ NaowhForever = features }, { __index = _G })
     env._G = env

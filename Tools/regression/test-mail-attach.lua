@@ -79,7 +79,7 @@ function root:CreateButton(text, fn) menu[#menu + 1] = { text = text, fn = fn } 
 
 local function Load()
     for k in pairs(frames) do frames[k] = nil end
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLSettings = { Get = function(key) return settings[key] end, Set = function() end },
         QoLConstants = dofile("Tools/regression/qol_constants.lua"),
         Color = function(_, text) return text end,

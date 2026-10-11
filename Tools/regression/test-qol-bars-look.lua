@@ -49,6 +49,7 @@ local function Load(path, ns, globals)
     ns.Font = function(parent) return Widget("FontString", parent) end
     ns.Solid = function(parent) return Widget("Texture", parent) end
     ns.Border, ns.PixelInset = Noop, Noop
+    ns.L, ns.Upper, ns.Lower = ns.L or dofile("Tools/regression/locale_stub.lua").L, string.upper, string.lower
     ns.Apply, ns.ShowUnlockMode, ns.HideUnlockMode = Noop, Noop, Noop
     ns.QoLConstants = dofile("Tools/regression/qol_constants.lua")
     ns.MEDIA = dofile("Tools/regression/core_media.lua")

@@ -26,7 +26,7 @@ local SPECS = {
 -- worn: slot -> item ID you wear there; carried: item ID -> how many in your bags and bank.
 local function Fixture(saved, char, worn, carried)
     local e = { account = { bis = saved }, printed = {} }
-    local ns = {}
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
     ns.Print = function(m) e.printed[#e.printed + 1] = m end
     ns.AccountSettings = function() return e.account end
     ns.QoLSettings = { Get = function() return true end }
@@ -459,5 +459,8 @@ Case("renaming to the name as shown keeps its pipes as they are", function()
     local e = Fixture()
     assert(e.ns.RenameBisList("A|B") and Saved(e).name == "A||B")
     assert(e.ns.RenameBisList((Saved(e).name:gsub("||", "|"))) and Saved(e).name == "A||B")
+end)
+Case("the cloak slot still reads Back on enUS, through its own key", function()
+    assert(Fixture().ns.Shared.Items.SlotName(15) == "Back")
 end)
 print(("%d cases passed"):format(count))

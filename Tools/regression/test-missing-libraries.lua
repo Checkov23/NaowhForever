@@ -18,7 +18,7 @@ local env = {
     CreateFrame = function()
         return { RegisterEvent = function() end, SetScript = function(_, _, fn) handler = fn end }
     end,
-    ns = { Print = function(msg) printed = msg end, Color = function(_, text) return text end },
+    ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Print = function(msg) printed = msg end, Color = function(_, text) return text end },
 }
 local fn = assert(loadstring(chunk))
 setfenv(fn, setmetatable(env, { __index = _G }))

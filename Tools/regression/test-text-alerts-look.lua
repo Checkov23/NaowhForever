@@ -79,7 +79,7 @@ local function Fixture(saved)
         Default = function(k) return defaults[k] end,
     }
     function S.Set(k, v) values[k] = v end
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLConstants = dofile("Tools/regression/qol_constants.lua"),
         THEME = T,
         Color = function(_, text) return text end,

@@ -24,7 +24,7 @@ end
 
 -- The real house colours, which some bar defaults come from.
 local SHARED = {}
-dofile("Tools/regression/load_files.lua")({ "Shared/Style.lua" }, { _G = { NaowhForever = { Shared = SHARED } } })
+dofile("Tools/regression/load_files.lua")({ "Shared/Style.lua" }, { _G = { NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = SHARED } } })
 
 local SECRET = setmetatable({}, { __tostring = function() return "<secret>" end })
 
@@ -82,7 +82,7 @@ local function Session(settings, opts)
         end,
         STATUS = {},
     }
-    local ns = { UI = UI, THEME = { bg = { r = 0, g = 0, b = 0 }, fg = { r = 1, g = 1, b = 1 } } }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, UI = UI, THEME = { bg = { r = 0, g = 0, b = 0 }, fg = { r = 1, g = 1, b = 1 } } }
     function ns.Apply() end
     function ns.ShowUnlockMode() end
     log.unlock = function() ns.ShowUnlockMode() end

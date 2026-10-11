@@ -85,7 +85,7 @@ local function Client(me, others, opts)
 
     local frame
     local SWS = { Get = function() return nil end, OnChange = NOTHING }
-    local ns = { QoLSettings = S, Apply = NOTHING, CODE_BUILD = opts.version or "0.5.25", GroupInspect = GI,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = S, Apply = NOTHING, CODE_BUILD = opts.version or "0.5.25", GroupInspect = GI,
         UI = { ModuleSettings = function() return SWS end }, Shared = { Items = { GEAR_SLOTS = GEAR_SLOTS } },
         AccountSettings = function() return {} end }
     state.ns = ns

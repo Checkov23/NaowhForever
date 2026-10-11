@@ -66,7 +66,7 @@ local panel
 local PICKER = { Hide = NOTHING, SetShown = NOTHING, _refreshLabel = NOTHING }
 local TITLE = { SetText = NOTHING }
 
-local addon = {
+local addon = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     THEME = { muted = GREY, fg = WHITE, accent = BLUE, accentSoft = BLUE },
     UI = { RefreshPage = NOTHING, AttachMover = function() return { Show = NOTHING, Hide = NOTHING } end },
     Color = function(_, text) return text end,

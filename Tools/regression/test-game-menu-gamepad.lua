@@ -13,7 +13,7 @@ local env = {
  SOUNDKIT = {},
  GameMenuFrame = {},
  HideUIPanel = function() hidden = hidden + 1 end,
- ns = { GamepadOwnsPanels = function() return owns end, OpenOptionsWindow = function() opened = opened + 1 end,
+ ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, GamepadOwnsPanels = function() return owns end, OpenOptionsWindow = function() opened = opened + 1 end,
   Color = function(_, text) return text end },
  MainMenuFrameMixin = { AddButton = function() added = added + 1 return {} end },
 }

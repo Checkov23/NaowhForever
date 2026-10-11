@@ -91,7 +91,7 @@ local duration = { GetRemainingDuration = function() return 1.5 end, GetElapsedD
 local kick = { IsZero = function() return state.kickReady end, GetRemainingDuration = function() return 0 end }
 
 local frames = {}
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     QoLSettings = S, THEME = { muted = {}, accent = ACCENT, bg = THEME_BG },
     UI = { FontPath = function() return "font" end, AttachMover = function() return Widget("Mover") end,

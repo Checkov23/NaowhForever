@@ -65,7 +65,7 @@ function T.Get(k)
     return v
 end
 local card, asked, reload
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLSettings = S, PRESETS = PRESETS,
     ModuleSwitches = function() return { { name = "Threat Meter", store = T, key = "enabled" } } end,
     PROFILE_OWN = { qol = { "characterPanelAsked", "characterPanelTookOver", "inspectPanelAsked", "inspectPanelTookOver" } },

@@ -19,6 +19,7 @@ end
 local function Consts(source)
     local block = assert(source:match("\n(local MINUTE, HOUR = .-)\n\n"))
     return "local QOL_CONSTANTS = dofile(\"Tools/regression/qol_constants.lua\")\n"
+        .. "local ns = setmetatable({ L = dofile(\"Tools/regression/locale_stub.lua\").L }, { __index = ns })\n"
         .. (block:gsub("ns%.QoLConstants%.", "QOL_CONSTANTS.")) .. "\n"
 end
 
@@ -48,7 +49,7 @@ do
         .. assert(source:match("(local function SetColour%(.-\nend\n\nlocal function ColourRow%(.-\nend)\n"))
     local S = Settings({})
     local accent = { r = 0, g = 0x91 / 255, b = 0xed / 255 }
-    local ns = { XPBarDefaultColor = function() return accent end }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, XPBarDefaultColor = function() return accent end }
     function ns.XPBarColor(k) return S.Get(k) or accent end
     local ColourRow = Load(chunk .. "\nreturn ColourRow", { S = S, ns = ns })
     local row = ColourRow("xpBarFillColor", "Fill Color")
@@ -129,7 +130,7 @@ do
     chat1.events.TIME_PLAYED_MSG = true
     local frame
     local env = {
-        NaowhForever = { Shared = {} },
+        NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = {} },
         GetTime = function() return now end,
         UnitLevel = function() return level end,
         CreateFrame = function() made = made + 1; frame = Frame(); return frame end,
@@ -177,7 +178,7 @@ do
     local chunk = Consts(source) .. assert(source:match("(local function Duration%(seconds%).-\nend)\n"))
         .. "\n" .. assert(source:match("(local function SlotText%(which, maxed, max%).-\nend)\n"))
     local SlotText = Load(chunk .. "\nreturn SlotText", { Played = Played, sessionStart = 0,
-        time = function() return 0 end, ns = { Color = function() return "" end } })
+        time = function() return 0 end, ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Color = function() return "" end } })
     check("the bar's Played text, from the helper", SlotText("played", false, 1)
         == "Played:|r 4d 6h 22m|r - This Level:|r 0m|r")
 
@@ -212,7 +213,7 @@ do
     local b = { fill = Tex(), done = Tex(), open = Tex(), rested = Tex(), bg = Tex(), edge = Tex() }
     local env = { S = S, T = { accent = { r = 0, g = 0.5, b = 1 }, bg = { r = 0.1, g = 0.1, b = 0.1 } },
         CreateColor = function(r, g, bl, a) return { r = r, g = g, b = bl, a = a } end,
-        ns = { ThemeTint = function(_, c) return c end, Shared = { Style = dofile("Tools/regression/shared_style.lua") },
+        ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, ThemeTint = function(_, c) return c end, Shared = { Style = dofile("Tools/regression/shared_style.lua") },
             UI = { TexturePath = function(name, own) if name == "" then return own end return "lsm:" .. name end } } }
     local PaintBar = Load(chunk .. "\nreturn PaintBar", env)
     PaintBar(b)

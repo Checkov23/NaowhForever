@@ -9,7 +9,7 @@ local settings = {
 }
 local S = { Get = function(key) return settings[key] end }
 function S.Set(key, value) settings[key] = value end
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLSettings = S,
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     Apply = function() end,

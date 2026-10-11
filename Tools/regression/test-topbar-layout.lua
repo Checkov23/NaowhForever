@@ -41,7 +41,7 @@ local ldb = {
 
 local function Load(db)
     local S = Store(db)
-    local ns = { TopBar = { Settings = S, LDB = function() return ldb end },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TopBar = { Settings = S, LDB = function() return ldb end },
         Shared = { Style = {}, Parts = {} }, THEME = {}, UI = {} }
     local env = setmetatable({ NaowhForever = ns, wipe = function(t) for k in pairs(t) do t[k] = nil end return t end },
         { __index = _G })

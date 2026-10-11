@@ -37,7 +37,7 @@ local function CloseMap()
     for _, fn in ipairs(hooks.OnHide or {}) do fn(WorldMapFrame) end
 end
 
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     Print = function(msg) printed[#printed + 1] = msg end,
     WaypointPinOn = function() return true end,
 }

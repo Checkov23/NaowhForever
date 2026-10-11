@@ -228,7 +228,7 @@ local function Fixture(settings)
     end
     local S = { Get = function(k) return values[k] end, Set = function(k, v) values[k] = v end,
         Raw = function(k) return values[k] end, Default = function(k) return defaults[k] end }
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"),
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
         THEME = T,
         Color = function(token, text) return "{" .. token .. ":" .. tostring(text) .. "}" end,
         Font = function(parent, size, flags, color)

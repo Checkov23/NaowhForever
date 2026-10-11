@@ -44,7 +44,7 @@ local S = { Get = function(k) return values[k] end, Set = function(k, v) values[
 
 local now, gcdUntil = 1000, 0
 local frames = {}
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     QoLSettings = S, ThemeTint = function(_, c) return c end, PixelInset = Noop,
     Apply = Noop, ShowUnlockMode = Noop, HideUnlockMode = Noop,

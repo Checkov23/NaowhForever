@@ -14,7 +14,7 @@ local function Check(ok, label) assert(ok, label); checks = checks + 1 end
 
 local settings = { enabled = true, townMap = true, townMinimap = false, townMail = false, townSpiritHealers = false }
 local S = { Get = function(key) return settings[key] end, Set = function() end }
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     QoLSettings = S, Apply = function() end, ThemeTint = function() end,
     TownCapitals = {}, TownNPCs = {},

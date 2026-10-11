@@ -30,7 +30,7 @@ local code = table.concat({
 
 -- The real look, on a stub namespace.
 local function LoadLook(S)
-    local ns = { TopBar = { Settings = S }, Shared = { Style = {}, Parts = {} }, THEME = {}, UI = {} }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TopBar = { Settings = S }, Shared = { Style = {}, Parts = {} }, THEME = {}, UI = {} }
     local env = setmetatable({ NaowhForever = ns }, { __index = _G })
     env._G = env
     for _, path in ipairs({ "NaowhForever_TopBar/Constants.lua", "NaowhForever_TopBar/View/Style.lua", "NaowhForever_TopBar/View/Look.lua" }) do

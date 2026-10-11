@@ -24,7 +24,7 @@ end
 
 local values = { enabled = true, equipReminder = false }
 local S = { Get = function(k) return values[k] end, Set = function(k, v) values[k] = v end }
-local ns = { QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = S, THEME = {}, Apply = Noop,
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = S, THEME = {}, Apply = Noop,
     Shared = { Style = dofile("Tools/regression/shared_style.lua"), Settings = { Page = function() return { Card = Noop } end } } }
 local env = setmetatable({
     _G = { NaowhForever = ns },

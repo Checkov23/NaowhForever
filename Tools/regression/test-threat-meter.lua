@@ -46,7 +46,7 @@ local function fixture(settings, withSettings)
         s.frames[#s.frames+1]=f; if name then s.named[name]=f end
         return f
     end
-    local ns={ MEDIA = dofile("Tools/regression/core_media.lua"), THEME={bg={},fg={r=1,g=1,b=1},muted={r=0.6,g=0.6,b=0.6},accent={r=0,g=0.7,b=1}},
+    local ns={ L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), THEME={bg={},fg={r=1,g=1,b=1},muted={r=0.6,g=0.6,b=0.6},accent={r=0,g=0.7,b=1}},
         UIFontPath=function() return 'font.ttf' end, Print=function() end,
         Apply=function() end, ShowUnlockMode=function() end, HideUnlockMode=function() end,
         Font=function() return frame('FontString') end,

@@ -28,7 +28,7 @@ local SECRET = {}
 
 local function Fixture(class)
     local state = { worn = {}, account = {}, printed = {}, postCalls = {}, watchers = {} }
-    local ns = { Shared = {}, QoLSettings = {} }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = {}, QoLSettings = {} }
     local db, listeners = {}, {}
     ns.UI = {
         ModuleSettings = function(_, defaults)
@@ -136,7 +136,7 @@ do
         check("every class has its specs: " .. class, (classes[class] or 0) >= 3)
     end
     -- Every spec the BiS List ranks has weights.
-    local bis = { QoLSettings = {} }
+    local bis = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = {} }
     Load({ "NaowhForever_BiS/BiS/Data/BiS.lua" }, setmetatable({ _G = { NaowhForever = bis } }, { __index = _G }))
     for _, spec in ipairs(bis.BiSData.specs) do
         check("the BiS List's spec has weights: " .. spec.key, SW.Spec(spec.key) ~= nil)

@@ -41,7 +41,7 @@ end
 
 local function Fixture(qol, aura)
     local env = { pairs = pairs, ipairs = ipairs, type = type, math = math, table = table }
-    local ns = { Apply = function() end, ShowUnlockMode = function() end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Apply = function() end, ShowUnlockMode = function() end,
         HideUnlockMode = function() end }
     ns.QoLSettings = Settings(qol)
     ns.AuraBuffSettings = aura and Settings(aura)

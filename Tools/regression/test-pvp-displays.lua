@@ -27,7 +27,7 @@ local function Load(withFrames)
     local s = { built = {}, movers = {}, placed = 0, settings = settings }
     local S = { Get = function(k) return settings[k] end }
     function S.Set(k, v) settings[k] = v end
-    local ns = { PvPSettings = S, Apply = function() end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, PvPSettings = S, Apply = function() end,
         ShowUnlockMode = function() end, HideUnlockMode = function() end,
         PlaceTopCentreWidgets = function() s.placed = s.placed + 1 end,
         UI = { AttachMover = function(holder, label, save, page, feature)

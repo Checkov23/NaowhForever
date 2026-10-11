@@ -131,7 +131,7 @@ do
             raw = 50000 - i * 1700, scaled = 100 - i * 3, rawPct = 100 - i * 3 }
     end
     local values = { enabled = true, visibility = "always", height = 700 }
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"), THEME = THEME, Print = function() end, Apply = function() end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), THEME = THEME, Print = function() end, Apply = function() end,
         ShowUnlockMode = function() end, HideUnlockMode = function() end,
         Font = function(parent) return New("FontString", nil, parent) end,
         Border = function(parent) return { _frame = New("Frame", nil, parent) } end,
@@ -241,7 +241,7 @@ do
             { category = "flask", itemID = 13510, auras = { 17626 } },
         } }
     local bags = { [13931] = 2, [13510] = 1 }
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"), AuraBuffSettings = Settings(values), THEME = THEME, Apply = function() end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), AuraBuffSettings = Settings(values), THEME = THEME, Apply = function() end,
         ShowUnlockMode = function() end, HideUnlockMode = function() end,
         Border = function() end, Solid = function(parent) return New("Texture", nil, parent) end,
         Font = function(parent) return New("FontString", nil, parent) end,

@@ -54,7 +54,7 @@ local bnet = {
     [2] = { gameAccountInfo = { wowProjectID = 9, playerGuid = "Player-1-B2", characterLevel = 60, isOnline = true } },
 }
 
-local ns = { Shared = {} }
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = {} }
 local env = setmetatable({
     _G = { NaowhForever = ns, NaowhForeverFriendTooltipTextLeft1 = fontLine,
         NaowhForeverFriendTooltipTextRight1 = fontRight },

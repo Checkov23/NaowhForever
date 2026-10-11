@@ -80,7 +80,7 @@ end
 -------------------------------------------------------------------------------
 local function World()
     local w = { profiles = { Default = { tankReminder = {} } }, account = {}, printed = {} }
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         UI = { Widgets = {} }, CODE_BUILD = "test", Macros = { C = { LIMIT = 255 } },
         THEME = { accent = {}, muted = {}, fg = {}, panel = {}, bg = {}, line = {} },
         Color = function(_, text) return text or "" end,
@@ -184,7 +184,7 @@ do
         player = { "Me Self", "Me", "WARRIOR" },
         party1 = { "Holy Man", "Holy", "PALADIN" },
     }
-    local ns = { QoLSettings = { Get = function() return true end, Set = function() end },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = { Get = function() return true end, Set = function() end },
         THEME = { fg = {}, muted = {}, accent = {}, bg = {} }, AccountSettings = function() return {} end,
         Apply = function() end, UI = { RefreshPage = function() end },
         Shared = { Style = dofile("Tools/regression/shared_style.lua"), Parts = { HudFont = function() end } },

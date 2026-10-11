@@ -271,7 +271,7 @@ do
         frames, painted = {}, {}
         local count = 0
         local env = { CreateFrame = Frame, T = { bg = {}, muted = {} },
-            ns = { MEDIA = dofile("Tools/regression/core_media.lua"), Solid = function()
+            ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), Solid = function()
                 count = count + 1
                 local index = count
                 return { SetAllPoints = function() end,

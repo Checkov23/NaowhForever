@@ -14,7 +14,7 @@ end
 local loaded = {}
 local Settings = {}
 local env = setmetatable({
-    NaowhForever = { Shared = { Settings = Settings } },
+    NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = { Settings = Settings } },
     C_AddOns = { IsAddOnLoaded = function(name) return loaded[name] == true end },
 }, { __index = _G })
 env._G = env
@@ -72,7 +72,7 @@ env._EQT_DB.profile.questTracker.autoAccept = true
 env._EQT_DB.profile.questTracker.enabled = false
 check("off while the Quest Tracker itself is off, as its auto-accept then never runs", Note(accept) == OFF)
 
-local ns = {}
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 _G.NaowhForever = ns
 assert(loadstring(Read("Core/Features.lua"), "Features"))()
 local count = 0

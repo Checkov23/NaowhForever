@@ -28,7 +28,7 @@ end
 local function Swatch(get, hasAlpha)
     local sets = {}
     local env = setmetatable({ UI = {}, CreateFrame = Frame, ColorPickerFrame = picker,
-        ns = { MEDIA = dofile("Tools/regression/core_media.lua"), Border = function() end, Solid = function() return Frame() end },
+        ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), Border = function() end, Solid = function() return Frame() end },
         T = { fg = {} } }, { __index = _G })
     local chunk = assert(loadstring(body))
     setfenv(chunk, env)

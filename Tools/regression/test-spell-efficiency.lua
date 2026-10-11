@@ -492,7 +492,7 @@ local function DeepCopy(t)
     return copy
 end
 local root = { qol = {} }
-local presetNs = {
+local presetNs = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     SettingsRoot = function() return root end,
     PROFILE_OWN = { qol = {} },
     Shared = { Settings = { pages = {} } },

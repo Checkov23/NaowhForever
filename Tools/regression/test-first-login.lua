@@ -35,7 +35,7 @@ local function Setup(account)
     local s = { account = account or {}, made = {}, timers = {}, combat = false, onboarding = 0, opened = {},
         profiles = { Default = {}, Raid = {} }, mainProfile = "Raid",
         charActive = { [ME] = "Default", ["Die Man"] = "Raid", ["Die Pri"] = "Default" } }
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         AccountSettings = function() return s.account end,
         ShowSetup = function(thisCharacter)
             s.onboarding = s.onboarding + 1

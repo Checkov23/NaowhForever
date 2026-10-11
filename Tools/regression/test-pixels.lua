@@ -31,7 +31,7 @@ local function Texture(parent)
     return t
 end
 
-local ns = {}
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 local env = setmetatable({ ns = ns, PixelUtil = { GetPixelToUIUnitFactor = function() return factor end },
     CreateFrame = function(_, _, parent)
         local child = Frame(1, parent)

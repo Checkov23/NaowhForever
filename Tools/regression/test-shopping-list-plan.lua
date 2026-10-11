@@ -28,7 +28,7 @@ local env = {
         GetRecipeCooldown = function(id) return cooldownLeft[id] or 0, dayCooldown[id] or false end,
         GetBaseProfessionInfo = function() return { professionID = openProf } end,
     },
-    NaowhForever = {
+    NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         Professions = {},
         AccountSettings = function() return account end,
         AuctionPrice = function(item) return prices[item] end,

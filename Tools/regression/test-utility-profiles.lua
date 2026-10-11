@@ -12,7 +12,7 @@ local function Case(name, fn) fn(); count = count + 1; print("PASS " .. name) en
 
 local function World()
     local w = { profiles = { Default = { tankReminder = {} } }, account = {} }
-    local ns = { UI = {}, CODE_BUILD = "test", Macros = { C = { LIMIT = 255 } },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, UI = {}, CODE_BUILD = "test", Macros = { C = { LIMIT = 255 } },
         SettingsRoot = function() return w.profiles.Default end,
         AccountSettings = function() return w.account end,
         ModuleDefaults = function() return nil end,

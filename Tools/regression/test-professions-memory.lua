@@ -294,7 +294,7 @@ local defaults = {}
 local db = {}
 local account = {}
 local ns, logoPage
-ns = { MEDIA = dofile("Tools/regression/core_media.lua"),
+ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
     Shared = { Style = dofile("Tools/regression/shared_style.lua"), Parts = { Logo = function(parent, page) logoPage = page; return Widget(parent) end }, Settings = {
         Group = function() return {} end, Look = function() return {} end,
         Page = function() return { Window = Noop, Card = Noop } end } },

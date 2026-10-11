@@ -82,7 +82,7 @@ local S = {
 }
 state.values = { enabled = true, bis = true, bisBagMarks = false }
 
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent) return Frame(parent) end,

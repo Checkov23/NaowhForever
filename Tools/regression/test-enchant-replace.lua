@@ -63,7 +63,7 @@ end)
 Case("the Looting card no longer offers it", function()
     local card
     local env = setmetatable({
-        NaowhForever = { QoLSettings = { Get = function() return true end },
+        NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = { Get = function() return true end },
             Shared = { Settings = { Page = function()
                 return { Card = function(_, spec) card = spec end }
             end } } },

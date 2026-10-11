@@ -26,7 +26,7 @@ local function Town()
         { 16, 16, "bank", "Banker", "Banker", nil, "AH" },
     }
 end
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     QoLSettings = S, Apply = function() end, ThemeTint = function() end,
     TownCapitals = { [2] = true }, TownNPCs = { [1] = Town(), [2] = Town() },

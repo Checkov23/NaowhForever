@@ -29,7 +29,7 @@ end
 local pf = Frame()
 local env = {
     waiting = {},
-    ns = { ProfBagChanges = 0 },
+    ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, ProfBagChanges = 0 },
     wipe = function(t) for k in pairs(t) do t[k] = nil end end,
     InCombatLockdown = function() return combat end,
     ProfessionsFrame = pf,

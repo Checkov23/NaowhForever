@@ -58,7 +58,7 @@ local function World(known)
         return f
     end
     local WHITE = { r = 1, g = 1, b = 1 }
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         THEME = { fg = WHITE, muted = WHITE },
         Solid = function() return Fake("solid") end,
         AccentBorder = function(f) return f end,

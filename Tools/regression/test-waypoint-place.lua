@@ -10,7 +10,7 @@ local tomtom, set, tracked, printed, timers = {}, {}, 0, {}, {}
 local current   -- the game's user waypoint, as C_Map.GetUserWaypoint gives it
 local pinOn = false
 local watch
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     Print = function(msg) printed[#printed + 1] = msg end,
     WaypointPinOn = function() return pinOn end,
 }

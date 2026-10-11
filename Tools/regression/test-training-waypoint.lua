@@ -40,8 +40,8 @@ local function Vector(x, y) return { GetXY = function() return x, y end } end
 -- The nearest trainer for a character of `class` and `faction` standing at `at` ({ map, x, y }
 -- as fractions), or nowhere with a position when `at` is nil.
 local function Nearest(class, faction, at)
-    local env = {
-        ns = { TownNPCs = NPCS, TownCapitals = { [1453] = true, [1454] = true, [2521] = true } },
+    local env = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+        ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TownNPCs = NPCS, TownCapitals = { [1453] = true, [1454] = true, [2521] = true } },
         Training = {},
         UnitClass = function() return "", class end,
         UnitFactionGroup = function() return faction end,
@@ -96,8 +96,8 @@ local function Route(class, faction, professions, at)
     local placed
     local lines = {}
     for i, p in ipairs(professions) do lines[i] = p end
-    local env = {
-        ns = {
+    local env = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+        ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
             TownNPCs = NPCS, TownCapitals = { [1453] = true, [1454] = true, [2521] = true },
             Print = function() end,
             PlaceWaypointRoute = function(title, stops) placed = { title = title, stops = stops } end,

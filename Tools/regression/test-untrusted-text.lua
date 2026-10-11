@@ -49,7 +49,7 @@ Case("4000 letters of color codes clean quickly", function()
 end)
 
 local function Profiles()
-    local ns = { PlainText = PlainText }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, PlainText = PlainText }
     local env = setmetatable({ _G = { NaowhForever = ns }, LibStub = LibStub }, { __index = _G })
     ns.Shared = { Decode = dofile("Tools/regression/load_decode.lua")(env) }
     local chunk = assert(loadfile("Core/Profiles/ProfileShare.lua")); setfenv(chunk, env); chunk()
@@ -119,7 +119,7 @@ local function Senders(world)
         if unit == "player" then return world.me end
         return world.party[tonumber(unit:match("^party(%d+)$") or unit:match("^raid(%d+)$") or 0)]
     end
-    local ns = {}
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
     local env = setmetatable({ _G = { NaowhForever = ns },
         IsInRaid = function() return world.raid end,
         GetNumGroupMembers = function() return #world.party end,

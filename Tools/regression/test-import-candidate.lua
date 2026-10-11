@@ -18,7 +18,7 @@ local code = assert(src:match("\n(local MODULE_KEY = .-\n)\nlocal ns = {}\n"), "
     .. Slice("function ns.MarkSeen()", "function ns.ListProfiles()")
 
 local function Login(sv, name, clock, guid)
-    local env = { ns = { STARTER = { profile = {}, account = {} } }, UNKNOWNOBJECT = "Unknown",
+    local env = { ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, STARTER = { profile = {}, account = {} } }, UNKNOWNOBJECT = "Unknown",
         UnitName = function() return name end, GetRealmName = function() return "Forever" end,
         UnitGUID = function() return guid end, time = function() return clock or 0 end }
     function env.CopyTable(t)

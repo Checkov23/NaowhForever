@@ -163,7 +163,7 @@ local function Fixture(settings, units)
     local account = {}
     env.IsInInstance = function() return units.instance == true end
     env.InCombatLockdown = function() return units.combat == true end
-    local ns = { THEME = { accent = {}, muted = { r = 0.66 }, fg = {}, panel = {}, accentSoft = {}, bg = {} },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, THEME = { accent = {}, muted = { r = 0.66 }, fg = {}, panel = {}, accentSoft = {}, bg = {} },
         Apply = function() end,
         ShowUnlockMode = function() end, HideUnlockMode = function() end }
     ns.AccountSettings = function() return account end

@@ -30,7 +30,7 @@ function widgets:SetPoint(...) self.points = { ... }; self.moves = self.moves + 
 -- A fresh copy of the file each time, with the given container (nil: a client without one);
 -- returns the bar's PlaceWidgets.
 local function Load(container)
-    local ns = { TopBar = {} }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TopBar = {} }
     local env = setmetatable({ NaowhForever = ns, UIParent = UIParent, UIWidgetTopCenterContainerFrame = container },
         { __index = _G })
     env._G = env

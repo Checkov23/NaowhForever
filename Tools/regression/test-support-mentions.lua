@@ -108,7 +108,7 @@ end
 
 local scanned, hitFiles = 0, {}
 for _, path in ipairs(TOC_LUA) do
-    local f = not path:find("^Libs/") and io.open(path, "rb")
+    local f = not path:find("^Libs/") and not path:find("^Core/Locales/") and io.open(path, "rb")
     if f then
         local src = f:read("*a")
         f:close()
@@ -156,7 +156,7 @@ local function Shown(flag)
     local cards, infos, registered = {}, {}, {}
     local store = { Get = function() return true end, Default = function() return true end, OnChange = NOTHING }
     local ns
-    ns = {
+    ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         FEATURE_BADGES = flag, BADGES_LIVE = 1, LINKS = {}, MEDIA = dofile("Tools/regression/core_media.lua"), CODE_BUILD = "test", THEME = setmetatable({}, { __index = function() return COLOR end }),
         QoLSettings = store, Apply = NOTHING,
         BADGE_STAFF = { [1] = { [TEAM_GUID] = "developer" } },

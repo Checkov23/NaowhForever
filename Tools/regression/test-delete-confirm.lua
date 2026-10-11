@@ -32,7 +32,7 @@ function box:GetParent() return dialog end
 
 local cursor
 local env = setmetatable({
-    NaowhForever = { QoLSettings = { Get = function(key) return settings[key] end },
+    NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = { Get = function(key) return settings[key] end },
         Shared = { Settings = { Page = function() return { Card = function() end } end } } },
     hooksecurefunc = function(name, fn)
         assert(name == "StaticPopup_Show")

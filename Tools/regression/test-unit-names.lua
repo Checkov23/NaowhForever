@@ -8,7 +8,7 @@ local source = Read("NaowhForever_QoL/Interface/UnitNames.lua")
 
 local function Load(cvars)
     local card
-    local ns = { QoLSettings = {}, Shared = { Settings = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = {}, Shared = { Settings = {
         Page = function() return { Card = function(_, c) card = c end } end,
     } } }
     local env = setmetatable({

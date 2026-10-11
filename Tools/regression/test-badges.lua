@@ -39,7 +39,7 @@ local function fixture(withChatUtil, settings, flag)
         function f:GetEffectiveScale() return 1 end
         return f
     end
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         THEME = { bg = {}, line = {}, fg = {}, muted = {}, accentSoft = {} },
         Solid = function() return frame() end,
         Border = function() return { SetColor = noop } end,
@@ -591,7 +591,7 @@ do  -- regions, staff over patrons, the badge code and who may preview
 end
 
 do  -- the real staff and patron files load and make sense
-    local ns = {}
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
     for _, path in ipairs({ "Core/Badges/Staff.lua", "Core/Badges/Patrons.lua" }) do
         local chunk = assert(loadfile(path))
         setfenv(chunk, setmetatable({ _G = { NaowhForever = ns } }, { __index = _G }))

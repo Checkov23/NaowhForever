@@ -58,7 +58,7 @@ local function Fixture(opts)
     local level, levels = opts.level or 20, opts.levels or {}
     local seen = { placed = {}, printed = {}, requested = {} }
     local J = Data()
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         Journal = J,
         Print = function(text) seen.printed[#seen.printed + 1] = text end,
         PlaceWaypoint = function(title, map, x, y, note)
@@ -415,7 +415,7 @@ end)
 -------------------------------------------------------------------------------
 Case("the generated quest and chain data is well formed and free of loops", function()
     local J = {}
-    local env = setmetatable({ _G = { NaowhForever = { Journal = J } } }, { __index = _G })
+    local env = setmetatable({ _G = { NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Journal = J } } }, { __index = _G })
     for _, path in ipairs({ "NaowhForever_DungeonJournal/Data/Quests.lua", "NaowhForever_DungeonJournal/Data/QuestChains.lua",
         "NaowhForever_DungeonJournal/Data/BiSQuests.lua" }) do
         local chunk = assert(loadfile(path))
@@ -516,7 +516,7 @@ end)
 
 Case("every quest in a generated chain is in its own chain", function()
     local J = {}
-    local ns = { Journal = J }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Journal = J }
     local env = setmetatable({ _G = { NaowhForever = ns }, C_QuestLog = {} }, { __index = _G })
     for _, path in ipairs({ "NaowhForever_DungeonJournal/Data/Quests.lua", "NaowhForever_DungeonJournal/Data/QuestChains.lua",
                             "NaowhForever_DungeonJournal/Constants.lua", "NaowhForever_DungeonJournal/Quests.lua" }) do

@@ -23,7 +23,7 @@ end
 
 local function Fixture(completoOn, discoveryOn, oldFolderLoaded)
     local completo, discovery = { enabled = completoOn }, { enabled = discoveryOn }
-    local ns = { FEATURES = { completo = {} }, Apply = function() end }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, FEATURES = { completo = {} }, Apply = function() end }
     ns.DiscoverySettings = Store(discovery)
     ns.UI = { ModuleSettings = function() return Store(completo) end }
     local boot, disabled, reloads = nil, {}, 0

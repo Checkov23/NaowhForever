@@ -35,7 +35,7 @@ local values = { enabled = true, trainerPanel = true }
 local trainer = Stub()
 local COLOR = { r = 1, g = 1, b = 1 }
 
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     THEME = setmetatable({}, { __index = function() return COLOR end }),
     Training = {
         Settings = { Get = function(key) return values[key] end, OnChange = NOTHING },

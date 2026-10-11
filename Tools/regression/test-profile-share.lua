@@ -9,7 +9,7 @@ dofile("Libs/LibSerialize/LibSerialize.lua")
 local PlainText = dofile("Tools/regression/plain_text.lua")()
 local settingsShared = { Style = dofile("Tools/regression/shared_style.lua"), Settings = {} }
 local settingsStyle = assert(loadfile("Shared/Settings/Style.lua"))
-setfenv(settingsStyle, { _G = { NaowhForever = { Shared = settingsShared } }, setmetatable = setmetatable })
+setfenv(settingsStyle, { _G = { NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = settingsShared } }, setmetatable = setmetatable })
 settingsStyle()
 
 local count = 0
@@ -47,7 +47,7 @@ local function World()
     }
     w.active = "Default"
     w.buildsChanged = 0
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         UI = { PROFILES_PAGE = "Profiles" }, CODE_BUILD = "test", PlainText = PlainText,
         Macros = { C = { LIMIT = 255 } },
         TrainingBuilds = { [2] = { talents = {} } },

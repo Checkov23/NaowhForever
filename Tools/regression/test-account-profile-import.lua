@@ -12,8 +12,8 @@ local function Slice(source, a, b)
 end
 
 local function Fixture(char)
-    local e = { char = char or "Main-Ravencrest", reapplied = 0 }
-    local env = { ns = { QueueReapply = function() e.reapplied = e.reapplied + 1 end,
+    local e = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, char = char or "Main-Ravencrest", reapplied = 0 }
+    local env = { ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QueueReapply = function() e.reapplied = e.reapplied + 1 end,
             STARTER = { profile = {}, account = {} } },
         activeRoot = nil,
         CharKey = function() return e.char end,
@@ -190,7 +190,7 @@ Case("an account that already has settings never takes the starter", function()
 end)
 
 Case("the shipped presets carry no reminders, and a new install starts from Minimalist", function()
-    local env = { NaowhForever = {} }; env._G = env
+    local env = { NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,} }; env._G = env
     local chunk = assert(loadfile("Core/Profiles/Presets.lua")); setfenv(chunk, env); chunk()
     local presets = env.NaowhForever.PRESETS
     assert(presets.newInstall == "minimalist" and env.NaowhForever.STARTER == presets.minimalist)

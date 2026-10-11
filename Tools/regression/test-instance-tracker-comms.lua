@@ -21,7 +21,7 @@ local code = Slice(tracker, "local NIT_PREFIX = ", "\n-- end Nova reset wire for
     .. "\nreturn { Encode = NitEncode, Wire = NitWire, Decode = NitDecode,"
     .. " Incoming = NitIncoming, Outbound = NitOutbound, Announce = NitAnnounce,"
     .. " Clear = ClearNamedCopy }\n"
-local env = { LibStub = LibStub }
+local env = { LibStub = LibStub, ns = { L = dofile("Tools/regression/locale_stub.lua").L } }
 setmetatable(env, { __index = _G })
 local chunk = assert(loadstring(code))
 setfenv(chunk, env)

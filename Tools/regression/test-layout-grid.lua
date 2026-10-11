@@ -30,7 +30,7 @@ function UIParent:GetWidth() return W end
 function UIParent:GetHeight() return H end
 function UIParent:GetEffectiveScale() return scale end
 local FG, ACCENT = { r = 1, g = 1, b = 1 }, { r = 0, g = 0.57, b = 0.93 }
-local ns = {}
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 local env = setmetatable({
     ns = ns, T = { fg = FG, accent = ACCENT }, UIParent = UIParent,
     Pixel = function() return 1 / scale end,

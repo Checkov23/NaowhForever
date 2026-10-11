@@ -31,6 +31,7 @@ local ns = {
 }
 local env = setmetatable({
     NaowhForever = ns,
+    ns = ns,
     C_AddOns = {
         GetAddOnEnableState = function(addon) return enabled[addon] and 2 or 0 end,
         IsAddOnLoaded = function(addon) return loaded[addon] == true end,

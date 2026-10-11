@@ -47,7 +47,7 @@ local function Session(settings)
     for k, v in pairs(settings or {}) do values[k] = v end
     local S = { Get = function(k) return values[k] end, Set = function(k, v) values[k] = v end }
     local page = { Card = function() end }
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLConstants = dofile("Tools/regression/qol_constants.lua"),
         QoLSettings = S, UI = {}, THEME = {},
         Shared = { Style = dofile("Tools/regression/shared_style.lua"), Settings = { Group = function() return {} end, Page = function() return page end } },

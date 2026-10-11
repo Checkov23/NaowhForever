@@ -29,7 +29,7 @@ local settings = { enabled = true, groupButtonsWidth = 90, groupButtonsHeight = 
     groupButtonsFontSize = 12, groupButtonsOutline = "NONE", groupButtonsBackground = "card" }
 local setHooks = {}
 local S = { Get = function(k) return settings[k] end }
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLSettings = S,
     THEME = setmetatable({}, { __index = function() return { r = 1, g = 1, b = 1 } end }),
     UI = { AttachMover = function(parent) return Frame("Mover", parent) end,

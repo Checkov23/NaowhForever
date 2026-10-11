@@ -90,7 +90,7 @@ local s = { combat = false, profiles = { Default = {} }, charActive = { [ME] = "
 local buttons, fonts = {}, {}
 
 local Parts = {}
-local ns = { MEDIA = dofile("Tools/regression/core_media.lua"), THEME = T, UI = {},
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), THEME = T, UI = {},
     Shared = { Style = St, Parts = Parts },
     THEME_EDITABLE = EDITABLE, CLASSIC_PLUS = CLASSIC_PLUS,
     ThemePresetKey = function() return "" end,

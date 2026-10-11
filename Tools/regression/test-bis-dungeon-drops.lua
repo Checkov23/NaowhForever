@@ -56,7 +56,7 @@ end
 -- With journal false, the Journal has not loaded.
 local function Fixture(class, level, sources, journal)
     local list = Dungeons()
-    local ns = { BiSData = { sources = sources or {}, specs = {} }, QoLSettings = {},
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, BiSData = { sources = sources or {}, specs = {} }, QoLSettings = {},
         Journal = journal ~= false and { Items = FACTS, Dungeons = function() return list end } or nil }
     Load(RULES, Env(ns, class, level))
     ns.Shared.ItemFacts = FACTS
@@ -197,7 +197,7 @@ for _, id in ipairs({ 5821, 263435, 263436, 270039, 270046, 272996, 276727, 2772
 
 Case("every ranked item has a source, from the Journal's dungeons or wowsrc", function()
     local dungeons = {}
-    local ns = { QoLSettings = {}, Shared = {}, Journal = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = {}, Shared = {}, Journal = {
         AddDungeon = function(_, dungeon) dungeons[#dungeons + 1] = dungeon end,
         Dungeons = function() return dungeons end,
     } }

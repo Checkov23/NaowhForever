@@ -22,7 +22,7 @@ local chunk = assert(loadstring(constants .. Slice("local function ApplyNow()", 
     .. "\n" .. Slice("local reapplyPending")))
 
 local frames, timers, applied = {}, {}, 0
-local ns = {}
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 local env = setmetatable({
     NaowhForever = ns,
     ns = ns,

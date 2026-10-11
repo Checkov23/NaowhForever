@@ -37,7 +37,7 @@ local account = { alts = { ["Realm-Alliance"] = {
 } } }
 
 local post
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLSettings = S, Apply = Noop, QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     AccountSettings = function() return account end,
     Color = function() return "|cff0091edNaowh|r" end,

@@ -28,7 +28,7 @@ Case("late LSM, negative cache, and later sound registration", function()
         RegisterCallback = function(_, event, fn) assert(event == "LibSharedMedia_Registered"); callback = fn end,
         UnregisterCallback = function() end,
     }
-    local env = { UI = ui, LibStub = false, ns = { MEDIA = dofile("Tools/regression/core_media.lua") } }
+    local env = { UI = ui, LibStub = false, ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua") } }
     Eval(widgetConstants .. sharedMedia .. Slice(widgets, "local bundledVoices =", "function ns.SoundChoices()"), env)
     assert(ui.SoundPathFor("sm:later") == nil)
     env.LibStub = function() return provider end
@@ -40,7 +40,7 @@ Case("late LSM, negative cache, and later sound registration", function()
 end)
 
 Case("bundled voices resolve without SharedMedia, and each one is a real Ogg file", function()
-    local ns = { UI = {}, MEDIA = dofile("Tools/regression/core_media.lua") }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, UI = {}, MEDIA = dofile("Tools/regression/core_media.lua") }
     local start = assert(widgets:find("local bundledVoices =", 1, true))
     local chunk = assert(loadstring("local ns = ...; local UI = ns.UI; " .. widgetConstants .. sharedMedia
         .. widgets:sub(start)))

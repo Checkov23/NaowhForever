@@ -73,7 +73,7 @@ for _, key in ipairs({ "Icon", "Arrow", "DistanceText", "IconBorder" }) do gameM
 
 local function Theme() return { r = 0, g = 0.57, b = 0.93 } end
 local routeInfo   -- { title, at, n, next } while a route is followed
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     MEDIA = dofile("Tools/regression/core_media.lua"),
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     QoLSettings = S,

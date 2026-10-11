@@ -21,10 +21,11 @@ for _, key in ipairs({ "townCapitalsOnly", "townMinimap", "townMinimapSpirit", "
 end
 Check(panelSrc:find("local ROWS = ns.TownPinRows", 1, true), "the panel reads the town map's list")
 Check(townSrc:find('key = "townPinSize"', 1, true), "the card keeps Pin Size")
-local pinRows = assert(loadstring("return " .. townSrc:match("local PIN_ROWS = (%b{})")))()
+local pinRows = setfenv(assert(loadstring("return " .. townSrc:match("local PIN_ROWS = (%b{})"))),
+    setmetatable({ ns = { L = dofile("Tools/regression/locale_stub.lua").L } }, { __index = _G }))()
 
 local function RealShared()
-    local holder = {}
+    local holder = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
     local chunk = assert(loadstring(Read("Shared/Shared.lua")))
     setfenv(chunk, setmetatable({ _G = { NaowhForever = holder } }, { __index = _G }))
     chunk()
@@ -61,7 +62,7 @@ do
     local shared = RealShared()
     shared.MapPins = { questSection, ownSection }
     shared.Settings = { Group = Group, Page = function() return { Card = function(_, c) card = c end } end }
-    local cardNs = { QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = own,
+    local cardNs = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = own,
         Apply = function() end, ThemeTint = function() end, TownCapitals = {}, TownNPCs = {}, Shared = shared }
     local cardEnv = setmetatable({ _G = { NaowhForever = cardNs },
         CreateFromMixins = function() return {} end, MapCanvasPinMixin = {}, MapCanvasDataProviderMixin = {},
@@ -126,7 +127,7 @@ do
     end
     local own, ownValues = Store({ townFlight = true })
     local other, otherValues = Store({ mapPins = false })
-    local sns = { THEME = {}, Shared = { Style = dofile("Tools/regression/shared_style.lua") }, UI = {} }
+    local sns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, THEME = {}, Shared = { Style = dofile("Tools/regression/shared_style.lua") }, UI = {} }
     local senv = setmetatable({ _G = { NaowhForever = sns } }, { __index = _G })
     local chunk = assert(loadfile("Shared/Settings/Settings.lua"))
     setfenv(chunk, senv)

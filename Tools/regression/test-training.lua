@@ -21,7 +21,7 @@ local function Fixture(o)
     local known = o.known or {}
     local frames = {}
     local S = { Get = function() return true end, OnChange = function() end }
-    local ns = { TrainingData = DATA, AccountSettings = function() return account end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TrainingData = DATA, AccountSettings = function() return account end,
         UI = { ModuleSettings = function() return S end, RefreshPage = function() refreshes = refreshes + 1 end } }
     local env = {
         NaowhForever = ns,
@@ -169,7 +169,7 @@ Case("buying at a trainer: the new prices and the learned spell refresh the page
 end)
 
 -- What a rank adds, from two ranks' descriptions as the client writes them.
-local upgrades = { NaowhForever = { Training = {} } }
+local upgrades = { NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Training = {} } }
 upgrades._G = upgrades
 Load({ DIR .. "/Constants.lua", DIR .. "/Upgrades.lua" }, setmetatable(upgrades, { __index = _G }))
 local compare = upgrades.NaowhForever.Training.Compare

@@ -846,7 +846,7 @@ env.EllesmereUIDB, env.EllesmereUI = nil, nil
 local function Card(flag)
     local cards = {}
     local store = { Get = function(key) return key ~= "inspectPanelBadge" or flag == 1 end }
-    local flagNs = {
+    local flagNs = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         FEATURE_BADGES = flag, BADGES_LIVE = 1, QoLSettings = store,
         InspectPanel = { EllesmereSheet = function() return false end },
         Shared = { Settings = { Page = function()

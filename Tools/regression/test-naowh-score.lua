@@ -33,7 +33,7 @@ local function Fixture()
         OnChange = function(fn) listeners[#listeners + 1] = fn end,
     }
     state.roster, state.account, state.clock = {}, {}, 2000000000
-    local ns = { QoLSettings = S, Apply = NOTHING, Shared = { ItemFacts = {}, Style = { LOGO_SMALL = "logo" },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = S, Apply = NOTHING, Shared = { ItemFacts = {}, Style = { LOGO_SMALL = "logo" },
         Roster = { AddTooltip = function(fn) state.roster[#state.roster + 1] = fn end },
         Ago = function(when) return (state.clock - when) .. "s ago" end },
         AccountSettings = function() return state.account end,

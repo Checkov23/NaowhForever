@@ -24,7 +24,7 @@ local function Session(settings, account, cvars)
     log.uiErrors = Frame()
     local S = { Get = function(k) return settings[k] end }
     function S.Set(k, v) settings[k] = v end
-    local ns = { QoLSettings = S, AccountSettings = function() return account end }
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = S, AccountSettings = function() return account end }
     function ns.Apply() end
     local env = {
         _G = { NaowhForever = ns },

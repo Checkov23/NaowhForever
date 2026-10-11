@@ -44,7 +44,7 @@ local function boot(settings, units)
         return f
     end
     local St = { TIME_OK_RGB = GREEN, TIME_LOW_RGB = YELLOW, TIME_OUT_RGB = RED, RED_RGB = RED }
-    local ns = { QoLConstants = dofile("Tools/regression/qol_constants.lua"), THEME = { bg = {}, fg = { r = 1, g = 1, b = 1 }, muted = { r = 0.5, g = 0.5, b = 0.5 } },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLConstants = dofile("Tools/regression/qol_constants.lua"), THEME = { bg = {}, fg = { r = 1, g = 1, b = 1 }, muted = { r = 0.5, g = 0.5, b = 0.5 } },
         Font = function(parent)
             local fs = frame("FontString", nil, parent)
             parent.fonts[#parent.fonts + 1] = fs

@@ -832,7 +832,7 @@ local function PanelCard(flag)
         Default = function() return true end,
         OnChange = function() listeners = listeners + 1 end,
     }
-    local flagNs = {
+    local flagNs = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         FEATURE_BADGES = flag, BADGES_LIVE = 1, THEME = ns.THEME, QoLSettings = store,
         CharacterPanel = { EllesmereSheet = function() return false end },
         Shared = { Style = dofile("Tools/regression/shared_style.lua"), Settings = { Page = function()

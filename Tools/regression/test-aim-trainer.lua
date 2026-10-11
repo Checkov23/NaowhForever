@@ -95,7 +95,7 @@ local function fixture(opts)
     function S.Set(k, v) s.settings[k] = v end
     local account = {}
     local card
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"), QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = S, THEME = { accent = { r = 0, g = 0.5, b = 1 }, accentSoft = { r = 0.3, g = 0.7, b = 1 },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = S, THEME = { accent = { r = 0, g = 0.5, b = 1 }, accentSoft = { r = 0.3, g = 0.7, b = 1 },
         bg = { r = 0, g = 0, b = 0 }, panel = { r = 0.1, g = 0.1, b = 0.1 }, fg = { r = 1, g = 1, b = 1 },
         muted = { r = 0.6, g = 0.6, b = 0.6 } } }
     ns.UI = { AttachMover = function(f) local m = new("Frame", f); m.shown = false; return m end,

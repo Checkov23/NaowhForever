@@ -105,7 +105,7 @@ local function Fixture(opts)
     }, noopMeta)
     local cards = {}
 
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLConstants = dofile("Tools/regression/qol_constants.lua"),
         Color = function(token, text) return "|cff" .. HEX[token] .. (text and (text .. "|r") or "") end,
         THEME = { accent = { r = 0, g = 0.57, b = 0.93 }, muted = { r = 0.6, g = 0.6, b = 0.6 },

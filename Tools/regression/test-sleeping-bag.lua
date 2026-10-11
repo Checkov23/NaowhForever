@@ -19,7 +19,7 @@ local function Read(path)
     return text
 end
 
-local ns = {}
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 _G.NaowhForever = ns
 assert(loadstring(Read("NaowhForever_Discovery/Data/SleepingBag.lua")))()
 local data = ns.SleepingBag
@@ -135,7 +135,7 @@ local Library = env.Library
 Library.Waypoint = function(title) waypoints[#waypoints + 1] = title end
 local zone = 1436
 Library.PlayerZone = function() return zone end
-local addon = {
+local addon = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     DiscoverySettings = S, SleepingBag = data, SleepingBagChain = Bag, Library = Library,
     THEME = { muted = GREY, fg = WHITE, accent = BLUE, accentSoft = BLUE },
     UI = { RefreshPage = NOTHING },

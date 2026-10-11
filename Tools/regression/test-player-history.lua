@@ -30,7 +30,7 @@ local function Boot(settings, account, now)
         s.frames[#s.frames + 1] = f
         return f
     end
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         THEME = { accent = { r = 0, g = 0.57, b = 0.93 }, fg = { r = 0.94, g = 0.95, b = 0.95 } },
         Apply = Noop,
         QoLConstants = dofile("Tools/regression/qol_constants.lua"),

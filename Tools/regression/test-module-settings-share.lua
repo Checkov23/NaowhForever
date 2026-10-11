@@ -17,7 +17,7 @@ local function check(label, value) assert(value, label); checks = checks + 1 end
 local root, account = {}, {}
 -- A fresh load of the file, as a reload is: its own registered defaults, the same saved data.
 local function Load()
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"), SettingsRoot = function() return root end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), SettingsRoot = function() return root end,
         AccountSettings = function() return account end }
     local env = setmetatable({ ns = ns, UI = {} }, { __index = _G })
     local chunk = assert(loadstring(code))

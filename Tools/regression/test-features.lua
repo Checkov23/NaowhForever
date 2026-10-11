@@ -12,7 +12,7 @@ local function Read(path)
     return s
 end
 
-local ns = {}
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 _G.NaowhForever = ns
 assert(loadstring(Read("Core/Features.lua"), "Features"))()
 

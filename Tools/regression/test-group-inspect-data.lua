@@ -71,7 +71,7 @@ local function Fixture()
         TheirRank = function(guid, slot) if guid == state.bisGUID and slot == 1 then return 1 end end,
         RunsNaowh = function(guid) return guid == state.nfGUID end,
     }
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLSettings = S, Apply = NOTHING, InspectPanel = IP,
         THEME = setmetatable({}, { __index = function() return { r = 1, g = 1, b = 1 } end }),
         StatWeights = { TreeSpec = function(_, i) return WARRIOR_TREES[i] end },

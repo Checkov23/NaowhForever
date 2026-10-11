@@ -35,7 +35,7 @@ local function boot(settings)
         function f:SetValue(v) self.value = v end
         return f
     end
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"), QoLConstants = dofile("Tools/regression/qol_constants.lua"), THEME = { bg = {}, accent = { r = 0, g = 0.5, b = 1 } },
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), QoLConstants = dofile("Tools/regression/qol_constants.lua"), THEME = { bg = {}, accent = { r = 0, g = 0.5, b = 1 } },
         Font = function(parent)
             local fs = frame("FontString", nil, parent)
             parent.fonts[#parent.fonts + 1] = fs

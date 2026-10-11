@@ -37,7 +37,7 @@ local secure = { ["/CAST"] = true, ["/USE"] = true, ["/TARGET"] = true }
 -- has moved them there.
 local proxy = {}
 local env = {
-    NaowhForever = {
+    NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLSettings = {
             Get = function(key) return settings[key] end,
             DB = function() return db end,

@@ -20,8 +20,8 @@ local function Fixture(o)
     local bought, commits = {}, 0
     -- A stand-in codec: what goes into the payload and what comes back out is the point here.
     local vault = {}
-    local env = {
-        ns = {
+    local env = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+        ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
             TrainingBuilds = TREE,
             Print = function(m) printed[#printed + 1] = m end,
             Confirm = function(_, yes) yes() end,
@@ -245,7 +245,7 @@ end)
 
 Case("every class has its tree, and any build that ships passes the rules", function()
     local data = assert(io.open(DIR .. "/Data/TrainingBuilds.lua", "rb")):read("*a")
-    local ns = {}
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
     local chunk = assert(loadstring(data)); setfenv(chunk, { _G = { NaowhForever = ns } }); chunk()
     local t, classes = Fixture(), 0
     for class, tree in pairs(ns.TrainingBuilds) do

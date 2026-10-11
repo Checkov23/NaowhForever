@@ -86,7 +86,7 @@ local function Fixture(opts)
     function Q.DB() return qol end
     function Q.OnChange() end
     local mover
-    local ns = {
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         -- The Consumable Bar module, loaded before QoL (its OptionalDeps) when it is on.
         ConsumableBar = opts.consumableBarLoaded and {} or nil,
         QoLSettings = Q,

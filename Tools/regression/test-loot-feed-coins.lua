@@ -44,7 +44,7 @@ local S = { Get = function(k) return defaults[k] end, Set = function(k, v) defau
 
 local THEME = { fg = { r = 1, g = 1, b = 1 }, muted = { r = 0.6, g = 0.6, b = 0.6 },
     accent = { r = 0, g = 0.57, b = 0.93 }, bg = { r = 0, g = 0, b = 0 } }
-local ns = {
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     QoLSettings = S, THEME = THEME,
     Apply = function() end, ShowUnlockMode = function() end, HideUnlockMode = function() end,

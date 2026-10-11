@@ -30,7 +30,7 @@ local function Load(path, settings)
         for _, fn in ipairs(hooks) do fn(k) end
     end
     local fonts = {}
-    local ns = { MEDIA = dofile("Tools/regression/core_media.lua"),
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
         AuraBuffSettings = S, ProfessionSettings = S, THEME = { accentSoft = {}, muted = {} },
         HEALTHSTONES = { 5509 }, HEALING_POTIONS = { 13446 },
         Apply = NOTHING, ShowUnlockMode = NOTHING, HideUnlockMode = NOTHING,
