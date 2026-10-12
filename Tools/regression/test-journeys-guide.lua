@@ -46,6 +46,7 @@ local ns = {
         [104] = { { IRONFORGE, 50, 50 }, { { DARNASSUS, 50, 50 }, { IRONFORGE, 50, 50 } } },
         [105] = { { DARNASSUS, 50, 50 }, { { IRONFORGE, 50, 50 } } },
     },
+    L = dofile("Tools/regression/locale_stub.lua").L,
     Print = function(msg) printed[#printed + 1] = msg end,
     WaypointPinOn = function() return true end,
     AccountSettings = function() return account end,
