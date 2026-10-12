@@ -28,7 +28,7 @@ local TEXT_BATTLEGROUNDS = ns.L("Battlegrounds")
 local TEXT_NEW = ns.L("New in Forever")
 local TEXT_CLASSIC = ns.L("Classic")
 local GROUPS = {
-    reputation = { TEXT_NEW, TEXT_CLASSIC, ns.L("Cities"), "Steamwheedle Cartel", TEXT_UNRELEASED },
+    reputation = { TEXT_NEW, TEXT_CLASSIC, "Cities", "Steamwheedle Cartel", TEXT_UNRELEASED },
     pvp = { TEXT_YOUR_RANK, TEXT_BATTLEGROUNDS },
 }
 local TEXT_YOUR_PVP_RANK = ns.L("Your PvP Rank")
@@ -316,7 +316,7 @@ function List.Build(parent, select)
     scroll, content = LP.NewScroll(parent)
     for _, titles in pairs(GROUPS) do
         for _, title in ipairs(titles) do
-            headers[title] = LP.Header(content, title, title == TEXT_UNRELEASED and HeaderClicked or nil)
+            headers[title] = LP.Header(content, ns.L(title), title == TEXT_UNRELEASED and HeaderClicked or nil)
         end
     end
     rows[1] = Row(content, J.RANK)
