@@ -18978,6 +18978,15 @@
   "slot": 6,
   "subclass": 3
  },
+ "item:273024": {
+  "class": 4,
+  "id": 273024,
+  "level": 31,
+  "quality": 3,
+  "reqlevel": 26,
+  "slot": 8,
+  "subclass": 1
+ },
  "item:273025": {
   "class": 4,
   "id": 273025,
@@ -19023,6 +19032,123 @@
   "slot": 15,
   "subclass": 3
  },
+ "item:273030": {
+  "class": 4,
+  "id": 273030,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 11,
+  "subclass": -2
+ },
+ "item:273032": {
+  "class": 4,
+  "id": 273032,
+  "level": 31,
+  "quality": 3,
+  "reqlevel": 25,
+  "slot": 11,
+  "subclass": -2
+ },
+ "item:273034": {
+  "class": 4,
+  "id": 273034,
+  "level": 32,
+  "quality": 3,
+  "reqlevel": 27,
+  "slot": 10,
+  "subclass": 1
+ },
+ "item:273035": {
+  "class": 4,
+  "id": 273035,
+  "level": 32,
+  "quality": 3,
+  "reqlevel": 27,
+  "slot": 5,
+  "subclass": 3
+ },
+ "item:273036": {
+  "class": 4,
+  "id": 273036,
+  "level": 31,
+  "quality": 3,
+  "reqlevel": 26,
+  "slot": 9,
+  "subclass": 1
+ },
+ "item:273037": {
+  "class": 2,
+  "id": 273037,
+  "level": 34,
+  "quality": 3,
+  "reqlevel": 29,
+  "slot": 17,
+  "subclass": 6
+ },
+ "item:273038": {
+  "class": 4,
+  "id": 273038,
+  "level": 34,
+  "quality": 3,
+  "reqlevel": 29,
+  "slot": 5,
+  "subclass": 2
+ },
+ "item:273039": {
+  "class": 4,
+  "id": 273039,
+  "level": 34,
+  "quality": 3,
+  "reqlevel": 29,
+  "slot": 6,
+  "subclass": 1
+ },
+ "item:273040": {
+  "class": 2,
+  "id": 273040,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 17,
+  "subclass": 10
+ },
+ "item:273041": {
+  "class": 4,
+  "id": 273041,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 6,
+  "subclass": 2
+ },
+ "item:273042": {
+  "class": 4,
+  "id": 273042,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 8,
+  "subclass": 3
+ },
+ "item:273043": {
+  "class": 2,
+  "id": 273043,
+  "level": 32,
+  "quality": 3,
+  "reqlevel": 27,
+  "slot": 15,
+  "subclass": 19
+ },
+ "item:273044": {
+  "class": 4,
+  "id": 273044,
+  "level": 32,
+  "quality": 3,
+  "reqlevel": 27,
+  "slot": 5,
+  "subclass": 1
+ },
  "item:273045": {
   "class": 4,
   "id": 273045,
@@ -19041,6 +19167,33 @@
   "slot": 17,
   "subclass": 1
  },
+ "item:273047": {
+  "class": 4,
+  "id": 273047,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 3,
+  "subclass": 2
+ },
+ "item:273048": {
+  "class": 4,
+  "id": 273048,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 7,
+  "subclass": 3
+ },
+ "item:273049": {
+  "class": 4,
+  "id": 273049,
+  "level": 35,
+  "quality": 3,
+  "reqlevel": 30,
+  "slot": 2,
+  "subclass": -3
+ },
  "item:273052": {
   "class": 4,
   "id": 273052,
@@ -19049,6 +19202,33 @@
   "reqlevel": 30,
   "slot": 23,
   "subclass": -5
+ },
+ "item:273053": {
+  "class": 2,
+  "id": 273053,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 21,
+  "subclass": 15
+ },
+ "item:273054": {
+  "class": 4,
+  "id": 273054,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 10,
+  "subclass": 2
+ },
+ "item:273055": {
+  "class": 4,
+  "id": 273055,
+  "level": 33,
+  "quality": 3,
+  "reqlevel": 28,
+  "slot": 14,
+  "subclass": 6
  },
  "item:273084": {
   "class": 4,
@@ -20031,6 +20211,15 @@
   "slot": 14,
   "subclass": 6
  },
+ "item:6695": {
+  "class": 4,
+  "id": 6695,
+  "level": 34,
+  "quality": 3,
+  "reqlevel": 29,
+  "slot": 2,
+  "subclass": -3
+ },
  "item:6696": {
   "class": 2,
   "id": 6696,
@@ -20588,6 +20777,15 @@
   "reqlevel": 40,
   "slot": 9,
   "subclass": 4
+ },
+ "item:9446": {
+  "class": 2,
+  "id": 9446,
+  "level": 34,
+  "quality": 3,
+  "reqlevel": 29,
+  "slot": 21,
+  "subclass": 7
  },
  "item:9447": {
   "class": 4,

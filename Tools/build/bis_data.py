@@ -134,9 +134,17 @@ OFFLINE = "--offline" in sys.argv
 game_rows = None
 
 
+def same_else_one(exact, other_quality):
+    """The matches of the item's quality; with none, the one match of another quality. wowsrc
+    shows some greens as blue (Energized Stone Circle, Doomsayer's Robe: green in the game's
+    table and on Wowhead, at the item level wowsrc gives), and a name, icon and item level that
+    fit one item are that item. Two of another quality stay unsettled."""
+    return exact or (other_quality if len(other_quality) == 1 else [])
+
+
 def game_lookup(item):
     """The Forever items with the item's name, quality and item level, from the game's own item
-    table (the --offline build)."""
+    table (the --offline build); same_else_one when the quality is wowsrc's slip."""
     global game_rows
     if game_rows is None:
         import wago
@@ -151,9 +159,10 @@ def game_lookup(item):
                 if r["ID"] in forever and r["ID"] not in seen:
                     seen.add(r["ID"])
                     game_rows.setdefault(r.get("Display_lang", "").lower(), []).append(r)
-    return [int(r["ID"]) for r in game_rows.get(item["name"].lower(), [])
-            if int(r["OverallQualityID"]) == item["quality"]
-            and (not item["ilvl"] or int(r["ItemLevel"]) == item["ilvl"])]
+    rows = [r for r in game_rows.get(item["name"].lower(), [])
+            if not item["ilvl"] or int(r["ItemLevel"]) == item["ilvl"]]
+    return same_else_one([int(r["ID"]) for r in rows if int(r["OverallQualityID"]) == item["quality"]],
+                         [int(r["ID"]) for r in rows if int(r["OverallQualityID"]) != item["quality"]])
 
 
 def lookup(item):
@@ -162,18 +171,18 @@ def lookup(item):
     url = ("https://www.wowhead.com/forever/search/suggestions-template?q="
            + urllib.parse.quote(item["name"]))
     results = json.loads(fetch(url)).get("results", [])
-    matches = []
+    exact, other_quality = [], []
     for r in results:
         if r.get("type") != 3 or r.get("name", "").lower() != item["name"].lower():
             continue
-        if r.get("quality") != item["quality"] or r.get("icon") != item["icon"]:
+        if r.get("icon") != item["icon"]:
             continue
         ilvl = re.search(r"item level (\d+)", r.get("pinDescription", ""))
         if item["ilvl"] and ilvl and int(ilvl.group(1)) != item["ilvl"]:
             continue
-        matches.append(r["id"])
+        (exact if r.get("quality") == item["quality"] else other_quality).append(r["id"])
     time.sleep(1)
-    return matches
+    return same_else_one(exact, other_quality)
 
 
 def listview(page, lv_id):

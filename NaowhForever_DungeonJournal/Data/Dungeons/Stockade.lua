@@ -13,7 +13,7 @@ ns.Journal.AddDungeon("Stockade", {
             { npc = 1716, name = "Bazil Thredd", model = 1621, encounters = { 2760 }, loot = { 273824, 273825, 273827, 273829 } },
             { npc = 1663, name = "Dextren Ward", model = 2149, encounters = { 2759 }, loot = { 273817, 273819, 273820 } },
             { npc = 1720, name = "Bruegal Ironknuckle", model = 2142, rare = true, loot = { 3228, 2941, 2942 }, chance = { 56, 19, 18 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 274092, 1076 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 1076, 274092 } },
         } },
     },
 })

@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Threat Meter
 ## Notes: Your threat on the target and the nameplates around you.
 ## Author: Naowh
-## Version: 1.1.8
+## Version: 1.1.9
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

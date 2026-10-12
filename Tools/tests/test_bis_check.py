@@ -3,6 +3,7 @@ list a pull request shows (Tools/sources/wowsrc.py). Offline, made-up data. From
 
     python -m unittest discover -s Tools/tests
 """
+import json
 import os
 import re
 import sys
@@ -78,6 +79,48 @@ class ShortList(unittest.TestCase):
         self.assertEqual(wowsrc.shortened(found), found, "no run to link: all of it")
         os.environ.update(self.RUN)
         self.assertEqual(wowsrc.shortened(found[:5]), found[:5])
+
+
+class Lookup(unittest.TestCase):
+    """An item's ID from its name: of its quality first; wowsrc shows some greens as blue, and
+    then the one item of another quality with that name, icon and item level is it."""
+
+    def setUp(self):
+        self.saved = (bis_data.game_rows, bis_data.fetch, bis_data.time.sleep, bis_data.OFFLINE)
+        bis_data.time.sleep = lambda _: None
+
+    def tearDown(self):
+        bis_data.game_rows, bis_data.fetch, bis_data.time.sleep, bis_data.OFFLINE = self.saved
+
+    @staticmethod
+    def rows(*found):
+        return {"energized stone circle": [{"ID": str(i), "OverallQualityID": str(q), "ItemLevel": str(lvl)}
+                                           for i, q, lvl in found]}
+
+    def test_offline_the_game_table_settles_a_green_shown_as_blue(self):
+        bis_data.game_rows = self.rows((9522, 2, 38))
+        self.assertEqual(bis_data.game_lookup(item("Energized Stone Circle", quality=3, ilvl=38)), [9522])
+
+    def test_offline_its_own_quality_wins(self):
+        bis_data.game_rows = self.rows((9522, 2, 38), (99999, 3, 38))
+        self.assertEqual(bis_data.game_lookup(item("Energized Stone Circle", quality=3, ilvl=38)), [99999])
+
+    def test_offline_two_of_another_quality_stay_unsettled(self):
+        bis_data.game_rows = self.rows((9522, 2, 38), (99998, 4, 38))
+        self.assertEqual(bis_data.game_lookup(item("Energized Stone Circle", quality=3, ilvl=38)), [])
+
+    def test_offline_another_item_level_is_not_it(self):
+        bis_data.game_rows = self.rows((9522, 2, 36))
+        self.assertEqual(bis_data.game_lookup(item("Energized Stone Circle", quality=3, ilvl=38)), [])
+
+    def test_wowhead_settles_a_green_shown_as_blue(self):
+        bis_data.OFFLINE = False
+        found = {"results": [{"type": 3, "id": 9522, "name": "Energized Stone Circle", "quality": 2,
+                              "icon": "inv_shield_10", "pinDescription": "This green shield of item level 38 goes"}]}
+        bis_data.fetch = lambda url: json.dumps(found)
+        wanted = item("Energized Stone Circle", quality=3, ilvl=38, icon="inv_shield_10")
+        self.assertEqual(bis_data.lookup(wanted), [9522])
+        self.assertEqual(bis_data.lookup(dict(wanted, icon="inv_shield_11")), [], "another icon is another item")
 
 
 if __name__ == "__main__":

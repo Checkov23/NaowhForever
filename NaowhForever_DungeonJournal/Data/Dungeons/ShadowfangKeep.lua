@@ -15,7 +15,7 @@ ns.Journal.AddDungeon("ShadowfangKeep", {
             { npc = 4274, name = "Fenrus the Devourer", model = 2352, encounters = { 2753 }, loot = { 6340, 3230, 273646 }, chance = { 72, 17, 0 } },
             { npc = 3927, name = "Wolf Master Nandos", model = 11179, encounters = { 2754 }, loot = { 3748, 6314, 273647 }, chance = { 57, 38, 0 } },
             { npc = 4275, name = "Archmage Arugal", model = 2353, encounters = { 2755 }, loot = { 6324, 6392, 6220 }, chance = { 35, 35, 18 } },
-            { npc = 3872, name = "Deathsworn Captain", model = 3224, rare = true, loot = { 6641, 6642, 2205 }, chance = { 57, 34, 2 } },
+            { npc = 3872, name = "Deathsworn Captain", model = 3224, rare = true, loot = { 6641, 6642 }, chance = { 57, 34 } },
             { npc = 3864, name = "Fel Steed", model = 1951, rare = true, loot = { 6341 }, chance = { 7 } },
             { npc = 14682, name = "Sever", model = 1061, optional = true, loot = { 23173, 23171 }, chance = { 51, 44 } },
             { npc = 4627, name = "Arugal's Voidwalker", model = 1131, optional = true, loot = { 5943 } },
