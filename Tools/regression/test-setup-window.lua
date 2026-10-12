@@ -365,7 +365,7 @@ end
 local MINIMALIST = "Quality of Life,Dungeon Journal,BiS List,Training Planner,Blessings,Professions,Macros,Action Bars,"
     .. "AuraBuffs,Threat Meter,PvP,Top Bar"
 local MINIMALIST_ON = #w.MODULES - #w.ns.PRESETS.minimalist.modulesOff
-check("Minimalist: all but its six", Picked() == MINIMALIST
+check("Minimalist: all but its seven", Picked() == MINIMALIST
     and Said(MINIMALIST_ON .. " of " .. #w.MODULES .. " on") ~= nil)
 check("three to a row", tiles[1].point[5] == tiles[3].point[5] and tiles[4].point[5] ~= tiles[1].point[5])
 local completo, topBar, qol = Tile("Discovery"), Tile("Top Bar"), Tile("Quality of Life")

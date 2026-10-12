@@ -7,7 +7,7 @@ Completo on turns Discovery on. The Quest List window's Overview tab, where it o
 Its Quests tab has every quest of every zone for your character, how many you have done per zone, and for each quest chain the step
 you are on; its Rares tab every rare of every zone and which of them this character has killed.
 Map Pins put a ! on the world map at each quest giver with a quest for you, and a star where each
-rare spawns; Rare Alerts warn you when a rare is near. Off by default, every feature too: players
+rare spawns; Rare Alerts warn you when a rare is near, and a left-click on the alert targets it. Off by default, every feature too: players
 turn it on in Discovery's settings pages (Discovery/Quest List and Discovery/Rares).
 
 ## Layout
@@ -39,13 +39,14 @@ NaowhForever_Discovery/QuestList/
     DropRow.lua               a rare's drop, under it while open
     AlertCard.lua             the Rare Alert's card, live or in its preview (Completo.AlertCard)
   UI/
-    RareAlert.lua             the alert on screen: seeing a rare, the card, its place (Completo.RareAlert)
+    RareAlert.lua             the alert on screen: seeing a rare, the card, its place, its click that
+                              targets the rare (Completo.RareAlert)
     Window.lua                the Quest List window (its key binding) and its three tabs
     QuestPins.lua, .xml       the quest giver pins on the world map, and their template
     RarePins.lua, .xml        the rare stars on the world map, and their template
     GeneralSettings.lua       the key binding and window cards, on the Discovery/Quest List page
-    QuestsSettings.lua        the quest cards on the Discovery/Quest List page, and the quest pins on Map Options and Pins
-    RaresSettings.lua         the Discovery/Rares settings page, with the alert's live preview, and the rare pins on Map Options and Pins
+    QuestsSettings.lua        the quest cards on the Discovery/Quest List page, and the quest pins on QoL > Map & Pins
+    RaresSettings.lua         the Discovery/Rares settings page, with the alert's live preview, and the rare pins on QoL > Map & Pins
 ```
 
 Each layer only uses the ones above it: `Data` fills the rules, `View` draws what they decide,
@@ -107,8 +108,10 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   Our pins want their clicks, so there is nothing to pass through.
 - The pin mixins are globals so the XML templates can name them.
 - Quest and rare pins scale with `ns.Shared.ScalePin`, so they keep one size on screen however far
-  the map is zoomed, in the small map's window and on the full screen map alike.
-- Their switches, Pin Sizes and options are rows on QoL's Map Options and Pins card and in its world map drawer
+  the map is zoomed, in the small map's window and on the full screen map alike. Quest pins take
+  `QUEST_PIN_SCALE` (0.5) of it and rares `RARE_PIN_SCALE` (0.75), so at 20, the default every map pin
+  shares (`PIN_SIZE_DEFAULT`), each is the size that reads best: the same number sizes every kind of pin alike.
+- Their switches, Pin Sizes and options are rows on the Map Pins card of QoL's Map & Pins tab
   (`ns.Shared.MapPins`), with every other map pin; the keys stay in Completo's store.
 - Quest pins redraw on a quest taken, handed in or dropped, and on a level up (which turns some
   grey and lets others be picked up). A giver whose quests are all repeatable gets the game's blue
@@ -131,6 +134,14 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
 - Completo never marks a rare: raid marks are Blizzard-only on Forever (`SetRaidTarget` has
   `HasRestrictions`), so an addon calling it is blocked. A marking feature would need a secure
   click button running the game's `/tm`.
+- Targeting is protected too, so a left-click on the alert targets its rare through a secure
+  button running `/targetexact` and the rare's name. It is laid over the card, all but its pin,
+  only while the pointer is on the card, and draws nothing, so the card looks and reads as it did.
+- That button is a frame of its own on UIParent, placed where the card is but neither its child
+  nor anchored to it: either would make the card protected, so it could not show or hide in combat.
+- Its macro is set and it is shown only out of combat; it hides when combat starts, before the
+  lockdown, so in combat a left-click on the card does nothing. A right-click on it closes the
+  card, as on the card itself. It is made the first time the card is hovered.
 - The sounds offered are the game's: SOUNDKIT names (left out where the client lacks one), kit IDs
   for the flag sounds SOUNDKIT has no name for, and the sound file IDs rare scanners use, the
   Gruntling Horn first. The addon's spoken lines and the error collector's sound are left out. A

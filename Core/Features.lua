@@ -66,7 +66,6 @@ ns.FEATURES = {
         mapUnexplored = true,
         zoneLevels = false,
         mapSkyborne = false,
-        mapSize = false,
         gearSets = true,
         gearBarVisible = true,
         trinketBar = false,
@@ -186,6 +185,9 @@ ns.FEATURES = {
         enabled = true,
         focusEnabled = false,
         warnSound = false,
+    },
+    damageMeter = {
+        enabled = false,
     },
     pvp = {
         enabled = false,

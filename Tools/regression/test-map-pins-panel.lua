@@ -1,7 +1,8 @@
--- Run with Lua 5.1 from the repository root: the Map Options and Pins panel on the world map.
--- Every town pin switch is on the panel and on the options card, both drawn from one list, with
--- Town Pins and Town Pin Size on the card. Other modules' and QoL's own rows (ns.Shared.MapPins,
--- in order) follow on both, and the button shows whenever QoL is on.
+-- Run with Lua 5.1 from the repository root: the Town Pins drawer on the world map, and the Map & Pins tab.
+-- The panel holds the town pins only, drawn from TownMap's list; their switches are not on the tab.
+-- QoL's Map & Pins tab has the rest: a Map Options card and a Map Pins card with Town Pin Size and
+-- each module's rows (ns.Shared.MapPins, in order, under their titles). The button shows whenever
+-- QoL is on.
 local function Read(path)
     local f = assert(io.open(path, "rb"))
     local s = f:read("*a"):gsub("\r\n", "\n"); f:close()
@@ -23,6 +24,11 @@ Check(panelSrc:find("local ROWS = ns.TownPinRows", 1, true), "the panel reads th
 Check(townSrc:find('key = "townPinSize"', 1, true), "the card keeps Pin Size")
 local pinRows = setfenv(assert(loadstring("return " .. townSrc:match("local PIN_ROWS = (%b{})"))),
     setmetatable({ ns = { L = dofile("Tools/regression/locale_stub.lua").L } }, { __index = _G }))()
+Check(townSrc:find('key = "townStable", text = ns.L("Stable Masters"), tip = ns.L("Hunters only."), class = STABLE_CLASS', 1, true),
+    "Stable Masters is a hunter's row")
+for _, row in ipairs(pinRows) do
+    if row.key == "townStable" then row.class = "HUNTER" end
+end
 
 local function RealShared()
     local holder = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
@@ -52,16 +58,22 @@ local questSection = { title = "Quests", store = questStore, switch = "mapPins",
 
 local pinTexts
 do
-    local card
+    local cards = {}
     local function Group(title) return { group = title } end
     local own = {}
-    local ownSection = { order = 11, store = own, switch = "mapSize", rows = {
-        { key = "mapSize", label = "Map Window", toggle = true, store = own },
-        { key = "mapSizePercent", label = "Map Scale", slider = { 50, 150, 5 }, store = own, needs = "mapSize" },
+    local ownSection = { map = true, title = "Map", order = 11, store = own, switch = "mapUnexplored", rows = {
+        { key = "mapUnexplored", label = "Unexplored Areas", toggle = true, store = own },
+        { key = "mapUnexploredDark", label = "Unexplored Darkness", slider = { 0, 100, 5 }, store = own,
+          needs = "mapUnexplored" },
     } }
     local shared = RealShared()
-    shared.MapPins = { questSection, ownSection }
-    shared.Settings = { Group = Group, Page = function() return { Card = function(_, c) card = c end } end }
+    local hiddenSection = { title = "Skyborne", store = own, switch = "mapSkyborne", hidden = function() return true end,
+        rows = { { key = "mapSkyborne", label = "Skyborne Spots", toggle = true, store = own } } }
+    shared.MapPins = { questSection, ownSection, hiddenSection }
+    shared.Style = dofile("Tools/regression/shared_style.lua")
+    shared.Settings = { Group = Group, Page = function(key)
+        return { Card = function(_, c) c.pageKey = key; cards[c.id] = c end }
+    end }
     local cardNs = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLConstants = dofile("Tools/regression/qol_constants.lua"), QoLSettings = own,
         Apply = function() end, ThemeTint = function() end, TownCapitals = {}, TownNPCs = {}, Shared = shared }
     local cardEnv = setmetatable({ _G = { NaowhForever = cardNs },
@@ -72,46 +84,38 @@ do
     local chunk = assert(loadstring(townSrc))
     setfenv(chunk, cardEnv)
     chunk()
-    local labels, groups = {}, {}
+    local card, mapCard = cards.townMap, cards.mapOptions
+    Check(card and mapCard and card.pageKey == "QoL/Map & Pins" and mapCard.pageKey == "QoL/Map & Pins",
+        "two cards on QoL's Map & Pins tab: Map Options and Map Pins")
+    Check(mapCard.order < card.order and not card.switch and not mapCard.switch,
+        "map options first, and neither has a switch of its own")
     local rows = card.rows()
     for _, row in ipairs(rows) do
-        if row.group then groups[#groups + 1] = row.group elseif row.toggle then labels[row.key] = row.label end
+        Check(not (row.key and row.key:find("^town") and row.toggle),
+            "no town switch on the card, they are on the map: " .. tostring(row.key))
     end
-    for _, row in ipairs(pinRows) do
-        if row.key then Check(labels[row.key] == row.text, "the card has the panel's toggle: " .. row.key) end
-    end
-    Check(groups[1] == "Town" and groups[2] == "Town options" and groups[3] == "Show in town",
-        "the town rows are grouped as the drawer groups them")
-    Check(rows[2].key == "townMap" and rows[3].key == "townPinSize" and rows[3].needs == "townMap",
-        "Town Pins first, then the size, which waits for it")
-    Check(rows[5].needs == "townMap" and not rows[2].needs, "the town rows wait for Town Pins, which itself does not")
-    Check(groups[4] == "Quests", "the sections follow under their own titles")
-    local lastRow = rows[#rows]
-    Check(lastRow == questSection.rows[5] and rows[#rows - 4] == questSection.rows[1],
-        "a module's rows as it declared them, after the QoL ones")
-    Check(lastRow.lent and not rows[1].lent, "lent to the card: its Reset and changed count leave them alone")
-    local ownAt, questAt
-    for i, row in ipairs(rows) do
-        if row == ownSection.rows[1] then ownAt = i end
-        if row == questSection.rows[1] then questAt = i end
-    end
-    Check(ownAt and questAt and ownAt < questAt, "QoL's own section comes first, by its order")
-    Check(not ownSection.rows[1].lent and not ownSection.rows[2].lent, "its rows are the card's own store's: Reset takes them")
-    Check(rows[ownAt - 1].group == nil, "so it follows the last town row directly")
+    Check(rows[1].group == "Town" and rows[2].key == "townPinSize" and rows[2].needs == "townMap" and rows[2].why,
+        "Town Pin Size under Town, waiting for Town Pins with its reason")
+    Check(rows[3].group == "Quests" and rows[4] == questSection.rows[1] and rows[8] == questSection.rows[5]
+        and #rows == 8, "a module's rows under its title, its switches with them, and a hidden one left out")
+    Check(rows[4].lent and not rows[2].lent, "lent to the card: its Reset and changed count leave them alone")
+    local mapRows = mapCard.rows()
+    Check(#mapRows == 2 and mapRows[1] == ownSection.rows[1] and mapRows[2] == ownSection.rows[2],
+        "Map Options: the map sections' rows, switch and all, without their title")
+    Check(not mapRows[1].lent, "QoL's own rows are the card's own store's: Reset takes them")
     pinTexts = cardNs.TownPinTexts
     Check(pinTexts.group and pinTexts.switch and pinTexts.tip, "the drawer's town texts are named, not positional")
     Check(cardNs.TownPinRows ~= nil, "the list is shared with the panel")
-    local Search = dofile("Tools/regression/settings_search.lua")({ ["QoL/Interface"] = { card } })
+    local Search = dofile("Tools/regression/settings_search.lua")({ ["QoL/Map & Pins"] = { card, mapCard } })
     local hit = Search("flight master")[1]
-    Check(hit and hit.label == "Flight Masters" and hit.card == "QoL/Interface:townMap",
-        "the options search finds a pin by name")
+    Check(hit and hit.card == "QoL/Map & Pins:townMap", "the options search still leads a pin's name to the card")
     hit = Search("graveyard")[1]
-    Check(hit and hit.card == "QoL/Interface:townMap", "and the card by its search words")
-    hit = Search("quest givers")[1]
-    Check(hit and hit.label == "Quest Givers" and hit.card == "QoL/Interface:townMap",
-        "and a module's pin row on it")
-    hit = Search("map window")[1]
-    Check(hit and hit.label == "Map Window" and hit.card == "QoL/Interface:townMap", "and QoL's own map options")
+    Check(hit and hit.card == "QoL/Map & Pins:townMap", "and its search words")
+    hit = Search("quest pin size")[1]
+    Check(hit and hit.label == "Quest Pin Size" and hit.card == "QoL/Map & Pins:townMap", "a module's size on it")
+    hit = Search("unexplored darkness")[1]
+    Check(hit and hit.label == "Unexplored Darkness" and hit.card == "QoL/Map & Pins:mapOptions",
+        "and a map option on the other card")
 end
 -- A card's Reset and changed count skip rows lent to it from another module's store.
 do
@@ -148,7 +152,7 @@ Check(Read("NaowhForever_QoL/Interface/TownMap.xml"):find('<Script file="MapPins
 local settings = { enabled = true, townMap = false }
 local canvasHeight = 600
 local S = { Get = function(key) return settings[key] end, Set = function(key, v) settings[key] = v end }
-local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = S, TownPinRows = pinRows, Apply = function() end, THEME = { bg = {}, line = {}, accent = {}, accentSoft = {}, panel = {}, fg = {} }, UI = {} }
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = S, TownPinRows = pinRows, Apply = function() end, THEME = { bg = {}, line = {}, accent = {}, accentSoft = {}, panel = {}, fg = {}, muted = {} }, UI = {} }
 local made, boot, button, panel = 0, nil, nil, nil
 local mapLeft, maximized, mapHeight = 500, false, 700
 local canvasLeft = 350
@@ -203,6 +207,15 @@ end
 local scroll = { SetPoint = function() end, SetScript = function() end, bar = { SetFrameLevel = function() end },
     SetScrollChild = function(self, child) self.child = child end }
 ns.UI.SlimScroll = function() return scroll end
+local slider
+ns.UI.BuildSliderCore = function()
+    local box = { SetPoint = function() end, SetAlpha = function(self, a) self.alpha = a end,
+        EnableMouse = function(self, on) self.mouse = on end, ClearFocus = function(self) self.cleared = true end }
+    slider = { SetPoint = function() end, _refreshValue = function() end, _valBox = box,
+        SetAlpha = function(self, a) self.alpha = a end, EnableMouse = function(self, on) self.mouse = on end }
+    return slider, box
+end
+ns.TownPinRange = { 10, 28, 1 }
 local env = setmetatable({
     _G = { NaowhForever = ns },
     CreateFrame = function(kind)
@@ -212,6 +225,7 @@ local env = setmetatable({
         else boot = f end
         return f
     end,
+    UnitClass = function() return "Mage", "MAGE" end,
     hooksecurefunc = function(t, name, fn)
         local old = t[name]
         t[name] = function(...) old(...); fn(...) end
@@ -243,29 +257,16 @@ local map = env.WorldMapFrame
 button.scripts.OnClick()
 Check(panel and panel.shown, "the button opens the drawer")
 local towns = 0
-for _, row in ipairs(pinRows) do if row.key then towns = towns + 1 end end
-Check(#toggles == 1 + towns + 4, "a Town Pins switch, every town row, and the module's switches only")
-local quest, grey, chains, repeatable = toggles[#toggles - 3], toggles[#toggles - 2], toggles[#toggles - 1], toggles[#toggles]
+for _, row in ipairs(pinRows) do if row.key and not row.class then towns = towns + 1 end end
+Check(#toggles == 1 + towns, "a Town Pins switch and every town row, nothing from other modules; a mage has no Stable Masters")
 local flight = toggles[2]
-quest.set(true)
-Check(questStore.values.mapPins == true and settings.mapPins == nil and quest.get(),
-    "a module's switch reads and writes its own store")
-Check(grey.alpha == 1 and grey.mouse, "a row whose parent is on can be used")
-questStore.Set("mapPins", false)
-Check(grey.alpha == 0.35 and grey.mouse == false and quest.alpha == 1,
-    "the open drawer follows the module's store: a row whose parent is off is dimmed and locked")
-Check(chains.alpha == 0.35 and chains.mouse == false, "a row that names its parent by key is too")
-Check(repeatable.alpha == 0.35 and repeatable.mouse == false, "and one that names several")
-questStore.Set("enabled", false)
-Check(quest.mouse == false, "the module off: its switch too")
-questStore.Set("enabled", true)
-quest.set(true)
 toggles[1].set(false)
 Check(panel.shown and flight.mouse == false and toggles[1].mouse == nil,
     "Town Pins off: the town rows are dimmed, its own switch stays")
+Check(slider.alpha == 0.35 and slider.mouse == false and slider._valBox.alpha == 0.35
+    and slider._valBox.mouse == false and slider._valBox.cleared, "Town Pin Size too, its number box with it")
 toggles[1].set(true)
-Check(flight.mouse == true, "and back")
-quest.set(false)
+Check(flight.mouse == true and slider._valBox.alpha == 1 and slider._valBox.mouse == true, "and back")
 toggles[1].set(false)
 Check(button.shown and panel.shown, "everything off: the button and drawer stay, to turn it back on")
 toggles[1].set(true)

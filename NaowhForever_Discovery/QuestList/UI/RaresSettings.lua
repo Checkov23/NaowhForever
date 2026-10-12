@@ -1,4 +1,4 @@
--- RaresSettings.lua: the Rares settings page (Discovery/Rares), declared as cards, with the alert's preview, and its rare pins' rows on Map Options and Pins.
+-- RaresSettings.lua: the Rares settings page (Discovery/Rares), declared as cards, with the alert's preview, and its rare pins' rows on QoL > Map & Pins.
 local ns = _G.NaowhForever
 
 local Completo = ns.Completo

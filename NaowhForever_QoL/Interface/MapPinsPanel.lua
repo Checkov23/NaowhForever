@@ -1,4 +1,4 @@
--- MapPinsPanel.lua: the Map Options and Pins button on the world map and its drawer of which pins and options show.
+-- MapPinsPanel.lua: the Town Pins button on the world map and its drawer of which town pins show.
 local ns = _G.NaowhForever
 
 local T = ns.THEME
@@ -8,7 +8,7 @@ local DIM_ALPHA = ns.Shared.Settings.Style.DIM_ALPHA
 local S = ns.QoLSettings
 
 local PAD, HEAD_H, ROW_H, ROW_MIN_H = 14, 40, 28, 20
-local LABEL_SIZE, NAME_SIZE, SMALL_SIZE = 13, 14, 11
+local LABEL_SIZE, NAME_SIZE, SMALL_SIZE, FOOT_SIZE = 13, 14, 11, 9
 local GROUP_DROP, LABEL_GAP = 7, 8
 local RULE_ALPHA = 0.6
 local PANEL_W = 330
@@ -23,11 +23,13 @@ local BUTTON_SIZE, BUTTON_GAP, BUTTON_RIGHT, BUTTON_TOP = 32, 2, 4, 2
 local BUTTON_ALPHA = 0.9
 local ICON_INSET = 4
 local SCROLL_W, SCROLL_IN = 4, 2
+local TRACK_W, BOX_W, BOX_H, BOX_ALPHA, SLIDER_GAP = 70, 30, 14, 1, 6
 
-local TEXT_TITLE = ns.L("Map Options and Pins")
-local TEXT_TIP = ns.L("Click to choose which pins and options show on the map.")
+local TEXT_TITLE = ns.L("Town Pins")
+local TEXT_TIP = ns.L("Click to choose which town pins show on the map.")
 local TEXT_CLOSE = "x"
 local TEXT_TOWN, TEXT_TOWN_PINS, TEXT_TOWN_TIP = ns.TownPinTexts.group, ns.TownPinTexts.switch, ns.TownPinTexts.tip
+local TEXT_SIZE, TEXT_SIZE_TIP = "Town Pin Size", "How big the town pins are on the world map."
 
 local ROWS = ns.TownPinRows
 
@@ -67,6 +69,12 @@ local function RefreshRows()
             row.label:SetAlpha(alpha)
             row.control:SetAlpha(alpha)
             row.control:EnableMouse(on)
+            local box = row.control._valBox
+            if box then
+                box:SetAlpha(alpha)
+                box:EnableMouse(on)
+                if not on then box:ClearFocus() end
+            end
         end
     end
 end
@@ -112,16 +120,31 @@ local function SetRow(store, key, value)
     if UI.RefreshPage then UI:RefreshPage(true) end
 end
 
-local function MakeRow(parent, store, key, text, tip, needs)
-    local frame = Strip(parent, 0, ROW_H, 0)
-    strips[#strips + 1] = frame
-    frame:EnableMouse(true)
-    Rule(frame)
+local function BuildToggle(frame, store, key)
     local control = UI.BuildToggleControl(frame, frame:GetFrameLevel() + CONTROL_LEVEL,
         function() return store.Get(key) end,
         function(value) SetRow(store, key, value) end)
     control:SetPoint("RIGHT", frame, "RIGHT", -PAD, 0)
-    local label = ns.Font(frame, LABEL_SIZE, nil, T.fg)
+    return control
+end
+
+local function BuildSlider(frame, store, key, range)
+    local track, box = UI.BuildSliderCore(frame, TRACK_W, St.SLIDER_H, St.KNOB, BOX_W, BOX_H, FOOT_SIZE, BOX_ALPHA,
+        range[1], range[2], range[3],
+        function() return store.Get(key) end,
+        function(value) SetRow(store, key, value) end)
+    box:SetPoint("RIGHT", frame, "RIGHT", -PAD, 0)
+    track:SetPoint("RIGHT", box, "LEFT", -SLIDER_GAP, 0)
+    return track
+end
+
+local function MakeRow(parent, store, key, text, tip, needs, range)
+    local frame = Strip(parent, 0, ROW_H, 0)
+    strips[#strips + 1] = frame
+    frame:EnableMouse(true)
+    Rule(frame)
+    local control = range and BuildSlider(frame, store, key, range) or BuildToggle(frame, store, key)
+    local label = ns.Font(frame, range and FOOT_SIZE or LABEL_SIZE, nil, range and T.muted or T.fg)
     label:SetJustifyH("LEFT")
     label:SetWordWrap(false)
     label:SetPoint("LEFT", PAD, 0)
@@ -199,19 +222,15 @@ local function BuildPanel()
     scroll:SetScript("OnSizeChanged", function(_, w) content:SetWidth(w) end)
     MakeGroup(content, TEXT_TOWN:upper())
     MakeRow(content, S, "townMap", TEXT_TOWN_PINS, TEXT_TOWN_TIP)
+    local _, class = UnitClass("player")
     for _, row in ipairs(ROWS) do
         if row.header then
             MakeGroup(content, row.header)
-        else
+        elseif not row.class or row.class == class then
             MakeRow(content, S, row.key, row.text, row.tip, TownOn)
         end
     end
-    for _, section in ipairs(ns.Shared.MapPinSections()) do
-        if section.title then MakeGroup(content, section.title:upper()) end
-        for _, row in ipairs(section.rows) do
-            if row.toggle then MakeRow(content, row.store, row.key, row.label, row.help, row.needs) end
-        end
-    end
+    MakeRow(content, S, "townPinSize", TEXT_SIZE, TEXT_SIZE_TIP, TownOn, ns.TownPinRange)
     panel:SetScript("OnShow", RefreshRows)
     if WorldMapFrame.Maximize then hooksecurefunc(WorldMapFrame, "Maximize", PlacePanel) end
     if WorldMapFrame.Minimize then hooksecurefunc(WorldMapFrame, "Minimize", PlacePanel) end
@@ -297,13 +316,6 @@ end
 
 local function OnLogin(self)
     self:UnregisterAllEvents()
-    local watched = {}
-    for _, section in ipairs(ns.Shared.MapPinSections()) do
-        if not watched[section.store] then
-            watched[section.store] = true
-            section.store.OnChange(Apply)
-        end
-    end
     Apply()
 end
 

@@ -1,0 +1,20 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- DamageMeter.xml: the Damage Meter's files, in load order. -->
+    <Script file="DamageMeter.lua"/>
+    <Script file="Constants.lua"/>
+    <Script file="Data\Samples.lua"/>
+    <Script file="Source.lua"/>
+    <Script file="Numbers.lua"/>
+    <Script file="Spells.lua"/>
+    <Script file="Looks.lua"/>
+    <Script file="Names.lua"/>
+    <Script file="Report.lua"/>
+    <Script file="History.lua"/>
+    <Script file="View\Meter.lua"/>
+    <Script file="View\Breakdown.lua"/>
+    <Script file="UI\History.lua"/>
+    <Script file="UI\Menus.lua"/>
+    <Script file="UI\Meter.lua"/>
+    <Script file="UI\ImageHelp.lua"/>
+    <Script file="UI\SettingsPage.lua"/>
+</Ui>

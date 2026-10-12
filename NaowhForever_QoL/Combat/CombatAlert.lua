@@ -219,7 +219,7 @@ end
 local page = ns.Shared.Settings.Page("QoL/Combat", S)
 
 page:Card({
-    id = "combatAlert", name = "Combat Alert", order = 70, switch = "combatAlert", note = ns.Shared.Settings.EllesmereNote,
+    id = "combatAlert", name = "Combat Alert", order = 70, switch = "combatAlert",
     help = "A short flash of text entering and leaving combat. Move it in the HUD Editor.",
     summary = Summary,
     rows = rows,

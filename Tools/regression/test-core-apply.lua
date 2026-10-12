@@ -21,8 +21,8 @@ local constants = assert(source:match("\n(local MODULE_KEY = .-\n)\nlocal ns = {
 local chunk = assert(loadstring(constants .. Slice("local function ApplyNow()", "\ndo\n")
     .. "\n" .. Slice("local reapplyPending")))
 
-local frames, timers, applied = {}, {}, 0
-local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
+local frames, timers, applied, watched = {}, {}, 0, 0
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = { Settings = { WatchEllesmere = function() watched = watched + 1 end } } }
 local env = setmetatable({
     NaowhForever = ns,
     ns = ns,
@@ -49,6 +49,7 @@ events:onEvent("PLAYER_LOGIN")
 check("login: one Apply a second later", #timers == 1 and timers[1].delay == 1)
 timers[1].fn()
 check("which reaches the modules' hooks", applied == 1)
+check("and starts watching EllesmereUI's window", watched == 1)
 events:onEvent("PLAYER_ENTERING_WORLD")
 events:onEvent("PLAYER_SPECIALIZATION_CHANGED")
 check("a burst of world and spec events: one reapply queued", #timers == 2 and timers[2].delay == 0)

@@ -1,7 +1,8 @@
 -- Run with Lua 5.1 from the repository root: Group Tools' on-screen Invite and Disband buttons.
 -- Nothing is made while off; Invite runs the game's /invite from a secure button; the layout
 -- stacks or lines up; secure changes wait for the end of a fight; Disband waits too; each kept
--- person gets a button, with Invite All and the target Invite as switches.
+-- person gets a button, with Invite All and the target Invite as switches. A person button
+-- invites the person on its label, even when the list changed in a fight it has not caught up with.
 local NOTHING = function() end
 local frames, printed, disbanded, invited, invitedAll = {}, {}, 0, {}, 0
 local combat = false
@@ -160,7 +161,21 @@ Case("each kept person gets a button between Invite and Disband", function()
     assert(robin.label.text == "Robin" and robin.point[2] == bar.invite, "Robin under Invite")
     assert(gly.label.text == "Gly" and gly.tip == "Invites Glyalith.")
     gly.scripts.OnClick(gly)
-    assert(invited[1] == 2, "the button invites its own person")
+    assert(invited[1].char == "Glyalith", "the button invites its own person")
+end)
+
+Case("a list changed in a fight: each button still invites the person it shows", function()
+    combat = true
+    Set("groupInvites", { { name = "Gly", char = "Glyalith" } })
+    local bar = Bar()
+    local gly = bar.disband.point[2]
+    local robin = gly.point[2]
+    assert(robin.label.text == "Robin", "the labels wait for the fight to end")
+    robin.scripts.OnClick(robin)
+    assert(invited[2].tag == "Robin#1234", "Robin's button invites Robin")
+    combat = false
+    events.scripts.OnEvent(events, "PLAYER_REGEN_ENABLED")
+    Set("groupInvites", { { name = "Robin", tag = "Robin#1234" }, { name = "Gly", char = "Glyalith" } })
 end)
 
 Case("Invite All after the people, only when switched on", function()

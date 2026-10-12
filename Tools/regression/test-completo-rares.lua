@@ -7,6 +7,9 @@
 -- registered while it is off. Raid marks are Blizzard-only on Forever: SetRaidTarget and the other
 -- marker calls raise an error here, so no rare path (nameplate, mouseover, target, minimap, Test
 -- Alert, Unlock Mode, the settings preview) may call them.
+-- Rare Alert targeting: hovering the card out of combat lays an invisible secure button over it
+-- (all but its pin) running /targetexact on the rare; it hides when combat starts and its macro
+-- is never set in combat; right-clicking it still closes the card.
 -- Map Pins: hover a star for its tooltip, click it for a waypoint, right-click it to keep its spots
 -- and way shown (no panel).
 
@@ -191,9 +194,32 @@ local function Fixture(settings, units)
     -- The card, by its frame name.
     local create = env.CreateFrame
     ---@diagnostic disable-next-line: duplicate-set-field
-    env.CreateFrame = function(kind, name, ...)
-        local f = create(kind, name, ...)
+    env.CreateFrame = function(kind, name, parent, template)
+        local f = create(kind, name, parent, template)
         if name == "NaowhForeverRareAlert" then ns.alert = f end
+        -- The secure target button: its template, attributes, textures, place, and its show and
+        -- hide scripts run as the game runs them.
+        if name == "NaowhForeverRareAlertTarget" then
+            ns.target, f.template, f.attrs, f.textures = f, template, {}, 0
+            f.combatSets = 0
+            function f:SetAttribute(k, v)
+                if env.InCombatLockdown() then self.combatSets = self.combatSets + 1 end
+                self.attrs[k] = v
+            end
+            function f:CreateTexture() self.textures = self.textures + 1; return Region() end
+            function f:SetSize(w, h) self.size = { w, h } end
+            function f:IsMouseOver() return env.overTarget == true end
+            function f:Show()
+                assert(not env.InCombatLockdown(), "the secure button is shown in combat")
+                self.shown = true
+                if self.OnShow then self.OnShow(self) end
+            end
+            function f:Hide()
+                assert(not env.InCombatLockdown(), "the secure button is hidden in combat")
+                self.shown = false
+                if self.OnHide then self.OnHide(self) end
+            end
+        end
         return f
     end
     -- The HUD Editor's plates, by label.
@@ -222,7 +248,7 @@ local function Fixture(settings, units)
         if opts.background == "card" then rows[#rows + 1] = { key = prefix .. "Background" } end
         return rows
     end
-    ns.Shared = { Settings = Settings, MapPins = {},
+    ns.Shared = { Settings = Settings, MapPins = {}, ScalePin = function() end,
         -- Per character, by the player's GUID.
         CharacterData = function(key)
             account[key] = account[key] or {}
@@ -562,6 +588,85 @@ do
 
     ns.CompletoSettings.Set("rareAlert", false)
     Check(not env.Listening("NAME_PLATE_UNIT_ADDED") and not ns.alert:IsShown(), "switched off: unregistered, alert gone")
+end
+
+-- Rare Alerts: a left-click on the card targets its rare
+do
+    local units = {}
+    local settings = { enabled = true, rareAlert = true }
+    local ns, env = Fixture(settings, units)
+    units.nameplate1 = { guid = Guid(10644), name = "Mist Howler", kind = "rare", level = 22 }
+    env.Fire("NAME_PLATE_UNIT_ADDED", "nameplate1")
+    local alert = ns.alert
+    Check(alert:IsShown() and ns.target == nil, "no secure button is made until the card is hovered")
+    -- The card on screen: 300 wide and 54 high at (100, 600), its pin 24 in from its right.
+    alert.GetLeft = function() return 100 end
+    alert.GetRight = function() return 400 end
+    alert.GetBottom = function() return 600 end
+    alert.GetHeight = function() return 54 end
+    alert.pin.GetLeft = function() return 376 end
+    alert.OnEnter(alert)
+    local target = ns.target
+    Check(target and target:IsShown() and target.template == "SecureActionButtonTemplate"
+        and target:GetParent() == env.UIParent, "hovering lays a secure button of its own over the card")
+    Check(target.attrs.type1 == "macro" and target.attrs.macrotext1 == "/targetexact Mist Howler",
+        "a left-click on it targets the rare by its exact name")
+    Check(target.point == "BOTTOMLEFT" and target.at[1] == 100 and target.at[2] == 600
+        and target.size[1] == 276 and target.size[2] == 54, "it covers the card up to its pin, which keeps its click")
+    Check(target.textures == 0, "it draws nothing: the card looks as it did")
+    Check(#env.tip == 1 and env.tip[1][1] == "Right-click to close it." and env.tipOwner == alert,
+        "the card's tooltip is as it was")
+    env.overTarget = true
+    alert.OnLeave(alert)
+    Check(target:IsShown() and not env.tipHidden, "the pointer going onto it from the card keeps it and the tooltip")
+    target.OnLeave(target)
+    env.overTarget = false
+    Check(not target:IsShown() and env.tipHidden, "and leaving it takes it away")
+    alert.OnEnter(alert)
+    alert.OnLeave(alert)
+    Check(not target:IsShown(), "so does leaving the card for its pin or off it")
+
+    alert.OnEnter(alert)
+    Check(env.Listening("PLAYER_REGEN_DISABLED"), "while it is up, it waits for combat")
+    env.Fire("PLAYER_REGEN_DISABLED")
+    Check(not target:IsShown() and not env.Listening("PLAYER_REGEN_DISABLED"),
+        "combat starting takes it away before the lockdown, and it stops listening")
+    units.combat = true
+    alert.OnEnter(alert)
+    alert.OnLeave(alert)
+    units.nameplate2 = { guid = Guid(10647), name = "Prince Raze", kind = "rare", level = 32 }
+    env.Fire("NAME_PLATE_UNIT_ADDED", "nameplate2")
+    alert.OnClick(alert, "RightButton")
+    Check(not target:IsShown() and target.combatSets == 0 and target.attrs.macrotext1 == "/targetexact Mist Howler",
+        "in combat it is never shown, moved or set")
+    units.combat = nil
+
+    env.Fire("NAME_PLATE_UNIT_ADDED", "nameplate1")
+    env.Advance(301)
+    env.Fire("NAME_PLATE_UNIT_ADDED", "nameplate1")
+    alert.OnEnter(alert)
+    target.PostClick(target, "LeftButton", false)
+    Check(alert:IsShown() and target:IsShown(), "a left-click leaves the card up")
+    target.PostClick(target, "RightButton", true)
+    Check(alert:IsShown(), "a right-click's press does not close it")
+    target.PostClick(target, "RightButton", false)
+    Check(not alert:IsShown() and not target:IsShown(), "a right-click on it closes the card, as on the card")
+
+    env.Advance(301)
+    env.Fire("NAME_PLATE_UNIT_ADDED", "nameplate1")
+    alert.OnEnter(alert)
+    units.nameplate3 = { guid = Guid(99999), name = "Odd\nName", kind = "rare", level = 30 }
+    env.Fire("NAME_PLATE_UNIT_ADDED", "nameplate3")
+    Check(target:IsShown() and target.attrs.macrotext1 == "/targetexact OddName",
+        "a new alert under the pointer retargets it, and a name never adds a macro line")
+    Check(not alert.pin.shown and target.size[1] == 300, "with no pin it covers the whole card")
+    alert.fade.OnFinished(alert.fade)
+    Check(not target:IsShown(), "the card fading away takes it with it")
+
+    ns.ShowUnlockMode()
+    alert.OnEnter(alert)
+    Check(alert:IsShown() and alert.preview and not target:IsShown(), "the Unlock Mode preview targets nothing")
+    ns.HideUnlockMode()
 end
 
 -- The card's old spot, from before the HUD Editor placed it

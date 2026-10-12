@@ -1,10 +1,12 @@
 -- Run with Lua 5.1 from the repository root: Always Free for All.
 -- Off it listens to nothing; on, a party you lead is set to Free for All, a raid or a party you do
--- not lead is left alone, and nothing is changed in a fight until it ends.
+-- not lead is left alone, and nothing is changed in a fight until it ends. Free for All the game does
+-- not offer is never asked for, and a refused change is not retried until the leader changes.
 local NOTHING = function() end
 local frames = {}
 local combat, grouped, raid, leader = false, false, false, false
 local method, sets = 1, 0
+local available, accept = true, true
 
 local function Frame()
     local f = { scripts = {}, events = {} }
@@ -34,7 +36,12 @@ local env = setmetatable({
     Enum = { LootMethod = { Freeforall = 0, Roundrobin = 1, Group = 3 } },
     C_PartyInfo = {
         GetLootMethod = function() return method end,
-        SetLootMethod = function(m) method, sets = m, sets + 1; return true end,
+        IsLootMethodAvailable = function() return available end,
+        SetLootMethod = function(m)
+            sets = sets + 1
+            if accept then method = m end
+            return accept
+        end,
     },
     hooksecurefunc = function(t, name, fn)
         if t == S then setHooks[#setHooks + 1] = fn elseif name == "Apply" then applyHooks[#applyHooks + 1] = fn end
@@ -111,6 +118,25 @@ Case("in a fight: waits for it to end", function()
     combat = false
     Fire("PLAYER_REGEN_ENABLED")
     assert(method == 0)
+end)
+
+Case("Free for All not offered: not asked for", function()
+    available, method, sets = false, 3, 0
+    Fire("GROUP_ROSTER_UPDATE")
+    assert(method == 3 and sets == 0)
+    available = true
+end)
+
+Case("refused: not retried until the leader changes", function()
+    accept, sets = false, 0
+    Fire("GROUP_ROSTER_UPDATE")
+    assert(sets == 1)
+    Fire("GROUP_ROSTER_UPDATE")
+    Fire("PARTY_LOOT_METHOD_CHANGED")
+    assert(sets == 1, "no retry on roster or loot changes")
+    accept = true
+    Fire("PARTY_LEADER_CHANGED")
+    assert(method == 0 and sets == 2, "a new leader tries again")
 end)
 
 Case("switched off: events dropped", function()

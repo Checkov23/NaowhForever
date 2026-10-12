@@ -827,7 +827,7 @@ local function Summary(store)
 end
 
 Settings.Page("QoL/Travel", S):Card({
-    id = "flightTimer", name = "Flight Timer", order = 10, switch = "flightTimer", note = Settings.EllesmereNote,
+    id = "flightTimer", name = "Flight Timer", order = 10, switch = "flightTimer",
     help = "Your flight on a card: time left, the stops on a track, and the next stop.",
     summary = Summary,
     studio = { height = STAGE_H, states = STATES, new = NewPreview, paint = PaintPreview },

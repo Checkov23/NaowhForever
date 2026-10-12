@@ -252,9 +252,9 @@ page:Card({
         .. "quest. The Modifier skips them or triggers them, as Modifier Does says.",
     summary = QuestSummary,
     rows = {
-        { key = "questAccept", label = "Accept Quests", toggle = true, note = ns.Shared.Settings.EllesmereNote,
+        { key = "questAccept", label = "Accept Quests", toggle = true,
           help = "Accepts a quest as soon as its text opens. Use the Modifier to read it first." },
-        { key = "questTurnIn", label = "Hand In Quests", toggle = true, note = ns.Shared.Settings.EllesmereNote,
+        { key = "questTurnIn", label = "Hand In Quests", toggle = true,
           help = "Hands in finished quests. A quest with a choice of rewards waits for you to pick "
               .. "one, unless you saved a reward for it. The Modifier skips it for that quest." },
         { key = "questGossip", label = "Pick Quests From NPCs", toggle = true,
@@ -276,7 +276,7 @@ page:Card({
 })
 
 page:Card({
-    id = "gossip", name = "NPC Gossip", order = 15, switch = "gossipAuto", note = ns.Shared.Settings.EllesmereNote,
+    id = "gossip", name = "NPC Gossip", order = 15, switch = "gossipAuto",
     help = "Picks the only option of a vendor, trainer, banker, auctioneer or stable "
         .. "master; nothing that costs money or moves you.",
     rows = {

@@ -4,7 +4,7 @@ return {
 ["discovery"] = {
 ["enabled"] = true,
 ["bagMapPinSize"] = 16,
-["mapPinSize"] = 16,
+["mapPinSize"] = 18,
 ["bagMapPins"] = true,
 ["mapPins"] = true,
 },

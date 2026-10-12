@@ -68,10 +68,10 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
     help = "Fewer clicks around loot and items: the delete confirmation filled in, and auto loot that "
         .. "keeps the loot window.",
     rows = {
-        { key = "deleteConfirm", label = "Type DELETE For You", toggle = true, note = ns.Shared.Settings.EllesmereNote,
+        { key = "deleteConfirm", label = "Type DELETE For You", toggle = true,
           help = "Types DELETE into the confirmation box for you, and names the item in the dialog as a "
               .. "link you can hover for its tooltip." },
-        { key = "fastLoot", label = "Faster Auto Loot", toggle = true, note = ns.Shared.Settings.EllesmereNote,
+        { key = "fastLoot", label = "Faster Auto Loot", toggle = true,
           help = "Loots automatically without hiding the loot window. Hold Shift to loot manually." },
     },
 })

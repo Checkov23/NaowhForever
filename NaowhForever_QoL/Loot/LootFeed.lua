@@ -1009,7 +1009,7 @@ local function LootFeedSummary(store)
 end
 
 ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
-    id = "lootFeed", name = "Loot Feed", order = 5, switch = "lootFeed", note = ns.Shared.Settings.EllesmereNote,
+    id = "lootFeed", name = "Loot Feed", order = 5, switch = "lootFeed",
     help = "Everything you loot pops up on screen with its icon, amount and value, stacking "
         .. "in your chosen direction and fading out. Hover a line for the item's tooltip. Move it in the HUD Editor.",
     summary = LootFeedSummary,
@@ -1046,7 +1046,6 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
           help = "Starts the gold per hour count again from your next loot." },
         Group("Loot Window"),
         { key = "hideLootWindow", label = "Hide Blizzard Loot Window", toggle = true, always = true,
-          note = ns.Shared.Settings.EllesmereNote,
           help = "Takes everything the moment you loot, with Blizzard's loot window kept out of "
               .. "sight, so the feed is all you see. Works with or without the game's auto loot. "
               .. "Hold Shift while looting to get the window back. It also appears whenever "

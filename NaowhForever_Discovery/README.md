@@ -73,6 +73,9 @@ keep their names for the rest of the addon.
 
 ## Why
 
+- Book and Sleeping Bag pins scale with `ns.Shared.ScalePin` at `BOOK_PIN_SCALE` / `BAG_PIN_SCALE` (0.5),
+  like the quest pins: drawn in map units they grew with the canvas and filled the full screen map. Pin
+  Size 20 is the default every map pin shares.
 - Every file registers nothing but a login check until its feature is switched on.
 - The windows' opacity was one setting (`windowAlpha`) before each had its own: a player who set
   it keeps it on the trackers until they set theirs, once.

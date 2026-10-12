@@ -189,8 +189,10 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   PLAYER_REGEN_DISABLED, the last moment it still may.
 - Disenchant takes Uncommon to Epic weapons and armor; shirts and tabards never. The skill an item
   needs is left to the game (the refused-item skip), not a table: Forever's may differ from classic's.
-- Kept items are saved account-wide by item ID (`profDisenchantKeep`), so a kept item is kept on
-  every character and in every copy.
+- Right-click keeps one copy, by its item GUID (`profDisenchantKeepCopy`), which stays the same when it
+  moves between bags; Shift-right-click keeps every copy, by item ID
+  (`profDisenchantKeep`). Both are account-wide. A copy's GUID is not removed once it is gone; each is
+  one short string. Without C_Item.GetItemGUID, right-click keeps every copy.
 - Enchanting's profession ID is 333; the window's Disenchant button shows for your own Enchanting only.
 
 ## Checking

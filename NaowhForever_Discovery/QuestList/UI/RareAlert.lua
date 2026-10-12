@@ -15,13 +15,16 @@ local DEFAULT_Y = 260
 local PERCENT = C.PERCENT
 local STRATA = "HIGH"
 local HOLDER_NAME, CARD_NAME = "NaowhForeverRareAlertHolder", "NaowhForeverRareAlert"
+local TARGET_NAME = "NaowhForeverRareAlertTarget"
+local TARGET_STRATA = "DIALOG"
+local TARGET_MACRO = "/targetexact %s"
 local MOVER_LABEL, MOVER_PAGE, MOVER_FEATURE = "Rare Alert", "Discovery/Rares", "Discovery/Rares:rareAlert"
 local RARE = { rare = true, rareelite = true }
 local LOOK_PREFIX = "^rareAlert"
 local TEXT_RARE = ns.L("Rare")
 local TEXT_CLOSE = ns.L("Right-click to close it.")
 
-local alert, holder
+local alert, holder, target
 local shownNpc, shownGuid
 local alerted = {}
 local events = CreateFrame("Frame")
@@ -33,8 +36,13 @@ local function On()
     return S.Get("enabled") and S.Get("rareAlert")
 end
 
+local function HideTarget()
+    if target and target:IsShown() and not InCombatLockdown() then target:Hide() end
+end
+
 local function HideAlert()
     if not alert then return end
+    HideTarget()
     alert.fade:Stop()
     alert:Hide()
     shownNpc, shownGuid = nil, nil
@@ -57,16 +65,77 @@ local function CardClicked(_, button)
     if button == "RightButton" then HideAlert() end
 end
 
-local function CardEnter(card)
+local function TargetName()
+    local seen = alert.seen
+    if alert.preview or not (seen and seen.name) then return nil end
+    return (seen.name:gsub("%c", ""))
+end
+
+local function ShowTip()
     local soft = T.accentSoft
-    GameTooltip:SetOwner(card, "ANCHOR_TOP")
-    GameTooltip:SetText(card.name:GetText() or TEXT_RARE, 1, 1, 1)
+    GameTooltip:SetOwner(alert, "ANCHOR_TOP")
+    GameTooltip:SetText(alert.name:GetText() or TEXT_RARE, 1, 1, 1)
     GameTooltip:AddLine(TEXT_CLOSE, soft.r, soft.g, soft.b)
     GameTooltip:Show()
 end
 
-local function CardLeave()
+local function TargetClicked(_, button, down)
+    if button == "RightButton" and not down then HideAlert() end
+end
+
+local function TargetLeave()
     GameTooltip:Hide()
+    HideTarget()
+end
+
+local function TargetShown(self)
+    self:RegisterEvent("PLAYER_REGEN_DISABLED")
+end
+
+local function TargetHidden(self)
+    self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+end
+
+local function BuildTarget()
+    target = CreateFrame("Button", TARGET_NAME, UIParent, "SecureActionButtonTemplate")
+    target:SetFrameStrata(TARGET_STRATA)
+    target:RegisterForClicks("AnyUp", "AnyDown")
+    target:SetAttribute("type1", "macro")
+    target:SetScript("PostClick", TargetClicked)
+    target:SetScript("OnEnter", ShowTip)
+    target:SetScript("OnLeave", TargetLeave)
+    target:SetScript("OnShow", TargetShown)
+    target:SetScript("OnHide", TargetHidden)
+    target:SetScript("OnEvent", target.Hide)
+    target:Hide()
+end
+
+local function CoverCard()
+    if InCombatLockdown() then return end
+    local name, left = TargetName(), alert:GetLeft()
+    if not (name and left) then
+        HideTarget()
+        return
+    end
+    if not target then BuildTarget() end
+    local scale = alert:GetEffectiveScale() / UIParent:GetEffectiveScale()
+    local right = alert.pin:IsShown() and alert.pin:GetLeft() or alert:GetRight()
+    target:SetAttribute("macrotext1", TARGET_MACRO:format(name))
+    target:ClearAllPoints()
+    target:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", left * scale, alert:GetBottom() * scale)
+    target:SetSize((right - left) * scale, alert:GetHeight() * scale)
+    target:Show()
+end
+
+local function CardEnter()
+    CoverCard()
+    ShowTip()
+end
+
+local function CardLeave()
+    if target and target:IsShown() and target:IsMouseOver() then return end
+    GameTooltip:Hide()
+    HideTarget()
 end
 
 local function Moved(pos)
@@ -139,6 +208,7 @@ local function ShowAlert(seen, quiet)
     Place()
     alert.fade:Stop()
     alert:Show()
+    if target and target:IsShown() then CoverCard() end
     if track then events:RegisterEvent("UNIT_FLAGS") else events:UnregisterEvent("UNIT_FLAGS") end
     if not quiet then Play() end
 end

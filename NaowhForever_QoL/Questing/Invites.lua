@@ -36,9 +36,13 @@ local function Copy()
 end
 
 local function ForeverAccount(friendIndex)
+    local faction = not C_PartyInfo.CanFormCrossFactionParties() and UnitFactionGroup("player")
     for i = 1, C_BattleNet.GetFriendNumGameAccounts(friendIndex) do
         local game = C_BattleNet.GetFriendGameAccountInfo(friendIndex, i)
-        if game and game.isOnline and game.wowProjectID == WOW_PROJECT_ID and game.playerGuid then return game end
+        if game and game.isOnline and game.wowProjectID == WOW_PROJECT_ID and game.playerGuid and game.realmID ~= 0
+            and (not faction or game.factionName == faction) then
+            return game
+        end
     end
 end
 
@@ -69,9 +73,8 @@ local function Invite(entry, skipMembers)
     return true
 end
 
-function ns.InvitePerson(index)
-    local entry = List()[index]
-    if entry then Invite(entry) end
+function ns.InvitePerson(entry)
+    Invite(entry)
 end
 
 function ns.InviteAll()

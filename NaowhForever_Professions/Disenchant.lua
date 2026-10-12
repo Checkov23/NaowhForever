@@ -5,6 +5,7 @@ local GetContainerNumSlots = C_Container.GetContainerNumSlots
 local GetContainerItemInfo = C_Container.GetContainerItemInfo
 local GetItemInfoInstant = C_Item.GetItemInfoInstant
 local GetItemQualityByID = C_Item.GetItemQualityByID
+local GetItemGUID = C_Item.GetItemGUID
 
 local P = ns.Professions
 
@@ -14,7 +15,7 @@ local WEAPON, ARMOR = 2, 4
 local UNCOMMON, EPIC = 2, 4
 local NEVER = { INVTYPE_BODY = true, INVTYPE_TABARD = true }
 local LAST_BAG = NUM_TOTAL_EQUIPPED_BAG_SLOTS or NUM_BAG_SLOTS
-local KEEP_KEY = "profDisenchantKeep"
+local KEEP_KEY, COPY_KEY = "profDisenchantKeep", "profDisenchantKeepCopy"
 
 local records, failed = {}, {}
 local count = 0
@@ -22,10 +23,16 @@ local count = 0
 local D = { SPELL = SPELL, ENCHANTING = ENCHANTING }
 P.Disenchant = D
 
-local function KeepList()
+local function Saved(key)
     local account = ns.AccountSettings()
-    account[KEEP_KEY] = account[KEEP_KEY] or {}
-    return account[KEEP_KEY]
+    account[key] = account[key] or {}
+    return account[key]
+end
+
+local function CopyGUID(bag, slot)
+    if not (GetItemGUID and ItemLocation) then return nil end
+    local location = ItemLocation:CreateFromBagAndSlot(bag, slot)
+    return location and location:IsValid() and GetItemGUID(location) or nil
 end
 
 local function Takes(itemID, quality)
@@ -44,6 +51,7 @@ local function Note(bag, slot, info)
     r.link, r.icon = info.hyperlink, info.iconFileID
     r.quality = info.quality or GetItemQualityByID(info.itemID)
     r.locked = info.isLocked == true
+    r.guid = CopyGUID(bag, slot)
 end
 
 function D.Known()
@@ -61,13 +69,27 @@ function D.Collect()
     return records, count
 end
 
-function D.Kept(itemID)
-    return KeepList()[itemID] == true
+function D.KeptAll(r)
+    return Saved(KEEP_KEY)[r.itemID] == true
 end
 
-function D.ToggleKeep(itemID)
-    local list = KeepList()
-    list[itemID] = not list[itemID] or nil
+function D.KeptCopy(r)
+    return r.guid ~= nil and Saved(COPY_KEY)[r.guid] == true
+end
+
+function D.Kept(r)
+    return D.KeptAll(r) or D.KeptCopy(r)
+end
+
+function D.ToggleKeep(r, every)
+    local all, copies = Saved(KEEP_KEY), Saved(COPY_KEY)
+    local copy = D.KeptCopy(r)
+    if r.guid then copies[r.guid] = nil end
+    if every or not r.guid or all[r.itemID] then
+        all[r.itemID] = not all[r.itemID] or nil
+    elseif not copy then
+        copies[r.guid] = true
+    end
 end
 
 function D.Failed(itemID)
@@ -79,7 +101,7 @@ function D.MarkFailed(itemID)
 end
 
 function D.Ready(r)
-    return not (D.Kept(r.itemID) or failed[r.itemID])
+    return not (D.Kept(r) or failed[r.itemID])
 end
 
 function D.Next()
@@ -92,7 +114,7 @@ function D.Counts()
     local ready, kept = 0, 0
     for i = 1, count do
         local r = records[i]
-        if D.Kept(r.itemID) then
+        if D.Kept(r) then
             kept = kept + 1
         elseif not failed[r.itemID] then
             ready = ready + 1

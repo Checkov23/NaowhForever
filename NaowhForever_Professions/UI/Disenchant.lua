@@ -28,7 +28,7 @@ local OPEN_W, OPEN_H, OPEN_RIGHT, OPEN_DROP = 90, 22, 36, 7
 local EVENTS = { "BAG_UPDATE_DELAYED", "ITEM_LOCK_CHANGED", "PLAYER_REGEN_ENABLED", "PLAYER_REGEN_DISABLED" }
 
 local TEXT_TITLE = ns.L("Disenchant")
-local TEXT_SUBTITLE = ns.L("Right-click an item to keep it.")
+local TEXT_SUBTITLE = ns.L("Right-click keeps one, Shift keeps every copy.")
 local TEXT_ALL, TEXT_ALL_COUNT = ns.L("Disenchant All"), ns.L("Disenchant All (%d)")
 local TEXT_OPEN = ns.L("Disenchant")
 local TEXT_SUMMARY = ns.L("%d to disenchant, %d kept")
@@ -37,8 +37,10 @@ local TEXT_KEEP_MARK = ns.L("Keep")
 local TEXT_NEXT_TIP = ns.L("Disenchants %s.")
 local TEXT_ONE_CLICK = ns.L("One item per click: the game needs a click for every disenchant.")
 local TEXT_NOTHING_LEFT = ns.L("Nothing left to disenchant.")
-local TEXT_KEEP_HINT = ns.L("Right-click: keep it, never disenchant")
-local TEXT_UNKEEP_HINT = ns.L("Right-click: disenchant it again")
+local TEXT_KEEP_HINT = ns.L("Right-click: keep this one")
+local TEXT_KEEP_ALL_HINT = ns.L("Shift-right-click: keep every copy")
+local TEXT_KEPT_COPY = ns.L("Kept: this one only. Right-click: disenchant it again")
+local TEXT_KEPT_ALL = ns.L("Kept: every copy. Right-click: disenchant them again")
 local TEXT_REFUSED = ns.L("The game would not disenchant this (skill too low?). Skipped until you reload.")
 local TEXT_REFUSED_CHAT = ns.L("%s could not be disenchanted, skipped until you reload.")
 local TEXT_COMBAT = ns.L("The Disenchant window cannot open in combat.")
@@ -56,7 +58,7 @@ end
 local function PaintSlot(b, r)
     b.record = r
     b.icon.texture:SetTexture(r.icon)
-    local kept, refused = D.Kept(r.itemID), D.Failed(r.itemID)
+    local kept, refused = D.Kept(r), D.Failed(r.itemID)
     b.icon.texture:SetDesaturated(kept or refused or r.locked)
     b.icon:SetAlpha((kept or refused) and KEPT_ALPHA or 1)
     b.mark:SetShown(kept)
@@ -74,10 +76,13 @@ local function OnSlotEnter(self)
     if D.Failed(r.itemID) then
         local red = St.RED_RGB
         GameTooltip:AddLine(TEXT_REFUSED, red.r, red.g, red.b, true)
-    elseif D.Kept(r.itemID) then
-        GameTooltip:AddLine(TEXT_UNKEEP_HINT, T.accent.r, T.accent.g, T.accent.b)
+    elseif D.KeptAll(r) then
+        GameTooltip:AddLine(TEXT_KEPT_ALL, T.accent.r, T.accent.g, T.accent.b, true)
+    elseif D.KeptCopy(r) then
+        GameTooltip:AddLine(TEXT_KEPT_COPY, T.accent.r, T.accent.g, T.accent.b, true)
     else
-        GameTooltip:AddLine(TEXT_KEEP_HINT, T.accent.r, T.accent.g, T.accent.b)
+        if r.guid then GameTooltip:AddLine(TEXT_KEEP_HINT, T.accent.r, T.accent.g, T.accent.b) end
+        GameTooltip:AddLine(TEXT_KEEP_ALL_HINT, T.accent.r, T.accent.g, T.accent.b)
     end
     GameTooltip:Show()
 end
@@ -88,7 +93,7 @@ local function OnSlotClick(self, button)
     local r = self.record
     if not r then return end
     if button == "RightButton" then
-        D.ToggleKeep(r.itemID)
+        D.ToggleKeep(r, IsShiftKeyDown())
         Redraw()
         if GameTooltip:IsOwned(self) then OnSlotEnter(self) end
     elseif r.link then

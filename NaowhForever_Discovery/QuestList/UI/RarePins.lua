@@ -19,6 +19,7 @@ local FADED_ALPHA = 0.2
 local PERCENT = Completo.C.PERCENT
 local STAR_LEVEL, MORE_LEVEL = 1, 0
 local OWN_KEYS = { enabled = true, rarePins = true, rarePinsKilled = true, rarePinSize = true }
+local RARE_PIN_SCALE = 0.75
 local TEXT_RARE = ns.L("Rare")
 local TEXT_ELITE = ns.L("Rare elite")
 local TEXT_KIND_LEVEL = ns.L("%s, level %s")
@@ -34,8 +35,12 @@ local focused
 local shown = {}
 local spot = {}
 
+local function ScaleRarePin(pin)
+    ns.Shared.ScalePin(pin, RARE_PIN_SCALE)
+end
+
 NaowhForeverRarePinMixin = CreateFromMixins(MapCanvasPinMixin)
-NaowhForeverRarePinMixin.ApplyCurrentScale = ns.Shared.ScalePin
+NaowhForeverRarePinMixin.ApplyCurrentScale = ScaleRarePin
 
 local function On()
     return S.Get("enabled") and S.Get("rarePins")

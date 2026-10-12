@@ -10,6 +10,7 @@ local TEMPLATE = "NaowhForeverQuestGiverPinTemplate"
 local BANG_ATLAS, GREY_ATLAS, REPEAT_ATLAS = "QuestNormal", "TrivialQuests", "QuestDaily"
 local BANG_FILE = "Interface\\GossipFrame\\AvailableQuestIcon"
 local PERCENT = Completo.C.PERCENT
+local QUEST_PIN_SCALE = 0.5
 local EVENTS = { "QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED", "PLAYER_LEVEL_UP" }
 local OWN_KEYS = { enabled = true, mapPins = true, mapGrey = true, mapChainsOnly = true, mapPinSize = true }
 local TEXT_GIVER = ns.L("Quest giver")
@@ -21,8 +22,12 @@ local TEXT_WAYPOINT = ns.L("Click for a waypoint.")
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events
 
+local function ScaleQuestPin(pin)
+    ns.Shared.ScalePin(pin, QUEST_PIN_SCALE)
+end
+
 NaowhForeverQuestGiverPinMixin = CreateFromMixins(MapCanvasPinMixin)
-NaowhForeverQuestGiverPinMixin.ApplyCurrentScale = ns.Shared.ScalePin
+NaowhForeverQuestGiverPinMixin.ApplyCurrentScale = ScaleQuestPin
 
 local function On()
     return S.Get("enabled") and S.Get("mapPins")

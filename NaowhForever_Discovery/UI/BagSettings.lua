@@ -13,8 +13,10 @@ local SCALE = St.SCALE_RANGE
 local PIN_SIZE = St.PIN_SIZE_RANGE
 local OPACITY_RANGE = St.OPACITY_RANGE
 local PERCENT_SCALE = St.PERCENT_SCALE
-local ORDER_TRACKER, ORDER_MAP_PINS = 10, 20
+local ORDER_TRACKER = 10
+local TEXT_SECTION = ns.L("Sleeping Bag")
 local TEXT_OFF = ns.L("Turn on Discovery")
+local TEXT_PINS_OFF = ns.L("Turn on Sleeping Bag pins")
 local TEXT_HAVE_BAG = ns.L("You have the Cozy Sleeping Bag")
 local TEXT_STEP_OF = ns.L("Step %d of %d")
 local TEXT_HEADLINE = ns.L("Sleeping Bag: step %d of %d")
@@ -23,6 +25,7 @@ local TEXT_STARTS = ns.L("It starts at level %d.")
 local TEXT_NEXT = ns.L("Next: %s, %s.")
 
 local function On() return S.Get("enabled") == true end
+local function PinsOn() return On() and S.Get("bagMapPins") == true end
 
 local function BagSummary()
     local _, at = Bag.Current()
@@ -69,11 +72,12 @@ bags:Card({
     },
 })
 
-bags:Card({
-    id = "bagmappins", name = "Map Pins", order = ORDER_MAP_PINS, switch = "bagMapPins",
-    help = "Shows the Sleeping Bag steps still to do on your map; click one for a waypoint.",
+table.insert(ns.Shared.MapPins, {
+    title = TEXT_SECTION, store = S, switch = "bagMapPins",
     rows = {
-        { key = "bagMapPinSize", label = "Pin Size", slider = PIN_SIZE, needs = On, why = TEXT_OFF,
-          help = "How big the pins are on the map." },
+        { key = "bagMapPins", label = "Sleeping Bag Steps", toggle = true, store = S, needs = On, why = TEXT_OFF,
+          help = "Shows the Sleeping Bag steps still to do on your map; click one for a waypoint." },
+        { key = "bagMapPinSize", label = "Bag Pin Size", slider = PIN_SIZE, store = S, always = true, needs = PinsOn,
+          why = TEXT_PINS_OFF, help = "How big the pins are on the map." },
     },
 })

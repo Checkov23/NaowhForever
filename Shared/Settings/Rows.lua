@@ -78,8 +78,10 @@ local function RowGet(row)
     return row.setting.get()
 end
 
-local function RowSet(row, ...)
-    Control.Store(row.setting, ...)
+local function RowSet(row, v, ...)
+    local setting = row.setting
+    Control.Store(setting, v, ...)
+    if setting.kind == "toggle" and v then Settings.EllesmereClash(setting.card, setting.key) end
 end
 
 local function DotEnter(dot)
@@ -254,7 +256,10 @@ end
 local function HeadSwitchSet(head, v)
     local card = head.card
     card.switchSet(v)
-    if v then Settings.SetOpen(card, true) end
+    if v then
+        Settings.SetOpen(card, true)
+        Settings.EllesmereClash(card, card.switch)
+    end
     head:GetParent():QueueSettingsRedraw()
 end
 

@@ -667,6 +667,24 @@ cogIcon = PageRow("Show Count").icons[1]
 cogIcon.scripts.OnClick(cogIcon)
 check("a second click on the cog closes it", not panel.shown)
 
+-- A card folded while its cog is open takes the cog's panel with it.
+cogIcon = PageRow("Show Count").icons[1]
+cogIcon.scripts.OnClick(cogIcon)
+check("the cog is open again", panel.shown)
+local otherCard = Settings.Page("Test/Folded", cogStore):Card({ id = "f", name = "F", rows = {
+    { key = "other", label = "Other", toggle = true } } })
+local foldedParent = Frame()
+Settings.Render(foldedParent, "Test/Folded", NOTHING)
+Settings.SetOpen(otherCard, false)
+foldedParent.settingsView:Redraw()
+check("folding another card leaves the cog's panel open", panel.shown)
+Settings.SetOpen(cogCard, false)
+cogPage:Redraw()
+check("folding its card closes the cog's panel", not panel.shown)
+Settings.SetOpen(cogCard, true)
+cogPage:Redraw()
+check("and opening the card does not bring it back", not panel.shown)
+
 -- The sidebar's search: a match set in a cog's panel.
 Settings.Render(cogParent, "Test/Cogs", NOTHING, { all = {}, cards = { [cogCard.uid] = { ["Count Size"] = true } } })
 check("a search hit in a cog keeps the row with the cog", PageRow("Show Count") ~= nil)

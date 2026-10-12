@@ -256,8 +256,8 @@ page:Card({
     id = "disenchant", name = "Disenchant Window", order = ORDER_DISENCHANT, switch = "disenchant",
     help = "With Enchanting open, a Disenchant button at the top of the window opens a window of every item in "
         .. "your bags you can disenchant: green, blue and purple weapons and armor (or type /naowh disenchant). "
-        .. "Right-click an item to keep it: it is never disenchanted, on any character, until you right-click it "
-        .. "again. Disenchant All disenchants the rest one by one, one item per click, as the game asks a click "
-        .. "for every disenchant. An item the game will not take (skill too low) is skipped until you reload. "
+        .. "Right-click an item to keep that one copy, or Shift-right-click to keep every copy of it, on any "
+        .. "character, until you right-click it again. Disenchant All disenchants the rest one by one, one item "
+        .. "per click, as the game asks a click for every disenchant. An item the game will not take (skill too low) is skipped until you reload. "
         .. "Closes when combat starts.",
 })

@@ -16,7 +16,7 @@ local INFO = {
     minimalist = { order = 1, name = "Minimalist", about = "Fewer modules and settings on, and none that spoil the game.",
         modulesOff = { "NaowhForever_Discovery", "NaowhForever_GroupInspect",
             "NaowhForever_GearSets", "NaowhForever_SwingTimer", "NaowhForever_ConsumableBar", "NaowhForever_InstanceTracker",
-            "NaowhForever_Journeys" } },
+            "NaowhForever_Journeys", "NaowhForever_DamageMeter" } },
     recommended = { order = 2, name = "Recommended", about = "Naowh's recommended setup, with the modules he uses on." },
 }
 local NEW_INSTALL = "minimalist"

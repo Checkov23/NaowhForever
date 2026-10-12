@@ -214,6 +214,7 @@ Shared.Style = {
     PERCENT_SCALE = 0.01,
     SCALE_RANGE = { 50, 150, PERCENT_STEP },
     PIN_SIZE_RANGE = { 12, 32, 1 },
+    PIN_SIZE_DEFAULT = 20,
     HUD_TEXT_RANGE = { 8, 24, 1 },
     STAGE_MARGIN = 16,
     STAGE_NOTE_Y = 10,

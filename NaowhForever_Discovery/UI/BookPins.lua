@@ -13,6 +13,7 @@ local BOOK_ICON = "Interface\\Icons\\INV_Misc_Book_11"
 local TURN_IN_ICON = "Interface\\Icons\\INV_Misc_Book_07"
 local CROP_LOW, CROP_HIGH = Style.ICON_CROP, Style.ICON_CROP_HIGH
 local OWN_KEYS = { enabled = true, mapPins = true, mapPinSize = true, mapTurnIn = true }
+local BOOK_PIN_SCALE = 0.5
 local TEXT_HAND_IN = ns.L("Hand in to %s, %s")
 local TEXT_TAKES_ONE = ns.L("Takes the book you carry.")
 local TEXT_TAKES = ns.L("Takes the %d books you carry.")
@@ -22,7 +23,12 @@ local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events
 local counts = {}
 
+local function ScaleBookPin(pin)
+    ns.Shared.ScalePin(pin, BOOK_PIN_SCALE)
+end
+
 NaowhForeverLibraryPinMixin = CreateFromMixins(MapCanvasPinMixin)
+NaowhForeverLibraryPinMixin.ApplyCurrentScale = ScaleBookPin
 
 local function SoftBlue(r, g, b)
     local c = ns.ThemeTint("accentSoft", nil)
@@ -79,6 +85,7 @@ function NaowhForeverLibraryPinMixin:OnAcquired(entry)
     local x, y
     if entry.book then x, y = entry.spot[C.SPOT_X], entry.spot[C.SPOT_Y] else x, y = entry.npc.x, entry.npc.y end
     self:SetPosition(x / C.PERCENT, y / C.PERCENT)
+    self:ApplyCurrentScale()
 end
 
 function NaowhForeverLibraryPinMixin:OnMouseEnter()

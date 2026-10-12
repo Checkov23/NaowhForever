@@ -8,12 +8,12 @@ local TEXT_OLD_FOLDER = ns.L("Completo is part of Discovery now. Its old folder 
 
 local S = ns.UI.ModuleSettings("completo", {
     enabled = F.enabled, hideDone = false, windowAlpha = 1, windowScale = 1,
-    mapPins = F.mapPins, mapGrey = false, mapChainsOnly = false, mapPinSize = 18,
+    mapPins = F.mapPins, mapGrey = false, mapChainsOnly = false, mapPinSize = 20,
     rareHideKilled = false, rareAlert = F.rareAlert, rareAlertKilled = false,
     rareSound = true, rareSoundKey = "file:gruntlinghorn", rareAlertPosition = nil, rareAlertScale = 1,
     rareAlertTime = 20, rareAlertFont = "", rareAlertFontSize = 13, rareAlertOutline = "",
     rareAlertBackground = "card", rareAlertGlow = false,
-    rarePins = F.rarePins, rarePinsKilled = false, rarePinSize = 18,
+    rarePins = F.rarePins, rarePinsKilled = false, rarePinSize = 20,
 })
 ns.CompletoSettings = S
 

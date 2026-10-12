@@ -61,7 +61,7 @@ local function OnDisbandClick()
 end
 
 local function OnPersonClick(button)
-    ns.InvitePerson(button.index)
+    ns.InvitePerson(button.entry)
 end
 
 local function SavePosition(pos)
@@ -92,9 +92,9 @@ local function Person(index, entry)
         button = CreateFrame("Button", nil, bar)
         button:SetScript("OnClick", OnPersonClick)
         Style(button, entry.name, "")
-        button.index = index
         people[index] = button
     end
+    button.entry = entry
     button.label:SetText(entry.name)
     button.tip = TIP_PERSON:format(ns.InviteWho(entry))
     return button

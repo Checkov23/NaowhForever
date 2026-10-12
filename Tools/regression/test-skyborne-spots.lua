@@ -127,7 +127,7 @@ Check(Read("Core/Settings.lua"):find("mapSkyborne = F.mapSkyborne,", 1, true)
     and Read("Core/Features.lua"):find("mapSkyborne = false,", 1, true), "Skyborne Spots starts off")
 local section = ns.Shared.MapPins[1]
 Check(section and section.switch == "mapSkyborne" and section.store == S and section.rows[1].key == "mapSkyborne",
-    "its section on Map Options and Pins switches the setting")
+    "its section on Map & Pins switches the setting")
 Check(section.rows[2].key == "mapSkyborneSize" and section.rows[2].needs == "mapSkyborne", "the pin size waits for the switch")
 
 local function CastAt(spellID, buffID, duration)

@@ -1,4 +1,4 @@
--- QuestsSettings.lua: the Quest List's quest cards (Discovery/Quest List), and its quest pins' rows on Map Options and Pins.
+-- QuestsSettings.lua: the Quest List's quest cards (Discovery/Quest List), and its quest pins' rows on QoL > Map & Pins.
 local ns = _G.NaowhForever
 
 local Completo = ns.Completo

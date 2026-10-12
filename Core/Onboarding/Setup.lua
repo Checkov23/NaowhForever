@@ -51,6 +51,8 @@ Setup.ITEMS = {
         blurb = ns.L("Buff, food and campfire reminders.") },
     threatMeter = { addon = "NaowhForever_ThreatMeter", db = "threatMeter", key = "enabled",
         blurb = ns.L("Your group's threat on your target.") },
+    damageMeter = { addon = "NaowhForever_DamageMeter", db = "damageMeter", key = "enabled",
+        blurb = ns.L("Damage, healing and more for your group.") },
     groupInspect = { addon = "NaowhForever_GroupInspect", db = "qol", key = "groupInspect",
         blurb = ns.L("Your group's gear, talents and Naowh Score.") },
     pvp = { addon = "NaowhForever_PvP", db = "pvp", key = "enabled",

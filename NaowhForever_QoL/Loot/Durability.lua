@@ -138,7 +138,7 @@ end
 local Settings = ns.Shared.Settings
 
 Settings.Page(PAGE, S):Card({
-    id = "durability", name = "Durability", order = 80, switch = "durability", note = Settings.EllesmereNote,
+    id = "durability", name = "Durability", order = 80, switch = "durability",
     help = "Text on screen when any piece of gear drops below the threshold. Hidden in "
         .. "combat. Move it in the HUD Editor.",
     summary = DurabilitySummary,

@@ -1,4 +1,4 @@
--- SettingsPage.lua: the Dungeon Journal's settings page, declared as cards, and its entrance pins' rows on Map Options and Pins.
+-- SettingsPage.lua: the Dungeon Journal's settings page, declared as cards, and its entrance pins' rows on QoL > Map & Pins.
 local ns = _G.NaowhForever
 
 local J = ns.Journal
@@ -8,7 +8,8 @@ local Quests = J.Quests
 local Settings = ns.Shared and ns.Shared.Settings
 
 local OPACITY_RANGE, SCALE_RANGE = J.Style.OPACITY_RANGE, J.Style.SCALE_RANGE
-local ICON_MIN, ICON_MAX, ICON_STEP = 50, 200, 10
+local PIN_SIZE_RANGE = ns.Shared.Style.PIN_SIZE_RANGE
+local TO_ENTRANCE_SCALE = 1 / ns.Shared.Style.PIN_SIZE_DEFAULT
 local TO_FRACTION = J.Style.PERCENT_SCALE
 local PERCENT = J.C.PERCENT
 local ROUND_HALF = J.C.ROUND_HALF
@@ -277,8 +278,8 @@ local function DeclareMapPins()
         title = ns.L("Dungeons & Raids"), store = S, switch = "mapEntrances",
         rows = {
             entrances,
-            { key = "mapEntranceScale", label = "Entrance Icon Size", slider = { ICON_MIN, ICON_MAX, ICON_STEP },
-              unit = "%", scale = TO_FRACTION, store = S, always = true, needs = EntrancesOn,
+            { key = "mapEntranceScale", label = "Entrance Icon Size", slider = PIN_SIZE_RANGE,
+              scale = TO_ENTRANCE_SCALE, store = S, always = true, needs = EntrancesOn,
               why = TEXT_ENTRANCES_OFF, help = "How big the entrance icons are. They are largest on a zone's map, "
                   .. "smaller on a continent's and the world's." },
         },

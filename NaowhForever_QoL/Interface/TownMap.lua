@@ -26,7 +26,8 @@ local HINT = ns.QoLConstants.HINT_RGB
 local EMPTY = {}
 local MINI_SIZE = 12
 local MINI_INTERVAL = 0.05
-local PIN_RANGE = { 10, 28, 1 }
+local PIN_RANGE = ns.Shared.Style.PIN_SIZE_RANGE
+local TOWN_PIN_SCALE = 0.5625
 local MINI_EVENTS = { "ZONE_CHANGED_NEW_AREA", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "PLAYER_ENTERING_WORLD" }
 local MOVE_EVENTS = { "PLAYER_STARTED_MOVING", "PLAYER_STOPPED_MOVING", "MINIMAP_UPDATE_ZOOM" }
 local AUDIT_EVENTS = { "GOSSIP_SHOW", "MERCHANT_SHOW", "TRAINER_SHOW", "TAXIMAP_OPENED",
@@ -74,7 +75,7 @@ local PIN_ROWS = {
     { key = "townBank", text = ns.L("Bank & Auction House") },
     { key = "townRepair", text = ns.L("Repairs") },
     { key = "townSupplies", text = ns.L("Reagents, Ammo & Food") },
-    { key = "townStable", text = ns.L("Stable Masters"), tip = ns.L("Hunters only.") },
+    { key = "townStable", text = ns.L("Stable Masters"), tip = ns.L("Hunters only."), class = STABLE_CLASS },
     { key = "townVendors", text = ns.L("Other Vendors"), tip = ns.L("Trade goods and every other merchant.") },
 }
 
@@ -114,6 +115,11 @@ local TEXT_TOWN_TIP = ns.L("Service NPCs, mailboxes, spirit healers, exits and d
 local TEXT_TOWN_OFF = ns.L("Town pins off")
 local TEXT_SUMMARY = ns.L("Town pins: %d of %d shown%s")
 local TEXT_CAPITALS = ns.L(", vendors and trainers in cities only")
+local TEXT_ON_MAP = ns.L(" Which town pins show is switched on the map, from the button at its top right.")
+local MAP_CARD_ORDER, PIN_CARD_ORDER = 10, 20
+local TEXT_MAP_CARD, TEXT_PIN_CARD = ns.L("Map Options"), ns.L("Map Pins")
+local TEXT_MAP_HELP = ns.L("How the world map looks.")
+local TEXT_PIN_HELP = ns.L("Every pin on the world map: town pins for your faction and each module's own.")
 local TEXT_PINS_SEARCH = "vendor vendors trainer trainers mailbox graveyard npc npcs"
 
 local miniPins, miniSpots = {}, {}
@@ -200,8 +206,12 @@ local function TravelArt(label)
     return TRAVEL_ATLAS
 end
 
+local function ScaleTownPin(pin)
+    ScalePin(pin, TOWN_PIN_SCALE)
+end
+
 NaowhForeverTownPinMixin = CreateFromMixins(MapCanvasPinMixin)
-NaowhForeverTownPinMixin.ApplyCurrentScale = ScalePin
+NaowhForeverTownPinMixin.ApplyCurrentScale = ScaleTownPin
 
 function NaowhForeverTownPinMixin:OnLoad()
     self:UseFrameLevelType("PIN_FRAME_LEVEL_AREA_POI")
@@ -232,7 +242,7 @@ function NaowhForeverTownPinMixin:OnMouseLeave()
 end
 
 NaowhForeverZoneLinkPinMixin = CreateFromMixins(MapCanvasPinMixin)
-NaowhForeverZoneLinkPinMixin.ApplyCurrentScale = ScalePin
+NaowhForeverZoneLinkPinMixin.ApplyCurrentScale = ScaleTownPin
 
 function NaowhForeverZoneLinkPinMixin:OnLoad()
     self:UseFrameLevelType("PIN_FRAME_LEVEL_AREA_POI")
@@ -521,27 +531,39 @@ function ns.TownAudit()
     ns.Print(TEXT_AUDIT:format(auditing and TEXT_AUDIT_ON or TEXT_AUDIT_OFF, count))
 end
 
-local function CardRows()
+local function AddSectionRows(rows, section, titled)
+    if titled and section.title then rows[#rows + 1] = ns.Shared.Settings.Group(section.title) end
+    for _, row in ipairs(section.rows) do
+        row.lent = row.store ~= S
+        rows[#rows + 1] = row
+    end
+end
+
+local function PinCardRows()
     local rows = {
         ns.Shared.Settings.Group(TEXT_TOWN),
-        { key = "townMap", label = TEXT_TOWN_PINS, toggle = true, help = TEXT_TOWN_TIP },
-        { key = "townPinSize", label = "Town Pin Size", slider = PIN_RANGE, needs = "townMap" },
+        { key = "townPinSize", label = "Town Pin Size", slider = PIN_RANGE, needs = "townMap", why = TEXT_TOWN_OFF },
     }
-    for _, row in ipairs(PIN_ROWS) do
-        if row.header then
-            rows[#rows + 1] = ns.Shared.Settings.Group(row.header:sub(1, 1) .. row.header:sub(2):lower())
-        else
-            rows[#rows + 1] = { key = row.key, label = row.text, toggle = true, help = row.tip, needs = "townMap" }
-        end
-    end
     for _, section in ipairs(ns.Shared.MapPinSections()) do
-        if section.title then rows[#rows + 1] = ns.Shared.Settings.Group(section.title) end
-        for _, row in ipairs(section.rows) do
-            row.lent = row.store ~= S
-            rows[#rows + 1] = row
-        end
+        if not section.map and not (section.hidden and section.hidden()) then AddSectionRows(rows, section, true) end
     end
     return rows
+end
+
+local function MapCardRows()
+    local rows = {}
+    for _, section in ipairs(ns.Shared.MapPinSections()) do
+        if section.map then AddSectionRows(rows, section, false) end
+    end
+    return rows
+end
+
+local function PinSearch()
+    local words = { TEXT_PINS_SEARCH }
+    for _, row in ipairs(PIN_ROWS) do
+        if row.text then words[#words + 1] = row.text:lower() end
+    end
+    return table.concat(words, " ")
 end
 
 local function TownSummary(store)
@@ -566,13 +588,21 @@ boot:RegisterEvent("PLAYER_LOGIN")
 boot:SetScript("OnEvent", Apply)
 
 ns.TownPinRows = PIN_ROWS
+ns.TownPinRange = PIN_RANGE
 ns.TownPinTexts = { group = TEXT_TOWN, switch = TEXT_TOWN_PINS, tip = TEXT_TOWN_TIP }
 
-ns.Shared.Settings.Page("QoL/Interface", S):Card({
-    id = "townMap", name = "Map Options and Pins", order = 40,
-    help = "The world map's options and every pin on it: town pins (service NPCs for your faction), "
-        .. "quests, rares and entrances. Also set from the button on the map.",
-    search = TEXT_PINS_SEARCH,
+local page = ns.Shared.Settings.Page("QoL/Map & Pins", S)
+
+page:Card({
+    id = "mapOptions", name = TEXT_MAP_CARD, order = MAP_CARD_ORDER,
+    help = TEXT_MAP_HELP,
+    rows = MapCardRows,
+})
+
+page:Card({
+    id = "townMap", name = TEXT_PIN_CARD, order = PIN_CARD_ORDER,
+    help = TEXT_PIN_HELP .. TEXT_ON_MAP,
+    search = PinSearch(),
     summary = TownSummary,
-    rows = CardRows,
+    rows = PinCardRows,
 })

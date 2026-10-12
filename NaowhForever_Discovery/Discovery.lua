@@ -7,7 +7,7 @@ local TRACKER_ALPHAS = { "trackerAlpha", "bagTrackerAlpha" }
 
 local S = ns.UI.ModuleSettings("discovery", {
     enabled = F.enabled,
-    tracker = F.tracker, trackerAlways = false, trackerScale = 1, mapPins = F.mapPins, mapPinSize = 18,
+    tracker = F.tracker, trackerAlways = false, trackerScale = 1, mapPins = F.mapPins, mapPinSize = 20,
     mapTurnIn = true,
     nearbySound = F.nearbySound, nearbyRange = 40, nearbyPing = true, nearbyChat = true, openMap = true,
     windowAlpha = 1,

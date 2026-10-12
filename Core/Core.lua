@@ -46,6 +46,8 @@ local DB_VERSION = 1
 local GUID_PATTERN, HEX = "^Player%-(%d+)%-(%x+)$", 16
 local SCALE_DEFAULT, SCALE_MIN, SCALE_MAX, PERCENT = 100, 50, 200, 100
 local LOGIN_APPLY_DELAY = 1
+local DAMAGE_METER_ADDON, GAME_METER_CVAR, GAME_METER_SAVED = "NaowhForever_DamageMeter", "damageMeterEnabled",
+    "damageMeterGameWas"
 local ERR_NO_PROFILE = "no such profile"
 local TEXT_SECRET = "(withheld: this line contained a secret value)"
 local TEXT_LIBRARIES_MISSING = "Libraries missing (%s), so parts of the addon will not work. Download Naowh "
@@ -354,6 +356,19 @@ end
 local libCheck = CreateFrame("Frame")
 libCheck:RegisterEvent("PLAYER_LOGIN")
 libCheck:SetScript("OnEvent", OnLibraryCheck)
+
+local function RestoreGameMeter()
+    local account = ns.AccountSettings()
+    if account[GAME_METER_SAVED] == nil or C_AddOns.IsAddOnLoaded(DAMAGE_METER_ADDON) or InCombatLockdown() then
+        return
+    end
+    C_CVar.SetCVar(GAME_METER_CVAR, account[GAME_METER_SAVED])
+    account[GAME_METER_SAVED] = nil
+end
+
+local meterCheck = CreateFrame("Frame")
+meterCheck:RegisterEvent("PLAYER_LOGIN")
+meterCheck:SetScript("OnEvent", RestoreGameMeter)
 
 local reloader
 
@@ -1134,7 +1149,10 @@ specWatch:RegisterEvent("PLAYER_ENTERING_WORLD")
 specWatch:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
 specWatch:SetScript("OnEvent", function() ns.ApplySpecProfile((ns.CurrentSpec())) end)
 
-local function ApplyNow() ns.Apply() end
+local function ApplyNow()
+    ns.Shared.Settings.WatchEllesmere()
+    ns.Apply()
+end
 
 local function OnReapplyEvent(_, event)
     if event == "PLAYER_LOGIN" then

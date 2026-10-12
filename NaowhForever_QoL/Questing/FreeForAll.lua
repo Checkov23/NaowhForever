@@ -6,15 +6,18 @@ local S = ns.QoLSettings
 local EVENTS = { "GROUP_ROSTER_UPDATE", "PARTY_LEADER_CHANGED", "PARTY_LOOT_METHOD_CHANGED", "PLAYER_REGEN_ENABLED" }
 
 local events = CreateFrame("Frame")
+local refused
 
 local function On()
     return S.Get("enabled") and S.Get("freeForAll")
 end
 
-local function Update()
-    if InCombatLockdown() or not IsInGroup() or IsInRaid() or not UnitIsGroupLeader("player") then return end
-    if C_PartyInfo.GetLootMethod() ~= Enum.LootMethod.Freeforall then
-        C_PartyInfo.SetLootMethod(Enum.LootMethod.Freeforall)
+local function Update(_, event)
+    if event == "PARTY_LEADER_CHANGED" then refused = false end
+    if refused or InCombatLockdown() or not IsInGroup() or IsInRaid() or not UnitIsGroupLeader("player") then return end
+    local ffa = Enum.LootMethod.Freeforall
+    if C_PartyInfo.GetLootMethod() ~= ffa and C_PartyInfo.IsLootMethodAvailable(ffa) then
+        refused = not C_PartyInfo.SetLootMethod(ffa)
     end
 end
 
@@ -24,6 +27,7 @@ local function Apply()
         return
     end
     for _, event in ipairs(EVENTS) do events:RegisterEvent(event) end
+    refused = false
     Update()
 end
 

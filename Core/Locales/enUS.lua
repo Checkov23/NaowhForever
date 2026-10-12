@@ -149,6 +149,7 @@ L["Macros"] = true
 L["Main Hand"] = true
 L["Make"] = true
 L["Map"] = true
+L["Map & Pins"] = true
 L["More"] = true
 L["My class"] = true
 L["Neck"] = true

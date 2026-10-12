@@ -127,6 +127,24 @@ do
     t.env.NaowhForever_ToggleTraining()
     check("which says so while the Training Planner is not loaded", t.printed[#t.printed]:find("Training Planner", 1, true))
 end
+check("a key binding for showing or hiding the Damage Meter",
+    bindings:find('<Binding name="NAOWHFOREVER_DAMAGEMETER_TOGGLE" category="BINDING_HEADER_NAOWHFOREVER">'
+        .. "NaowhForever_ToggleDamageMeter()</Binding>", 1, true))
+do
+    local t = Fixture(0)
+    check("with its name", t.env.BINDING_NAME_NAOWHFOREVER_DAMAGEMETER_TOGGLE ~= nil)
+    t.env.NaowhForever_ToggleDamageMeter()
+    check("which says so while the Damage Meter is not loaded", t.printed[#t.printed]:find("Damage Meter", 1, true))
+end
+check("a key binding for resetting the Damage Meter",
+    bindings:find('<Binding name="NAOWHFOREVER_DAMAGEMETER_RESET" category="BINDING_HEADER_NAOWHFOREVER">'
+        .. "NaowhForever_ResetDamageMeter()</Binding>", 1, true))
+do
+    local t = Fixture(0)
+    check("with its name", t.env.BINDING_NAME_NAOWHFOREVER_DAMAGEMETER_RESET ~= nil)
+    t.env.NaowhForever_ResetDamageMeter()
+    check("which says so while the Damage Meter is not loaded", t.printed[#t.printed]:find("Damage Meter", 1, true))
+end
 
 local toc = Read("NaowhForever.toc")
 local s = Fixture(0)

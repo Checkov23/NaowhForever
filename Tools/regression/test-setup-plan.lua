@@ -9,7 +9,7 @@ local World = dofile("Tools/regression/setup_world.lua")
 local MINIMALIST_ON = { qol = true, journal = true, bis = true, training = true, blessings = true, professions = true,
     macros = true, actionBars = true, auraBuffs = true, threatMeter = true, pvp = true, topBar = true }
 local MINIMALIST_OFF = "NaowhForever_Discovery,NaowhForever_GroupInspect,NaowhForever_GearSets,"
-    .. "NaowhForever_SwingTimer,NaowhForever_ConsumableBar,NaowhForever_InstanceTracker,NaowhForever_Journeys"
+    .. "NaowhForever_SwingTimer,NaowhForever_ConsumableBar,NaowhForever_InstanceTracker,NaowhForever_Journeys,NaowhForever_DamageMeter"
 
 local function All(value)
     local out = {}

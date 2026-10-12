@@ -116,7 +116,7 @@ pin:Refresh()
 Check(#textures == 1 and textures[1].file == 13, "an explored area is left to the game")
 
 local section = ns.Shared.MapPins[1]
-Check(section and section.switch == "mapUnexplored" and section.store == S, "its section on Map Options and Pins switches the setting")
+Check(section and section.switch == "mapUnexplored" and section.store == S, "its section on Map & Pins switches the setting")
 Check(section.rows[1].key == "mapUnexplored" and section.rows[1].toggle, "with its own switch row")
 Check(Read("Core/Settings.lua"):find("mapUnexplored = F.mapUnexplored, mapUnexploredDark = 0.5", 1, true)
     and Read("Core/Features.lua"):find("mapUnexplored = true,", 1, true),

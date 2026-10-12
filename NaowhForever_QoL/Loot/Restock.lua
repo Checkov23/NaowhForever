@@ -429,9 +429,9 @@ loot:Card({
     id = "vendors", name = "Vendors", order = 20,
     help = "What happens when you open a vendor. Both work whether or not the Restock Reminder is on.",
     rows = {
-        { key = "autoRepair", label = "Auto Repair", toggle = true, note = ns.Shared.Settings.EllesmereNote,
+        { key = "autoRepair", label = "Auto Repair", toggle = true,
           help = "Repairs all gear when you open a vendor who can." },
-        { key = "sellJunk", label = "Auto Sell Junk", toggle = true, note = ns.Shared.Settings.EllesmereNote,
+        { key = "sellJunk", label = "Auto Sell Junk", toggle = true,
           help = "Sells grey items when you open a vendor." },
     },
 })

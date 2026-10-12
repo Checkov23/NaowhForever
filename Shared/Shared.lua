@@ -1,4 +1,4 @@
--- Shared.lua: the namespace every module shares (ns.Shared), the Map Options and Pins sections and pin scale, what a character keeps by its GUID, and how long ago a time was.
+-- Shared.lua: the namespace every module shares (ns.Shared), the Map & Pins sections and pin scale, what a character keeps by its GUID, and how long ago a time was.
 local ns = _G.NaowhForever
 
 local MINUTE, HOUR, DAY = 60, 3600, 86400
@@ -10,6 +10,7 @@ local TEXT_HOURS = ns.L("%d h ago")
 local TEXT_YESTERDAY = ns.L("yesterday")
 local TEXT_DAYS = ns.L("%d days ago")
 local PIN_SCALE = 1.5
+local FULL_SCREEN_PIN_SCALE = 1.5
 local LAST_PIN_ORDER = 50
 
 local Shared = { Parts = {}, Kinds = {}, Items = {}, View = {}, MapPins = {} }
@@ -32,11 +33,12 @@ function Shared.CharacterData(key, create)
     return Child(all, guid, create)
 end
 
-function Shared.ScalePin(pin)
+function Shared.ScalePin(pin, factor)
     local map = pin:GetMap()
     local canvas = map and map.GetCanvasScale and map:GetCanvasScale()
     if not canvas or canvas <= 0 then return end
-    local scale = PIN_SCALE / canvas
+    local scale = PIN_SCALE * (factor or 1) / canvas
+    if map.IsMaximized and map:IsMaximized() then scale = scale * FULL_SCREEN_PIN_SCALE end
     if map.GetGlobalPinScale and not (pin.IsIgnoringGlobalPinScale and pin:IsIgnoringGlobalPinScale()) then
         scale = scale * map:GetGlobalPinScale()
     end

@@ -14,22 +14,23 @@ local PIN_SIZE = St.PIN_SIZE_RANGE
 local RANGE = { 10, 100, 5 }
 local OPACITY_RANGE = St.OPACITY_RANGE
 local PERCENT_SCALE = St.PERCENT_SCALE
-local ORDER_TRACKER, ORDER_MAP_PINS, ORDER_NEARBY, ORDER_WAYPOINTS, ORDER_WINDOW = 10, 20, 30, 35, 90
+local ORDER_TRACKER, ORDER_NEARBY, ORDER_WAYPOINTS, ORDER_WINDOW = 10, 30, 35, 90
+local TEXT_SECTION = ns.L("Library Books")
 local TEXT_OFF = ns.L("Turn on Discovery")
+local TEXT_PINS_OFF = ns.L("Turn on Library Books pins")
 local TEXT_HANDED_IN = ns.L("%d of %d books handed in")
 local TEXT_ALL_EARNED = ns.L("Every reward earned. %s thanks you.")
 local TEXT_NEXT = ns.L("Next: %s at %d. Hand them to %s.")
 local TEXT_EVERY_ZONE = ns.L("In every zone")
 local TEXT_BOOK_ZONES = ns.L("In zones with books to find")
 local TEXT_WITHIN = ns.L("Within %d yards")
-local TEXT_WITH_TURN_IN = ns.L("Books and who takes them")
-local TEXT_BOOKS_ONLY = ns.L("Books only")
 local TEXT_OPENS_MAP = ns.L("Pins it and opens the map")
 local TEXT_PIN_ONLY = ns.L("Pins it only")
 
 local page = Settings.Page(PAGE, S)
 
 local function On() return S.Get("enabled") == true end
+local function PinsOn() return On() and S.Get("mapPins") == true end
 
 local function Headline()
     return TEXT_HANDED_IN:format(Library.Progress())
@@ -52,10 +53,6 @@ end
 
 local function NearbySummary(store)
     return TEXT_WITHIN:format(store.Get("nearbyRange"))
-end
-
-local function MapSummary(store)
-    return store.Get("mapTurnIn") and TEXT_WITH_TURN_IN or TEXT_BOOKS_ONLY
 end
 
 local function WaypointSummary(store)
@@ -86,16 +83,17 @@ page:Card({
     },
 })
 
-page:Card({
-    id = "mapPins", name = "Map Pins", order = ORDER_MAP_PINS, switch = "mapPins",
-    help = "Pins every book you still need on its zone's map, and your librarian while you carry books. "
-        .. "Hover a pin for the exact spot; click it for a waypoint.",
-    summary = MapSummary,
+table.insert(ns.Shared.MapPins, {
+    title = TEXT_SECTION, store = S, switch = "mapPins",
     rows = {
-        { key = "mapTurnIn", label = "Hand-In Pin", toggle = true, needs = On, why = TEXT_OFF,
+        { key = "mapPins", label = TEXT_SECTION, toggle = true, store = S, needs = On, why = TEXT_OFF,
+          help = "Pins every book you still need on its zone's map, and your librarian while you carry books. "
+              .. "Hover a pin for the exact spot; click it for a waypoint." },
+        { key = "mapTurnIn", label = "Hand-In Pin", toggle = true, store = S, always = true, needs = PinsOn,
+          why = TEXT_PINS_OFF,
           help = "While you carry books, a pin on who takes them: your librarian, or the mage trainer." },
-        { key = "mapPinSize", label = "Pin Size", slider = PIN_SIZE, needs = On, why = TEXT_OFF,
-          help = "How big the pins are on the map." },
+        { key = "mapPinSize", label = "Book Pin Size", slider = PIN_SIZE, store = S, always = true, needs = PinsOn,
+          why = TEXT_PINS_OFF, help = "How big the pins are on the map." },
     },
 })
 

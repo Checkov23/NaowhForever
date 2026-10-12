@@ -1,4 +1,4 @@
--- MapSize.lua: the QoL map window: the windowed world map scaled by a corner grip or a slider, and moved by its title bar.
+-- MapSize.lua: the QoL map window: the windowed world map scaled by a corner grip and moved by its title bar.
 local ns = _G.NaowhForever
 
 local S = ns.QoLSettings
@@ -6,7 +6,6 @@ local S = ns.QoLSettings
 local PERCENT = ns.QoLConstants.PERCENT
 local ROUND = ns.QoLConstants.ROUND
 local MIN_PCT, MAX_PCT, STEP_PCT = 50, 150, 5
-local SCALE_RANGE = { MIN_PCT, MAX_PCT, STEP_PCT }
 local SAME_SCALE = 0.001
 local GRIP_SIZE = 16
 local GRIP_INSET = 3
@@ -18,14 +17,8 @@ local TITLE_BUTTONS = 80
 local HANDLE_LEVEL = 80
 local KEEP_ON_SCREEN = 60
 
-local SECTION_ORDER = 10
-local TEXT_SECTION = "Map"
 local TEXT_TITLE = "Map Window"
 local TEXT_TIP = ns.L("Drag to make the map bigger or smaller.\nRight-click: back to 100%.")
-local TEXT_HELP = ns.L("Makes the windowed world map bigger or smaller and lets you move it: drag the grip in "
-    .. "its bottom right corner or set the size here, and drag its title bar to move it (right-click "
-    .. "the title bar puts it back). The full screen map keeps its size and place.")
-local TEXT_SCALE = "Map Scale"
 
 local grip, handle
 local hooked, applied
@@ -34,7 +27,7 @@ local moveX, moveY, cursorX, cursorY
 local home
 
 local function On()
-    return S.Get("enabled") and S.Get("mapSize")
+    return S.Get("enabled")
 end
 
 local function Wanted()
@@ -257,18 +250,10 @@ local function OnLogin(self)
 end
 
 hooksecurefunc(S, "Set", function(key)
-    if key == "enabled" or key == "mapSize" or key == "mapSizePercent" or key == "mapSizePos" then Setup() end
+    if key == "enabled" or key == "mapSizePercent" or key == "mapSizePos" then Setup() end
 end)
 hooksecurefunc(ns, "Apply", Setup)
 
 local boot = CreateFrame("Frame")
 boot:RegisterEvent("PLAYER_LOGIN")
 boot:SetScript("OnEvent", OnLogin)
-
-table.insert(ns.Shared.MapPins, {
-    title = TEXT_SECTION, order = SECTION_ORDER, store = S, switch = "mapSize",
-    rows = {
-        { key = "mapSize", label = TEXT_TITLE, toggle = true, store = S, help = TEXT_HELP },
-        { key = "mapSizePercent", label = TEXT_SCALE, slider = SCALE_RANGE, unit = "%", store = S, needs = "mapSize" },
-    },
-})

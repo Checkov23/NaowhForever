@@ -8,7 +8,7 @@ ns.PRESETS = {
         name = "Minimalist",
         about = "Fewer modules and settings on, and none that spoil the game.",
         source = "Minimalist by Naowh, 2026-10-10",
-        modulesOff = { "NaowhForever_Discovery", "NaowhForever_GroupInspect", "NaowhForever_GearSets", "NaowhForever_SwingTimer", "NaowhForever_ConsumableBar", "NaowhForever_InstanceTracker", "NaowhForever_Journeys" },
+        modulesOff = { "NaowhForever_Discovery", "NaowhForever_GroupInspect", "NaowhForever_GearSets", "NaowhForever_SwingTimer", "NaowhForever_ConsumableBar", "NaowhForever_InstanceTracker", "NaowhForever_Journeys", "NaowhForever_DamageMeter" },
         profile = {
             actionBars = {
                 enabled = true,
@@ -48,7 +48,7 @@ ns.PRESETS = {
                 bagMapPinSize = 16,
                 bagMapPins = true,
                 enabled = false,
-                mapPinSize = 16,
+                mapPinSize = 18,
                 mapPins = false,
             },
             journal = {
@@ -342,7 +342,7 @@ ns.PRESETS = {
                 bagMapPinSize = 16,
                 bagMapPins = true,
                 enabled = true,
-                mapPinSize = 16,
+                mapPinSize = 18,
                 mapPins = true,
             },
             journal = {

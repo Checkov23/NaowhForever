@@ -15,6 +15,7 @@ move-folders:
   NaowhForever/NaowhForever_ActionBars: NaowhForever_ActionBars
   NaowhForever/NaowhForever_AuraBuffs: NaowhForever_AuraBuffs
   NaowhForever/NaowhForever_ThreatMeter: NaowhForever_ThreatMeter
+  NaowhForever/NaowhForever_DamageMeter: NaowhForever_DamageMeter
   NaowhForever/NaowhForever_SwingTimer: NaowhForever_SwingTimer
   NaowhForever/NaowhForever_ConsumableBar: NaowhForever_ConsumableBar
   NaowhForever/NaowhForever_PvP: NaowhForever_PvP

@@ -75,6 +75,8 @@ BINDING_NAME_NAOWHFOREVER_COMPLETO = ns.L("Open Quest List")
 BINDING_NAME_NAOWHFOREVER_BAGSPACE_PICKUP = ns.L("Pick Up Cheapest Item")
 BINDING_NAME_NAOWHFOREVER_HUD = ns.L("Open or Close the HUD Editor")
 BINDING_NAME_NAOWHFOREVER_TRAINING = ns.L("Open Training Planner")
+BINDING_NAME_NAOWHFOREVER_DAMAGEMETER_RESET = ns.L("Reset the Damage Meter")
+BINDING_NAME_NAOWHFOREVER_DAMAGEMETER_TOGGLE = ns.L("Show or Hide the Damage Meter")
 _G["BINDING_NAME_CLICK NaowhForeverBlessNext:LeftButton"] = ns.L("Next Blessing")
 _G["BINDING_NAME_CLICK NaowhForeverBlessNextGreater:LeftButton"] = ns.L("Next Greater Blessing")
 _G["BINDING_NAME_CLICK NaowhForeverFoodBarFood:LeftButton"] = ns.L("Use Best Food")
@@ -90,6 +92,8 @@ NaowhForever_ToggleGroupInspect = SwitchedOff("Group Inspect")
 NaowhForever_ToggleCompleto = SwitchedOff("Discovery")
 NaowhForever_BagSpacePickUp = SwitchedOff("Quality of Life")
 NaowhForever_ToggleTraining = SwitchedOff("Training Planner")
+NaowhForever_ResetDamageMeter = SwitchedOff("Damage Meter")
+NaowhForever_ToggleDamageMeter = SwitchedOff("Damage Meter")
 
 SLASH_NAOWHFOREVERQUESTLIST1 = "/nfquests"
 SLASH_NAOWHFOREVERQUESTLIST2 = "/nfcompleto"

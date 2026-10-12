@@ -36,6 +36,7 @@ local TEXT_CLICK = ns.L("Click for a waypoint.")
 local TEXT_FORGET = ns.L("Right-click to forget this spot.")
 local SECTION_ORDER = 60
 local TEXT_SECTION = "Skyborne"
+local TEXT_OFF = "Skyborne Spots off"
 
 local waiting
 local events
@@ -54,6 +55,10 @@ local function MyKind()
     for key, kind in pairs(KINDS) do
         if kind.faction == faction then return key end
     end
+end
+
+local function NotSkyborne()
+    return MyKind() == nil
 end
 
 local function Found(kind)
@@ -337,7 +342,7 @@ boot:RegisterEvent("PLAYER_LOGIN")
 boot:SetScript("OnEvent", Apply)
 
 table.insert(ns.Shared.MapPins, {
-    title = TEXT_SECTION, order = SECTION_ORDER, store = S, switch = "mapSkyborne",
+    title = TEXT_SECTION, order = SECTION_ORDER, store = S, switch = "mapSkyborne", hidden = NotSkyborne,
     rows = {
         { key = "mapSkyborne", label = "Skyborne Spots", toggle = true, store = S,
           help = "For Skyborne characters: ley lines (Alliance, for Read Ley Line) or Elemental "
@@ -345,7 +350,7 @@ table.insert(ns.Shared.MapPins, {
               .. "them: the addon knows the ones players have found, and saves each new one you cast "
               .. "your racial on. Other races see no pins." },
         { key = "mapSkyborneSize", label = "Skyborne Pin Size", slider = PIN_RANGE, store = S,
-          needs = "mapSkyborne" },
+          needs = "mapSkyborne", why = TEXT_OFF },
         { label = "Forget Found Spots", buttonText = "Forget All", button = ForgetAll, store = S,
           needs = AnyFound, why = "No spots found yet",
           help = "Forgets every spot this account found. The addon's own list stays.",

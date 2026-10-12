@@ -20,7 +20,8 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
     TownCapitals = {}, TownNPCs = {},
     TownMailboxes = { [1] = { { 55, 50, "mail", "Mailbox", "", nil, "AH" }, { 50, 30, "mail", "Mailbox", "", nil, "AH" } } },
     TownSpiritHealers = { [1] = { { 50, 55, "spirit", "Spirit Healer", "Graveyard", nil, "AH" } } },
-    Shared = { Settings = { Group = function() end, Page = function() return { Card = function() end } end } },
+    Shared = { Style = dofile("Tools/regression/shared_style.lua"),
+        Settings = { Group = function() end, Page = function() return { Card = function() end } end } },
 }
 
 local frames = {}

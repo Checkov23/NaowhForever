@@ -1,4 +1,4 @@
--- Ellesmere.lua: the note on a setting EllesmereUI also has, saying whether it is on there, read from its settings each time the row is drawn (Settings.EllesmereNote).
+-- Ellesmere.lua: the popup when a setting is on in both EllesmereUI and Naowh Forever, after a click here or once EllesmereUI's window closes (Settings.EllesmereClash).
 local ns = _G.NaowhForever
 local Settings = ns.Shared.Settings
 
@@ -7,8 +7,11 @@ local ESSENTIALS = "EllesmereUIForeverEssentials"
 local QUESTS = "EllesmereUIQuestTracker"
 local DB = "EllesmereUIDB"
 local QUEST_DB = "_EQT_DB"
-local TEXT_ON = ns.L("EllesmereUI has it on")
-local TEXT_OFF = ns.L("EllesmereUI has it off")
+local WINDOW_OPENERS = { "Show", "Toggle", "ShowModule" }
+local LIST_JOIN = ", "
+local TEXT_BOTH = ns.L("%s is on in both EllesmereUI and Naowh Forever. Turn one of them off.")
+local TEXT_BOTH_MANY = ns.L("%s are on in both EllesmereUI and Naowh Forever. Turn one of each off.")
+local TEXT_OFF_HERE, TEXT_KEEP = ns.L("Turn Off Here"), ns.L("Keep Both")
 local TRACKER_ON = { path = { QUEST_DB, "profile", "questTracker", "enabled" }, default = true }
 
 local OVERLAPS = {
@@ -43,11 +46,89 @@ local function Read(entry)
     return value
 end
 
-function Settings.EllesmereNote(item)
-    local entry = OVERLAPS[item.key or item.switch]
-    if not (entry and C_AddOns.IsAddOnLoaded(entry.addon)) then return nil end
+local ORDER = {}
+for key in pairs(OVERLAPS) do ORDER[#ORDER + 1] = key end
+table.sort(ORDER)
+
+local before = {}
+local watching, hooked
+
+local function EllesmereOn(key)
+    local entry = OVERLAPS[key]
+    if not (entry and C_AddOns.IsAddOnLoaded(entry.addon)) then return false end
     local on = Read(entry)
-    if on == nil then return nil end
     if on and entry.gate and Read(entry.gate) == false then on = false end
-    return on and TEXT_ON or TEXT_OFF
+    return on == true
+end
+
+local function Find(key)
+    for _, page in pairs(Settings.pages) do
+        for _, card in pairs(page.cards) do
+            if card.switch == key then return card.name, card end
+            for _, row in ipairs(card.rows) do
+                if row.key == key then return row.label, card end
+            end
+        end
+    end
+end
+
+local function OnHere(key)
+    local label, card = Find(key)
+    if not (label and card.store.Get(key)) then return false end
+    return type(card.switch) ~= "string" or card.store.Get(card.switch) == true
+end
+
+local function TurnOff(keys)
+    for _, key in ipairs(keys) do
+        local _, card = Find(key)
+        card.store.Set(key, false)
+    end
+    ns.UI:RefreshPage(true)
+end
+
+local function Ask(keys)
+    local labels = {}
+    for i, key in ipairs(keys) do labels[i] = (Find(key)) end
+    local text = #keys == 1 and TEXT_BOTH:format(labels[1]) or TEXT_BOTH_MANY:format(table.concat(labels, LIST_JOIN))
+    ns.Confirm(text, function() TurnOff(keys) end, nil, TEXT_OFF_HERE, TEXT_KEEP)
+end
+
+function Settings.EllesmereClash(card, key)
+    if type(key) ~= "string" then return end
+    local keys = {}
+    for _, overlap in ipairs(ORDER) do
+        local mine = overlap == key or (key == card.switch and select(2, Find(overlap)) == card)
+        if mine and EllesmereOn(overlap) and OnHere(overlap) then keys[#keys + 1] = overlap end
+    end
+    if #keys > 0 then Ask(keys) end
+end
+
+local function Snapshot()
+    for _, key in ipairs(ORDER) do before[key] = EllesmereOn(key) end
+end
+
+local function OnWindowHidden()
+    local keys = {}
+    for _, key in ipairs(ORDER) do
+        if not before[key] and EllesmereOn(key) and OnHere(key) then keys[#keys + 1] = key end
+    end
+    if #keys > 0 then Ask(keys) end
+end
+
+local function WatchWindow()
+    local frame = EllesmereUI:GetMainFrame()
+    if watching or not frame then return end
+    watching = true
+    frame:HookScript("OnShow", Snapshot)
+    frame:HookScript("OnHide", OnWindowHidden)
+    if frame:IsShown() then Snapshot() end
+end
+
+function Settings.WatchEllesmere()
+    if hooked or not EllesmereUI then return end
+    hooked = true
+    for _, name in ipairs(WINDOW_OPENERS) do
+        if EllesmereUI[name] then hooksecurefunc(EllesmereUI, name, WatchWindow) end
+    end
+    WatchWindow()
 end
