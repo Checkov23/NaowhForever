@@ -130,7 +130,7 @@ local function BuildList(builds, y)
         r.band:SetAlpha(r.picked and PICKED or 0)
         r.name:SetText(build.name)
         local source = build.source or (build.saved and TEXT_SAVED_BY_YOU)
-        r.spec:SetText(TEXT_SPEC_LINE:format(build.spec, #build.points) .. (source and Style.PLACE_DOT .. source or ""))
+        r.spec:SetText(TEXT_SPEC_LINE:format(ns.L(build.spec), #build.points) .. (source and Style.PLACE_DOT .. source or ""))
         r:SetScript("OnClick", function()
             V.buildIndex, V.editing = i, false
             Redraw()
