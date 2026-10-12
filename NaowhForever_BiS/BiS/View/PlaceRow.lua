@@ -82,7 +82,7 @@ end
 local function Drop(list, slot)
     local id = list.slots[slot]
     local _, who = R.Place(ns.BiSSource(id) or TEXT_UNKNOWN)
-    return who, C_Item.GetItemNameByID(id), ns.BiSSpots[id]
+    return who and ns.L(who), C_Item.GetItemNameByID(id), ns.BiSSpots[id]
 end
 
 local function Has(who, spot)

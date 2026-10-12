@@ -1624,6 +1624,7 @@ L["Counts food and drink separately across all stacks. Warriors and rogues do no
 L["craft"] = "Herstellung"
 L["Craft Order"] = "Handwerksauftrag"
 L["Craft Orders"] = "Handwerksaufträge"
+L["Crafted"] = "Hergestellt"
 L["Crafting"] = "Herstellen"
 L["Crafting Profit"] = "Herstellungsgewinn"
 L["Crafting several at once (Create All, or Create with a count) shows one bar for the whole batch, drawn like the Flight Timer: the recipe, how many are done and the time left on all of them, in place of the cast bar that fills for every craft. It sits where the Flight Timer is, as nobody crafts in flight: move it in the HUD Editor as the Flight Timer."] = "Stellst du mehrere auf einmal her (Alle erstellen oder Erstellen mit einer Anzahl), erscheint eine Leiste für die ganze Serie, gezeichnet wie der Flugtimer: das Rezept, wie viele fertig sind, und die Restzeit für alle, anstelle der Zauberleiste, die sich bei jeder Herstellung füllt. Sie sitzt dort, wo der Flugtimer ist, da niemand im Flug herstellt: Verschiebe sie im HUD-Editor als Flugtimer."

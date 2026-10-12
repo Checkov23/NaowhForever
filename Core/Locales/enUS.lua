@@ -1629,6 +1629,7 @@ L["Counts food and drink separately across all stacks. Warriors and rogues do no
 L["craft"] = true
 L["Craft Order"] = true
 L["Craft Orders"] = true
+L["Crafted"] = true
 L["Crafting"] = true
 L["Crafting Profit"] = true
 L["Crafting several at once (Create All, or Create with a count) shows one bar for the whole batch, drawn like the Flight Timer: the recipe, how many are done and the time left on all of them, in place of the cast bar that fills for every craft. It sits where the Flight Timer is, as nobody crafts in flight: move it in the HUD Editor as the Flight Timer."] = true
