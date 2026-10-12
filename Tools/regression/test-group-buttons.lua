@@ -1,8 +1,9 @@
 -- Run with Lua 5.1 from the repository root: Group Tools' on-screen Invite and Disband buttons.
 -- Nothing is made while off; Invite runs the game's /invite from a secure button; the layout
--- stacks or lines up; secure changes wait for the end of a fight; Disband waits too.
+-- stacks or lines up; secure changes wait for the end of a fight; Disband waits too; each kept
+-- person gets a button, with Invite All and the target Invite as switches.
 local NOTHING = function() end
-local frames, printed, disbanded = {}, {}, 0
+local frames, printed, disbanded, invited, invitedAll = {}, {}, 0, {}, 0
 local combat = false
 
 local function Frame(kind, parent, template)
@@ -16,6 +17,8 @@ local function Frame(kind, parent, template)
     function f:Show() self.shown = true end
     function f:Hide() self.shown = false end
     function f:SetShown(v) self.shown = v and true or false end
+    function f:IsShown() return self.shown == true end
+    function f:SetText(text) self.text = text end
     function f:RegisterEvent(e) self.events[e] = true end
     function f:UnregisterEvent(e) self.events[e] = nil end
     function f:UnregisterAllEvents() self.events = {} end
@@ -25,7 +28,7 @@ local function Frame(kind, parent, template)
     return f
 end
 
-local settings = { enabled = true, groupButtonsWidth = 90, groupButtonsHeight = 24, groupButtonsFont = "",
+local settings = { enabled = true, groupButtonsTarget = true, groupButtonsInviteAll = false, groupButtonsWidth = 90, groupButtonsHeight = 24, groupButtonsFont = "",
     groupButtonsFontSize = 12, groupButtonsOutline = "NONE", groupButtonsBackground = "card" }
 local setHooks = {}
 local S = { Get = function(k) return settings[k] end }
@@ -46,6 +49,9 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
     Font = function(parent) return Frame("FontString", parent) end,
     Print = function(m) printed[#printed + 1] = m end,
     DisbandGroup = function() disbanded = disbanded + 1 end,
+    InvitePerson = function(i) invited[#invited + 1] = i end,
+    InviteAll = function() invitedAll = invitedAll + 1 end,
+    InviteWho = function(entry) return entry.tag or entry.char end,
     Apply = NOTHING, ShowUnlockMode = NOTHING, HideUnlockMode = NOTHING,
 }
 local env = setmetatable({
@@ -53,6 +59,7 @@ local env = setmetatable({
     UIParent = {},
     CreateFrame = function(kind, _, parent, template) return Frame(kind, parent, template) end,
     InCombatLockdown = function() return combat end,
+    wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
     hooksecurefunc = function(t, _, fn)
         if t == S then setHooks[#setHooks + 1] = fn end
     end,
@@ -142,6 +149,42 @@ Case("Disband waits for the end of a fight, then disbands", function()
     combat = false
     bar.disband.scripts.OnClick(bar.disband)
     assert(disbanded == 1)
+end)
+
+Case("each kept person gets a button between Invite and Disband", function()
+    Set("groupInvites", { { name = "Robin", tag = "Robin#1234" }, { name = "Gly", char = "Glyalith" } })
+    local bar = Bar()
+    assert(bar.w == 90 and bar.h == 24 * 4 + 4 * 3, "four stacked: " .. bar.w .. "x" .. bar.h)
+    local gly = bar.disband.point[2]
+    local robin = gly.point[2]
+    assert(robin.label.text == "Robin" and robin.point[2] == bar.invite, "Robin under Invite")
+    assert(gly.label.text == "Gly" and gly.tip == "Invites Glyalith.")
+    gly.scripts.OnClick(gly)
+    assert(invited[1] == 2, "the button invites its own person")
+end)
+
+Case("Invite All after the people, only when switched on", function()
+    local bar = Bar()
+    assert(not bar.inviteAll.shown)
+    Set("groupButtonsInviteAll", true)
+    assert(bar.inviteAll.shown and bar.disband.point[2] == bar.inviteAll)
+    bar.inviteAll.scripts.OnClick(bar.inviteAll)
+    assert(invitedAll == 1)
+end)
+
+Case("the target Invite can go; a removed person's button hides", function()
+    Set("groupButtonsTarget", false)
+    Set("groupInvites", { { name = "Robin", tag = "Robin#1234" } })
+    local bar = Bar()
+    assert(not bar.invite.shown, "no target Invite")
+    local robin = bar.inviteAll.point[2]
+    assert(robin.label.text == "Robin" and robin.point[1] == "TOPLEFT" and robin.point[2] == nil, "Robin first")
+    local hidden = 0
+    for _, f in ipairs(frames) do
+        if f.label and f.label.text == "Gly" and f.shown == false then hidden = hidden + 1 end
+    end
+    assert(hidden == 1, "Gly's button hidden")
+    assert(bar.h == 24 * 3 + 4 * 2)
 end)
 
 Case("turning it off hides it", function()

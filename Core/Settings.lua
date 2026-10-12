@@ -30,6 +30,8 @@ local S = UI.ModuleSettings("qol", {
     gossipAuto = F.gossipAuto, gossipModifier = "ALT", gossipModifierMode = "SKIP",
     groupButtons = F.groupButtons, groupButtonsLayout = "stacked", groupButtonsWidth = 90, groupButtonsHeight = 24,
     groupButtonsFont = "", groupButtonsFontSize = 12, groupButtonsOutline = "NONE", groupButtonsBackground = "card",
+    groupButtonsTarget = true, groupButtonsInviteAll = false, groupInvites = {},
+    freeForAll = F.freeForAll,
     questShare = F.questShare,
     combatTimer = F.combatTimer, combatTimerInstanceOnly = false, combatTimerChat = true,
     combatTimerSticky = false, combatTimerHidePrefix = false, combatTimerBackground = "none",

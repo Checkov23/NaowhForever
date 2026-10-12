@@ -71,12 +71,23 @@ local function ClearNow()
     if C_SuperTrack then C_SuperTrack.ClearAllSuperTracked() end
 end
 
+local function TrackNow(quest)
+    C_Map.ClearUserWaypoint()
+    C_SuperTrack.SetSuperTrackedQuestID(quest)
+end
+
 local function Flush()
     local change = pending
     if not change then return end
     pending = nil
     held:UnregisterAllEvents()
-    if change == CLEAR then ClearNow() else SetNow(unpack(change, 1, STOP_FIELDS)) end
+    if change == CLEAR then
+        ClearNow()
+    elseif change.quest then
+        TrackNow(change.quest)
+    else
+        SetNow(unpack(change, 1, STOP_FIELDS))
+    end
 end
 
 local function DropPending()
@@ -103,7 +114,12 @@ local function SetGameWaypoint(title, map, x, y, note, icon)
     return true
 end
 
+function ns.TrackQuest(quest)
+    if MapOpen() then Hold({ quest = quest }) else TrackNow(quest) end
+end
+
 function ns.ClearWaypoint()
+    if ns.JourneyCancel then ns.JourneyCancel() end
     if MapOpen() then Hold(CLEAR) else ClearNow() end
 end
 
@@ -112,8 +128,16 @@ local function EndRoute()
     watch:UnregisterAllEvents()
 end
 
+function ns.ShowJourneyStep(title, map, x, y, note, icon)
+    EndRoute()
+    if not C_Map.CanSetUserWaypointOnMap(map) then return false end
+    SetGameWaypoint(title, map, x, y, note, icon)
+    return true
+end
+
 function ns.PlaceWaypoint(title, map, x, y, note, icon)
     EndRoute()
+    if ns.JourneyTo and ns.JourneyTo(title, { { title, map, x, y, note, icon } }) then return true end
     local pin = ns.WaypointPinOn and ns.WaypointPinOn()
     if not pin and TomTom and TomTom.AddWaypoint and PlaceTomTom(title, map, x, y, note) then return true end
     if not C_Map.CanSetUserWaypointOnMap(map) then
@@ -168,6 +192,10 @@ end
 watch:SetScript("OnEvent", OnRouteEvent)
 
 function ns.PlaceWaypointRoute(title, stops)
+    if ns.JourneyTo and ns.JourneyTo(title, stops) then
+        EndRoute()
+        return true
+    end
     if #stops < ROUTE_MIN_STOPS then
         local stop = stops[1]
         return stop ~= nil and ns.PlaceWaypoint(stop[1], stop[2], stop[3], stop[4], stop[5], stop[6])
@@ -180,6 +208,10 @@ function ns.PlaceWaypointRoute(title, stops)
 end
 
 function ns.WaypointRoute()
+    if ns.JourneyStep then
+        local title, at, n, nextTitle = ns.JourneyStep()
+        if title then return title, at, n, nextTitle end
+    end
     if not route then return end
     local nextStop = route.stops[route.at + 1]
     return route.title, route.at, #route.stops, nextStop and nextStop[1]

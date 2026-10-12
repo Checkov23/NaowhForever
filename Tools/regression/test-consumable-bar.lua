@@ -28,6 +28,7 @@ local KNOWN = {
     [10587] = { 133001, 7, 12543, 3 }, -- Goblin Bomb Dispenser: Trade Goods, Devices
     [4359] = { 133594, 7, nil, 1 },   -- Handful of Bronze Bolts: Trade Goods, Parts
     [10307] = { 134937, 0, 12178, 4 }, -- Scroll of Stamina IV
+    [7146] = { 134939, 0, 8902, 4 },   -- a Scroll that gives no buff
     [8932] = { 133948, 0, 433, 5 },   -- Alterac Swiss
     [14530] = { 133690, 0, 18610, 7 }, -- Heavy Runecloth Bandage
     [2862] = { 135248, 7, 2828, 0 },  -- Rough Sharpening Stone, filed as a trade good here
@@ -792,6 +793,7 @@ do
     check('food and bandages by subclass', cat(s, 8932) == 'food' and cat(s, 14530) == 'bandage')
     check('a stone is a weapon enhancement, whatever class the game gives it', cat(s, 2862) == 'weapon')
     check('a healthstone has its own kind', cat(s, 5509) == 'healthstone')
+    check('a scroll that gives no buff is not one either', cat(s, 7146) == nil)
     check('cloth is no consumable', cat(s, 2589) == nil)
     check('explosives and devices count, filed as Trade Goods', cat(s, 18641) == 'explosive'
         and cat(s, 10587) == 'device')

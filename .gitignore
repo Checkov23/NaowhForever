@@ -13,3 +13,8 @@ __pycache__/
 
 # Pages fetched by Tools/sources/wowsrc.py, kept to save asking again.
 /Tools/data/wowsrc_pages/
+
+# The walking-map bake's packages and the game files it downloads.
+/Tools/nav/node_modules/
+/Tools/nav/.cache/
+/Tools/nav/cache/

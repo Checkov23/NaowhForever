@@ -1,0 +1,10 @@
+## Interface: 16001
+## Title: |cff0091edNaowh|r Forever: Journeys
+## Notes: The fastest way anywhere: walking, flights, boats, zeppelins, the tram, portals and your Hearthstone.
+## Author: Naowh
+## Version: 1.1.9
+## Dependencies: NaowhForever
+## Group: NaowhForever
+## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga
+
+Journeys.xml

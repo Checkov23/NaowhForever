@@ -53,7 +53,10 @@ NaowhForever_QoL/
     PetTracker.lua      the Pet Tracker
   Questing/
     BuffThanks.lua      Buff Thank You Message and its line editor
-    GroupButtons.lua    On-Screen Buttons (Invite, Disband)
+    Invites.lua         the people you keep an invite button for and their editor (ns.InvitePerson,
+                        ns.InviteAll, ns.ShowInviteEditor)
+    GroupButtons.lua    On-Screen Buttons (Invite, your invite buttons, Invite All, Disband)
+    FreeForAll.lua      Always Free for All, the party loot method while you lead
     TalentPoints.lua    the unspent talent points reminder
     QuestAutomation.lua accept, hand in and share quests, saved reward picks
     PlayerHistory.lua   Player History (ns.PlayerHistory), read by the Naowh Inspect panel
@@ -698,6 +701,23 @@ NaowhForever_QoL/
 - The pace arrow sits a share of the text size lower (`DROP_SHARE`), level with the letters: the Naowh font leaves room above capitals.
 - The file sits close to Lua 5.1's 200-local cap for one chunk, so new constants are grouped into tables (`FORMAT`, `DEFAULT_POS`); the XP Bar folds its texts into `TEXT` for the same reason.
 
+
+### Always Free for All
+- Raids are left alone: a raid usually sets its own loot rules.
+- The method is set again whenever it changes, so a leader who wants another one turns the switch off.
+- `C_PartyInfo.SetLootMethod` is marked HasRestrictions in the Forever API docs; it is called only out
+  of combat, from an event handler, never from a secure path.
+
+### Invite Buttons
+- The list is in `ns.PROFILE_OWN`: a shared profile never carries your friends' BattleTags.
+- A Battle.net friend is kept by BattleTag: the game account ID to invite changes every session, so it
+  is looked up on each click, the first of their game accounts online on Forever.
+- Battle.net friends are invited with `C_BattleNet.InviteFriend`, as the game's Friends list does: the
+  legacy friend list is off on Forever, so a name invite only reaches characters the game can find.
+- Invite All stops at a full party (`MAX_PARTY_MEMBERS`) and does not turn the party into a raid;
+  people already in the group are skipped.
+- The invite buttons are plain buttons: invites are not protected, so they work in combat. Adding or
+  removing one moves the bar, which waits for the fight to end, as the bar's other changes do.
 
 ### QoL defaults (Core/Settings.lua)
 - Every on/off switch default in the QoL store is read from `ns.FEATURES.qol`; the values are unchanged.

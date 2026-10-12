@@ -53,6 +53,7 @@ function CB.Category(itemID)
     local _, _, _, _, _, classID, subclassID = C_Item.GetItemInfoInstant(itemID)
     if classID == C.TRADE_GOODS_CLASS then return D.TRADE_GOODS[subclassID] end
     if classID ~= C.CONSUMABLE_CLASS then return nil end
+    if subclassID == C.SCROLL_SUBCLASS and not D.SCROLLS[itemID] then return nil end
     return D.BY_SUBCLASS[subclassID] or "other"
 end
 

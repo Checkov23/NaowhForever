@@ -287,7 +287,8 @@ Profile strings
   and notes fit the game's limits, lists have no holes, and there are at most 500 consumables and
   100 class macros a class. One bad entry leaves that whole part out, and only the fields the addon
   reads are copied in.
-- What one player answered about EllesmereUI's windows (`ns.PROFILE_OWN`) is never shared.
+- What one player answered about EllesmereUI's windows, and their invite buttons' friends (`ns.PROFILE_OWN`),
+  are never shared.
 - The skin travels in a profile string's Look part, with the theme, font and window scale. A
   consumable needs only its item ID; its buff IDs may be left out.
 - A multiline edit box is as tall as its text, so an empty one is given a height or it takes no

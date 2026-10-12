@@ -1,0 +1,16 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- Journeys.xml: the Journeys planner's files, in load order. -->
+    <Script file="Journeys.lua"/>
+    <Script file="Constants.lua"/>
+    <Script file="Data\Network.lua"/>
+    <Script file="Data\Teleports.lua"/>
+    <Script file="Data\QuestSpots.lua"/>
+    <Script file="Planner.lua"/>
+    <Script file="World.lua"/>
+    <Script file="Walk.lua"/>
+    <Script file="Guide.lua"/>
+    <Script file="Quests.lua"/>
+    <Script file="UI\Card.lua"/>
+    <Include file="UI\MapRoute.xml"/>
+    <Script file="UI\SettingsPage.lua"/>
+</Ui>

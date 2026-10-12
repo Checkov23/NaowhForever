@@ -26,7 +26,8 @@ local LOOK_TYPES = { themePreset = "string", themeColors = "table", uiFont = "st
     skin = "string" }
 local GEAR_SLOT = { [1] = true, [2] = true, [3] = true, [5] = true, [6] = true, [7] = true, [8] = true, [9] = true,
     [10] = true, [11] = true, [12] = true, [13] = true, [14] = true, [15] = true, [16] = true, [17] = true, [18] = true }
-local OWN = { qol = { "characterPanelAsked", "characterPanelTookOver", "inspectPanelAsked", "inspectPanelTookOver" } }
+local OWN = { qol = { "characterPanelAsked", "characterPanelTookOver", "inspectPanelAsked", "inspectPanelTookOver",
+    "groupInvites" } }
 local PARTS = {
     { key = "settings", label = "Settings", help = "Every module's settings and positions",
       share = ns.L("Every module's settings and where its frames sit.") },

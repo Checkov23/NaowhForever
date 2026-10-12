@@ -23,4 +23,12 @@ CB.Data = {
         [3776] = true, [5237] = true, [6951] = true, [9186] = true, [10918] = true, [10920] = true,
         [10921] = true, [10922] = true,
     },
+    SCROLLS = {
+        [3012] = true, [1477] = true, [4425] = true, [10309] = true,
+        [955] = true, [2290] = true, [4419] = true, [10308] = true,
+        [3013] = true, [1478] = true, [4421] = true, [10305] = true,
+        [1181] = true, [1712] = true, [4424] = true, [10306] = true,
+        [1180] = true, [1711] = true, [4422] = true, [10307] = true,
+        [954] = true, [2289] = true, [4426] = true, [10310] = true,
+    },
 }

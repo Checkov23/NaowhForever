@@ -1,0 +1,7 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- MapRoute.xml: the journey route pin's template, and the file that draws it. -->
+    <Script file="MapRoute.lua"/>
+    <Frame name="NaowhForeverJourneyRoutePinTemplate" mixin="NaowhForeverJourneyRoutePinMixin" virtual="true">
+        <Size x="1" y="1"/>
+    </Frame>
+</Ui>

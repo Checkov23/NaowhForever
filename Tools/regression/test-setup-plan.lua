@@ -9,7 +9,7 @@ local World = dofile("Tools/regression/setup_world.lua")
 local MINIMALIST_ON = { qol = true, journal = true, bis = true, training = true, blessings = true, professions = true,
     macros = true, actionBars = true, auraBuffs = true, threatMeter = true, pvp = true, topBar = true }
 local MINIMALIST_OFF = "NaowhForever_Discovery,NaowhForever_GroupInspect,NaowhForever_GearSets,"
-    .. "NaowhForever_SwingTimer,NaowhForever_ConsumableBar,NaowhForever_InstanceTracker"
+    .. "NaowhForever_SwingTimer,NaowhForever_ConsumableBar,NaowhForever_InstanceTracker,NaowhForever_Journeys"
 
 local function All(value)
     local out = {}
@@ -84,7 +84,7 @@ do
     local on = {}
     for id, value in pairs(minimal) do if value then on[#on + 1] = id end end
     table.sort(on)
-    check("Minimalist pre-selects all but its six: " .. Names(on), Names(on) == "actionBars,auraBuffs,bis,blessings,journal,macros,professions,pvp,qol,threatMeter,topBar,training")
+    check("Minimalist pre-selects all but its seven: " .. Names(on), Names(on) == "actionBars,auraBuffs,bis,blessings,journal,macros,professions,pvp,qol,threatMeter,topBar,training")
     check("the list is the preset's own", Names(w.ns.PRESETS.minimalist.modulesOff) == MINIMALIST_OFF)
     local starter = Game({ root = w.env.CopyTable(w.ns.STARTER.profile) })
     for id in pairs(Setup.ITEMS) do

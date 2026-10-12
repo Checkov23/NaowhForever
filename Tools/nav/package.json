@@ -1,0 +1,10 @@
+{
+  "name": "naowhforever-nav",
+  "private": true,
+  "type": "module",
+  "description": "Bakes the Journeys walking maps from the Forever client's terrain. Not shipped.",
+  "dependencies": {
+    "@rhyster/wow-casc-dbc": "2.16.15",
+    "recast-navigation": "0.43.1"
+  }
+}

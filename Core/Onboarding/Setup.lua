@@ -31,6 +31,8 @@ Setup.ITEMS = {
         blurb = ns.L("Your best gear, called out when it drops.") },
     training = { addon = "NaowhForever_Training", db = "training", key = "enabled",
         blurb = ns.L("What to train at each level, and its cost.") },
+    journeys = { addon = "NaowhForever_Journeys", db = "journeys", key = "enabled",
+        blurb = ns.L("The fastest way to any waypoint.") },
     discovery = { addon = "NaowhForever_Discovery", db = "discovery", key = "enabled",
         blurb = ns.L("Library books, and every quest and rare by zone.") },
     gearSets = { addon = "NaowhForever_GearSets", db = "qol", key = "gearSets",

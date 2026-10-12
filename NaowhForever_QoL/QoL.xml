@@ -11,7 +11,9 @@
     <Script file="Combat\CombatAlert.lua"/>
     <Script file="Questing\QuestAutomation.lua"/>
     <Script file="Questing\Disband.lua"/>
+    <Script file="Questing\Invites.lua"/>
     <Script file="Questing\GroupButtons.lua"/>
+    <Script file="Questing\FreeForAll.lua"/>
     <Script file="Loot\LootConfirm.lua"/>
     <Script file="Cursor\CursorClip.lua"/>
     <Script file="Combat\CombatTimer.lua"/>

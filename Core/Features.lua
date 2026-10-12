@@ -24,6 +24,7 @@ ns.FEATURES = {
         questShare = true,
         gossipAuto = false,
         groupButtons = false,
+        freeForAll = false,
         combatTimer = false,
         cursorCooldown = false,
         globalCopy = false,
@@ -111,6 +112,10 @@ ns.FEATURES = {
     },
     statWeights = {
         enabled = false,
+    },
+    journeys = {
+        enabled = false,
+        card = true,
     },
     training = {
         enabled = true,

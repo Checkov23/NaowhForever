@@ -874,3 +874,27 @@ SETUP_OUT = os.path.join(OUT, "Setup")
 os.makedirs(SETUP_OUT, exist_ok=True)
 for name, pixel in SETUP_ICONS.items():
     write_tga(os.path.join(SETUP_OUT, name + ".tga"), 64, pixel)
+
+
+JOURNEYS_OUT = os.path.join(paths.ROOT, "NaowhForever_Journeys", "Media")
+JOURNEY_ICONS = {
+    "walk": line_icon(dot(0.5, 0.2, 0.085), path([(0.5, 0.34), (0.5, 0.58)]), path([(0.5, 0.58), (0.36, 0.86)]),
+                      path([(0.5, 0.58), (0.64, 0.86)]), path([(0.32, 0.46), (0.68, 0.46)]), width=0.095),
+    "ship": line_icon(path([(0.12, 0.64), (0.88, 0.64), (0.74, 0.86), (0.26, 0.86)], True),
+                      path([(0.5, 0.12), (0.5, 0.64)]), path([(0.5, 0.18), (0.82, 0.54), (0.5, 0.54)], True),
+                      width=0.07),
+    "fly": line_icon(path([(0.1, 0.5), (0.9, 0.14), (0.62, 0.86), (0.46, 0.58)], True), path([(0.46, 0.58), (0.9, 0.14)]),
+                     width=0.075),
+    "tram": line_icon(path([(0.2, 0.22), (0.8, 0.22), (0.8, 0.72), (0.2, 0.72)], True), path([(0.2, 0.46), (0.8, 0.46)]),
+                      path([(0.5, 0.22), (0.5, 0.08)]), dot(0.34, 0.86, 0.07), dot(0.66, 0.86, 0.07), width=0.075),
+    "portal": line_icon(path(arc(0.5, 0.5, 0.36, 0, 360, 60) , True), path(arc(0.5, 0.5, 0.17, 0, 360, 40), True),
+                        width=0.085),
+    "hearth": line_icon(path([(0.1, 0.5), (0.5, 0.14), (0.9, 0.5)]), path([(0.22, 0.42), (0.22, 0.86), (0.78, 0.86), (0.78, 0.42)]),
+                        path([(0.43, 0.86), (0.43, 0.62), (0.57, 0.62), (0.57, 0.86)]), width=0.075),
+    "teleport": line_icon(solid(STAR4), solid(SMALL4)),
+    "goal": line_icon(path([(0.26, 0.9), (0.26, 0.1)]), path([(0.26, 0.14), (0.82, 0.14), (0.66, 0.38), (0.82, 0.62), (0.26, 0.62)]),
+                      width=0.085),
+}
+os.makedirs(JOURNEYS_OUT, exist_ok=True)
+for name, pixel in JOURNEY_ICONS.items():
+    write_tga(os.path.join(JOURNEYS_OUT, name + ".tga"), 64, pixel)

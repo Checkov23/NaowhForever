@@ -75,6 +75,12 @@ local MODULES = {
       tabs = {
           { name = "Settings", reuse = true },
       } },
+    { name = "Journeys", group = "ADVENTURE", navIcon = "compass", settings = "JourneysSettings",
+      addon = "NaowhForever_Journeys",
+      subtitle = "The fastest way anywhere: walking, flights, boats, zeppelins, the tram, portals and your Hearthstone.",
+      tabs = {
+          { name = "Settings", reuse = true },
+      } },
     { name = "Discovery", group = "ADVENTURE", navIcon = "compass", settings = "DiscoverySettings",
       addon = "NaowhForever_Discovery",
       open = "ToggleDiscoveryWindow",

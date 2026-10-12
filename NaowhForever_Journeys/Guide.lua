@@ -1,0 +1,318 @@
+-- Guide.lua: the journey being followed, one step at a time on the game's waypoint, planned again as you go.
+local ns = _G.NaowhForever
+
+local Jy = ns.Journeys
+local C = Jy.C
+local World = Jy.World
+local Planner = Jy.Planner
+local Walk = Jy.Walk
+
+local PERCENT = 100
+local SAME_SPOT = 0.05
+local REPLAN_DELAY = 0.5
+local FIRST_CORNER = 2
+local EVENTS = { "NAVIGATION_DESTINATION_REACHED", "USER_WAYPOINT_UPDATED", "PLAYER_CONTROL_GAINED",
+    "PLAYER_ENTERING_WORLD", "PLAYER_REGEN_ENABLED" }
+local TEXT_WALK = { flight = "Flight Master: %s", dock = "%s dock", link = "%s", goal = "%s", jump = "%s" }
+local TEXT_FLY = "Fly to %s"
+local TEXT_SHIP = "%s to %s"
+local TEXT_TRAM = "Deeprun Tram to %s"
+local TEXT_PORTAL = "Portal to %s"
+local TEXT_HEARTH = "Hearthstone to %s"
+local TEXT_TELEPORT = "Teleport to %s"
+local TEXT_NO_WAY = "No way found to %s from here; placed a plain waypoint."
+local TEXT_NO_PLACE = "That journey ends where the game takes no waypoints."
+
+local Guide = {}
+Jy.Guide = Guide
+
+local journey, events, step, working, driver, dismissed
+local replanQueued = false
+local listeners = {}
+
+local function Changed()
+    for i = 1, #listeners do listeners[i]() end
+end
+
+function Guide.OnChange(fn)
+    listeners[#listeners + 1] = fn
+end
+
+local function Close(a, b)
+    return a.c == b.c and (a.x - b.x) ^ 2 + (a.y - b.y) ^ 2 <= C.ARRIVED * C.ARRIVED
+end
+
+function Guide.LegText(leg)
+    local mode, name = leg.mode, leg.name or ""
+    if mode == "walk" then return (TEXT_WALK[leg.kind] or "%s"):format(name) end
+    if mode == "fly" then return TEXT_FLY:format(name) end
+    if mode == "ship" then return TEXT_SHIP:format(leg.shipKind or "", name) end
+    if mode == "tram" then return TEXT_TRAM:format(name) end
+    if mode == "portal" then return TEXT_PORTAL:format(name) end
+    if mode == "hearth" then return TEXT_HEARTH:format(name) end
+    return TEXT_TELEPORT:format(name)
+end
+
+local function Stop()
+    return journey.stops[journey.at]
+end
+
+local function PlainWaypoint(stop)
+    local title, map, x, y, note, icon = unpack(stop, 1, 6)
+    journey = nil
+    if events then events:UnregisterAllEvents() end
+    Changed()
+    ns.Print(TEXT_NO_WAY:format(title))
+    ns.ShowJourneyStep(title, map, x, y, note, icon)
+end
+
+local function Action(legs)
+    local first, second = legs[1], legs[2]
+    if first and first.mode == "walk" and second then return second, first, 3 end
+    return first, first, 2
+end
+
+local function Corner()
+    local corners, at = journey.corners, journey.corner
+    if not corners or at * 2 > #corners then return nil end
+    return { c = journey.plan.legs[1].c, x = corners[at * 2 - 1], y = corners[at * 2] }
+end
+
+local function StopStep()
+    local stop = Stop()
+    step = { title = stop[1], map = stop[2], x = stop[3], y = stop[4], note = stop[5], icon = stop[6] }
+    return ns.ShowJourneyStep(step.title, step.map, step.x, step.y, step.note, step.icon)
+end
+
+local function ShowStep()
+    local stop = Stop()
+    local action, spot = Action(journey.plan.legs)
+    step = { title = stop[1], map = stop[2], x = stop[3], y = stop[4], note = stop[5], icon = stop[6] }
+    if action and action.mode ~= "walk" then step.title, step.note = Guide.LegText(action), nil end
+    spot = Corner() or spot
+    if spot then
+        local map, x, y = World.ToMap(spot)
+        if map then step.map, step.x, step.y = map, x, y end
+    end
+    if not ns.ShowJourneyStep(step.title, step.map, step.x, step.y, step.note, step.icon) and not StopStep() then
+        ns.Print(TEXT_NO_PLACE)
+        return Guide.Cancel()
+    end
+    Changed()
+end
+
+local function WalkCost(a, b)
+    local ea, eb = a.walkKey or a.reach, b.walkKey or b.reach
+    if not ea or not eb then return nil end
+    return Walk.Cost(a.c, ea, eb)
+end
+
+local function Context(from, to)
+    local faction = World.Faction()
+    local known, version = World.Known()
+    return { faction = faction, known = known, knownVersion = version, from = from, to = to,
+        speed = C.RUN_SPEED, now = GetServerTime(), jumps = World.Jumps(faction), walk = WalkCost }
+end
+
+local function Reach(spot)
+    spot.reach = Walk.From(spot)
+    return spot
+end
+
+local function Planned(plan)
+    if not journey then return end
+    if not plan then return PlainWaypoint(Stop()) end
+    local before = journey.plan
+    if before then
+        local finished = journey.planAt == journey.at and math.max(0, #before.legs - #plan.legs) or #before.legs
+        journey.done = journey.done + finished
+    end
+    journey.plan, journey.planAt = plan, journey.at
+    journey.corners, journey.corner = plan.corners, FIRST_CORNER
+    ShowStep()
+end
+
+local function Thin(points)
+    if not points then return nil end
+    local out = { points[1], points[2] }
+    local n = #points
+    for i = 3, n - 2, 2 do
+        local dx, dy = points[i] - out[#out - 1], points[i + 1] - out[#out]
+        if dx * dx + dy * dy >= C.CORNER_GAP * C.CORNER_GAP then out[#out + 1], out[#out + 2] = points[i], points[i + 1] end
+    end
+    if n > 2 then out[#out + 1], out[#out + 2] = points[n - 1], points[n] end
+    return out
+end
+
+local function Work(here, to)
+    local ctx = Context(Reach(here), Reach(to))
+    for _, jump in ipairs(ctx.jumps) do Reach(jump) end
+    local plan = Planner.Plan(ctx)
+    local first = plan and plan.legs[1]
+    if first and first.mode == "walk" and here.reach then
+        local there = Walk.From({ c = first.c, x = first.x, y = first.y })
+        plan.corners = there and Thin(Walk.Path(here.reach, there))
+    end
+    return plan
+end
+
+local function Abandon()
+    working = nil
+    if driver then driver:SetScript("OnUpdate", nil) end
+end
+
+local function Drive()
+    if not working then return Abandon() end
+    Walk.StartBudget()
+    local ok, plan = coroutine.resume(working)
+    if coroutine.status(working) ~= "dead" then return end
+    driver:SetScript("OnUpdate", nil)
+    working = nil
+    if not ok then
+        geterrorhandler()(plan)
+        return
+    end
+    Planned(plan)
+end
+
+local function Replan()
+    if not journey then return end
+    Abandon()
+    if InCombatLockdown() then
+        journey.waiting = true
+        if not journey.plan then StopStep() end
+        return
+    end
+    journey.waiting = false
+    local here = World.Player()
+    if not here then return end
+    while Close(here, Stop().spot) do
+        if journey.at == #journey.stops then
+            local quest = journey.quest
+            journey = nil
+            if events then events:UnregisterAllEvents() end
+            Changed()
+            if quest then
+                ns.TrackQuest(quest)
+            end
+            return
+        end
+        journey.at = journey.at + 1
+    end
+    local stop = Stop()
+    local to = { c = stop.spot.c, x = stop.spot.x, y = stop.spot.y, name = stop[1] }
+    working = coroutine.create(Work)
+    driver = driver or CreateFrame("Frame")
+    Walk.StartBudget()
+    local ok, plan = coroutine.resume(working, here, to)
+    if coroutine.status(working) ~= "dead" then
+        driver:SetScript("OnUpdate", Drive)
+        return
+    end
+    working = nil
+    if not ok then return geterrorhandler()(plan) end
+    Planned(plan)
+end
+
+local function QueuedReplan()
+    replanQueued = false
+    Replan()
+end
+
+local function QueueReplan()
+    if replanQueued then return end
+    replanQueued = true
+    C_Timer.After(REPLAN_DELAY, QueuedReplan)
+end
+
+local function OnStep(point)
+    return point ~= nil and step ~= nil and point.uiMapID == step.map
+        and math.abs(point.position.x * PERCENT - step.x) < SAME_SPOT
+        and math.abs(point.position.y * PERCENT - step.y) < SAME_SPOT
+end
+
+local function OnEvent(_, event, isWaypoint)
+    if event == "USER_WAYPOINT_UPDATED" then
+        local point = C_Map.GetUserWaypoint()
+        if point and not OnStep(point) then return Guide.Cancel() end
+        if not point then QueueReplan() end
+    elseif event == "NAVIGATION_DESTINATION_REACHED" then
+        if isWaypoint then return end
+        if journey.corners and (journey.corner + 1) * 2 <= #journey.corners then
+            journey.corner = journey.corner + 1
+            ShowStep()
+        else
+            QueueReplan()
+        end
+    elseif event ~= "PLAYER_REGEN_ENABLED" or journey.waiting then
+        QueueReplan()
+    end
+end
+
+function Guide.Start(title, stops, quest)
+    if not Jy.On() or not World.Player() then return false end
+    local own = {}
+    for i, stop in ipairs(stops) do
+        local spot = World.FromMap(stop[2], stop[3], stop[4])
+        if not spot then return false end
+        own[i] = { stop[1], stop[2], stop[3], stop[4], stop[5], stop[6], spot = spot }
+    end
+    journey = { title = title, stops = own, at = 1, done = 0, quest = quest }
+    if not events then
+        events = CreateFrame("Frame")
+        events:SetScript("OnEvent", OnEvent)
+    end
+    for _, event in ipairs(EVENTS) do events:RegisterEvent(event) end
+    Replan()
+    return true
+end
+
+function Guide.Cancel()
+    if not journey then return end
+    dismissed = journey.quest
+    journey, step = nil, nil
+    Abandon()
+    events:UnregisterAllEvents()
+    Changed()
+end
+
+function Guide.Current()
+    return journey
+end
+
+function Guide.Dismissed()
+    return dismissed
+end
+
+function Guide.Undismiss()
+    dismissed = nil
+end
+
+function Guide.Step()
+    if not journey or not journey.plan then return end
+    local legs = journey.plan.legs
+    local _, _, after = Action(legs)
+    local nextLeg = legs[after]
+    return journey.title, journey.done + 1, journey.done + math.max(#legs, 1), nextLeg and Guide.LegText(nextLeg)
+end
+
+function Guide.Estimate(map, x, y)
+    if not Jy.On() or InCombatLockdown() then return nil end
+    local here, there = World.Player(), World.FromMap(map, x, y)
+    if not here or not there then return nil end
+    return Planner.Plan(Context(here, { c = there.c, x = there.x, y = there.y }))
+end
+
+ns.JourneyTo = Guide.Start
+ns.JourneyCancel = Guide.Cancel
+ns.JourneyStep = Guide.Step
+ns.JourneyEstimate = Guide.Estimate
+
+local function Apply()
+    World.Apply()
+    if not Jy.On() then Guide.Cancel() end
+end
+
+Jy.Settings.OnChange(Apply)
+hooksecurefunc(ns, "Apply", Apply)
+Apply()

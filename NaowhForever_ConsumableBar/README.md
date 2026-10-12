@@ -21,7 +21,7 @@ NaowhForever_ConsumableBar/
   ConsumableBar.lua   the module table (ns.ConsumableBar, CB): entries, their settings, change listeners
   Constants.lua       the numbers several files share (CB.C)
   Data/
-    Categories.lua    the kinds of consumable: by the game's subclass, Trade Goods, weapon items by ID (CB.Data)
+    Categories.lua    the kinds of consumable: by the game's subclass, Trade Goods, weapon items and stat scrolls by ID (CB.Data)
   Items.lua           the item rules: what is a consumable, the list, typed items, Scan Bags, Clear
   Keys.lua            the key that uses each entry: its own button's binding, or an action button holding it
   Used.lua            Hide After Use: the item's cooldown, buff or weapon enchant, and when to look again
@@ -56,6 +56,8 @@ NaowhForever_ConsumableBar/
 - A cooldown counts only when it started with the item's own cast, seen as `UNIT_SPELLCAST_SUCCEEDED`
   (within `CAST_SLOP`, 1 s): potions share one cooldown, and drinking a healing potion must not hide
   a mana potion. A cooldown from before a reload is not seen, so the item shows until its next use.
+- Only the six stat scrolls count as scrolls (`SCROLLS`): the game files other items as Scrolls too,
+  and only a scroll that gives a buff belongs on the bar.
 - A cooldown of `GCD` (1.5 s) or less is the global cooldown, not the item's own.
 - A setting is applied as far as it reaches: the bar's look (fonts, offsets, background, an item's
   own text) restyles the icons, what the bar does not show (window opacity, filters, declined items,
