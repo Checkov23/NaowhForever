@@ -26,7 +26,7 @@ local Settings = { pages = { ["QoL/Loot"] = { cards = { restock = restock, lootF
 local asked, refreshed = {}, 0
 local openers = {}
 local loaded = {}
-local ns = { Shared = { Settings = Settings }, Apply = function() end,
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = { Settings = Settings }, Apply = function() end,
     UI = { RefreshPage = function() refreshed = refreshed + 1 end },
     Confirm = function(text, yes, _, yesText, noText)
         asked[#asked + 1] = { text = text, yes = yes, yesText = yesText, noText = noText }
