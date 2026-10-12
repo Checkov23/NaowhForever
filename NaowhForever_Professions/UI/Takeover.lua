@@ -187,8 +187,15 @@ function Drag.Follow()
     end
     Drag.pending, Drag.following = nil, true
     local scale = win:GetEffectiveScale() / ProfessionsFrame:GetEffectiveScale()
+    local x, y = pos.x * scale, pos.y * scale
+    -- EllesmereUI's Shifter puts ProfessionsFrame back at its own saved spot on every SetPoint.
+    local eui = _G.EllesmereUIDB
+    if type(eui) == "table" and eui.shifterEnabled then
+        eui.shifterPositions = eui.shifterPositions or {}
+        eui.shifterPositions.ProfessionsFrame = { point = "TOPLEFT", relPoint = "BOTTOMLEFT", x = x, y = y }
+    end
     ProfessionsFrame:ClearAllPoints()
-    ProfessionsFrame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", pos.x * scale, pos.y * scale)
+    ProfessionsFrame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
     Drag.following = false
     Drag.Place()
 end

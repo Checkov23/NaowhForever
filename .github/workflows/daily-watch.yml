@@ -20,12 +20,15 @@ name: daily-watch
 # that changes Formula.lua gets its own changelog line: every player's score moves.
 # The loot job: whether wowsrc.com's Forever loot pages list something the Journal was not
 # built from (Tools/data/wowsrc_loot.json): items a boss gained or lost, new bosses and pages.
-# If so, the Journal is rebuilt from them and a pull request says what. The bis job: the
-# same for wowsrc's BiS lists and the BiS List's data. Both ask Wowhead nothing (--offline):
-# a new item's facts come from the game's own tables, and what those cannot settle is listed
-# in the pull request, for a run on our machines (Tools/README.md). wowsrc allows crawling,
-# and gave us permission.
-# The three run one after another on one branch, each on what the one before changed, and
+# If so, the Journal is rebuilt from them and a pull request says what. The drops job: every
+# boss's drops read again from Wowhead Forever (Tools/build/journal.py --refresh-drops), so the
+# Journal's chances follow today's kill counts; it adds a change only when a chance moved a
+# whole percent (or an item came or went). The bis job: the same as loot for wowsrc's BiS
+# lists and the BiS List's data, then Wowhead for a new pick's source. The loot and bis
+# rebuilds ask Wowhead nothing (--offline): a new item's facts come from the game's own tables,
+# and the drops job's full build settles what those cannot. wowsrc allows crawling, and gave
+# us permission; Wowhead is read one page at a time at fetch's pace (Tools/README.md).
+# The four run one after another on one branch, each on what the one before changed, and
 # whatever they change goes in one pull request, one commit (it is squash merged): a title
 # saying what is in it, a short list, and each check's report folded away in its description
 # (Tools/hooks/daily-pull-request.sh). The checks' lines for players go under "## Changelog" in
@@ -77,7 +80,7 @@ jobs:
   daily:
     name: daily
     runs-on: ubuntu-24.04
-    timeout-minutes: 75
+    timeout-minutes: 110
     permissions:
       contents: write
       pull-requests: write
@@ -196,6 +199,49 @@ jobs:
           $PR add loot "boss loot" "$RUNNER_TEMP/loot.md" \
             "Changed: Dungeon Journal: boss loot updated from the latest Forever loot lists." \
             Tools/data/wowsrc_loot.json Tools/data/item_names.json Tools/data/journal_cache.json NaowhForever_DungeonJournal/Data Shared/Data
+      # Every boss's and chest's drops, read again from Wowhead Forever: one page each, at
+      # fetch's pace (a 403 waits and tries again). Added only when the Journal's data moved:
+      # a count that changes no whole percent is not worth a pull request.
+      - name: Refresh the drop chances from Wowhead
+        id: drops
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        timeout-minutes: 40
+        run: |
+          git reset -q --hard HEAD && git clean -fdq -- Tools NaowhForever_DungeonJournal NaowhForever_BiS Shared
+          python Tools/build/journal.py --refresh-drops > /dev/null 2> "$RUNNER_TEMP/drops-build.txt"
+          # Each time Wowhead answered 403/429/503 and the fetch waited: a block shows here first.
+          waits="$(grep -c "retrying in" "$RUNNER_TEMP/drops-build.txt" || true)"
+          echo "Wowhead made the refresh wait ${waits:-0} times." >> "$GITHUB_STEP_SUMMARY"
+          if [ "${waits:-0}" -gt 0 ]; then echo "::warning::Wowhead made the drop refresh wait $waits times."; fi
+          if git diff --quiet -- NaowhForever_DungeonJournal/Data Shared/Data; then
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+            echo "No drop chance moved a whole percent." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Drop chances"
+            echo
+            echo "Every boss's and chest's drops read again from Wowhead Forever's kill counts (\`build/journal.py --refresh-drops\`). Dungeons whose data changed:"
+            echo
+            echo '```'
+            git diff --stat -- NaowhForever_DungeonJournal/Data Shared/Data
+            echo '```'
+            echo
+            echo "### What the build said"
+            echo
+            echo '```'
+            grep -Ev "^ *[0-9]+  " "$RUNNER_TEMP/drops-build.txt" | tail -n 60
+            echo '```'
+          } > "$RUNNER_TEMP/drops.md"
+          cat "$RUNNER_TEMP/drops.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Add the drop chances
+        if: steps.drops.outcome == 'success' && steps.drops.outputs.changes == 'true'
+        run: |
+          $PR add drops "drop chances" "$RUNNER_TEMP/drops.md" \
+            "Changed: Dungeon Journal: drop chances updated from Wowhead's latest kill counts." \
+            Tools/data/journal_cache.json NaowhForever_DungeonJournal/Data Shared/Data
 
       - name: Compare wowsrc.com's BiS lists with ours
         id: bis
@@ -206,6 +252,10 @@ jobs:
           python Tools/build/bis_data.py --check --report "$RUNNER_TEMP/bis.md" --github-output "$GITHUB_OUTPUT"
           if grep -q "^changes=true" "$GITHUB_OUTPUT"; then
             python Tools/build/bis_data.py --offline 2> "$RUNNER_TEMP/bis-build.txt"
+            # A new pick wowsrc gives no source for: Wowhead's item page, where it has one.
+            if ! python Tools/build/bis_data.py --sources-only 2>> "$RUNNER_TEMP/bis-build.txt"; then
+              echo "::warning::Wowhead's sources for new picks could not be read; the test below says which are missing."
+            fi
             {
               echo
               echo "### What the build said"
@@ -224,9 +274,9 @@ jobs:
             "Changed: BiS List: picks updated from wowsrc.com's latest lists." \
             NaowhForever_BiS/BiS/Data/BiS.lua Tools/data/bis_item_ids.json Tools/data/bis_sources.json
 
-      # A new pick CI could not find a source for (it may not read Wowhead) fails the
-      # regression test every pull request runs: the pull request stays a draft, saying what
-      # to run on our machines, so it is not merged red.
+      # A new pick neither wowsrc nor Wowhead has a source for fails the regression test every
+      # pull request runs: the pull request stays a draft, saying what to do, so it is not
+      # merged red.
       - name: Check every BiS pick has a source
         if: steps.bis.outcome == 'success' && steps.bis.outputs.changes == 'true'
         run: |
@@ -237,11 +287,11 @@ jobs:
           fi
           missing="$(grep -o 'no source: [0-9, ]*' "$RUNNER_TEMP/sources.txt" | head -n 1 | sed 's/^no source: //')"
           {
-            echo "Some new BiS picks have no source (CI may not read Wowhead): ${missing:-see the run}."
-            echo "On a branch from main, run \`python Tools/build/bis_data.py --sources-only\` and add what"
-            echo "Wowhead has no source for either to the known list in"
-            echo "\`Tools/regression/test-bis-dungeon-drops.lua\`, in a pull request of its own (as #57"
-            echo "did). Once it is merged, the next run rebuilds this one on it and marks it ready."
+            echo "Some new BiS picks have no source on wowsrc or Wowhead: ${missing:-see the run}."
+            echo "Add them to the known list in \`Tools/regression/test-bis-dungeon-drops.lua\`, in a"
+            echo "pull request of its own (as #57 did); if Wowhead could not be read, run"
+            echo "\`python Tools/build/bis_data.py --sources-only\` on our machines first. Once it is merged,"
+            echo "the next run rebuilds this one on it and marks it ready."
           } > "$RUNNER_TEMP/hold.md"
           $PR hold "$RUNNER_TEMP/hold.md"
 
@@ -308,11 +358,12 @@ jobs:
 
       # The run says a check failed, after the others' changes went in.
       - name: Fail if a check failed
-        if: ${{ !cancelled() && (steps.watch.outcome == 'failure' || steps.loot.outcome == 'failure' || steps.bis.outcome == 'failure') }}
+        if: ${{ !cancelled() && (steps.watch.outcome == 'failure' || steps.loot.outcome == 'failure' || steps.drops.outcome == 'failure' || steps.bis.outcome == 'failure') }}
         env:
           WATCH: ${{ steps.watch.outcome }}
           LOOT: ${{ steps.loot.outcome }}
+          DROPS: ${{ steps.drops.outcome }}
           BIS: ${{ steps.bis.outcome }}
         run: |
-          echo "::error::A check failed (watch: $WATCH, loot: $LOOT, bis: $BIS); the others' changes are in the pull request."
+          echo "::error::A check failed (watch: $WATCH, loot: $LOOT, drops: $DROPS, bis: $BIS); the others' changes are in the pull request."
           exit 1

@@ -35,7 +35,7 @@ purpose.
 
 | Tool | What it does | Why |
 | --- | --- | --- |
-| `journal.py` | Builds every dungeon's bosses and loot into `NaowhForever_DungeonJournal/Data/`. `--offline` asks Wowhead nothing (its cache and the game's tables only), for CI. | The heart of the Journal. How it decides what a boss drops is drawn in `NaowhForever_DungeonJournal/README.md`. |
+| `journal.py` | Builds every dungeon's bosses and loot into `NaowhForever_DungeonJournal/Data/`. `--offline` asks Wowhead nothing (its cache and the game's tables only); `--refresh-drops` reads every boss's drops again for today's chances (both daily in CI). | The heart of the Journal. How it decides what a boss drops is drawn in `NaowhForever_DungeonJournal/README.md`. |
 | `factions.py` | Builds the Reputation and PvP tabs from `data/journal_factions.json` and the game's own item tables. | Rewards, standings and prices are in the client, so we read them from there, not a website. |
 | `quest_chains.py` | Builds each dungeon quest's chain and what you need first, from Wowhead Forever. | So the Journal can say "do this first". |
 | `abilities.py` | Builds `NaowhForever_DungeonJournal/Data/Abilities.lua` (each boss's spell IDs, each name once) and `BossInfo.lua` (its level, classification, creature type and title) from its Wowhead Forever NPC page. Cached in `data/abilities_cache.json`; `--offline` writes what the cache has. | A boss's page shows its abilities and header. The game gives each spell's name, icon and description. |
@@ -45,7 +45,7 @@ purpose.
 
 | Tool | What it does | Why |
 | --- | --- | --- |
-| `bis_data.py` | Builds `NaowhForever_BiS/BiS/Data/BiS.lua` from wowsrc.com's per-spec BiS pages. Item IDs are cached in `data/bis_item_ids.json`. `--check` says what changed on their pages, `--offline` builds without Wowhead (both daily in CI). | The BiS List's picks, with permission from wowsrc. |
+| `bis_data.py` | Builds `NaowhForever_BiS/BiS/Data/BiS.lua` from wowsrc.com's per-spec BiS pages. Item IDs are cached in `data/bis_item_ids.json`. `--check` says what changed on their pages, `--offline` builds without Wowhead, `--sources-only` fills a new pick's source from Wowhead (all daily in CI). | The BiS List's picks, with permission from wowsrc. |
 | `bis_spots.py` | Builds `NaowhForever_BiS/BiS/Data/Spots.lua`: where the NPC that drops or sells a BiS item stands out in the world, from Wowhead's item and NPC pages. Cached in `data/bis_spots.json`. | The BiS List's Run Next puts a waypoint on them. |
 | `enchants.py` | Builds `NaowhForever_BiS/BiS/Data/Enchants.lua`: every Enchanting recipe, what it gives and goes on, from the game's tables (wago.tools), and the skill it needs and who teaches it, from Wowhead (cached in `data/enchant_recipes.json`). | The BiS List's best enchant for what you wear. |
 | `bis_quests.py` | Builds `NaowhForever_DungeonJournal/Data/BiSQuests.lua`: every quest that rewards a ranked BiS item, from Wowhead's item pages ("Reward from") and quest pages (where it starts, who can take it). Cached in `data/bis_quests.json` and `data/bis_quest_pages.json`. Run `quest_chains.py` after it. | The BiS List's Quests page. |
@@ -133,15 +133,15 @@ purpose.
 
 - **Every PR** (`checks.yml`, and `pr-title.yml` for the PR rules and title): luacheck and
   pre-commit, the Lua regression tests, the Python tests, PR rules, the title, and a package check.
-- **Daily** (`daily-watch.yml`), three checks, one after another on one branch, each on what
+- **Daily** (`daily-watch.yml`), four checks, one after another on one branch, each on what
   the one before changed. Whatever they change goes in **one** pull request, as one commit (we
   squash merge): its title says what is in it (`chore(data): WoW Forever build 1.60.1.70205,
   boss loot and BiS lists`), its description lists the changes, their lines for players under
   `## Changelog` (labelled `no changelog` when there are none; CHANGELOG.md is left to the
   release), and each check's report folded away (`hooks/daily-pull-request.sh`, which keeps it
   up to date). A check that fails leaves out only its own change, and the run says so. A new
-  BiS pick CI could not find a source for (it may not read Wowhead) keeps the pull request a
-  draft that says what to run on our machines. A change CI cannot make at all (wowsrc lists
+  BiS pick neither wowsrc nor Wowhead has a source for keeps the pull request a draft that
+  says what to do. A change CI cannot make at all (wowsrc lists
   items the game's tables don't have yet) goes in one issue, "Daily data: changes that need a
   run on our machines", with what to run; the first run with nothing stuck closes it. Where
   workflows may not open a pull request, an issue with a one-click link:
@@ -154,13 +154,19 @@ purpose.
     fit's quality, its gates). A manual run reports it too; a failed fit only says so.
   - `loot`: `sources/wowsrc.py --check`. If wowsrc's loot pages changed (a boss gained or lost
     items, a new boss or page), it rebuilds the Journal with `build/journal.py --offline`.
-  - `bis`: `build/bis_data.py --check`, the same for wowsrc's BiS lists.
+  - `drops`: `build/journal.py --refresh-drops`. Every boss's and chest's drops read again from
+    Wowhead Forever, so the chances follow today's kill counts. A change only when a chance
+    moved a whole percent, or an item came or went.
+  - `bis`: `build/bis_data.py --check`, the same for wowsrc's BiS lists, then
+    `build/bis_data.py --sources-only` for a new pick's source from Wowhead.
 
   `--offline` asks Wowhead nothing: a new item's facts come from the game's own tables, and
   what they can't settle (an old classic item) is listed in the PR for a run on our machines.
 - **Daily** (`badges.yml`): `release/sync_badges.py`.
-- **Not in CI:** anything that reads Wowhead. Their terms don't allow scraping it from a
-  server, so a full `build/journal.py` (CI only runs it `--offline`), `build/quest_chains.py`,
+- **Wowhead in CI:** only the daily `drops` check and the BiS sources, one page at a time at
+  `wowhead.fetch`'s pace (a second apart, backing off on a 403). GitHub's runners can read it
+  (checked on 11 Oct 2026). Everything else that reads Wowhead stays off CI and runs on our
+  machines, by hand: `build/quest_chains.py`,
   `build/bis_spots.py`, `build/enchants.py`, `build/bis_quests.py`, `build/abilities.py`,
   `build/boss_quests.py`, the Completo and town map builders that read Wowhead, and
-  `build/forever_new.py` run on our machines, by hand.
+  `build/forever_new.py`.

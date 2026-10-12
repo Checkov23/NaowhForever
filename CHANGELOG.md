@@ -2,6 +2,75 @@
 
 ## Unreleased
 
+## 1.1.8
+
+### Added
+- Dungeon Journal: City of Dalaran is open, with every boss's loot and drop chances.
+
+### Changed
+- Dungeon Journal: the old dungeons' group is called Low Level and sits at the top of the dungeon
+  list, closed until you open it.
+- Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70338.
+- Dungeon Journal: boss loot updated from the latest Forever loot lists.
+- Dungeon Journal: drop chances updated from Wowhead's latest kill counts.
+- BiS List: picks updated from wowsrc.com's latest lists.
+- Dungeon Journal: City of Dalaran and Excavation Site read wowsrc.com's loot lists too.
+
+### Fixed
+- Dungeon Journal: an item placed on a boss twice is listed once (the Stockade's Defias Renegade
+  Ring).
+
+## 1.1.7
+
+### Added
+- AuraBuffs: personal buff reminders for every class (armor, Inner Fire, Battle Shout, poisons,
+  weapon imbues, shields, Thorns, Trueshot Aura, Hunter's Mark on elites), with a switch for each on
+  the Buffs & Consumables card. Warn With Minutes Left flags them before they run out.
+- Town Map: boat pins for the new Stormwind Harbor to Auberdine boat and the Steamwheedle Port to
+  Powderfuse Port (Riverglades) boat.
+- Town Map: zeppelin pins for the Dalaran and Mulgore zeppelins to Zephras Isle, and the island's
+  docks back.
+- Key binding: Open Training Planner, under Key Bindings > Naowh Forever.
+- QoL > Interface: Names Over Heads, switches for guild names, guild titles and player titles shown
+  with player names.
+- German: the options window, module names, tabs, buttons, search hints and gear slot names now show
+  in German on German clients.
+- Consumable Bar: Smart Buttons in Adding Items: NF Health, NF Mana, NF Bandage and NF Food from
+  Macros, and the Food & Drink buttons, each always using your best item.
+- Consumable Bar: Scan Bags and Ask to Add skip what a smart button already covers, and adding one
+  yourself asks first.
+- Settings: a card's on/off switch shows the Changed dot when it is off its default.
+- Settings that EllesmereUI also has (auto repair, sell junk, quick loot, skip cinematics and more)
+  now say whether EllesmereUI has them on, so you can keep only one running.
+
+### Changed
+- Macros: a Smart Macro the Consumable Bar uses stays on and shows Used by Consumable Bar.
+- Food & Drink Bar: steps aside while its buttons are on the Consumable Bar (its settings greyed),
+  and its key bindings work for them there too.
+- Consumable Bar and Food & Drink Bar: the keybind font starts on the addon font, and the Food &
+  Drink preview shows the keys you bound.
+- Consumable Bar: warriors and rogues get no drink button or NF Mana, no drinks or mana potions from
+  Scan Bags and Ask to Add, and adding one yourself asks first.
+- The Moderator badge is red.
+- The XP Bar hides in battlegrounds and arenas.
+
+### Fixed
+- Action Bars: importing a saved set no longer makes a second, outdated copy of each NF macro; your
+  own NF macros go on the bars.
+- Action Bars: Save on Logout no longer saves a set with no actions, which made importing it blank
+  your bars; it also never saves an alt's bars over a set the alt only imported.
+- Town Map: the Menethil Harbor and Auberdine boat now shows its Southshore stop, with a dock pin in
+  Hillsbrad Foothills.
+- Scrap Marker: works in Baganator's bags: marked items show the mark, Alt+click marks them, and
+  Baganator's junk can follow your scrap list.
+- On-Screen Buttons: Invite and Disband now start on the left edge of the screen instead of over the
+  action bars.
+- Auction Prices: the Scan Prices button is no longer hidden behind Auctionator's tabs; with
+  Auctionator loaded it sits after them.
+- The /nf badges help line no longer breaks into pieces in chat.
+- Professions: the window stays where you drag it when EllesmereUI's window mover is on, instead of
+  snapping back.
+
 ## 1.1.6
 
 ### Added

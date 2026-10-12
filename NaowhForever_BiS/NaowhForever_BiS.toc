@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: BiS List
 ## Notes: Best-in-slot lists, stat weights, Naowh Score, the character panel and the inspect window.
 ## Author: Naowh
-## Version: 1.1.6
+## Version: 1.1.8
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

@@ -66,7 +66,11 @@ kills count with it, and says so ("with").
 from the game's own tables where they have it (a new item's facts, through Tools/sources/wago.py),
 else is left out and listed at the end, for a run on our machines.
 
-Usage: python Tools/build/journal.py [--offline]
+--refresh-drops reads every boss's and chest's drops from Wowhead again, so each chance is
+counted from today's kills (the cache otherwise keeps the first answer). One page per boss, at
+fetch's pace; a run stopped part way keeps the old answer for the bosses it did not reach.
+
+Usage: python Tools/build/journal.py [--offline | --refresh-drops]
 """
 import csv
 import io
@@ -119,6 +123,8 @@ cache = json.loads(CACHE.read_text(encoding="utf-8")) if CACHE.exists() else {}
 
 
 OFFLINE = "--offline" in sys.argv
+REFRESH_DROPS = "--refresh-drops" in sys.argv and not OFFLINE
+refreshed = set()
 # What a Wowhead answer is cached under; offline, one not cached yet is not asked.
 WOWHEAD_KEYS = ("npc:", "drops5:", "contains5:", "model:", "item:", "zones", "guide:")
 offline_missed = []
@@ -298,8 +304,9 @@ def wowhead_drops(kind, thing):
                 and not (i.get("commondrop") or (kind == "npc" and i.get("flags2", 0) & WORLD_DROP and not npc_new))
                 and not sod_only(i)]}
     key = f"drops5:{thing}" if kind == "npc" else f"contains5:{thing}"
-    if not OFFLINE and stale(cache.get(key)):
-        del cache[key]
+    if not OFFLINE and (stale(cache.get(key)) or (REFRESH_DROPS and key not in refreshed)):
+        cache.pop(key, None)
+    refreshed.add(key)
     found = cached(key, get)
     if not found or isinstance(found, list):   # a page with no drops (or, offline, not read yet)
         return []
@@ -759,9 +766,13 @@ def main():
             # The wing's trash, last: what its other mobs drop, by wowsrc's list.
             trash = merge_wowsrc([], (listed.get((here, "trash")) or {"items": [], "complete": True}))
             if here == dungeon["wings"][-1].get("name"):   # placed by hand ("add": { "Trash": [...] })
+                # An item can be placed twice (by hand and as a BiS source, the Stockade's
+                # Defias Renegade Ring): listed once.
                 have = {i["id"] for i in trash}
-                trash += [dict(i, chance=None) for i in extra.get("trash", []) if i["id"] not in have
-                          and i["quality"] >= MIN_QUALITY and i["slot"] in EQUIPPABLE]
+                for i in extra.get("trash", []):
+                    if i["id"] not in have and i["quality"] >= MIN_QUALITY and i["slot"] in EQUIPPABLE:
+                        have.add(i["id"])
+                        trash.append(dict(i, chance=None))
             trash = {"npc": None, "name": "Trash", "rare": False, "trash": True, "loot": trash}
             if trash["loot"]:
                 for item in trash["loot"]:

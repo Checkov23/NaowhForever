@@ -463,7 +463,9 @@ the game's own tables, and what they can't settle is listed in the pull request 
   for the other states; its newer in-progress icon, a speech bubble with dots, did not read as
   a quest.
 - The dungeon list's group settings keep the names they were made with: `closedGroup3` is
-  Behind you, `closedGroup4` the raids.
+  Low level (once called Behind you), `closedGroup4` the raids. Low level comes first (`ORDER`),
+  closed by default: the dungeons you outleveled are one click away without pushing your
+  level's down.
 - A faction's unlocked count is kept until your standing or the filters that decide it change;
   with Missing BiS Only (which follows your bags) it is counted each time.
 - The window's search runs once typing pauses (`SEARCH_DELAY`), from two letters. Up, Down and

@@ -4,6 +4,7 @@
     python -m unittest discover -s Tools/tests
 """
 import copy
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -67,6 +68,23 @@ class Check(unittest.TestCase):
         text = "\n".join(wowsrc.changes(OLD, new))
         self.assertIn("Shadowfang Keep / Sever: The Axe of Severing", text)
         self.assertIn("- Ruins of Lordaeron", text)
+
+
+class Links(unittest.TestCase):
+    """Every wowsrc loot page we read is one a dungeon in journal_bosses.json names ("wowsrc"):
+    an unlinked page is read every day and built into nothing (City of Dalaran's, Excavation
+    Site's, until 11 Oct 2026)."""
+
+    def test_every_page_is_linked_to_a_dungeon(self):
+        pages = json.loads((paths.DATA / "wowsrc_loot.json").read_text(encoding="utf-8"))
+        dungeons = json.loads((paths.DATA / "journal_bosses.json").read_text(encoding="utf-8"))["dungeons"]
+        linked = set()
+        for dungeon in dungeons:
+            slugs = dungeon.get("wowsrc") or {}
+            linked.update([slugs] if isinstance(slugs, str) else slugs.values())
+        self.assertEqual(sorted(set(pages) - linked), [],
+                         'add "wowsrc": "<slug>" to the dungeon in Tools/data/journal_bosses.json')
+        self.assertEqual(sorted(linked - set(pages)), [], "a linked page wowsrc_loot.json does not have")
 
 
 if __name__ == "__main__":

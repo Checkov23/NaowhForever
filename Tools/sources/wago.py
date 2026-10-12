@@ -20,12 +20,12 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-BUILD = "1.60.1.70205"   # the Forever client build the Journal's data is read from
+BUILD = "1.60.1.70338"   # the Forever client build the Journal's data is read from
 # The build before it, whose hotfixed tables fill in the items BUILD's lack entirely. Hotfixes
 # are recorded per build, and wago.tools records a new build's some time after it appears;
 # a hotfix stays in the game from build to build until Blizzard takes it back, so the last
 # build's are carried over meanwhile. Set by Tools/release/watch_build.py when it moves BUILD on.
-CARRY_FROM = "1.60.1.70124"
+CARRY_FROM = None
 SITE = "https://wago.tools"
 # Who is asking, so wago can tell these requests apart and reach us.
 AGENT = "NaowhForever-tools (+https://github.com/naowh-gaming/NaowhForever)"

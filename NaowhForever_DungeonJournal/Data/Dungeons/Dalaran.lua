@@ -4,20 +4,19 @@ local ns = _G.NaowhForever
 ns.Journal.AddDungeon("Dalaran", {
     name = "City of Dalaran",
     new = true,
-    closed = true,
     zone = "Alterac Mountains", territory = "Contested",
     entrance = { map = 1416, x = 21.7, y = 68.3 },
     wings = {
         { bosses = {
-            { npc = 247126, name = "Atrexis the Grave Knight", model = 145787, encounters = { 3311 } },
-            { npc = 245999, name = "Arcane Anomaly", model = 129891, encounters = { 3298 } },
-            { npc = 246003, name = "Fel Ancient", model = 129894, encounters = { 3299 } },
-            { npc = 246017, name = "Unstable Sentinel", model = 129954, encounters = { 3302 } },
-            { npc = 246020, name = "Shade of the Archmage", model = 130061, encounters = { 3303 } },
-            { npc = 247032, name = "Lyn the Ignored", model = 130235, rare = true, encounters = { 3310 } },
+            { npc = 247126, name = "Atrexis the Grave Knight", model = 145787, encounters = { 3311 }, loot = { 273036, 273032, 273033 }, chance = { 38, 32, 29 } },
+            { npc = 245999, name = "Arcane Anomaly", model = 129891, encounters = { 3298 }, loot = { 273035, 273034, 273031 }, chance = { 35, 33, 32 } },
+            { npc = 246003, name = "Fel Ancient", model = 129894, encounters = { 3299 }, loot = { 273039, 273038, 273037 }, chance = { 36, 35, 29 } },
+            { npc = 246017, name = "Unstable Sentinel", model = 129954, encounters = { 3302 }, loot = { 273046, 273047, 273048 }, chance = { 37, 32, 31 } },
+            { npc = 246020, name = "Shade of the Archmage", model = 130061, encounters = { 3303 }, loot = { 273052, 273049, 273051 }, chance = { 33, 32, 31 } },
+            { npc = 247032, name = "Lyn the Ignored", model = 130235, rare = true, encounters = { 3310 }, loot = { 273055, 273053, 273054 }, chance = { 34, 33, 33 } },
             { npc = 246931, name = "Mana Wraith", model = 130220, optional = true, encounters = { 3312 } },
-            { npc = 246008, name = "Mana Devourer", model = 129895, optional = true, encounters = { 3300 } },
-            { npc = 246016, name = "Arcanic Enigma", model = 129900, optional = true, encounters = { 3301 }, loot = { 273045 } },
+            { npc = 246008, name = "Mana Devourer", model = 129895, optional = true, encounters = { 3300 }, loot = { 273041, 273042, 273040 }, chance = { 35, 35, 30 } },
+            { npc = 246016, name = "Arcanic Enigma", model = 129900, optional = true, encounters = { 3301 }, loot = { 273045, 273044, 273043 }, chance = { 36, 33, 32 } },
         } },
     },
 })

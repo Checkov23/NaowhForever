@@ -2665,6 +2665,7 @@ L["Low Health"] = true
 L["Low Health Below"] = true
 L["Low Health Text"] = true
 L["Low Latency Mode"] = true
+L["Low level"] = true
 L["Low Level Quests"] = true
 L["Lower Ranks on Your Bars"] = true
 L["Lowers the chance to be hit, crit and dazed."] = true

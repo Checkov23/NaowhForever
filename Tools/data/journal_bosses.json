@@ -81,7 +81,7 @@
       "wings": [
       { "bosses": ["Targorr the Dread", "Kam Deepfury", "Hamhock", "Bazil Thredd", "Dextren Ward"],
         "rare": ["Bruegal Ironknuckle"] } ] },
-    { "key": "ExcavationSite", "name": "Excavation Site: Wetlands", "new": true, "zone": 16732,
+    { "key": "ExcavationSite", "name": "Excavation Site: Wetlands", "wowsrc": "excavation-site-wetlands", "new": true, "zone": 16732,
       "npcs": { "Saltspine": 260322, "Shadetooth": 260325, "Highland Horror": 260808, "Relic Guardian": 260326 },
       "entranceZone": 11, "entrance": { "map": 1437, "x": 53.4, "y": 65.3, "source": "Wowhead Forever guide: the meeting stone, where the road up to the portal starts" },
       "add": { "Relic Guardian": [273028, 273029], "Saltspine": [273022], "Shadetooth": [273027] },
@@ -102,7 +102,7 @@
                    "Charlga Razorflank"],
         "rare": ["Blind Hunter", "Earthcaller Halmgar", "Razorfen Spearhide"],
         "optional": ["Roogug"] } ] },
-    { "key": "Dalaran", "name": "City of Dalaran", "new": true, "zone": 16544,
+    { "key": "Dalaran", "name": "City of Dalaran", "wowsrc": "city-of-dalaran", "new": true, "zone": 16544,
       "npcs": { "Atrexis the Grave Knight": 247126, "Arcane Anomaly": 245999, "Fel Ancient": 246003,
                 "Unstable Sentinel": 246017, "Shade of the Archmage": 246020, "Mana Wraith": 246931,
                 "Mana Devourer": 246008, "Arcanic Enigma": 246016, "Lyn the Ignored": 247032 },

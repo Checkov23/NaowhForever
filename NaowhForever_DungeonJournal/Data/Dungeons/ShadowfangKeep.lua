@@ -12,7 +12,7 @@ ns.Journal.AddDungeon("ShadowfangKeep", {
             { npc = 3887, name = "Baron Silverlaine", model = 3222, encounters = { 2750 }, loot = { 6323, 6321, 273637 }, chance = { 38, 19, 0 } },
             { npc = 4278, name = "Commander Springvale", model = 3223, encounters = { 2751 }, loot = { 3191, 6320, 273643 }, chance = { 36, 30, 0 } },
             { npc = 4279, name = "Odo the Blindwatcher", model = 522, encounters = { 2752 }, loot = { 6319, 6318, 273645 }, chance = { 58, 33, 0 } },
-            { npc = 4274, name = "Fenrus the Devourer", model = 2352, encounters = { 2753 }, loot = { 6340, 3230, 273646 }, chance = { 73, 17, 0 } },
+            { npc = 4274, name = "Fenrus the Devourer", model = 2352, encounters = { 2753 }, loot = { 6340, 3230, 273646 }, chance = { 72, 17, 0 } },
             { npc = 3927, name = "Wolf Master Nandos", model = 11179, encounters = { 2754 }, loot = { 3748, 6314, 273647 }, chance = { 57, 38, 0 } },
             { npc = 4275, name = "Archmage Arugal", model = 2353, encounters = { 2755 }, loot = { 6324, 6392, 6220 }, chance = { 35, 35, 18 } },
             { npc = 3872, name = "Deathsworn Captain", model = 3224, rare = true, loot = { 6641, 6642, 2205 }, chance = { 57, 34, 2 } },

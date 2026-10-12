@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Quality of Life
 ## Notes: Naowh's quality of life tweaks, trimmed to what Forever has.
 ## Author: Naowh
-## Version: 1.1.6
+## Version: 1.1.8
 ## Dependencies: NaowhForever
 ## OptionalDeps: NaowhForever_ConsumableBar
 ## Group: NaowhForever

@@ -316,5 +316,39 @@ class DailyWatchLog(unittest.TestCase):
             self.assertFalse(self.hidden.search(line), line)
 
 
+class RefreshDrops(unittest.TestCase):
+    """--refresh-drops: a boss's cached drops are read again, once a run, and today's count wins."""
+
+    def setUp(self):
+        self.saved = (journal.cache, journal.fetch, journal.REFRESH_DROPS, journal.OFFLINE, journal.refreshed)
+        self.pages = []
+        row = {"id": 9461, "name": "Charged Gear", "quality": 3, "slot": 11, "classs": 4, "subclass": 0,
+               "level": 34, "reqlevel": 29, "count": 33, "outof": 100}
+
+        def fetch(url):
+            self.pages.append(url)
+            return "template: 'item', id: 'drops', _totalCount: 100, data: " + json.dumps([row])
+
+        journal.fetch = fetch
+        journal.cache = {"drops5:7800": {"new": False, "items": [drop(9461, 18, 100)]}}
+        journal.REFRESH_DROPS, journal.OFFLINE, journal.refreshed = True, False, set()
+
+    def tearDown(self):
+        journal.cache, journal.fetch, journal.REFRESH_DROPS, journal.OFFLINE, journal.refreshed = self.saved
+
+    def test_a_cached_boss_is_read_again_once(self):
+        first = journal.wowhead_drops("npc", 7800)
+        again = journal.wowhead_drops("npc", 7800)
+        self.assertEqual(len(self.pages), 1, "one page a boss, however often the build asks")
+        self.assertAlmostEqual(first[0]["chance"], 33)
+        self.assertEqual(first, again)
+
+    def test_without_the_flag_the_cache_answers(self):
+        journal.REFRESH_DROPS = False
+        kept = journal.wowhead_drops("npc", 7800)
+        self.assertEqual(self.pages, [])
+        self.assertAlmostEqual(kept[0]["chance"], 18)
+
+
 if __name__ == "__main__":
     unittest.main()

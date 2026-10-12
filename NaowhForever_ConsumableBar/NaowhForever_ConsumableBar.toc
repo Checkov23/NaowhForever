@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Consumable Bar
 ## Notes: Your consumables on a bar you can click.
 ## Author: Naowh
-## Version: 1.1.6
+## Version: 1.1.8
 ## Dependencies: NaowhForever
 ## OptionalDeps: NaowhForever_Macros
 ## Group: NaowhForever
