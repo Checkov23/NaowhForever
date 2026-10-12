@@ -25,9 +25,9 @@ local FILTER_GROUPS = {
     { title = ns.L("Class"), items = {} },
     { title = ns.L("Role"), items = { { group = "role", value = "TANK", label = ns.L("Tank") },
         { group = "role", value = "HEALER", label = ns.L("Healer") }, { group = "role", value = "DAMAGER", label = ns.L("Damage") } } },
-    { title = ns.L("Armor"), items = { { group = "armor", value = ns.L("Cloth"), label = ns.L("Cloth") },
-        { group = "armor", value = ns.L("Leather"), label = ns.L("Leather") }, { group = "armor", value = ns.L("Mail"), label = ns.L("Mail") },
-        { group = "armor", value = ns.L("Plate"), label = ns.L("Plate") } } },
+    { title = ns.L("Armor"), items = { { group = "armor", value = "Cloth", label = ns.L("Cloth") },
+        { group = "armor", value = "Leather", label = ns.L("Leather") }, { group = "armor", value = "Mail", label = ns.L("Mail") },
+        { group = "armor", value = "Plate", label = ns.L("Plate") } } },
 }
 for _, class in ipairs(UI.CLASS_ORDER) do
     local items = FILTER_GROUPS[1].items
