@@ -16,7 +16,7 @@ local SIDE_GAP = 6
 local GRADIENT_TEX = ns.MEDIA .. "NaowhGradient.tga"
 
 local TEXT_COMBAT, TEXT_NONE = C.TEXT_SPELLS_COMBAT, C.TEXT_SPELLS_NONE
-local TEXT_TARGETS = "Targets"
+local TEXT_TARGETS = ns.L("Targets")
 local VALUE_PERCENT = "%s  %s"
 local VALUE_RATE = "%s  %s"
 local VALUE_FULL = "%s  %s  %s"

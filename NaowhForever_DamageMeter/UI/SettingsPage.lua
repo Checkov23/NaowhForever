@@ -9,25 +9,25 @@ local Settings = ns.Shared and ns.Shared.Settings
 if not Settings then return end
 local Group = Settings.Group
 
-local OFF = "Turn on the Damage Meter"
-local OFF_OWN_CUSTOM = "Set Your Bar to Custom Color"
-local OFF_EDGE_CUSTOM = "Set Your Row Edge to Custom Color"
-local OFF_HIGHLIGHT = "Turn on Highlight Your Row"
-local OFF_CLASS = "Set Bar Color to Class Colors"
-local OFF_IMAGE = "Pick a Background Image"
-local OFF_TILE = "Turn on Tile Image"
-local OFF_OWN = "Pick Your Own Picture in Image"
-local OFF_TIME = "Turn on Show Fight Time"
-local OFF_BOTH = "Put Total and Per Second in two columns"
-local OFF_FADE = "Set Out of Combat Opacity below 100%"
-local OFF_SUMMARY = "Turn on Summary Line"
-local OFF_LOCKED = "Turn on Lock Window"
-local OFF_OWN_FONT = "Turn on its Own Font"
-local OFF_OWN_LOOK = "Turn on Own Look"
-local TEXT_LOOK_NAME, TEXT_LOOK_EXPORT, TEXT_LOOK_IMPORT = "Name this look", "Look", "Paste a look"
-local TEXT_LOOKS_FULL = "There is room for twelve looks. Delete one first."
-local TEXT_LOOK_NO_NAME, TEXT_LOOK_BAD = "A look needs a name.", "That is not a look."
-local TEXT_LOOK_DELETE = "Delete the look %s?"
+local OFF = ns.L("Turn on the Damage Meter")
+local OFF_OWN_CUSTOM = ns.L("Set Your Bar to Custom Color")
+local OFF_EDGE_CUSTOM = ns.L("Set Your Row Edge to Custom Color")
+local OFF_HIGHLIGHT = ns.L("Turn on Highlight Your Row")
+local OFF_CLASS = ns.L("Set Bar Color to Class Colors")
+local OFF_IMAGE = ns.L("Pick a Background Image")
+local OFF_TILE = ns.L("Turn on Tile Image")
+local OFF_OWN = ns.L("Pick Your Own Picture in Image")
+local OFF_TIME = ns.L("Turn on Show Fight Time")
+local OFF_BOTH = ns.L("Put Total and Per Second in two columns")
+local OFF_FADE = ns.L("Set Out of Combat Opacity below 100%")
+local OFF_SUMMARY = ns.L("Turn on Summary Line")
+local OFF_LOCKED = ns.L("Turn on Lock Window")
+local OFF_OWN_FONT = ns.L("Turn on its Own Font")
+local OFF_OWN_LOOK = ns.L("Turn on Own Look")
+local TEXT_LOOK_NAME, TEXT_LOOK_EXPORT, TEXT_LOOK_IMPORT = ns.L("Name this look"), ns.L("Look"), ns.L("Paste a look")
+local TEXT_LOOKS_FULL = ns.L("There is room for twelve looks. Delete one first.")
+local TEXT_LOOK_NO_NAME, TEXT_LOOK_BAD = ns.L("A look needs a name."), ns.L("That is not a look.")
+local TEXT_LOOK_DELETE = ns.L("Delete the look %s?")
 local Style = ns.Shared.Style
 local WIDTH_RANGE, HEIGHT_RANGE = { C.MIN_WIDTH, C.MAX_WIDTH, 1 }, { C.MIN_HEIGHT, C.MAX_HEIGHT, 1 }
 local SCALE_RANGE = { C.MIN_SCALE, C.MAX_SCALE, 5 }
@@ -105,70 +105,70 @@ local function NotAbbreviating()
 end
 
 local function Headline()
-    if not DM.On() then return "Damage Meter is off" end
-    return DM.Mode(S.Get("mode")).label
+    if not DM.On() then return ns.L("Damage Meter is off") end
+    return ns.L(DM.Mode(S.Get("mode")).label)
 end
 
 local function Detail()
-    local session = (C.SESSION_LABELS[S.Get("session")] or C.SESSION_LABELS.current):lower()
-    return ("The %s session. Unlock its window to drag and resize it, or place it in the HUD Editor."):format(session)
+    local session = ns.L((C.SESSION_LABELS[S.Get("session")] or C.SESSION_LABELS.current):lower())
+    return ns.L("The %s session. Unlock its window to drag and resize it, or place it in the HUD Editor."):format(session)
 end
 
 local function ListsSummary(store)
-    local text = DM.Mode(store.Get("mode")).label
+    local text = ns.L(DM.Mode(store.Get("mode")).label)
     local lower = store.Get("lower")
-    if lower ~= "" then text = text .. " over " .. DM.Mode(lower).label end
-    return ("%s, %s"):format(text, (C.SESSION_LABELS[store.Get("session")] or C.SESSION_LABELS.current):lower())
+    if lower ~= "" then text = ns.L("%s over %s"):format(text, ns.L(DM.Mode(lower).label)) end
+    return ("%s, %s"):format(text, ns.L((C.SESSION_LABELS[store.Get("session")] or C.SESSION_LABELS.current):lower()))
 end
 
 local function WindowSummary(store)
-    local text = ("%d by %d"):format(store.Get("width"), store.Get("height"))
-    if store.Get("locked") then text = text .. ", locked" end
+    local text = ns.L("%d by %d"):format(store.Get("width"), store.Get("height"))
+    if store.Get("locked") then text = ns.L("%s, locked"):format(text) end
     return text
 end
 
 local function BarsSummary(store)
-    return ("%d px rows, %d px apart"):format(store.Get("barHeight"), store.Get("barSpacing"))
+    return ns.L("%d px rows, %d px apart"):format(store.Get("barHeight"), store.Get("barSpacing"))
 end
 
 local function RowSummary(store)
-    local icons = store.Get("showIcons") and (C.ICON_SIDES[store.Get("iconSide")] or ""):lower() or "off"
-    return ("Icons %s, ranks %s"):format(icons, store.Get("showRanks") and "on" or "off")
+    local icons = store.Get("showIcons") and ns.L((C.ICON_SIDES[store.Get("iconSide")] or ""):lower()) or ns.L("off")
+    return ns.L("Icons %s, ranks %s"):format(icons, store.Get("showRanks") and ns.L("on") or ns.L("off"))
 end
 
 local function FiguresSummary()
     local names = {}
     for _, kind in ipairs(DM.ColumnSlots(S.Get("columns"), DM.Mode(S.Get("mode")))) do
-        if kind ~= "none" then names[#names + 1] = C.COLUMN_KINDS[kind] end
+        if kind ~= "none" then names[#names + 1] = ns.L(C.COLUMN_KINDS[kind]) end
     end
     return table.concat(names, ", ")
 end
 
 local function HeaderSummary(store)
-    return ("%s, buttons %s"):format(C.TITLE_TEXTS[store.Get("titleText")] or "",
-        store.Get("showButtons") and "on" or "off")
+    return ns.L("%s, buttons %s"):format(ns.L(C.TITLE_TEXTS[store.Get("titleText")] or ""),
+        store.Get("showButtons") and ns.L("on") or ns.L("off"))
 end
 
 local function HoverSummary(store)
-    return ("Spells %s, reports of %d lines"):format(store.Get("breakdown") and "on" or "off",
+    return ns.L("Spells %s, reports of %d lines"):format(store.Get("breakdown") and ns.L("on") or ns.L("off"),
         store.Get("reportLines"))
 end
 
 local function DataSummary(store)
-    local text = ("%d of %d fights kept"):format(#DM.History.List(), store.Get("keepFights"))
+    local text = ns.L("%d of %d fights kept"):format(#DM.History.List(), store.Get("keepFights"))
     local rule = store.Get("resetOn")
-    if rule ~= "never" then text = text .. ", reset " .. (C.RESET_ON[rule] or ""):lower() end
+    if rule ~= "never" then text = ns.L("%s, reset %s"):format(text, ns.L((C.RESET_ON[rule] or ""):lower())) end
     return text
 end
 
 local function LooksSummary()
     local count = #DM.LookNames()
-    return count == 0 and "None kept" or ("%d kept"):format(count)
+    return count == 0 and ns.L("None kept") or ns.L("%d kept"):format(count)
 end
 
 local function WindowNSummary(index)
     return function(store)
-        return ("%s, %d by %d"):format(DM.Mode(store.Get(DM.Key("mode", index))).label,
+        return ns.L("%s, %d by %d"):format(ns.L(DM.Mode(store.Get(DM.Key("mode", index))).label),
             store.Get(DM.Key("width", index)), store.Get(DM.Key("height", index)))
     end
 end
@@ -176,7 +176,7 @@ end
 local CLEAN_LOOK = { showColumnHeaders = false, showButtons = false, showSummary = false, showRanks = false,
     showBorder = false, headerAlpha = 0, backgroundAlpha = 0, timeBrackets = true, timeByTitle = true,
     showDivider = true }
-local TEXT_CLEAN_ASK = "Hide the column titles, buttons, rank numbers, backgrounds and border?"
+local TEXT_CLEAN_ASK = ns.L("Hide the column titles, buttons, rank numbers, backgrounds and border?")
 
 local function ApplyCleanLook()
     for key, value in pairs(CLEAN_LOOK) do S.Set(key, value) end
@@ -281,7 +281,7 @@ local function ImageChoices()
     return values, order
 end
 
-local TEXT_RELOAD = "Needs a /reload"
+local TEXT_RELOAD = ns.L("Needs a /reload")
 local ICON_KEYS = { "showIcons", "iconStyle", "iconSize", "iconSide", "iconZoom", "iconGap" }
 
 local function FontKeys(...)

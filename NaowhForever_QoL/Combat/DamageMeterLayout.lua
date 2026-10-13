@@ -4,14 +4,14 @@ local ns = _G.NaowhForever
 local DEBOUNCE, VERIFY = 0.5, 0.5
 local BACKUP_KEY = "damageMeterLayoutBackup"
 local DIFF, STEP, FLAG = "diff", "step", "flag"
-local TEXT_COMBAT = "Not in combat."
-local TEXT_NO_EDIT_MODE = "The game's layouts are not available."
-local TEXT_EDIT_MODE_OPEN = "Close Edit Mode first."
-local TEXT_PRESET = "Your active layout is one of the game's own: make a copy in Edit Mode first."
-local TEXT_NO_SYSTEM = "This layout has no damage meter."
-local TEXT_FAILED = "The game would not save the layout (%s)."
-local TEXT_RELOAD = "Needs a /reload"
-local TEXT_NOTHING = "Nothing to restore yet: it remembers your settings from before your first change."
+local TEXT_COMBAT = ns.L("Not in combat.")
+local TEXT_NO_EDIT_MODE = ns.L("The game's layouts are not available.")
+local TEXT_EDIT_MODE_OPEN = ns.L("Close Edit Mode first.")
+local TEXT_PRESET = ns.L("Your active layout is one of the game's own: make a copy in Edit Mode first.")
+local TEXT_NO_SYSTEM = ns.L("This layout has no damage meter.")
+local TEXT_FAILED = ns.L("The game would not save the layout (%s).")
+local TEXT_RELOAD = ns.L("Needs a /reload")
+local TEXT_NOTHING = ns.L("Nothing to restore yet: it remembers your settings from before your first change.")
 
 local SPECS = {
     { name = "Style", label = "Bar Style", enum = "DamageMeterStyle", members = { "Default", "Bordered", "Thin" },

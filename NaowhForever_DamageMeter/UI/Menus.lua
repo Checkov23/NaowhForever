@@ -5,13 +5,13 @@ local DM = ns.DamageMeter
 local S = DM.Settings
 local C, Key = DM.C, DM.Key
 
-local TEXT_LIST, TEXT_LOWER, TEXT_NONE = "List", "Second List", "None"
-local TEXT_SESSION = "Session"
-local TEXT_FIGHTS, TEXT_NO_FIGHTS = "Past Fights", "No Past Fights Yet"
-local TEXT_REPORT, TEXT_RESET, TEXT_RESET_ASK = "Report To", "Reset Data", C.TEXT_RESET_ASK
-local TEXT_ADD, TEXT_CLOSE, TEXT_LOCK, TEXT_SETTINGS = "Add Window", "Close Window", "Lock Window", "Settings"
-local TEXT_RAID, TEXT_BAR_COLOR = "Raid Mode", "Bar Color"
-local TEXT_HISTORY, TEXT_SHOT = "Fight History", "Take Screenshot"
+local TEXT_LIST, TEXT_LOWER, TEXT_NONE = ns.L("List"), ns.L("Second List"), ns.L("None")
+local TEXT_SESSION = ns.L("Session")
+local TEXT_FIGHTS, TEXT_NO_FIGHTS = ns.L("Past Fights"), ns.L("No Past Fights Yet")
+local TEXT_REPORT, TEXT_RESET, TEXT_RESET_ASK = ns.L("Report To"), ns.L("Reset Data"), C.TEXT_RESET_ASK
+local TEXT_ADD, TEXT_CLOSE, TEXT_LOCK, TEXT_SETTINGS = ns.L("Add Window"), ns.L("Close Window"), ns.L("Lock Window"), ns.L("Settings")
+local TEXT_RAID, TEXT_BAR_COLOR = ns.L("Raid Mode"), ns.L("Bar Color")
+local TEXT_HISTORY, TEXT_SHOT = ns.L("Fight History"), ns.L("Take Screenshot")
 local SHOT_DELAY = 0.3
 
 local Menus = {}
@@ -31,21 +31,21 @@ local function ListChoices(menu, w, lower)
         menu:CreateRadio(TEXT_NONE, function() return S.Get(setting) == "" end, function() Choose("") end)
     end
     for _, key in ipairs(C.MODE_ORDER) do
-        menu:CreateRadio(C.MODE_LABELS[key], function() return S.Get(setting) == key end,
+        menu:CreateRadio(ns.L(C.MODE_LABELS[key]), function() return S.Get(setting) == key end,
             function() Choose(key) end)
     end
 end
 
 local function SessionChoices(menu, w)
     for _, key in ipairs(C.SESSION_ORDER) do
-        menu:CreateRadio(C.SESSION_LABELS[key], Chosen(w, "session", key),
+        menu:CreateRadio(ns.L(C.SESSION_LABELS[key]), Chosen(w, "session", key),
             function() w.fight, w.offset = nil, 0; S.Set(Key("session", w.index), key); DM.Refresh() end)
     end
     local fights = DM.Fights()
     menu:CreateDivider()
     menu:CreateTitle(#fights > 0 and TEXT_FIGHTS or TEXT_NO_FIGHTS)
     for _, fight in ipairs(fights) do
-        menu:CreateRadio(DM.FightLabel(fight), function() return w.fight == fight.id end,
+        menu:CreateRadio(DM.FightLabel(fight, true), function() return w.fight == fight.id end,
             function() w.fight, w.offset = fight.id, 0; DM.Refresh() end)
     end
 end
@@ -75,14 +75,14 @@ end
 
 function Menus.Window(w, owner)
     MenuUtil.CreateContextMenu(owner, function(_, root)
-        root:CreateTitle(DM.WindowName(w.index))
+        root:CreateTitle(DM.WindowName(w.index, true))
         ListChoices(root:CreateButton(TEXT_LIST), w, false)
         SessionChoices(root:CreateButton(TEXT_SESSION), w)
         ListChoices(root:CreateButton(TEXT_LOWER), w, true)
         root:CreateDivider()
         local report = root:CreateButton(TEXT_REPORT)
         for _, channel in ipairs(DM.Channels()) do
-            report:CreateButton(channel.label, function() Report(w, channel.key) end)
+            report:CreateButton(ns.L(channel.label), function() Report(w, channel.key) end)
         end
         root:CreateButton(TEXT_HISTORY, function() DM.HistoryWindow.Toggle() end)
         root:CreateButton(TEXT_SHOT, TakeScreenshot)
@@ -94,7 +94,7 @@ function Menus.Window(w, owner)
         local bars = root:CreateButton(TEXT_BAR_COLOR)
         local setting = DM.LookKey(w.index, "barColor")
         for _, key in ipairs(C.BAR_COLORS_ORDER) do
-            bars:CreateRadio(C.BAR_COLORS[key], function() return S.Get(setting) == key end,
+            bars:CreateRadio(ns.L(C.BAR_COLORS[key]), function() return S.Get(setting) == key end,
                 function() S.Set(setting, key) end)
         end
         root:CreateCheckbox(TEXT_RAID, function() return S.Get("raidMode") == true end,

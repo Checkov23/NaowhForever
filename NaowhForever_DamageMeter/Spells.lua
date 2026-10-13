@@ -4,7 +4,7 @@ local ns = _G.NaowhForever
 local DM = ns.DamageMeter
 local C = DM.C
 
-local TEXT_UNKNOWN, TEXT_TARGETS = "Unknown", "Targets"
+local TEXT_UNKNOWN, TEXT_TARGETS = ns.L("Unknown"), ns.L("Targets")
 
 function DM.SpellName(spell)
     local getName = C_Spell and C_Spell.GetSpellName

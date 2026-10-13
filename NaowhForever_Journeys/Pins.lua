@@ -7,7 +7,7 @@ local Guide = Jy.Guide
 
 local PERCENT = 100
 local SAME_SPOT = 0.05
-local TEXT_PIN = "Map Pin"
+local TEXT_PIN = ns.L("Map Pin")
 
 local events
 

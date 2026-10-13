@@ -11,18 +11,18 @@ local PRIMARY_WINDOW = "DamageMeterSessionWindow1"
 local OTHER_METERS = { { addon = "Details", name = "Details" },
     { addon = "EllesmereUIDamageMeters", name = "EllesmereUI Damage Meters" }, { addon = "Skada", name = "Skada" },
     { addon = "Recount", name = "Recount" }, { addon = "TinyDPS", name = "TinyDPS" } }
-local TEXT_OTHERS = "Turn off every other damage meter first."
-local TEXT_OTHERS_NAMED = "Turn off %s first."
+local TEXT_OTHERS = ns.L("Turn off every other damage meter first.")
+local TEXT_OTHERS_NAMED = ns.L("Turn off %s first.")
 local CARD_ORDER = 110
 local GRADIENT_TEX = ns.MEDIA .. "NaowhGradient.tga"
-local TEXT_GRADIENT, TEXT_NEEDS_NOT_FREE = "Naowh Gradient", "Turn off Move and Resize"
-local TEXT_NO_WINDOW = "The game's meter has no window to place."
-local TEXT_NO_PLACE = "Show the game's meter first, then switch this off and on."
+local TEXT_GRADIENT, TEXT_NEEDS_NOT_FREE = "Naowh Gradient", ns.L("Turn off Move and Resize")
+local TEXT_NO_WINDOW = ns.L("The game's meter has no window to place.")
+local TEXT_NO_PLACE = ns.L("Show the game's meter first, then switch this off and on.")
 local BAR_CLASS, BAR_ACCENT, BAR_CUSTOM = "class", "accent", "custom"
 local BARS = { { class = "Class Colors", accent = "Theme Accent", custom = "Custom Color" },
     { BAR_CLASS, BAR_ACCENT, BAR_CUSTOM } }
 local OUTLINE_GAME, OUTLINE_SHADOW = "game", ""
-local TEXT_GAME_DEFAULT, TEXT_NEEDS_CUSTOM = "Game Default", "Set Bar Color to Custom Color"
+local TEXT_GAME_DEFAULT, TEXT_NEEDS_CUSTOM = "Game Default", ns.L("Set Bar Color to Custom Color")
 local ENTRY_REFRESH = { "UpdateStyle", "UpdateBackground", "UpdateStatusBarColor" }
 local SCROLL_GAME, SCROLL_ACCENT, SCROLL_HIDDEN = "game", "accent", "hidden"
 local SCROLLS = { { game = TEXT_GAME_DEFAULT, accent = "Theme Accent", hidden = "Hidden" },
@@ -38,8 +38,8 @@ local BUTTON_PARTS = { "MinimizeButton", "SettingsDropdown", "SessionDropdown", 
 local BUTTON_DEPTH = 2
 local BUTTONS_GAME, BUTTONS_THEMED = "game", "themed"
 local BUTTONS = { { game = TEXT_GAME_DEFAULT, themed = "Themed" }, { BUTTONS_GAME, BUTTONS_THEMED } }
-local TEXT_NEEDS_THEMED = "Set Buttons to Themed"
-local TEXT_NEEDS_BORDER, TEXT_NEEDS_FADE = "Turn on Window Border", "Set Title Bar to Shown on Hover"
+local TEXT_NEEDS_THEMED = ns.L("Set Buttons to Themed")
+local TEXT_NEEDS_BORDER, TEXT_NEEDS_FADE = ns.L("Turn on Window Border"), ns.L("Set Title Bar to Shown on Hover")
 local SETTING_PREFIX, POSITION_KEY = "^damageMeter", "damageMeterPos"
 
 local HUD_NAMES, HUD_ORDER = unpack(Parts.HUD_OUTLINES)

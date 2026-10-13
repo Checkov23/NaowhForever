@@ -25,7 +25,7 @@ local friends = {
 
 local settings = {}
 local S = { Get = function(k) return settings[k] end, Set = function(k, v) settings[k] = v end }
-local ns = { QoLSettings = S, UI = {}, THEME = {}, Print = function(m) printed[#printed + 1] = m end }
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = S, UI = {}, THEME = {}, Print = function(m) printed[#printed + 1] = m end }
 local env = setmetatable({
     NaowhForever = ns,
     WOW_PROJECT_ID = 99, MAX_PARTY_MEMBERS = 4, MAX_RAID_MEMBERS = 40,

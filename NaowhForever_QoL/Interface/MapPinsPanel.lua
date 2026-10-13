@@ -29,7 +29,7 @@ local TEXT_TITLE = ns.L("Town Pins")
 local TEXT_TIP = ns.L("Click to choose which town pins show on the map.")
 local TEXT_CLOSE = "x"
 local TEXT_TOWN, TEXT_TOWN_PINS, TEXT_TOWN_TIP = ns.TownPinTexts.group, ns.TownPinTexts.switch, ns.TownPinTexts.tip
-local TEXT_SIZE, TEXT_SIZE_TIP = "Town Pin Size", "How big the town pins are on the world map."
+local TEXT_SIZE, TEXT_SIZE_TIP = ns.L("Town Pin Size"), ns.L("How big the town pins are on the world map.")
 
 local ROWS = ns.TownPinRows
 

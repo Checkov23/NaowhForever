@@ -152,7 +152,7 @@ local function Boot(opts)
         maxAmount = Amount("max"), totalAmount = Amount("total") }
     s.session = session
     s.spells = { combatSpells = { Spell(101, 600), Spell(102, 300), Spell(103, 100) }, maxAmount = 600, totalAmount = 1000 }
-    local ns = { THEME = THEME, MEDIA = "Media\\",
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, THEME = THEME, MEDIA = "Media\\",
         FEATURES = { damageMeter = { enabled = false } },
         UI = {
             ModuleSettings = function(_, d) defaults = d; return store end,

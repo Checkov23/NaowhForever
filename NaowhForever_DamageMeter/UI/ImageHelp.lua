@@ -7,7 +7,7 @@ local DIALOG = "damageMeterImages"
 local WIDTH, PAD, BUTTON_W, BUTTON_H = 480, 16, 90, 24
 local HEAD_SIZE, TITLE_SIZE, TEXT_SIZE = 14, 12, 11
 local HEAD_GAP, TITLE_GAP, BLOCK_GAP, BUTTON_GAP = 12, 2, 10, 14
-local TEXT_HEAD, TEXT_CLOSE = "Add Your Own Image", "Close"
+local TEXT_HEAD, TEXT_CLOSE = ns.L("Add Your Own Image"), ns.L("Close")
 
 DM.IMAGE_HELP = {
     { title = "The picture", text = "A .png, .tga or .blp file. Make its width and height powers of two, "
@@ -40,12 +40,12 @@ function DM.ShowImageHelp()
         title:SetPoint("TOPLEFT", above, "BOTTOMLEFT", 0, -gap)
         title:SetWidth(WIDTH - 2 * PAD)
         title:SetJustifyH("LEFT")
-        title:SetText(part.title)
+        title:SetText(ns.L(part.title))
         local text = UI.KeepFont(panel, "text" .. i, TEXT_SIZE, nil, T.muted)
         text:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -TITLE_GAP)
         text:SetWidth(WIDTH - 2 * PAD)
         text:SetJustifyH("LEFT")
-        text:SetText(part.text)
+        text:SetText(ns.L(part.text))
         used = used + gap + title:GetStringHeight() + TITLE_GAP + text:GetStringHeight()
         above, gap = text, BLOCK_GAP
     end

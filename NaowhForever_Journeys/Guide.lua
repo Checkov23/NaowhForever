@@ -13,16 +13,16 @@ local REPLAN_DELAY = 0.5
 local FIRST_CORNER = 2
 local EVENTS = { "NAVIGATION_DESTINATION_REACHED", "USER_WAYPOINT_UPDATED", "PLAYER_CONTROL_GAINED",
     "PLAYER_ENTERING_WORLD", "PLAYER_REGEN_ENABLED" }
-local TEXT_WALK = { flight = "Flight Master: %s", dock = "%s dock", link = "%s", goal = "%s", jump = "%s" }
-local TEXT_FLY = "Fly to %s"
-local TEXT_SHIP = "%s to %s"
-local TEXT_TRAM = "Deeprun Tram to %s"
-local TEXT_PORTAL = "Portal to %s"
-local TEXT_LIFT = "Lift to %s"
-local TEXT_HEARTH = "Hearthstone to %s"
-local TEXT_TELEPORT = "Teleport to %s"
-local TEXT_NO_WAY = "No way found to %s from here; placed a plain waypoint."
-local TEXT_NO_PLACE = "That journey ends where the game takes no waypoints."
+local TEXT_WALK = { flight = ns.L("Flight Master: %s"), dock = ns.L("%s dock"), link = "%s", goal = "%s", jump = "%s" }
+local TEXT_FLY = ns.L("Fly to %s")
+local TEXT_SHIP = ns.L("%s to %s")
+local TEXT_TRAM = ns.L("Deeprun Tram to %s")
+local TEXT_PORTAL = ns.L("Portal to %s")
+local TEXT_LIFT = ns.L("Lift to %s")
+local TEXT_HEARTH = ns.L("Hearthstone to %s")
+local TEXT_TELEPORT = ns.L("Teleport to %s")
+local TEXT_NO_WAY = ns.L("No way found to %s from here; placed a plain waypoint.")
+local TEXT_NO_PLACE = ns.L("That journey ends where the game takes no waypoints.")
 
 local Guide = {}
 Jy.Guide = Guide
@@ -48,7 +48,7 @@ function Guide.LegText(leg)
     local mode, name = leg.mode, leg.name or ""
     if mode == "walk" then return (TEXT_WALK[leg.kind] or "%s"):format(name) end
     if mode == "fly" then return TEXT_FLY:format(name) end
-    if mode == "ship" then return TEXT_SHIP:format(leg.shipKind or "", name) end
+    if mode == "ship" then return TEXT_SHIP:format(ns.L(leg.shipKind or ""), name) end
     if mode == "tram" then return TEXT_TRAM:format(name) end
     if mode == "portal" then return TEXT_PORTAL:format(name) end
     if mode == "lift" then return TEXT_LIFT:format(name) end

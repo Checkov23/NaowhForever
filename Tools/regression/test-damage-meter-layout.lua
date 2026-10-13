@@ -37,7 +37,7 @@ end
 local function Boot(opts)
     opts = opts or {}
     local s = { printed = {}, saves = {}, timers = {}, converts = 0, account = {}, refreshes = 0 }
-    local ns = { Print = function(text) s.printed[#s.printed + 1] = text end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Print = function(text) s.printed[#s.printed + 1] = text end,
         UI = { RefreshPage = function() s.refreshes = s.refreshes + 1 end },
         AccountSettings = function() return s.account end }
     s.manager = { layoutInfo = opts.info or Info(), IsShown = function() return s.editOpen == true end }

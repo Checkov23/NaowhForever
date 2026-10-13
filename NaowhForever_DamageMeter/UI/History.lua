@@ -13,10 +13,10 @@ local SIDE_GAP = 8
 local HEADER, TITLE_SIZE, TEXT_SIZE, PAD, GAP = C.HEADER, 12, 11, 8, 4
 local ROW_H, VISIBLE, HEAD_H = 18, 12, 18
 local BUTTON_H, CLOSE_W, CLEAR_W, BUTTON_GAP = 18, 22, 52, 4
-local DATE_FORMAT = "%m/%d %H:%M"
-local TEXT_TITLE, TEXT_CLEAR, TEXT_CLOSE = "Fight History", "Clear", "X"
-local TEXT_EMPTY = "No fights kept yet"
-local TEXT_ASK = "Clear the fight history?"
+local DATE_FORMAT = ns.L("%m/%d %H:%M")
+local TEXT_TITLE, TEXT_CLEAR, TEXT_CLOSE = ns.L("Fight History"), ns.L("Clear"), "X"
+local TEXT_EMPTY = ns.L("No fights kept yet")
+local TEXT_ASK = ns.L("Clear the fight history?")
 
 local COLUMNS = {
     { key = "when", title = "Time", width = 84, left = true },
@@ -154,7 +154,7 @@ local function Build()
     for n, column in ipairs(COLUMNS) do
         local fs = ns.Font(frame, TEXT_SIZE, "OUTLINE", T.muted)
         Place(fs, column, x, frame, -(HEADER + PAD / 2), HEAD_H)
-        fs:SetText(column.title)
+        fs:SetText(ns.L(column.title))
         frame.titles[n] = fs
         x = x + column.width + GAP
     end

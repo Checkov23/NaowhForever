@@ -12,18 +12,18 @@ local EDITOR_W, EDITOR_PAD, EDITOR_TOP, EDITOR_ROW, EDITOR_FOOT = 460, 20, 52, 3
 local EDITOR_NAME_W, EDITOR_GAP, EDITOR_BUTTON_W, EDITOR_BUTTON_H = 110, 8, 70, 22
 local FOOT_BUTTON_W, FOOT_BUTTON_H, FOOT_Y = 110, 26, 16
 
-local TEXT_TITLE = "Invite Buttons"
-local TEXT_NONE = "No one yet. Add a Battle.net friend or a character name."
-local TEXT_ADD_FRIEND, TEXT_ADD_NAME, TEXT_CLOSE = "Add Friend", "Add Name", "Close"
-local TEXT_RENAME, TEXT_REMOVE = "Rename", "Remove"
-local TEXT_ASK_NAME = "Invite which character?"
-local TEXT_ASK_LABEL = "Text on the button"
-local TEXT_FRIENDS = "Battle.net Friends"
-local TEXT_NO_FRIENDS = "You have no Battle.net friends."
+local TEXT_TITLE = ns.L("Invite Buttons")
+local TEXT_NONE = ns.L("No one yet. Add a Battle.net friend or a character name.")
+local TEXT_ADD_FRIEND, TEXT_ADD_NAME, TEXT_CLOSE = ns.L("Add Friend"), ns.L("Add Name"), ns.L("Close")
+local TEXT_RENAME, TEXT_REMOVE = ns.L("Rename"), ns.L("Remove")
+local TEXT_ASK_NAME = ns.L("Invite which character?")
+local TEXT_ASK_LABEL = ns.L("Text on the button")
+local TEXT_FRIENDS = ns.L("Battle.net Friends")
+local TEXT_NO_FRIENDS = ns.L("You have no Battle.net friends.")
 local TEXT_ON_FOREVER = "%s (%s)"
-local TEXT_WHO_FRIEND, TEXT_WHO_NAME = "Battle.net: %s", "Character: %s"
-local TEXT_OFFLINE = "%s is not online on Forever."
-local TEXT_FULL = "Your group is full."
+local TEXT_WHO_FRIEND, TEXT_WHO_NAME = ns.L("Battle.net: %s"), ns.L("Character: %s")
+local TEXT_OFFLINE = ns.L("%s is not online on Forever.")
+local TEXT_FULL = ns.L("Your group is full.")
 
 local function List()
     return S.Get("groupInvites") or {}

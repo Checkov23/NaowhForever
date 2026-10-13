@@ -12,8 +12,8 @@ local DARK_RANGE = { 10, 90, 5 }
 local PERCENT_SCALE = ns.Shared.Style.PERCENT_SCALE
 local EMPTY = {}
 local SECTION_ORDER = 11
-local TEXT_SECTION = "Map"
-local TEXT_OFF = "Unexplored Areas off"
+local TEXT_SECTION = ns.L("Map")
+local TEXT_OFF = ns.L("Unexplored Areas off")
 
 local explored = {}
 local added

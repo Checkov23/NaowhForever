@@ -11,16 +11,16 @@ local ORDER_ROUTES, ORDER_CARD = 10, 20
 local SAVING_RANGE = { 0, 10, 1 }
 local SCALE_RANGE = { 0.5, 2, 0.05 }
 local OPACITY_RANGE, PERCENT_SCALE = Style.ALPHA_RANGE, Style.PERCENT_SCALE
-local TEXT_OFF = "Turn on Journeys"
+local TEXT_OFF = ns.L("Turn on Journeys")
 local TEXT_MINUTES = " min"
-local TEXT_HEADLINE = "Following: %s"
-local TEXT_IDLE = "No journey yet"
-local TEXT_DETAIL = "Every waypoint button in Naowh Forever plans a journey: walking, flights, boats, "
-    .. "zeppelins, the tram, portals and your Hearthstone."
-local TEXT_ROUTES = "Hearthstone %s, teleports %s"
-local TEXT_ON, TEXT_OFF_WORD = "on", "off"
-local TEXT_CARD = "%d%% opacity"
-local TEXT_CARD_OFF = "Hidden"
+local TEXT_HEADLINE = ns.L("Following: %s")
+local TEXT_IDLE = ns.L("No journey yet")
+local TEXT_DETAIL = ns.L("Every waypoint button in Naowh Forever plans a journey: walking, flights, boats, "
+    .. "zeppelins, the tram, portals and your Hearthstone.")
+local TEXT_ROUTES = ns.L("Hearthstone %s, teleports %s")
+local TEXT_ON, TEXT_OFF_WORD = ns.L("on"), ns.L("off")
+local TEXT_CARD = ns.L("%d%% opacity")
+local TEXT_CARD_OFF = ns.L("Hidden")
 
 local function Headline()
     local journey = Jy.Guide.Current()

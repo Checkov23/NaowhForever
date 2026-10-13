@@ -17,7 +17,7 @@ local settings = { learnLifts = true }
 local store, printed = {}, {}
 local frame, ticks
 
-local ns = { Print = function(msg) printed[#printed + 1] = msg end, AccountSettings = function() return store end }
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Print = function(msg) printed[#printed + 1] = msg end, AccountSettings = function() return store end }
 local env = setmetatable({
     NaowhForever = ns,
     hooksecurefunc = function() end,

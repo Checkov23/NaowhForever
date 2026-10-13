@@ -12,9 +12,9 @@ local STORE = "journeyLifts"
 local EVENTS = { "PLAYER_STARTED_MOVING", "PLAYER_STOPPED_MOVING" }
 local MOVED = 1
 local TEXT_LINE = "{ %d, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %d }, -- %s to %s, seen %d times"
-local TEXT_NONE = "No lifts learned yet. Ride one with Learn Lifts as You Ride on."
-local TEXT_CLEARED = "Learned lifts cleared."
-local TEXT_LEARNED = "Learned a lift: %s to %s, %d seconds."
+local TEXT_NONE = ns.L("No lifts learned yet. Ride one with Learn Lifts as You Ride on.")
+local TEXT_CLEARED = ns.L("Learned lifts cleared.")
+local TEXT_LEARNED = ns.L("Learned a lift: %s to %s, %d seconds.")
 
 local Lifts = {}
 Jy.Lifts = Lifts

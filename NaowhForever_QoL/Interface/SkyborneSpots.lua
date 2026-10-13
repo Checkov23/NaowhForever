@@ -36,7 +36,7 @@ local TEXT_CLICK = ns.L("Click for a waypoint.")
 local TEXT_FORGET = ns.L("Right-click to forget this spot.")
 local SECTION_ORDER = 60
 local TEXT_SECTION = "Skyborne"
-local TEXT_OFF = "Skyborne Spots off"
+local TEXT_OFF = ns.L("Skyborne Spots off")
 
 local waiting
 local events

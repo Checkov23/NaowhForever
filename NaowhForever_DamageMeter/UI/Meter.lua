@@ -26,14 +26,14 @@ local DATA_EVENTS = { "DAMAGE_METER_COMBAT_SESSION_UPDATED", "DAMAGE_METER_CURRE
 local STATE_EVENTS = { "PLAYER_ENTERING_WORLD", "GROUP_ROSTER_UPDATE" }
 local FADE_EVERY, FADE_STEP, FADE_SNAP = 0.1, 0.35, 0.02
 
-local TEXT_OFF = "Enable the Damage Meter first."
-local TEXT_UNAVAILABLE = "The damage meter is not available"
-local TEXT_IN_COMBAT = "Preview is available outside combat."
-local TEXT_RESET_DONE = "Damage meter data reset."
-local TEXT_RESET_INSTANCE_ASK = "You entered a new instance. Reset the damage meter data?"
-local TEXT_FIGHT = "Fight"
-local TEXT_SESSION_TIP = "The current fight, everything since the last reset, or a past fight."
-local TEXT_MORE_TIP = "The list and the session, report, reset, add or close a window, and settings."
+local TEXT_OFF = ns.L("Enable the Damage Meter first.")
+local TEXT_UNAVAILABLE = ns.L("The damage meter is not available")
+local TEXT_IN_COMBAT = ns.L("Preview is available outside combat.")
+local TEXT_RESET_DONE = ns.L("Damage meter data reset.")
+local TEXT_RESET_INSTANCE_ASK = ns.L("You entered a new instance. Reset the damage meter data?")
+local TEXT_FIGHT = ns.L("Fight")
+local TEXT_SESSION_TIP = ns.L("The current fight, everything since the last reset, or a past fight.")
+local TEXT_MORE_TIP = ns.L("The list and the session, report, reset, add or close a window, and settings.")
 
 local windows = {}
 local pendingUpdate, unlocked, hovered, tipRow
@@ -176,7 +176,7 @@ local function Render(w, session, unavailable, seconds, lowerSession, fightName)
     local summary = S.Get("showSummary") == true
     frame.summary:SetShown(summary)
     if summary then
-        Look.PaintSummary(frame, listSession, mode, DM.SessionName(Get(w, "session"), w.fight), seconds)
+        Look.PaintSummary(frame, listSession, mode, DM.SessionName(Get(w, "session"), w.fight, true), seconds)
     end
     PaintTitleBar(frame, mode, seconds, fightName, title)
     ns.SetButtonText(frame.session, w.fight and TEXT_FIGHT or C.SESSION_LABELS[Get(w, "session")]

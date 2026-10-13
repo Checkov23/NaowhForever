@@ -195,7 +195,7 @@ local function Boot(settings, loaded, windows)
         for _, w in ipairs(self.windows) do fn(w) end
     end
     function meter:SetupSessionWindow() end
-    local ns = { QoLSettings = store, THEME = THEME, Apply = function() end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = store, THEME = THEME, Apply = function() end,
         DamageMeterLayout = { rows = {}, byName = {
             FrameWidth = { label = "Window Width", slider = { 200, 600, 1 }, frame = true,
                 get = function() return 300 end, set = function() end },

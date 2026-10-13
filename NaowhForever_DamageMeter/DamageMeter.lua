@@ -169,8 +169,9 @@ function DM.On()
     return S.Get("enabled")
 end
 
-function DM.WindowName(index)
-    return index > 1 and TITLE .. " " .. index or TITLE
+function DM.WindowName(index, shown)
+    local title = shown and ns.L(TITLE) or TITLE
+    return index > 1 and title .. " " .. index or title
 end
 
 function DM.WindowOn(index)

@@ -5,8 +5,8 @@ local DM = ns.DamageMeter
 local S = DM.Settings
 local Format, Plain = DM.Format, DM.Plain
 
-local TEXT_COMBAT = "Reports are sent outside combat."
-local TEXT_EMPTY = "There is nothing to report yet."
+local TEXT_COMBAT = ns.L("Reports are sent outside combat.")
+local TEXT_EMPTY = ns.L("There is nothing to report yet.")
 local LINE, LINE_RATE = "%d. %s  %s", "%s (%s)"
 local HEADER = "%s, %s"
 

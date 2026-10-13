@@ -25,9 +25,9 @@ local CURRENT_SEG = 0.5
 local HIGHLIGHT_ALPHA = 0.35
 local MINUTE = 60
 local TEXT_TIME = "%d:%02d"
-local TEXT_WAIT = "wait %s"
-local TEXT_COG = "Journey settings"
-local TEXT_CLOSE = "Stop the journey"
+local TEXT_WAIT = ns.L("wait %s")
+local TEXT_COG = ns.L("Journey settings")
+local TEXT_CLOSE = ns.L("Stop the journey")
 local TEXT_NAME = "Journey Card"
 
 local card
