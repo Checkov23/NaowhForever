@@ -49,7 +49,7 @@ local SHORT_LABELS = {
     [HEAL] = { "HPM", "HPS", "HPM/s" },
     [DAMAGE] = { "DPM", "DPS", "DPM/s" },
 }
-local KIND_WORDS = { [HEAL] = "healing", [DAMAGE] = "damage" }
+local KIND_WORDS = { [HEAL] = ns.L("healing"), [DAMAGE] = ns.L("damage") }
 local PER_MANA, PER_SECOND, PER_MANA_SECOND = 1, 2, 3
 local WHOLE = "%d"
 
