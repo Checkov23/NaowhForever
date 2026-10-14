@@ -19,7 +19,8 @@ local LABEL_DROP, LABEL_SIDE, TIMER_Y = 2, 3, 1
 local CLASS_ICON_PATH = "Interface\\Icons\\ClassIcon_"
 local CLASS_ICON_MIN, CLASS_ICON_MAX = 12, 24
 local CLASS_ICON_SHARE = 2 / 3
-local HIGHLIGHT = "Interface\\Buttons\\ButtonHilight-Square"
+local HOVER_ALPHA, PUSHED_ALPHA = 0.15, 0.35
+local FLAT_BLEND = "BLEND"
 local SECONDS = 60
 local ROUND = B.ROUND
 local MINUTES = "m"
@@ -30,7 +31,7 @@ local TOWARD = { RIGHT = 1, LEFT = -1, DOWN = -1, UP = 1 }
 local tints = { [RED] = RED, [YELLOW] = YELLOW, [BLUE] = BLUE }
 local deepAccent
 
-local Look = { RED = RED, YELLOW = YELLOW, BLUE = BLUE, HIGHLIGHT = HIGHLIGHT, ICON_BORDER = ICON_BORDER,
+local Look = { RED = RED, YELLOW = YELLOW, BLUE = BLUE, ICON_BORDER = ICON_BORDER,
     ICON_CROP = ICON_CROP, CLASS_ICON_PATH = CLASS_ICON_PATH, EDGE = EDGE, TOWARD = TOWARD }
 B.Look = Look
 
@@ -103,6 +104,23 @@ function Look.Icon(frame)
     frame.mark:SetPoint("CENTER")
     frame.timer = ns.Font(frame, TIMER_SIZE, "OUTLINE")
     frame.timer:SetPoint("BOTTOM", 0, TIMER_Y)
+end
+
+local function Flat(texture, colour, alpha)
+    texture:SetColorTexture(colour.r, colour.g, colour.b, alpha)
+    texture:SetBlendMode(FLAT_BLEND)
+    ns.PixelInset(texture, 1)
+end
+
+function Look.Hover(button)
+    local hover = button:GetHighlightTexture()
+    if not hover then
+        hover = ns.Solid(button, "HIGHLIGHT")
+        button:SetHighlightTexture(hover)
+    end
+    Flat(hover, T.fg, HOVER_ALPHA)
+    local pushed = button:GetPushedTexture()
+    if pushed then Flat(pushed, ICON_BORDER, PUSHED_ALPHA) end
 end
 
 function Look.Label(cell, class)

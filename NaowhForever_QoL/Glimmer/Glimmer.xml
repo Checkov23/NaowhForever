@@ -3,6 +3,7 @@
     <Script file="Glimmer.lua"/>
     <Script file="Constants.lua"/>
     <Script file="Data\Nodes.lua"/>
+    <Script file="Data\Spots.lua"/>
     <Script file="CVars.lua"/>
     <Script file="Target.lua"/>
     <Script file="Spots.lua"/>

@@ -1,6 +1,9 @@
 return {
 ["training"] = {
 },
+["glimmer"] = {
+["enabled"] = false,
+},
 ["discovery"] = {
 ["enabled"] = true,
 ["bagMapPinSize"] = 16,

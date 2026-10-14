@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Language
 ## Notes: Keeps the language you picked for Naowh Forever.
 ## Author: Naowh
-## Version: 1.1.12
+## Version: 1.1.13
 ## SavedVariables: NaowhForeverLanguageDB
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

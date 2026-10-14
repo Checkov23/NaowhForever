@@ -226,7 +226,7 @@ local function NewButton(preview, onClick)
     local button = CreateFrame("Button", nil, preview.bar)
     button.preview = preview
     Look.Icon(button)
-    button:SetHighlightTexture(Look.HIGHLIGHT, "ADD")
+    Look.Hover(button)
     button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     button:SetScript("OnClick", onClick)
     button:SetScript("OnMouseWheel", Wheel)
@@ -264,7 +264,7 @@ local function NewPlus(preview)
     plus.icon:SetSize(PLUS_ICON, PLUS_ICON)
     plus.icon:SetPoint("CENTER")
     PlusLeave(plus)
-    plus:SetHighlightTexture(Look.HIGHLIGHT, "ADD")
+    Look.Hover(plus)
     plus:SetScript("OnEnter", PlusEnter)
     plus:SetScript("OnLeave", PlusLeave)
     plus:SetScript("OnClick", PlusClick)
@@ -473,8 +473,6 @@ page:Card({
           help = "The gap between two buttons." },
         { key = "blessGroupSpacing", label = GROUP_LABEL, slider = GROUP_SLIDER, needs = On,
           why = BLESSINGS_OFF, help = "The extra gap between your aura and Righteous Fury and the class buttons." },
-        { key = "blessLayout", label = "Growth Direction", choice = LAYOUT, needs = On, why = BLESSINGS_OFF,
-          help = "Which way the bar grows from its first button. A column puts the class labels beside the buttons." },
         Settings.Look("bless", { text = true, size = FONT_SLIDER, keys = { FontSize = "blessTimerSize" }, needs = On,
             why = BLESSINGS_OFF }),
         Group("Colors"),
@@ -492,6 +490,9 @@ page:Card({
 
 local function AnchorRows()
     local rows = ns.Shared.Anchor.Rows(ANCHOR)
+    table.insert(rows, 1, { key = "blessLayout", label = "Growth Direction", choice = LAYOUT, needs = On,
+        why = BLESSINGS_OFF, help = "Which way the bar grows from its first button. A column puts the class labels "
+            .. "beside the buttons." })
     rows[#rows + 1] = { label = "Reset Position", button = B.ResetPosition, buttonText = "Reset", needs = HasBar,
         why = NO_BAR, help = "Puts the bar back above Buff Reminders, anchored to them." }
     return rows

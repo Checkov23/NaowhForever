@@ -441,6 +441,16 @@ do
     kind.Set(rows[2], { kind = "toggle", label = "On", card = card, get = function() return true end }, false)
     check("on again: the box and tick as before", box.alpha == 1 and box.checkArt.alpha == 1
         and box.checkTick.texture == St.FOREVER_CHECK and rows[2].label.alpha == 1)
+    local outlined = false
+    kind.Set(rows[3], { kind = "button", label = "Show the Cut-Out", card = card,
+        button = function() outlined = not outlined end,
+        buttonText = function() return outlined and "Hide" or "Show" end }, false)
+    local go = rows[3].controls.button
+    check("a button's text may be a function", go.label.text == "Show")
+    go.scripts.OnClick(go)
+    check("clicked: it reads its text again", outlined and go.label.text == "Hide")
+    go.scripts.OnClick(go)
+    check("and again, back as it was", not outlined and go.label.text == "Show")
 end
 
 -- Forever on a client without the disabled tick: the yellow tick, dimmed.

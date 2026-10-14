@@ -155,6 +155,7 @@ local function NewSelfButton(name)
     btn:SetAttribute("type1", "spell")
     btn:SetAttribute("unit1", "player")
     ns.Shared.Parts.Press(btn)
+    Look.Hover(btn)
     Look.Icon(btn)
     B.Watch(btn)
     return btn

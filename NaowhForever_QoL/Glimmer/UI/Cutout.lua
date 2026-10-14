@@ -10,6 +10,7 @@ local Plain = G.Plain
 local CUTOUT = St.MEDIA .. "cutout"
 local EDGE = St.MEDIA .. "cutout_edge"
 local WRAP = "CLAMP"
+local TEXT_SHOW, TEXT_HIDE = "Show", "Hide"
 
 local Cutout = {}
 G.Cutout = Cutout
@@ -38,7 +39,25 @@ function Cutout.Place(fx)
     Effects.Mask(fx, fx.cutout)
 end
 
-function Cutout.ShowEdge()
+local function Refresh()
+    if ns.UI.RefreshPage then ns.UI:RefreshPage(true) end
+end
+
+local function HideEdge()
+    edgeRun = edgeRun + 1
+    edge:Hide()
+end
+
+function Cutout.EdgeShown()
+    return edge ~= nil and edge:IsShown()
+end
+
+function Cutout.EdgeText()
+    return Cutout.EdgeShown() and TEXT_HIDE or TEXT_SHOW
+end
+
+function Cutout.ToggleEdge()
+    if Cutout.EdgeShown() then return HideEdge() end
     if not edge then
         edge = CreateFrame("Frame", nil, UIParent)
         edge:SetFrameStrata("HIGH")
@@ -56,6 +75,8 @@ function Cutout.ShowEdge()
     edgeRun = edgeRun + 1
     local run = edgeRun
     C_Timer.After(St.CUTOUT_EDGE_TIME, function()
-        if run == edgeRun then edge:Hide() end
+        if run ~= edgeRun then return end
+        HideEdge()
+        Refresh()
     end)
 end

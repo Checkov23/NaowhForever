@@ -37,8 +37,17 @@ local function TextReset(box)
     box:ClearFocus()
 end
 
+local function ButtonText(setting)
+    local text = setting.buttonText
+    if type(text) == "function" then text = text() end
+    return text or TEXT_GO
+end
+
 local function ButtonClicked(row)
-    if row.setting then row.setting.button() end
+    local setting = row.setting
+    if not setting then return end
+    setting.button()
+    if type(setting.buttonText) == "function" then ns.SetButtonText(row.controls.button, ButtonText(setting)) end
 end
 
 function Makers.toggle(row)
@@ -154,7 +163,7 @@ local function BindValue(control, setting)
     elseif kind == "toggle" or kind == "text" then
         control._refreshValue()
     elseif kind == "button" then
-        ns.SetButtonText(control, setting.buttonText or TEXT_GO)
+        ns.SetButtonText(control, ButtonText(setting))
         if setting.help then ns.Tooltip(control, setting.label, setting.help) end
     elseif kind == "binding" then
         BindingField(control, setting)

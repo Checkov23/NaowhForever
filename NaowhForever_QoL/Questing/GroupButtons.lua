@@ -21,6 +21,7 @@ local TIP_PERSON = ns.L("Invites %s.")
 local TEXT_INVITE_ALL, TIP_INVITE_ALL = ns.L("Invite All"), ns.L("Invites everyone on your invite buttons.")
 local TEXT_DISBAND = ns.L("Disband")
 local TIP_DISBAND = ns.L("Removes everyone from your group. Group leader only, out of combat.")
+local TIP_DISBAND_SHIFT = ns.L("Shift-click to disband without the question.")
 local TEXT_IN_COMBAT = ns.L("The group can be disbanded once the fight is over.")
 local SUMMARY_ROW, SUMMARY_STACKED = ns.L("Side by Side"), ns.L("Stacked")
 
@@ -61,6 +62,18 @@ local function OnDisbandClick()
     ns.DisbandGroup()
 end
 
+local function ArmDisband(button)
+    if InCombatLockdown() then return end
+    button.armed = IsInGroup() and UnitIsGroupLeader("player") or false
+    button:SetAttribute("shift-macrotext1", button.armed and ns.DisbandMacro() or "")
+end
+
+local function OnDisbandPostClick(button, _, down)
+    if down then return end
+    if IsShiftKeyDown() and button.armed then return end
+    OnDisbandClick()
+end
+
 local function OnPersonClick(button)
     ns.InvitePerson(button.entry)
 end
@@ -81,9 +94,12 @@ local function Build()
     bar.inviteAll = CreateFrame("Button", nil, bar)
     bar.inviteAll:SetScript("OnClick", ns.InviteAll)
     Style(bar.inviteAll, TEXT_INVITE_ALL, TIP_INVITE_ALL)
-    bar.disband = CreateFrame("Button", nil, bar)
-    bar.disband:SetScript("OnClick", OnDisbandClick)
-    Style(bar.disband, TEXT_DISBAND, TIP_DISBAND)
+    bar.disband = CreateFrame("Button", nil, bar, "SecureActionButtonTemplate")
+    bar.disband:RegisterForClicks("AnyUp", "AnyDown")
+    bar.disband:SetAttribute("shift-type1", "macro")
+    bar.disband:SetScript("PostClick", OnDisbandPostClick)
+    Style(bar.disband, TEXT_DISBAND, TIP_DISBAND .. "\n" .. TIP_DISBAND_SHIFT)
+    bar.disband:HookScript("OnEnter", ArmDisband)
     bar.mover = UI.AttachMover(bar, MOVER_LABEL, SavePosition, SETTINGS_PAGE, SETTINGS_CARD)
 end
 

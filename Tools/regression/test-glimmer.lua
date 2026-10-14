@@ -4,7 +4,7 @@
 local checks = 0
 local function check(label, ok) assert(ok, label); checks = checks + 1 end
 
-local FILES = dofile("Tools/regression/toc_files.lua")("^NaowhForever_Glimmer/.*%.lua$")
+local FILES = dofile("Tools/regression/toc_files.lua")("^NaowhForever_QoL/Glimmer/.*%.lua$")
 table.insert(FILES, 1, "Core/Features.lua")
 table.insert(FILES, 2, "Shared/UI/MinimapPins.lua")
 
@@ -110,19 +110,26 @@ local function Session(settings, opts)
             IsAddOnLoaded = function(name) return game.loaded[name] and true or false end,
             GetAddOnInfo = function(name) return name, name end,
             DisableAddOn = function(name) game.loaded[name] = nil; log.disabled = name end,
-            LoadAddOn = function(name)
-                log.dataLoaded = name
-                ns.GlimmerSpots = { [1429] = { 1731, 500, 520, 1618, 510, 500, 1732, 900, 900 } }
+        },
+        C_EncodingUtil = {
+            DecodeBase64 = function(s) return s end,
+            DecompressString = function(s) return s end,
+            DeserializeCBOR = function(s)
+                log.dataLoaded = s
+                return { 1429, { 1731, 500, 520, 1618, 510, 500, 1732, 900, 900 } }
             end,
         },
-        Enum = { TooltipDataLineType = { QuestObjective = 8 } },
+        Enum = { TooltipDataLineType = { QuestObjective = 8 }, CompressionMethod = { Deflate = 0 } },
         UnitGUID = function() return game.guid end,
         UnitIsGameObject = function() return game.guid ~= nil and game.object end,
         UnitIsInInteractRange = function() return game.near end,
         UnitIsUnit = function(unit) return unit ~= "nameplate9" end,
         GetNumLootItems = function() return 1 end,
         GetLootSourceInfo = function() return game.lootFrom or game.guid end,
-        SetUnitCursorTexture = function() return false end,
+        SetUnitCursorTexture = function(texture)
+            texture.texture = game.cursor
+            return game.cursor ~= nil
+        end,
         GetFileIDFromPath = function() return nil end,
         GetProfessions = function() return 1, game.herbalism > 0 and 2 or nil end,
         GetProfessionInfo = function(i)
@@ -297,10 +304,27 @@ log.Set("hideLocked", true)
 check("too low and hidden: dark", Lit(log) == nil)
 log.Set("hideLocked", false)
 
+-- No Mining at all: ore is not this character's to gather.
+log.game.mining = 0
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "x", "y")
+check("no Mining: ore stays dark", Lit(log) == nil)
+log.game.mining = 20
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "x", "y")
+check("Mining learned: ore lights again", Lit(log) ~= nil)
+
 -- An NPC: no nameplate opened for it.
 log.game.guid, log.game.object = "Creature-0-1-2-3-4-5", false
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "y", "z")
 check("an NPC closes the nameplate", cv.SoftTargetNameplateInteract == "0" and Lit(log) == nil)
+log.game.cursor = "Interface\\Cursor\\QuestTurnIn"
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
+check("a quest giver with a quest to hand in lights up", Lit(log) ~= nil)
+log.game.cursor = "Interface\\Cursor\\Quest"
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "y", "z")
+check("and one with a quest to pick up", Lit(log) ~= nil)
+log.game.cursor = nil
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
+check("an NPC with no quest stays dark", Lit(log) == nil)
 log.game.object = true
 
 -- Chests and the bobber come from their IDs; a switched off category stays dark.
@@ -319,6 +343,24 @@ log.game.tooltip = { lines = { { type = 1, leftText = "Supply Crate" }, { type =
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "b", "c")
 check("a quest object shows what is still needed", Lit(log) ~= nil and LineText(log) == "Supplies: 1/4")
 log.game.related = false
+
+-- The game does not call it quest related, but its tooltip lists the objective: still a quest object,
+-- in the effect picked for quest objects.
+log.Set("questStyle", "beam")
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "c", "d")
+local questFx = Lit(log)
+check("the objective line alone makes it a quest object", questFx ~= nil and LineText(log) == "Supplies: 1/4")
+check("in the effect picked for quest objects", questFx and questFx.style == "beam")
+log.Set("questStyle", "same")
+log.game.tooltip = nil
+
+-- A quest finished and ready to hand in at an object: no objective left, but the game's turn-in cursor.
+log.game.cursor = "Interface\\Cursor\\QuestTurnIn"
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "d", "e")
+check("a quest turn-in object lights up from its cursor", Lit(log) ~= nil and LineText(log) == nil)
+log.game.cursor = nil
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "e", "f")
+check("without the cursor, objective or quest link it stays dark", Lit(log) == nil)
 
 -- Combat: the nameplate is closed before the lockdown, and settings wait for the fight to end.
 log.game.guid = GUID(COPPER)
@@ -391,7 +433,8 @@ do
     m.Login()
     check("map features off: the spot data is not loaded", m.dataLoaded == nil)
     m.Set("minimapIcons", true)
-    check("minimap icons on: the spot data loads", m.dataLoaded == "NaowhForever_GlimmerData")
+    check("minimap icons on: the packed spots are unpacked, once, and let go", type(m.dataLoaded) == "string"
+        and #m.dataLoaded > 0 and m.ns.GlimmerSpotsPacked == nil and m.ns.GlimmerSpots[1429] ~= nil)
     local shown = {}
     for _, f in ipairs(m.frames) do
         if f.ring and f.shown and f.id then shown[#shown + 1] = f end
@@ -489,7 +532,7 @@ do
     local chunk = assert(loadstring(names .. source:sub(first, last) .. "return RestoreGlimmerSettings"))
     setfenv(chunk, setmetatable({
         ns = { AccountSettings = function() return account end },
-        C_AddOns = { IsAddOnLoaded = function(name) return loaded and name == "NaowhForever_Glimmer" end },
+        C_AddOns = { IsAddOnLoaded = function(name) return loaded and name == "NaowhForever_QoL" end },
         InCombatLockdown = function() return combat end,
         C_CVar = { SetCVar = function(k, v) cvars[k] = v end },
     }, { __index = _G }))
@@ -539,6 +582,24 @@ do
     b.Set("cutout", false)
     lit = Lit(b)
     check("cut-out off: no mask", lit and lit.glow.mask == nil and lit.glints[1].tex.mask == nil)
+end
+
+-- Show the Cut-Out: a second click takes the outline off at once, and the button says which it does.
+do
+    local o = Session({ enabled = true, cutout = true })
+    o.Login()
+    local Cutout = o.ns.Glimmer.Cutout
+    check("the button offers to show it", Cutout.EdgeText() == "Show" and not Cutout.EdgeShown())
+    Cutout.ToggleEdge()
+    check("clicked: the outline shows, the button offers to hide it", Cutout.EdgeShown() and Cutout.EdgeText() == "Hide")
+    local stale = o.timers[#o.timers]
+    Cutout.ToggleEdge()
+    check("clicked again: it is off at once", not Cutout.EdgeShown() and Cutout.EdgeText() == "Show")
+    Cutout.ToggleEdge()
+    stale()
+    check("the first click's timer leaves a new outline alone", Cutout.EdgeShown())
+    o.RunTimers()
+    check("its own timer takes it off", not Cutout.EdgeShown() and Cutout.EdgeText() == "Show")
 end
 
 print(("test-glimmer: %d checks passed"):format(checks))

@@ -13,7 +13,7 @@ ns.Glimmer.Style = setmetatable({
     },
     LOCKED_RGB = { r = 0.62, g = 0.62, b = 0.62 },
     QUEST_LINE_RGB = St.CARRIED_RGB,
-    MEDIA = "Interface\\AddOns\\NaowhForever_Glimmer\\Media\\",
+    MEDIA = "Interface\\AddOns\\NaowhForever_QoL\\Media\\Glimmer\\",
     BASE = 48,
     PLATE_Y = -40,
     LINE_SIZE = 12,

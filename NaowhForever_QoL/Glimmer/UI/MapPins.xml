@@ -5,7 +5,7 @@
         <Size x="18" y="18"/>
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture parentKey="Ring" file="Interface\AddOns\NaowhForever_Glimmer\Media\ring">
+                <Texture parentKey="Ring" file="Interface\AddOns\NaowhForever_QoL\Media\Glimmer\ring">
                     <Anchors>
                         <Anchor point="TOPLEFT" x="-4" y="4"/>
                         <Anchor point="BOTTOMRIGHT" x="4" y="-4"/>

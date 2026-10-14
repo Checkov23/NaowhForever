@@ -1,4 +1,4 @@
--- SettingsPage.lua: Glimmer's settings page, declared as cards, with its live previews.
+-- SettingsPage.lua: Glimmer's tab of the QoL settings, declared as cards, with its live previews.
 local ns = _G.NaowhForever
 
 local T = ns.THEME
@@ -47,7 +47,7 @@ local CATEGORY_NAMES = {
 local CATEGORY_HELP = {
     ore = "Mining veins and deposits.",
     herb = "Plants you can gather.",
-    quest = "Objects one of your quests needs.",
+    quest = "Objects your quests need, and quest givers with a quest to pick up or hand in.",
     chest = "Chests, strongboxes and footlockers out in the world.",
     bobber = "Your fishing bobber.",
 }
@@ -150,8 +150,8 @@ page:Window({
 })
 
 page:Card({
-    id = "look", name = "Look", order = ORDER_LOOK,
-    help = "How the object you are walking up to lights up.",
+    id = "look", name = "Glimmer", order = ORDER_LOOK, switch = "enabled",
+    help = "Herbs, ore, chests and quest objects light up as you walk up to them.",
     studio = { height = STAGE_H, states = LOOK_STATES, new = NewPreview, paint = PaintPreview },
     rows = {
         { key = "style", label = "Effect", choice = STYLES, needs = Enabled, why = OFF },
@@ -176,7 +176,7 @@ page:Card({
           needs = CutoutOn, why = OFF, help = "Bigger if the effect still covers you, smaller if it stops short." },
         { key = "cutoutHeight", label = "Cut-Out Height", slider = CUTOUT_HEIGHT, unit = "%", scale = TO_FRACTION,
           needs = CutoutOn, why = OFF, help = "Moves the cut-out up or down the screen." },
-        { label = "Show the Cut-Out", button = G.Cutout.ShowEdge, buttonText = "Show",
+        { label = "Show the Cut-Out", button = G.Cutout.ToggleEdge, buttonText = G.Cutout.EdgeText,
           needs = CutoutOn, why = OFF, help = "Outlines it in red for a few seconds; it should hug your character." },
     },
 })
@@ -240,7 +240,8 @@ table.insert(ns.Shared.MapPins, { title = TEXT_SECTION, store = S, switch = "gat
 
 page:Card({
     id = "questSparkle", name = "Quest Item Sparkle", order = ORDER_SPARKLE, switch = "questSparkle",
-    help = "Keep the game's loot sparkle on quest items, even after a graphics preset turns it off.",
+    help = "The game's own sparkle on every quest item, kept on through graphics presets; Glimmer's Effect "
+        .. "does not change it.",
     note = SparkleNote,
     rows = {},
 })

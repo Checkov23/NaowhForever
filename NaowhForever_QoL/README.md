@@ -13,6 +13,26 @@ NaowhForever_QoL/
   NaowhForever_QoL.toc             its metadata, and one file line: QoL.xml
   QoL.xml                          every file, in load order
   Constants.lua                    the numbers, colors and patterns several QoL features share (ns.QoLConstants)
+  Glimmer/                         Glimmer, its own tab: herbs, ore, chests and quest objects light up as you walk up
+    Glimmer.xml                    its files, in load order, included by QoL.xml
+    Glimmer.lua                    its settings (ns.GlimmerSettings), its table (ns.Glimmer, G), its categories
+    Constants.lua                  the names, game settings, timings and limits its files share (G.C)
+    Data/Nodes.lua                 every herb, vein and chest by object ID, with the skill it needs (G.NODES),
+                                   from Tools/build/glimmer_nodes.py
+    Data/Spots.lua                 where herbs and veins grow, packed into one string (ns.GlimmerSpotsPacked),
+                                   from Tools/build/glimmer_nodes.py
+    CVars.lua                      the game settings it changes, saved first and put back (G.CVars)
+    Target.lua                     what the soft interact target is, its reach and its skill-up chance (G.Target)
+    Spots.lua                      where herbs and veins grow, unpacked on first use, and the ones gathered (G.Spots)
+    View/Style.lua                 its look: skill colors, effect sizes and timings (G.Style)
+    View/Effects.lua               the five effects on a frame, over the world and on the previews (G.Effects)
+    UI/Conflict.lua                the question when another addon changes the same game settings (G.CheckOthers)
+    UI/Cutout.lua                  the hole in the effect where your character stands, and its red outline (G.Cutout)
+    UI/Highlight.lua               the effect and its line on the target's nameplate, and its events
+    UI/Minimap.lua                 where herbs and veins grow, as icons on the minimap
+    UI/MapPins.xml                 the Gathered pin's template, and the file that fills it
+    UI/MapPins.lua                 the herbs and veins you gathered on the world map, noted as you loot them
+    UI/SettingsPage.lua            its tab, QoL > Glimmer, declared as cards, with its previews
   Interface/
     SpellEfficiencyData.lua  each mana spell rank's healing or damage (ns.SpellEfficiencyData) and their talents (ns.SpellEfficiencyTalents), generated
     SpellEfficiency.lua Mana Efficiency on spell tooltips, its Preview Tooltip and the Tooltips card's preview; ns.SpellEfficiencyOf, the numbers both it and the report show
@@ -71,6 +91,7 @@ NaowhForever_QoL/
   XP/
     GroupXP.lua         Group XP
     XPTicker.lua        XP per Hour (ns.ResetXPTicker)
+    XPBarFX.lua         the XP Bar's effects and hover breakdown (ns.XPBarFX)
     XPBar.lua           the XP Bar (ns.XPBarColor, ns.ResetXPBarSession, ns.ResetXPBarLayout)
   Loot/
     LootCard.lua        the one card on Loot & Items that Looting, Vendors, Auction Prices and Mail & Alts join
@@ -100,6 +121,8 @@ NaowhForever_QoL/
   Media/
     crosshair_ring.tga  the Crosshair's ring
     MouseRing/          the Mouse Ring's rings, glows and trail
+    Glimmer/            Glimmer's glow, flare, ring, beam, bracket, the cut-out and its outline, drawn by
+                        Tools/media/make_media.py
   README.md           this file
 ```
 
@@ -719,8 +742,12 @@ NaowhForever_QoL/
 - The texts are measured and placed only when one of them, or the bar, changed. `TEXT_GAP` sits between two texts in a row and `SLOT_FONT_MIN` is the smallest they shrink to before they cut off; a text is measured with a pixel spare so rounding never cuts it. Side texts start at the bar's ends; the middle one is centred while it has room and slides away from a long side text when not; when a row does not fit even at its smallest, it is split evenly and long texts cut off. The rows above and below shrink only as far as their own texts need; the texts beside the bar keep the full size. The texts inside follow the bar's height (`INSIDE_SHARE`).
 - Rested runs from the end of your XP, like Blizzard's, the full height of the bar and over the incomplete quests, so a bar full of quest XP cannot push it off the end; at least `RESTED_MIN_W` (3 px), so a sliver of rest still reads.
 - In a battleground or an arena (`PVP_INSTANCES`, from IsInInstance) the bar hides, like Blizzard's stays faded: the instance type only changes behind a loading screen, so it is read on PLAYER_ENTERING_WORLD and when the bar turns on, never per update. The HUD Editor still shows it there, to place it.
-- The bar takes the mouse only while Ctrl is down, for its reset click; otherwise a click or a camera drag that starts over it goes through to the world.
+- The bar takes clicks only while Ctrl is down, for its reset click; otherwise a click or a camera drag that starts over it goes through to the world. It follows the mouse without taking clicks (SetMouseMotionEnabled) while Show Texts On Mouseover or Hover Breakdown is on; its hover area then reaches the texts around it (SetHitRectInsets), so moving onto a text keeps them up.
+- Leveling Pace is Time to Level and XP/h in one text. Time to Level, XP/h and Leveling Pace stay blank until XP comes in this session, never `--` or `0`.
+- The effects (`XPBarFX.lua`, its own file because XPBar.lua sits near the 200-local cap) each have a switch: Shine and Notches are on, as the bar's look; Rested Stripes, Quest XP Pulse, Ready to Level, Level-Up Flash and Hover Breakdown start off. They use the game's own animations (AnimationGroup), so nothing runs per frame: the quest pulse plays once per hand-in, the Ready to Level glow loops only while completed quests cover the rest of the level, and the level-up flash plays once on PLAYER_LEVEL_UP. The quest pulse comes from QUEST_TURNED_IN's XP reward, so kills never pulse. That event and PLAYER_XP_UPDATE come in either order, so the pulse waits for the fill to move, or `PULSE.WAIT` at most (a redraw follows `FX.SETTLE` after the hand-in), and the slice is the reward's width back from where the fill ends: right in either order, and cut at the bar's start when the reward levels you. Hand-ins between two draws add up into one pulse.
+- Hover Breakdown's kills are of your own level, `5 x level + 45` XP each (Classic's formula for a normal mob of your level), counted double while rested XP lasts, so it says "About".
 - The texts are picked on the preview, so their rows are not drawn on the page; they are still declared for the search, the changed count and the card's Reset. A preview spot answers HandlesGlobalMouseEvent so the menu manager does not close its menu before OnMouseDown toggles it.
+- The card's preview draws the bar at its real size, never enlarged, and shrinks it only when it does not fit. Its Quest Hand-In, Ready and Level Up states play the effects, each while its switch is on. An empty spot is a small + that shows only while the mouse is over the stage, placed after the texts so it never covers one. The two Resets live in the preview's right-click menu, as on the Campfire card, which keeps the rows to the settings themselves.
 
 ### Unexplored Areas
 - The overlays (`MapOverlays.lua`, generated by `Tools/build/map_overlays.py` from the game's tables) are `[uiMapID] = { { width, height, offsetX, offsetY, fileDataID, ... } }`: an area's size and place on the map art in its pixels, then its `TILE` (256 px) tiles row by row (`AREA_FIELDS` before them).
@@ -787,6 +814,101 @@ NaowhForever_QoL/
   people already in the group are skipped.
 - The invite buttons are plain buttons: invites are not protected, so they work in combat. Adding or
   removing one moves the bar, which waits for the fight to end, as the bar's other changes do.
+
+### Glimmer
+- Herbs, ore, quest objects, chests and your fishing bobber light up as you walk up to them, in one of
+  five effects: dim while out of reach, a flash and full brightness once you can use them. Its tab is
+  QoL > Glimmer, its on/off the Glimmer card's switch there. It keeps its own settings store,
+  `ns.GlimmerSettings` (the profile's `glimmer` table, defaults from `ns.FEATURES.glimmer`), not
+  `ns.QoLSettings`: it was a module addon of its own (NaowhForever_Glimmer) before it moved into QoL,
+  and the same table means every setting carried over with no migration.
+- Herbs and ore take the color of your chance of a skill-up and get a line under their name saying so; a
+  node your skill is too low for shows red with the skill it needs; a character without Herbalism or
+  Mining at all sees no herbs or ore lit, since they are not theirs to gather. Quest objects are
+  found three ways: the game marking them quest related, a quest objective in their tooltip, or the
+  quest pick-up or turn-in cursor the game shows on them; that cursor is also what lights an NPC with a
+  quest to pick up or hand in, the only NPCs Glimmer lights. Quest objects get the line of the
+  quest objective they count for. Quest Item Sparkle keeps the game's loot sparkle on quest items
+  through graphics presets. Minimap Icons shows every spot herbs and ore grow near you, ringed in their
+  skill-up color, and Gathered on the Map every herb and vein you gather. Behind My Character cuts the
+  effect out around you, so it passes behind you instead of over you.
+- Its spots (25,177 on 44 maps) used to be the load-on-demand NaowhForever_GlimmerData; they are now one string in
+  QoL, CBOR deflated in Base64 (about 130 KB), which Spots.Load unpacks with the client's own C_EncodingUtil
+  the first time Minimap Icons or Gathered on the Map needs them (about 1.2 MB as a table, measured in Lua 5.1),
+  then lets the string go. A player who never turns those on holds only the string, and there is one addon
+  fewer in the list. It never unpacks in combat. An old NaowhForever_GlimmerData folder is switched off at
+  login with a note to delete it.
+- Show the Cut-Out is a toggle: a second click takes the outline off at once, and its button says Hide
+  while the outline shows (a button row's `buttonText` may be a function).
+- The game always picks one object to interact with, the `softinteract` unit, and gives it a
+  nameplate when `SoftTargetNameplateInteract` is on. Glimmer hangs its effect on that nameplate,
+  so only that one object lights up and the effect follows it on screen with no work of ours.
+- `SoftTargetInteract` 3 keeps the soft target on, and `SoftTargetInteractOnlyInRange` 0 lets it pick
+  objects beyond reach, so they can light up dim before you get there. The range is capped at 15
+  yards on the page because the client drops the soft target near there whatever is asked.
+- The nameplate is only opened for an object Glimmer lights (`onlyHighlighted`), so NPCs, mailboxes
+  and doors do not grow a nameplate. Whether to open it does not need the nameplate: the object is
+  read from the unit token, then the nameplate arrives with `NAME_PLATE_UNIT_ADDED`.
+- In combat the game will not change these settings, and an open soft target nameplate would sit
+  on every lootable corpse with 0% health. The nameplate is closed on `PLAYER_REGEN_DISABLED`, just
+  before the lockdown, and Glimmer rests until combat ends; a setting changed in combat is applied
+  after it.
+- What an object is comes from the object ID in its GUID, looked up in `G.NODES`; the bobber is
+  object 35591. IDs work in every language. A herb or vein the data does not know is still found by
+  the cursor the game would show on it (`SetUnitCursorTexture`): Mine or GatherHerbs, with an Unable
+  variant when the game would refuse it.
+- Quest objects come from `C_QuestLog.UnitIsRelatedToActiveQuest`, and their line is the quest
+  objective line of the object's own tooltip, as the game words it.
+- Gathering gives a point every time up to 25 skill over the node's (orange), usually up to 50
+  (yellow), rarely up to 100 (green), and never past that (grey): `SKILL_ORANGE`, `SKILL_YELLOW`,
+  `SKILL_GREEN`. The node's skill comes from the data, so a node your skill is too low for is red
+  from as far as it is picked, not only once in reach.
+- `UnitIsInInteractRange` is not in the 12.1 API docs but answers on Forever; without it every
+  object counts as in reach. Its answer is read every `STATE_CHECK` while an object is lit, and a
+  change must hold for `STATE_HOLD` before it shows, so the edge of reach does not flicker. That
+  check runs only while something is lit; nothing runs while no object is.
+- The effect is parented to the nameplate, one frame level under it so the game's name stays on
+  top, and ignores the nameplate's alpha so it does not fade with it.
+- The game settings Glimmer changes are saved in the account settings before the first change and
+  written back when Glimmer or the Quest Item Sparkle is turned off, or by Restore. A graphics
+  preset turns the quest sparkle settings back; `CVAR_UPDATE` on a preset or one of those settings
+  puts them back `SPARKLE_AGAIN` seconds later, after the preset has finished writing.
+- Taking the quest sparkle off only shows after a full restart of the game, so the card says so.
+- The game does not tell an addon where your character is on screen. With the camera behind you, you
+  stand near the middle, so Behind My Character masks a capsule there (`CUTOUT_SHARE` of the screen's
+  height, `CUTOUT_Y` below the middle) with its size and height as settings, and Show the Cut-Out
+  outlines it in red so you can fit it. The mask belongs to the effect's frame but is anchored to the
+  screen, so its size and place are scaled from the screen's scale to the nameplate's, which changes
+  with distance; it is placed again on every repaint and every reach check. Its texture is opaque to its edges, so
+  anything outside it stays visible.
+- Other addons that change the same soft target settings (`OTHER_ADDONS`) undo Glimmer's and it
+  undoes theirs; with one on as well, Glimmer asks once per session to disable it.
+- A slider drag sets its key on every step, so settings apply once on the next frame.
+- The game does not tell an addon where its tracking dots are, and it cannot switch tracking for you:
+  Find Herbs and Find Minerals are casts, which only a click may start. So the minimap icons come from
+  where Wowhead Forever has each herb and vein growing (`ns.GlimmerSpots`, unpacked from
+  Data/Spots.lua on first use), and herbs and ore show together whatever you track. The game's own dot on
+  top of an icon is a node up right now.
+- The minimap shows at most `MINIMAP_MAX` icons, the spots inside its view. Placing them is
+  `Parts.MinimapLayer` (Shared/UI/MinimapPins.lua): it moves them only while you move or the minimap
+  turns.
+- The spot data loads the first time Minimap Icons is on, out of combat: loading an addon in combat is
+  not something to rely on, so it waits for the fight to end, and only then does `PLAYER_REGEN_ENABLED`
+  redraw the icons. A skill-up repaints their rings, and redraws them only when it changes whether
+  herbs or ore show. Gathered on the Map alone never loads the data.
+- Only My Professions shows herbs to an herbalist and ore to a miner; a character with neither sees
+  both, so the icons still help someone deciding what to learn.
+- A gather is noted when the loot window opens while the soft target is a herb or vein in reach and
+  the loot came from it (`GetLootSourceInfo`), so it needs no spell IDs and a corpse looted beside a
+  node does not count. One node counts once per loot window, even if it is opened again. Where it is
+  noted is a pin already there for that node within `SNAP` (tenths of a map percent) of where you
+  stand, else the data's own spot for it when the data is loaded, else where you stand, so gathering
+  a node again when it grows back counts on the same pin. Each
+  map keeps at most `MAX_GATHERED` nodes, dropping the one gathered longest ago. They are kept in the
+  account settings, so every character's gathering shows.
+- Check it offline: `lua Tools/regression/test-glimmer.lua`: reading the target, skill-up colors, the game settings
+  saved and put back, combat, the nameplate it opens, the cut-out, the minimap icons and the gathered pins, against
+  stubs of the game's API.
 
 ### QoL defaults (Core/Settings.lua)
 - Every on/off switch default in the QoL store is read from `ns.FEATURES.qol`; the values are unchanged.

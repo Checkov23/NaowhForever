@@ -18,8 +18,6 @@ move-folders:
   NaowhForever/NaowhForever_AuraBuffs: NaowhForever_AuraBuffs
   NaowhForever/NaowhForever_ThreatMeter: NaowhForever_ThreatMeter
   NaowhForever/NaowhForever_SwingTimer: NaowhForever_SwingTimer
-  NaowhForever/NaowhForever_Glimmer: NaowhForever_Glimmer
-  NaowhForever/NaowhForever_GlimmerData: NaowhForever_GlimmerData
   NaowhForever/NaowhForever_ConsumableBar: NaowhForever_ConsumableBar
   NaowhForever/NaowhForever_PvP: NaowhForever_PvP
   NaowhForever/NaowhForever_QoL: NaowhForever_QoL

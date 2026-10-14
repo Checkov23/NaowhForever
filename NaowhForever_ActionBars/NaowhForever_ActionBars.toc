@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Action Bars
 ## Notes: Save, share and import action bar layouts.
 ## Author: Naowh
-## Version: 1.1.12
+## Version: 1.1.13
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

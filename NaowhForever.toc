@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever
 ## Notes: Naowh's Forever companion: the window every module shares.
 ## Author: Naowh
-## Version: 1.1.12
+## Version: 1.1.13
 ## Dependencies: NaowhForever_Language
 ## OptionalDeps: NaowhUI_Media
 ## SavedVariables: NaowhForeverDB

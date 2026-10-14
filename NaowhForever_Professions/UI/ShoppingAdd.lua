@@ -34,7 +34,9 @@ end
 
 local function OnAdd()
     local info = ns.ProfWindowAPI.SelectedInfo()
-    if info then Shopping.Add(info, AddCrafts()) end
+    if not info then return end
+    Shopping.Add(info, AddCrafts())
+    ns.OpenShoppingList()
 end
 
 function ns.ShoppingListAttach(win)

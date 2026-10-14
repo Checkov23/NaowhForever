@@ -25,6 +25,7 @@ function B.Recipient(parent, name)
     button:RegisterForClicks("AnyUp", "AnyDown")
     button:SetAttribute("type1", "spell")
     Parts.Press(button)
+    B.Look.Hover(button)
     return header, button
 end
 

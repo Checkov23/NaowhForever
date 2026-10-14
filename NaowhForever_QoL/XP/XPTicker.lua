@@ -998,7 +998,7 @@ local SUMMARY = { base = ns.L("Rate and time to level"), some = ns.L("Rate, time
     splits = ns.L("Rate, time to level%s, this level and the last %d"), played = ns.L("played time"),
     pace = ns.L("played time against your characters") }
 local STATES = {
-    { key = "levelling", label = "Levelling", tip = "Out in the world, earning experience." },
+    { key = "levelling", label = "Leveling", tip = "Out in the world, earning experience." },
     { key = "starting", label = "Starting", tip = "A new session, before any experience." },
     { key = "paused", label = "Paused", tip = "Paused from its header: the clock and the count stop." },
     { key = "resting", label = "Resting", tip = "In a city or an inn." },

@@ -337,7 +337,7 @@ local function WeaponEnhancement(list)
     if #slots == 0 or Enchanted(slots, S.Get("consumablesMinutes") * SECONDS) then return end
     local item = FirstCarried(D.WEAPON_ITEMS)
     if not item and S.Get("onlyIfCarried") then return end
-    list[#list + 1] = { icon = LastIcon("weapon") or C_Item.GetItemIconByID(item or D.WEAPON_ITEMS[1]),
+    list[#list + 1] = { icon = LastIcon("weapon") or C_Item.GetItemIconByID(item or D.WEAPON_ICON_ITEM),
         items = D.WEAPON_ITEMS }
 end
 

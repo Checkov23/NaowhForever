@@ -1,4 +1,4 @@
--- Spots.lua: where herbs and veins grow (NaowhForever_GlimmerData), and the ones you have gathered (G.Spots).
+-- Spots.lua: where herbs and veins grow (unpacked from Data/Spots.lua on first use), and the ones you have gathered (G.Spots).
 local ns = _G.NaowhForever
 
 local G = ns.Glimmer
@@ -17,9 +17,15 @@ local wanted = {}
 
 function Spots.Load()
     if ns.GlimmerSpots then return true end
-    if InCombatLockdown() then return false end
-    C_AddOns.LoadAddOn(C.DATA_ADDON)
-    return ns.GlimmerSpots ~= nil
+    local packed = ns.GlimmerSpotsPacked
+    if not packed or InCombatLockdown() then return false end
+    local u = C_EncodingUtil
+    local flat = u.DeserializeCBOR(u.DecompressString(u.DecodeBase64(packed), Enum.CompressionMethod.Deflate))
+    if type(flat) ~= "table" then return false end
+    local all = {}
+    for i = 1, #flat, 2 do all[flat[i]] = flat[i + 1] end
+    ns.GlimmerSpots, ns.GlimmerSpotsPacked = all, nil
+    return true
 end
 
 local function Has(category)

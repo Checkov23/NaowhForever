@@ -17,6 +17,7 @@ ns.Journeys.C = {
     SEA = 2.5,
     WALK_BUDGET = 3,
     WALK_TILES = 48,
+    WALK_RELEASE = 60,
     WALK_REACH = 200,
     HEIGHT_WEIGHT = 0.25,
     CORNER_GAP = 15,

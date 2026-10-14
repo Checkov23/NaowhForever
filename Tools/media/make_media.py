@@ -902,7 +902,7 @@ for name, pixel in JOURNEY_ICONS.items():
     write_tga(os.path.join(JOURNEYS_OUT, name + ".tga"), 64, pixel)
 
 
-GLIMMER_OUT = os.path.join(paths.ROOT, "NaowhForever_Glimmer", "Media")
+GLIMMER_OUT = os.path.join(paths.ROOT, "NaowhForever_QoL", "Media", "Glimmer")
 
 
 def glimmer_glow(x, y, size):

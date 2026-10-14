@@ -49,7 +49,9 @@ under 25%, white, green from 45%, blue from 65%, purple from 80%, orange from 95
 worked out from the gear the addon knows (Shared's ItemFacts: dungeon loot and faction rewards):
 each slot's best item, two different rings and trinkets, a two-hander or a main and off hand.
 Grade Against (BiS List > Character > Naowh Score) picks the best in the game (anyone levelling is grey or
-white) or the best the player's level can wear (who is well geared for where they are). New
+white) or the best the player's level can wear (who is well geared for where they are), the
+default: graded against the whole game, a levelling character's well-chosen greens read as a
+near-empty bar and looked broken to players. New
 loot in the data raises the best with no number to keep.
 
 ## Where it shows

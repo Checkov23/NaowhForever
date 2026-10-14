@@ -939,7 +939,7 @@ do
     t.Advance(0.5)
     Check("none carried", t.Shown(), "")
     t.Set("onlyIfCarried", false)
-    Check("none carried, switch off", t.Shown(), "item:13931 item:13510 item:13452 item:20750")
+    Check("none carried, switch off", t.Shown(), "item:13931 item:13510 item:13452 item:12404")
     t.state.weapons[16] = 1800
     t.Fire("UNIT_INVENTORY_CHANGED", "player")
     t.Advance(0.5)
@@ -947,7 +947,7 @@ do
     t.state.shields[17] = nil
     t.Fire("UNIT_INVENTORY_CHANGED", "player")
     t.Advance(0.5)
-    Check("off hand weapon bare", t.Shown(), "item:13931 item:13510 item:13452 item:20750")
+    Check("off hand weapon bare", t.Shown(), "item:13931 item:13510 item:13452 item:12404")
 end
 
 -- Icon: Last Used shows the flask, elixir or weapon item used last, and only listens while it is chosen.
@@ -956,7 +956,7 @@ do
         itemSpells = { [13511] = 17627, [20749] = 28898 },
         settings = { consumableEntries = {}, onlyIfCarried = false, weaponEnhancements = true, personalBuffs = false } })
     t.Login()
-    Check("default icons", t.Shown(), "spell:1248406 item:13510 item:13452 item:20750")
+    Check("default icons", t.Shown(), "spell:1248406 item:13510 item:13452 item:12404")
     Check("off-mode listens for the food icon", t.Listening("UNIT_SPELLCAST_SUCCEEDED"), true)
     t.Set("onlyIfCarried", true)
     Check("not listening for casts", t.Listening("UNIT_SPELLCAST_SUCCEEDED"), false)
@@ -965,12 +965,12 @@ do
     t.Set("onlyIfCarried", false)
     t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast1", 17627)
     t.Advance(0.5)
-    Check("a flask used", t.Shown(), "spell:1248406 item:13511 item:13452 item:20750")
+    Check("a flask used", t.Shown(), "spell:1248406 item:13511 item:13452 item:12404")
     t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast2", 28898)
     t.Advance(0.5)
     Check("a weapon oil used", t.Shown(), "spell:1248406 item:13511 item:13452 item:20749")
     t.Set("buffIconMode", "default")
-    Check("Default again", t.Shown(), "spell:1248406 item:13510 item:13452 item:20750")
+    Check("Default again", t.Shown(), "spell:1248406 item:13510 item:13452 item:12404")
 end
 
 -- A class with its own poison reminder does not get the generic one.

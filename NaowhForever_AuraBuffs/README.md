@@ -127,7 +127,8 @@ NaowhForever_AuraBuffs/
   food eaten (`lastFoodIcon` in the account settings, taken on `UNIT_SPELLCAST_SUCCEEDED` from the bag item
   with that use spell, else the spell's own texture), else Well Fed's. Weapon Enhancement Reminder (off by default) asks for a stone or
   oil (`D.WEAPON_ITEMS`) on each equipped weapon, an off hand only when it is a weapon, and defers to a class's
-  own poison or imbue reminder.
+  own poison or imbue reminder. Its icon is the carried item's, else a Dense Sharpening Stone (`D.WEAPON_ICON_ITEM`):
+  Naowh asked for classic-looking defaults, and the first oil in the list has a modern icon.
 - With Only If I Carry One on (the default), Robin asked for reminders only while you have the item, but a profile
   with nothing listed should still remind you about the flask or buff food in your bags. So a kind shows when a
   listed item is carried, else when an item of the same `D.DEFAULT_GROUPS` list is (buff food is any bag item whose

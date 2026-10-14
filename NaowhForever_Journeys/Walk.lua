@@ -1,4 +1,4 @@
--- Walk.lua: walking costs over the baked walking maps (NaowhForever_JourneysData), loaded when first needed.
+-- Walk.lua: walking costs over the baked walking maps (NaowhForever_JourneysData), built when needed, let go when idle.
 local ns = _G.NaowhForever
 
 local sqrt, floor = math.sqrt, math.floor
@@ -26,6 +26,7 @@ local loaded, store
 local tiles, used = {}, {}
 local graphs, places = {}, {}
 local budgetEnd = 0
+local lastUse, releasing = 0, false
 
 local function Decode(s)
     local u = C_EncodingUtil
@@ -41,6 +42,26 @@ end
 
 function Walk.StartBudget()
     budgetEnd = debugprofilestop() + C.WALK_BUDGET
+end
+
+local function Release()
+    local idle = GetTime() - lastUse
+    if idle < C.WALK_RELEASE then
+        C_Timer.After(C.WALK_RELEASE - idle, Release)
+        return
+    end
+    releasing = false
+    wipe(tiles)
+    wipe(used)
+    wipe(graphs)
+    wipe(places)
+end
+
+local function Used()
+    lastUse = GetTime()
+    if releasing then return end
+    releasing = true
+    C_Timer.After(C.WALK_RELEASE, Release)
 end
 
 function Walk.Ready()
@@ -127,6 +148,7 @@ function Walk.Tile(map, tx, ty)
         tiles[key] = tile
     end
     used[key] = GetTime()
+    Used()
     return tile or nil
 end
 
@@ -240,6 +262,7 @@ function Walk.Spread(tile, from, extra)
 end
 
 local function Graph(map)
+    Used()
     local g = graphs[map]
     if g == nil then
         local s = store.graph[map]
@@ -265,6 +288,7 @@ local function Graph(map)
 end
 
 local function Places(map)
+    Used()
     local p = places[map]
     if p == nil then
         local s = store.walks[map]

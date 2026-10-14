@@ -23,6 +23,8 @@ local function Macro()
     return table.concat(lines, "\n")
 end
 
+ns.DisbandMacro = Macro
+
 local function Disarm()
     armed = nil
     if kicker and not InCombatLockdown() then kicker:Hide() end

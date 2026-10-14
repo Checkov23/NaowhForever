@@ -55,7 +55,9 @@ local SCALE_DEFAULT, SCALE_MIN, SCALE_MAX, PERCENT = 100, 50, 200, 100
 local LOGIN_APPLY_DELAY = 1
 local DAMAGE_METER_ADDON, GAME_METER_CVAR, GAME_METER_SAVED = "NaowhForever_DamageMeter", "damageMeterEnabled",
     "damageMeterGameWas"
-local GLIMMER_ADDON, GLIMMER_SAVED = "NaowhForever_Glimmer", { "glimmerSoftCVars", "glimmerSparkleCVars" }
+local GLIMMER_ADDON, GLIMMER_SAVED = "NaowhForever_QoL", { "glimmerSoftCVars", "glimmerSparkleCVars" }
+local RETIRED_ADDONS = { "NaowhForever_Glimmer", "NaowhForever_GlimmerData" }
+local TEXT_RETIRED = "%s is now part of Quality of Life: delete its old folder from your AddOns folder."
 local ERR_NO_PROFILE = "no such profile"
 local TEXT_SECRET = "(withheld: this line contained a secret value)"
 local TEXT_LIBRARIES_MISSING = "Libraries missing (%s), so parts of the addon will not work. Download Naowh "
@@ -117,7 +119,7 @@ function ns.Lower(text)
     return (text:lower():gsub(LATIN_CAPITAL, LatinLower))
 end
 
-ns.CODE_BUILD = "1.1.12"
+ns.CODE_BUILD = "1.1.13"
 
 ns.THEME = {
     bg     = { r = 0x0e / 255, g = 0x0f / 255, b = 0x11 / 255 },
@@ -406,9 +408,19 @@ local function RestoreGlimmerSettings()
     end
 end
 
+local function RetireOldFolders()
+    for _, addon in ipairs(RETIRED_ADDONS) do
+        if C_AddOns.DoesAddOnExist(addon) then
+            C_AddOns.DisableAddOn(addon)
+            ns.Print(ns.L(TEXT_RETIRED):format(addon))
+        end
+    end
+end
+
 local meterCheck = CreateFrame("Frame")
 meterCheck:RegisterEvent("PLAYER_LOGIN")
 meterCheck:SetScript("OnEvent", function()
+    RetireOldFolders()
     RestoreGameMeter()
     RestoreGlimmerSettings()
 end)

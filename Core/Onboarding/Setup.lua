@@ -54,8 +54,6 @@ Setup.ITEMS = {
         blurb = ns.L("Your group's gear, talents and Naowh Score.") },
     pvp = { addon = "NaowhForever_PvP", db = "pvp", key = "enabled",
         blurb = ns.L("Your target's short buffs and crowd control.") },
-    glimmer = { addon = "NaowhForever_Glimmer", db = "glimmer", key = "enabled",
-        blurb = ns.L("Herbs, ore and chests light up as you walk up.") },
     swingTimer = { addon = "NaowhForever_SwingTimer", db = "swingTimer", key = "enabled",
         blurb = ns.L("Your swings, with marks to time around them.") },
 }

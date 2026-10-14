@@ -1,6 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <!-- QoL.xml: every QoL feature, in load order. -->
     <Script file="Constants.lua"/>
+    <Include file="Glimmer\Glimmer.xml"/>
     <Script file="Combat\StealthReminder.lua"/>
     <Script file="Combat\CoTank.lua"/>
     <Script file="Combat\HealerMana.lua"/>
@@ -39,6 +40,7 @@
     <Script file="Loot\LootFeed.lua"/>
     <Script file="Loot\AuctionPrices.lua"/>
     <Script file="XP\XPTicker.lua"/>
+    <Script file="XP\XPBarFX.lua"/>
     <Script file="XP\XPBar.lua"/>
     <Script file="XP\GroupXP.lua"/>
     <Script file="Questing\PlayerHistory.lua"/>

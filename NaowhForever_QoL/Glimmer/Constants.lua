@@ -2,7 +2,7 @@
 local ns = _G.NaowhForever
 
 ns.Glimmer.C = {
-    PAGE = "Glimmer/Settings",
+    PAGE = "QoL/Glimmer",
     UNIT = "softinteract",
     BOBBER = 35591,
     GUID_OBJECT = "^GameObject%-%d+%-%d+%-%d+%-%d+%-(%d+)%-",
@@ -24,12 +24,11 @@ ns.Glimmer.C = {
     },
     SPARKLE_RESETS = { graphicsquality = true, raidgraphicsquality = true },
     SPARKLE_AGAIN = 1,
-    CURSOR_WORDS = { herb = "herb", mine = "ore" },
+    CURSOR_WORDS = { herb = "herb", mine = "ore", quest = "quest" },
     CURSOR_UNABLE = "unable",
     STATE_CHECK = 0.15,
     STATE_HOLD = 0.15,
     OTHER_ADDONS = { "Lueur", "ForeverLootSparkles" },
-    DATA_ADDON = "NaowhForever_GlimmerData",
     ICON_SPELL = { herb = 2383, ore = 2580 },
     SPOT_SCALE = 1000,
     SNAP = 15,
