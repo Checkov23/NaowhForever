@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Instance Tracker
 ## Notes: Visits, and how many new instances this account has entered this hour.
 ## Author: Naowh
-## Version: 1.1.13
+## Version: 1.1.15
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

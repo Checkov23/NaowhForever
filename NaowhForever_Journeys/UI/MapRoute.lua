@@ -15,6 +15,15 @@ local WALK_SIZE, LEG_SIZE = 7, 5
 local WALK_GAP, LEG_GAP = 13, 11
 local WALK_ALPHA, LEG_ALPHA = 0.9, 0.55
 local CENTER = 0.5
+local TINT = {
+    fly = { 0.2, 1, 0.35 },
+    ship = { 0, 0.75, 1 },
+    tram = { 1, 0.6, 0.2 },
+    lift = { 1, 0.6, 0.2 },
+    portal = { 0.85, 0.35, 1 },
+    hearth = { 0.85, 0.35, 1 },
+    teleport = { 0.85, 0.35, 1 },
+}
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added
@@ -72,7 +81,12 @@ function NaowhForeverJourneyRoutePinMixin:Place(x, y)
     dot:ClearAllPoints()
     dot:SetPoint("CENTER", self, "TOPLEFT", x, -y)
     dot:SetSize(self.size, self.size)
-    dot:SetVertexColor(T.accent.r, T.accent.g, T.accent.b, self.alpha)
+    local tint = self.tint
+    if tint then
+        dot:SetVertexColor(tint[1], tint[2], tint[3], self.alpha)
+    else
+        dot:SetVertexColor(T.accent.r, T.accent.g, T.accent.b, self.alpha)
+    end
     dot:Show()
 end
 
@@ -96,6 +110,7 @@ function NaowhForeverJourneyRoutePinMixin:Draw()
         if u and last then
             self.size = (p.walk and WALK_SIZE or LEG_SIZE) * scale
             self.alpha = p.walk and WALK_ALPHA or LEG_ALPHA
+            self.tint = not p.walk and TINT[p.mode] or nil
             carry = Jy.RouteDots(last[1] * w, last[2] * h, u * w, v * h, (p.walk and WALK_GAP or LEG_GAP) * scale, carry,
                 self.place)
         else

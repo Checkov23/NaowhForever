@@ -36,7 +36,7 @@ local function Nodes(ctx, net)
     local flights, docks = {}, {}
     for id, f in pairs(net.flights) do
         if Has(f[6], ctx.faction) and ctx.known[id] then
-            flights[id] = AddNode(nodes, { kind = "flight", id = id, name = f[1], c = f[2], x = f[3], y = f[4],
+            flights[id] = AddNode(nodes, { kind = "flight", id = id, name = f[1], c = f[2], x = f[3], y = f[4], z = f[5],
                 walkKey = "f" .. id })
         end
     end
@@ -54,9 +54,9 @@ local function Nodes(ctx, net)
         if Has(link[2], ctx.faction) then
             local a, b = link[4], link[5]
             local here = AddNode(nodes, { kind = "link", link = l, name = a[4], linkKind = link[1], c = a[1], x = a[2], y = a[3],
-                walkKey = "l" .. l .. ".1" })
+                z = a[5], walkKey = "l" .. l .. ".1" })
             local there = AddNode(nodes, { kind = "link", link = l, name = b[4], linkKind = link[1], c = b[1], x = b[2], y = b[3],
-                walkKey = "l" .. l .. ".2" })
+                z = b[5], walkKey = "l" .. l .. ".2" })
             here.other, there.other = there.index, here.index
         end
     end
@@ -205,7 +205,7 @@ local function Legs(state, nodes, v)
         local leg = state.leg[v]
         local node = nodes[v]
         leg.name, leg.kind, leg.key, leg.c, leg.x, leg.y = node.name, node.kind, node.walkKey or node.key, node.c, node.x, node.y
-        leg.shipKind = node.shipKind
+        leg.shipKind, leg.z = node.shipKind, node.z
         if leg.mode ~= "walk" or leg.seconds >= C.MIN_WALK then table.insert(legs, 1, leg) end
         v = state.prev[v]
     end

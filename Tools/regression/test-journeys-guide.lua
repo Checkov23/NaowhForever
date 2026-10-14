@@ -436,6 +436,23 @@ Check(ns.PlaceWaypoint("Nearby Spot", IRONFORGE, 50, 50) and current and math.ab
     "with Waypoint Only Where Steps End off, it goes on each bend")
 Jy.Guide.Cancel()
 Jy.Settings.Set("stepEnds", true)
+
+here = { x = -8835.6, y = 489.3, c = 0 }
+local flights = account.journeyFlights["Glyadin-Forever"]
+account.journeyFlights["Glyadin-Forever"] = {}
+Check(ns.PlaceWaypoint("Far Spot", IRONFORGE, 50, 50), "a journey by the tram")
+Check(printed[#printed] and printed[#printed]:find("flight points", 1, true), "with no flight points known, it says how to learn them")
+local tramLegs = Jy.Guide.Current().plan.legs
+Check(tramLegs[2].mode == "tram" and tramLegs[3].mode == "walk" and tramLegs[3].corners, "the walk after the tram has its own path")
+local points = Jy.Guide.Points()
+Check(points[#points].walk and points[#points - 1].x == WALK_MID_X, "the route draws that walk's bends")
+local rides = 0
+for _, p in ipairs(points) do
+    if p.mode == "tram" then rides = rides + 1 end
+end
+Check(rides == 1, "and the tram as a ride")
+Jy.Guide.Cancel()
+account.journeyFlights["Glyadin-Forever"] = flights
 Jy.Walk.Path, Jy.Walk.Cost = realPath, realCost
 
 Check(Jy.Guide.LegText({ mode = "lift", name = "The Rise" }) == "Lift to The Rise", "a lift step reads as one")

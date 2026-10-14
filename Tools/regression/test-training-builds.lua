@@ -28,7 +28,7 @@ local function Fixture(o)
         ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
             TrainingBuilds = TREE, TrainingData = SPELLS,
             Print = function(m) printed[#printed + 1] = m end,
-            Confirm = function(_, yes) yes() end,
+            Confirm = o.confirm or function(_, yes) yes() end,
         },
         UnitClass = function() return "Mage", "MAGE", 8 end,
         C_Spell = { GetSpellName = function(id) return SPELL_NAMES[id] or ("Talent " .. id) end },
@@ -320,6 +320,45 @@ Case("no learning in combat, for another class, or without a talent config", fun
     assert(Fixture({ config = 1, points = 5, combat = true }).T.LearnBuild(8, build) == 0, "combat")
     assert(Fixture({ config = 1, points = 5 }).T.LearnBuild(1, build) == 0, "another class")
     assert(Fixture({ points = 5 }).T.LearnBuild(8, build) == 0, "no config")
+end)
+
+Case("a followed build learns new points, but a talent reset asks before spending them again", function()
+    local ranks, asked = {}, {}
+    local t = Fixture({ config = 1, points = 30, ranks = ranks,
+        confirm = function(text, yes, no) asked[#asked + 1] = { text = text, yes = yes, no = no } end })
+    t.T.Follow(8, TREE[8][1])
+    t.T.LearnFollowed()
+    assert(t.Commits() == 1 and #asked == 0, "first points learned without asking")
+    ranks[13] = 4
+    t.T.LearnFollowed()
+    assert(t.Commits() == 2 and #asked == 0, "more points learned without asking")
+    ranks[13] = 0
+    t.T.LearnFollowed()
+    assert(t.Commits() == 2 and #asked == 1, "reset asks instead of learning")
+    assert(asked[1].text:find("Arcane Leveling", 1, true), asked[1].text)
+    t.T.LearnFollowed()
+    assert(t.Commits() == 2 and #asked == 1, "no second ask or learn while the first is open")
+    asked[1].no()
+    assert(t.T.Followed() == nil, "declining stops following")
+    t.T.Follow(8, TREE[8][1])
+    ranks[13] = 4
+    t.T.LearnFollowed()
+    ranks[13] = 0
+    t.T.LearnFollowed()
+    asked[2].yes()
+    assert(t.Commits() == 4 and t.T.Followed() ~= nil, "Learn Again learns and keeps following")
+end)
+
+Case("following a build again starts from the talents you have now", function()
+    local ranks, asked = { [13] = 5 }, 0
+    local t = Fixture({ config = 1, points = 30, ranks = ranks, confirm = function() asked = asked + 1 end })
+    t.T.Follow(8, TREE[8][1])
+    t.T.LearnFollowed()
+    t.T.Follow(8, nil)
+    ranks[13] = 0
+    t.T.Follow(8, TREE[8][1])
+    t.T.LearnFollowed()
+    assert(asked == 0 and t.Commits() == 2, "no ask after a reset made while not following")
 end)
 
 print(("test-training-builds: %d cases passed"):format(count))

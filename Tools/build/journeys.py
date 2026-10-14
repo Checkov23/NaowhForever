@@ -195,14 +195,14 @@ def main():
         lines.append("        { " + ", ".join(fields) + " },")
     lines.append("    },")
     triggers = {int(row["ID"]): row for row in wago.table("AreaTrigger", build)}
-    # links = { { kind, factions, seconds, { continent, x, y, place[, z] }, { continent, x, y, place[, z] } }, ... }
-    # z is only given for a lift, whose two ends stand over each other.
+    # links = { { kind, factions, seconds, { continent, x, y, place, z }, { continent, x, y, place, z } }, ... }
+    # z tells the floor an end stands on: the walking maps stack ground over ground in cities.
     lines.append("    links = {")
     for kind, side, here, here_id, there, there_id, seconds in LINKS:
         ends = []
         for place, trigger in ((here, here_id), (there, there_id)):
             row = triggers[trigger]
-            ends.append(f"{{ {row['ContinentID']}, {float(row['Pos_0']):.1f}, {float(row['Pos_1']):.1f}, {lua_string(place)} }}")
+            ends.append(f"{{ {row['ContinentID']}, {float(row['Pos_0']):.1f}, {float(row['Pos_1']):.1f}, {lua_string(place)}, {float(row['Pos_2']):.1f} }}")
         lines.append(f'        {{ "{kind}", "{side}", {seconds}, {ends[0]}, {ends[1]} }},')
     for side, seconds, *ends in LIFTS:
         ends = [f"{{ {c}, {x:.1f}, {y:.1f}, {lua_string(place)}, {z:.1f} }}" for c, x, y, z, place in ends]

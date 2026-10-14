@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+## 1.1.15
+
+### Fixed
+- Training Planner: resetting your talents while following a build asks whether to learn it again,
+  instead of spending the points straight away.
+
+## 1.1.14
+
+### Changed
+- Glimmer: its map data is now part of Quality of Life, one addon fewer in your list; delete an old
+  NaowhForever_GlimmerData folder if you install by hand.
+
+### Fixed
+- Journeys: routes use the Deeprun Tram again, so Dun Morogh and Ironforge journeys from Stormwind
+  no longer walk the long way round.
+- Journeys: the route on the world map follows every walk instead of a straight line, and rides are
+  drawn in their own colour.
+- Journeys: flight points learned at a flight master are picked up straight away, and a character
+  with none learned is told to open a flight master's map.
+- Journeys: focusing a quest again after closing its Journey card brings the card back.
+- Journeys: dungeon quests like Save Techbot's Brain! start a journey to the dungeon's entrance.
+
 ## 1.1.13
 
 ### Added

@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Top Bar
 ## Notes: Your buttons on either side of an optional clock, with FPS and latency underneath.
 ## Author: Naowh
-## Version: 1.1.13
+## Version: 1.1.15
 ## Dependencies: NaowhForever, NaowhForever_QoL
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

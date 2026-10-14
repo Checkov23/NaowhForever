@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: PvP
 ## Notes: What your target is doing in a fight: their short buffs, the crowd control on them and the debuffs you pick.
 ## Author: Naowh
-## Version: 1.1.13
+## Version: 1.1.15
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

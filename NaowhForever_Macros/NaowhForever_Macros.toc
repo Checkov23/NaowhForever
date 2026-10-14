@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Macros
 ## Notes: Naowh's Forge: the macro window and Naowh's macro library.
 ## Author: Naowh
-## Version: 1.1.13
+## Version: 1.1.15
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

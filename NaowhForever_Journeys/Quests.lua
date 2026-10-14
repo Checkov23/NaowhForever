@@ -11,6 +11,7 @@ local PERCENT = 100
 local CENTER = 0.5
 local PLAYER = "player"
 local CONTINENTS = { 1415, 1414 }
+local UNFOCUS_DELAY = 1
 
 local events
 
@@ -68,11 +69,28 @@ local function FromData(quest)
     return Nearest(camps)
 end
 
+local function Entrance(quest)
+    local journal = ns.Journal
+    if not journal or C_QuestLog.IsComplete(quest) then return nil end
+    for _, dungeon in ipairs(journal.Dungeons()) do
+        local door = dungeon.entrance
+        for _, row in ipairs(door and dungeon.quests and dungeon.quests.quests or {}) do
+            if row[1] == quest then return door.map, door.x / PERCENT, door.y / PERCENT end
+        end
+    end
+end
+
+local function Recorded(quest)
+    local map, x, y = FromData(quest)
+    if map then return map, x, y end
+    return Entrance(quest)
+end
+
 local function Target(quest)
     local map, x, y = C_QuestLog.GetNextWaypoint(quest)
     if map and x and y then return map, x, y end
     local here = C_Map.GetBestMapForUnit(PLAYER)
-    if not here then return FromData(quest) end
+    if not here then return Recorded(quest) end
     x, y = OnMap(quest, here)
     if x then return here, x, y end
     local mine = Continent(here)
@@ -86,7 +104,7 @@ local function Target(quest)
             if map then return map, x, y end
         end
     end
-    return FromData(quest)
+    return Recorded(quest)
 end
 
 local function Far(map, x, y)
@@ -97,9 +115,14 @@ local function Far(map, x, y)
     return dx * dx + dy * dy > C.QUEST_NEAR * C.QUEST_NEAR
 end
 
+local function ForgetDismissed()
+    local quest = C_SuperTrack.GetSuperTrackedQuestID()
+    if not quest or quest == 0 then Guide.Undismiss() end
+end
+
 local function OnSuperTrack()
     local quest = C_SuperTrack.GetSuperTrackedQuestID()
-    if not quest or quest == 0 then return end
+    if not quest or quest == 0 then return C_Timer.After(UNFOCUS_DELAY, ForgetDismissed) end
     if quest == Guide.Dismissed() then return end
     Guide.Undismiss()
     local current = Guide.Current()

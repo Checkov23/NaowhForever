@@ -34,8 +34,10 @@ local TEXT_LATER_NEEDS = ns.L("A later point needs it. ")
 local TEXT_NOTHING_TO_GIVE = ns.L("No points in it to give back.")
 local TEXT_LEARNED = ns.L("Learned %d talent %s from %s.")
 local TEXT_POINT, TEXT_POINTS = ns.L("point"), ns.L("points")
+local TEXT_RESET_ASK = ns.L("Your talent points were refunded. Learn %s again?")
+local TEXT_LEARN_AGAIN, TEXT_STOP_FOLLOW = ns.L("Learn Again"), ns.L("Stop Following")
 
-local learning = false
+local learning, asking = false, false
 
 local function Saved(classID)
     local all = Account("trainingBuilds")
@@ -346,11 +348,37 @@ function Training.LearnedText(bought, name)
     return TEXT_LEARNED:format(bought, bought == 1 and TEXT_POINT or TEXT_POINTS, name)
 end
 
-function Training.LearnFollowed()
-    local build, classID = Training.Followed()
-    if not build then return end
+local function LearnAndPrint(classID, build)
     local bought = Training.LearnBuild(classID, build)
     if bought > 0 then ns.Print(Training.LearnedText(bought, build.name)) end
+end
+
+local function Spent(classID)
+    local ranks = Training.Ranks(ns.TrainingBuilds[classID].talents)
+    if not ranks then return nil end
+    local total = 0
+    for _, rank in pairs(ranks) do total = total + rank end
+    return total
+end
+
+function Training.LearnFollowed()
+    local build, classID = Training.Followed()
+    if not build or asking or not ns.TrainingBuilds[classID] then return end
+    local followed = Account("trainingFollow")[CharKey()]
+    local now, before = Spent(classID), followed.spent
+    if now then followed.spent = now end
+    if now and before and now < before then
+        asking = true
+        ns.Confirm(TEXT_RESET_ASK:format(build.name), function()
+            asking = false
+            LearnAndPrint(classID, build)
+        end, function()
+            asking = false
+            Training.Follow(classID, nil)
+        end, TEXT_LEARN_AGAIN, TEXT_STOP_FOLLOW)
+        return
+    end
+    LearnAndPrint(classID, build)
 end
 
 function Training.DeleteBuild(classID, build)

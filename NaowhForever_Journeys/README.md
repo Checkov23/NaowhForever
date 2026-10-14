@@ -99,6 +99,16 @@ NaowhForever_Journeys/
   expected wait is half its period until its departures are known.
 - Flight points come from the flight master's map (`TAXIMAP_OPENED`): `C_TaxiMap.GetAllTaxiNodes` only
   answers there. They are kept per character in the account store, like the Action Bars' last set.
+  A node learned with the map open (`TAXI_NODE_STATUS_CHANGED`) is read then too, but only between
+  `TAXIMAP_OPENED` and `TAXIMAP_CLOSED`: the event also fires away from a flight master, where every node
+  reads as unreachable and would wipe the list. With none known, the first journey says how to learn them.
+- A link's ends (the tram, the Darnassus portal) carry their height from the game's AreaTrigger table: the
+  walking maps stack floors in the cities, and without it the Ironforge tram end attached to a roof cut
+  off from the city, so no journey used the tram.
+- Every walk in a plan gets its path (the first for the guide's corners, the later ones for the drawn
+  route), kept per journey so a replan does not search them again. Rides are drawn in their mode's colour.
+- A tracked dungeon quest the game gives no point for goes to its dungeon's entrance from the Dungeon
+  Journal, when that addon is on and the quest is not yet complete.
 - The Hearthstone lands where you stood when you bound it (`HEARTHSTONE_BOUND`, at the innkeeper), and
   where it last landed. A teleport lands at its city's flight master until it has been cast once; the
   client has no table of where a teleport goes.

@@ -24,11 +24,12 @@ local TEXT_HEARTH = ns.L("Hearthstone to %s")
 local TEXT_TELEPORT = ns.L("Teleport to %s")
 local TEXT_NO_WAY = ns.L("No way found to %s from here; placed a plain waypoint.")
 local TEXT_NO_PLACE = ns.L("That journey ends where the game takes no waypoints.")
+local TEXT_NO_FLIGHTS = ns.L("Journeys knows none of your flight points yet. Open a flight master's map once and it will plan with your flights.")
 
 local Guide = {}
 Jy.Guide = Guide
 
-local journey, events, step, working, driver, dismissed
+local journey, events, step, working, driver, dismissed, hinted
 local replanQueued = false
 local ticker, ticks
 local listeners = {}
@@ -169,6 +170,25 @@ local function Thin(points)
     return out
 end
 
+local function LaterWalks(plan, from)
+    local cache = journey.paths
+    for i, leg in ipairs(plan.legs) do
+        if i > 1 and leg.mode == "walk" and not leg.corners and from.c == leg.c then
+            local key = ("%d:%.0f,%.0f>%.0f,%.0f"):format(leg.c, from.x, from.y, leg.x, leg.y)
+            local corners = cache[key]
+            if corners == nil then
+                local a, b = Walk.From(from), Walk.From(leg)
+                if a ~= nil and b ~= nil then
+                    corners = a and b and Thin(Walk.Path(a, b)) or false
+                    cache[key] = corners
+                end
+            end
+            leg.corners = corners or nil
+        end
+        from = leg
+    end
+end
+
 local function Work(here, to)
     local ctx = Context(Reach(here), Reach(to))
     for _, jump in ipairs(ctx.jumps) do Reach(jump) end
@@ -176,9 +196,10 @@ local function Work(here, to)
     local plan = Planner.Plan(ctx)
     local first = plan and plan.legs[1]
     if first and first.mode == "walk" and here.reach then
-        local there = Walk.From({ c = first.c, x = first.x, y = first.y })
+        local there = Walk.From({ c = first.c, x = first.x, y = first.y, z = first.z })
         plan.corners = there and Thin(Walk.Path(here.reach, there))
     end
+    if plan then LaterWalks(plan, here) end
     return plan
 end
 
@@ -301,7 +322,11 @@ function Guide.Start(title, stops, quest)
         if not spot then return false end
         own[i] = { stop[1], stop[2], stop[3], stop[4], stop[5], stop[6], spot = spot }
     end
-    journey, step = { title = title, stops = own, at = 1, done = 0, quest = quest }, nil
+    journey, step = { title = title, stops = own, at = 1, done = 0, quest = quest, paths = {} }, nil
+    if not hinted and next((World.Known())) == nil then
+        hinted = true
+        ns.Print(TEXT_NO_FLIGHTS)
+    end
     if not events then
         events = CreateFrame("Frame")
         events:SetScript("OnEvent", OnEvent)
@@ -340,7 +365,13 @@ function Guide.Points()
     end
     for i = first, #legs do
         local leg = legs[i]
-        list[#list + 1] = { c = leg.c, x = leg.x, y = leg.y, walk = leg.mode == "walk" }
+        if leg.corners then
+            for k = 3, #leg.corners, 2 do
+                list[#list + 1] = { c = leg.c, x = leg.corners[k], y = leg.corners[k + 1], walk = true }
+            end
+        else
+            list[#list + 1] = { c = leg.c, x = leg.x, y = leg.y, walk = leg.mode == "walk", mode = leg.mode }
+        end
     end
     return list
 end

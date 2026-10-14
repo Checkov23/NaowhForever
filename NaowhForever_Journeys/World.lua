@@ -13,12 +13,12 @@ local GCD = 1.5
 local LANDING_DELAY = 10
 local MOVED = 100
 local PLAYER = "player"
-local EVENTS = { "TAXIMAP_OPENED", "HEARTHSTONE_BOUND", "PLAYER_ENTERING_WORLD" }
+local EVENTS = { "TAXIMAP_OPENED", "TAXIMAP_CLOSED", "TAXI_NODE_STATUS_CHANGED", "HEARTHSTONE_BOUND", "PLAYER_ENTERING_WORLD" }
 
 local World = {}
 Jy.World = World
 
-local events, landing, castFrom
+local events, landing, castFrom, atFlightMaster
 local knownVersion = 0
 local teleportBySpell = {}
 for _, tp in ipairs(ns.JourneyTeleports) do teleportBySpell[tp.spell] = tp end
@@ -113,7 +113,12 @@ end
 
 local function OnEvent(_, event, unit, _, spellID)
     if event == "TAXIMAP_OPENED" then
+        atFlightMaster = true
         LearnFlights()
+    elseif event == "TAXIMAP_CLOSED" then
+        atFlightMaster = false
+    elseif event == "TAXI_NODE_STATUS_CHANGED" then
+        if atFlightMaster then LearnFlights() end
     elseif event == "HEARTHSTONE_BOUND" then
         landing, castFrom = C.HEARTH_SPELL, nil
         LearnLanding()
