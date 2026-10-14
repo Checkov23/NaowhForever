@@ -6358,3 +6358,6 @@ L["Nothing shows while you carry what you need."] = "Nichts erscheint, solange d
 L["Only your equipped ammo, at or below its own amount."] = "Nur deine angelegte Munition, bei oder unter ihrer eigenen Menge."
 L["The game's own sparkle on every quest item, kept on through graphics presets; Glimmer's Effect does not change it."] = "Das Funkeln des Spiels auf jedem Questgegenstand, das auch bei Grafikvoreinstellungen an bleibt; der Effekt von Schimmer ändert es nicht."
 L["What you are short on when you reach a city or inn."] = "Was dir fehlt, wenn du eine Stadt oder ein Gasthaus erreichst."
+L["Learn Again"] = "Erneut lernen"
+L["Your talent points were refunded. Learn %s again?"] = "Deine Talentpunkte wurden zurückerstattet. %s erneut lernen?"
+L["Journeys knows none of your flight points yet. Open a flight master's map once and it will plan with your flights."] = "Reisen kennt noch keinen deiner Flugpunkte. Öffne einmal die Karte eines Flugmeisters, dann plant es mit deinen Flügen."
