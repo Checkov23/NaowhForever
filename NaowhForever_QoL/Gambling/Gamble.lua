@@ -66,6 +66,7 @@ local CHAT_EVENTS = {
 local CHANNELS = { "PARTY", "RAID" }
 
 local CHANNEL_LABEL = { PARTY = ns.L("Party"), RAID = ns.L("Raid") }
+local CHANNEL_CHAT = { PARTY = "Party", RAID = "Raid" }
 local MODE_LABEL = { classic = ns.L("Classic"), deathroll = ns.L("Deathroll") }
 
 local PATTERN_ESCAPE = {
@@ -783,7 +784,7 @@ end
 
 local function LastCall()
     if not (game and game.isHost and game.phase == "lobby") then ns.Print(TEXT_NOT_LOBBY); return end
-    SendChat(TEXT_LAST:format(game.joinWord, CHANNEL_LABEL[game.channel]), game.channel)
+    SendChat(TEXT_LAST:format(game.joinWord, CHANNEL_CHAT[game.channel]), game.channel)
 end
 
 local function CancelSession()
@@ -936,7 +937,7 @@ local function CreateWindow()
     helpText:SetJustifyH("LEFT")
     helpText:SetJustifyV("TOP")
     helpText:SetWordWrap(true)
-    helpText:SetText(ns.GambleHelpText)
+    helpText:SetText(ns.L(ns.GambleHelpText))
     local textHeight = helpText:GetStringHeight()
     helpContent:SetHeight(textHeight > 0 and textHeight or HELP_TEXT_HEIGHT)
     helpView:Hide()

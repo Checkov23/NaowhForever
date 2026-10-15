@@ -153,7 +153,7 @@ local function Says(f)
     if f.stop then said[#said + 1] = TEXT_STOPS end
     said[#said + 1] = (f.cmd == "/use" and TEXT_USES or TEXT_CASTS):format(ns.Color("accentSoft", f.spell), ON[f.aim])
     if Checked(f) then said[#said + 1] = TEXT_THEN[f.fall]:format(TEXT_NO_ONE[f.kind]) end
-    if f.self ~= "none" then said[#said + 1] = TEXT_HOLD:format(KEY_NAMES[f.self]) end
+    if f.self ~= "none" then said[#said + 1] = TEXT_HOLD:format(ns.L(KEY_NAMES[f.self])) end
     if f.attack then said[#said + 1] = TEXT_ATTACKS end
     return table.concat(said, " ")
 end
