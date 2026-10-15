@@ -35,7 +35,7 @@ check("no LibStub at all: warns", Login(nil):find("LibCustomGlow%-1%.0") ~= nil)
 check("someone else's LibStub without our libraries: warns", Login({}):find("LibDeflate") ~= nil)
 local all = {}
 for _, name in ipairs({ "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0",
-    "LibCustomGlow-1.0", "LibGetFrame-1.0", "LibDeflate", "LibSerialize" }) do all[name] = true end
+    "LibCustomGlow-1.0", "LibDeflate", "LibSerialize" }) do all[name] = true end
 check("every library present: says nothing", Login(all) == nil)
 all["LibSerialize"] = nil
 local msg = Login(all)

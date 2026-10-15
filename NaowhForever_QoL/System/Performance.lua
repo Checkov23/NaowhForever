@@ -2,6 +2,7 @@
 local ns = _G.NaowhForever
 local UI = ns.UI
 local Group = ns.Shared.Settings.Group
+local S = ns.QoLSettings
 
 local SAME_WITHIN = 0.001
 local SPELL_QUEUE = "SpellQueueWindow"
@@ -21,6 +22,7 @@ local TEXT_RESTORE_ALL = ns.L("Put back every setting this page has changed?")
 local TEXT_ROW_HELP = ns.L("Recommended: %s.|n|nOn sets it; off puts back the value you had before. Now: %s.")
 local TEXT_SUMMARY = ns.L("%d of %d recommended settings in use")
 local TEXT_HDR_OFF = ns.L("Turn on HDR")
+local TEXT_HDR_SETTINGS_OFF = ns.L("Needs %s", ns.L("HDR Settings"))
 
 local CATEGORIES = {
     { name = "Render & Display", cvars = {
@@ -199,6 +201,14 @@ local function HDRSet(on)
     UI:RefreshPage(true)
 end
 
+local function PeakOn()
+    return S.Get("hdr") and HDROn()
+end
+
+local function PeakWhy()
+    return S.Get("hdr") and TEXT_HDR_OFF or TEXT_HDR_SETTINGS_OFF
+end
+
 local function PeakGet()
     return tonumber(C_CVar.GetCVar(HDR_PEAK)) or HDR_PEAK_DEFAULT
 end
@@ -230,10 +240,12 @@ local HEAD = {
 }
 local HDR_ROWS = {
     Group("HDR"),
-    { label = "HDR", toggle = true, get = HDROn, set = HDRSet,
+    { key = "hdr", label = "HDR Settings", toggle = true,
+      help = "Lets this page change the game's HDR and peak brightness." },
+    { label = "HDR", toggle = true, get = HDROn, set = HDRSet, needs = "hdr",
       help = "High dynamic range, for an HDR monitor with HDR on in Windows." },
     { label = "Peak Brightness", slider = HDR_PEAK_RANGE, unit = " nits", get = PeakGet, set = PeakSet,
-      needs = HDROn, why = TEXT_HDR_OFF,
+      needs = PeakOn, why = PeakWhy,
       help = "Your monitor's peak brightness in nits, so the brightest parts are not clipped or dimmed." },
 }
 for _, cat in ipairs(CATEGORIES) do cat.group = Group(cat.name) end

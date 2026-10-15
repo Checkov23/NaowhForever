@@ -61,7 +61,7 @@ D.SCROLLS = {
 }
 
 D.DEFAULT_GROUPS = { food = { items = {}, auras = {}, wellFed = true }, flask = { items = D.FLASKS.items, auras = D.FLASKS.auras },
-    battle = { items = {}, auras = {} } }
+    battle = { items = {}, auras = {} }, scroll = { items = {}, auras = {}, carried = true } }
 for _, elixir in ipairs(D.ELIXIRS) do
     for _, id in ipairs(elixir.items) do table.insert(D.DEFAULT_GROUPS.battle.items, id) end
     for _, id in ipairs(elixir.auras) do table.insert(D.DEFAULT_GROUPS.battle.auras, id) end
@@ -82,6 +82,19 @@ D.RAID = {
             25290, 19854, 19853, 19852, 19850, 19742, 25918, 25894,
             20217, 25898, 1038, 25895, 19979, 19978, 19977, 25890 } },
 }
+
+local raidSpells = {}
+for _, family in ipairs(D.RAID) do raidSpells[family.key] = family.spells end
+D.SCROLL_AURAS = {}
+for _, scroll in ipairs(D.SCROLLS) do
+    local auras = {}
+    for _, id in ipairs(scroll.auras) do auras[#auras + 1] = id end
+    for _, id in ipairs(raidSpells[scroll.raid] or {}) do auras[#auras + 1] = id end
+    for _, id in ipairs(scroll.items) do
+        D.SCROLL_AURAS[id] = auras
+        table.insert(D.DEFAULT_GROUPS.scroll.items, id)
+    end
+end
 
 D.PERSONAL = {
     { key = "demonArmor", name = "Demon Armor", class = "WARLOCK",

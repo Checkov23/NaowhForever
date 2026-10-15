@@ -528,8 +528,10 @@ NaowhForever_QoL/
 - The Flight Timer's mover reports offsets in the timer's own scaled units; they are saved in
   screen units so the Scale slider resizes it in place.
 - Flight Point reads `C_TaxiMap.GetTaxiNodesForMap` for the zone, and the parent maps up through
-  the continent when that list is empty. `isUndiscovered` is not set for a classic flight path you
-  have not spoken to. Until this character opens a flight master's map on that continent
+  the continent when that list is empty. That list keeps nodes the game has retired ("zzOLDPowderfuse
+  Port"), so a name with one of the markers `Tools/build/journeys.py` drops (`RETIRED`) is never a
+  reminder, nor the nearest node to a flight master's pin. `isUndiscovered` is not set for a classic
+  flight path you have not spoken to. Until this character opens a flight master's map on that continent
   (`GetAllTaxiNodes` only lists the open map's continent), a friendly point in range
   asks you to open one to save the points you know, and only a node the map marks undiscovered is
   named. Talking to a flight master (a gossip option with the taxi icon) records that town's node
@@ -688,7 +690,7 @@ NaowhForever_QoL/
 ### Performance
 - The game keeps its settings per computer, so the values the recommended ones replaced live in the account store (`cvarBackups`), not the profile.
 - `SAME_WITHIN` compares numeric CVars loosely, as the game writes some back with float noise.
-- HDR and Peak Brightness set the game's own `HDRFactor` and `HDRPeakBrightness`, which have no place in the game's options. Peak Brightness also turns on `useHDRPeakBrightness`, without which the game ignores it. They are the player's own values, not recommended ones, so they are not backed up, and they show only where the client has `HDRFactor`.
+- HDR and Peak Brightness set the game's own `HDRFactor` and `HDRPeakBrightness`, which have no place in the game's options. Peak Brightness also turns on `useHDRPeakBrightness`, without which the game ignores it. They are the player's own values, not recommended ones, so they are not backed up, and they show only where the client has `HDRFactor`. HDR Settings (`hdr`, off by default) is the opt-in: until it is on, the page leaves both alone.
 
 ### Stealth Reminder
 - The form IDs are `GetShapeshiftFormID` values, the same ones the Threat Meter reads.

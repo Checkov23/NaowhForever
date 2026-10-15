@@ -233,6 +233,14 @@ state.pos = { x = 0, y = 0 }
 check("a confirmed gap wins over a nearer point we have not checked",
     At(DARKSHORE, { Node("Auberdine, Darkshore", ALLIANCE, 50, false, AUBERDINE),
         Node("Lor'danel, Darkshore", ALLIANCE, 10, true, 99) }) == "Learn the Auberdine flight point")
+check("a retired zz node is never named, even nearer",
+    At(DARKSHORE, { Node("zzOLDPowderfuse Port", NEUTRAL, 10, false, 98),
+        Node("Auberdine, Darkshore", ALLIANCE, 50, false, AUBERDINE) }) == "Learn the Auberdine flight point")
+check("nor a [DNT] one",
+    At(DARKSHORE, { Node("[DNT] Test Node", NEUTRAL, 10, false, 97),
+        Node("Auberdine, Darkshore", ALLIANCE, 50, false, AUBERDINE) }) == "Learn the Auberdine flight point")
+check("nor on its own",
+    not (At(DARKSHORE, { Node("zzOLDPowderfuse Port", NEUTRAL, 10, false, 98) }) or ""):find("zz", 1, true))
 state.pos = nil
 check("Auberdine's inn asks you to open the flight map before any snapshot",
     At(DARKSHORE, { Node("Auberdine, Darkshore", ALLIANCE, 0, true, AUBERDINE) }) == "Open a flight master's map to save the points you know")
@@ -463,6 +471,13 @@ check("an unchecked pin is not labelled as unlearned", ns.FlightPointReminderFor
 state.nodes = { Node("Auberdine, Darkshore", ALLIANCE, 8000, false, AUBERDINE) }
 Fire("ZONE_CHANGED")
 check("a remote pin cannot borrow this zone's node", ns.FlightPointReminderForPin(DARKSHORE, { 10, 0 }) == nil)
+state.nodes = { Node("zzOLDAuberdine", NEUTRAL, 8000, false, 98),
+    Node("Auberdine, Darkshore", ALLIANCE, 8100, false, AUBERDINE) }
+Fire("ZONE_CHANGED")
+check("a retired node nearer the pin does not hide the real one",
+    ns.FlightPointReminderForPin(DARKSHORE, pin) == "Learn the Auberdine flight point")
+state.nodes = { Node("Auberdine, Darkshore", ALLIANCE, 8000, false, AUBERDINE) }
+Fire("ZONE_CHANGED")
 
 At(BARRENS, {})
 At(DARKSHORE, { Node("Auberdine, Darkshore", ALLIANCE, 8000, false, AUBERDINE) })

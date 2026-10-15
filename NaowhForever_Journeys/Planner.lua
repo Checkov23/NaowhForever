@@ -28,12 +28,12 @@ local function AddNode(nodes, node)
     return node
 end
 
-local function Nodes(ctx, net)
-    local nodes = {}
-    AddNode(nodes, { kind = "start", key = "start", c = ctx.from.c, x = ctx.from.x, y = ctx.from.y, reach = ctx.from.reach })
-    AddNode(nodes, { kind = "goal", key = "goal", c = ctx.to.c, x = ctx.to.x, y = ctx.to.y, name = ctx.to.name,
-        reach = ctx.to.reach })
-    local flights, docks = {}, {}
+local network = { key = nil }
+
+local function Network(ctx, net)
+    local key = ctx.knownVersion and ctx.faction .. ":" .. ctx.knownVersion
+    if key and network.key == key then return network end
+    local nodes, flights, docks = { false, false }, {}, {}
     for id, f in pairs(net.flights) do
         if Has(f[6], ctx.faction) and ctx.known[id] then
             flights[id] = AddNode(nodes, { kind = "flight", id = id, name = f[1], c = f[2], x = f[3], y = f[4], z = f[5],
@@ -60,11 +60,22 @@ local function Nodes(ctx, net)
             here.other, there.other = there.index, here.index
         end
     end
+    network = { key = key, nodes = nodes, flights = flights, docks = docks }
+    return network
+end
+
+local function Nodes(ctx, net)
+    local nodes = {}
+    AddNode(nodes, { kind = "start", key = "start", c = ctx.from.c, x = ctx.from.x, y = ctx.from.y, reach = ctx.from.reach })
+    AddNode(nodes, { kind = "goal", key = "goal", c = ctx.to.c, x = ctx.to.x, y = ctx.to.y, name = ctx.to.name,
+        reach = ctx.to.reach })
+    local fixed = Network(ctx, net)
+    for i = GOAL + 1, #fixed.nodes do nodes[i] = fixed.nodes[i] end
     for _, jump in ipairs(ctx.jumps or {}) do
         AddNode(nodes, { kind = "jump", key = "j" .. (jump.spell or jump.item), mode = jump.mode, name = jump.name, cast = jump.cast,
             bias = jump.bias, spell = jump.spell, item = jump.item, c = jump.c, x = jump.x, y = jump.y, reach = jump.reach })
     end
-    return nodes, flights, docks
+    return nodes, fixed.flights, fixed.docks
 end
 
 local function TaxiGraph(net, flights)
@@ -133,13 +144,12 @@ local function ExpectedWait(net, ship)
     return Period(net, ship) / 2
 end
 
-local function Relax(state, from, to, cost, leg)
+local function Relax(state, from, to, cost)
     local t = state.time[from] + cost
-    if t < state.time[to] then
-        state.time[to] = t
-        state.prev[to] = from
-        state.leg[to] = leg
-    end
+    if t >= state.time[to] then return false end
+    state.time[to] = t
+    state.prev[to] = from
+    return true
 end
 
 local function RelaxWalks(ctx, state, nodes, u)
@@ -151,7 +161,7 @@ local function RelaxWalks(ctx, state, nodes, u)
             if yards == nil then yards = Distance(a, b) * C.WALK_DETOUR end
             if yards then
                 local seconds = yards / ctx.speed
-                Relax(state, u, v, seconds, { mode = "walk", seconds = seconds })
+                if Relax(state, u, v, seconds) then state.leg[v] = { mode = "walk", seconds = seconds } end
             end
         end
     end
@@ -163,7 +173,7 @@ local function RelaxFlights(ctx, state, nodes, u, net)
         local v = state.flights[id].index
         if v ~= u and not state.done[v] then
             local seconds = flown + C.TAXI_OVERHEAD + C.TRANSFER
-            Relax(state, u, v, seconds, { mode = "fly", seconds = seconds, prev = prev })
+            if Relax(state, u, v, seconds) then state.leg[v] = { mode = "fly", seconds = seconds, prev = prev } end
         end
     end
 end
@@ -177,7 +187,9 @@ local function RelaxShip(ctx, state, nodes, u, net)
         if j ~= a.dock and not state.done[b.index] then
             local ride = Sail(net, ship, a.dock, j) + C.BOARD + C.TRANSFER
             if b.c ~= a.c then ride = ride + C.LOADING end
-            Relax(state, u, b.index, wait + ride, { mode = "ship", seconds = wait + ride, wait = wait })
+            if Relax(state, u, b.index, wait + ride) then
+                state.leg[b.index] = { mode = "ship", seconds = wait + ride, wait = wait }
+            end
         end
     end
 end
@@ -186,7 +198,9 @@ local function RelaxLink(state, nodes, u, net)
     local a = nodes[u]
     if state.done[a.other] then return end
     local seconds = net.links[a.link][3] + C.TRANSFER
-    Relax(state, u, a.other, seconds, { mode = LINK_MODE[a.linkKind] or "portal", seconds = seconds })
+    if Relax(state, u, a.other, seconds) then
+        state.leg[a.other] = { mode = LINK_MODE[a.linkKind] or "portal", seconds = seconds }
+    end
 end
 
 local function RelaxJumps(state, nodes)
@@ -194,7 +208,9 @@ local function RelaxJumps(state, nodes)
         local b = nodes[v]
         if b.kind == "jump" then
             local seconds = b.cast + C.LOADING
-            Relax(state, START, v, seconds + (b.bias or 0), { mode = b.mode, seconds = seconds, spell = b.spell, item = b.item })
+            if Relax(state, START, v, seconds + (b.bias or 0)) then
+                state.leg[v] = { mode = b.mode, seconds = seconds, spell = b.spell, item = b.item }
+            end
         end
     end
 end

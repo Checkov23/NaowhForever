@@ -69,6 +69,13 @@ Check(shared > #tile.polys, "polygons find their neighbours by shared edges: " .
 
 local a, b = Walk.From(A), Walk.From(B)
 Check(a and b, "both spots stand on walking ground")
+local scratch = Walk.Scratch()
+local reused = Walk.From(A, scratch)
+Check(Walk.Cost(ZEPHRAS, reused, b) == Walk.Cost(ZEPHRAS, a, b), "a walk searched into reused tables costs the same")
+local refilled = Walk.From(A, scratch)
+Check(refilled.near == reused.near and refilled.far == reused.far
+    and Walk.Cost(ZEPHRAS, refilled, b) == Walk.Cost(ZEPHRAS, a, b),
+    "the next search fills the same tables")
 local ab, ba = Walk.Cost(ZEPHRAS, a, b), Walk.Cost(ZEPHRAS, b, a)
 local straight = math.sqrt((A.x - B.x) ^ 2 + (A.y - B.y) ^ 2)
 Check(ab and ab >= straight * 0.95, ("a walk is no shorter than the line: %s vs %.0f"):format(tostring(ab), straight))

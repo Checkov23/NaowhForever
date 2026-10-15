@@ -44,7 +44,7 @@ local DATA = {
 }
 
 local LIBRARIES = { "LibStub", "CallbackHandler-1.0", "LibDataBroker-1.1", "LibDBIcon-1.0", "LibSharedMedia-3.0",
-    "LibCustomGlow-1.0", "LibGetFrame-1.0", "LibDeflate", "LibSerialize" }
+    "LibCustomGlow-1.0", "LibDeflate", "LibSerialize" }
 
 local SECTIONS = {
     { title = ns.L("The Team"), people = TEAM },

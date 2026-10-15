@@ -27,7 +27,6 @@ externals:
   Libs/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
   Libs/LibCustomGlow-1.0: https://github.com/Stanzilla/LibCustomGlow
   Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
-  Libs/LibGetFrame-1.0: https://github.com/mrbuds/LibGetFrame
   Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
   Libs/LibSharedMedia-3.0: https://repos.curseforge.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
   Libs/LibStub: https://repos.curseforge.com/wow/libstub/trunk

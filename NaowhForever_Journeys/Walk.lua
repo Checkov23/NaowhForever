@@ -26,6 +26,21 @@ local FACTOR = { [0] = 1, [1] = C.SWIM, [OCEAN] = C.SEA }
 local Walk = {}
 Jy.Walk = Walk
 
+local function Set()
+    return { cost = {}, done = {}, heap = {}, prev = {} }
+end
+
+local function Tables(into)
+    if not into then return {}, {}, {}, {} end
+    return wipe(into.cost), wipe(into.done), wipe(into.heap), wipe(into.prev)
+end
+
+local segment = Set()
+
+function Walk.Scratch()
+    return { near = Set(), far = Set(), seeds = {} }
+end
+
 local loaded, store
 local tiles, used = {}, {}
 local graphs, places = {}, {}
@@ -59,6 +74,7 @@ local function Release()
     wipe(used)
     wipe(graphs)
     wipe(places)
+    segment = Set()
 end
 
 local function Used()
@@ -249,8 +265,9 @@ local function Leg(tile, p, x, y, z)
     return sqrt(dx * dx + dy * dy + dz * dz) * Rate(tile, p)
 end
 
-function Walk.Spread(tile, from, extra)
-    local cost, done, heap, prev = { [from] = extra }, {}, { from }, {}
+function Walk.Spread(tile, from, extra, into)
+    local cost, done, heap, prev = Tables(into)
+    cost[from], heap[1] = extra, from
     while #heap > 0 do
         local p = Pop(heap, cost)
         if not done[p] then
@@ -316,8 +333,8 @@ local function Places(map)
     return p or nil
 end
 
-local function Search(g, seeds)
-    local cost, done, heap, prev = {}, {}, {}, {}
+local function Search(g, seeds, into)
+    local cost, done, heap, prev = Tables(into)
     for c, w in pairs(seeds) do
         cost[c] = w
         Push(heap, cost, c)
@@ -363,7 +380,7 @@ local function Pier(map, spot)
     end
 end
 
-function Walk.From(spot)
+function Walk.From(spot, scratch)
     if not Walk.Ready() then return nil end
     local map = spot.c
     local tx, ty = Walk.TileOf(spot.x, spot.y)
@@ -393,8 +410,8 @@ function Walk.From(spot)
     local x, y, off = spot.x, spot.y, nil
     local sx, sy = Walk.TileOf(spot.x, spot.y)
     if pier or sx ~= tx or sy ~= ty then x, y, off = tile.cx[poly], tile.cy[poly], { spot.x, spot.y } end
-    local near, nearPrev = Walk.Spread(tile, poly, extra)
-    local seeds = {}
+    local near, nearPrev = Walk.Spread(tile, poly, extra, scratch and scratch.near)
+    local seeds = scratch and wipe(scratch.seeds) or {}
     for _, c in ipairs(tile.cross) do
         local reach = near[c[2]]
         if reach then
@@ -402,7 +419,7 @@ function Walk.From(spot)
             seeds[c[1]] = reach + sqrt(dx * dx + dy * dy)
         end
     end
-    local far, farPrev = Search(g, seeds)
+    local far, farPrev = Search(g, seeds, scratch and scratch.far)
     return { map = map, tx = tx, ty = ty, poly = poly, x = x, y = y, off = off, near = near, nearPrev = nearPrev,
         far = far, farPrev = farPrev }
 end
@@ -487,7 +504,7 @@ local function Funnel(lx, ly, rx, ry, out)
 end
 
 local function Segment(tile, fromPoly, fromX, fromY, toPoly, toX, toY, out)
-    local _, prev = Walk.Spread(tile, fromPoly, 0)
+    local _, prev = Walk.Spread(tile, fromPoly, 0, segment)
     local chain, p = {}, toPoly
     while p and p ~= fromPoly do
         table.insert(chain, 1, p)

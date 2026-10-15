@@ -25,6 +25,7 @@ local STORE = "flightPoints"
 local LEARN, ASK = "learn", "ask"
 local TEXT_ALERT = "Flight Point Reminder"
 local SAMPLE_PLACE = "Ratchet"
+local RETIRED = { "zzOLD", "Quest Path", "[DNT]", "DEPRECATED" }
 local TAXI_ICON = "Interface\\GossipFrame\\TaxiGossipIcon"
 
 local TEXT = ns.L("Learn the %s flight point")
@@ -76,6 +77,13 @@ local function OwnCity(place, zoneName)
     return place == zoneName or HasWord(zoneName, place) or HasWord(place, zoneName)
 end
 
+local function Retired(name)
+    for _, mark in ipairs(RETIRED) do
+        if name:find(mark, 1, true) then return true end
+    end
+    return false
+end
+
 local function Ours(faction)
     if faction == NEUTRAL then return true end
     local side = UnitFactionGroup(PLAYER)
@@ -89,7 +97,7 @@ local function Mine(create)
 end
 
 local function Kind(node, mine, seen)
-    if not (Ours(node.faction) and node.name) then return nil end
+    if not (Ours(node.faction) and node.name) or Retired(node.name) then return nil end
     if mine and node.nodeID and mine[node.nodeID] == true then return nil end
     if node.isUndiscovered then return LEARN end
     if seen then
@@ -379,7 +387,7 @@ function ns.FlightPointReminderForPin(map, npc)
     if blocked or not entries then return nil end
     local nearest, distance
     for _, entry in ipairs(entries) do
-        if Ours(entry.node.faction) and entry.world then
+        if Ours(entry.node.faction) and entry.node.name and not Retired(entry.node.name) and entry.world then
             local yards = Yards(world, entry.world)
             if yards <= TOWN_RANGE and (not distance or yards < distance) then
                 nearest, distance = entry.node, yards

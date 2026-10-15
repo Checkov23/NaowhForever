@@ -127,6 +127,13 @@ NaowhForever_Journeys/
 - Every walk in a plan gets its path (the first for the guide's corners, the later ones for the drawn
   route), kept per journey so a replan does not search them again. Rides are drawn in their mode's colour,
   on both maps, and a flight through each flight point it stops at on the way.
+- A replan runs every `TICK` while you move, so it makes as little garbage as it can: the walk from where
+  you stand searches into tables the journey keeps (`Walk.Scratch`), each path segment into one set in
+  `Walk.lua` dropped with the decoded tiles, and the planner keeps its flight point, dock and link nodes per faction and flight point
+  version, the key its flight times already use. The reused tables hold one search at a time, which is
+  safe because only the guide's one planning coroutine walks; a second walker needs its own scratch. A
+  leg is only built once it is the best way to its node. Measured on Kalimdor data, a replan went from
+  about 530 KB of garbage to about 33 KB.
 - A tracked dungeon quest the game marks nowhere and the quest spots have no place for goes to its
   dungeon's entrance from the Dungeon Journal, when that addon is on and the quest is not yet complete.
 - The Hearthstone lands where you stood when you bound it (`HEARTHSTONE_BOUND`, at the innkeeper), and

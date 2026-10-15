@@ -142,7 +142,7 @@ NaowhForever_Combat/AuraBuffs/
   width changed.
 - With Only If I Carry One off, food, flasks and elixirs with no entries still get a reminder: any Well Fed, flask or elixir of the
   classic lists in `D.DEFAULT_GROUPS` (no battle/guardian split on Forever, so one elixir reminder, skipped when
-  guardian entries exist). Scrolls stay opt-in. Food's icon is the carried item's, else the last buff
+  guardian entries exist). Food's icon is the carried item's, else the last buff
   food eaten (`lastFoodIcon` in the account settings, taken on `UNIT_SPELLCAST_SUCCEEDED` from the bag item
   with that use spell, else the spell's own texture), else Well Fed's. Weapon Enhancement Reminder (off by default) asks for a stone or
   oil (`D.WEAPON_ITEMS`) on each equipped weapon, an off hand only when it is a weapon, and defers to a class's
@@ -161,6 +161,13 @@ NaowhForever_Combat/AuraBuffs/
   `BAG_UPDATE_DELAYED` or `PLAYER_ENTERING_WORLD`, not on every refresh. This replaced "an empty profile never
   invents reminders from bag items", so the row is on whenever the module is. Weapon Enhancement Reminder
   already worked this way on `D.WEAPON_ITEMS`.
+- A scroll you have not listed reminds only while you carry one, with Only If I Carry One on or off (`carried` on their
+  `D.DEFAULT_GROUPS` entry): Robin expected a carried scroll to remind like food, but a reminder for scrolls you
+  do not have would nag everyone. Each stat is its own buff, so `ScrollGroup` offers the first carried
+  scroll whose stat is missing, not any scroll. A scroll does not stack with the class buff of its
+  stat (`raid` on `D.SCROLLS`: Arcane Intellect, Power Word: Fortitude, Divine Spirit), so
+  `D.SCROLL_AURAS` counts that buff as the scroll's. Listing a scroll keeps the old rules for that kind: the
+  listed entries alone decide, and the built-in scroll group is not used.
 - Icon (Default or Last Used): Last Used shows the icon of the flask, elixir, scroll or weapon item
   used last (`lastIcons` in the account settings, food's is `lastFoodIcon`), taken from the item whose
   use spell `UNIT_SPELLCAST_SUCCEEDED` reports; a spell no listed or default item uses is ignored, and

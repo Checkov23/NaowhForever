@@ -6,7 +6,6 @@
   <Include file="Libs\LibDBIcon-1.0\lib.xml"/>
   <Include file="Libs\LibSharedMedia-3.0\lib.xml"/>
   <Include file="Libs\LibCustomGlow-1.0\LibCustomGlow-1.0.xml"/>
-  <Include file="Libs\LibGetFrame-1.0\LibGetFrame-1.0.xml"/>
   <Include file="Libs\LibDeflate\lib.xml"/>
   <Include file="Libs\LibSerialize\lib.xml"/>
 </Ui>

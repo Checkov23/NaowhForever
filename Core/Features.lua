@@ -29,6 +29,7 @@ ns.FEATURES = {
         damageMeterSkin = false,
         damageMeterFree = false,
         cursorCooldown = false,
+        hdr = false,
         globalCopy = false,
         badgeChat = true,
         badgeCard = true,

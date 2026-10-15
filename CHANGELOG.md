@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## 1.1.20
+
+### Added
+- Buffs & Consumables: a stat scroll in your bags now reminds you when its buff is missing, one stat
+  at a time, and counts Arcane Intellect, Fortitude and Divine Spirit as the matching scroll buff.
+
+### Changed
+- Performance: the HDR options are opt-in. Turn on HDR Settings on QoL > System > Performance to
+  change HDR or Peak Brightness from there.
+- Naowh Forever no longer ships LibGetFrame, which it did not use.
+
+### Fixed
+- Flight Point Reminder: no longer asks you to learn retired flight points like "zzOLDPowderfuse
+  Port".
+- Journeys: replanning while you walk makes far less memory garbage, so Naowh Forever's memory no
+  longer climbs so fast during a journey.
+
 ## 1.1.19
 
 ### Changed
