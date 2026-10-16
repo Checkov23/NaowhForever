@@ -166,6 +166,7 @@ ns.FEATURES = {
         trainFavorites = false,
         searchFavoritesAH = false,
         manualPatternScan = false,
+        favoriteVendorMarks = false,
         gatherReminder = false,
         ahSearch = false,
         ahShiftClick = false,

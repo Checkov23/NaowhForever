@@ -41,6 +41,7 @@ env.C_AddOns = { IsAddOnLoaded = function() return true end, DoesAddOnExist = fu
     GetAddOnEnableState = function() return 2 end, LoadAddOn = function() return true end }
 env.MAX_PARTY_MEMBERS, env.MAX_RAID_MEMBERS = 4, 40
 env.MerchantFrame = { IsShown = function() return false end }
+env.ClassTrainerFrame = { IsShown = function() return false end }
 env.C_ClassColor = { GetClassColor = function()
     return { WrapTextInColorCode = function(_, text) return text end }
 end }

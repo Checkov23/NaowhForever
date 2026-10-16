@@ -47,6 +47,7 @@
     <Script file="UI\ShoppingList.lua"/>
     <Script file="UI\CraftQueue.lua"/>
     <Script file="UI\TrainFavorites.lua"/>
+    <Script file="UI\FavoriteMarks.lua"/>
     <Script file="UI\FavoritePatterns.lua"/>
     <Script file="UI\CraftTimer.lua"/>
     <Script file="UI\GatherTracking.lua"/>

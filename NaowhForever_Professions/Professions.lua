@@ -16,7 +16,7 @@ local S = ns.UI.ModuleSettings("professions", {
     craftQueue = F.craftQueue,
     shoppingVendor = F.shoppingVendor,
     trainFavorites = F.trainFavorites, searchFavoritesAH = F.searchFavoritesAH,
-    manualPatternScan = F.manualPatternScan,
+    manualPatternScan = F.manualPatternScan, favoriteVendorMarks = F.favoriteVendorMarks,
     gatherReminder = F.gatherReminder, gatherInInstances = false, gatherIconSize = 40, gatherFish = false,
     gatherFont = "", gatherFontSize = 13, gatherOutline = "OUTLINE",
     ahSearch = F.ahSearch, ahShiftClick = F.ahShiftClick, craftProfit = F.craftProfit,
