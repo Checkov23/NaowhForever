@@ -853,6 +853,7 @@ NaowhForever_QoL/
 
 ### Skyborne Spots
 - The game marks neither ley lines nor Elemental Convergences, so the spots come from two places: the list every player starts with (`SkyborneData.lua`, from tr0tsky's Skyborne Ley Line & Convergence Marker, under its MIT licence, whose notice stays in that file) and the ones this account finds. Casting the racial on a spot gives its buff, and where it was cast is saved.
+- The shipped list is tr0tsky's v0.4.0 data, 76 ley lines and 56 convergences, after Forever added spawn spots in most Eastern Kingdoms and Kalimdor zones. A spot this account found before it shipped is dropped from the found list on the first map draw of a session (`PruneFound`), so it is not pinned twice.
 - `SAME_SPOT` is 40 yards: a find this close to a known spot is that spot. `MIN_BUFF` is 60 s: the spot's buff lasts minutes, not a moment.
 - The game applies the buff a moment after the cast, so it is looked for `FIRST_LOOK` after and then up to `MAX_TRIES` times, `RETRY_DELAY` apart. `CAST_SLACK` lets a buff that started just before the cast's own time count.
 - Auras are secret in combat: the buff is read only while readable, and through pcall all the same. A cast in combat waits for combat to end.
