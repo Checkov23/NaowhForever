@@ -9,7 +9,7 @@ local Inline, Smooth = Parts.Inline, Parts.Smooth
 
 local STAR, PLACE_DOT, BORDER_RGB = St.STAR, St.PLACE_DOT, St.BORDER_RGB
 local FOREVER, FOREVER_RGB = St.FOREVER, St.FOREVER_RGB
-local RANK_RGB = { St.BIS_RGB, St.SECOND_RGB }
+local RANK_RGB = { St.BIS_RGB, St.SECOND_RGB, St.THIRD_RGB }
 local COLOR_SCALE = 255
 local COLOR_TEXT = "|cff%02x%02x%02x%s|r"
 local RANK_NUMBER = "#"
@@ -104,7 +104,8 @@ function Parts.RankMark(rank, drop)
 end
 
 function Parts.RankLine(rank, listName)
-    return Parts.RankMark(rank) .. " " .. Colored(Parts.RankColor(rank), RankWords(rank))
+    local mark = RANK_RGB[rank] and Parts.RankMark(rank) .. " " or ""
+    return mark .. Colored(Parts.RankColor(rank), RankWords(rank))
         .. (listName and ns.Color("muted", PLACE_DOT .. listName) or "")
 end
 

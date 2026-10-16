@@ -323,7 +323,9 @@ What a comment in the code used to say, in short. The house rules behind it are 
 - Naowh's house style is a 1px black edge round cards, badges, chips, icons, buttons and
   panels; the accent (Naowh blue) marks what is picked.
 - Your BiS is legendary orange so it stands apart from blue item names, your second pick
-  silver; new looks are cyan, clear of the BiS orange for color-blind eyes too.
+  silver and your third copper (`THIRD_RGB`, a0522d): the usual bronze, cd7f32, is too close to the BiS
+  orange on a tooltip-sized star. Picks past the third show their number. New looks are cyan, clear
+  of the BiS orange for color-blind eyes too.
 - `PICKED_RGB` (a boss picked on a dungeon map) is the game's quest gold until the player picks
   an Accent of their own. `GUIDE_RGB` (the HUD Editor's guides) is amber so it never reads as
   the accent's selection.

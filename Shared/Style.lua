@@ -217,6 +217,7 @@ Shared.Style = {
     BIS_CODE = "|cffff8000",
     BIS_RGB = { r = 1, g = 0.5, b = 0 },
     SECOND_RGB = { r = 0xc7 / 255, g = 0xcc / 255, b = 0xdb / 255 },
+    THIRD_RGB = { r = 0xa0 / 255, g = 0x52 / 255, b = 0x2d / 255 },
     LOOK_CODE = "|cff66d9ef",
     LOOK_RGB = { r = 0x66 / 255, g = 0xd9 / 255, b = 0xef / 255 },
     UPGRADE_CODE = "|cff1eff00",
