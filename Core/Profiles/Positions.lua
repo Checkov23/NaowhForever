@@ -5,7 +5,7 @@ local POSITIONS = {
     qol = { "alertsPos", "bisToastPos", "gearPos", "trinketPos", "combatAlertPos", "combatTimerPos",
         "focusCastBarPos", "gcdTrackerPos", "healerManaPos", "stealthPos", "waypointNavPos", "bagSpacePos",
         "lootFeedPos", "lootFeedWidth", "lootFeedHeight", "groupButtonsPos", "flightTimerPos", "groupXPPos",
-        "xpBarPos", "xpTickerPos", "damageMeterPos", "mapSizePos", "trainerPos", "aimPos", "quizPos",
+        "xpBarPos", "xpTickerPos", "damageMeterPos", "mapSizePos", "trainerPos", "aimPos", "quizPos", "dailyWordPos",
         "blessPos", "blessAnchor", "blessAnchorPoint", "blessAnchorRelPoint", "blessX", "blessY",
         "consumableBarPos", "consumableBarAnchor", "consumableBarAnchorPoint", "consumableBarAnchorRelPoint",
         "consumableBarX", "consumableBarY",

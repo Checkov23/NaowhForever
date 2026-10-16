@@ -79,6 +79,8 @@
     <Script file="Interface\Waypoints.lua"/>
     <Script file="Travel\QuizData.lua"/>
     <Script file="Travel\Quiz.lua"/>
+    <Script file="Travel\DailyWordData.lua"/>
+    <Script file="Travel\DailyWord.lua"/>
     <Script file="Travel\AimTrainer.lua"/>
     <Script file="Travel\AimBoard.lua"/>
     <Include file="TopBar\TopBar.xml"/>

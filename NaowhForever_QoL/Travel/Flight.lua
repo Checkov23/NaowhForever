@@ -17,7 +17,9 @@ local HEAD_H, ROUTE_SIZE, TIME_SIZE, TIME_ROOM = 22, 14, 20, 70
 local TRACK_H, ZONE_H, MOUNT, STOP, STOP_HOLE = 6, 22, 20, 10, 6
 local HOLE_LAYER = 2
 local LABEL_SIZE, LABEL_H, LABEL_GAP, LABEL_SPACE = 11, 12, 3, 8
-local FOOT_SIZE, NEXT_ROOM, BTN_W, BTN_H, BTN_GAP = 12, 90, 48, 22, 6
+local FOOT_SIZE, NEXT_ROOM, BTN_H, BTN_GAP = 12, 90, 22, 6
+local ICON_SIZE, ICON_GAP, GAME_OFF_ALPHA = 16, 4, 0.35
+local ICON_MEDIA = "Interface\\AddOns\\NaowhForever_QoL\\Media\\Flight\\"
 local CHEVRON_SIZE, TEXT_GAP, TEXT_DROP = 10, 5, 1
 local TRAIL_W, TRAIL_ALPHA, FILL_MIN = 48, 0.45, 0.01
 local HALOS = { { size = 32, alpha = 0.14 }, { size = 26, alpha = 0.22 } }
@@ -26,7 +28,6 @@ local SPAN = WIDTH - TRACK_H
 local ZONE_TOP = PAD + HEAD_H + ROW_GAP
 local LABEL_TOP = ZONE_TOP + ZONE_H + LABEL_GAP
 local ROUTE_CAP = (WIDTH - TIME_ROOM - CHEVRON_SIZE - 2 * TEXT_GAP) / 2
-local NEXT_CAP = WIDTH - 2 * (BTN_W + BTN_GAP) - NEXT_ROOM
 local FLIGHT_SPEED = 30.4
 local ADVENTURE_LEGACY_TREE, FREQUENT_FLIER_NODE = 1188, 110300
 local FREQUENT_FLIER_SPEED = 1.2
@@ -51,18 +52,26 @@ local TEXT_FLIGHT_TIME = ns.L("Flight Time")
 local TEXT_IN_FLIGHT = ns.L("In flight")
 local TEXT_VIA, TEXT_NEXT = ns.L("Via"), ns.L("Next")
 local LIST_JOIN = ", "
-local TEXT_LAND, TEXT_GAMES = ns.L("Land"), ns.L("Games")
 local TIP_LAND_TITLE, TIP_LAND = ns.L("Land Early"), ns.L("Come down at the next stop on the way.")
-local TIP_GAMES = ns.L("A game to pass the flight: the Quiz or the Aim Trainer. It closes when you land.")
-local TEXT_MENU_TITLE, TEXT_QUIZ = ns.L("Pass the Flight"), ns.L("Quiz")
+local AIM_OFF = ns.L("Turn on the Aim Trainer in QoL > Travel")
+local WORD_OFF = ns.L("Turn on the Daily Word in QoL > Travel")
+local GAME_BUTTONS = {
+    { id = "quiz", title = ns.L("Quiz"), tip = ns.L("WoW questions until you land.") },
+    { id = "gridshot", aim = true, title = ns.L("Aim Trainer: Gridshot"), tip = ns.L("Three targets at once.") },
+    { id = "hexakill", aim = true, title = ns.L("Aim Trainer: Hexakill"), tip = ns.L("Six targets at once.") },
+    { id = "reflex", aim = true, title = ns.L("Aim Trainer: Reflex"), tip = ns.L("One target at a time that shrinks away.") },
+    { id = "word", word = true, title = ns.L("Daily Word"), tip = ns.L("Guess the day's five-letter word.") },
+}
+local NEXT_CAP = WIDTH - (#GAME_BUTTONS + 1) * BTN_H - (#GAME_BUTTONS - 1) * ICON_GAP - BTN_GAP - NEXT_ROOM
 local MOVER_LABEL = "Flight Timer"
 local SETTINGS_PAGE, SETTINGS_CARD = "QoL/Travel", "QoL/Travel:flightTimer"
 local SUMMARY = ns.L("Scale %d%%%s%s")
 local SUMMARY_BACKGROUND = ns.L(", %d%% background")
 local SUMMARY_LAND = ns.L(", Land Early button")
-local GAMES_OFF = ns.L("Off: no Games button")
-local GAMES_BUTTON = ns.L("Games button, nothing opens by itself")
+local GAMES_OFF = ns.L("Off: no game buttons")
+local GAMES_BUTTON = ns.L("Game buttons, nothing opens by itself")
 local GAMES_AIM_OFF = ns.L("Aim Trainer, but it is off: nothing opens")
+local GAMES_WORD_OFF = ns.L("Daily Word, but it is off: nothing opens")
 local GAMES_WHEN = ns.L(" when a flight starts")
 
 local bar, poll, unlocked, Apply, FadeBlizzardStop, StyleText
@@ -302,6 +311,18 @@ local function NewFoot(f)
     f.nextTime:SetPoint("LEFT", f.sep, "RIGHT", 0, 0)
 end
 
+local function IconButton(f, kind)
+    local b = ns.Button(f, "", BTN_H, BTN_H)
+    b.kind = kind
+    b.icon = b:CreateTexture(nil, "ARTWORK")
+    b.icon:SetTexture(ICON_MEDIA .. kind, nil, nil, "TRILINEAR")
+    b.icon:SetSize(ICON_SIZE, ICON_SIZE)
+    b.icon:SetPoint("CENTER")
+    b.icon:SetVertexColor(T.accentSoft.r, T.accentSoft.g, T.accentSoft.b)
+    b:SetMotionScriptsWhileDisabled(true)
+    return b
+end
+
 function Look.New(f)
     f:SetSize(WIDTH + 2 * PAD, 2 * PAD + HEAD_H)
     f.bg = ns.Solid(f, "BACKGROUND", T.bg, CARD_ALPHA)
@@ -317,8 +338,9 @@ function Look.New(f)
         { f.nextName, FOOT_SIZE }, { f.sep, FOOT_SIZE }, { f.nextTime, FOOT_SIZE } }) do
         f.texts[#f.texts + 1] = t
     end
-    f.land = ns.Button(f, TEXT_LAND, BTN_W, BTN_H)
-    f.games = ns.Button(f, TEXT_GAMES, BTN_W, BTN_H)
+    f.land = IconButton(f, "land")
+    f.games = {}
+    for i, game in ipairs(GAME_BUTTONS) do f.games[i] = IconButton(f, game.id) end
 end
 
 function StyleText(f, fs, size)
@@ -330,7 +352,8 @@ function Look.Style(f)
     local alpha = S.Get("flightTimerAlpha")
     f.bg:SetAlpha(alpha)
     f.border._frame:SetAlpha(alpha)
-    for _, b in ipairs({ f.land, f.games }) do
+    for i = 0, #f.games do
+        local b = i == 0 and f.land or f.games[i]
         b._bg:SetAlpha(alpha)
         b._border._frame:SetAlpha(alpha)
         if b._art then
@@ -464,16 +487,20 @@ function Look.Layout(f, fl, land, games)
     local footTop = ZONE_TOP + ZONE_H + (labelled and LABEL_GAP + LABEL_H or 0) + ROW_GAP
     f.foot = placed and "next" or n > 2 and "via" or nil
     LayoutFoot(f, points, n, footTop)
-    f.games:SetShown(games)
-    f.games:ClearAllPoints()
-    f.games:SetPoint("TOPRIGHT", f, "TOPLEFT", PAD + WIDTH, -footTop)
+    local right = PAD + WIDTH
+    for i = #f.games, 1, -1 do
+        local b = f.games[i]
+        b:SetShown(games)
+        b:ClearAllPoints()
+        if games then
+            b:SetPoint("TOPRIGHT", f, "TOPLEFT", right, -footTop)
+            right = right - BTN_H - ICON_GAP
+        end
+    end
+    if games then right = right + ICON_GAP - BTN_GAP end
     f.land:SetShown(land)
     f.land:ClearAllPoints()
-    if games then
-        f.land:SetPoint("RIGHT", f.games, "LEFT", -BTN_GAP, 0)
-    else
-        f.land:SetPoint("TOPRIGHT", f, "TOPLEFT", PAD + WIDTH, -footTop)
-    end
+    f.land:SetPoint("TOPRIGHT", f, "TOPLEFT", right, -footTop)
     f.land:SetEnabled(not fl.early)
     f.land:SetAlpha(fl.early and LAND_USED_ALPHA or 1)
     local foot = f.foot or land or games
@@ -524,42 +551,40 @@ function Look.Progress(f, fl, elapsed)
     if f.foot == "next" then Advance(f, elapsed) end
 end
 
-local AIM_OFF = ns.L("Turn on the Aim Trainer in QoL > Travel")
-local AIM_MODES = { { "gridshot", ns.L("Aim Trainer: Gridshot") }, { "hexakill", ns.L("Aim Trainer: Hexakill") },
-    { "reflex", ns.L("Aim Trainer: Reflex") } }
-
-local function PickQuiz()
-    if ns.AimDismiss then ns.AimDismiss() end
-    if ns.QuizPlay then ns.QuizPlay("flight") end
-end
-
-local function PickAim(m)
-    if ns.QuizDismiss then ns.QuizDismiss() end
-    if ns.AimPlay then ns.AimPlay(m, "flight") end
-end
-
-local function GamesMenu(_, root)
-    root:CreateTitle(TEXT_MENU_TITLE)
-    root:CreateButton(TEXT_QUIZ, PickQuiz)
-    local aimOn = ns.AimTrainerOn and ns.AimTrainerOn()
-    for _, entry in ipairs(AIM_MODES) do
-        local button = root:CreateButton(entry[2], PickAim, entry[1])
-        if not aimOn then
-            button:SetEnabled(false)
-            button:SetTooltip(function(tooltip) GameTooltip_SetTitle(tooltip, AIM_OFF) end)
-        end
+local function Play(game)
+    if InCombatLockdown() then return end
+    if game.id ~= "quiz" and ns.QuizDismiss then ns.QuizDismiss() end
+    if not game.aim and ns.AimDismiss then ns.AimDismiss() end
+    if not game.word and ns.DailyWordDismiss then ns.DailyWordDismiss() end
+    if game.aim then
+        if ns.AimPlay then ns.AimPlay(game.id, "flight") end
+    elseif game.word then
+        if ns.DailyWordPlay then ns.DailyWordPlay("flight") end
+    elseif ns.QuizPlay then
+        ns.QuizPlay("flight")
     end
 end
 
-local function PlayClicked()
-    if InCombatLockdown() then return end
-    MenuUtil.CreateContextMenu(bar.games, GamesMenu)
+local function GameOn(game)
+    if game.aim then return ns.AimTrainerOn and ns.AimTrainerOn() end
+    if game.word then return ns.DailyWordOn and ns.DailyWordOn() end
+    return true
+end
+
+local function PaintGames(f)
+    for i, game in ipairs(GAME_BUTTONS) do
+        local b, on = f.games[i], GameOn(game) and true or false
+        b:SetEnabled(on)
+        b.icon:SetAlpha(on and 1 or GAME_OFF_ALPHA)
+        ns.Tooltip(b, game.title, on and game.tip or game.aim and AIM_OFF or WORD_OFF)
+    end
 end
 
 local function Layout()
     local land = S.Get("flightEarlyLanding") and not flight.sample
     local games = S.Get("enabled") and S.Get("flightGame") ~= "off" and not flight.sample
     Look.Layout(bar, flight, land and true or false, games and true or false)
+    PaintGames(bar)
 end
 
 local function Update()
@@ -590,9 +615,10 @@ local function Land()
     if unlocked then Apply() end
     if ns.QuizDismiss then ns.QuizDismiss("flight") end
     if ns.AimDismiss then ns.AimDismiss("flight") end
+    if ns.DailyWordDismiss then ns.DailyWordDismiss("flight") end
 end
 
-local FLIGHT_GAMES = { off = true, none = true, quiz = true, aim = true }
+local FLIGHT_GAMES = { off = true, none = true, quiz = true, aim = true, word = true }
 
 local function MigrateGame()
     local db = S.DB()
@@ -616,6 +642,8 @@ local function OfferGame()
         if ns.QuizOffer then ns.QuizOffer("flight") end
     elseif game == "aim" then
         if ns.AimOffer then ns.AimOffer("flight") end
+    elseif game == "word" then
+        if ns.DailyWordOffer then ns.DailyWordOffer("flight") end
     end
 end
 
@@ -681,8 +709,9 @@ local function Build()
     bar:SetClampedToScreen(true)
     bar.land._onClick = LandEarly
     ns.Tooltip(bar.land, TIP_LAND_TITLE, TIP_LAND)
-    bar.games._onClick = PlayClicked
-    ns.Tooltip(bar.games, TEXT_GAMES, TIP_GAMES)
+    for i, game in ipairs(GAME_BUTTONS) do
+        bar.games[i]._onClick = function() Play(game) end
+    end
     bar:SetScript("OnUpdate", Update)
     bar.mover = ns.UI.AttachMover(bar, MOVER_LABEL, SavePosition, SETTINGS_PAGE, SETTINGS_CARD)
     bar:Hide()
@@ -759,7 +788,7 @@ end
 
 local function OnSettingChanged(key)
     if key == "enabled" or key == "flightEarlyLanding" or key == "flightGame"
-        or (key:find("^flightTimer") and key ~= "flightTimerPos") or key == "aimTrainer" then
+        or (key:find("^flightTimer") and key ~= "flightTimerPos") or key == "aimTrainer" or key == "dailyWord" then
         Apply()
     end
 end
@@ -799,7 +828,7 @@ local function NewPreview(stage)
     preview.bar = CreateFrame("Frame", nil, preview)
     Look.New(preview.bar)
     preview.bar.land:EnableMouse(false)
-    preview.bar.games:EnableMouse(false)
+    for _, b in ipairs(preview.bar.games) do b:EnableMouse(false) end
     return preview
 end
 
@@ -809,6 +838,7 @@ local function PaintPreview(preview)
     Look.Style(f)
     Look.Layout(f, PREVIEW, S.Get("flightEarlyLanding") and true or false, games and true or false)
     Look.Progress(f, PREVIEW, PREVIEW_ELAPSED)
+    PaintGames(f)
     local w, h = f:GetWidth(), f:GetHeight()
     local scale = S.Get("flightTimerScale")
     local roomW = preview:GetWidth() - STAGE_MARGIN * 2
@@ -844,8 +874,8 @@ Settings.Page("QoL/Travel", S):Card({
     },
 })
 
-local GAME_NAMES = { off = "Off", none = "Button only", quiz = "Quiz", aim = "Aim Trainer" }
-local GAMES = { GAME_NAMES, { "off", "none", "quiz", "aim" } }
+local GAME_NAMES = { off = "Off", none = "Buttons only", quiz = "Quiz", aim = "Aim Trainer", word = "Daily Word" }
+local GAMES = { GAME_NAMES, { "off", "none", "quiz", "aim", "word" } }
 
 local function GamesSummary()
     local game = Game()
@@ -853,6 +883,9 @@ local function GamesSummary()
     if game == "none" then return GAMES_BUTTON end
     if game == "aim" and not (ns.AimTrainerOn and ns.AimTrainerOn()) then
         return GAMES_AIM_OFF
+    end
+    if game == "word" and not (ns.DailyWordOn and ns.DailyWordOn()) then
+        return GAMES_WORD_OFF
     end
     return ns.L(GAME_NAMES[game]) .. GAMES_WHEN
 end
@@ -864,6 +897,6 @@ Settings.Page("QoL/Travel", S):Card({
     rows = {
         { key = "flightGame", label = "On Flights", choice = GAMES,
           get = Game, set = function(v) S.Set("flightGame", v) end,
-          help = "What opens when a flight starts; Off hides the Games button." },
+          help = "What opens when a flight starts; Off hides the game buttons." },
     },
 })

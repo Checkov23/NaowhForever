@@ -274,6 +274,7 @@ local S = UI.ModuleSettings("qol", {
     flightTimerFont = "", flightTimerOutline = "NONE", flightTimerTexture = "",
     aimTrainer = F.aimTrainer, aimMode = "hexakill", aimPulse = true, aimSound = true,
     aimSoundKey = "game:click", aimShare = true,
+    dailyWord = F.dailyWord,
     waypoints = F.waypoints, waypointShape = "hex", waypointScale = 1, waypointCard = true,
     waypointTime = true, waypointBeam = true, waypointFadeNear = 40, waypointArrive = 5, waypointEdge = true,
     waypointNav = true, waypointSound = "none", waypointHideGame = true,

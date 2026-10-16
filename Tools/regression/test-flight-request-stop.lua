@@ -26,6 +26,7 @@ local function fixture(settings, extra)
         function f:SetFont(path, size, flags) self.font = path .. " " .. size .. " " .. flags end
         function f:SetTexture(path) self.texture = path end
         function f:SetTextColor(r) self.red = r end
+        function f:SetEnabled(v) self.enabled = v end
         s.frames[#s.frames + 1] = f
         return f
     end
@@ -60,8 +61,15 @@ local function fixture(settings, extra)
                 HudFlags = function(o) return (o == "NONE" or type(o) ~= "string") and "" or o end } },
         QuizOffer = function(reason) s.offers[#s.offers + 1] = 'quiz:' .. reason end,
         AimOffer = function(reason) s.offers[#s.offers + 1] = 'aim:' .. reason end,
-        QuizDismiss = function(reason) s.dismissed.quiz = reason end,
-        AimDismiss = function(reason) s.dismissed.aim = reason end }
+        DailyWordOffer = function(reason) s.offers[#s.offers + 1] = 'word:' .. reason end,
+        QuizPlay = function(reason) s.played = 'quiz:' .. reason end,
+        AimPlay = function(m, reason) s.played = 'aim:' .. m .. ':' .. reason end,
+        DailyWordPlay = function(reason) s.played = 'word:' .. reason end,
+        AimTrainerOn = function() return s.aimOn end,
+        DailyWordOn = function() return s.wordOn end,
+        QuizDismiss = function(reason) s.dismissed.quiz = reason or true end,
+        AimDismiss = function(reason) s.dismissed.aim = reason or true end,
+        DailyWordDismiss = function(reason) s.dismissed.word = reason or true end }
     local env = { _G = { NaowhForever = ns }, UIParent = frame(), CreateFrame = frame,
         MainMenuBarVehicleLeaveButton = leave,
         GetTime = function() return s.now end, UnitOnTaxi = function() return s.taxi end,
@@ -94,7 +102,7 @@ local function fixture(settings, extra)
         for _, f in ipairs(s.frames) do if pred(f) then return f end end
     end
     function s.text(v) return s.find(function(f) return rawget(f, 'text') == v end) end
-    function s.button(label) return s.find(function(f) return rawget(f, 'name') == label end) end
+    function s.button(kind) return s.find(function(f) return rawget(f, 'kind') == kind end) end
     function s.tick()
         local bar = s.find(function(f) return f.scripts.OnUpdate end)
         bar.scripts.OnUpdate(bar)
@@ -180,7 +188,7 @@ do
     local key, name = s.text('Next'), s.text('Refuge Pointe')
     check('the sample flight names its next stop', key and key.shown and name and name.shown)
     check('with the time to it', s.text('0:50') and s.text('2:30'))
-    check('the sample has no Land or Games button', not s.button('Land').shown and not s.button('Games').shown)
+    check('the sample has no Land or game buttons', not s.button('land').shown and not s.button('quiz').shown)
     s.now = 60
     s.tick()
     check('a passed stop hands over to the next one', s.text('Menethil Harbor').shown and s.text('0:35'))
@@ -192,8 +200,11 @@ end
 do
     local s = fixture({ flightEarlyLanding = true })
     s.board()
-    local land, games = s.button('Land'), s.button('Games')
-    check('a flight shows the Land and Games buttons', land.shown and games.shown)
+    local land = s.button('land')
+    check('each icon is a real file path', land.icon.texture == 'Interface\\AddOns\\NaowhForever_QoL\\Media\\Flight\\land'
+        and s.button('word').icon.texture == 'Interface\\AddOns\\NaowhForever_QoL\\Media\\Flight\\word')
+    check('a flight shows the Land button and one button per game', land.shown and s.button('quiz').shown
+        and s.button('gridshot').shown and s.button('hexakill').shown and s.button('reflex').shown and s.button('word').shown)
     land._onClick()
     check('Land asks to land early', s.landRequests == 1)
     check('an unknown route is just in flight', s.text('In flight'))
@@ -207,7 +218,35 @@ do
     s.board()
     check('by default a flight offers the Aim Trainer, once', #s.offers == 1 and s.offers[1] == 'aim:flight')
     s.land()
-    check('landing closes what a flight opened', s.dismissed.quiz == 'flight' and s.dismissed.aim == 'flight')
+    check('landing closes what a flight opened', s.dismissed.quiz == 'flight' and s.dismissed.aim == 'flight'
+        and s.dismissed.word == 'flight')
+end
+do
+    local s = fixture()
+    s.aimOn = true
+    s.board()
+    check('the Aim Trainer on: its three buttons work', s.button('gridshot').enabled and s.button('reflex').enabled)
+    check('the Daily Word off: its button is greyed out', s.button('word').enabled == false
+        and s.button('word').icon.alpha < 1)
+    s.button('reflex')._onClick()
+    check('a mode button plays that mode, closing the other games', s.played == 'aim:reflex:flight'
+        and s.dismissed.quiz and s.dismissed.word and not s.dismissed.aim)
+    s.button('quiz')._onClick()
+    check('the Quiz button plays the Quiz', s.played == 'quiz:flight')
+    s.wordOn = true
+    s.set('dailyWord', true)
+    check('turning the Daily Word on lights its button', s.button('word').enabled)
+    s.button('word')._onClick()
+    check('and it opens the Daily Word', s.played == 'word:flight')
+    s.combat = true
+    s.played = nil
+    s.button('quiz')._onClick()
+    check('no game opens in combat', s.played == nil)
+end
+do
+    local s = fixture({ flightGame = 'word' })
+    s.board()
+    check('Daily Word: a flight offers the Daily Word', #s.offers == 1 and s.offers[1] == 'word:flight')
 end
 do
     local s = fixture({ flightGame = 'quiz' })
@@ -218,7 +257,7 @@ do
     local s = fixture({ flightGame = 'none' })
     s.board()
     check('Nothing: a flight offers no game', #s.offers == 0)
-    check('Nothing: the Games button still shows', s.button('Games').shown)
+    check('Buttons only: the game buttons still show', s.button('quiz').shown)
 end
 do
     local s = fixture({ flightGame = 'bogus' })
@@ -274,7 +313,7 @@ do -- the look: today's card by default, then Font, Outline, Bar Texture and Bac
     local s = fixture({ flightEarlyLanding = true })
     s.board()
     local bar = s.find(function(f) return f.scripts.OnUpdate end)
-    local land = s.button('Land')
+    local land = s.button('land')
     check('default: the Addon Font, no outline or shadow', bar.time.font == 'font: 20 ' and bar.time.shadow == false
         and bar.to.font == 'font: 14 ')
     check('default: the flat fill and a solid card', bar.fill.texture == 'Interface\\Buttons\\WHITE8X8'
