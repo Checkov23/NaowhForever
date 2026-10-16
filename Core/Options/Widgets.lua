@@ -53,6 +53,7 @@ local NO_SOUND = "none"
 local SHARED_MEDIA_PREFIX = "sm:"
 local SHARED_MEDIA_NONE = "None"
 local MODIFIER_KEYS = { LSHIFT = true, RSHIFT = true, LCTRL = true, RCTRL = true, LALT = true, RALT = true }
+local MOUSE_KEYS = { MiddleButton = "BUTTON3", Button4 = "BUTTON4", Button5 = "BUTTON5" }
 local RACIAL_VOICES = {
     ["voice:stoneform-ready"] = "stoneform-ready.ogg",
     ["voice:stoneform-preview"] = "stoneform-preview.ogg",
@@ -1064,7 +1065,7 @@ function UI.KeyField(rgn, action, label, tooltip)
     rgn._keyField = btn
     btn:SetPoint("RIGHT", rgn, "RIGHT", -ROW_INSET, 0)
     if rgn._label then rgn._label:SetPoint("RIGHT", btn, "LEFT", -LABEL_GAP, 0) end
-    btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    btn:RegisterForClicks("AnyUp")
     local capturing
     local function Show()
         local key = GetBindingKey(Resolve(action))
@@ -1078,6 +1079,13 @@ function UI.KeyField(rgn, action, label, tooltip)
     end
     btn:SetScript("OnClick", function(_, button)
         if InCombatLockdown() then return end
+        if MOUSE_KEYS[button] then
+            if capturing then
+                Bind(KeyCombo(MOUSE_KEYS[button]), Resolve(action), Resolve(label))
+                Stop()
+            end
+            return
+        end
         if button == "RightButton" then
             ClearBinding(Resolve(action))
             SaveKeyBindings()

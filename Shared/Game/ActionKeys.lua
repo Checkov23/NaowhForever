@@ -7,13 +7,26 @@ local EUI_SLOTS = 180
 local CLICK = "CLICK %s:%s"
 local CLICK_LEFT, CLICK_KEYBIND = "LeftButton", "Keybind"
 local KEY_EVENTS = { "UPDATE_BINDINGS", "ACTIONBAR_SLOT_CHANGED", "ACTIONBAR_PAGE_CHANGED", "UPDATE_BONUS_ACTIONBAR" }
+local MOUSE_KEY = "^(.-)BUTTON(%d+)$"
+local MOUSE_TEXT = "M%s"
+local MODIFIER_LETTERS = { { "ALT%-", "A" }, { "CTRL%-", "C" }, { "SHIFT%-", "S" } }
 
 local ActionKeys = {}
 ns.Shared.ActionKeys = ActionKeys
 
+function ActionKeys.Text(key)
+    local modifiers, number = key:match(MOUSE_KEY)
+    if not number then return GetBindingText(key, true) end
+    local letters = ""
+    for _, pair in ipairs(MODIFIER_LETTERS) do
+        if modifiers:find(pair[1]) then letters = letters .. pair[2] end
+    end
+    return letters .. MOUSE_TEXT:format(number)
+end
+
 function ActionKeys.Bound(command)
     local key = GetBindingKey(command)
-    return key and GetBindingText(key, true)
+    return key and ActionKeys.Text(key)
 end
 
 local function Try(command)

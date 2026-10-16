@@ -17,6 +17,7 @@ end
 
 -- The game's bindings: a key to its command, and the commands to their keys.
 local bound, printed, tooltips = {}, {}, {}
+local shift = false
 local env = setmetatable({
     UI = {},
     CreateFrame = Frame,
@@ -29,7 +30,7 @@ local env = setmetatable({
     InCombatLockdown = function() return false end,
     IsAltKeyDown = function() return false end,
     IsControlKeyDown = function() return false end,
-    IsShiftKeyDown = function() return false end,
+    IsShiftKeyDown = function() return shift end,
     GetBindingKey = function(command)
         for key, cmd in pairs(bound) do if cmd == command then return key end end
     end,
@@ -78,5 +79,21 @@ check("and says what it took the key from, by the field's label now",
     and printed[#printed]:find("CLICK FooButton:LeftButton", 1, true) ~= nil)
 field2.scripts.OnClick(field2, "RightButton")
 check("a right-click clears the binding it points at", bound.F == nil and bound.G == "CLICK Item1:LeftButton")
+
+-- Mouse buttons 3 to 5 bind like keys, with their modifiers, but only while the field waits for one.
+local region3 = {}
+local field3 = KeyField(region3, "CLICK Mouse:LeftButton", "Use Mouse")
+field3.scripts.OnClick(field3, "Button4")
+check("a mouse button does nothing until the field is waiting", next(bound) and bound.BUTTON4 == nil)
+field3.scripts.OnClick(field3, "LeftButton")
+shift = true
+field3.scripts.OnClick(field3, "Button5")
+shift = false
+check("shift and mouse button 5 bind SHIFT-BUTTON5", bound["SHIFT-BUTTON5"] == "CLICK Mouse:LeftButton")
+check("and the field stops waiting", field3.label.text == "SHIFT-BUTTON5")
+field3.scripts.OnClick(field3, "LeftButton")
+field3.scripts.OnClick(field3, "MiddleButton")
+check("the middle button binds BUTTON3", bound.BUTTON3 == "CLICK Mouse:LeftButton"
+    and bound["SHIFT-BUTTON5"] == nil)
 
 print(("test-keyfield: %d checks passed"):format(checks))

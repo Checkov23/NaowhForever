@@ -455,6 +455,9 @@ What a comment in the code used to say, in short. The house rules behind it are 
 
 ### Item bars (`UI/ItemBar.lua`, `UI/Anchor.lua`, `Game/ActionKeys.lua`)
 
+- `ActionKeys.Text` writes a mouse button as its modifiers' letters and M with its number (SM5), as
+  action bar addons show it: the game's short text still spells out "s-Mouse Button 5". Every other key
+  keeps the game's short text.
 - A bar's icons are cropped (`ItemBar.CropIcon`, `Style.ICON_CROP`) like the addon's other item
   icons, cutting off the rounded border the game draws into the item art. A rectangular button
   (`ItemBar.Shape`) crops its art further along its longer side, so the art keeps its shape.

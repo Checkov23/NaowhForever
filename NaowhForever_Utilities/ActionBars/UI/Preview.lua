@@ -101,7 +101,7 @@ end
 
 local function SetKey(command)
     local key = byCommand[command]
-    return key and GetBindingText(key, true) or ""
+    return key and ns.Shared.ActionKeys.Text(key) or ""
 end
 
 local function PreviewKeys(set)

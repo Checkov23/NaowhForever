@@ -146,7 +146,7 @@ end
 
 function P.KeyText(command)
     local key = command and GetBindingKey(command)
-    return key and GetBindingText(key, true) or ""
+    return key and ns.Shared.ActionKeys.Text(key) or ""
 end
 
 function P.BarSlots(bar)
