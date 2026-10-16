@@ -224,17 +224,23 @@ bad.settings.Set("classBuffTracker", true)
 assert(#bad.messages == 1 and bad.error, "unsupported display reports once and preserves error detail")
 bad.ns.Apply()
 assert(#bad.messages == 1, "no retry loop")
-local starts, stops = {}, {}
+local starts, stops, procLayers = {}, {}, {}
 local lib = {}
 for _, kind in ipairs({ "Proc", "Pixel", "Button" }) do
     lib[kind .. "Glow_Start"] = function(_, options)
         starts[kind] = (starts[kind] or 0) + 1
-        if kind == "Proc" then assert(options.startAnim == false, "gold glow skips the opening flash") end
+        if kind == "Proc" then
+            assert(options.startAnim == false, "gold glow skips the opening flash")
+            procLayers[options.key or ""] = options
+        end
     end
-    lib[kind .. "Glow_Stop"] = function() stops[kind] = (stops[kind] or 0) + 1 end
+    lib[kind .. "Glow_Stop"] = function(_, key)
+        stops[kind] = (stops[kind] or 0) + 1
+        if kind == "Proc" then procLayers[key or ""] = nil end
+    end
 end
 local glowSettings = { Type = "proc", Color = { r = 1, g = 0.82, b = 0.2 },
-    Lines = 8, Thickness = 2, Speed = 5 }
+    Lines = 8, Thickness = 1, Speed = 5 }
 local glowNs = { AuraBuffs = { Settings = { Get = function(key) return glowSettings[key:sub(5)] end } } }
 local glowEnv = setmetatable({ NaowhForever = glowNs, LibStub = function() return lib end }, { __index = _G })
 glowEnv._G = glowEnv
@@ -245,12 +251,40 @@ local target = { GetWidth = function() return 40 end }
 glow.Set(target, true, "test")
 glow.Set(target, true, "test")
 assert(starts.Proc == 1, "unchanged glow is not restarted")
+glowSettings.Thickness = 3
+glow.Set(target, true, "test")
+assert(starts.Proc == 4 and stops.Proc == 1, "thicker glow replaces the old outline")
+assert(procLayers.thickness2.xOffset == 0.5 and procLayers.thickness3.yOffset == 1,
+    "gold layers widen the outline in half-unit steps")
+glow.Set(target, true, "test")
+assert(starts.Proc == 4, "unchanged layered glow is not restarted")
+glowSettings.Thickness = 1
+glow.Set(target, true, "test")
+assert(stops.Proc == 4 and not procLayers.thickness2 and not procLayers.thickness3,
+    "reducing thickness removes every surplus layer")
+glowSettings.Thickness = 100
+glow.Set(target, true, "test")
+local layerCount = 0
+for _ in pairs(procLayers) do layerCount = layerCount + 1 end
+assert(layerCount == 6, "imported thickness cannot create unbounded glow layers")
 glowSettings.Type = "pixel"
 glow.Set(target, true, "test")
-assert(stops.Proc == 1 and starts.Pixel == 1, "changing style stops the old glow")
+assert(stops.Proc == 11 and next(procLayers) == nil and starts.Pixel == 1, "changing style stops every gold layer")
 glowSettings.Type = "standard"
 glow.Set(target, true, "test")
 assert(stops.Pixel == 1 and starts.Button == 1, "existing standard glow dispatch preserved")
 glow.Set(target, false)
 assert(stops.Button == 1, "turning glow off stops the current style")
+glowNs.L = function(text) return text end
+glowNs.Shared = { Settings = {} }
+local rowsCode = assert(loadfile("NaowhForever_Combat/AuraBuffs/UI/GlowRows.lua"))
+setfenv(rowsCode, glowEnv); rowsCode()
+glowSettings.Type = "proc"
+local rows = glowNs.AuraBuffs.GlowRows("test", function() return true end, glow.TRACKER_TYPES)
+assert(not rows[4].hidden() and rows[3].hidden() and rows[5].hidden(),
+    "gold exposes thickness while pixel-only controls stay hidden")
+glowSettings.Type = "standard"
+assert(rows[4].hidden(), "standard glow keeps its original controls")
+glowSettings.Type = "pixel"
+assert(not rows[4].hidden(), "pixel thickness remains available")
 print("Class buff tracker lifecycle and glow dispatch tests passed")

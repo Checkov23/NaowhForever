@@ -316,3 +316,8 @@ NaowhForever_Combat/AuraBuffs/
 - Offline checks: `lua Tools/regression/test-class-buffs.lua` covers lifecycle, native
   tooltip wiring, secure self-cast attributes, one shared scan, buff removal, unknown
   data, combat deferral, feature disable and mover open/close.
+
+- Gold Glow's Thickness control widens the outline with up to six copies of its native
+  artwork, each half a UI unit farther out. The icon keeps its size. The shared glow
+  wrapper owns and stops every keyed layer; changing thickness replaces the old layers.
+  Pixel Glow retains its direct stroke-width control, and Standard Glow is unchanged.
