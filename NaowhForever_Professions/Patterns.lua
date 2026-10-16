@@ -1,6 +1,8 @@
 -- Patterns.lua: your favourite recipes not learned yet: a trainer's offers of them, and their patterns to buy.
 local ns = _G.NaowhForever
 
+local IsUsableItem = C_Item.IsUsableItem
+
 local P = ns.Professions
 
 local KINDS = { available = true, unavailable = true, used = true, header = true }
@@ -21,6 +23,10 @@ local function Known(spell)
     local info = C_TradeSkillUI.GetRecipeInfo(spell)
     if info and info.learned then return true end
     return (C_SpellBook and C_SpellBook.IsSpellKnown and C_SpellBook.IsSpellKnown(spell)) or false
+end
+
+local function Learnable(item)
+    return IsUsableItem(item)
 end
 
 local function ServiceInfo(i)
@@ -137,6 +143,7 @@ end
 P.Patterns = {
     TrainerOffers = TrainerOffers,
     Learn = Learn,
+    Learnable = Learnable,
     Bought = Bought,
     List = List,
 }

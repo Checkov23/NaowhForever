@@ -207,6 +207,9 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   A search with no reply in 3s is put back for Resume, and a scan that ends with any unanswered
   stays on Resume rather than done. Lookup timeouts keep their own counter, so a reset cannot hand a
   new search the number of a pending timeout.
+- Favorite Patterns shows a pattern's name in green when the game says the current character can use
+  that recipe item now. Level and profession skill changes refresh the open list; those two events
+  are registered only while the auction house is open, since skill-ups fire often elsewhere.
 - Favorite Recipe Marks starts off and registers nothing while off. When enabled, it uses the existing
   favorite-pattern and trainer-offer lists: only unlearned, unowned patterns in stock and currently
   trainable favorite recipes receive a star. It hooks update functions without replacing their scripts.
