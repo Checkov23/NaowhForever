@@ -35,7 +35,7 @@ ns.Journal.AddFaction("TimbermawHold", {
     tiers = {
         { standing = 5, items = { 13484, 22392, 20254, 20253 } },
         { standing = 6, items = { 19202, 19215, 19326, 19445 } },
-        { standing = 7, items = { 228982, 251469, 251470, 19204, 19218, 19327 } },
+        { standing = 7, items = { 19218, 228982, 251469, 251470, 19204, 19327 } },
         { standing = 8, items = { 21326 } },
     },
     prices = {

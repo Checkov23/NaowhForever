@@ -8,12 +8,12 @@ ns.Journal.AddDungeon("RuinsOfLordaeron", {
     entrance = { map = 1458, x = 71.6, y = 11.4 },
     wings = {
         { bosses = {
-            { npc = 250483, name = "Witherfang", model = 144189, encounters = { 3353 }, loot = { 271203, 271202, 271201 }, chance = { 33, 29, 26 } },
-            { npc = 250660, name = "The Baron", model = 144188, encounters = { 3355 }, loot = { 271206, 271204, 271205 }, chance = { 32, 31, 28 } },
-            { npc = 256035, name = "Viktor the Vile", model = 139455, encounters = { 3411 }, loot = { 271211, 271212, 271218 }, chance = { 35, 34, 32 } },
-            { npc = 250631, name = "The Abandoned", model = 138667, encounters = { 3357 }, loot = { 271207, 271216, 271208 }, chance = { 36, 32, 31 } },
-            { npc = 256097, name = "Bjork", model = 144170, encounters = { 3412 }, loot = { 271210, 271209, 271217 }, chance = { 35, 32, 32 } },
-            { npc = 250657, name = "Rath'mael", model = 144175, encounters = { 3354 }, loot = { 271213, 271215, 271214 }, chance = { 37, 32, 30 } },
+            { npc = 250483, name = "Witherfang", model = 144189, encounters = { 3353 }, loot = { 271203, 271202, 271201 }, chance = { 33, 29, 25 } },
+            { npc = 250660, name = "The Baron", model = 144188, encounters = { 3355 }, loot = { 271206, 271204, 271205 }, chance = { 32, 31, 29 } },
+            { npc = 256035, name = "Viktor the Vile", model = 139455, encounters = { 3411 }, loot = { 271211, 271212, 271218 }, chance = { 35, 33, 32 } },
+            { npc = 250631, name = "The Abandoned", model = 138667, encounters = { 3357 }, loot = { 271207, 271216, 271208 }, chance = { 36, 33, 31 } },
+            { npc = 256097, name = "Bjork", model = 144170, encounters = { 3412 }, loot = { 271210, 271209, 271217 }, chance = { 35, 33, 32 } },
+            { npc = 250657, name = "Rath'mael", model = 144175, encounters = { 3354 }, loot = { 271213, 271215, 271214 }, chance = { 37, 33, 30 } },
             { npc = 255699, name = "Lordaeron Captain", model = 139050, rare = true, encounters = { 3408 }, loot = { 6641, 6642 }, chance = { 60, 40 } },
         } },
     },

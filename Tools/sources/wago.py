@@ -20,7 +20,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-BUILD = "1.60.1.70374"   # the Forever client build the Journal's data is read from
+BUILD = "1.60.1.70425"   # the Forever client build the Journal's data is read from
 # The build before it, whose hotfixed tables fill in the items BUILD's lack entirely. Hotfixes
 # are recorded per build, and wago.tools records a new build's some time after it appears;
 # a hotfix stays in the game from build to build until Blizzard takes it back, so the last

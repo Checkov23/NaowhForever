@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Changed
+- Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70425: 5 faction rewards changed
+  (quality, item levels, required levels).
+- Naowh Score: refitted to the latest Forever items.
+- Dungeon Journal: drop chances updated from Wowhead's latest kill counts.
+
 ## 1.1.24
 
 ### Added
