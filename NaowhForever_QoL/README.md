@@ -782,6 +782,7 @@ NaowhForever_QoL/
 - A reminder is fitted to its text only with a background, so elements anchored to it keep their spot.
 
 ### Quiz
+- The Quiz and Flight Timer use HIGH strata, like the Aim Trainer, so reminder text stays behind their controls.
 - `CAMPFIRE_SEATED` (1229739) is Forever's "Welcoming Campfire" aura, present only while seated at a campfire (probed 2026-09-24). "Campfire Nearby" (1283391) is an area aura from simply walking past one, so it is not used.
 - Auras cannot be read in combat, so the camp check pauses there rather than reading a missing aura as having walked away.
 - A dismiss with no reason is the close button; one with a reason closes only what that reason opened, so landing never shuts a quiz opened by hand.

@@ -108,7 +108,7 @@ end
 local function BuildFrame()
     quiz = CreateFrame("Frame", "NaowhForeverQuiz", UIParent)
     quiz:SetSize(QUIZ_W, QUIZ_H)
-    quiz:SetFrameStrata("MEDIUM")
+    quiz:SetFrameStrata("HIGH")
     quiz:SetMovable(true)
     quiz:SetClampedToScreen(true)
     ns.AllowOffscreen(quiz)
