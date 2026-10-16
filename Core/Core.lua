@@ -141,12 +141,12 @@ end
 ns.CODE_BUILD = "1.1.23"
 
 ns.THEME = {
-    bg     = { r = 0x0e / 255, g = 0x0f / 255, b = 0x11 / 255 },
-    panel  = { r = 0x1a / 255, g = 0x1c / 255, b = 0x1f / 255 },
-    line   = { r = 0x2e / 255, g = 0x31 / 255, b = 0x36 / 255 },
+    bg     = { r = 0x19 / 255, g = 0x1b / 255, b = 0x1e / 255 },
+    panel  = { r = 0x25 / 255, g = 0x28 / 255, b = 0x2c / 255 },
+    line   = { r = 0x3a / 255, g = 0x3e / 255, b = 0x44 / 255 },
     fg     = { r = 0xf0 / 255, g = 0xf1 / 255, b = 0xf3 / 255 },
     muted  = { r = 0x9a / 255, g = 0x9e / 255, b = 0xa6 / 255 },
-    grey   = { r = 0x34 / 255, g = 0x37 / 255, b = 0x3d / 255 },
+    grey   = { r = 0x40 / 255, g = 0x44 / 255, b = 0x4a / 255 },
     accent     = { r = 0x00 / 255, g = 0x91 / 255, b = 0xed / 255 },
     accentSoft = { r = 0x4d / 255, g = 0xb5 / 255, b = 0xf5 / 255 },
 }

@@ -63,8 +63,8 @@ end
 
 -- The default theme as shipped, and the presets as designed, pinned here on purpose: an edit
 -- to either in Core has to be an edit to this list as well.
-local SHIPPED = { bg = "0e0f11", panel = "1a1c1f", line = "2e3136", fg = "f0f1f3", muted = "9a9ea6",
-    grey = "34373d", accent = "0091ed", accentSoft = "4db5f5" }
+local SHIPPED = { bg = "191b1e", panel = "25282c", line = "3a3e44", fg = "f0f1f3", muted = "9a9ea6",
+    grey = "40444a", accent = "0091ed", accentSoft = "4db5f5" }
 local PRESETS = {
     midnight  = { "Midnight",  "0b1020", "151c30", "2a3550", "eef2ff", "9ba7c8", "5b8cff", "91b2ff", "303b55" },
     slate     = { "Slate",     "12161c", "1e242d", "36404d", "f0f3f5", "9aa7b4", "2bb8a8", "71cfc5", "3c4652" },

@@ -264,7 +264,7 @@ do
     Check(#e.notes == 1 and e.notes[1] == HINT, "the hint shows")
     start.setValue("default")
     e.confirms[2].yes()
-    Check(a.themeColors.bg.r == 0x0e / 255 and a.themeColors.accent.b == 0xed / 255, "the default theme's colors")
+    Check(a.themeColors.bg.r == 0x19 / 255 and a.themeColors.accent.b == 0xed / 255, "the default theme's colors")
 end
 
 -- The preview follows the selection.
@@ -274,13 +274,13 @@ do
         return ("%02x%02x%02x"):format(math.floor(c.r * 255 + 0.5), math.floor(c.g * 255 + 0.5), math.floor(c.b * 255 + 0.5))
     end
     local default, midnight = Chips({}), Chips({ themePreset = "midnight" })
-    Check(Hex(default[1]) == "0e0f11" and Hex(default[3]) == "0091ed", "default: the shipped background and accent")
+    Check(Hex(default[1]) == "191b1e" and Hex(default[3]) == "0091ed", "default: the shipped background and accent")
     Check(Hex(midnight[1]) == "0b1020" and Hex(midnight[2]) == "eef2ff" and Hex(midnight[3]) == "5b8cff",
         "a preset: its own background, text and accent")
     local custom = Chips({ themePreset = "custom", themeColors = { bg = { r = 1, g = 0, b = 0 } } })
     Check(Hex(custom[1]) == "ff0000" and Hex(custom[2]) == Hex(default[2]), "custom: the saved pick, the shipped color for the rest")
     local invalid = Chips({ themePreset = "bogus" })
-    Check(Hex(invalid[1]) == "0e0f11", "an invalid preset previews the default")
+    Check(Hex(invalid[1]) == "191b1e", "an invalid preset previews the default")
 end
 
 -- The chips themselves: the control is cut out of Widgets.lua and run with stub frames.
