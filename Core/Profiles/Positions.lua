@@ -6,6 +6,7 @@ local POSITIONS = {
         "focusCastBarPos", "gcdTrackerPos", "healerManaPos", "stealthPos", "waypointNavPos", "bagSpacePos",
         "lootFeedPos", "lootFeedWidth", "lootFeedHeight", "groupButtonsPos", "flightTimerPos", "groupXPPos",
         "xpBarPos", "xpTickerPos", "damageMeterPos", "mapSizePos", "trainerPos", "aimPos", "quizPos",
+        "transportTimersPos",
         "blessPos", "blessAnchor", "blessAnchorPoint", "blessAnchorRelPoint", "blessX", "blessY",
         "consumableBarPos", "consumableBarAnchor", "consumableBarAnchorPoint", "consumableBarAnchorRelPoint",
         "consumableBarX", "consumableBarY",

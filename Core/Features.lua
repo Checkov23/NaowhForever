@@ -101,6 +101,7 @@ ns.FEATURES = {
         trainerPopup = true,
         flightTimer = true,
         flightPoint = false,
+        transportTimers = false,
         quizCamp = true,
         aimTrainer = true,
         waypoints = true,
