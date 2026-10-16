@@ -253,7 +253,7 @@ do
             "'" .. query .. "' is found on the Profiles page, in the Setups card")
     end
     local card, n = Hit("setups")
-    Check(card.isCard and card.trail == "" and n == 4, "the card itself is a target, named by its page, then its three settings")
+    Check(card.isCard and card.trail == "" and n == 5, "the card itself is a target, named by its page, then its four settings")
     local row = Hit("skin")
     Check(row.label == "Onboarding" and not row.isCard and row.trail == "Setups", "a row names its card")
     local f = UI.Search.Build(carried, "skin")
@@ -299,9 +299,14 @@ do
     local refreshed = 0
     function UI.RefreshPage() refreshed = refreshed + 1 end
     local input
+    local function Region()
+        return setmetatable({ GetFrameLevel = function() return 0 end }, { __index = function() return function() end end })
+    end
+    env.CreateFrame = Region
+    ns.Solid, ns.Font, ns.Border = Region, Region, Region
     ns.Shared.Parts = { SearchBox = function(_, _, onText)
         input = onText
-        return { SetText = function() end, GetText = function() return "" end, ClearFocus = function() end }
+        return Region()
     end }
     function UI.RegisterOnHide() end
     UI.AttachSearchBox({}, function() end)

@@ -123,7 +123,6 @@ local function Ghost()
     ghost:SetFrameStrata("TOOLTIP")
     ghost.icon = ghost:CreateTexture(nil, "ARTWORK")
     ghost.icon:SetAllPoints()
-    ItemBar.CropIcon(ghost.icon)
     ghost:SetScript("OnUpdate", FollowCursor)
     ghost:Hide()
     return ghost
@@ -142,7 +141,9 @@ local function CellDragStart(cell)
     dragging = cell
     GameTooltip:Hide()
     local g = Ghost()
-    g:SetSize(cell:GetWidth(), cell:GetHeight())
+    local w, h = cell:GetWidth(), cell:GetHeight()
+    g:SetSize(w, h)
+    ItemBar.CropIcon(g.icon, nil, w, h)
     g.icon:SetTexture(cell.icon:GetTexture())
     FollowCursor(g)
     g:Show()
@@ -181,19 +182,19 @@ local function Cell(i)
 end
 
 local function PreviewHeight()
-    local size, gap, grow, perRow = CB.Grid()
-    local _, h = ItemBar.Size(#CB.Items() + 1, size, gap, grow, perRow)
+    local size, gap, grow, perRow, height = CB.Grid()
+    local _, h = ItemBar.Size(#CB.Items() + 1, size, gap, grow, perRow, height)
     return PREVIEW_TOP + h + 2 * C.BG_PAD + PREVIEW_PAD
 end
 
-local function DrawItems(items, size, gap, grow, perRow)
+local function DrawItems(items, size, gap, grow, perRow, height, flip)
     local map = CB.KeyMap()
     for i, entry in ipairs(items) do
         local cell = Cell(i)
         cell.isPlus, cell.entry, cell.itemID = nil, entry, CB.Resolve(entry)
-        ItemBar.Place(cell, preview.bar, i, size, gap, grow, perRow)
-        CB.PlaceBackground(cell, i, #items, gap, grow, perRow)
-        CB.StyleCell(cell, entry, size)
+        ItemBar.Place(cell, preview.bar, i, size, gap, grow, perRow, height, flip)
+        CB.PlaceBackground(cell, i, #items, gap, grow, perRow, flip)
+        CB.StyleCell(cell, entry, size, height)
         CB.ShowCount(cell, cell.itemID, GHOST)
         CB.ShowCooldown(cell, cell.itemID)
         CB.ShowKey(cell, map)
@@ -202,11 +203,11 @@ local function DrawItems(items, size, gap, grow, perRow)
     end
 end
 
-local function DrawPlus(index, size, gap, grow, perRow)
+local function DrawPlus(index, size, gap, grow, perRow, height, flip)
     local plus = Cell(index)
     plus.isPlus, plus.entry, plus.itemID, plus.empty = true, nil, nil, nil
-    ItemBar.Place(plus, preview.bar, index, size, gap, grow, perRow)
-    plus:SetSize(size, size)
+    ItemBar.Place(plus, preview.bar, index, size, gap, grow, perRow, height, flip)
+    plus:SetSize(size, height)
     plus:SetAlpha(1)
     plus.icon:SetColorTexture(T.panel.r, T.panel.g, T.panel.b, 1)
     plus.icon:SetDesaturated(false)
@@ -216,13 +217,13 @@ local function DrawPlus(index, size, gap, grow, perRow)
     plus.key:Hide()
     plus.timer:Hide()
     plus.bg:Hide()
-    plus.plus:SetFont(UI.FontPath(S.Get("consumableBarFont")), math.max(PLUS_MIN, math.floor(size * PLUS_SHARE)), "OUTLINE")
+    plus.plus:SetFont(UI.FontPath(S.Get("consumableBarFont")), math.max(PLUS_MIN, math.floor(math.min(size, height) * PLUS_SHARE)), "OUTLINE")
     plus.plus:Show()
     plus:Show()
 end
 
-local function Fit(count, size, gap, grow, perRow)
-    local w, h = ItemBar.Size(count, size, gap, grow, perRow)
+local function Fit(count, size, gap, grow, perRow, height)
+    local w, h = ItemBar.Size(count, size, gap, grow, perRow, height)
     preview.bar:SetSize(w, h)
     local viewW = preview.view:GetWidth() or 0
     local fullW = w + 2 * C.BG_PAD
@@ -238,11 +239,11 @@ end
 function Render()
     if not (window and window:IsShown()) then return end
     local items = CB.Items()
-    local size, gap, grow, perRow = CB.Grid()
-    DrawItems(items, size, gap, grow, perRow)
-    DrawPlus(#items + 1, size, gap, grow, perRow)
+    local size, gap, grow, perRow, height, flip = CB.Grid()
+    DrawItems(items, size, gap, grow, perRow, height, flip)
+    DrawPlus(#items + 1, size, gap, grow, perRow, height, flip)
     for i = #items + 2, #preview.cells do preview.cells[i]:Hide() end
-    Fit(#items + 1, size, gap, grow, perRow)
+    Fit(#items + 1, size, gap, grow, perRow, height)
     preview:SetHeight(PreviewHeight())
     window:SetHeight(HEADER + CARD + PAD + PreviewHeight() + PAD + BUTTON_H + PAD + FOOTER + CARD)
     window.note.text:SetText(#items == 1 and TEXT_ONE_ITEM or TEXT_ITEMS:format(#items))

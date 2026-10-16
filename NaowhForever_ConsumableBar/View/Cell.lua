@@ -61,23 +61,25 @@ local function PlaceCustom(cell, entry)
     cell.custom:Show()
 end
 
-local function FitNone(cell, size)
+local function FitNone(cell, size, height)
     local path = UI.FontPath(S.Get("consumableBarFont"))
-    local guess = math.max(C.NONE_MIN, math.floor(size * C.NONE_GUESS))
+    local short = math.min(size, height)
+    local guess = math.max(C.NONE_MIN, math.floor(short * C.NONE_GUESS))
     cell.none:SetFont(path, guess, "OUTLINE")
     local width = cell.none:GetStringWidth()
     if width and width > 0 then
         local fit = math.floor(guess * (size - 2 * C.TEXT_INSET) / width)
-        cell.none:SetFont(path, math.max(C.NONE_MIN, math.min(fit, math.floor(size * C.NONE_MAX))), "OUTLINE")
+        cell.none:SetFont(path, math.max(C.NONE_MIN, math.min(fit, math.floor(short * C.NONE_MAX))), "OUTLINE")
     end
 end
 
-function CB.StyleCell(cell, entry, size)
-    cell:SetSize(size, size)
+function CB.StyleCell(cell, entry, size, height)
+    height = height or size
+    ItemBar.Shape(cell, size, height)
     cell.icon:SetTexture(CB.EntryIcon(entry))
     ItemBar.StyleTexts(cell, S, CB.PREFIX)
     PlaceCustom(cell, entry)
-    FitNone(cell, size)
+    FitNone(cell, size, height)
 end
 
 function CB.ShowCount(cell, itemID, faded)
@@ -124,21 +126,28 @@ function CB.ShowKey(cell, map)
     ItemBar.ShowKey(cell, CB.KeyFor(cell, map))
 end
 
+function CB.IconSize()
+    local size = S.Get("consumableBarSize")
+    return size, S.Get("consumableBarRect") and S.Get("consumableBarHeight") or size
+end
+
 function CB.Grid()
-    return S.Get("consumableBarSize"), S.Get("consumableBarSpacing"), S.Get("consumableBarGrow"),
-        math.max(1, S.Get("consumableBarPerRow") or 1)
+    local size, height = CB.IconSize()
+    return size, S.Get("consumableBarSpacing"), S.Get("consumableBarGrow"),
+        math.max(1, S.Get("consumableBarPerRow") or 1), height, S.Get("consumableBarFlipRows") == true
 end
 
 local function Reach(hasNeighbour, half)
     return hasNeighbour and half or C.BG_PAD
 end
 
-function CB.PlaceBackground(cell, index, count, gap, grow, perRow)
+function CB.PlaceBackground(cell, index, count, gap, grow, perRow, flip)
     local k = index - 1
     local along, lane = k % perRow, math.floor(k / perRow)
     local half = gap / 2
     local back, ahead = Reach(along > 0, half), Reach(along < perRow - 1 and k + 1 < count, half)
     local before, after = Reach(lane > 0, half), Reach(k + perRow < count, half)
+    if flip then before, after = after, before end
     local left, right, top, bottom
     if grow == "LEFT" then left, right, top, bottom = ahead, back, before, after
     elseif grow == "UP" then left, right, top, bottom = before, after, ahead, back

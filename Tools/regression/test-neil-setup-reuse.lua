@@ -16,7 +16,7 @@ end
 for name in ("SetFont SetFontObject SetTextColor SetColorTexture SetTexture SetAllPoints SetPoint "
     .. "ClearAllPoints SetDrawLayer SetVertexColor SetTexelSnappingBias SetSnapToPixelGrid "
     .. "SetJustifyH SetJustifyV SetWordWrap SetAlpha EnableMouse SetAutoFocus SetTextInsets "
-    .. "SetCursorPosition ClearFocus SetFrameStrata SetClampedToScreen SetSpacing "
+    .. "SetHitRectInsets SetCursorPosition ClearFocus SetFrameStrata SetClampedToScreen SetSpacing "
     .. "RegisterEvent UnregisterEvent UnregisterAllEvents RegisterUnitEvent HookScript"):gmatch("%S+") do
     methods[name] = function() end
 end

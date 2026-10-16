@@ -30,6 +30,9 @@ local POINT_ORDER = { "TOPLEFT", "TOP", "TOPRIGHT", "LEFT", "CENTER", "RIGHT",
 local POINT = { POINT_VALUES, POINT_ORDER }
 local GROW_OF = { horizontal = "RIGHT", row = "RIGHT", vertical = "DOWN", stacked = "DOWN" }
 local GROW_NAMES = { RIGHT = "Right", LEFT = "Left", UP = "Up", DOWN = "Down" }
+local CORNER = { RIGHT = "TOPLEFT", LEFT = "TOPRIGHT", UP = "BOTTOMLEFT", DOWN = "TOPLEFT" }
+local FLIPPED_CORNER = { RIGHT = "BOTTOMLEFT", LEFT = "BOTTOMRIGHT", UP = "BOTTOMRIGHT", DOWN = "TOPRIGHT" }
+local HALF = 0.5
 
 local ItemBar = {}
 Shared.ItemBar = ItemBar
@@ -51,9 +54,15 @@ function ItemBar.GrowChoice(right, down)
         { right, "LEFT", "UP", down } }
 end
 
-function ItemBar.CropIcon(texture, crop)
+function ItemBar.CropIcon(texture, crop, width, height)
     crop = crop or ICON_CROP
-    texture:SetTexCoord(crop, 1 - crop, crop, 1 - crop)
+    if not (width and height and width > 0 and height > 0) or width == height then
+        texture:SetTexCoord(crop, 1 - crop, crop, 1 - crop)
+        return
+    end
+    local spanX, spanY = 1 - 2 * crop, 1 - 2 * crop
+    if width > height then spanY = spanY * height / width else spanX = spanX * width / height end
+    texture:SetTexCoord(HALF - spanX * HALF, HALF + spanX * HALF, HALF - spanY * HALF, HALF + spanY * HALF)
 end
 
 function ItemBar.NewButton(parent, template, name)
@@ -100,27 +109,43 @@ function ItemBar.SetItem(button, itemID)
     button:SetAttribute("item1", itemID and (ITEM_LINK .. itemID) or nil)
 end
 
+function ItemBar.Shape(button, width, height)
+    button:SetSize(width, height)
+    ItemBar.CropIcon(button.icon, nil, width - 2 * ICON_INSET, height - 2 * ICON_INSET)
+end
+
 function ItemBar.Fill(button, texture, count, empty)
     button.icon:SetTexture(texture)
     button.icon:SetDesaturated(empty and true or false)
     button.count:SetText(count or "")
 end
 
-function ItemBar.Place(button, parent, index, size, gap, grow, perRow)
-    local step = size + gap
-    local along = (index - 1) % perRow * step
-    local across = math.floor((index - 1) / perRow) * step
-    button:ClearAllPoints()
-    if grow == "LEFT" then button:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -along, -across)
-    elseif grow == "UP" then button:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT", across, along)
-    elseif grow == "DOWN" then button:SetPoint("TOPLEFT", parent, "TOPLEFT", across, -along)
-    else button:SetPoint("TOPLEFT", parent, "TOPLEFT", along, -across) end
+local function Steps(size, gap, grow, height)
+    height = height or size
+    if ItemBar.Vertical(grow) then return height + gap, size + gap end
+    return size + gap, height + gap
 end
 
-function ItemBar.Size(count, size, gap, grow, perRow)
+function ItemBar.Place(button, parent, index, size, gap, grow, perRow, height, flip)
+    local alongStep, acrossStep = Steps(size, gap, grow, height)
+    local along = (index - 1) % perRow * alongStep
+    local across = math.floor((index - 1) / perRow) * acrossStep
+    if flip then across = -across end
+    local x, y
+    if grow == "LEFT" then x, y = -along, -across
+    elseif grow == "UP" then x, y = across, along
+    elseif grow == "DOWN" then x, y = across, -along
+    else x, y = along, -across end
+    local corner = (flip and FLIPPED_CORNER or CORNER)[grow] or CORNER.RIGHT
+    button:ClearAllPoints()
+    button:SetPoint(corner, parent, corner, x, y)
+end
+
+function ItemBar.Size(count, size, gap, grow, perRow, height)
     count = math.max(count, 1)
-    local long = math.min(count, perRow) * (size + gap) - gap
-    local short = math.ceil(count / perRow) * (size + gap) - gap
+    local alongStep, acrossStep = Steps(size, gap, grow, height)
+    local long = math.min(count, perRow) * alongStep - gap
+    local short = math.ceil(count / perRow) * acrossStep - gap
     if ItemBar.Vertical(grow) then return short, long end
     return long, short
 end

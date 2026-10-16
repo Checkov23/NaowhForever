@@ -34,6 +34,8 @@ local TEXT_MANY_CHANGED = ns.L("%d settings changed from their defaults")
 local TEXT_RESET = ns.L("Reset %s")
 local FOOT_GAP = 8
 local TEXT_OFF = ns.L("Off")
+local TEXT_UNDO_RESET = ns.L("Undo reset")
+local TEXT_FIND_DEPENDENCY = ns.L("Go to the setting this option needs.")
 local NOTE_GAP = ", "
 
 local NO_ICONS = {}
@@ -191,6 +193,12 @@ local function SetIcons(row, setting, left, off)
     return left
 end
 
+local function DependencyClicked(button)
+    local row = button:GetParent()
+    local page, label, card = Settings.Dependency(row.setting)
+    if page then ns.UI.GoToSetting(page, label, card) end
+end
+
 local function NewSetting(view)
     local row = CreateFrame("Frame", nil, view)
     row:SetHeight(ROW_H)
@@ -198,6 +206,7 @@ local function NewSetting(view)
     row.Set = function(...) RowSet(row, ...) end
     row.controls = {}
     row.rule = Rule(row)
+    row.rule:SetShown(ns.foreverSkin == true)
     row.split = Split(row)
     row.dot = Dot(row)
     row.label = ns.Font(row, LABEL_SIZE, nil, ns.foreverSkin and T.accent or T.fg)
@@ -207,6 +216,12 @@ local function NewSetting(view)
     row.why = ns.Font(row, SMALL_SIZE, nil, T.muted)
     row.why:SetJustifyH("RIGHT")
     row.why:SetWordWrap(false)
+    row.dependency = CreateFrame("Button", nil, row)
+    row.dependency:SetAllPoints(row.why)
+    row.dependency:SetScript("OnClick", DependencyClicked)
+    row.dependency.help = TEXT_FIND_DEPENDENCY
+    row.dependency:SetScript("OnEnter", HelpEnter)
+    row.dependency:SetScript("OnLeave", HelpLeave)
     row.hit = HelpHit(row, row.label)
     row.dot:SetFrameLevel(row.hit:GetFrameLevel() + 1)
     row.icons = {}
@@ -240,8 +255,12 @@ local function SetSetting(row, setting, split)
     row.label:SetText(Marked(row, ns.L(setting.label)))
     row.hit.help = setting.help
     row.dot:SetShown(Settings.Changed(setting))
-    row.split:SetShown(split)
+    row.split:SetShown(split and ns.foreverSkin == true)
     local off, why = Settings.Off(setting)
+    local dependency = off and Settings.Dependency(setting)
+    row.dependency:SetShown(dependency ~= nil and dependency ~= false)
+    local whyColor = dependency and T.accentSoft or T.muted
+    row.why:SetTextColor(whyColor.r, whyColor.g, whyColor.b, 1)
     Control.Dim(row, control, off)
     local tint = setting.labelColor or (ns.foreverSkin and T.accent) or T.fg
     row.label:SetTextColor(tint.r, tint.g, tint.b, 1)
@@ -285,6 +304,7 @@ local function NewHead(view)
     head:SetHeight(HEAD_H)
     local fill = ns.Solid(head, "BACKGROUND", T.panel, 1)
     fill:SetAllPoints()
+    fill:Hide()
     head.rule = Rule(head, 1)
     head.chevron = head:CreateTexture(nil, "ARTWORK")
     head.chevron:SetTexture(ns.UI.CHEVRON)
@@ -376,7 +396,7 @@ local function SetHead(head, card, isOpen, held)
     if head.sign then return SetForeverHead(head, card, isOpen, held) end
     head.chevron:SetRotation(isOpen and OPEN_TURN or 0)
     head.chevron:SetShown(Settings.Openable(card) and not held)
-    head.rule:SetShown(isOpen)
+    head.rule:Hide()
     local anchor = PlaceSwitch(head, card)
     head.summary:ClearAllPoints()
     head.summary:SetPoint("LEFT", anchor, "RIGHT", SUMMARY_GAP, 0)
@@ -390,6 +410,7 @@ local function NewGroup(view)
     row.text = ns.Font(row, SMALL_SIZE, nil, T.accentSoft)
     row.text:SetPoint("BOTTOMLEFT", PAD, GROUP_RISE)
     local rule = Rule(row)
+    rule:Hide()
     if ns.foreverSkin then
         row.heading = Parts.ForeverHeading(row, LABEL_SIZE, PAD)
         row.heading:SetAllPoints()
@@ -419,12 +440,20 @@ local function ResetClicked(link)
     foot:GetParent():QueueSettingsRedraw()
 end
 
+local function UndoClicked(link)
+    local foot = link:GetParent()
+    Settings.UndoReset(foot.card)
+    foot:GetParent():QueueSettingsRedraw()
+end
+
 local function NewFoot(view)
     local foot = CreateFrame("Frame", nil, view)
     foot.text = ns.Font(foot, SMALL_SIZE, nil, T.muted)
     foot.text:SetPoint("LEFT", PAD, 0)
     foot.reset = Parts.Link(foot, ResetClicked, true)
     foot.reset:SetPoint("RIGHT", -PAD, 0)
+    foot.undo = Parts.Link(foot, UndoClicked, true)
+    Parts.SetLink(foot.undo, TEXT_UNDO_RESET)
     foot.text:SetPoint("RIGHT", foot.reset, "LEFT", -FOOT_GAP, 0)
     foot.text:SetJustifyH("LEFT")
     foot.text:SetWordWrap(false)
@@ -441,7 +470,19 @@ end
 
 local function SetFoot(foot, card, changed)
     foot.card = card
-    foot.text:SetText(ChangedText(changed))
+    local canUndo = Settings.CanUndoReset(card)
+    foot.text:SetText(changed > 0 and ChangedText(changed) or "")
+    foot.reset:SetShown(changed > 0)
+    foot.undo:SetShown(canUndo)
+    foot.undo:ClearAllPoints()
+    if changed > 0 then
+        foot.undo:SetPoint("RIGHT", foot.reset, "LEFT", -FOOT_GAP, 0)
+    else
+        foot.undo:SetPoint("RIGHT", -PAD, 0)
+    end
+    foot.text:ClearAllPoints()
+    foot.text:SetPoint("LEFT", PAD, 0)
+    foot.text:SetPoint("RIGHT", canUndo and foot.undo or foot.reset, "LEFT", -FOOT_GAP, 0)
     Parts.SetLink(foot.reset, ns.L(TEXT_RESET, ns.L(card.name)))
     return FOOT_H
 end

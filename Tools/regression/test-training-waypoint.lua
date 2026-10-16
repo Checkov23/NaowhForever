@@ -83,6 +83,21 @@ Case("with none on your continent, or no position, a capital's trainer", functio
     got = Nearest("WARRIOR", "Horde", nil)
     assert(got == "Grezz Ragefist@1454", got)
 end)
+-- Every class a Skyborne can be has its trainer on Zephras Isle, where they start, or their
+-- waypoint leaves the island for a capital (a shaman went to Thunder Bluff).
+Case("Zephras Isle has a trainer for every Skyborne class", function()
+    local towns = {}
+    local env = setmetatable({ NaowhForever = towns }, { __index = _G })
+    env._G = env
+    Load({ "Shared/Game/Towns.lua" }, env)
+    local have = {}
+    for _, npc in ipairs(towns.TownNPCs[2521]) do
+        if npc[3] == "class" then have[npc[6]] = true end
+    end
+    for _, class in ipairs({ "DRUID", "HUNTER", "MAGE", "ROGUE", "SHAMAN", "WARRIOR" }) do
+        assert(have[class], "no " .. class .. " trainer on Zephras Isle")
+    end
+end)
 Case("your faction's capital before one both factions share", function()
     local got = Nearest("ROGUE", "Horde", nil)
     assert(got == "Shenthul@1454", got)

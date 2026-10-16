@@ -20,6 +20,7 @@ local function Frame()
     function f:UnregisterAllEvents() self.events = {} end
     function f:CreateTexture() return New() end
     function f:SetAttribute(k, v) self.attrs[k] = v end
+    function f:SetAlpha(a) self.alpha = a end
     return f
 end
 
@@ -119,7 +120,8 @@ do
         "NaowhForever_Combat/AuraBuffs/Constants.lua", "NaowhForever_Combat/AuraBuffs/LowHealth.lua", "NaowhForever_Combat/AuraBuffs/View/Style.lua",
         "NaowhForever_Combat/AuraBuffs/View/Glow.lua", "NaowhForever_Combat/AuraBuffs/View/LowHealthLook.lua",
         "NaowhForever_Combat/AuraBuffs/UI/GlowRows.lua", "NaowhForever_Combat/AuraBuffs/UI/LowHealth.lua" }, settings,
-        { LibStub = function() return LCG end, UnitHealthPercent = function() return 0.2 end })
+        { LibStub = function() return LCG end, UnitHealthPercent = function() return 0.2 end,
+          C_Item = { GetItemCount = function() return 1 end, GetItemIconByID = function(id) return id end } })
     local events
     for _, f in ipairs(frames) do
         if f.events.UNIT_HEALTH then events = f end
@@ -130,6 +132,38 @@ do
     check("Low Health: health events while low leave the glow alone", starts == 1 and stops == 0 and reads == before)
     S.Set("lowHealthGlowLines", 6)
     check("Low Health: a new glow look restarts it", starts == 2 and stops == 1)
+end
+
+-- Low Health with no healing item: hidden, without its glow, unless Show When Out is on.
+do
+    local settings = { enabled = true, lowHealth = true, lowHealthBelow = 35, lowHealthItem = "auto",
+        lowHealthShowEmpty = false, lowHealthIconSize = 48, lowHealthGlow = true, lowHealthSound = false,
+        lowHealthGlowType = "pixel", lowHealthGlowColor = { r = 1, g = 0.25, b = 0.25 }, lowHealthGlowLines = 8,
+        lowHealthGlowThickness = 2, lowHealthGlowSpeed = 5, lowHealthFont = "", lowHealthFontSize = 16,
+        lowHealthOutline = "OUTLINE" }
+    local carried, starts, stops = 0, 0, 0
+    local LCG = { PixelGlow_Start = function() starts = starts + 1 end, PixelGlow_Stop = function() stops = stops + 1 end }
+    local S, _, frames = Load({ "Core/Features.lua", "NaowhForever_Combat/AuraBuffs/AuraBuffs.lua",
+        "NaowhForever_Combat/AuraBuffs/Constants.lua", "NaowhForever_Combat/AuraBuffs/LowHealth.lua", "NaowhForever_Combat/AuraBuffs/View/Style.lua",
+        "NaowhForever_Combat/AuraBuffs/View/Glow.lua", "NaowhForever_Combat/AuraBuffs/View/LowHealthLook.lua",
+        "NaowhForever_Combat/AuraBuffs/UI/GlowRows.lua", "NaowhForever_Combat/AuraBuffs/UI/LowHealth.lua" }, settings,
+        { LibStub = function() return LCG end, UnitHealthPercent = function() return 0.2 end,
+          C_Item = { GetItemCount = function() return carried end, GetItemIconByID = function(id) return id end } })
+    local events, icon
+    for _, f in ipairs(frames) do
+        if f.events.UNIT_HEALTH then events = f elseif f.alpha then icon = f end
+    end
+    check("Low Health: low with empty bags, hidden by default", icon.alpha == 0 and starts == 0)
+    events.scripts.OnEvent(events, "UNIT_HEALTH")
+    check("Low Health: health events keep it hidden", icon.alpha == 0 and starts == 0)
+    carried = 1
+    events.scripts.OnEvent(events, "BAG_UPDATE_DELAYED")
+    check("Low Health: a healing item looted while low shows it", icon.alpha == 0.2 and starts == 1)
+    carried = 0
+    events.scripts.OnEvent(events, "BAG_UPDATE_DELAYED")
+    check("Low Health: the last one used hides it again", icon.alpha == 0 and stops == 1)
+    S.Set("lowHealthShowEmpty", true)
+    check("Low Health: Show When Out shows it with nothing in bags", icon.alpha == 0.2 and starts == 2)
 end
 
 -- Tracking: its Track line at 13, outlined.

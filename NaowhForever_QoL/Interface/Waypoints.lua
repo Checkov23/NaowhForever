@@ -16,13 +16,13 @@ local CHEVRON, CHECK, CROSS = MEDIA .. "chevron", MEDIA .. "check", MEDIA .. "cr
 local PIN, MARK, ARROW = 36, 12, 18
 local MARK_LAYER = 2
 local FILL_ALPHA = 0.2
-local CARD_W, CARD_PAD, CARD_GAP, STRIP = 180, 8, 8, 2
+local CARD_W, CARD_PAD, CARD_GAP = 180, 8, 8
 local NAME_SIZE, NOTE_SIZE, DIST_SIZE, TIME_SIZE, LINE_GAP, TIME_GAP = 14, 11, 18, 11, 3, 8
-local CARD_H = 2 * CARD_PAD + STRIP + NAME_SIZE + LINE_GAP + DIST_SIZE
+local CARD_H = 2 * CARD_PAD + NAME_SIZE + LINE_GAP + DIST_SIZE
 local CARD_ICON, ICON_GAP, ICON_CROP = NAME_SIZE + LINE_GAP + DIST_SIZE, 8, St.ICON_CROP
 local BEAM_W, BEAM_H, BEAM_ALPHA = 2, 80, 0.55
 local GROUND_W, GROUND_H = 44, 12
-local EDGE_INSET = 70
+local EDGE_RING, EDGE_BACK, EDGE_NEAR = 0.3, 0.9, 40
 local BEHIND = math.rad(30)
 local BEHIND_Y, BEHIND_SIZE = 60, 13
 local FAR, FAR_SCALE = 400, 0.65
@@ -30,6 +30,7 @@ local FADE_FLOOR = 0.25
 local RUN_SPEED = 7
 local SAMPLE_EVERY, SMOOTH, MIN_CLOSING, MAX_CLOSING = 1, 0.5, 1, 60
 local NAV_W, NAV_H, NAV_PAD, NAV_ICON, NAV_ARROW = 320, 40, 10, 20, 14
+local STRIP = 2
 local NAV_NAME, NAV_SUB, NAV_DIST = 14, 11, 16
 local NAV_Y = -70
 local NAV_NAME_LIFT, NAV_SUB_GAP, CUE_TEXT_GAP = 2, 1, 2
@@ -101,10 +102,6 @@ local function Card(parent, width)
     local card = CreateFrame("Frame", nil, parent)
     card:SetSize(width, CARD_H)
     Parts.HudBackdrop(card)
-    local strip = ns.Solid(card, "ARTWORK", T.accent, 1)
-    strip:SetPoint("TOPLEFT")
-    strip:SetPoint("TOPRIGHT")
-    strip:SetHeight(STRIP)
     return card
 end
 
@@ -135,15 +132,15 @@ function Look.NewPin(parent)
     local card = Card(pin, CARD_W)
     card.icon = card:CreateTexture(nil, "ARTWORK")
     card.icon:SetSize(CARD_ICON, CARD_ICON)
-    card.icon:SetPoint("TOPLEFT", CARD_PAD, -(CARD_PAD + STRIP))
+    card.icon:SetPoint("TOPLEFT", CARD_PAD, -CARD_PAD)
     card.icon:SetTexCoord(ICON_CROP, 1 - ICON_CROP, ICON_CROP, 1 - ICON_CROP)
     card.name = Parts.HudText(ns.Font(card, NAME_SIZE))
-    card.name:SetJustifyH("LEFT")
+    card.name:SetJustifyH("CENTER")
     card.name:SetWordWrap(false)
     card.note = Parts.HudText(ns.Font(card, NOTE_SIZE, nil, T.muted))
     card.note:SetPoint("TOPLEFT", card.name, "BOTTOMLEFT", 0, -LINE_GAP)
     card.note:SetPoint("RIGHT", card.name, "RIGHT")
-    card.note:SetJustifyH("LEFT")
+    card.note:SetJustifyH("CENTER")
     card.note:SetWordWrap(false)
     card.dist = Parts.HudText(ns.Font(card, DIST_SIZE, nil, T.accent))
     card.time = Parts.HudText(ns.Font(card, TIME_SIZE, nil, T.muted))
@@ -176,17 +173,21 @@ function Look.PaintPin(pin, o)
     if o.icon then
         card.name:SetPoint("TOPLEFT", card.icon, "TOPRIGHT", ICON_GAP, 0)
     else
-        card.name:SetPoint("TOPLEFT", CARD_PAD, -(CARD_PAD + STRIP))
+        card.name:SetPoint("TOPLEFT", CARD_PAD, -CARD_PAD)
     end
     card.name:SetPoint("RIGHT", -CARD_PAD, 0)
     card.name:SetText(o.name)
     card.note:SetShown(o.note ~= nil)
     card.note:SetText(o.note or "")
-    card.dist:ClearAllPoints()
-    card.dist:SetPoint("TOPLEFT", o.note and card.note or card.name, "BOTTOMLEFT", 0, -LINE_GAP)
     card:SetHeight(CARD_H + (o.note and NOTE_SIZE + LINE_GAP or 0))
+    local walk = o.seconds and not arrived and Walk(o.seconds) or ""
     card.dist:SetText(arrived and TEXT_ARRIVED or Yards(o.yards))
-    card.time:SetText(o.seconds and not arrived and Walk(o.seconds) or "")
+    card.time:SetText(walk)
+    local row = card.dist:GetStringWidth() + (walk ~= "" and TIME_GAP + card.time:GetStringWidth() or 0)
+    local left = o.icon and CARD_PAD + CARD_ICON + ICON_GAP or CARD_PAD
+    card.dist:ClearAllPoints()
+    card.dist:SetPoint("TOPLEFT", o.note and card.note or card.name, "BOTTOMLEFT",
+        math.floor(math.max(CARD_W - left - CARD_PAD - row, 0) / 2 + ROUND), -LINE_GAP)
     Look.PlaceCard(pin, card, edge, o.angle or 0)
 end
 
@@ -263,6 +264,7 @@ local selfCleared, seenAway, seenFar
 local mapHooked, trackOnMapClose
 local reached
 local lastX, lastY
+local outside = false
 local shown = {}
 local dirty = true
 local paintedMode, paintedSide, paintedYards, paintedSeconds
@@ -357,9 +359,8 @@ local function SizePin(mode, yards)
     return scale
 end
 
-local function PlaceAtEdge(cx, cy, dx, dy, scale)
-    local hw, hh = UIParent:GetWidth() / 2 - EDGE_INSET, UIParent:GetHeight() / 2 - EDGE_INSET
-    local t = math.min(hw / math.max(math.abs(dx), 1), hh / math.max(math.abs(dy), 1))
+local function PlaceAtEdge(cx, cy, dx, dy, scale, ring)
+    local t = ring > 0 and 1 / ring or 0
     pin:ClearAllPoints()
     pin:SetPoint("CENTER", UIParent, "CENTER", dx * t / scale, dy * t / scale)
     pin.onNav = false
@@ -456,12 +457,15 @@ local function Update()
     local nx, ny = navFrame:GetCenter()
     local dx, dy = nx - cx, ny - cy
     local angle = math.atan2(dy, dx)
-    local mode = C_Navigation.WasClampedToScreen() and "edge" or "world"
-    local behind = mode == "edge" and math.abs(angle - DOWN) < BEHIND
+    local ring = math.sqrt((dx / (UIParent:GetWidth() * EDGE_RING)) ^ 2 + (dy / (UIParent:GetHeight() * EDGE_RING)) ^ 2)
+    local clamped, edgeOn = C_Navigation.WasClampedToScreen(), S.Get("waypointEdge")
+    outside = edgeOn and yards > EDGE_NEAR and ring > (outside and EDGE_BACK or 1)
+    local mode = (clamped or outside) and "edge" or "world"
+    local behind = clamped and math.abs(angle - DOWN) < BEHIND
     local scale = SizePin(mode, yards)
     local side
     if mode == "edge" then
-        side = PlaceAtEdge(cx, cy, dx, dy, scale)
+        side = PlaceAtEdge(cx, cy, dx, dy, scale, ring)
     else
         PlaceOnSpot(nx, ny, scale)
     end
@@ -476,8 +480,8 @@ local function Update()
         ns.ClearWaypoint()
         return
     end
-    pin:SetShown(not (behind or reached) and (mode ~= "edge" or S.Get("waypointEdge")))
-    cue:SetShown(behind and not reached and S.Get("waypointEdge"))
+    pin:SetShown(not (behind or reached) and (mode ~= "edge" or edgeOn))
+    cue:SetShown(behind and not reached and edgeOn)
     Paint(mode, side, yards, WalkSeconds(yards), angle)
 end
 
@@ -728,7 +732,7 @@ Settings.Page("QoL/Interface", S):Card({
         { key = "waypointArrive", label = "Arrival Distance", slider = ARRIVE_RANGE, unit = "yd",
           help = "How close counts as there: a map waypoint clears." },
         { key = "waypointEdge", label = "Edge Arrow Off Screen", toggle = true,
-          help = "Keeps the pin at the edge of the screen, pointing the way, when the spot is off it." },
+          help = "Keeps the pin near the middle of the screen, pointing the way, when the spot is off screen or far to one side." },
         { key = "waypointNav", label = "Navigator Bar", toggle = true,
           help = "A bar with the name, a turn arrow and the distance, while a waypoint is set." },
         { key = "waypointSound", label = "Arrival Sound", sound = true },

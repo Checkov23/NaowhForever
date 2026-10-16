@@ -7,6 +7,7 @@ local CHEVRON = MEDIA .. "chevron.tga"
 local COGS_ICON = MEDIA .. "cog.tga"
 local TRACK_TEX = MEDIA .. "toggle_track.tga"
 local KNOB_TEX = MEDIA .. "toggle_knob.tga"
+local CHECK_TEX = MEDIA .. "check.tga"
 local SPEAKER_TEX = MEDIA .. "speaker.tga"
 local VOICE_PATH = MEDIA .. "Voice\\"
 local BLACK = { r = 0, g = 0, b = 0 }
@@ -43,7 +44,7 @@ local SCROLL_STEP = 60
 local GLIDE_RATE = 14
 local GLIDE_DONE = 0.5
 local TIP = { w = 240, pad = 8, size = 10, spacing = 3, gap = 4, cursorX = 16, cursorY = -12, alpha = 0.98 }
-local TOGGLE = { w = 40, h = 20, knobShare = 0.7, insetShare = 0.15, minInset = 2 }
+local TOGGLE = { w = 40, h = 20, knobShare = 0.8, insetShare = 0.1, minInset = 2, markShare = 0.4, hit = 4 }
 local FOLD = { arrow = 14, inset = 22, switchGap = 12, barTextX = 12 }
 local NOTE = { size = 12, inset = 20, top = 12, room = 24, fallbackW = 960 }
 local SCROLL = { slimW = 6, slimGap = 6, trackAlpha = 0.6, thumbAlpha = 0.8, minThumb = 24, sync = 0.5 }
@@ -169,6 +170,7 @@ function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize)
     if frameLevel then t:SetFrameLevel(frameLevel) end
     t._get, t._set = get, set
     if ns.foreverSkin then return ForeverCheck(t) end
+    t:SetHitRectInsets(-TOGGLE.hit, -TOGGLE.hit, -TOGGLE.hit, -TOGGLE.hit)
 
     local track = t:CreateTexture(nil, "BACKGROUND")
     track:SetTexture(TRACK_TEX)
@@ -180,6 +182,16 @@ function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize)
     knob:SetSize(KNOB, KNOB)
     Smooth(knob)
 
+    local mark = t:CreateTexture(nil, "ARTWORK")
+    mark:SetTexture(CHECK_TEX)
+    mark:SetSize(H * TOGGLE.markShare, H * TOGGLE.markShare)
+    mark:SetPoint("CENTER", t, "LEFT", H / 2, 0)
+    Smooth(mark)
+    local minus = ns.Solid(t, "ARTWORK", T.muted, 1)
+    minus:SetSize(H * TOGGLE.markShare, 1)
+    minus:SetPoint("CENTER", t, "RIGHT", -H / 2, 0)
+    ns.Hairline(minus, "h")
+
     local on = false
     local function PaintTrack(c, a)
         track:SetVertexColor(c.r, c.g, c.b, a)
@@ -187,6 +199,8 @@ function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize)
 
     local function Paint(state)
         on = Truthy(state)
+        mark:SetShown(on)
+        minus:SetShown(not on)
         knob:ClearAllPoints()
         if on then
             PaintTrack(T.accent, 1)
@@ -194,7 +208,7 @@ function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize)
             knob:SetPoint("RIGHT", t, "RIGHT", -INSET, 0)
         else
             PaintTrack(T.line, 1)
-            knob:SetVertexColor(T.muted.r, T.muted.g, T.muted.b, 1)
+            knob:SetVertexColor(T.fg.r, T.fg.g, T.fg.b, 1)
             knob:SetPoint("LEFT", t, "LEFT", INSET, 0)
         end
     end
@@ -853,6 +867,7 @@ local function NewRowRegions(row, parent, leftCfg, rightCfg)
     divider:SetPoint("TOP", row, "TOP", 0, -DIVIDER_INSET)
     divider:SetPoint("BOTTOM", row, "BOTTOM", 0, DIVIDER_INSET)
     ns.Hairline(divider, "v")
+    divider:SetShown(ns.foreverSkin == true)
 end
 
 local function FitRegions(row, parent, rightCfg)
@@ -874,6 +889,7 @@ function W:DualRow(parent, yOffset, leftCfg, rightCfg)
         row._rule = ns.Solid(row, "ARTWORK", T.line, RULE_ALPHA)
         row._rule:SetPoint("BOTTOMLEFT"); row._rule:SetPoint("BOTTOMRIGHT"); ns.Hairline(row._rule, "h")
     end
+    row._rule:SetShown(ns.foreverSkin == true)
     if row._leftRegion then
         row._leftRegion._refresh(leftCfg)
         if rightCfg then row._rightRegion._refresh(rightCfg) end
@@ -918,6 +934,7 @@ function W:SectionHeader(parent, text, yOffset, inset, fold)
     sep:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 0, 0)
     sep:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, 0)
     ns.Hairline(sep, "h")
+    sep:Hide()
     if ns.foreverSkin then
         ForeverHeader(f, text, fold)
         lbl:Hide()

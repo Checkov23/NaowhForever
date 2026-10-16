@@ -1,4 +1,4 @@
--- ScrapList.lua: the Scrap List window (/nf scrap): every marked item and rule match in your bags.
+-- ScrapList.lua: the Junk List window (/nf junk): every marked item and rule match in your bags.
 local ns = _G.NaowhForever
 
 local T = ns.THEME
@@ -38,7 +38,7 @@ local EMPTY_NOTE = {
     alt = ns.L("Nothing marked. Alt-click an item in your bags to mark it."),
     ctrl = ns.L("Nothing marked. Ctrl-click an item in your bags to mark it."),
 }
-local NO_MATCH = ns.L("No scrap item matches your search.")
+local NO_MATCH = ns.L("No junk item matches your search.")
 local TAGS = { account = ns.L("Account"), char = ns.L("Character") }
 local TAG_TIPS = { account = ns.L("Marked on every character; click for this character only."),
     char = ns.L("Marked on this character only; click for every character.") }
@@ -49,12 +49,12 @@ local TEXT_IN_BAGS = ns.L(" in your bags")
 local TEXT_NOT_CARRIED = ns.L("Not in your bags")
 local TEXT_ITEM, TEXT_ITEMS = ns.L("%d item"), ns.L("%d items")
 local TEXT_KEEP, TEXT_UNMARK = ns.L("Keep it"), ns.L("Unmark")
-local TEXT_CLEAR_ASK = ns.L("Unmark every item marked as scrap?")
+local TEXT_CLEAR_ASK = ns.L("Unmark every item marked as junk?")
 local TEXT_NOTHING_MARKED = ns.L("Nothing marked to export.")
-local TEXT_TITLE = ns.L("Scrap List")
+local TEXT_TITLE = ns.L("Junk List")
 local TEXT_SUBTITLE = ns.L("Sold at the next vendor. Drop an item here to mark it.")
-local TEXT_ADD_ONE = ns.L("Add %d item to your scrap list: %s%s?")
-local TEXT_ADD = ns.L("Add %d items to your scrap list: %s%s?")
+local TEXT_ADD_ONE = ns.L("Add %d item to your junk list: %s%s?")
+local TEXT_ADD = ns.L("Add %d items to your junk list: %s%s?")
 local TEXT_MORE = ns.L(" and %d more")
 local TEXT_RARE_ONE, TEXT_RARE = ns.L("%d of these is Rare or better"), ns.L("%d of these are Rare or better")
 local TEXT_UNCOMMON_ONE, TEXT_UNCOMMON = ns.L("%d of these is Uncommon"), ns.L("%d of these are Uncommon")
@@ -62,9 +62,9 @@ local TEXT_WORTH_ONE, TEXT_WORTH = ns.L("%d sells for %s or more"), ns.L("%d sel
 local TEXT_WORTH_ALONE_ONE = ns.L("%d of these sells for %s or more")
 local TEXT_WORTH_ALONE = ns.L("%d of these sell for %s or more")
 local TEXT_WARN_AND = ns.L("%s, and %s")
-local TEXT_NOT_A_LIST = ns.L("That isn't a Scrap List string.")
+local TEXT_NOT_A_LIST = ns.L("That isn't a Junk List string.")
 local TEXT_NOTHING_NEW = ns.L("Nothing new to add from that list.")
-local TEXT_PASTE = ns.L("Paste a Scrap List")
+local TEXT_PASTE = ns.L("Paste a Junk List")
 local TEXT_IMPORT, TEXT_IMPORT_TIP = ns.L("Import a list"), ns.L("Paste a shared list to add its items.")
 local TEXT_EXPORT, TEXT_EXPORT_TIP = ns.L("Export this list"), ns.L("A string to share it with.")
 local TEXT_SEARCH = ns.L("Search")
@@ -386,13 +386,13 @@ end
 
 Shared.Settings.Page(PAGE, ns.QoLSettings):Window({
     order = 66,
-    text = "Open Scrap List",
+    text = "Open Junk List",
     open = OpenFromCard,
-    headline = "Scrap List",
-    detail = "Every item marked as scrap, to search, unmark, share or add to.",
+    headline = "Junk List",
+    detail = "Every item marked as junk, to search, unmark, share or add to.",
 })
 
 ns.RegisterMinimapFeature({
-    id = "ScrapList", name = "Scrap List", icon = "Interface\\Icons\\INV_Misc_Bag_08",
-    open = ns.ToggleScrapList, tooltip = "Click to open or close the Scrap List.",
+    id = "ScrapList", name = "Junk List", icon = "Interface\\Icons\\INV_Misc_Bag_08",
+    open = ns.ToggleScrapList, tooltip = "Click to open or close the Junk List.",
 })

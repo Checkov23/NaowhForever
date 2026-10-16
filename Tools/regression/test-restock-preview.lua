@@ -196,14 +196,14 @@ for i, row in ipairs(rows) do
 end
 check("ammo follows class reagents and precedes food", positions["Class Reagents"] < positions.restockAmmo
     and positions.restockAmmo < positions.restockHunterAmmo and positions.restockHunterAmmo < positions["Food & Drink"])
-local SHARED_AMMO = "Ammo: |cfffff468Rogue|r, |cffc69b6dWarrior|r and |cffaad372Hunter|r"
+local SHARED_AMMO = "Ammo: |cfffff468Rogue|r and |cffc69b6dWarrior|r"
 check("class-coloured groups precede their own preserved setting keys",
     positions[SHARED_AMMO] + 1 == positions.restockAmmo
     and positions["Ammo: |cffaad372Hunter|r"] + 1 == positions.restockHunterAmmo)
 local groupRow = s.ns.Shared.Settings.kinds.group.New(s.Frame())
 s.ns.Shared.Settings.kinds.group.Set(groupRow, SHARED_AMMO)
 check("an uppercased group keeps its colour codes working", groupRow.text.text
-    == "AMMO: |cFFFFF468ROGUE|r, |cFFC69B6DWARRIOR|r AND |cFFAAD372HUNTER|r")
+    == "AMMO: |cFFFFF468ROGUE|r AND |cFFC69B6DWARRIOR|r")
 check("carry and hunter threshold keys remain distinct", positions.restockAmmoTarget and positions.restockHunterAmmoBelow)
 local function InventorySubscribed(state)
     for _, frame in ipairs(state.frames) do

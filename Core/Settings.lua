@@ -114,6 +114,7 @@ local S = UI.ModuleSettings("qol", {
     foodBarX = 0, foodBarY = 0,
     consumableBar = F.consumableBar, consumableBarItems = {}, consumableBarItemFlags = {},
     consumableBarSize = 36, consumableBarSpacing = 4, consumableBarGrow = "RIGHT", consumableBarPerRow = 12,
+    consumableBarRect = false, consumableBarHeight = 36, consumableBarFlipRows = false,
     consumableBarCooldown = true, consumableBarTooltip = true, consumableBarHideEmpty = true,
     consumableBarHideCombat = false, consumableBarBackground = false, consumableBarBgAlpha = 0.6,
     consumableBarAskNew = false, consumableBarDeclined = {}, consumableBarSkip = { other = true },

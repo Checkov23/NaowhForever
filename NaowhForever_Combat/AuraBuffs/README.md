@@ -23,7 +23,7 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
   sized to what it says and stacked in the Alerts group (`ns.AlertStack`), with the camp's time
   left inline after a dot while it still runs.
 - **Low Health:** the best healing item in your bags, with a LOW HEALTH warning, while your health
-  is under the threshold.
+  is under the threshold. With no healing item it stays hidden, unless Show When Out is on.
 
 ## Layout
 

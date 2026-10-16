@@ -294,8 +294,9 @@ local settings = { enabled = true, recipeFinder = true, vendorMaterials = true, 
 local defaults = {}
 local db = {}
 local account = {}
-local ns, logoPage
+local ns, logoPage, launcher
 ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
+    RegisterMinimapFeature = function(feature) launcher = feature end,
     Shared = { Style = dofile("Tools/regression/shared_style.lua"), Parts = { Logo = function(parent, page) logoPage = page; return Widget(parent) end }, Settings = {
         Group = function() return {} end, Look = function() return {} end,
         Page = function() return { Window = Noop, Card = Noop } end } },
@@ -799,6 +800,8 @@ check("with the window closed, a shopping change draws no recipe list", listRend
 settings.recipeAvailability = false
 
 check("the recipe window's logo opens the Professions settings", logoPage == "Professions/Settings")
+check("the Shopping List has a launcher that toggles it, with a real icon path", launcher
+    and launcher.open == ns.ToggleShoppingList and launcher.icon == "Interface\\Icons\\INV_Misc_Note_01")
 
 if #failures > 0 then
     for _, label in ipairs(failures) do print("  FAIL " .. label) end

@@ -13,7 +13,7 @@ local function Check(ok, label) assert(ok, label); checks = checks + 1 end
 
 local settings = { enabled = true, townMap = true, townCapitalsOnly = true, townFlight = true, townInn = true,
     townStable = true, townVendors = true, townRepair = true, townClass = true, townProfession = true,
-    townBank = true, townSupplies = true }
+    townBank = true, townSupplies = true, townPinSize = 20 }
 local S = { Get = function(key) return settings[key] end, Set = function() end }
 local function Town()
     return {

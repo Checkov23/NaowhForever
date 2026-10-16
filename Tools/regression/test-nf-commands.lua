@@ -56,7 +56,7 @@ do
     check("/nf help prints a list and leaves the window alone", #s.printed > 10 and s.toggled == 0)
     check("it names /nf move", Printed(s, "/nf move"))
     for _, word in ipairs({ "/nf bars", "/nf ab", "/nf xp", "/nf lockouts", "/nf ranks", "/nf trainer", "/nf profrank",
-            "/nf scrap", "/nf efficiency", "/nf quiz", "/nf gamble", "/nf setup" }) do
+            "/nf junk", "/nf efficiency", "/nf quiz", "/nf gamble", "/nf setup" }) do
         check("it names " .. word, Printed(s, word))
     end
     for _, mod in ipairs(s.ns.Options.MODULES) do
@@ -90,6 +90,11 @@ do
     s.ns.ToggleSpellEfficiencyReport = function() opened = opened + 1 end
     nf("efficiency")
     check("/nf efficiency opens the Mana Efficiency window", opened == 1 and s.toggled == 0)
+    local junk = 0
+    s.ns.ToggleScrapList = function() junk = junk + 1 end
+    nf("junk")
+    nf("scrap")
+    check("/nf junk opens the Junk List, and /nf scrap still does", junk == 2 and s.toggled == 0)
 
     nf("nonsense")
     check("an unknown command still opens the window", s.toggled == 1)
@@ -186,7 +191,7 @@ do
     t.env.NaowhForever_OpenTopBar()
     check("and otherwise opens QoL > Interface", page == "QoL/Interface")
 end
-for key, window in pairs({ SCRAP = { "scrap", "ToggleScrapList", "Scrap List", "Quality of Life" },
+for key, window in pairs({ SCRAP = { "scrap", "ToggleScrapList", "Junk List", "Quality of Life" },
         DISENCHANT = { "disenchant", "ToggleDisenchant", "Disenchant", "Professions" },
         QUIZ = { "quiz", "ToggleQuiz", "Quiz", "Quality of Life" }, AIM = { "aim", "ToggleAimTrainer", "Aim Trainer", "Quality of Life" },
         EFFICIENCY = { "efficiency", "ToggleSpellEfficiencyReport", "Mana Efficiency", "Quality of Life" } }) do

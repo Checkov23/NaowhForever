@@ -109,8 +109,8 @@ NaowhForever_QoL/
     Alts.lua            your characters per realm and faction (ns.AltRealm, ns.AltList, ns.OpenForgetAltMenu)
     LootFeed.lua        the Loot Feed, gold per hour and quick loot (ns.ResetLootFeedSession)
     Restock.lua         the Restock Reminder, Auto Repair and Auto Sell Junk
-    ScrapMarker.lua     the Scrap Marker (ns.ScrapMarker), read by Bag Space and the Scrap List
-    ScrapList.lua       the Scrap List window (ns.OpenScrapList, /nf scrap)
+    ScrapMarker.lua     the Junk Marker (ns.ScrapMarker), read by Bag Space and the Junk List
+    ScrapList.lua       the Junk List window (ns.OpenScrapList, /nf junk)
     Mail.lua            Alts and Attach buttons at the mailbox, the expiring mail warning
   Travel/
     FlightData.lua      each flight route's flown length (ns.FLIGHT_ROUTES), generated
@@ -594,7 +594,7 @@ NaowhForever_QoL/
   (`Parts.HudBackdrop`); the icons keep their own edges in each. Its Font Size is the header's
   (12 is the size its other measures are drawn for); the bag, the header line and the prices
   scale with it. The card is the house panel at the Flight Timer's fill (0.85) round a slim
-  header (the bag, free slots out of your total, Scrap Marker's "+N", the Stack button) over a
+  header (the bag, free slots out of your total, Junk Marker's "+N", the Stack button) over a
   cell per item (its icon, its marks, its price under it).
 - Bag Space's cells and gap shrink with the Icon Size below 36 (the size the rest is drawn for):
   the gap, the price column and the price font follow it, to a floor, so a small row stays
@@ -706,23 +706,26 @@ NaowhForever_QoL/
 - Quick Attach puts in one stack at a time, from a scan made at the click: each is checked in its bag slot and on the cursor before it goes in, and the next goes only once the last has landed (MAIL_SEND_INFO_UPDATE).
 - Its one `C_Container.PickupContainerItem` runs only from a click at the open mailbox, which is why the taint scan allows it.
 
-### Scrap Marker and Scrap List
+### Junk Marker and Junk List
+- Players see Junk Marker and Junk List; the code, setting keys (`scrap*`), saved marks, the `NFSCRAP:1:` share
+  string and Baganator's plugin id (`NaowhForeverScrap`) keep the old Scrap name, so saved settings, marks and
+  shared lists carry over. `/nf scrap` still opens the list.
 - Items are marked by ID, never by name: for the account (`scrapItems`) or for one character by its GUID (`scrapChars`).
 - With Save Marks off (the default) a mark lasts only while you hold the item: on `BAG_UPDATE_DELAYED`, a marked ID
   this character has had in its bags this session and no longer has loses its mark. Only IDs seen in the bags this
   session are dropped, so a login before the bags are read, another character's account mark, or a mark added from
-  the Scrap List for an item you do not carry are all kept.
-- Scrap sells `BATCH` (6) items at a time, `STEP_DELAY` (0.25 s) apart, and each sale checks again that you are still at the vendor, out of combat, with the same item in that slot. That is why the taint scan allows its one `C_Container.UseContainerItem`; keep that check right before the call.
+  the Junk List for an item you do not carry are all kept.
+- The Junk Marker sells `BATCH` (6) items at a time, `STEP_DELAY` (0.25 s) apart, and each sale checks again that you are still at the vendor, out of combat, with the same item in that slot. That is why the taint scan allows its one `C_Container.UseContainerItem`; keep that check right before the call.
 - A generation number drops a step left over from an earlier sale, so closing the vendor or entering combat ends a sale cleanly.
 - The X on a rule match keeps it (`scrapKeep`), so the rule leaves it alone until you mark it yourself.
 - `QUEST_GEAR` is gear a quest takes but the game files as a weapon or armour, not a quest item, so a rule
   would sell it: the Razormane wand, dagger and shield (5092-5094) for Weapons of Choice in the Barrens.
-  It is never scrap, even with an old mark, and can't be marked.
+  It is never junk, even with an old mark, and can't be marked.
 - Bag buttons, the game's, EllesmereUI's and Baganator's, are hooked once with HookScript, and only out of combat.
 - Marking Modifier is Alt or Ctrl. The game's own modified click still runs after the hook, so with Ctrl a click on gear also opens the dressing room (DRESSUP is Ctrl by default); the setting's help says so instead of blocking the game's handler.
-- Baganator gets the mark as a corner widget and the marks as a junk plugin, through `Baganator.API`. Neither can be taken back, so both are registered once, the first time the Scrap Marker is on, and answer nothing while it is off.
+- Baganator gets the mark as a corner widget and the marks as a junk plugin, through `Baganator.API`. Neither can be taken back, so both are registered once, the first time the Junk Marker is on, and answer nothing while it is off.
 - Baganator pools its item buttons and moves them between slots, so a marking click reads the button's bag and slot when it lands, not at the last paint. Its buttons for other characters' bags have no bag, so they get no click and no mark.
-- Baganator's junk plugin takes over its junk detection, so ours counts grey items with a sell price as junk too, as Baganator's own Poor quality does, and adds scrap on top.
+- Baganator's junk plugin takes over its junk detection, so ours counts grey items with a sell price as junk too, as Baganator's own Poor quality does, and adds marked junk on top.
 - `MAX_ITEM_ID` caps an imported ID at the largest 32-bit signed number, so a pasted list cannot ask for an impossible item.
 
 ### Skyborne Spots
@@ -760,6 +763,7 @@ NaowhForever_QoL/
 - The drawer sits against the map window's left side (the Dungeon Journal takes the right), `GAP` -1 putting its border on the map's so the two read as one window; with no room there, the right. It is the map's height, as wide as the quest log beside the map (`PANEL_W` where there is none), and its rows shrink to fit a small map, down to `ROW_MIN_H`; past that they scroll, so the drawer never runs off the map. The scroll bar sits inside the rows' right margin, raised over them so its grip takes the mouse.
 - The maximized map letterboxes its picture on a wide screen, so there the drawer goes in the black bar left of the picture, as wide as the bar allows; with no bar `BAR_MIN_W` wide it hangs under the Map Pins button, which stays free to close it. Either way it is no taller than the picture and its rows scroll. The map's Maximize and Minimize place it again.
 - On the minimap, the game says when you start and stop moving but not where you are, so the pins are placed every `MINI_INTERVAL` (0.05 s) while you move, or always with a rotating minimap, for turning. The zone's map is kept in world coordinates (its continent, top left corner and the steps for one whole map across and down): `UnitPosition` makes no table each tick, `GetPlayerMapPosition` does.
+- Minimap pins follow Town Pin Size too, at `MINI_SCALE` (0.9) of it: Town Pin Size 20 makes them 18, the size of the game's own tracking icons beside them.
 - Pins draw the game's own map art, not square spell icons with a border: `MAP_ART` lists each kind's art in order, the redesigned atlases of the minimap's object icon sheet (`Interface/Minimap/ObjectIconsAtlas`) first, then the older `Interface/Minimap/Tracking` and gossip files. A kind whose art the client lacks keeps its square icon. A missing file makes SetTexture return false, so a file is only kept where it loaded.
 - Flight masters are the flight map's green spot (`Taxi_Frame_Green`): its yellow one is lost on the Barrens' yellow. Vendors and trade goods are the sheet's bags, which is its `Banker` art, so the bank shares it.
 - Spirit healers are the sheet's blue spirit ghost. Where the client lacks it, the Spirit Healer's angel cut round (`ROUND_ART`, `ROUND_MASK`), as the Skyborne pins are, reads better than a tombstone. Pins are pooled across kinds, so the mask goes on and comes off again.
@@ -796,6 +800,8 @@ NaowhForever_QoL/
 - The game clears a map pin on arrival, but it keeps tracking a quest, and Forever reports a quest reached only right on its point. So for a tracked quest the pin and cue go within `QUEST_NEAR` (40 yards) of its point, the quest's area or the quest giver, and come back past `QUEST_LEAVE` (55), so walking about the area does not make them flicker. The game has no call that says you are inside a quest's area (Forever's QuestLog and Navigation docs: only map points, `IsOnMap` and a display state), so the distance stands in for it. Other targets use Arrival Distance (`waypointArrive`, 5 yards by default) and come back `LEAVE_MARGIN` (2) yards past it. The navigator stays.
 - The walking time comes from how fast the distance shrinks, sampled every `SAMPLE_EVERY` second and smoothed by `SMOOTH`. Your speed reads secret at times (on a mount too), and the last readable one was often the run on foot, so a mounted time came out about double. A sample under `MIN_CLOSING` (stopped, turned away) or over `MAX_CLOSING` (the spot moved) drops the pace, and so does a new target; without one, the time uses your last readable speed, or `RUN_SPEED` (7 yards a second) standing still.
 - The card and navigator are repainted only when the mode, side, whole yards or whole seconds change; the place and arrows move every frame, and nothing is built per frame.
+- The pin stands on its spot only inside an oval around the middle of the screen, `EDGE_RING` (0.3) of its width and height out from the centre. Past it, on screen or off, it rides the oval with its arrow: the minimap, quest tracker, buffs and bars sit at the edges and corners, and a pin and card clamped there landed on top of them. One boundary for both cases means no jump when the game starts clamping the spot, which it does right at the screen's edge. With Edge Arrow Off Screen off, a spot on screen keeps its pin wherever it is. Once past the oval it holds there until the spot is back inside `EDGE_BACK` (0.9) of it, so a spot sitting on the line does not flicker between the two looks. Within `EDGE_NEAR` (40 yards) a spot on screen keeps its pin, beam and fade wherever it is: walking up to it, it is often low on screen.
+- Behind you is the game's clamped spot within `BEHIND` of straight down, not the oval's: a spot low on screen past the oval is in front of you.
 - `BEHIND` is the angle either side of straight down that counts as behind you. `FAR` is the distance at which the pin is smallest (`FAR_SCALE`), and `FADE_FLOOR` its alpha at your feet with Fade Up Close on.
 - The game places a waypoint you click on the map without tracking it (its map code calls `SetSuperTrackedUserWaypoint(false)` right after `SetUserWaypoint`), and the pin only follows what is tracked, so on `USER_WAYPOINT_UPDATED` it tracks the new waypoint itself: one frame later with the map closed (the game's own untracking has run by then), or as the map closes (`trackOnMapClose`), as `Core/Waypoint.lua` holds its own placements, since setting one with the map open taints it. Already tracked, it leaves it.
 - A waypoint you set has no held arrival: reaching it plays the sound and the pin, cue and bar go at once. A quest, the corpse and a route's stop hold the arrival where the pin last stood for `ARRIVED_HOLD` (a route's names the next stop). The game clears a waypoint you set as you reach it, its navigation frame going too, before or after NAVIGATION_DESTINATION_REACHED; that event's `isWaypoint` is a stop on the way (a zone's exit), not the spot itself. A waypoint you set does not wait for it: on the waypoint's map or one inside it (a waypoint placed on a continent still counts in its zones; the game routes a waypoint on another map through stops on the way, such as a zone's exit, which are not the spot), within Arrival Distance of its spot once the pin has seen you more than `LEAVE_MARGIN` past it, or within `REACHED` (5 yards) once it has seen you more than `LEAVE_MARGIN` past that, since the waypoint was attached or placed (a new waypoint can report no distance at first, and one placed under you has nothing to reach; other tracking changes on the way do not reset it), the pin shows the arrival and clears the waypoint itself, so it goes even when the game sends no arrival, or sends it as a stop. The game's event, when it does come first, clears it before the pin does. It does this once per waypoint (`selfCleared`: with the world map open the clear is held, and the pin must not arrive again every hold), and never on a route's stop, which moves on by the game's arrival event: clearing it would end the route. The `REACHED` fallback keeps a waypoint placed inside a long Arrival Distance from clearing at once.

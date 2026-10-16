@@ -1677,6 +1677,7 @@ ns.TownNPCs = {
         { 65.4, 80.2, "profession", "Daeann Steelwind", "Blacksmith", nil, "AH" },
         { 66.2, 79.6, "profession", "Iaadaria Bitterwind", "Alchemist", nil, "A" },
         { 44.7, 45.4, "vendor", "Veena Vericloud", "General Goods", nil, "AH", 254358 },
+        { 42.8, 23.6, "class", "Windshaper Boro", "Shaman Trainer", "SHAMAN", "AH", 251374 },
         { 57.9, 77.1, "auction", "Zelena Favorbreeze", "Auctioneer", nil, "AH", 257037 },
         { 43.8, 43.9, "vendor", "Zerril Softbreeze", "Cook", nil, "AH", 251905 },
     },

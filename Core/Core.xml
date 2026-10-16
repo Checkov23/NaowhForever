@@ -3,6 +3,7 @@
     <Script file="Core.lua"/>
     <Script file="Features.lua"/>
     <Script file="Profiles\Presets.lua"/>
+    <Script file="Profiles\Positions.lua"/>
     <Script file="Senders.lua"/>
     <Script file="Waypoint.lua"/>
     <Frame name="NaowhForeverWaypointPreviewPinTemplate" mixin="NaowhForeverWaypointPreviewPinMixin" virtual="true">

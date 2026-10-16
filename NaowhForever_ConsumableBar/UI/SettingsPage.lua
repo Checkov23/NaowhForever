@@ -11,6 +11,7 @@ local Group = Settings.Group
 local STAGE_MIN, STAGE_PAD = 90, 24
 local NOTE_FONT = 12
 local ASK = "Ask to Add New Consumables"
+local RECT = "Rectangular Icons"
 local HEALTH, FOOD = "NF Health", "NF Food"
 local TEXT_NO_MANA = ns.L("You don't use mana")
 local TEXT_BUTTONS_ON = ns.L("The Food & Drink buttons are on the bar")
@@ -41,7 +42,7 @@ end
 
 local function PaintPreview(holder, state)
     local items = CB.ShownItems()
-    local size, gap, grow, perRow = CB.Grid()
+    local size, gap, grow, perRow, height, flip = CB.Grid()
     local map = CB.KeyMap()
     local combat = state == "combat"
     for i, entry in ipairs(items) do
@@ -51,22 +52,22 @@ local function PaintPreview(holder, state)
             holder.cells[i] = cell
         end
         cell.entry, cell.itemID = entry, CB.Resolve(entry)
-        ItemBar.Place(cell, holder, i, size, gap, grow, perRow)
-        CB.PlaceBackground(cell, i, #items, gap, grow, perRow)
-        CB.StyleCell(cell, entry, size)
+        ItemBar.Place(cell, holder, i, size, gap, grow, perRow, height, flip)
+        CB.PlaceBackground(cell, i, #items, gap, grow, perRow, flip)
+        CB.StyleCell(cell, entry, size, height)
         CB.ShowCount(cell, cell.itemID, 0)
         CB.ShowCooldown(cell, cell.itemID)
         CB.ShowKey(cell, map)
         cell:SetShown(not (combat and (S.Get("consumableBarHideCombat") or CB.Flags(entry).combat)))
     end
     for i = #items + 1, #holder.cells do holder.cells[i]:Hide() end
-    holder:SetSize(ItemBar.Size(#items, size, gap, grow, perRow))
+    holder:SetSize(ItemBar.Size(#items, size, gap, grow, perRow, height))
     holder.note:SetShown(#items == 0)
 end
 
 local function StageHeight()
-    local size, gap, grow, perRow = CB.Grid()
-    local _, h = ItemBar.Size(#CB.ShownItems(), size, gap, grow, perRow)
+    local size, gap, grow, perRow, height = CB.Grid()
+    local _, h = ItemBar.Size(#CB.ShownItems(), size, gap, grow, perRow, height)
     return math.max(STAGE_MIN, h + 2 * C.BG_PAD + STAGE_PAD)
 end
 
@@ -106,10 +107,16 @@ local ANCHOR = { store = S, prefix = CB.PREFIX, name = BAR_NAME, on = CB.On, fra
 local barRows = {
     Group("Layout"),
     { key = "consumableBarSize", label = "Icon Size", slider = SIZE_RANGE },
+    { key = "consumableBarRect", label = RECT, toggle = true,
+      cog = { title = "Icon Height", tip = "How tall the icons are, with Icon Size as their width." },
+      help = "Gives the icons their own height, cropped to fit instead of stretched." },
+    { key = "consumableBarHeight", label = "Icon Height", slider = SIZE_RANGE, under = RECT },
     { key = "consumableBarSpacing", label = "Spacing", slider = SPACING_RANGE },
     { key = "consumableBarGrow", label = "Growth Direction", choice = ItemBar.GrowChoice() },
     { key = "consumableBarPerRow", label = "Icons Per Row", slider = PER_ROW_RANGE,
       help = "How many icons fit in a row before the next row starts." },
+    { key = "consumableBarFlipRows", label = "Flip Row Direction", toggle = true,
+      help = "New rows go above the first instead of below it, or left instead of right." },
     { key = "consumableBarCooldown", label = "Show Cooldowns", toggle = true,
       help = "The item's cooldown sweeps over its icon." },
     { key = "consumableBarTooltip", label = "Item Tooltips", toggle = true,

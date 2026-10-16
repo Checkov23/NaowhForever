@@ -149,6 +149,7 @@ return function(opts)
     Load("Core/Profiles/Presets.lua", env)
     ns.QoLSettings = Store(w, ns, "qol")
     Load("Core/Options/Modules.lua", env)
+    Load("Core/Profiles/Positions.lua", env)
     Load("Core/Profiles/Setups.lua", env)
     Load("Core/Onboarding/Setup.lua", env)
     ns.ConfirmReload = ns.ConfirmReload or function(text) w.reloads[#w.reloads + 1] = text end

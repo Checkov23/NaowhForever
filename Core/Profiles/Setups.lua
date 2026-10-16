@@ -6,6 +6,7 @@ local P = ns.PRESETS
 local Settings = ns.Shared.Settings
 
 local ASK = ns.L("Apply %s to every setting and position? Your lists, notes and saved picks stay. Cannot be undone.")
+local ASK_KEEP = ns.L("Apply %s to every setting? Your positions, lists, notes and saved picks stay. Cannot be undone.")
 local DONE = ns.L("Every setting now follows %s. Reload now to finish?")
 local ON, OFF, SAME = ns.L("%s turns on: %s"), ns.L("%s turns off: %s"), ns.L("%s is what you have now.")
 local RIVALS = { "characterPanel", "inspectPanel" }
@@ -44,17 +45,19 @@ local function Replace(root, profile)
     if type(root.qol) ~= "table" then root.qol = {} end
 end
 
-function ns.ApplyPreset(key)
+function ns.ApplyPreset(key, keepPositions)
     local root = ns.SettingsRoot()
     local qol = type(root.qol) == "table" and root.qol or {}
     local own, was = {}, {}
     for _, k in ipairs(ns.PROFILE_OWN.qol) do own[k] = qol[k] end
     local kept = Kept(root)
+    local positions = keepPositions and ns.KeepPositions(root)
     for _, k in ipairs(RIVALS) do was[k] = S.Get(k) end
     Replace(root, P[key].profile)
     if ns.Setup then ns.Setup.PresetSwitches(P[key]) end
     for k, value in pairs(own) do root.qol[k] = value end
     PutBack(root, kept)
+    if positions then ns.PutPositionsBack(root, positions) end
     root.qol.preset = key
     for _, k in ipairs(RIVALS) do
         if S.Get(k) ~= was[k] then S.Set(k, S.Get(k)) end
@@ -62,9 +65,9 @@ function ns.ApplyPreset(key)
 end
 
 function ns.UsePreset(key, ask)
-    local name = P[key].name
+    local name, keep = P[key].name, ns.AccountSettings().presetKeepPositions ~= false
     local function Go()
-        ns.ApplyPreset(key)
+        ns.ApplyPreset(key, keep)
         if ns.Setup then
             local want = ns.Setup.ModuleDefaults(key)
             for _, m in ipairs(ns.Setup.Modules()) do
@@ -75,7 +78,7 @@ function ns.UsePreset(key, ask)
         ns.ConfirmReload(DONE:format(name))
     end
     if ask == false then return Go() end
-    ns.Confirm(ASK:format(name), Go, nil, APPLY)
+    ns.Confirm((keep and ASK_KEEP or ASK):format(name), Go, nil, APPLY)
 end
 
 local function ByName(a, b) return a < b end

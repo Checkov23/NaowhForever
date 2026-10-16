@@ -479,4 +479,9 @@ function ns.ToggleShoppingList()
     if window and window:IsShown() then window:Hide() else ns.OpenShoppingList() end
 end
 
+ns.RegisterMinimapFeature({
+    id = "ShoppingList", name = "Shopping List", icon = "Interface\\Icons\\INV_Misc_Note_01",
+    open = ns.ToggleShoppingList, tooltip = "Click to open or close the Shopping List.",
+})
+
 Shopping.RenderWindow = RenderWindow

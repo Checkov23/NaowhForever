@@ -83,7 +83,14 @@ NaowhForever_ConsumableBar/
 - Remove Empty takes off the items you have none of in your bags; Smart Macros stay, since they
   pick whatever you carry.
 - Counts, keys, the grey icon, NONE and cooldowns are plain text and textures, and update in combat.
-- NONE follows the icon's size, not the count's font: as large as fits between the edges.
+- NONE follows the icon's size, not the count's font: as large as fits between the edges, and no
+  taller than a rectangular icon's shorter side.
+- Rectangular Icons (off by default) gives the icons their own height, with Icon Size as their
+  width, so they can match a unit frame's or a cooldown manager's icons. The art is cropped to the
+  icon's shape (`ItemBar.Shape`), never stretched.
+- Flip Row Direction (off by default) starts each new row on the other side of the first: above it
+  when the icons grow left or right, to the left when they grow up or down. A bar under a unit frame
+  then grows upward toward it.
 - Each icon carries its own piece of the background, reaching halfway into the spacing toward each
   neighbour and `BG_PAD` (3 px) past an outer edge, so a hidden icon takes its piece with it.
 - Keys are read a frame after a bar changes (`C_Timer.After(0)`): Blizzard redraws its own key text

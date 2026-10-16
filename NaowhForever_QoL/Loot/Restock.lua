@@ -547,8 +547,7 @@ local function RestockRows()
     for _, family in ipairs(FAMILIES) do
         if family.class == class then grouped = AddReagentRows(family, grouped) end
     end
-    restockRows[#restockRows + 1] = Group(ns.L("Ammo: %s, %s and %s", ClassName("ROGUE"), ClassName("WARRIOR"),
-        ClassName("HUNTER")))
+    restockRows[#restockRows + 1] = Group(ns.L("Ammo: %s and %s", ClassName("ROGUE"), ClassName("WARRIOR")))
     for _, row in ipairs(AMMO) do restockRows[#restockRows + 1] = row end
     restockRows[#restockRows + 1] = Group(ns.L("Ammo: %s", ClassName("HUNTER")))
     for _, row in ipairs(HUNTER) do restockRows[#restockRows + 1] = row end

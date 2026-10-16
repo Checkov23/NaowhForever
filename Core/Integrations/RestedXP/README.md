@@ -86,13 +86,25 @@ Core/Integrations/RestedXP/
   only the first four make the redraw read RestedXP's steps and walk its windows again (`Rebuilt`).
   The window needs RestedXP's V2 interface (`v2:IsGuideWindowEnabled()`): the active step rows and
   the guide's rows are built for it.
-- Steps after the active one come from `v2:BuildGuideStepsSnapshot`, which is what RestedXP's own
-  v2 guide window lists, so a step it hides or has done is not listed here either. It walks the
-  whole guide and joins every step's text, so it is read once and kept, for the most steps that can
-  be listed, by guide and by the step it follows, until RestedXP builds again. A counter ticking
-  redraws from what was kept, as RestedXP's own window is only rebuilt then too: with a guide of 700
-  steps a redraw went from reading it (2.6 ms of Lua, plus the same in RestedXP's own window at its
-  layout) to none.
+- The list under the active step is the guide's steps as `v2:BuildGuideStepsSnapshot` has them, which
+  is what RestedXP's own v2 guide window lists: a step it hides is not listed, and a step done is, a
+  little dimmer, so that a step can be gone back to. It starts at the first step after the active one
+  and the mouse wheel moves it, two lines a tick, over the steps before (the one the guide is on in
+  the accent color) and after. The wheel scrolls it over its lines, and only while there are more
+  steps than lines, so anywhere else it still zooms the camera. A bar that shows where it is (Show Scroll
+  Bar, off to start: the list is as wide as the step box, and no tooltip says it scrolls) is there only
+  when there are more steps than lines: it is at the right edge of the step box, as wide as the steps
+  are and not at the window's (where it looked like it belonged to nothing), and the lines end before
+  it. It goes back to the steps after the active one when the guide moves on (a
+  new progress or guide), and not when RestedXP builds again, so a list being read is not taken from
+  the reader. Listed Steps is how many lines it has, and a click on one goes to that step as it did
+  (shift-click to start): `SetStep` is what RestedXP's own "Go to step" calls, back or forward. With
+  RestedXP's Hide Completed Steps on, the snapshot has no done steps and so neither has the list.
+  The snapshot walks the whole guide and joins every step's text, so it is read once and kept, by
+  guide, until RestedXP builds again, and the text of a line is made when the line is drawn. A counter
+  ticking redraws from what was kept, as RestedXP's own window is only rebuilt then too: with a guide
+  of 700 steps a redraw went from reading it (2.6 ms of Lua, plus the same in RestedXP's own window at
+  its layout) to none.
 - RestedXP's two windows are walked (`Silence`) for frames made since the last time only when it built
   something, and when they are given back and taken again. A window that is not there yet is asked
   for at every redraw until both are.
@@ -100,7 +112,10 @@ Core/Integrations/RestedXP/
   are the ones it has, and the two font strings of a row, which their row sets at every draw, are not
   in the loop that follows an option. A redraw that changes no size sets no font (22 calls before, in
   a window of three rows and six lines). RestedXP's own title text, which it may set again itself,
-  is always set.
+  is always set, at RestedXP's own size (`BOX_TITLE_TEXT`, 9) and never at the size `GetFont` answers:
+  a title whose font did not load (a cold login, before the font is there) answers a size that is
+  garbage, and `SetFont` refuses a height of 0 or less with an error the client reports even when it
+  is caught. RestedXP sets every one of these titles at 9 itself.
 - The window has no panel of its own, as RestedXP's coming layout has none: a header with a rule under
   it, the active step in a box (the only thing with a background), and the steps after it as plain
   shadowed lines over the world, so every text carries a shadow (`SHADOW`) to be read on any ground.
@@ -150,7 +165,22 @@ Core/Integrations/RestedXP/
   the outline and the three sizes change at once.
 - The progress bar is a `StatusBar`: the guide's under the title (the step over the number of steps, so
   36 of 66) and one in the active step (the rows done over its rows). Its texture is a SharedMedia
-  statusbar picked in the page and flat to start, its track is the Line color and its fill the Accent color. Its height is fixed (`BAR_HEIGHT`).
+  statusbar picked in the page and flat to start, its track is the Bar Background Color (the Line color
+  to start) and its fill the Bar Color (the Accent color to start, `barFill` follows `accent`, so it is
+  the theme's). The fill's height is fixed (`BAR_HEIGHT`).
+- The step box and the bars have a border of their own, one pixel to start and black in the Naowh theme,
+  as Naowh's house style has it and as Naowh asked for them: Step Box Border Size and Color, Bar Border
+  Size and Color, and the bar's background. The color is themed (`edge` in `COLORS`, `ThemedEdge`): black
+  for the addon's own theme, the preset's line color for a preset (the window's or the addon's), and the
+  Forever skin's bronze for the skin, so a theme keeps its look and only the Naowh theme is black. The
+  size is in whole screen pixels: both are the shared `ns.Border`, whose `SetPixels` sets how many, and
+  which refits them like every other border when the UI scale changes. The bar is that much
+  taller, `EDGE_SIDES` times the size, so its fill is as thick as it was: the border is inside the bar's
+  frame and over it. The three colors are the player's in every theme (`always` is set on them): a
+  theme's edge is not what a player has to take, so Custom is not needed to change it. The window's own
+  border keeps the Border Color, and the two windows of RestedXP that take the step's look (Active
+  Targets and Items) take the step box's, as they are drawn as the step box is. The Forever skin draws
+  its own rim and inset, so its look has neither the border nor its size.
 - The window is resized from its corner (`StartSizing`). Its height is what it draws, so the height does
   not set a height: it sets how many steps are listed. Draw keeps the height the window has without the
   list (`chrome`) and the height of a line, and letting go of the grip turns the width and
@@ -158,7 +188,7 @@ Core/Integrations/RestedXP/
   Its bounds are the smallest (no steps) and the tallest (all of them). Lock Window stops moving and
   sizing, and a folded window has nothing to size. The width has no slider and the grip no switch:
   the corner is the way to size the window, so a setting for either was one more row to say the same
-  (only the steps keep one, Upcoming Steps, as a number is exact where a drag is not). A grip that an
+  (only the lines keep one, Listed Steps, as a number is exact where a drag is not). A grip that an
   older version had switched off is shown.
 - The window follows the drag as it happens (`OnSizeChanged` while the grip is held): what the list can
   show is read once when the grip is pressed, with every step it could list, and each size drawn from
@@ -240,11 +270,13 @@ Core/Integrations/RestedXP/
   (`ForeverInset`) behind the step box with its border on and behind the window with its border on, in place
   of the flat back and line, the skin's rim and field on the bars, and its plus and minus for the fold. The
   box's opacity and the window's panel are the fill of the inset; with no border the flat back is what is drawn.
-- The window has a theme of its own (`rxpWindowTheme`: the addon's to start, a preset, or Custom), picked in
-  its fold and shown at once. It is the window's colors alone: the addon's theme (COLORS) is not read for
+- The window has a theme of its own (`rxpWindowTheme`: the addon's current one to start, a preset, or Custom),
+  picked in its fold, where the addon's own is called Current Theme, as RestedXP's theme list does, and
+  shown at once. It is the window's colors alone: the addon's theme (COLORS) is not read for
   a preset and not set by it, and the icons and the arrow follow the window's. The colors are the preset's
   and the player's own only while it is Custom (`RXPWindowOwnColors`): a theme is a look as a whole, so the
-  nine colors are shown only for Custom, and what was picked is kept for when it is Custom again. Forever is
+  nine colors are shown only for Custom, and what was picked is kept for when it is Custom again (the four of
+  the step box's border and the bars, `always`, are shown and kept in any theme). Forever is
   the addon's Forever skin for the window alone: its gold and bronze (`ns.FOREVER_SKIN`) and its face, with the
   addon left as it is (the skin itself, under COLORS, is read at load and takes the window with it when the
   window's theme is the addon's). The

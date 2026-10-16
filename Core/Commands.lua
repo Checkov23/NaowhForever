@@ -11,7 +11,7 @@ local MODULE_KEYS = { instance = true, discovery = true, gear = true, bless = tr
     buffs = true, threat = true, pvp = true }
 local NAMED_KEYS = { Journeys = "JOURNEYS", Professions = "PROFESSIONS", ["Consumable Bar"] = "CONSUMABLEBAR",
     ["Swing Timer"] = "SWINGTIMER" }
-local WINDOW_KEYS = { scrap = { "ToggleScrapList", "Scrap List", "Quality of Life" },
+local WINDOW_KEYS = { scrap = { "ToggleScrapList", "Junk List", "Quality of Life" },
     disenchant = { "ToggleDisenchant", "Disenchant", "Professions" }, quiz = { "ToggleQuiz", "Quiz", "Quality of Life" },
     aim = { "ToggleAimTrainer", "Aim Trainer", "Quality of Life" },
     efficiency = { "ToggleSpellEfficiencyReport", "Mana Efficiency", "Quality of Life" } }
@@ -36,7 +36,7 @@ local HELP_LINES = {
     ns.L("/nf ranks: higher ranks to put on your bars"),
     ns.L("/nf trainer: a waypoint to your nearest class trainer"),
     "/nf profrank: your professions' next ranks",
-    ns.L("/nf scrap: the Scrap List"),
+    ns.L("/nf junk: the Junk List"),
     ns.L("/nf efficiency: Mana Efficiency, every rank of your mana spells"),
     ns.L("/nf shopping: the Professions Shopping List"),
     ns.L("/nf quiz: the WoW quiz"),
@@ -150,7 +150,7 @@ SlashCmdList["NAOWHFOREVER"] = function(msg)
         ns.BadgesCommand(arg)
     elseif cmd == "disenchant" and ns.ToggleDisenchant then
         ns.ToggleDisenchant()
-    elseif cmd == "scrap" and ns.ToggleScrapList then
+    elseif (cmd == "junk" or cmd == "scrap") and ns.ToggleScrapList then
         ns.ToggleScrapList()
     elseif cmd == "gamble" and ns.ToggleGamble then
         ns.ToggleGamble()

@@ -24,7 +24,7 @@ local ICON_FOLDER = "\\Icons\\"
 local FULL_LOW, FULL_HIGH = 0, 1
 local HINT = ns.QoLConstants.HINT_RGB
 local EMPTY = {}
-local MINI_SIZE = 12
+local MINI_SCALE = 0.9
 local MINI_INTERVAL = 0.05
 local PIN_RANGE = ns.Shared.Style.PIN_SIZE_RANGE
 local TOWN_PIN_SCALE = 0.5625
@@ -436,7 +436,6 @@ local function MiniPin(i)
     local pin = miniPins[i]
     if pin then return pin end
     pin = CreateFrame("Frame", nil, Minimap, TEMPLATE)
-    pin:SetSize(MINI_SIZE, MINI_SIZE)
     pin:SetScript("OnEnter", pin.OnMouseEnter)
     pin:SetScript("OnLeave", pin.OnMouseLeave)
     miniPins[i] = pin
@@ -458,8 +457,10 @@ local function MiniRefresh()
         miniWidth, miniHeight = C_Map.GetMapWorldSize(miniMap)
     end
     for i = #miniSpots + 1, #miniPins do miniPins[i]:Hide() end
+    local size = S.Get("townPinSize") * MINI_SCALE
     for i, spot in ipairs(miniSpots) do
         local pin = MiniPin(i)
+        pin:SetSize(size, size)
         pin.npc = spot
         SetPinArt(pin, spot)
     end

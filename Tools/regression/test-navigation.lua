@@ -981,6 +981,45 @@ input:SetText(""); Flush()
 Check(not Text("TURNED OFF") and Text("MODULES"), "cleared, the group hides and the page goes back to Settings")
 missingAddOns.NaowhForever_QoL = nil
 
+do
+    ns.BuildProfileSettings = function(parent, y)
+        return y - ns.Shared.Settings.Render(parent, "Profiles/Setups", function() end, ns.UI.Search.Narrowed("Profiles"))
+    end
+    input:SetText("onboarding"); Flush()
+    local result
+    for _, frame in ipairs(frames) do
+        if frame.entry and frame.entry.label == "Onboarding" and frame:IsShown() then result = frame break end
+    end
+    Check(result ~= nil, "search offers a direct Onboarding result")
+    Click(result)
+    Check(not ns.UI.SearchTyped() and not result:IsShown(), "choosing a result clears search and closes the popup")
+    Check(Text("Start") ~= nil, "carried setting results open the actual Profiles setting")
+    input:SetText("clock"); Flush()
+    input.scripts.OnArrowPressed(input, "DOWN")
+    local selected
+    for _, frame in ipairs(frames) do
+        if frame.entry and frame:IsShown() and frame.fill and frame.fill:IsShown() then selected = frame break end
+    end
+    Check(selected and selected.index == 2, "Down selects the next search result")
+    input.scripts.OnEditFocusLost(input)
+    Check(not selected:IsShown(), "leaving search closes its popup")
+    input.scripts.OnEditFocusGained(input)
+    Check(selected:IsShown(), "refocusing search restores its results")
+    input.scripts.OnEnterPressed(input)
+    Check(not ns.UI.SearchTyped(), "Enter navigates to the selected result")
+    input:SetText("zzzzzzzzzzzzzz"); Flush()
+    Check(Text("No matching settings.") ~= nil, "an empty result list explains that nothing matched")
+    input.scripts.OnEscapePressed(input)
+    Check(not ns.UI.SearchTyped(), "Escape clears the search")
+    ns.BuildProfileSettings = nil
+    ns.MarkReloadRequired("Changed the skin")
+    Check(Text("Reload UI *") ~= nil, "reload-required feedback persists in the window button")
+    local reload = ns.ReloadButton(env.UIParent, "Reload UI", 110, 26)
+    Check(reload.label.text == "Reload UI *" and reload._tipBody() == "Changed the skin",
+        "new reload buttons inherit the pending reason")
+    reload:Hide()
+end
+
 print(cases .. " navigation checks passed")
 -- Available only to an offline renderer that loads this test environment.
 local capture = rawget(_G, "NAVIGATION_CAPTURE")

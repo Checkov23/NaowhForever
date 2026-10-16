@@ -4,7 +4,6 @@ local Safe = ns.RXPSafe
 local Has, Dig, Run = Safe.Has, Safe.Dig, Safe.Run
 
 local ACTIVE_SHOWN = 3
-local UPCOMING_MAX = select(2, ns.RXPWindowStepsRange())
 local PERCENT, ROUND = 100, 0.5
 local COUNT_PATTERN = "(%d+)%s*/%s*(%d+)"
 local LEAD_ICON, LEAD_PLAIN = "^%s*(|T[^|]*|t)%s*", "^|T([^|:]+):%d+|t$"
@@ -103,42 +102,53 @@ function ns.RXPWindowStale()
     kept = nil
 end
 
-local function Listed(v2, after)
+local function Listed(v2)
     local snapshot = Run("WindowSteps", v2.BuildGuideStepsSnapshot, v2, true)
     if not snapshot then return nil end
     local list = {}
     for _, row in ipairs(snapshot.rows) do
-        if row.index > after and not row.hidden and not row.complete then
-            list[#list + 1] = { index = row.index, text = Plain(row.text:match("^[^\n]*")) }
-            if #list == UPCOMING_MAX then break end
+        if not row.hidden then
+            list[#list + 1] = { index = row.index, line = row.text:match("^[^\n]*"), done = row.complete and true or false }
         end
     end
     return list
 end
 
-local function Upcoming(rxp, after, count)
-    local out = {}
+local function Steps(rxp)
     local v2 = rxp.v2
-    if count == 0 or not v2.BuildGuideStepsSnapshot then return out end
+    if not v2.BuildGuideStepsSnapshot then return nil end
     local guide = rxp.currentGuide
-    if not (kept and kept.guide == guide and kept.after == after) then
-        local list = Listed(v2, after)
-        if not list then return out end
-        kept = { guide = guide, after = after, list = list }
+    if not (kept and kept.guide == guide) then
+        local list = Listed(v2)
+        if not list then return nil end
+        kept = { guide = guide, list = list }
     end
-    for i = 1, math.min(count, #kept.list) do out[i] = kept.list[i] end
-    return out
+    return kept.list
+end
+
+local function FirstAfter(list, index)
+    local low, high = 1, #list + 1
+    while low < high do
+        local middle = math.floor((low + high) / 2)
+        if list[middle].index > index then high = middle else low = middle + 1 end
+    end
+    return low
+end
+
+function ns.RXPWindowLineText(entry)
+    if not entry.text then entry.text = Plain(entry.line) end
+    return entry.text
 end
 
 function ns.RXPWindowNoGuide()
-    return { heading = TEXT_NO_GUIDE, steps = {}, upcoming = {}, empty = true }
+    return { heading = TEXT_NO_GUIDE, steps = {}, current = {}, list = {}, first = 1, empty = true }
 end
 
-function ns.RXPWindowRead(steps)
+function ns.RXPWindowRead()
     local rxp = _G.RXP
     local guide = rxp.currentGuide
     if not guide or guide.empty then return nil end
-    local model = { heading = Heading(rxp, guide), steps = {} }
+    local model = { heading = Heading(rxp, guide), steps = {}, current = {}, guide = guide }
     local step = Run("WindowProgress", rxp.GetGuideProgress)
     local total = #guide.steps
     if step and total > 0 then
@@ -157,8 +167,10 @@ function ns.RXPWindowRead(steps)
             end
         end
         model.steps[#model.steps + 1] = { label = StepLabel(activeStep), rows = rows, source = activeStep }
+        model.current[activeStep.index] = true
         if activeStep.index > after then after = activeStep.index end
     end
-    model.upcoming = Upcoming(rxp, after, steps or ns.RXPWindowSteps())
+    model.list = Steps(rxp) or {}
+    model.after, model.first = after, FirstAfter(model.list, after)
     return model
 end

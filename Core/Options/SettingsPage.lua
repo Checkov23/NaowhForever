@@ -31,7 +31,7 @@ local TEXT_COLORS_RELOAD = ns.L("Reload UI to apply your color changes.")
 local TEXT_RXP_RELOAD = ns.L("Reload UI to apply your RestedXP changes.")
 local TEXT_RXP_PICK_RELOAD = "Reload UI to pick a theme."
 local TEXT_RXP_WINDOW_NEEDS = "Turn on RestedXP's Beta Features and V2 interface."
-local TEXT_WINDOW_THEME_SAME = "Same as the Addon"
+local TEXT_WINDOW_THEME_CURRENT = "Current Theme"
 local TEXT_SKIN_RELOAD = ns.L("Reload UI to change the skin.")
 local TEXT_SKIN_TIP = ns.L("Dresses the addon's windows as Naowh's own or WoW Forever's, after a reload.")
 local TEXT_FOREVER = "Forever"
@@ -272,6 +272,7 @@ end
 
 local function ColorsChanged()
     colorsPending = true
+    ns.MarkReloadRequired(TEXT_COLORS_RELOAD)
     UI:RefreshPage(true)
 end
 
@@ -358,6 +359,7 @@ end
 
 local function RxpChanged()
     rxpPending = true
+    ns.MarkReloadRequired(TEXT_RXP_RELOAD)
     UI:RefreshPage(true)
 end
 
@@ -515,7 +517,7 @@ local function IconStyleRow()
 end
 
 local function WindowThemeRow()
-    local values, order = { [""] = TEXT_WINDOW_THEME_SAME }, { "" }
+    local values, order = { [""] = TEXT_WINDOW_THEME_CURRENT }, { "" }
     for _, key in ipairs(ns.THEME_PRESET_ORDER) do
         values[key] = ns.THEME_PRESETS[key].name
         order[#order + 1] = key
@@ -525,7 +527,7 @@ local function WindowThemeRow()
     values[CUSTOM] = TEXT_CUSTOM
     order[#order + 1] = CUSTOM
     return { type = "dropdown", text = "Window Theme", values = values, order = order,
-        tooltip = "The window's colors alone, whatever the addon's theme is; Custom lets you pick them.",
+        tooltip = "The window's own theme, or the addon's current one; Custom lets you pick the colors.",
         getValue = ns.RXPWindowThemeKey,
         setValue = function(v)
             ns.SetRXPWindowTheme(v)
@@ -542,8 +544,9 @@ local function RxpWindowStyleRows(W, parent, y)
             if option.group == group then cells[#cells + 1] = WindowOptionCell(option) end
         end
     end
-    if ns.RXPWindowOwnColors() then
-        for _, color in ipairs(ns.RXPWindowColors()) do cells[#cells + 1] = WindowColorCell(color) end
+    local own = ns.RXPWindowOwnColors()
+    for _, color in ipairs(ns.RXPWindowColors()) do
+        if own or color.always then cells[#cells + 1] = WindowColorCell(color) end
     end
     for i = 1, #cells, 2 do
         _, h = W:DualRow(parent, y, cells[i], cells[i + 1] or Empty()); y = y - h
@@ -593,8 +596,8 @@ local function RxpWindowRows(W, parent, y)
     local stepsMin, stepsMax, stepsStep = ns.RXPWindowStepsRange()
     local scaleMin, scaleMax, scaleStep = ns.RXPWindowScaleRange()
     _, h = W:DualRow(parent, y,
-        { type = "slider", text = "Upcoming Steps", min = stepsMin, max = stepsMax, step = stepsStep,
-          tooltip = "How many of the steps after the active one are listed.",
+        { type = "slider", text = "Listed Steps", min = stepsMin, max = stepsMax, step = stepsStep,
+          tooltip = "How many steps the list shows at once, the rest by scrolling it.",
           getValue = ns.RXPWindowSteps,
           setValue = function(v) ns.SetRXPWindowSteps(v) end },
         { type = "slider", text = "Naowh Window Scale", min = scaleMin, max = scaleMax, step = scaleStep,

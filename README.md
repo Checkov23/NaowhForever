@@ -82,7 +82,7 @@ character or share them with a friend.
 | `/nf quiz` | A WoW quiz for flights and campfires |
 | `/nfaim` | The Aim Trainer |
 | `/nf gamble` | Gamble sessions |
-| `/nf scrap` | Your Scrap List (Scrap Marker, QoL > Loot & Items) |
+| `/nf junk` | Your Junk List (Junk Marker, QoL > Loot & Items); `/nf scrap` still works |
 | `/nf shopping` | Your Shopping List window (Professions > Shopping List) |
 | `/copy` | The text under your mouse, ready to copy (turn on Global Copy in QoL > Interface) |
 | `/nf badges id` | Your badge code, for all your characters (see [Supporter badges](#supporter-badges)) |

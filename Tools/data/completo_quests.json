@@ -50707,6 +50707,18 @@
    "zone": 14
   }
  },
+ "81570": {
+  "chain": null,
+  "start": {
+   "coord": [
+    55.4,
+    26.2
+   ],
+   "npc": "\"Swamp Eye\" Jarl",
+   "npcId": 4792,
+   "zone": 15
+  }
+ },
  "816": {
   "chain": null,
   "start": {
@@ -52876,6 +52888,27 @@
    "npcId": 3338,
    "zone": 17
   }
+ },
+ "8458": {
+  "chain": {
+   "chain": [
+    [
+     1480
+    ],
+    [
+     1481
+    ],
+    [
+     1482
+    ]
+   ],
+   "names": {
+    "1480": "The Corrupter",
+    "1481": "The Corrupter",
+    "1482": "The Corrupter"
+   }
+  },
+  "start": null
  },
  "846": {
   "chain": {
@@ -60597,6 +60630,35 @@
    "zone": 267
   }
  },
+ "92459": {
+  "chain": {
+   "chain": [
+    [
+     92432
+    ],
+    [
+     92458
+    ],
+    [
+     92459
+    ]
+   ],
+   "names": {
+    "92432": "An Alarming Request",
+    "92458": "Heart of Disruption",
+    "92459": "Friend of the Kirin Tor"
+   }
+  },
+  "start": {
+   "coord": [
+    68.6,
+    45.2
+   ],
+   "npc": "Image of Archmage Modera",
+   "npcId": 269127,
+   "zone": 130
+  }
+ },
  "92460": {
   "chain": {
    "chain": [
@@ -62293,6 +62355,10 @@
    "zone": 16593
   }
  },
+ "92872": {
+  "chain": null,
+  "start": null
+ },
  "92880": {
   "chain": null,
   "start": {
@@ -62552,6 +62618,104 @@
    "zone": 16593
   }
  },
+ "93044": {
+  "chain": {
+   "chain": [
+    [
+     1382
+    ],
+    [
+     1368,
+     1384
+    ],
+    [
+     1370
+    ],
+    [
+     1373
+    ],
+    [
+     93034
+    ],
+    [
+     93035,
+     93037
+    ],
+    [
+     93041
+    ],
+    [
+     93044
+    ],
+    [
+     93045
+    ]
+   ],
+   "names": {
+    "1368": "Gelkis Alliance",
+    "1370": "Stealing Supplies",
+    "1373": "Ongeku",
+    "1382": "Strange Alliance",
+    "1384": "Raid on the Kolkar",
+    "93034": "Valley of Bones",
+    "93035": "Ravaging Ravagers",
+    "93037": "Outing Outcasts",
+    "93041": "Facing the Truth",
+    "93044": "A Cleansing Cry",
+    "93045": "Test Your Theory"
+   }
+  },
+  "start": null
+ },
+ "93045": {
+  "chain": {
+   "chain": [
+    [
+     1382
+    ],
+    [
+     1368,
+     1384
+    ],
+    [
+     1370
+    ],
+    [
+     1373
+    ],
+    [
+     93034
+    ],
+    [
+     93035,
+     93037
+    ],
+    [
+     93041
+    ],
+    [
+     93044
+    ],
+    [
+     93045
+    ]
+   ],
+   "names": {
+    "1368": "Gelkis Alliance",
+    "1370": "Stealing Supplies",
+    "1373": "Ongeku",
+    "1382": "Strange Alliance",
+    "1384": "Raid on the Kolkar",
+    "93034": "Valley of Bones",
+    "93035": "Ravaging Ravagers",
+    "93037": "Outing Outcasts",
+    "93041": "Facing the Truth",
+    "93044": "A Cleansing Cry",
+    "93045": "Test Your Theory"
+   }
+  },
+  "start": null
+ },
  "93065": {
   "chain": {
    "chain": [
@@ -62693,6 +62857,37 @@
    "zone": 141
   }
  },
+ "93128": {
+  "chain": {
+   "chain": [
+    [
+     93058,
+     93062
+    ],
+    [
+     93122
+    ],
+    [
+     93128
+    ]
+   ],
+   "names": {
+    "93058": "Saving Our Own",
+    "93062": "Bone Burying",
+    "93122": "Checking Things Out",
+    "93128": "Khan Jehn"
+   }
+  },
+  "start": {
+   "coord": [
+    58.4,
+    88.6
+   ],
+   "npc": "Nerlokh",
+   "npcId": 253177,
+   "zone": 405
+  }
+ },
  "93159": {
   "chain": null,
   "start": {
@@ -62783,6 +62978,75 @@
    "npcId": 217412,
    "zone": 8
   }
+ },
+ "93196": {
+  "chain": {
+   "chain": [
+    [
+     1385
+    ],
+    [
+     1367,
+     1386
+    ],
+    [
+     1369
+    ],
+    [
+     92743
+    ],
+    [
+     92841
+    ],
+    [
+     92844,
+     92846
+    ],
+    [
+     92847
+    ],
+    [
+     92873
+    ],
+    [
+     92893,
+     92894
+    ],
+    [
+     93066
+    ],
+    [
+     93072,
+     93129
+    ],
+    [
+     93188
+    ],
+    [
+     93196
+    ]
+   ],
+   "names": {
+    "1367": "Magram Alliance",
+    "1369": "Broken Tears",
+    "1385": "Brutal Politics",
+    "1386": "Assault on the Kolkar",
+    "92743": "A Conqueror's Crown",
+    "92841": "Valley of Bones",
+    "92844": "Mountain of Bones",
+    "92846": "Outcast Necromancers",
+    "92847": "Corrupting Tears",
+    "92873": "Proof of Concept",
+    "92893": "No Mercy for the Weak",
+    "92894": "Bone Raising",
+    "93066": "Bristleback Retreat",
+    "93072": "Long-Term Solutions",
+    "93129": "Threat of Starvation",
+    "93188": "Return to Orgrul",
+    "93196": "Khan Jehn"
+   }
+  },
+  "start": null
  },
  "932": {
   "chain": {
@@ -63153,6 +63417,10 @@
   }
  },
  "93663": {
+  "chain": null,
+  "start": null
+ },
+ "93678": {
   "chain": null,
   "start": null
  },
@@ -64963,7 +65231,15 @@
   "chain": null,
   "start": null
  },
+ "95770": {
+  "chain": null,
+  "start": null
+ },
  "95771": {
+  "chain": null,
+  "start": null
+ },
+ "95773": {
   "chain": null,
   "start": null
  },
@@ -64991,6 +65267,10 @@
    "npcId": 3432,
    "zone": 17
   }
+ },
+ "95786": {
+  "chain": null,
+  "start": null
  },
  "958": {
   "chain": null,
@@ -65025,6 +65305,44 @@
    ],
    "names": {
     "95816": "Sign Me Up!"
+   }
+  },
+  "start": null
+ },
+ "95817": {
+  "chain": {
+   "chain": [
+    [
+     95816
+    ],
+    [
+     95817
+    ]
+   ],
+   "names": {
+    "95816": "Sign Me Up!",
+    "95817": "Rotgath Stonebeard"
+   }
+  },
+  "start": null
+ },
+ "95818": {
+  "chain": {
+   "chain": [
+    [
+     95816
+    ],
+    [
+     95817
+    ],
+    [
+     95818
+    ]
+   ],
+   "names": {
+    "95816": "Sign Me Up!",
+    "95817": "Rotgath Stonebeard",
+    "95818": "A Quick Craft"
    }
   },
   "start": null
@@ -65314,6 +65632,30 @@
    "npc": "Cerellean Whiteclaw",
    "npcId": 3644,
    "zone": 148
+  }
+ },
+ "96339": {
+  "chain": null,
+  "start": {
+   "coord": [
+    62,
+    39.4
+   ],
+   "npc": "Innkeeper Wiley",
+   "npcId": 6791,
+   "zone": 17
+  }
+ },
+ "96383": {
+  "chain": null,
+  "start": {
+   "coord": [
+    62,
+    39.4
+   ],
+   "npc": "Innkeeper Wiley",
+   "npcId": 6791,
+   "zone": 17
   }
  },
  "96390": {
@@ -66460,6 +66802,10 @@
    "npcId": 10302,
    "zone": 490
   }
+ },
+ "97420": {
+  "chain": null,
+  "start": null
  },
  "97485": {
   "chain": null,

@@ -9,8 +9,10 @@ local checks = 0
 local function Check(ok, label) assert(ok, label); checks = checks + 1 end
 
 local W, H = 1920, 1080
+local EDGE_ROOM = 250
 local NOOP = function() end
 local made = {}
+local GLYPH_W = 6
 local Frame = {}
 local FrameMeta = { __index = function(_, k)
     if Frame[k] then return Frame[k] end
@@ -39,6 +41,8 @@ function Frame:SetPoint(...)
 end
 function Frame:SetText(t) self.text = t end
 function Frame:GetText() return self.text end
+function Frame:GetStringWidth() return #(self.text or "") * GLYPH_W end
+function Frame:SetJustifyH(j) self.justify = j end
 function Frame:SetRotation(r) self.rotation = r end
 function Frame:SetTexture(t) self.texture = t end
 function Frame:SetHeight(h) self.height = h end
@@ -202,6 +206,13 @@ Check(pin.point[2] == navFrame and pin.point[5] == 0, "with no line it sits on t
 S.Set("waypointBeam", nil)
 Check(pin.card.name.text == "Mage Trainer" and pin.card.dist.text == "312 yd", "named as placed, with its distance")
 Check(pin.card.time.text == "about 0:45", "standing still, the walking time is at running pace")
+local function Centred(card)
+    local row = #card.dist.text * GLYPH_W + (card.time.text ~= "" and 8 + #card.time.text * GLYPH_W or 0)
+    local left = card.icon.shown and 8 + 35 + 8 or 8
+    return card.name.justify == "CENTER" and card.note.justify == "CENTER"
+        and card.dist.point[4] == math.floor(math.max(180 - left - 8 - row, 0) / 2 + 0.5)
+end
+Check(Centred(pin.card), "the name, and the distance with its time, sit centred on the card")
 speed = 14
 driver.scripts.OnUpdate(driver, 0)
 Check(pin.card.time.text == "about 0:22", "moving, at your own speed")
@@ -250,6 +261,12 @@ driver.scripts.OnUpdate(driver, 0)
 Check(pin.card.note.shown and pin.card.note.text == "Weapon Master" and pin.card.height > plainH,
     "the note on its own line, the card taller")
 Check(pin.card.icon.shown and pin.card.icon.texture == 132 and pin.card.name.points[1][2] == pin.card.icon, "the icon beside the name")
+Check(Centred(pin.card), "with an icon, the text centres in the room beside it")
+nav.distance = 23456
+driver.scripts.OnUpdate(driver, 0)
+Check(pin.card.dist.point[4] == 0, "a row too long to centre starts at the column's edge, never over the icon")
+nav.distance = 312
+driver.scripts.OnUpdate(driver, 0)
 Check(navBar.sub.text == "Weapon Master . Thunder Bluff" and navBar.icon.shown and navBar.icon.texture == 132
     and not navBar.fill.shown, "the navigator: note and zone, the icon in place of the shape")
 ns.placedWaypoint.note, ns.placedWaypoint.icon = nil, nil
@@ -266,12 +283,20 @@ Check(pin.card.dist.text == "1,240 yd", "long distances read with a comma")
 -- Off screen to the right: at the edge, the arrow pointing right, the card toward the middle.
 nav.clamped, nav.x, nav.y = true, 2400, 540
 driver.scripts.OnUpdate(driver, 0)
-Check(pin.point[2] == UIParent and pin.point[4] == W / 2 - 70 and pin.point[5] == 0, "clamped right, it sits at the edge")
+Check(pin.point[2] == UIParent and math.abs(pin.point[4] - W * 0.3) < 0.01 and pin.point[5] == 0,
+    "clamped right, it sits on the ring around the middle, not at the screen's edge")
 Check(pin.arrow.shown and pin.arrow.rotation == 0 and not pin.beam.shown, "with the arrow out and no line down")
 Check(pin.card.point[1] == "RIGHT" and pin.card.point[3] == "LEFT", "the card on the screen's side of it")
 S.Set("waypointScale", 1.5)
 driver.scripts.OnUpdate(driver, 0)
-Check(math.abs(pin.point[4] * pin.scale - (W / 2 - 70)) < 0.01, "a bigger pin still sits on the edge")
+Check(math.abs(pin.point[4] * pin.scale - W * 0.3) < 0.01, "a bigger pin still sits on the ring")
+-- Up and to the right, toward the minimap's corner: still on the ring, well inside the screen.
+nav.x, nav.y = 960 + 3000, 540 + 3000
+driver.scripts.OnUpdate(driver, 0)
+local px, py = pin.point[4] * pin.scale, pin.point[5] * pin.scale
+Check(math.abs((px / (W * 0.3)) ^ 2 + (py / (H * 0.3)) ^ 2 - 1) < 0.001, "toward a corner it sits on the ring")
+Check(W / 2 - px > EDGE_ROOM and H / 2 - py > EDGE_ROOM,
+    "and stays " .. EDGE_ROOM .. " px clear of both edges, off the minimap")
 S.Set("waypointScale", nil)
 -- Off the bottom edge, but not behind: the card goes above the pin, on screen.
 nav.x, nav.y = 960 + 1000 * math.cos(math.rad(-50)), 540 + 1000 * math.sin(math.rad(-50))
@@ -292,6 +317,40 @@ S.Set("waypointEdge", nil)
 nav.clamped, nav.x, nav.y = false, 1100, 700
 driver.scripts.OnUpdate(driver, 0)
 Check(pin:IsShown() and pin.point[2] == navFrame, "back on screen, back on the navigation frame")
+-- On screen but out past the ring, up by the minimap: on the ring with the arrow, never on the corner.
+nav.x, nav.y = W - 60, H - 60
+driver.scripts.OnUpdate(driver, 0)
+Check(pin:IsShown() and pin.point[2] == UIParent and pin.arrow.shown
+    and W / 2 - pin.point[4] * pin.scale > EDGE_ROOM and H / 2 - pin.point[5] * pin.scale > EDGE_ROOM,
+    "a spot on screen in the corner gets the arrow on the ring, not a pin on the minimap")
+-- Just inside the ring after being past it: it stays on the ring, so it never flickers on the line.
+nav.x, nav.y = 960 + 0.95 * W * 0.3, 540
+driver.scripts.OnUpdate(driver, 0)
+Check(pin.point[2] == UIParent and pin.arrow.shown, "a little inside the ring it holds on the ring")
+nav.x = 960 + 0.85 * W * 0.3
+driver.scripts.OnUpdate(driver, 0)
+Check(pin.point[2] == navFrame, "well inside, back on its spot")
+-- Low on screen past the ring is in front of you, not behind: on the ring, no cue.
+nav.x, nav.y = 960, 60
+driver.scripts.OnUpdate(driver, 0)
+Check(pin:IsShown() and pin.point[2] == UIParent and not cue:IsShown(), "a spot low on screen is not behind you")
+nav.clamped = true
+driver.scripts.OnUpdate(driver, 0)
+Check(not pin:IsShown() and cue:IsShown(), "clamped straight down is behind you")
+nav.clamped = false
+-- Close by, the spot keeps its pin wherever it is on screen, so you can walk onto it.
+nav.distance = 20
+driver.scripts.OnUpdate(driver, 0)
+Check(pin:IsShown() and pin.point[2] == navFrame and pin.alpha < 1, "within 40 yards it stays on its spot, fading up close")
+nav.distance = 1240
+-- With Edge Arrow off, a spot on screen keeps its pin on the spot, wherever it is.
+S.Set("waypointEdge", false)
+nav.x, nav.y = W - 60, H - 60
+driver.scripts.OnUpdate(driver, 0)
+Check(pin:IsShown() and pin.point[2] == navFrame, "Edge Arrow off: the pin stays on the spot")
+S.Set("waypointEdge", nil)
+nav.x, nav.y = 1100, 700
+driver.scripts.OnUpdate(driver, 0)
 
 -- A stop on the way there (a zone's exit) is not the arrival.
 S.Set("waypointSound", "naowh")

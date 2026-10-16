@@ -1,13 +1,14 @@
--- ns.Hairline and ns.PixelInset (Core/Core.lua): lines and insets in whole screen
+-- ns.Hairline, ns.PixelInset and ns.Border (Core/Core.lua): lines, insets and borders in whole screen
 -- pixels, refitted when their frame shows again. The renderer's snapping is not emulated;
 -- these check the sizes and offsets handed to it.
 local f = assert(io.open(arg[1] or "Core/Core.lua", "rb"))
 local source = f:read("*a"):gsub("\r\n", "\n"); f:close()
 local first = assert(source:find("local fitters", 1, true))
-local last = assert(source:find("function ns.Border(frame, color, alpha)", first, true))
+local last = assert(source:find("function ns.Solid(parent, layer, color, alpha)", first, true))
 
 local factor = 768 / 1440          -- a 1440p screen
-local function Frame(scale, parent)
+local Frame
+function Frame(scale, parent)
     local o = { scale = scale, parent = parent, points = {}, children = {}, visible = true }
     function o:GetObjectType() return self.texture and "Texture" or "Frame" end
     function o:GetParent() return self.parent end
@@ -18,6 +19,17 @@ local function Frame(scale, parent)
     function o:SetWidth(w) self.width = w end
     function o:ClearAllPoints() self.points = {} end
     function o:SetPoint(point, _, _, x, y) self.points[point] = { x, y } end
+    function o:SetAllPoints() end
+    function o:GetFrameLevel() return self.level or 1 end
+    function o:SetFrameLevel(level) self.level = level end
+    function o:SetColorTexture(r, g, b, a) self.color = { r, g, b, a } end
+    function o:CreateTexture()
+        local t = Frame(nil, self)
+        t.texture = true
+        self.textures = self.textures or {}
+        self.textures[#self.textures + 1] = t
+        return t
+    end
     -- Showing a frame shows its children: each child's OnShow runs.
     function o:Show()
         if self.onShow then self.onShow(self) end
@@ -32,7 +44,7 @@ local function Texture(parent)
 end
 
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
-local env = setmetatable({ ns = ns, PixelUtil = { GetPixelToUIUnitFactor = function() return factor end },
+local env = setmetatable({ ns = ns, BORDER_EDGES = 4, MAX_FRAME_LEVEL = 9999, PixelUtil = { GetPixelToUIUnitFactor = function() return factor end },
     CreateFrame = function(_, _, parent)
         local child = Frame(1, parent)
         if parent then parent.children[#parent.children + 1] = child end
@@ -83,5 +95,22 @@ Case("RefitPixels redraws what is up, and leaves hidden frames for their next sh
     ns.RefitPixels()
     assert(Near(a.height, factor / 2), "the shown frame refits")
     assert(Near(b.height, factor), "the hidden one waits")
+end)
+Case("a border is one pixel to start, any whole number after, and refits at a new scale", function()
+    local panel = Frame(0.71)
+    local border = ns.Border(panel, { r = 0, g = 0, b = 0 })
+    local edges = border._frame.textures
+    local px = factor / 0.71
+    assert(#edges == 4 and border.pixels == 1, "four edges, one pixel")
+    assert(Near(edges[1].height, px) and Near(edges[2].height, px), "top and bottom one pixel")
+    assert(Near(edges[3].width, px) and Near(edges[4].width, px), "left and right one pixel")
+    border:SetPixels(3)
+    assert(Near(edges[1].height, 3 * px) and Near(edges[4].width, 3 * px), "three pixels when asked")
+    panel.scale = 1.4
+    panel:Show()
+    assert(Near(edges[2].height, 3 * factor / 1.4) and Near(edges[3].width, 3 * factor / 1.4),
+        "and still three pixels after a scale change")
+    border:SetColor(1, 0, 0)
+    assert(edges[1].color[1] == 1 and edges[4].color[4] == 1, "its color is set on every edge, opaque to start")
 end)
 print(count .. " pixel regressions passed")

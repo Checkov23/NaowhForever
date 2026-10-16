@@ -479,7 +479,7 @@
     "level": 8,
     "name": "Rime's Wrath",
     "reqlevel": 5,
-    "reqrace": 4294967364,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -488,7 +488,7 @@
     "level": 8,
     "name": "Rime's Wrath",
     "reqlevel": 5,
-    "reqrace": 4294967364,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -1121,7 +1121,7 @@
     "reqclass": 64,
     "reqlevel": 18,
     "reqrace": 162,
-    "side": 2
+    "side": 3
    },
    {
     "category2": 0,
@@ -1131,7 +1131,7 @@
     "reqclass": 64,
     "reqlevel": 18,
     "reqrace": 162,
-    "side": 2
+    "side": 3
    },
    {
     "category2": 0,
@@ -1299,6 +1299,7 @@
     "level": 22,
     "name": "The Valor Family",
     "reqlevel": 18,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -1477,7 +1478,7 @@
     "category2": 0,
     "id": 306,
     "level": 24,
-    "name": "In Search of The Excavation Team",
+    "name": "In Search of the Excavation Team",
     "reqlevel": 21,
     "side": 1
    },
@@ -1555,7 +1556,7 @@
    {
     "category2": 0,
     "id": 472,
-    "level": 25,
+    "level": 30,
     "name": "Fall of Dun Modr",
     "reqlevel": 25,
     "side": 1
@@ -1589,7 +1590,7 @@
     "id": 631,
     "level": 31,
     "name": "The Thandol Span",
-    "reqlevel": 28,
+    "reqlevel": 26,
     "side": 1
    },
    {
@@ -1597,7 +1598,7 @@
     "id": 632,
     "level": 31,
     "name": "The Thandol Span",
-    "reqlevel": 28,
+    "reqlevel": 26,
     "side": 1
    },
    {
@@ -1605,14 +1606,14 @@
     "id": 633,
     "level": 31,
     "name": "The Thandol Span",
-    "reqlevel": 28,
+    "reqlevel": 26,
     "side": 1
    },
    {
     "category2": 0,
     "id": 634,
     "level": 31,
-    "name": "Plea To The Alliance",
+    "name": "Plea to the Alliance",
     "reqlevel": 28,
     "side": 1
    },
@@ -1627,9 +1628,9 @@
    {
     "category2": 0,
     "id": 1132,
-    "level": 20,
+    "level": 30,
     "name": "Fiora Longears",
-    "reqlevel": 18,
+    "reqlevel": 30,
     "side": 1
    },
    {
@@ -1645,7 +1646,8 @@
     "id": 87318,
     "level": 33,
     "name": "Hearts of the Lost",
-    "reqlevel": 28
+    "reqlevel": 28,
+    "side": 1
    },
    {
     "category2": 0,
@@ -1684,7 +1686,8 @@
     "id": 98072,
     "level": 27,
     "name": "Crocs of the Sky",
-    "reqlevel": 19
+    "reqlevel": 19,
+    "side": 1
    },
    {
     "category2": 0,
@@ -1692,6 +1695,7 @@
     "level": 25,
     "name": "Return the Statuette",
     "reqlevel": 20,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -1700,6 +1704,7 @@
     "level": 22,
     "name": "Spoils of War",
     "reqlevel": 18,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -1707,14 +1712,16 @@
     "id": 98208,
     "level": 29,
     "name": "Bloom of the Heavens",
-    "reqlevel": 22
+    "reqlevel": 22,
+    "side": 1
    },
    {
     "category2": 0,
     "id": 98209,
     "level": 29,
     "name": "Bloom of the Heavens",
-    "reqlevel": 22
+    "reqlevel": 22,
+    "side": 1
    },
    {
     "category2": 0,
@@ -1778,6 +1785,7 @@
     "level": 22,
     "name": "Alchemical Hazards",
     "reqlevel": 20,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -1785,7 +1793,8 @@
     "id": 98283,
     "level": 30,
     "name": "Carnage",
-    "reqlevel": 22
+    "reqlevel": 22,
+    "side": 1
    },
    {
     "category2": 0,
@@ -2321,7 +2330,7 @@
     "level": 3,
     "name": "Mining Consultant",
     "reqlevel": 1,
-    "reqrace": 4294967368,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -2392,7 +2401,7 @@
     "level": 7,
     "name": "Rare Books",
     "reqlevel": 1,
-    "reqrace": 76,
+    "reqrace": 68,
     "side": 1
    },
    {
@@ -2856,7 +2865,6 @@
     "level": 20,
     "name": "Watching the Roads",
     "reqlevel": 10,
-    "reqrace": 50,
     "side": 2
    },
    {
@@ -2865,6 +2873,7 @@
     "level": 16,
     "name": "Arugal's Folly",
     "reqlevel": 9,
+    "reqrace": 146,
     "side": 2
    },
    {
@@ -2873,7 +2882,7 @@
     "level": 20,
     "name": "Stop the Spread",
     "reqlevel": 9,
-    "reqrace": 144,
+    "reqrace": 146,
     "side": 2
    }
   ]
@@ -5168,7 +5177,6 @@
     "level": 8,
     "name": "A Pain in the Neck",
     "reqlevel": 5,
-    "reqrace": 146,
     "side": 2
    },
    {
@@ -5793,7 +5801,7 @@
     "level": 10,
     "name": "Easing Suffering",
     "reqlevel": 4,
-    "reqrace": 8,
+    "reqrace": 4294967304,
     "side": 1
    }
   ]
@@ -6419,6 +6427,7 @@
     "level": 20,
     "name": "Swelling Forces",
     "reqlevel": 12,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -6677,14 +6686,6 @@
    },
    {
     "category2": 0,
-    "id": 92401,
-    "level": 22,
-    "name": "A Frightened Request",
-    "reqlevel": 15,
-    "side": 2
-   },
-   {
-    "category2": 0,
     "id": 97290,
     "level": 21,
     "name": "Unending Torment",
@@ -6907,7 +6908,7 @@
     "category2": 1,
     "id": 1251,
     "level": 35,
-    "name": "The Black Shield ",
+    "name": "The Black Shield",
     "reqlevel": 30,
     "side": 2
    },
@@ -7240,6 +7241,14 @@
     "level": 4,
     "name": "The \"Chow\" Quest (123)aa",
     "reqlevel": 1
+   },
+   {
+    "category2": 1,
+    "id": 81570,
+    "level": 35,
+    "name": "Jarl Needs a Blade",
+    "reqlevel": 30,
+    "side": 3
    }
   ]
  },
@@ -8608,6 +8617,20 @@
    },
    {
     "category2": 0,
+    "id": 95817,
+    "level": 60,
+    "name": "Rotgath Stonebeard",
+    "reqlevel": 1
+   },
+   {
+    "category2": 0,
+    "id": 95818,
+    "level": 60,
+    "name": "A Quick Craft",
+    "reqlevel": 1
+   },
+   {
+    "category2": 0,
     "id": 97263,
     "level": 2,
     "name": "Your Package Has Arrived",
@@ -8628,7 +8651,8 @@
     "id": 98313,
     "level": 32,
     "name": "For Further Study",
-    "reqlevel": 24
+    "reqlevel": 24,
+    "side": 1
    }
   ]
  },
@@ -10249,7 +10273,7 @@
     "level": 11,
     "name": "Eyes of the Sentinels",
     "reqlevel": 1,
-    "reqrace": 4294967304,
+    "reqrace": 4294967368,
     "side": 1
    },
    {
@@ -10333,9 +10357,7 @@
     "id": 92467,
     "level": 4,
     "name": "Call of Earth",
-    "reqclass": 1088,
     "reqlevel": 3,
-    "reqrace": 128,
     "side": 2
    },
    {
@@ -10343,7 +10365,9 @@
     "id": 92468,
     "level": 4,
     "name": "Call of Earth",
+    "reqclass": 1088,
     "reqlevel": 3,
+    "reqrace": 32,
     "side": 2
    },
    {
@@ -10421,7 +10445,7 @@
     "category2": -2,
     "id": 92516,
     "level": 7,
-    "name": "Hippogryph Harrassment",
+    "name": "Hippogryph Harassment",
     "reqlevel": 4,
     "reqrace": 4294967296,
     "side": 3
@@ -10928,7 +10952,7 @@
     "level": 6,
     "name": "Welcome to Shen'dar Village",
     "reqlevel": 4,
-    "side": 3
+    "side": 1
    },
    {
     "category2": -2,
@@ -11232,6 +11256,7 @@
     "level": 10,
     "name": "Fillion's Mission",
     "reqlevel": 5,
+    "reqrace": 4294967296,
     "side": 1
    }
   ]
@@ -12052,7 +12077,7 @@
     "level": 20,
     "name": "WANTED: Bruuz",
     "reqlevel": 15,
-    "side": 2
+    "side": 3
    },
    {
     "category2": 1,
@@ -12108,6 +12133,18 @@
     "level": 60,
     "name": "Sign Me Up!",
     "reqlevel": 1
+   },
+   {
+    "category2": 1,
+    "id": 96339,
+    "level": 60,
+    "name": "Legacy Reward: Replica Ironforge Air Rifle"
+   },
+   {
+    "category2": 1,
+    "id": 96383,
+    "level": 60,
+    "name": "Legacy Reward: Spectral Bear Cub"
    },
    {
     "category2": 1,
@@ -12605,7 +12642,7 @@
     "level": 10,
     "name": "Thunderhorn's Report",
     "reqlevel": 4,
-    "reqrace": 32,
+    "reqrace": 48,
     "side": 2
    },
    {
@@ -12641,7 +12678,7 @@
     "level": 9,
     "name": "The High Chieftain",
     "reqlevel": 4,
-    "reqrace": 32,
+    "reqrace": 48,
     "side": 2
    },
    {
@@ -12918,16 +12955,8 @@
    {
     "category2": 0,
     "id": 544,
-    "level": 34,
+    "level": 33,
     "name": "Prison Break In",
-    "reqlevel": 30,
-    "side": 2
-   },
-   {
-    "category2": 0,
-    "id": 545,
-    "level": 35,
-    "name": "Dalaran Patrols",
     "reqlevel": 30,
     "side": 2
    },
@@ -12990,7 +13019,7 @@
    {
     "category2": 0,
     "id": 556,
-    "level": 32,
+    "level": 33,
     "name": "Stone Tokens",
     "reqlevel": 30,
     "side": 2
@@ -12998,7 +13027,7 @@
    {
     "category2": 0,
     "id": 557,
-    "level": 34,
+    "level": 33,
     "name": "Bracers of Binding",
     "reqlevel": 30,
     "side": 2
@@ -15199,6 +15228,30 @@
    },
    {
     "category2": 0,
+    "id": 95770,
+    "level": 40,
+    "name": "Locating the Lost City",
+    "reqlevel": 30,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 95773,
+    "level": 37,
+    "name": "Enemies in the Water",
+    "reqlevel": 30,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 95786,
+    "level": 40,
+    "name": "An Acquaintance in Southshore",
+    "reqlevel": 30,
+    "side": 1
+   },
+   {
+    "category2": 0,
     "id": 97047,
     "level": 38,
     "name": "The Cook in the Cage",
@@ -15216,7 +15269,8 @@
     "id": 97328,
     "level": 35,
     "name": "Anything of Value",
-    "reqlevel": 30
+    "reqlevel": 30,
+    "side": 2
    },
    {
     "category2": 0,
@@ -15231,6 +15285,14 @@
     "level": 35,
     "name": "Zimmix's Great Escape",
     "reqlevel": 30
+   },
+   {
+    "category2": 0,
+    "id": 97420,
+    "level": 36,
+    "name": "Reduce, Reuse, Reconcile",
+    "reqlevel": 31,
+    "side": 1
    },
    {
     "category2": 0,
@@ -15306,8 +15368,7 @@
     "id": 908,
     "level": 27,
     "name": "Amongst the Ruins",
-    "reqlevel": 25,
-    "side": 3
+    "reqlevel": 25
    },
    {
     "category2": 1,
@@ -16633,6 +16694,14 @@
    },
    {
     "category2": 0,
+    "id": 545,
+    "level": 35,
+    "name": "Dalaran Patrols",
+    "reqlevel": 30,
+    "side": 2
+   },
+   {
+    "category2": 0,
     "id": 551,
     "level": 40,
     "name": "The Ensorcelled Parchment",
@@ -16665,6 +16734,14 @@
    },
    {
     "category2": 0,
+    "id": 92459,
+    "level": 33,
+    "name": "Friend of the Kirin Tor",
+    "reqlevel": 24,
+    "side": 1
+   },
+   {
+    "category2": 0,
     "id": 93680,
     "level": 33,
     "name": "Key to the City",
@@ -16676,7 +16753,8 @@
     "id": 95534,
     "level": 36,
     "name": "Strahnbrad Mystery",
-    "reqlevel": 25
+    "reqlevel": 25,
+    "side": 2
    },
    {
     "category2": 0,
@@ -18401,19 +18479,11 @@
    },
    {
     "category2": 0,
-    "id": 92753,
-    "level": 18,
-    "name": "Destruction in Deadmines",
-    "reqlevel": 9,
-    "reqrace": 4294967372,
-    "side": 1
-   },
-   {
-    "category2": 0,
     "id": 92819,
     "level": 18,
     "name": "Destruction in Deadmines",
     "reqlevel": 9,
+    "reqrace": 4294967372,
     "side": 1
    },
    {
@@ -18667,7 +18737,7 @@
     "id": 1152,
     "level": 30,
     "name": "Test of Lore",
-    "reqlevel": 25,
+    "reqlevel": 26,
     "side": 2
    },
    {
@@ -18675,7 +18745,7 @@
     "id": 1154,
     "level": 30,
     "name": "Test of Lore",
-    "reqlevel": 25,
+    "reqlevel": 26,
     "side": 2
    },
    {
@@ -18683,7 +18753,7 @@
     "id": 1159,
     "level": 30,
     "name": "Test of Lore",
-    "reqlevel": 25,
+    "reqlevel": 26,
     "side": 2
    },
    {
@@ -18834,7 +18904,7 @@
     "id": 1394,
     "level": 36,
     "name": "Final Passage",
-    "reqlevel": 25,
+    "reqlevel": 26,
     "side": 2
    },
    {
@@ -18850,8 +18920,7 @@
     "id": 4323,
     "level": 26,
     "name": "<NYI> <TXT> Get those Hyenas!!!",
-    "reqlevel": 24,
-    "side": 3
+    "reqlevel": 24
    },
    {
     "category2": 1,
@@ -18953,7 +19022,7 @@
     "category2": 1,
     "id": 5147,
     "level": 29,
-    "name": "Wanted - Arnak Grimtotem",
+    "name": "WANTED: Arnak Grimtotem",
     "reqlevel": 25,
     "side": 2
    },
@@ -18986,7 +19055,7 @@
     "id": 6627,
     "level": 30,
     "name": "Test of Lore",
-    "reqlevel": 25,
+    "reqlevel": 26,
     "side": 2
    },
    {
@@ -18994,7 +19063,7 @@
     "id": 6628,
     "level": 30,
     "name": "Test of Lore",
-    "reqlevel": 25,
+    "reqlevel": 26,
     "side": 2
    },
    {
@@ -19055,8 +19124,7 @@
     "id": 1277,
     "level": 40,
     "name": "<nyi> <TXT> The Centaur Hoofprints",
-    "reqlevel": 30,
-    "side": 3
+    "reqlevel": 30
    },
    {
     "category2": 1,
@@ -19303,16 +19371,14 @@
     "id": 1460,
     "level": 37,
     "name": "<UNUSED>",
-    "reqlevel": 30,
-    "side": 3
+    "reqlevel": 30
    },
    {
     "category2": 1,
     "id": 1461,
     "level": 37,
     "name": "<UNUSED>",
-    "reqlevel": 30,
-    "side": 3
+    "reqlevel": 30
    },
    {
     "category2": 1,
@@ -19375,7 +19441,7 @@
     "id": 1488,
     "level": 40,
     "name": "The Corrupter",
-    "reqlevel": 25,
+    "reqlevel": 26,
     "side": 2
    },
    {
@@ -19446,7 +19512,7 @@
     "category2": 1,
     "id": 5821,
     "level": 35,
-    "name": "Bodyguard for Hire ",
+    "name": "Bodyguard for Hire",
     "reqlevel": 30,
     "side": 3
    },
@@ -19502,7 +19568,7 @@
     "category2": 1,
     "id": 6143,
     "level": 36,
-    "name": "Other Fish to Fry ",
+    "name": "Other Fish to Fry",
     "reqlevel": 32,
     "side": 2
    },
@@ -19521,6 +19587,13 @@
     "name": "The Testament of Rexxar",
     "reqlevel": 55,
     "side": 2
+   },
+   {
+    "category2": 1,
+    "id": 8458,
+    "level": 33,
+    "name": "<UNUSED>",
+    "reqlevel": 25
    },
    {
     "category2": 1,
@@ -19587,7 +19660,8 @@
     "id": 92812,
     "level": 60,
     "name": "Economic Warfare",
-    "reqlevel": 1
+    "reqlevel": 1,
+    "side": 2
    },
    {
     "category2": 1,
@@ -19608,6 +19682,34 @@
     "id": 92818,
     "level": 35,
     "name": "Big, No, MASSIVE Iron Axes",
+    "reqlevel": 30
+   },
+   {
+    "category2": 1,
+    "id": 93044,
+    "level": 38,
+    "name": "A Cleansing Cry",
+    "reqlevel": 30
+   },
+   {
+    "category2": 1,
+    "id": 93045,
+    "level": 38,
+    "name": "Test Your Theory",
+    "reqlevel": 30
+   },
+   {
+    "category2": 1,
+    "id": 93128,
+    "level": 42,
+    "name": "Khan Jehn",
+    "reqlevel": 30
+   },
+   {
+    "category2": 1,
+    "id": 93196,
+    "level": 42,
+    "name": "Khan Jehn",
     "reqlevel": 30
    },
    {
@@ -19649,6 +19751,13 @@
    },
    {
     "category2": 1,
+    "id": 93678,
+    "level": 40,
+    "name": "Abridged Notes on Draenethyst",
+    "reqlevel": 30
+   },
+   {
+    "category2": 1,
     "id": 94872,
     "level": 45,
     "name": "Buying Friendship: Magram",
@@ -19659,14 +19768,16 @@
     "id": 94873,
     "level": 45,
     "name": "Buying Friendship: Gelkis",
-    "reqlevel": 30
+    "reqlevel": 30,
+    "side": 2
    },
    {
     "category2": 1,
     "id": 96222,
     "level": 42,
     "name": "Khan Hratha",
-    "reqlevel": 30
+    "reqlevel": 30,
+    "side": 2
    },
    {
     "category2": 1,
@@ -21235,8 +21346,7 @@
     "id": 636,
     "level": 35,
     "name": "Legends of the Earth <NYI>",
-    "reqlevel": 30,
-    "side": 3
+    "reqlevel": 30
    },
    {
     "category2": 0,
@@ -21506,7 +21616,7 @@
     "category2": 0,
     "id": 684,
     "level": 39,
-    "name": "Wanted! Marez Cowl",
+    "name": "WANTED: Marez Cowl",
     "reqlevel": 30,
     "side": 1
    },
@@ -21514,7 +21624,7 @@
     "category2": 0,
     "id": 685,
     "level": 40,
-    "name": "Wanted! Otto and Falconcrest",
+    "name": "WANTED: Otto and Falconcrest",
     "reqlevel": 30,
     "side": 1
    },
@@ -21652,6 +21762,14 @@
     "level": 39,
     "name": "Ground to Keep",
     "reqlevel": 32
+   },
+   {
+    "category2": 0,
+    "id": 92872,
+    "level": 38,
+    "name": "Dutiful Steps",
+    "reqlevel": 32,
+    "side": 1
    },
    {
     "category2": 0,
@@ -23622,7 +23740,8 @@
     "id": 93176,
     "level": 35,
     "name": "My Little Friends",
-    "reqlevel": 25
+    "reqlevel": 25,
+    "side": 3
    },
    {
     "category2": 0,
@@ -24080,7 +24199,7 @@
    {
     "category2": 0,
     "id": 95328,
-    "level": 10,
+    "level": 13,
     "name": "Whispering Horror Residue",
     "reqlevel": 7,
     "side": 2
@@ -24088,7 +24207,7 @@
    {
     "category2": 0,
     "id": 96895,
-    "level": 13,
+    "level": 12,
     "name": "The Argent Emissary",
     "reqlevel": 10,
     "side": 2
@@ -24096,7 +24215,7 @@
    {
     "category2": 0,
     "id": 96896,
-    "level": 13,
+    "level": 12,
     "name": "A Righteous Cause",
     "reqlevel": 10,
     "reqrace": 16,
@@ -24105,23 +24224,25 @@
    {
     "category2": 0,
     "id": 96897,
-    "level": 13,
+    "level": 12,
     "name": "The Cult of the Damned",
     "reqlevel": 10,
+    "reqrace": 146,
     "side": 2
    },
    {
     "category2": 0,
     "id": 96898,
-    "level": 13,
+    "level": 12,
     "name": "Remnants of War",
     "reqlevel": 10,
+    "reqrace": 146,
     "side": 2
    },
    {
     "category2": 0,
     "id": 96899,
-    "level": 13,
+    "level": 12,
     "name": "Bandarion Keep",
     "reqlevel": 10,
     "reqrace": 18,
@@ -24148,7 +24269,7 @@
    {
     "category2": 0,
     "id": 98545,
-    "level": 13,
+    "level": 12,
     "name": "Leonid's Letter",
     "reqlevel": 10,
     "reqrace": 16,
@@ -24193,18 +24314,18 @@
    {
     "category2": 0,
     "id": 99152,
-    "level": 10,
+    "level": 12,
     "name": "As Above, So Below",
-    "reqlevel": 7,
+    "reqlevel": 10,
     "reqrace": 16,
     "side": 2
    },
    {
     "category2": 0,
     "id": 99153,
-    "level": 10,
+    "level": 12,
     "name": "The One That Got Away",
-    "reqlevel": 7,
+    "reqlevel": 10,
     "reqrace": 16,
     "side": 2
    },
@@ -24214,7 +24335,7 @@
     "level": 13,
     "name": "Rear Guard Patrol",
     "reqlevel": 6,
-    "reqrace": 16,
+    "reqrace": 18,
     "side": 2
    }
   ]

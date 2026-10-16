@@ -7,6 +7,11 @@ local INDEX_ADDON = "NaowhForever_SearchIndex"
 local NONE = {}
 local NOT_LETTERS, LETTER, WORD = "[^%w\128-\255]+", "[%w\128-\255]", "()([%w\128-\255]+)"
 local FUZZY_MIN, FUZZY_SHARE, MAX_CAPTURES = 3, 0.5, 32
+local RESULTS = { width = 390, rows = 7, rowH = 46, pad = 12, gap = 6, footer = 26,
+    titleSize = 13, trailSize = 11, titleY = 8, trailY = 26, fillAlpha = 0.12, raise = 20 }
+local TEXT_RESULTS = ns.L("%d-%d of %d results")
+local TEXT_NO_RESULTS = ns.L("No matching settings.")
+local TEXT_RESULT_PATH = "%s / %s"
 
 local carries = {}
 local spreads = {}
@@ -287,6 +292,115 @@ function UI.SearchCarries(pageKey, settingsKey)
 end
 
 local box, list, onFilter
+local results, matches
+local resultOffset, selectedResult = 0, 1
+
+local function PickResult(button)
+    local entry = button.entry
+    if not entry then return end
+    local page, label, card = entry.page, entry.label, entry.card
+    results:Hide()
+    UI.GoToSetting(page, label, card)
+end
+
+local function ResultEnter(button)
+    for _, row in ipairs(results.rows) do row.fill:SetShown(row == button) end
+    selectedResult = button.index
+end
+
+local function PaintResults()
+    local count = #matches
+    local shown = math.min(RESULTS.rows, count)
+    results:SetHeight(shown * RESULTS.rowH + RESULTS.footer)
+    for i, row in ipairs(results.rows) do
+        local index = resultOffset + i
+        local entry = matches[index]
+        row.entry, row.index = entry, index
+        row:SetShown(i <= shown and entry ~= nil)
+        if entry then
+            row.title:SetText(Mark(UI.filter, ns.L(entry.label or entry.tag)))
+            local trail = entry.trail and entry.trail ~= "" and TEXT_RESULT_PATH:format(entry.tag, entry.trail) or entry.tag
+            row.trail:SetText(trail)
+            row.fill:SetShown(index == selectedResult)
+        end
+    end
+    results.footer:SetText(count > 0 and ns.L(TEXT_RESULTS, resultOffset + 1, resultOffset + shown, count)
+        or TEXT_NO_RESULTS)
+end
+
+local function MoveResults(delta)
+    if not (results and results:IsShown() and matches and #matches > 0) then return end
+    selectedResult = math.max(1, math.min(#matches, selectedResult + delta))
+    if selectedResult <= resultOffset then resultOffset = selectedResult - 1 end
+    if selectedResult > resultOffset + RESULTS.rows then resultOffset = selectedResult - RESULTS.rows end
+    PaintResults()
+end
+
+local function NewResults()
+    if results then return end
+    local T = ns.THEME
+    results = CreateFrame("Frame", nil, box)
+    results:SetWidth(RESULTS.width)
+    results:SetPoint("TOPLEFT", box, "TOPRIGHT", RESULTS.gap, 0)
+    results:SetFrameLevel(box:GetFrameLevel() + RESULTS.raise)
+    results:SetClampedToScreen(true)
+    ns.Solid(results, "BACKGROUND", T.bg, 1):SetAllPoints()
+    ns.Border(results, T.line)
+    results.rows = {}
+    results:EnableMouseWheel(true)
+    results:SetScript("OnMouseWheel", function(_, delta) MoveResults(-delta) end)
+    for i = 1, RESULTS.rows do
+        local row = CreateFrame("Button", nil, results)
+        row:SetPoint("TOPLEFT", 0, -(i - 1) * RESULTS.rowH)
+        row:SetPoint("TOPRIGHT", 0, -(i - 1) * RESULTS.rowH)
+        row:SetHeight(RESULTS.rowH)
+        row.fill = ns.Solid(row, "BACKGROUND", T.accent, RESULTS.fillAlpha)
+        row.fill:SetAllPoints()
+        row.title = ns.Font(row, RESULTS.titleSize, nil, T.fg)
+        row.title:SetPoint("TOPLEFT", RESULTS.pad, -RESULTS.titleY)
+        row.title:SetPoint("TOPRIGHT", -RESULTS.pad, -RESULTS.titleY)
+        row.title:SetJustifyH("LEFT")
+        row.title:SetWordWrap(false)
+        row.trail = ns.Font(row, RESULTS.trailSize, nil, T.muted)
+        row.trail:SetPoint("TOPLEFT", RESULTS.pad, -RESULTS.trailY)
+        row.trail:SetPoint("TOPRIGHT", -RESULTS.pad, -RESULTS.trailY)
+        row.trail:SetJustifyH("LEFT")
+        row.trail:SetWordWrap(false)
+        row:SetScript("OnClick", PickResult)
+        row:SetScript("OnEnter", ResultEnter)
+        results.rows[i] = row
+    end
+    results.footer = ns.Font(results, RESULTS.trailSize, nil, T.muted)
+    results.footer:SetPoint("BOTTOMLEFT", RESULTS.pad, RESULTS.gap)
+    results:Hide()
+end
+
+local function ShowResults(text)
+    if not text:find("%S") then
+        if results then results:Hide() end
+        matches = nil
+        return
+    end
+    NewResults()
+    matches = Find(list, text)
+    resultOffset, selectedResult = 0, 1
+    PaintResults()
+    results:Show()
+end
+
+local function SearchKey(_, key)
+    if key == "UP" then MoveResults(-1) elseif key == "DOWN" then MoveResults(1) end
+end
+
+local function SearchEnter()
+    if not (results and results:IsShown()) then return end
+    local button = results.rows[selectedResult - resultOffset]
+    if button then PickResult(button) end
+end
+
+local function HideResults()
+    if results then results:Hide() end
+end
 
 local function OnText(text)
     local before = UI.filter
@@ -298,6 +412,7 @@ local function OnText(text)
     end
     onFilter()
     if CarriedChanged(before, UI.filter) then UI:RefreshPage(true) end
+    ShowResults(text)
 end
 
 function UI.FocusSearch()
@@ -317,6 +432,16 @@ end
 function UI.AttachSearchBox(parent, onChange, columns)
     onFilter = onChange
     box = ns.Shared.Parts.SearchBox(parent, TEXT_SEARCH_HINT, OnText, columns)
+    box:SetScript("OnArrowPressed", SearchKey)
+    box:SetScript("OnEnterPressed", SearchEnter)
+    box:HookScript("OnEscapePressed", HideResults)
+    box:HookScript("OnHide", HideResults)
+    box:HookScript("OnEditFocusLost", function()
+        if not (results and results:IsMouseOver()) then HideResults() end
+    end)
+    box:HookScript("OnEditFocusGained", function()
+        if list then ShowResults(box:GetText()) end
+    end)
     UI:RegisterOnHide(UI.ClearSearch)
     return box
 end

@@ -48,7 +48,7 @@ end
 local function UpdateAlpha()
     if unlocked then
         frame:SetAlpha(1)
-    elseif UnitIsDeadOrGhost("player") then
+    elseif UnitIsDeadOrGhost("player") or not (shownItem or S.Get("lowHealthShowEmpty")) then
         frame:SetAlpha(0)
         SetGlow(false)
         wasLow = false
@@ -82,7 +82,10 @@ local function Place()
 end
 
 local function OnEvent(_, event)
-    if event == "BAG_UPDATE_DELAYED" then UpdateItem() else UpdateAlpha() end
+    if event ~= "BAG_UPDATE_DELAYED" then return UpdateAlpha() end
+    local had = shownItem
+    UpdateItem()
+    if (had == nil) ~= (shownItem == nil) then UpdateAlpha() end
 end
 
 local function Listen()

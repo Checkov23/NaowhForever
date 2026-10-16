@@ -9,6 +9,7 @@ local TipLines = Parts.TipLines
 local BORDER_RGB = St.BORDER_RGB
 local TAB_SIZE, TAB_H, TAB_LINE, TAB_FILL = St.TAB_SIZE, St.TAB_H, St.TAB_LINE, St.TAB_FILL
 local FILL_SUBLEVEL = 1
+local TEXT_TAB_INSET = 8
 local SEARCH_ICON_SIZE, SEARCH_ICON_LEFT, SEARCH_ICON_GAP = 13, 7, 6
 local SEARCH_TEXT_LEFT = SEARCH_ICON_LEFT + SEARCH_ICON_SIZE + SEARCH_ICON_GAP
 local SEARCH_TEXT_RIGHT = 22
@@ -43,6 +44,12 @@ local function NewTab(bar)
     button.line:SetPoint("BOTTOMLEFT")
     button.line:SetPoint("BOTTOMRIGHT")
     button.line:SetHeight(TAB_LINE)
+    if bar.plain then
+        button.line:ClearAllPoints()
+        button.line:SetPoint("BOTTOMLEFT", TEXT_TAB_INSET, 0)
+        button.line:SetPoint("BOTTOMRIGHT", -TEXT_TAB_INSET, 0)
+        button.text:SetWordWrap(false)
+    end
     if ns.foreverSkin then Parts.ForeverTab(button) end
     button:SetScript("OnClick", TabClicked)
     button:SetScript("OnEnter", TabEnter)
@@ -92,7 +99,7 @@ function Parts.PaintTabs(bar, shown)
         local on = button.key == shown
         local color = on and T.fg or T.muted
         button.text:SetTextColor(color.r, color.g, color.b)
-        button.fill:SetShown(on)
+        button.fill:SetShown(on and not bar.plain)
         button.line:SetShown(on)
         if ns.foreverSkin then Parts.PaintForeverTab(button, on) end
     end
@@ -163,7 +170,11 @@ function Parts.SetTabs(bar, items)
         if ns.foreverSkin then w = button.fit end
         button:SetSize(w, TAB_H)
         button:SetPoint("LEFT", x, 0)
-        if i > 1 and not ns.foreverSkin then Split(bar, i, x) end
+        if bar.plain then
+            button.text:SetWidth(math.max(1, w - TEXT_TAB_INSET * 2))
+            button.cut = button.want > w - TEXT_TAB_INSET * 2
+        end
+        if i > 1 and not ns.foreverSkin and not bar.plain then Split(bar, i, x) end
         x = x + w + (ns.foreverSkin and St.FOREVER_TAB_GAP or 0)
     end
     PlaceRail(bar, x - St.FOREVER_TAB_GAP)
@@ -177,13 +188,14 @@ function Parts.FitTabs(bar, items, margin, maxW)
     Parts.SetTabs(bar, items)
 end
 
-function Parts.Tabs(parent, width, items, onPick, noRail)
+function Parts.Tabs(parent, width, items, onPick, noRail, plain)
     local bar = CreateFrame("Frame", nil, parent)
     bar:SetSize(width, TAB_H)
-    if not ns.foreverSkin then
+    bar.plain = plain and not ns.foreverSkin
+    if not ns.foreverSkin and not bar.plain then
         ns.Solid(bar, "BACKGROUND", T.panel, 1):SetAllPoints()
         ns.Border(bar, BORDER_RGB)
-    elseif not noRail then
+    elseif ns.foreverSkin and not noRail then
         bar.rail = Parts.ForeverRail(bar)
     end
     bar.buttons, bar.splits, bar.onPick = {}, {}, onPick

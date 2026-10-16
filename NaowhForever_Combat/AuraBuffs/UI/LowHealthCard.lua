@@ -23,6 +23,7 @@ local STATES = {
 
 local OFF = ns.L("Turn on AuraBuffs")
 local TEXT_NOTE = ns.L("Shown below %d%% health, in combat too.")
+local TEXT_HIDDEN = ns.L("Hidden while you carry no healing item.")
 
 local Enabled = A.Enabled
 local SoundOn = A.Needs("lowHealthSound")
@@ -58,10 +59,12 @@ local function PaintPreview(shot, state)
     f:SetPoint("CENTER", shot, "CENTER", 0, (NOTE_Y + LABEL_ROOM / 2) / scale)
     local mode = S.Get("lowHealthItem")
     Look.Item(f, SampleItem(state, mode), mode == "potion" and SAMPLE_POTIONS or 1)
+    local hidden = state == "none" and not S.Get("lowHealthShowEmpty")
+    f:SetShown(not hidden)
     local glow = S.Get("lowHealthGlowColor")
     shot.glowBorder:SetColor(glow.r, glow.g, glow.b)
     shot.glow:SetShown(S.Get("lowHealthGlow"))
-    shot.note:SetText(TEXT_NOTE:format(S.Get("lowHealthBelow")))
+    shot.note:SetText(hidden and TEXT_HIDDEN or TEXT_NOTE:format(S.Get("lowHealthBelow")))
 end
 
 local function Summary(store)
@@ -81,6 +84,8 @@ Settings.Page(A.PAGE, S):Card({
           why = OFF },
         { key = "lowHealthItem", label = "Item", choice = ITEMS, needs = Enabled, why = OFF,
           help = "Best in Bags: your best healthstone, else your best healing potion." },
+        { key = "lowHealthShowEmpty", label = "Show When Out", toggle = true, needs = Enabled, why = OFF,
+          help = "Shows the warning with a grey icon when you carry no healing item." },
         { key = "lowHealthGlow", label = "Glow", toggle = true, needs = Enabled, why = OFF,
           help = "A glow around the icon while it shows." },
         A.GlowRows("lowHealthGlow"),

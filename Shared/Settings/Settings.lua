@@ -34,6 +34,7 @@ Shared.Settings = Settings
 
 local pages = {}
 local open = {}
+local undoReset
 
 local Page = {}
 Page.__index = Page
@@ -175,13 +176,13 @@ local function Insert(page, item)
     table.sort(page.items, Before)
 end
 
-local function Same(a, b)
+local function Same(a, b, exact)
     if type(a) ~= "table" or type(b) ~= "table" then return a == b end
     for k, v in pairs(a) do
-        if type(v) == "number" and type(b[k]) == "number" then
+        if not exact and type(v) == "number" and type(b[k]) == "number" then
             if math.abs(v - b[k]) > SAME_WITHIN then return false end
         elseif type(v) == "table" then
-            if not Same(v, b[k]) then return false end
+            if not Same(v, b[k], exact) then return false end
         elseif b[k] ~= v then
             return false
         end
@@ -352,7 +353,7 @@ function Settings.ChangedCount(card)
     return n
 end
 
-function Settings.ResetRow(row)
+local function ResetRow(row)
     local store, key = row.store, row.key
     if not (key and store and store.Default and Settings.Changed(row)) then return end
     local value = Copy(store.Default(key))
@@ -364,10 +365,60 @@ function Settings.ResetRow(row)
     store.Set(key, value)
 end
 
-function Settings.Reset(card)
-    for _, row in ipairs(card.rows) do
-        if not row.lent then Settings.ResetRow(row) end
+local function RememberReset(rows, card)
+    local operation = { card = card, root = ns.SettingsRoot and ns.SettingsRoot(), entries = {} }
+    local seen = {}
+    for _, row in ipairs(rows) do
+        local store, key = row.store, row.key
+        if key and store and store.Raw and Settings.Changed(row) then
+            local keys = seen[store] or {}
+            seen[store] = keys
+            if not keys[key] then
+                keys[key] = true
+                operation.entries[#operation.entries + 1] = { store = store, key = key, before = Copy(store.Raw(key)) }
+            end
+        end
     end
+    if #operation.entries == 0 then return end
+    for _, row in ipairs(rows) do ResetRow(row) end
+    for _, entry in ipairs(operation.entries) do entry.after = Copy(entry.store.Raw(entry.key)) end
+    undoReset = operation
+end
+
+function Settings.ResetRow(row)
+    RememberReset({ row }, row.card)
+end
+
+function Settings.Reset(card)
+    local rows = {}
+    for _, row in ipairs(Settings.Rows(card)) do
+        if not row.lent then rows[#rows + 1] = row end
+    end
+    RememberReset(rows, card)
+end
+
+function Settings.CanUndoReset(card)
+    local operation = undoReset
+    if not operation then return false end
+    if ns.SettingsRoot and operation.root ~= ns.SettingsRoot() then
+        undoReset = nil
+        return false
+    end
+    for _, entry in ipairs(operation.entries) do
+        if not Same(entry.store.Raw(entry.key), entry.after, true) then
+            undoReset = nil
+            return false
+        end
+    end
+    return operation.card == card
+end
+
+function Settings.UndoReset(card)
+    if not Settings.CanUndoReset(card) then return false end
+    local operation = undoReset
+    undoReset = nil
+    for _, entry in ipairs(operation.entries) do entry.store.Set(entry.key, Copy(entry.before)) end
+    return true
 end
 
 function Settings.UnderOf(card, label)
@@ -385,7 +436,9 @@ end
 
 function Settings.Off(row)
     local card = row.card
-    if card.switchGet and not row.always and not card.switchGet() then return true end
+    if card.switchGet and not row.always and not card.switchGet() then
+        return true, ns.L(TEXT_NEEDS, ns.L(card.name))
+    end
     local held = not row.always and card.switchWhy and card.switchWhy()
     if held then return true, held end
     local needs = row.needs
@@ -405,6 +458,36 @@ function Settings.Off(row)
         if not store.Get(needs[i]) then return Needing(row, needs[i]) end
     end
     return false
+end
+
+function Settings.Dependency(row)
+    if not Settings.Off(row) then return end
+    local card = row.card
+    if not card.page then return end
+    if card.switchGet and not row.always and not card.switchGet() then
+        return card.page.key, nil, card.uid
+    end
+    local needs, key = row.needs
+    if type(needs) == "string" then
+        key = needs
+    elseif type(needs) == "table" then
+        for _, candidate in ipairs(needs) do
+            if not row.store.Get(candidate) then key = candidate break end
+        end
+    end
+    if not key then return end
+    for _, page in pairs(pages) do
+        for _, candidate in ipairs(page.items) do
+            if candidate.store == row.store and candidate.switch == key then
+                return page.key, nil, candidate.uid
+            end
+            for _, target in ipairs(candidate.rows or NO_KEYS) do
+                if target.store == row.store and target.key == key then
+                    return page.key, target.label, candidate.uid
+                end
+            end
+        end
+    end
 end
 
 function Settings.IsOpen(card)

@@ -1,4 +1,4 @@
--- ScrapMarker.lua: the QoL Scrap Marker (ns.ScrapMarker): scrap marks and rules, sold at the next vendor.
+-- ScrapMarker.lua: the QoL Junk Marker (ns.ScrapMarker): junk marks and rules, sold at the next vendor.
 local ns = _G.NaowhForever
 
 local S = ns.QoLSettings
@@ -60,38 +60,38 @@ local QUEST_GEAR = { [5092] = true, [5093] = true, [5094] = true }
 
 local RULE_WEAR, RULE_OLD = ns.L("Can't wear"), ns.L("Outlevelled")
 local TIPS = {
-    sell = { ns.L("Scrap: sold at the next vendor"), ns.L("Scrap by rule: sold at the next vendor") },
-    ask = { ns.L("Scrap: offered at the next vendor"), ns.L("Scrap by rule: offered at the next vendor") },
-    none = { ns.L("Scrap"), ns.L("Scrap by rule") },
+    sell = { ns.L("Junk: sold at the next vendor"), ns.L("Junk by rule: sold at the next vendor") },
+    ask = { ns.L("Junk: offered at the next vendor"), ns.L("Junk by rule: offered at the next vendor") },
+    none = { ns.L("Junk"), ns.L("Junk by rule") },
 }
 local NOT_SCRAP = {
-    quest = ns.L(" is a quest item, so it can't be scrap."),
-    key = " is a key, so it can't be scrap.",
-    value = ns.L(" has no sell price, so it can't be scrap."),
-    bis = ns.L(" is on your BiS list, so it can't be scrap."),
-    set = ns.L(" is in a gear set, so it can't be scrap."),
+    quest = ns.L(" is a quest item, so it can't be junk."),
+    key = " is a key, so it can't be junk.",
+    value = ns.L(" has no sell price, so it can't be junk."),
+    bis = ns.L(" is on your BiS list, so it can't be junk."),
+    set = ns.L(" is in a gear set, so it can't be junk."),
 }
 local VENDOR = { { sell = "Sell", ask = "Ask First", none = "Nothing" }, { "sell", "ask", "none" } }
 local SCOPE = { { account = "Account", char = "This Character" }, { "account", "char" } }
 local MODIFIER = { { alt = "Alt", ctrl = "Ctrl" }, { "alt", "ctrl" } }
 local MARK_HELP = {
-    alt = ns.L("Alt-click an item in your bags to mark it as scrap, and sell it at the next vendor."),
-    ctrl = ns.L("Ctrl-click an item in your bags to mark it as scrap, and sell it at the next vendor."),
+    alt = ns.L("Alt-click an item in your bags to mark it as junk, and sell it at the next vendor."),
+    ctrl = ns.L("Ctrl-click an item in your bags to mark it as junk, and sell it at the next vendor."),
 }
 
 local TEXT_ITEM = ns.L("item ")
-local TEXT_MARKED = ns.L(" marked as scrap.")
-local TEXT_UNMARKED = ns.L(" is no longer scrap.")
-local TEXT_SOLD_ONE, TEXT_SOLD = ns.L("Sold %d scrap item for %s."), ns.L("Sold %d scrap items for %s.")
+local TEXT_MARKED = ns.L(" marked as junk.")
+local TEXT_UNMARKED = ns.L(" is no longer junk.")
+local TEXT_SOLD_ONE, TEXT_SOLD = ns.L("Sold %d junk item for %s."), ns.L("Sold %d junk items for %s.")
 local TEXT_KEPT = ns.L(" Kept %d protected.")
-local TEXT_KEPT_ALL_ONE = ns.L("Kept %d protected scrap item from the vendor.")
-local TEXT_KEPT_ALL = ns.L("Kept %d protected scrap items from the vendor.")
+local TEXT_KEPT_ALL_ONE = ns.L("Kept %d protected junk item from the vendor.")
+local TEXT_KEPT_ALL = ns.L("Kept %d protected junk items from the vendor.")
 local TEXT_COUNT = "x"
 local TEXT_SELL, TEXT_NOT_NOW = "Sell", "Not Now"
-local TEXT_ASK = ns.L("Sell your scrap for %s?")
+local TEXT_ASK = ns.L("Sell your marked junk for %s?")
 local TEXT_SUMMARY_ONE, TEXT_SUMMARY = ns.L("%d item marked"), ns.L("%d items marked")
 local TEXT_IN_BAGS = ns.L(" in your bags")
-local TEXT_BAGANATOR = "Naowh Forever Scrap"
+local TEXT_BAGANATOR = "Naowh Forever Junk"
 
 local marks, hooked, bagOf, slotOf = {}, {}, {}, {}
 local installed, registered, events = false, false, nil
@@ -708,28 +708,28 @@ local function Summary()
 end
 
 Shared.Settings.Page("QoL/Loot & Items", S):Card({
-    id = "scrapMarker", name = "Scrap Marker", order = 65, switch = "scrapMarker",
+    id = "scrapMarker", name = "Junk Marker", order = 65, switch = "scrapMarker",
     help = function() return MARK_HELP[Scrap.Modifier()] end,
-    search = "/nf scrap nf scrap list alt-click ctrl-click mark scrap sell vendor",
+    search = "/nf junk nf junk list alt-click ctrl-click mark junk scrap sell vendor",
     summary = Summary,
     rows = {
         { key = "scrapMarkerModifier", label = "Marking Modifier", choice = MODIFIER,
           help = "The key to hold as you click an item to mark it; Ctrl also opens the dressing room on gear." },
         { key = "scrapMarkerVendor", label = "At the Vendor", choice = VENDOR,
-          help = "Sell your scrap when you open a vendor, ask you first, or do nothing." },
+          help = "Sell your junk when you open a vendor, ask you first, or do nothing." },
         { key = "scrapMarkerScope", label = "New Marks", choice = SCOPE,
           help = "Whether a new mark counts on every character or only this one." },
         { key = "scrapMarkerShow", label = "Show Mark", toggle = true,
-          help = "A scrap icon on the bag slot of each item marked as scrap." },
+          help = "A junk icon on the bag slot of each item marked as junk." },
         { key = "scrapMarkerProtect", label = "Protect BiS and Gear Sets", toggle = true,
-          help = "Items on your BiS list or in a gear set are never scrap." },
+          help = "Items on your BiS list or in a gear set are never junk." },
         { key = "scrapMarkerSave", label = "Save Marks", toggle = true,
-          help = "Keep a mark after the item leaves your bags, so the next one you loot is scrap too." },
+          help = "Keep a mark after the item leaves your bags, so the next one you loot is junk too." },
         Group("Rules"),
         { key = "scrapRuleWear", label = "Gear You Can't Wear", toggle = true,
-          help = "Armour and weapons your class can never use count as scrap." },
+          help = "Armour and weapons your class can never use count as junk." },
         { key = "scrapRuleOld", label = "Old Common Gear", toggle = true,
-          help = "Grey and white gear far below your level counts as scrap." },
+          help = "Grey and white gear far below your level counts as junk." },
         { key = "scrapRuleLevels", label = "Levels Below You", slider = LEVELS_RANGE, needs = "scrapRuleOld",
           help = "How far below your level gear has to be for Old Common Gear." },
     },

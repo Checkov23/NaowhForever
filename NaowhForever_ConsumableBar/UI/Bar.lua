@@ -96,22 +96,22 @@ end
 local function Layout()
     CB.RefreshSmart()
     local items = CB.ShownItems()
-    local size, gap, grow, perRow = CB.Grid()
+    local size, gap, grow, perRow, height, flip = CB.Grid()
     local inUse = {}
     for i = #buttons, 1, -1 do buttons[i] = nil end
     for i, entry in ipairs(items) do
         local button = ButtonFor(entry)
         buttons[i], inUse[button] = button, true
-        ItemBar.Place(button, frame, i, size, gap, grow, perRow)
-        CB.PlaceBackground(button, i, #items, gap, grow, perRow)
-        CB.StyleCell(button, entry, size)
+        ItemBar.Place(button, frame, i, size, gap, grow, perRow, height, flip)
+        CB.PlaceBackground(button, i, #items, gap, grow, perRow, flip)
+        CB.StyleCell(button, entry, size, height)
         button.entry, button.slot = entry, i
         Point(button, entry)
     end
     for _, button in pairs(pool) do
         if not inUse[button] and (button.entry ~= nil or button:IsShown()) then Retire(button) end
     end
-    frame:SetSize(ItemBar.Size(#items, size, gap, grow, perRow))
+    frame:SetSize(ItemBar.Size(#items, size, gap, grow, perRow, height))
 end
 
 local function UpdateCounts()
@@ -210,11 +210,11 @@ local function HasSmart()
 end
 
 local function RestyleWhere(test)
-    local size = CB.Grid()
+    local size, height = CB.IconSize()
     for _, button in ipairs(buttons) do
         if test(button.entry) then
             Point(button, button.entry)
-            CB.StyleCell(button, button.entry, size)
+            CB.StyleCell(button, button.entry, size, height)
         end
     end
 end
@@ -247,7 +247,7 @@ local function RefreshMacros()
             if fight then
                 button.icon:SetTexture(CB.EntryIcon(button.entry))
             else
-                CB.StyleCell(button, button.entry, CB.Grid())
+                CB.StyleCell(button, button.entry, CB.IconSize())
             end
         end
     end
@@ -369,10 +369,10 @@ local function Restyle()
         Apply()
         return
     end
-    local size, gap, grow, perRow = CB.Grid()
+    local size, gap, grow, perRow, height, flip = CB.Grid()
     for i, button in ipairs(buttons) do
-        CB.StyleCell(button, button.entry, size)
-        CB.PlaceBackground(button, i, #buttons, gap, grow, perRow)
+        CB.StyleCell(button, button.entry, size, height)
+        CB.PlaceBackground(button, i, #buttons, gap, grow, perRow, flip)
     end
     UpdateCounts()
     QueueKeys()

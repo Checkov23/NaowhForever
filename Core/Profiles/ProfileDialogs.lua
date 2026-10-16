@@ -4,7 +4,7 @@ local UI = ns.UI
 local Profiles = ns.Profiles
 
 local EXPORT_W, EXPORT_H, BOX_H = 560, 360, 180
-local IMPORT_W, IMPORT_H, PASTE_H = 600, 520, 110
+local IMPORT_W, IMPORT_H, PASTE_H = 600, 544, 110
 local PAD, ROW_H, BUTTON_W, BUTTON_H = 14, 24, 120, 26
 local BOX_RIGHT = 34
 local TITLE_SIZE, TEXT_SIZE, SMALL_SIZE = 14, 12, 11
@@ -27,6 +27,8 @@ local HANDOFFS = {
 }
 local ACTING_LINE = ns.L("It also turns on settings that act for you: %s; they stay off unless you tick Also Import.")
 local ACTING_HELP = ns.L("Turns those settings on in the new profile")
+local TEXT_KEEP_POSITIONS = "Keep My Positions"
+local KEEP_POSITIONS_HELP = ns.L("Your frames stay where you put them")
 local TEXT_EXPORT_TITLE, TEXT_IMPORT_TITLE = ns.L("Export Profile"), ns.L("Import")
 local TEXT_PROFILE = ns.L("Profile: %s. %s.")
 local TEXT_EXPORTED = ns.L("%d characters. Click the text, then Ctrl+A and Ctrl+C.")
@@ -182,6 +184,7 @@ local function ShowPayload(payload)
     local y = math.min(-(PASTE_Y + PASTE_H + PREVIEW_MIN_ROOM),
         -(PASTE_Y + PASTE_H + PREVIEW_TOP_GAP + import.preview:GetStringHeight() + PREVIEW_GAP))
     local list = ns.ProfileStringParts(payload)
+    list[#list + 1] = { key = "keepPositions", label = TEXT_KEEP_POSITIONS, help = KEEP_POSITIONS_HELP }
     if #acting > 0 then
         list[#list + 1] = { key = "acting", label = TEXT_ALSO_IMPORT, help = ACTING_HELP, off = true }
     end

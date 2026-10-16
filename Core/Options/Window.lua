@@ -43,7 +43,7 @@ local SCREEN_MARGIN, MIN_FIT = 32, 0.25
 local DEFAULT_SCALE = 100
 local NAV_BAR = { w = 10, inset = 1 }
 local SOON = { titleSize = 16, textSize = 12, top = 60, gap = 12, inset = 60, height = 180 }
-local HEAD = { crumbSize = 12, crumbY = 24, titleSize = 24, titleY = 51, titleRoom = 300, subSize = 12, subY = 94,
+local HEAD = { flashSeconds = 1.5, flashAlpha = 0.12, crumbSize = 12, crumbY = 24, titleSize = 24, titleY = 51, titleRoom = 300, subSize = 12, subY = 94,
     switchW = 52, switchH = 26, switchY = 54, labelGap = 14, labelSize = 14, tabDrop = 14 }
 local SIDE = { groupSize = 11, groupX = 20, groupY = 10, groupStep = 28, utilityRow = 28, utilityTop = 4,
     utilityRoom = 6, versionSize = 10, versionX = 20, versionY = 10, linksRight = 14, linksY = 8, linkSize = 16,
@@ -214,10 +214,11 @@ function Off.Layout()
 end
 
 local function PaintNavButton(btn, hover)
-    local active = btn.fill:IsShown()
+    local active = btn.marker:IsShown()
     local found = UI.filter and btn.found
     local off = btn.mod ~= nil and not ModuleOn(btn.mod)
-    local c = (active or hover) and T.fg or (ns.foreverSkin and T.accent or T.muted)
+    local c = active and not ns.foreverSkin and T.accentSoft
+        or (active or hover) and T.fg or (ns.foreverSkin and T.accent or T.muted)
     local a = (off and not active and not hover) and NAV_OFF_ALPHA or 1
     if found == false and not active and not hover then a = MISS_ALPHA end
     btn.label:SetTextColor(c.r, c.g, c.b, a)
@@ -243,7 +244,7 @@ local function PaintNav()
     LayoutNav()
     for name, btn in pairs(navButtons) do
         local active = name == nav
-        btn.fill:SetShown(active)
+        btn.fill:SetShown(active and ns.foreverSkin == true)
         btn.marker:SetShown(active)
         btn.found = nil
         if filter then btn.found = Found(filter, name, btn) end
@@ -350,11 +351,27 @@ function UI.SearchOffPages()
     return pages
 end
 
+function UI.HighlightSetting(row)
+    if not row then return end
+    if not row.settingHighlight then
+        row.settingHighlight = ns.Solid(row, "BACKGROUND", T.accent, HEAD.flashAlpha)
+        row.settingHighlight:SetAllPoints()
+        row:HookScript("OnHide", function() row.settingHighlight:Hide() end)
+    end
+    row.settingHighlight:Show()
+    row.settingHighlightGeneration = (row.settingHighlightGeneration or 0) + 1
+    local generation = row.settingHighlightGeneration
+    C_Timer.After(HEAD.flashSeconds, function()
+        if row.settingHighlightGeneration == generation then row.settingHighlight:Hide() end
+    end)
+end
+
 local function ScrollToSetting(key, label, card)
     local Settings = ns.Shared.Settings
-    if not (card and Settings.pages[key]) then return end
-    local _, top = Settings.FindRow(wrappers[key], label, card)
+    if not (card and wrappers[key]) then return end
+    local row, top = Settings.FindRow(wrappers[key], label, card)
     if not top then return end
+    UI.HighlightSetting(row)
     scrollFrame:UpdateScrollChildRect()
     local y = top - scrollFrame:GetHeight() * SETTING_AT
     scrollFrame:SetVerticalScroll(math.min(scrollFrame:GetVerticalScrollRange(), math.max(0, y)))
@@ -548,7 +565,7 @@ local function TabStrip(parent, mod, onPick, maxW)
     local items = {}
     for i, tab in ipairs(mod.tabs) do items[i] = { key = tab.key, label = ns.L(tab.name) } end
     local Parts = ns.Shared.Parts
-    local bar = Parts.Tabs(parent, 1, items, onPick, true)
+    local bar = Parts.Tabs(parent, 1, items, onPick, true, true)
     Parts.FitTabs(bar, items, TAB_MARGIN, maxW)
     return bar
 end
@@ -612,6 +629,13 @@ local function NavigationButton(parent, label, y, onClick, icon, listed)
     btn.marker = ns.Solid(btn, "ARTWORK", T.accent, 1)
     btn.marker:SetPoint("TOPLEFT"); btn.marker:SetPoint("BOTTOMLEFT"); btn.marker:SetWidth(NAV_MARKER_W)
     btn.marker:Hide()
+    if not ns.foreverSkin then
+        btn.marker:ClearAllPoints()
+        btn.marker:SetTexture(NAV_DOT_TEXTURE, nil, nil, "TRILINEAR")
+        btn.marker:SetVertexColor(T.accent.r, T.accent.g, T.accent.b, 1)
+        btn.marker:SetSize(NAV_DOT, NAV_DOT)
+        btn.marker:SetPoint("LEFT", 0, 0)
+    end
     if lined then
         ns.Shared.Parts.ForeverNavLine(btn)
     elseif ns.foreverSkin then
@@ -704,7 +728,11 @@ local function WindowFrame()
     window:SetMovable(true)
     window:SetClampedToScreen(true)
     window:EnableMouse(true)
-    ns.Shared.Parts.Backdrop(window):Paint(1)
+    if ns.foreverSkin then
+        ns.Shared.Parts.Backdrop(window):Paint(1)
+    else
+        ns.Solid(window, "BACKGROUND", T.bg, 1):SetAllPoints()
+    end
     ns.Shared.Parts.Shadow(window)
     local border = ns.Border(window, ns.Shared.Style.BORDER_RGB)
     if ns.foreverSkin then ns.Shared.Parts.ForeverFrame(window) end
@@ -737,7 +765,7 @@ local function TopBar(border)
     local close = ns.Button(top, TEXT_CLOSE, TOP.close, TOP.close, function() window:Hide() end)
     close:SetPoint("RIGHT", -TOP.gap, 0)
     local unlock = ns.Button(top, TEXT_HUD_EDITOR, TOP.hudW, TOP.buttonH, EnterUnlockMode)
-    ns.AccentBorder(unlock)
+    ns.PrimaryButton(unlock)
     unlock:SetPoint("RIGHT", close, "LEFT", -TOP.gap, 0)
     ns.Tooltip(unlock, TEXT_HUD_EDITOR, TEXT_HUD_HELP)
     local reload = ns.ReloadButton(top, TEXT_RELOAD, TOP.reloadW, TOP.buttonH)
@@ -1080,7 +1108,11 @@ local function ModuleWindowFrame()
     win:SetMovable(true)
     win:SetClampedToScreen(true)
     win:EnableMouse(true)
-    ns.Shared.Parts.Backdrop(win):Paint(1)
+    if ns.foreverSkin then
+        ns.Shared.Parts.Backdrop(win):Paint(1)
+    else
+        ns.Solid(win, "BACKGROUND", T.bg, 1):SetAllPoints()
+    end
     ns.Border(win, ns.Shared.Style.BORDER_RGB)
     if ns.foreverSkin then ns.Shared.Parts.ForeverFrame(win) end
     win:SetScript("OnKeyDown", CloseOnEscape)

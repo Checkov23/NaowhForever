@@ -28,7 +28,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     campHiddenBonuses = {}, campFont = "", campOutline = "", campBarOutline = "NONE",
     campPos = { point = "CENTER", relPoint = "BOTTOMRIGHT", x = -223, y = 61 },
 
-    lowHealth = F.lowHealth, lowHealthBelow = 35, lowHealthItem = "auto",
+    lowHealth = F.lowHealth, lowHealthBelow = 35, lowHealthItem = "auto", lowHealthShowEmpty = false,
     lowHealthIconSize = 48, lowHealthGlow = true, lowHealthGlowType = "pixel",
     lowHealthGlowColor = { r = 1, g = 0.25, b = 0.25 }, lowHealthGlowLines = 8, lowHealthGlowThickness = 2,
     lowHealthGlowSpeed = 5,

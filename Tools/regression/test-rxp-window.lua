@@ -71,6 +71,7 @@ local function Object(everything)
     function o:SetAlpha(a) self.alpha = a end
     function o:GetAlpha() return self.alpha or 1 end
     function o:EnableMouse(on) self.mouse = on end
+    function o:EnableMouseWheel(on) self.wheelOn = on end
     function o:IsMouseEnabled() return self.mouse ~= false end
     function o:IsForbidden() return false end
     function o:GetFrameLevel() return self.level or 1 end
@@ -170,12 +171,14 @@ local function World(account, opts)
         w.borders[#w.borders + 1] = parent
         local border = { _frame = Object(w.everything), parent = parent }
         function border:SetColor(r, g, b, a) self.color = { r, g, b, a } end
+        function border:SetPixels(pixels) self.pixels = pixels end
         parent.borderObject = border
         return border
     end
     ns.UI = { FontPath = function(name) return "Fonts\\" .. name .. ".ttf" end,
         TexturePath = function(name) return "Textures\\" .. name end }
     ns.Hairline = function() end
+    ns.OnePixel = function() return 1 end
     ns.Shared = { Style = { FOREVER_FIELD_RGB = { r = 0, g = 0, b = 0 } }, Parts = {
         ForeverInset = function(parent)
             local inset = Object(w.everything)
@@ -356,8 +359,9 @@ do
     Check(#labels == 1, "the active step is labelled in capitals, as RestedXP titles it")
     Check(#rowTexts == 3 and rowTexts[1] == "Talk to |cff00ff00Duokna|r", "its rows are RestedXP's own, as they read now")
     Check(#lines == 6 and lines[1] == "37  Step 37 line one" and lines[2] == "39  Talk to Gornek"
-        and lines[3] == "40  Step 40 line one" and lines[4] == "42  Step 42 line one",
-        "six steps after it, one line each, without the one RestedXP hides and the one that is done")
+        and lines[3] == "40  Step 40 line one" and lines[4] == "41  Step 41 line one"
+        and lines[5] == "42  Step 42 line one" and lines[6] == "43  Step 43 line one",
+        "six steps after it, one line each, without the one RestedXP hides")
     Check(progress.text:find(string.char(194, 183), 1, true), "the step and the percent are joined by a dot")
     Check(f.menu == nil, "there is no menu button: the right click is the menu")
     local panel
@@ -367,8 +371,8 @@ do
     Check(panel and panel.shown == false and f.borderObject._frame.shown == false,
         "the window has a panel and a border to turn on, and both are off to start")
     local boxed = 0
-    for _, parent in ipairs(w.borders) do
-        if parent ~= f then boxed = boxed + 1 end
+    for _, o in ipairs(w.frames) do
+        if o.label and o.logo and Seen(o) then boxed = boxed + 1 end
     end
     Check(boxed == 1, "only the active step is in a box")
     Check(not seenTip, "a step that is a tip only, or not active, is not a box")
@@ -565,7 +569,7 @@ do
     for _, o in ipairs(w.frames) do
         if o.index and o.shade and Seen(o) then hits[#hits + 1] = o end
     end
-    Check(#hits == 6 and hits[1].index == 37 and hits[2].index == 39 and hits[6].index == 44,
+    Check(#hits == 6 and hits[1].index == 37 and hits[2].index == 39 and hits[6].index == 43,
         "each line of the list has a button for its step")
     Check(hits[2].width == 380 - 20 and hits[2].height == 12 + 6, "as big as the line")
     hits[2].scripts.OnClick(hits[2])
@@ -577,7 +581,7 @@ do
     hits[2].scripts.OnEnter(hits[2])
     Check(w.env.GameTooltip.text == "Go to step 39" and hits[2].shade.shown, "it says so, and is lit")
     Check(#w.env.GameTooltip.lines == 1 and w.env.GameTooltip.lines[1] == "Shift-click",
-        "and it does not say where the menu is")
+        "and it does not say where the menu is, nor that the list scrolls")
     hits[2].scripts.OnLeave(hits[2])
     Check(hits[2].shade.shown == false, "and not when the mouse leaves")
     Check(hits[1].scripts.OnDragStart ~= nil, "a line is still where the window is dragged from")
@@ -789,14 +793,297 @@ do
     rxp.GetGuideProgress = function() return 40, "id" end
     w.talk.frame.text:SetText("Talk to Duokna 0/2")
     Flush(w)
-    Check(rxp.v2.snapshots == snapshots + 1 and Lines()[1].text == "42  Step 42 line one",
-        "nor are the steps after another step")
+    Check(rxp.v2.snapshots == snapshots and Lines()[1].text == "41  Step 41 line one",
+        "the guide on another step is the same list, from the step after it, and is not read again")
 
     walks = 0
     ns.SetRXPWindow(false)
     ns.SetRXPWindow(true)
     Check(walks > 0 and w.guide.frame.alpha == 0 and w.button.mouse == false,
         "off and on: its windows are taken again, whatever RestedXP did meanwhile")
+end
+
+-- the list is the guide's steps, scrolled with the wheel: the ones done above, the ones to come below
+do
+    local account = { rxpWindow = true, rxpWindowScrollBar = true }
+    local w = Start(account)
+    local ns, rxp = w.ns, w.rxp
+    local f = Window(w)
+    local went = {}
+    rxp.SetStep = function(n) went[#went + 1] = n end
+    local function Lines()
+        local out = {}
+        for _, o in ipairs(w.everything) do
+            if o.text and Seen(o) and o.text:find("^%d+  ") then out[#out + 1] = o end
+        end
+        return out
+    end
+    local function First(of)
+        local line = Lines()[of or 1]
+        return line and line.text:match("^(%d+)")
+    end
+    local function Wheel(ticks)
+        for _ = 1, math.abs(ticks) do f.wheel.scripts.OnMouseWheel(f.wheel, ticks > 0 and 1 or -1) end
+        Flush(w)
+    end
+    local function Hit(index)
+        for _, o in ipairs(w.frames) do
+            if o.index == index and o.shade and Seen(o) then return o end
+        end
+    end
+    local accent = ns.RXPWindowColor("accent")
+
+    Check(#Lines() == 6 and First() == "37", "to start: the six steps after the active one, as before")
+    Check(f.track.shown == true and f.thumb.shown == true, "and a bar says there are more of them")
+    Check(f.scripts.OnMouseWheel == nil and f.wheel.wheelOn == true and Seen(f.wheel)
+        and f.wheel.points[1][5] == f.track.points[1][5] and f.wheel.width == 380 - 20,
+        "the wheel is the list's alone, over its lines, not the whole window's: the camera still zooms elsewhere")
+    Check(f.track.points[1][2] == f and f.track.points[1][3] == "TOPRIGHT" and f.track.points[1][4] == -10
+        and f.thumb.points[1][4] == -10, "at the step box's right edge, not the window's: as wide as the step it follows")
+    Check(Lines()[1].width == 380 - 20 - 2 - 4, "and the lines end before it, not under it")
+
+    Wheel(1)
+    Check(First() == "35" and First(2) == "36" and First(3) == "37" and #Lines() == 6,
+        "a tick up: the steps behind it, from the first of the guide RestedXP lists")
+    Check(Lines()[1].alpha == 0.5 and Lines()[3].alpha == 1, "a step that is done is dimmer")
+    Check(Lines()[2].color and math.abs(Lines()[2].color[1] - accent) < 1e-6 and Lines()[3].color[1] ~= accent,
+        "and the one the guide is on has the accent")
+    local thumb = f.thumb.points[1][5]
+    Check(f.track.points[1][5] == f.thumb.points[1][5], "the bar's thumb is at the top of its track")
+    Wheel(3)
+    Check(First() == "35", "no further up than the first step")
+
+    Wheel(-3)
+    Check(First() == "42" and #Lines() == 6, "three ticks down: further in the guide")
+    Check(f.thumb.points[1][5] < thumb, "and the bar's thumb has moved down")
+    Wheel(-30)
+    Check(First() == "45" and #Lines() == 6 and First(6) == "50", "no further down than the last step, at the bottom of the list")
+
+    w.shift = true
+    Wheel(30)
+    Hit(35).scripts.OnClick(Hit(35))
+    Check(#went == 1 and went[1] == 35, "a step done is gone back to like any other: with shift, a click goes to it")
+    w.shift = false
+    Hit(35).scripts.OnEnter(Hit(35))
+    Check(w.env.GameTooltip.text == "Go to step 35" and #w.env.GameTooltip.lines == 1,
+        "and its tooltip says so, and no more")
+    ns.SetRXPWindowOption("rxpWindowSkip", "off")
+    Flush(w)
+    local before = #went
+    Hit(35).scripts.OnClick(Hit(35))
+    Check(#went == before, "with Skipping Steps off it goes nowhere")
+    ns.SetRXPWindowOption("rxpWindowSkip", "shift")
+
+    rxp.v2:UpdateGuideWindow()
+    Flush(w)
+    Check(First() == "35", "RestedXP laying its window out again does not take the list from where it is scrolled")
+    rxp.GetGuideProgress = function() return 40, "id" end
+    rxp.v2:UpdateGuideWindow()
+    Flush(w)
+    Check(First() == "41", "the guide moving on takes it back to the steps after it")
+
+    ns.SetRXPWindowSteps(12)
+    Flush(w)
+    Check(#Lines() == 10 and f.track.shown == true, "twelve lines of the ten steps after it, and the rest above them")
+    Wheel(5)
+    Check(First() == "35" and #Lines() == 12, "all twelve lines are the guide's now")
+    ns.SetRXPWindowSteps(0)
+    Wheel(1)
+    Check(#Lines() == 0 and f.track.shown == false and f.thumb.shown == false, "none listed: nothing to scroll and no bar")
+    ns.SetRXPWindowSteps(6)
+    Flush(w)
+
+    account.rxpWindowCollapsed = true
+    ns.RXPWindowRefresh()
+    Flush(w)
+    Check(f.track.shown == false and f.thumb.shown == false and f.wheel.shown == false,
+        "folded: no bar either, and the wheel is free")
+    account.rxpWindowCollapsed = nil
+    ns.RXPWindowRefresh()
+    Flush(w)
+
+    ns.SetRXPWindowSteps(0)
+    Flush(w)
+    Check(f.wheel.shown == false and f.wheel.wheelOn == false, "with no steps listed the wheel is free too")
+    ns.SetRXPWindowSteps(6)
+    Flush(w)
+    Check(f.wheel.shown == true and f.wheel.wheelOn == true, "and it scrolls again when they are back")
+
+    rxp.GetGuideProgress = function() return 66, "id" end
+    rxp.v2:UpdateGuideWindow()
+    Flush(w)
+    Check(#Lines() == 0, "at the end of the guide there is nothing after it")
+    Wheel(1)
+    Check(#Lines() == 2 and First() == "49", "and a tick up shows the last steps")
+
+    local plain = Start({ rxpWindow = true })
+    local p = Window(plain)
+    local function PlainLines()
+        local out = {}
+        for _, o in ipairs(plain.everything) do
+            if o.text and Seen(o) and o.text:find("^%d+  ") then out[#out + 1] = o end
+        end
+        return out
+    end
+    Check(p.track.shown == false and p.thumb.shown == false, "the scroll bar is off to start: no bar")
+    Check(#PlainLines() == 6 and PlainLines()[1].width == 380 - 20, "and the lines are as wide as the step box, with no room kept for it")
+    p.wheel.scripts.OnMouseWheel(p.wheel, 1)
+    Flush(plain)
+    Check(PlainLines()[1].text:find("^35") ~= nil, "while the wheel scrolls the list as it does with it")
+    for _, o in ipairs(plain.frames) do
+        if o.index == 35 and o.shade and Seen(o) then
+            o.scripts.OnEnter(o)
+            Check(plain.env.GameTooltip.text == "Go to step 35" and #plain.env.GameTooltip.lines == 1,
+                "and a line's tooltip says nothing of the scroll")
+        end
+    end
+    plain.ns.SetRXPWindowOption("rxpWindowScrollBar", true)
+    Flush(plain)
+    Check(p.track.shown == true and p.thumb.shown == true and PlainLines()[1].width == 380 - 20 - 2 - 4,
+        "Show Scroll Bar shows it, and the lines end before it")
+    plain.ns.SetRXPWindowOption("rxpWindowScrollBar", false)
+    Flush(plain)
+    Check(p.track.shown == false and p.thumb.shown == false and PlainLines()[1].width == 380 - 20,
+        "and off again hides it")
+
+    local small = Start({ rxpWindow = true, rxpWindowScrollBar = true })
+    local g = Window(small)
+    for _, row in ipairs(small.rows) do
+        if row.index > 40 then row.hidden = true end
+    end
+    small.rxp.v2:UpdateGuideWindow()
+    Flush(small)
+    local shown = 0
+    for _, o in ipairs(small.everything) do
+        if o.text and Seen(o) and o.text:find("^%d+  ") then shown = shown + 1 end
+    end
+    Check(shown == 3 and g.track.shown == false, "a guide with no more steps than lines has no bar to show")
+    local full = true
+    for _, o in ipairs(small.everything) do
+        if o.text and Seen(o) and o.text:find("^%d+  ") and o.width ~= 380 - 20 then full = false end
+    end
+    Check(full, "and its lines are as wide as the step box")
+end
+
+-- the step box and the bars have a border, black to start, and its size and color are the player's in any theme
+do
+    local account = { rxpWindow = true }
+    local w = Start(account)
+    local ns = w.ns
+    local f = Window(w)
+    local function Box()
+        for _, o in ipairs(w.frames) do
+            if o.label and o.logo then return o end
+        end
+    end
+    local function Meters()
+        local out = {}
+        for _, o in ipairs(w.frames) do
+            if o.track and o ~= f and o ~= f.bar and o.parent ~= f and Seen(o) then out[#out + 1] = o end
+        end
+        return out
+    end
+    local function Black(r, g, b, a) return r == 0 and g == 0 and b == 0 and a == 1 end
+
+    Check(Black(ns.RXPWindowColor("boxBorder")) and Black(ns.RXPWindowColor("barBorder")),
+        "both borders are black to start")
+    Check(ns.RXPWindowOption("rxpWindowBoxBorderSize") == 1 and ns.RXPWindowOption("rxpWindowBarBorderSize") == 1,
+        "and one pixel")
+    Check(Box().edge.pixels == 1 and f.bar.edge and f.bar.edge.pixels == 1 and Black(unpack(f.bar.edge.color)),
+        "as drawn: the step's box and the guide's bar")
+    Check(select(4, ns.RXPWindowColor("barBack")) == 0.5 and select(1, ns.RXPWindowColor("barBack"))
+        == select(1, ns.RXPWindowColor("line")), "the bar's background is the line's color to start")
+
+    local function Is(line, ...)
+        local r, g, b, a = ...
+        return r == line.r and g == line.g and b == line.b and a == 1
+    end
+    local preset = ns.THEME_PRESET_ORDER[1]
+    ns.SetRXPWindowTheme(preset)
+    Check(Is(ns.THEME_PRESETS[preset].line, ns.RXPWindowColor("boxBorder"))
+        and Is(ns.THEME_PRESETS[preset].line, ns.RXPWindowColor("barBorder")),
+        "a preset's is its own line color: themed, and black only in the Naowh theme")
+    ns.SetRXPWindowTheme("forever")
+    Check(Is(ns.FOREVER_SKIN.line, ns.RXPWindowColor("boxBorder")) and Is(ns.FOREVER_SKIN.line, ns.RXPWindowColor("barBorder")),
+        "and the Forever skin's its bronze")
+    ns.SetRXPWindowTheme("")
+    Check(Black(ns.RXPWindowColor("boxBorder")), "the addon's own theme is black again")
+    account.themePreset = preset
+    ns.ApplyThemeColors()
+    local painted = ns.THEME.line
+    Check(Is(painted, ns.RXPWindowColor("boxBorder")) and not Black(ns.RXPWindowColor("boxBorder")),
+        "and a theme picked for the whole addon is the window's, as its line color")
+    account.themePreset = nil
+
+    local tall = f.height
+    ns.SetRXPWindowOption("rxpWindowBoxBorderSize", 3)
+    ns.SetRXPWindowOption("rxpWindowBarBorderSize", 2)
+    ns.SetRXPWindowColor("boxBorder", 1, 0, 0, 1)
+    ns.SetRXPWindowColor("barBorder", 0, 1, 0, 0.5)
+    ns.SetRXPWindowColor("barBack", 0, 0, 1, 0.25)
+    Flush(w)
+    Check(f.height == tall + 2, "the window is as tall as the bar's border makes it, the step box's being inside its own")
+    local box = Box()
+    Check(box.edge.pixels == 3 and box.edge.color[1] == 1 and box.edge._frame.shown == true,
+        "a size and a color for the step's box, in the addon's own theme")
+    Check(box.edge.parent == box and f.bar.edge.parent == f.bar,
+        "drawn by the shared border (ns.Border), sized in whole pixels")
+    Check(f.bar.edge.pixels == 2 and f.bar.edge.color[2] == 1 and f.bar.edge.color[4] == 0.5 and f.bar.height == 5 + 2 * 2,
+        "and for the bar: the size, the color, and room for it, so the fill is as thick as it was")
+    Check(f.bar.track.solid[3] == 1 and f.bar.track.solid[4] == 0.25, "and the bar's background its own")
+    Check(account.rxpWindowBoxBorderSize == 3 and account.rxpWindowBarBorderSize == 2
+        and account.rxpWindowColors.boxBorder ~= nil, "kept")
+
+    ns.SetRXPWindowOption("rxpWindowBarBorderSize", 0)
+    Flush(w)
+    Check(f.bar.edge._frame.shown == false and f.bar.height == 5 and account.rxpWindowBarBorderSize == 0,
+        "none: no border and no room for it")
+    ns.SetRXPWindowOption("rxpWindowBarBorderSize", 9)
+    ns.SetRXPWindowOption("rxpWindowBoxBorderSize", 0)
+    Check(ns.RXPWindowOption("rxpWindowBarBorderSize") == 4 and ns.RXPWindowOption("rxpWindowBoxBorderSize") == 1,
+        "the sizes are held to 4 at most, and the box's to 1 at least")
+    ns.SetRXPWindowOption("rxpWindowBarBorderSize", 2.4)
+    Check(ns.RXPWindowOption("rxpWindowBarBorderSize") == 2, "and are whole pixels: a size between two is the nearer")
+    ns.SetRXPWindowOption("rxpWindowBarBorderSize", 0.4)
+    Check(ns.RXPWindowOption("rxpWindowBarBorderSize") == 0, "down to none")
+
+    ns.SetRXPWindowOption("rxpWindowBarBorderSize", 1)
+    w.talk.frame.text:SetText("Boar Meat: 3/8")
+    Flush(w)
+    local meters = Meters()
+    Check(#meters >= 1 and meters[1].edge and meters[1].edge.pixels == 1 and meters[1].edge.color[2] == 1,
+        "a row that counts has the bar's border too, in the same color")
+
+    ns.SetRXPWindowTheme("forever")
+    Flush(w)
+    Check(f.bar.edge._frame.shown == false and f.bar.rim._frame.shown == true,
+        "the Forever skin has its own rim, not this border")
+    ns.SetRXPWindowTheme("")
+
+    ns.ResetRXPWindowStyle()
+    Flush(w)
+    Check(ns.RXPWindowOption("rxpWindowBoxBorderSize") == 1 and Black(ns.RXPWindowColor("boxBorder"))
+        and f.bar.edge.pixels == 1, "Reset puts the sizes and colors back")
+
+    local accent = { ns.RXPWindowColor("accent") }
+    local fill = { ns.RXPWindowColor("barFill") }
+    Check(fill[1] == accent[1] and fill[2] == accent[2] and fill[3] == accent[3] and f.bar.barColor[1] == accent[1],
+        "the bar's color is the accent's to start: it follows the theme")
+    ns.SetRXPWindowColor("barFill", 1, 0, 1, 1)
+    w.talk.frame.text:SetText("Boar Meat: 3/8")
+    Flush(w)
+    Check(f.bar.barColor[1] == 1 and f.bar.barColor[2] == 0 and f.bar.barColor[3] == 1, "a bar color is the guide's bar's")
+    meters = Meters()
+    Check(#meters >= 1 and meters[1].barColor[1] == 1 and meters[1].barColor[2] == 0, "and a row's bar's, in any theme")
+    Check(ns.RXPWindowColor("accent") == accent[1] and select(2, ns.RXPWindowColor("accent")) == accent[2],
+        "while the accent is the accent's still, for the text and the icons")
+    ns.SetRXPWindowColor("barFill")
+    ns.SetRXPWindowTheme("custom")
+    ns.SetRXPWindowColor("accent", 0, 1, 0, 1)
+    Flush(w)
+    Check(f.bar.barColor[1] == 0 and f.bar.barColor[2] == 1,
+        "no bar color of its own: the accent's, as the Custom theme has it")
+    ns.SetRXPWindowTheme("")
 end
 
 -- RestedXP's windows that are not there yet are taken when they are, at whatever redraw is first
@@ -903,7 +1190,7 @@ do
     r, g, b, a = ns.RXPWindowColor("panel")
     Check(r == T.panel.r and g == T.panel.g and b == T.panel.b and a == 0.92,
         "the panel is the theme's panel color")
-    Check(#ns.RXPWindowColors() == 9, "the nine colors it lists, each for several things")
+    Check(#ns.RXPWindowColors() == 13, "the thirteen colors it lists, each for several things")
     ns.SetRXPWindowColor("title", 0.1, 0.2, 0.3, 0.4)
     r, g, b, a = ns.RXPWindowColor("title")
     Check(r == 0.1 and g == 0.2 and b == 0.3 and a == 0.4 and account.rxpWindowColors.title.a == 0.4,
@@ -979,7 +1266,8 @@ do
     Check(f.bar.shown == true and f.rule.shown == false, "under the title: the guide's progress bar to start")
     Check(math.abs(f.bar.value - 36 / 66) < 1e-9 and f.bar.range[1] == 0 and f.bar.range[2] == 1,
         "full as far as the guide is, steps 36 of 66")
-    Check(f.bar.height == 5 and f.bar.barTexture == w.ns.MEDIA .. "NaowhGradient.tga", "5 thick, in the Naowh Gradient")
+    Check(f.bar.height == 5 + 2 and f.bar.barTexture == w.ns.MEDIA .. "NaowhGradient.tga",
+        "5 thick inside its border, in the Naowh Gradient")
     Check(f.bar.barColor[1] == T.accent.r and f.bar.barColor[4] == 1, "in the accent")
     Check(f.bar.track.solid[1] == T.fg.r and f.bar.track.solid[4] == 0.5, "over a track of the line's color")
     local box
@@ -1018,8 +1306,9 @@ do
     w.ns.SetRXPWindowColor("accent", 1, 0, 0, 0.5)
     w.ns.SetRXPWindowColor("line", 0, 0, 1, 1)
     Flush(w)
-    Check(f.bar.height == 5 and f.bar.barTexture == "Textures\\Flat Name" and f.bar.barColor[1] == 1
-        and f.bar.barColor[4] == 0.5 and f.bar.track.solid[3] == 1, "the height is fixed, the texture and the colors are its own")
+    Check(f.bar.height == 5 + 2 and f.bar.barTexture == "Textures\\Flat Name" and f.bar.barColor[1] == 1
+        and f.bar.barColor[4] == 0.5 and f.bar.track.solid[3] == 1,
+        "the height is fixed, the texture and the colors are its own, and the track follows the line's")
     w.rows[1].complete = true
     w.rxp.GetGuideProgress = function() return 66, "id" end
     w.rxp.v2:UpdateGuideWindow()
@@ -1086,7 +1375,7 @@ do
     Check(box.inset and box.inset.shown ~= false and box.inset.of == box, "the box has the skin's inset")
     local solid = box.inset.fill.solid
     Check(solid and math.abs(solid[4] - 0.4) < 1e-9, "its fill has the box's color and opacity")
-    Check(box.back.shown == false and box.borderObject._frame.shown == false, "and the flat back and line are not drawn")
+    Check(box.back.shown == false and box.edge._frame.shown == false, "and the flat back and line are not drawn")
     ns.SetRXPWindowOption("rxpWindowBoxBorder", false)
     Flush(w)
     Check(box.inset.shown == false and box.back.shown ~= false and math.abs(box.back.solid[4] - 0.4) < 1e-9,
@@ -1161,15 +1450,16 @@ do
     for _, o in ipairs(w.frames) do
         if o.label and o.logo then box = o end
     end
-    Check(box.borderObject._frame.shown == true and box.borderObject.color[1] == 0.9 and box.borderObject.color[4] == 0.6,
-        "the step's box has its border, in the same color")
+    Check(box.edge._frame.shown == true and box.edge.color[1] == 0 and box.edge.color[2] == 0
+        and box.edge.color[3] == 0 and box.edge.color[4] == 1 and box.edge.pixels == 1,
+        "the step's box has its border, black and one pixel: it is not the window's")
     Check(math.abs(box.back.solid[4] - 0.55) < 1e-9, "the box is a little see-through to start")
     ns.SetRXPWindowOption("rxpWindowBoxBorder", false)
     ns.SetRXPWindowColor("box", 0.3, 0.3, 0.3, 0.3)
     ns.SetRXPWindowColor("border", 1, 1, 0, 1)
     Flush(w)
-    Check(box.borderObject._frame.shown == false and box.back.solid[1] == 0.3 and box.borderObject.color[1] == 1
-        and f.borderObject.color[1] == 1, "which can be turned off, and has its colors, the window's border the same")
+    Check(box.edge._frame.shown == false and box.back.solid[1] == 0.3 and f.borderObject.color[1] == 1,
+        "which can be turned off, and has its color, the window's border its own")
     Check(math.abs(box.back.solid[4] - 0.55) < 1e-9 and select(4, ns.RXPWindowColor("box")) == 1,
         "the opacity of the box is not part of its color")
     ns.SetRXPWindowOption("rxpWindowBoxOpacity", 100)
@@ -1474,7 +1764,7 @@ do
     local function Look(frame, name)
         local r, g, b = ns.RXPWindowColor("box")
         local opacity = ns.RXPWindowOption("rxpWindowBoxOpacity") / 100
-        local er, eg, eb, ea = ns.RXPWindowColor("border")
+        local er, eg, eb, ea = ns.RXPWindowColor("boxBorder")
         local label = { ns.RXPWindowColor("title") }
         Check(Is(Fill(frame), r, g, b, opacity), name .. ": the background is the active step's color and opacity")
         Check(Fill(frame.title) and Is(Fill(frame.title), r, g, b, opacity), name .. ": and so is its title's")
@@ -1493,8 +1783,43 @@ do
     Look(target, "targets")
     Look(items, "items")
 
+    local unset = Begin({ rxpWindow = true }, function(world, rxp)
+        Both(world, rxp)
+        for _, frame in ipairs({ rxp.targeting.activeTargetFrame, rxp.activeItemFrame }) do
+            local text = frame.title.text
+            text.bad = 0
+            function text:SetFont(path, size, flags)
+                if type(size) ~= "number" or size <= 0 then self.bad = self.bad + 1 end
+                self.font, self.fontSize, self.fontFlags = path, size, flags
+            end
+            function text:GetFont() return nil, -1566.511841, nil end
+        end
+    end)
+    local broken = unset.rxp.targeting.activeTargetFrame.title.text
+    local huge = unset.rxp.activeItemFrame.title.text
+    Check(broken.bad == 0 and huge.bad == 0, "a title with no font to read, and a size that is no size, is never given one")
+    Check(broken.font == "Fonts\\Naowh.ttf" and broken.fontSize == 9 and huge.fontSize == 9,
+        "it is set in the window's face at RestedXP's size, 9")
+    huge.GetFont = function() return "Fonts\\RXP.ttf", 5e30, "" end
+    unset.rxp.activeItemFrame:UpdateVisuals()
+    Flush(unset)
+    Check(huge.bad == 0 and huge.fontSize == 9, "and so is one that answers a size out of any range")
+    huge.GetFont = function() return nil, 14, nil end
+    unset.rxp.activeItemFrame:UpdateVisuals()
+    Flush(unset)
+    Check(huge.bad == 0 and huge.fontSize == 9, "and one with no face, whatever size it answers")
+    huge.GetFont = function() return "Fonts\\RXP.ttf", 12, "" end
+    unset.rxp.activeItemFrame:UpdateVisuals()
+    Flush(unset)
+    Check(huge.bad == 0 and huge.fontSize == 9, "and a readable size gets RestedXP's 9 as well")
+
     target:UpdateVisuals()
     Look(target, "targets painted again")
+    local read = target.title.text.GetFont
+    function target.title.text:GetFont() return self.font, -1566.5, self.fontFlags end
+    target:UpdateVisuals()
+    Look(target, "targets with a junk size from the game")
+    target.title.text.GetFont = read
     w.rxp.targeting:RenderTargetFrameBackground()
     local r, g, b = ns.RXPWindowColor("box")
     Check(Is(Fill(target), r, g, b, 0.55) and w.rxp.targeting.renders == 1,
@@ -1503,7 +1828,7 @@ do
     -- what is set for the window is what they follow
     ns.SetRXPWindowOption("rxpWindowBoxOpacity", 80)
     ns.SetRXPWindowColor("box", 1, 0, 0)
-    ns.SetRXPWindowColor("border", 0, 1, 0, 0.5)
+    ns.SetRXPWindowColor("boxBorder", 0, 1, 0, 0.5)
     ns.SetRXPWindowOption("rxpWindowOutline", "outline")
     ns.SetRXPWindowOption("rxpWindowFont", "Fancy")
     Flush(w)
@@ -1722,7 +2047,7 @@ do
     Flush(w)
     local buy = Row(BUY)
     Check(buy.meter.shown and math.abs(buy.meter.value - 0.4) < 1e-9, "buy five with two in the bags: two fifths")
-    Check(buy.meter.points[1][4] == 2 + 5 + 23 and buy.meter.width == buy.width - 2 - 5 - 23 and buy.height == 18 + 2 + 5,
+    Check(buy.meter.points[1][4] == 2 + 5 + 23 and buy.meter.width == buy.width - 2 - 5 - 23 and buy.height == 18 + 2 + 5 + 2,
         "under the text as wide as it, and the row is as tall as both")
     Check(f.events and f.events[BAGS] == true, "and the bags are listened to")
 

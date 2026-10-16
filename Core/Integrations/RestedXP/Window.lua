@@ -14,6 +14,7 @@ local HEAD_PAD, LIST_PAD = 10, 6
 local BOX_TITLE_TEXT, BOX_TITLE_HEIGHT, BOX_TITLE_ROOM = 9, 19, 10
 local BAR_W, ICON_GAP, GRIP_SIZE = 2, 5, 16
 local FIRST_GROW, FIRST_ICON_GROW, LOGO_SIZE, BAR_HEIGHT, INDENT, ICON_SIZE = 2, 2, 24, 5, 12, 18
+local EDGE_SIDES = 2
 local HOVER_ALPHA, ICON_DONE_ALPHA = 0.25, 0.5
 local COUNT_MIN, COUNT_GAP = 2, 2
 local BAG_EVENT = "BAG_UPDATE_DELAYED"
@@ -31,6 +32,9 @@ local TEXT_MENU = ns.L("Right-click: menu")
 local TEXT_GO = ns.L("Go to step %d")
 local TEXT_PICK = ns.L("Pick a guide")
 local TIP_DIM = 0.7
+local WHEEL_LINES, DONE_ALPHA = 2, 0.5
+local SCROLL_W, SCROLL_GAP, SCROLL_MIN = 2, 4, 12
+local SCROLL_ROOM = SCROLL_W + SCROLL_GAP
 local HOME = { "LEFT", "LEFT", 0, 35 }
 local DRAG_BUTTON, TIP_ANCHOR = "LeftButton", "ANCHOR_TOP"
 local ACCENT = "accent"
@@ -41,6 +45,7 @@ local OUTLINE_FLAGS = { outline = "OUTLINE", thick = "THICKOUTLINE" }
 local window, active, started, pending, styled, wantsBags
 local retake = true
 local sizing, sizingModel
+local scroll, anchorGuide, anchorAfter = 0
 local pool, used = { box = {}, row = {}, line = {}, hit = {} }, { box = 0, row = 0, line = 0, hit = 0 }
 local silenced = setmetatable({}, { __mode = "k" })
 local dressed = setmetatable({}, { __mode = "k" })
@@ -64,6 +69,11 @@ local function Refresh()
 end
 
 ns.RXPWindowRefresh = Refresh
+
+local function Wheel(_, delta)
+    scroll = scroll - delta * WHEEL_LINES
+    Refresh()
+end
 
 local function Rebuilt()
     retake = true
@@ -196,7 +206,7 @@ local function SkinBox(part)
         back.textures[1]:SetVertexColor(r, g, b, ns.RXPWindowOption("rxpWindowBoxOpacity") / PERCENT)
     end
     if not border then return end
-    local r, g, b, a = ns.RXPWindowColor("border")
+    local r, g, b, a = ns.RXPWindowColor("boxBorder")
     for _, texture in ipairs(border.textures) do texture:SetColorTexture(r, g, b, a) end
     border:SetShown(ns.RXPWindowOption("rxpWindowBoxBorder") and (not back or back:IsShown()))
 end
@@ -204,8 +214,7 @@ end
 local function SkinTitle(title)
     SkinBox(title)
     local text = title.text
-    local _, size = text:GetFont()
-    Faced(text, size or BOX_TITLE_TEXT)
+    Faced(text, BOX_TITLE_TEXT)
     Coloured(text, "title")
     title:SetSize(text:GetStringWidth() + BOX_TITLE_ROOM, BOX_TITLE_HEIGHT)
 end
@@ -359,7 +368,7 @@ end
 local function LiveSize(width, height)
     if not (sizing and sizingModel and window) then return end
     sizing.width = math.min(WIDTH_MAX, math.max(WIDTH_MIN, width))
-    sizing.steps = StepsFor(height)
+    sizing.steps = math.max(0, math.min(STEPS_MAX, StepsFor(height)))
     Draw()
 end
 
@@ -380,7 +389,7 @@ local function MakeGrip(parent)
     grip:SetHighlightTexture(GRIP_HIGHLIGHT)
     grip:SetScript("OnMouseDown", function()
         if ns.RXPWindowOption("rxpWindowLock") then return end
-        sizingModel = ns.RXPWindowRead(STEPS_MAX)
+        sizingModel = ns.RXPWindowRead()
         sizing = { width = window:GetWidth(), steps = ns.RXPWindowSteps() }
         window:StartSizing(GRIP_CORNER)
     end)
@@ -428,7 +437,7 @@ end
 
 local function PaintBar(bar, fraction)
     bar:SetStatusBarTexture(TexturePath())
-    local r, g, b, a = ns.RXPWindowColor(ACCENT)
+    local r, g, b, a = ns.RXPWindowColor("barFill")
     bar:SetStatusBarColor(r, g, b, a)
     local parts, style = ForeverParts()
     local forever = ForeverLook()
@@ -438,12 +447,23 @@ local function PaintBar(bar, fraction)
         local field = style.FOREVER_FIELD_RGB
         bar.track:SetColorTexture(field.r, field.g, field.b, 1)
     else
-        r, g, b, a = ns.RXPWindowColor("line")
+        r, g, b, a = ns.RXPWindowColor("barBack")
         bar.track:SetColorTexture(r, g, b, a)
+    end
+    local size = ns.RXPWindowOption("rxpWindowBarBorderSize")
+    local edged = size > 0 and not forever
+    if edged and not bar.edge then bar.edge = ns.Border(bar) end
+    if bar.edge then bar.edge._frame:SetShown(edged) end
+    local height = BAR_HEIGHT
+    if edged then
+        bar.edge:SetColor(ns.RXPWindowColor("barBorder"))
+        bar.edge:SetPixels(size)
+        height = height + EDGE_SIDES * size * ns.OnePixel(bar)
     end
     bar:SetMinMaxValues(0, 1)
     bar:SetValue(fraction)
-    bar:SetHeight(BAR_HEIGHT)
+    bar:SetHeight(height)
+    return height
 end
 
 local function Build()
@@ -478,6 +498,10 @@ local function Build()
     f.rule = ns.Solid(f, "ARTWORK", T.fg, 1)
     ns.Hairline(f.rule, "h")
     f.bar = MakeBar(f)
+    f.track = ns.Solid(f, "ARTWORK", T.line, 1)
+    f.thumb = ns.Solid(f, "OVERLAY", T.accent, 1)
+    f.wheel = CreateFrame("Frame", nil, f)
+    f.wheel:SetScript("OnMouseWheel", Wheel)
     f:SetScript("OnSizeChanged", function(_, width, height) LiveSize(width, height) end)
     f.grip = MakeGrip(f)
     Place(f)
@@ -494,7 +518,7 @@ local function MakeBox()
     Draggable(box)
     box.back = ns.Solid(box, "BACKGROUND", T.bg, 1)
     box.back:SetAllPoints()
-    box.edge = ns.Border(box, T.line)
+    box.edge = ns.Border(box)
     box.label = Text(box, "rxpWindowTextSize")
     box.logo = box:CreateTexture(nil, "OVERLAY")
     box.logo:SetTexture(LOGO)
@@ -623,9 +647,10 @@ local function DrawMeter(item, row, x, y, width)
     item.meter:ClearAllPoints()
     item.meter:SetPoint("TOPLEFT", item, "TOPLEFT", x, -y)
     item.meter:SetWidth(width)
-    PaintBar(item.meter, fraction)
+    local barHeight = PaintBar(item.meter, fraction)
     item.meter:Show()
     if row.bags then wantsBags = true end
+    return barHeight
 end
 
 local function DrawRow(box, row, x, y, width, first)
@@ -664,8 +689,7 @@ local function DrawRow(box, row, x, y, width, first)
     item.text:SetText(row.text)
     local height = math.max(drop + math.max(item.text:GetStringHeight(), textSize), iconSize)
     if row.need and row.need >= COUNT_MIN then
-        DrawMeter(item, row, BAR_W + gap + iconW, height + COUNT_GAP, textWidth)
-        height = height + COUNT_GAP + BAR_HEIGHT
+        height = height + COUNT_GAP + DrawMeter(item, row, BAR_W + gap + iconW, height + COUNT_GAP, textWidth)
     else
         item.meter:Hide()
     end
@@ -690,8 +714,9 @@ local function DrawBox(step, y, inner, current)
     if inset then box.inset.fill:SetColorTexture(boxR, boxG, boxB, opacity) end
     box.back:SetColorTexture(boxR, boxG, boxB, opacity)
     box.back:SetShown(not inset)
-    local r, g, b, a = ns.RXPWindowColor("border")
+    local r, g, b, a = ns.RXPWindowColor("boxBorder")
     box.edge:SetColor(r, g, b, a)
+    box.edge:SetPixels(ns.RXPWindowOption("rxpWindowBoxBorderSize"))
     box.edge._frame:SetShown(bordered and not inset)
     box.label:ClearAllPoints()
     box.label:SetPoint("TOPLEFT", box, "TOPLEFT", BOX_PAD, -BOX_PAD)
@@ -759,9 +784,9 @@ local function DrawLine(model, y)
         window.bar:ClearAllPoints()
         window.bar:SetPoint("TOPLEFT", window, "TOPLEFT", PAD, y)
         window.bar:SetPoint("TOPRIGHT", window, "TOPRIGHT", -PAD, y)
-        PaintBar(window.bar, model.fraction or 0)
+        local barHeight = PaintBar(window.bar, model.fraction or 0)
         window.bar:Show()
-        return y - BAR_HEIGHT - gap
+        return y - barHeight - gap
     elseif line == "rule" then
         window.rule:ClearAllPoints()
         window.rule:SetPoint("TOPLEFT", window, "TOPLEFT", PAD, y)
@@ -787,12 +812,13 @@ local function DrawPanel()
     window.edge._frame:SetShown(borderOn and not inset)
 end
 
-local function ListLine(y, inner, listH, text, index, menu)
+local function ListLine(y, inner, listH, text, index, menu, look, barred)
     local item = Acquire("line")
     item:ClearAllPoints()
     item:SetPoint("TOPLEFT", window, "TOPLEFT", PAD, y)
-    item:SetWidth(inner)
-    Coloured(item, "muted")
+    item:SetWidth(barred and inner - SCROLL_ROOM or inner)
+    Coloured(item, look == "current" and ACCENT or "muted")
+    item:SetAlpha(look == "done" and DONE_ALPHA or 1)
     item:SetText(text)
     local hit = Acquire("hit")
     hit:ClearAllPoints()
@@ -803,15 +829,48 @@ local function ListLine(y, inner, listH, text, index, menu)
     return y - listH
 end
 
+local function DrawScrollBar(from, height, top, count, total)
+    local grip = math.max(SCROLL_MIN, height * count / total)
+    local share = math.min(1, (top - 1) / (total - count))
+    window.track:ClearAllPoints()
+    window.track:SetPoint("TOPRIGHT", window, "TOPRIGHT", -PAD, from)
+    window.track:SetSize(SCROLL_W, height)
+    window.track:SetColorTexture(ns.RXPWindowColor("line"))
+    window.thumb:ClearAllPoints()
+    window.thumb:SetPoint("TOPRIGHT", window, "TOPRIGHT", -PAD, from - share * (height - grip))
+    window.thumb:SetSize(SCROLL_W, grip)
+    window.thumb:SetColorTexture(ns.RXPWindowColor(ACCENT))
+end
+
+local function DrawSteps(model, y, inner, listH)
+    local list = model.list
+    local count = sizing and sizing.steps or ns.RXPWindowSteps()
+    local top = math.max(1, math.min(model.first + scroll, math.max(model.first, #list - count + 1)))
+    scroll = top - model.first
+    local scrollable = count > 0 and #list > count
+    local barred = scrollable and ns.RXPWindowOption("rxpWindowScrollBar")
+    local from = y
+    for i = top, math.min(#list, top + count - 1) do
+        local entry = list[i]
+        local look = model.current[entry.index] and "current" or entry.done and "done" or nil
+        y = ListLine(y, inner, listH, ("%d  %s"):format(entry.index, ns.RXPWindowLineText(entry)), entry.index, false,
+            look, barred)
+    end
+    window.track:SetShown(barred)
+    window.thumb:SetShown(barred)
+    window.wheel:ClearAllPoints()
+    window.wheel:SetPoint("TOPLEFT", window, "TOPLEFT", PAD, from)
+    window.wheel:SetSize(inner, math.max(count, 1) * listH)
+    window.wheel:EnableMouseWheel(scrollable)
+    window.wheel:SetShown(scrollable)
+    if barred then DrawScrollBar(from, from - y, top, count, #list) end
+    return y
+end
+
 local function DrawList(model, y, inner, listH)
     if model.empty then y = ListLine(y, inner, listH, TEXT_PICK, nil, true) end
     for i, step in ipairs(model.steps) do y = DrawBox(step, y, inner, i == 1) end
-    for i = 1, sizing and sizing.steps or #model.upcoming do
-        local entry = model.upcoming[i]
-        if not entry then break end
-        y = ListLine(y, inner, listH, ("%d  %s"):format(entry.index, entry.text), entry.index, false)
-    end
-    return y
+    return DrawSteps(model, y, inner, listH)
 end
 
 local function DrawChrome(y, listH, folded)
@@ -832,6 +891,9 @@ function Draw()
     window = window or Build()
     local model = sizing and sizingModel or ns.RXPWindowRead() or ns.RXPWindowNoGuide()
     if not sizing and retake then retake = not Take() end
+    if not sizing and (model.guide ~= anchorGuide or model.after ~= anchorAfter) then
+        anchorGuide, anchorAfter, scroll = model.guide, model.after, 0
+    end
     Reset()
     Refaced()
     local width = sizing and sizing.width or ns.RXPWindowWidth()
@@ -842,6 +904,9 @@ function Draw()
     DrawPanel()
     DrawHeader(model, folded, width, headH)
     local y = DrawLine(model, -PAD - headH)
+    window.track:Hide()
+    window.thumb:Hide()
+    window.wheel:Hide()
     if not folded then y = DrawList(model, y, width - PAD * 2, listH) end
     DrawChrome(y, listH, folded)
     window:Show()

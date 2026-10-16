@@ -1,4 +1,4 @@
--- Run with Lua 5.1 from the repository root: the QoL Scrap Marker and its Scrap List, loaded
+-- Run with Lua 5.1 from the repository root: the QoL Junk Marker and its Junk List, loaded
 -- from the Shared files and the two QoL files against stubs of the game's bags, EllesmereUI's,
 -- gear sets and a vendor. Checks: off and hooking nothing by default; a plain Alt-click marks
 -- and unmarks by item ID, other clicks do nothing, and quest items, keys, items with no sell
@@ -9,7 +9,7 @@
 -- at a time only while it is open and out of combat, rereading each slot, keeping protected
 -- items and stopping when it closes; Ask First's panel and Nothing; Save Marks off ending a mark
 -- once its item has left the bags; the card's summary; the
--- API Bag Space reads; the Scrap List window (built on first open, its rows, X, scope tag,
+-- API Bag Space reads; the Junk List window (built on first open, its rows, X, scope tag,
 -- search, drop, Clear All, Export and Import, live updates); and no garbage per bag update,
 -- sale step or list redraw.
 local Load = dofile("Tools/regression/load_files.lua")
@@ -316,7 +316,7 @@ env.GameTooltip.GetOwner = function() return nil end
 
 local files = TocFiles("^Shared/.*%.lua$")
 check("the Shared bag helper loads with Shared", #TocFiles("^Shared/Game/Bags%.lua$") == 1)
-check("the TOC loads the Scrap Marker and its list", #TocFiles("^NaowhForever_QoL/Loot/ScrapMarker%.lua$") == 1
+check("the TOC loads the Junk Marker and its list", #TocFiles("^NaowhForever_QoL/Loot/ScrapMarker%.lua$") == 1
     and #TocFiles("^NaowhForever_QoL/Loot/ScrapList%.lua$") == 1)
 -- The copy cards are stubbed, so their Shared file is left out.
 for i = #files, 1, -1 do
@@ -424,7 +424,7 @@ check("holding an item on the cursor: no mark", state.account.scrapItems == nil)
 
 Alt(cloth)
 check("Alt-click marks the item by its ID, for the account", state.account.scrapItems[201] == true
-    and Printed():find("marked as scrap", 1, true) ~= nil)
+    and Printed():find("marked as junk", 1, true) ~= nil)
 check("every copy shows the scrap icon, on its own frame over the slot", Mark(cloth).shown == true
     and Mark(bagFrame.items[8]).shown == true and Mark(cloth).parent == cloth)
 check("the icon in the top-right corner, the game's scrap art", Mark(cloth).points.TOPRIGHT ~= nil
@@ -435,11 +435,11 @@ local tip = { lines = {}, AddLine = function(self, text) self.lines[#self.lines 
 state.tooltip(tip, { id = 201 })
 state.tooltip(tip, { id = 205 })
 check("a marked item's tooltip says it sells at the next vendor; others say nothing",
-    #tip.lines == 1 and tip.lines[1] == "Scrap: sold at the next vendor")
+    #tip.lines == 1 and tip.lines[1] == "Junk: sold at the next vendor")
 
 Alt(cloth)
 check("Alt-click again unmarks it", state.account.scrapItems[201] == nil and Mark(cloth).shown == false
-    and Mark(bagFrame.items[8]).shown == false and Printed():find("no longer scrap", 1, true) ~= nil)
+    and Mark(bagFrame.items[8]).shown == false and Printed():find("no longer junk", 1, true) ~= nil)
 
 for _, modifier in ipairs({ "alt", "ctrl" }) do
     Set("scrapMarkerModifier", modifier)
@@ -528,7 +528,7 @@ ns.Apply()
 ns.Apply()
 local widget, junk = BAGANATOR.widgets.NaowhForeverScrap, BAGANATOR.junk.NaowhForeverScrap
 check("loaded: one corner widget, top right, fast, and one junk plugin, under one name", widget
-    and junk and widget.label == "Naowh Forever Scrap" and junk.label == widget.label
+    and junk and widget.label == "Naowh Forever Junk" and junk.label == widget.label
     and widget.corner.corner == "top_right" and widget.isFast == true)
 local function BaganatorButton(bag, slot)
     local button = ItemButton(bag, slot)
@@ -670,7 +670,7 @@ check("a batch of six marked items sold, across both bags", #state.sold == 6 and
 for _, id in ipairs(state.sold) do check("only marked items sold", id == 201 or id == 206) end
 RunTimers()
 check("nothing left: it stops", #state.sold == 6 and #timers == 0)
-check("one line of what it sold", Printed() == "Sold 6 scrap items for 184c.")
+check("one line of what it sold", Printed() == "Sold 6 junk items for 184c.")
 check("unmarked and unsellable items stay", state.bags[0][2] == 202 and state.bags[0][5] == 205
     and state.bags[1][3] == 205)
 
@@ -700,7 +700,7 @@ Fire("MERCHANT_SHOW")
 RunTimers()
 RunTimers()
 check("a marked item now in a gear set is kept, and the line says so", #state.sold == 10
-    and state.bags[1][1] == 206 and Printed() == "Sold 10 scrap items for 260c. Kept 2 protected.")
+    and state.bags[1][1] == 206 and Printed() == "Sold 10 junk items for 260c. Kept 2 protected.")
 state.setItems[1] = nil
 Fire("EQUIPMENT_SETS_CHANGED")
 
@@ -710,7 +710,7 @@ Refill()
 Fire("MERCHANT_SHOW")
 RunTimers()
 Fire("MERCHANT_CLOSED")
-check("closing the vendor says what was sold", Printed() == "Sold 6 scrap items for 156c.")
+check("closing the vendor says what was sold", Printed() == "Sold 6 junk items for 156c.")
 RunTimers()
 check("and nothing more sells", #state.sold == 6 and #timers == 0)
 
@@ -758,7 +758,7 @@ RunTimers()
 local ask = panels[1]
 check("Ask First: nothing sold, a panel docked to the vendor's window", #state.sold == 0 and ask and ask.shown ~= false
     and (ask.points.TOPLEFT == merchant or ask.points.TOPRIGHT == merchant))
-check("its title asks, with the total", ask.title.text == "Sell your scrap for 340c?")
+check("its title asks, with the total", ask.title.text == "Sell your marked junk for 340c?")
 local askView = ask.view
 check("a row per item about to go, with its count and value", askView.pools.item.used == 2
     and askView.pools.item[1].meta.text == "x20" and askView.pools.item[1].value.text == "260c"
@@ -766,7 +766,7 @@ check("a row per item about to go, with its count and value", askView.pools.item
 check("Ask First's tooltip line says offered", (function()
     wipe(tip.lines)
     state.tooltip(tip, { id = 201 })
-    return tip.lines[1] == "Scrap: offered at the next vendor"
+    return tip.lines[1] == "Junk: offered at the next vendor"
 end)())
 ask.buttons["Not Now"].onClick()
 check("Not Now closes it, selling nothing", ask.shown == false and #state.sold == 0)
@@ -789,7 +789,7 @@ RunTimers()
 check("Nothing: nothing sold, the marks kept", #state.sold == 0 and state.account.scrapItems[201] == true)
 wipe(tip.lines)
 state.tooltip(tip, { id = 201 })
-check("the tooltip says Scrap only", tip.lines[1] == "Scrap")
+check("the tooltip says Junk only", tip.lines[1] == "Junk")
 Set("scrapMarkerVendor", "sell")
 merchant.shown = false
 Fire("MERCHANT_CLOSED")
@@ -831,7 +831,7 @@ state.bags[0], state.bags[1] = keptBags[1], keptBags[2]
 --  The settings card
 -------------------------------------------------------------------------------
 local card = ns.Shared.Settings.CardOf("QoL/Loot & Items:scrapMarker")
-check("a Scrap Marker card on QoL > Loot & Items, switched by scrapMarker", card and card.switch == "scrapMarker")
+check("a Junk Marker card on QoL > Loot & Items, switched by scrapMarker", card and card.switch == "scrapMarker")
 check("its summary counts the marks and what your scrap is worth", card.summary() == "2 items marked, 340c in your bags")
 for _, row in ipairs(card.rows) do
     if row.kind ~= "group" then
@@ -855,12 +855,12 @@ check("help returns to Alt", card.help():find("Alt-click", 1, true) ~= nil)
 local page = ns.Shared.Settings.pages["QoL/Loot & Items"]
 local windowCard
 for _, item in ipairs(page.items) do
-    if item.window and item.text == "Open Scrap List" then windowCard = item end
+    if item.window and item.text == "Open Junk List" then windowCard = item end
 end
-check("an Open Scrap List card on the page", windowCard ~= nil)
+check("an Open Junk List card on the page", windowCard ~= nil)
 
 -------------------------------------------------------------------------------
---  The Scrap List window
+--  The Junk List window
 -------------------------------------------------------------------------------
 check("the window is not built before it opens", #views == 1)
 state.bags[0] = { 201, 205, 207, 209 }
@@ -922,7 +922,7 @@ box.onSearch("CLO")
 check("search filters by name", Ids() == "201")
 box.onSearch("nothing like it")
 check("no match: a line says so", list.pools.item.used == 0 and list.pools.note.used == 1
-    and list.pools.note[1].text.text == "No scrap item matches your search.")
+    and list.pools.note[1].text.text == "No junk item matches your search.")
 box.onSearch("")
 
 -- A drop marks it, with the same refusals as Alt-click.
@@ -947,7 +947,7 @@ for _, child in ipairs(rawget(views[2].parent.parent, "children")) do
 end
 exportButton.scripts.OnClick()
 check("Export: a versioned plain string of the marked IDs", state.copied == "NFSCRAP:1:201,205,206,210")
-check("Import refuses what isn't a Scrap List", Scrap.Parse("NFSCRAP:2:201") == nil and Scrap.Parse("hello") == nil
+check("Import refuses what isn't a Junk List", Scrap.Parse("NFSCRAP:2:201") == nil and Scrap.Parse("hello") == nil
     and Scrap.Parse("NFSCRAP:1:201;DROP") == nil)
 local parsed = Scrap.Parse("NFSCRAP:1:208, 208,201")
 check("Import reads numbers only, once each", #parsed == 2 and parsed[1] == 208 and parsed[2] == 201)
@@ -957,19 +957,19 @@ check("Import stops at 500 items", #Scrap.Parse("NFSCRAP:1:" .. table.concat(lon
 state.paste, state.answer = "NFSCRAP:1:208,201,202,99999", false
 state.importButton.scripts.OnClick()
 check("Import asks first, counting only what is new and allowed, by name",
-    state.asked == "Add 1 item to your scrap list: |cffffffffWorn Shortsword|r?" and state.account.scrapItems[208] == nil)
+    state.asked == "Add 1 item to your junk list: |cffffffffWorn Shortsword|r?" and state.account.scrapItems[208] == nil)
 state.answer = nil
 state.importButton.scripts.OnClick()
 check("yes: merged in, nothing replaced", state.account.scrapItems[208] == true and state.account.scrapItems[201] == true)
 state.paste, state.answer = "NFSCRAP:1:213,212,208,207,211", false
 state.importButton.scripts.OnClick()
 check("Import names the best first, by quality, and warns about what is worth keeping", state.asked
-    == "Add 4 items to your scrap list: |cff0070ddRare Ring|r, |cff1eff00Apprentice Wand|r, |cff1eff00Silver Bar|r"
+    == "Add 4 items to your junk list: |cff0070ddRare Ring|r, |cff1eff00Apprentice Wand|r, |cff1eff00Silver Bar|r"
     .. " and 1 more?|n|cfffb923c1 of these is Rare or better, and 2 sell for 1g or more.|r" and state.account.scrapItems[211] == nil)
 state.paste = "NFSCRAP:1:207"
 state.importButton.scripts.OnClick()
 check("one Uncommon item is called out too", state.asked
-    == "Add 1 item to your scrap list: |cff1eff00Apprentice Wand|r?|n|cfffb923c1 of these is Uncommon.|r")
+    == "Add 1 item to your junk list: |cff1eff00Apprentice Wand|r?|n|cfffb923c1 of these is Uncommon.|r")
 state.answer = nil
 
 -- Clear All, after asking.
@@ -977,7 +977,7 @@ RunTimers()
 local clear = buttons["Clear All"]
 state.answer = false
 clear.onClick()
-check("Clear All asks first", state.asked == "Unmark every item marked as scrap?" and state.account.scrapItems ~= nil)
+check("Clear All asks first", state.asked == "Unmark every item marked as junk?" and state.account.scrapItems ~= nil)
 state.answer = nil
 clear.onClick()
 Set("scrapRuleWear", false)
@@ -1035,7 +1035,7 @@ state.keep = false
 wipe(timers)
 list:Redraw()
 local pooled = #list.pools.item
-Measure(check)("the Scrap List redrawn", 2, function() list:Redraw() end)
+Measure(check)("the Junk List redrawn", 2, function() list:Redraw() end)
 check("its rows pooled: no new row on a redraw", #list.pools.item == pooled and list.pools.item.used == 3)
 
 -------------------------------------------------------------------------------
