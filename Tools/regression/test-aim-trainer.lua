@@ -109,7 +109,9 @@ local function fixture(opts)
     function parts.Backdrop() return backdrop end
     function parts.TitleBar(w)
         w.title, w.subtitle, w.logo = w:CreateFontString(), w:CreateFontString(), frame("Button", nil, w)
-        return frame("Button", nil, w)
+        local close = frame("Button", nil, w)
+        close:SetSize(24, 24)
+        return close
     end
     function parts.BarButton(parent, _, _, _, onClick)
         local b = frame("Button", nil, parent)
@@ -145,6 +147,14 @@ local function fixture(opts)
     function ns.HideUnlockMode() end
     function ns.SoundChoices() return {}, {}, {} end
     function ns.Confirm(_, yes) yes() end
+    s.offered = true
+    function ns.FlightGameHideButton(parent, size)
+        local b = frame("Button", nil, parent)
+        b.shown = false
+        s.hide, s.hideSize = b, size
+        return b
+    end
+    function ns.FlightGameOffered(reason) return reason == "flight" and s.offered end
 
     local slash = {}
     local env = { _G = { NaowhForever = ns }, UIParent = new("Frame"), CreateFrame = frame,
@@ -315,6 +325,23 @@ do
     s.S.Set("aimTrainer", true)
     check("switching it on with no records builds and registers nothing", s.created == 0 and s.events == 0
         and #s.prefixes == 0 and s.panel() == nil and #s.sent == 0)
+end
+
+-- Don't Show on Flights: the eye shows when a flight opened it by itself, and goes once a round starts.
+do
+    local s = fixture({ faction = "Alliance" })
+    s.ns.AimOffer("flight")
+    check("a flight opening it shows the eye", s.hide and s.hide.shown)
+    check("the eye's box is the close button's size", s.hideSize == 24)
+    s.clickArea()
+    check("starting a round hides the eye", not s.hide.shown)
+    s.panel():Hide()
+    s.ns.ToggleAimTrainer()
+    check("opened by hand, no eye", s.panel().shown and not s.hide.shown)
+    s.panel():Hide()
+    s.offered = false
+    s.ns.AimPlay("gridshot", "flight")
+    check("a game button with nothing opening by itself shows no eye", s.panel().shown and not s.hide.shown)
 end
 
 -- Gridshot: scoring, hits and misses, round end, records, sound.

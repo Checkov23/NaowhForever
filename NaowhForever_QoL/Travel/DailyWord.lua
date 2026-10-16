@@ -14,7 +14,7 @@ local FIRST_DAY = 20741
 local CLOCK_EVERY = 1
 local WORD_W, WORD_H = 300, 500
 local WORD_ALPHA = 0.95
-local PAD, CLOSE_SIZE, CLOSE_INSET = 12, 22, 10
+local PAD, CLOSE_SIZE, CLOSE_INSET, HIDE_GAP = 12, 22, 10, 4
 local LOGO_SIZE, LOGO_TOP, TITLE_GAP, NUMBER_GAP = 26, 8, 8, 6
 local TITLE_SIZE, NUMBER_SIZE, CLOCK_SIZE, MESSAGE_SIZE, STATS_SIZE = 16, 13, 11, 13, 11
 local CLOCK_TOP = 42
@@ -324,6 +324,10 @@ local function BuildTitle()
     close:SetPoint("TOPRIGHT", -CLOSE_INSET, -CLOSE_INSET)
     word.clock = ns.Font(word, CLOCK_SIZE, nil, T.muted)
     word.clock:SetPoint("TOP", 0, -CLOCK_TOP)
+    local hideButton = ns.FlightGameHideButton
+    if not hideButton then return end
+    word.notOnFlights = hideButton(word, CLOSE_SIZE)
+    word.notOnFlights:SetPoint("RIGHT", close, "LEFT", -HIDE_GAP, 0)
 end
 
 local function NewTile(x, y)
@@ -424,6 +428,7 @@ local function Open(reason, focus)
     end
     if not word:IsShown() then
         openedFor = reason
+        if word.notOnFlights then word.notOnFlights:SetShown(ns.FlightGameOffered(reason)) end
         today, current = Today(), ""
         word.day = today
         word.input:SetText("")

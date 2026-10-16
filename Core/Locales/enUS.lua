@@ -2,6 +2,9 @@
 local L = _G.NaowhForeverLocale or {}
 _G.NaowhForeverLocale = L
 
+L["Don't Show on Flights"] = true
+L["Flight Games won't open by themselves now; the Flight Timer's game buttons still have them."] = true
+L["Stops the games opening by themselves; the Flight Timer's buttons still have them."] = true
 L["A Trainable tab under your spellbook that lists the spells you can train."] = true
 L["Nearest trainer: %s"] = true
 L["Nothing to train in the next few levels."] = true

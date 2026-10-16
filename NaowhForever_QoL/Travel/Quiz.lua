@@ -12,7 +12,7 @@ local QUIZ_ALPHA = 0.95
 local PAD, INSET = 12, 16
 local LOGO_SIZE, LOGO_TOP, TITLE_GAP = 26, 8, 8
 local TITLE_SIZE, QUESTION_SIZE, RESULT_SIZE, SCORE_SIZE = 16, 14, 14, 11
-local CLOSE_SIZE, CLOSE_INSET = 22, 10
+local CLOSE_SIZE, CLOSE_INSET, HIDE_GAP = 22, 10, 4
 local QUESTION_TOP, QUESTION_H = 48, 44
 local ANSWERS = 4
 local ANSWER_W, ANSWER_H, ANSWER_TOP, ANSWER_STEP = 368, 30, 100, 36
@@ -132,6 +132,11 @@ local function BuildTitle()
 
     local close = ns.Button(quiz, TEXT_CLOSE, CLOSE_SIZE, CLOSE_SIZE, OnClose)
     close:SetPoint("TOPRIGHT", -CLOSE_INSET, -CLOSE_INSET)
+
+    local hideButton = ns.FlightGameHideButton
+    if not hideButton then return end
+    quiz.notOnFlights = hideButton(quiz, CLOSE_SIZE)
+    quiz.notOnFlights:SetPoint("RIGHT", close, "LEFT", -HIDE_GAP, 0)
 end
 
 local function BuildBody()
@@ -184,6 +189,7 @@ local function Open(reason)
     if not quiz then Build() end
     if quiz:IsShown() then return end
     openedFor = reason
+    if quiz.notOnFlights then quiz.notOnFlights:SetShown(ns.FlightGameOffered(reason)) end
     Place()
     NextQuestion()
     UpdateScore()

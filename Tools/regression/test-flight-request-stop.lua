@@ -44,14 +44,14 @@ local function fixture(settings, extra)
             line = {} },
         Font = function() return frame() end, Solid = function() return frame() end,
         Border = function() return { _frame = frame() } end,
-        Button = function(_, text)
+        Button = function(_, text, w)
             local b = frame()
-            b.name, b.label = text, frame()
+            b.name, b.label, b.width, b.shown = text, frame(), w, true
             b._bg, b._border, b._art = frame(), { _frame = frame() }, false
             return b
         end,
         AccentBorder = function(f) return f end, PixelInset = function() end,
-        Tooltip = function() end, AccountSettings = function() return {} end, FLIGHT_ROUTES = {},
+        Tooltip = function(f, title, body) f.tipTitle, f.tipBody = title, body end, AccountSettings = function() return {} end, FLIGHT_ROUTES = {},
         Apply = function() end, ShowUnlockMode = function() end, HideUnlockMode = function() end,
         UI = { AttachMover = function() return frame() end, FontPath = function(name) return 'font:' .. name end,
             TexturePath = function(name, own) if name == '' then return own end return 'lsm:' .. name end },
@@ -59,6 +59,7 @@ local function fixture(settings, extra)
                 { __index = dofile('Tools/regression/shared_style.lua') }),
             Parts = { Arrow = function() return frame() end, HudText = function(fs, shadow) fs.shadow = shadow end,
                 HudFlags = function(o) return (o == "NONE" or type(o) ~= "string") and "" or o end } },
+        Print = function(msg) s.printed = msg end,
         QuizOffer = function(reason) s.offers[#s.offers + 1] = 'quiz:' .. reason end,
         AimOffer = function(reason) s.offers[#s.offers + 1] = 'aim:' .. reason end,
         DailyWordOffer = function(reason) s.offers[#s.offers + 1] = 'word:' .. reason end,
@@ -242,6 +243,29 @@ do
     s.played = nil
     s.button('quiz')._onClick()
     check('no game opens in combat', s.played == nil)
+end
+do
+    local s = fixture()
+    local eye = s.ns.FlightGameHideButton(s.env.UIParent, 24)
+    check("Don't Show on Flights is a hidden eye in a box the size of the close button", not eye.shown
+        and eye.name == '' and eye.width == 24 and eye.icon.texture == s.ns.Shared.Style.EYE_OFF
+        and eye.tipTitle == "Don't Show on Flights" and eye.tipBody)
+    check('the eye is offered only for a game a flight opened by itself', s.ns.FlightGameOffered('flight')
+        and not s.ns.FlightGameOffered(nil) and not s.ns.FlightGameOffered('camp'))
+    for _, game in ipairs({ 'quiz', 'word' }) do
+        s.set('flightGame', game)
+        check('the eye is offered for ' .. game, s.ns.FlightGameOffered('flight'))
+    end
+    s.board()
+    eye._onClick()
+    check('the eye leaves the game buttons and opens nothing by itself', s.settings.flightGame == 'none')
+    check('it closes what the flight opened', s.dismissed.quiz == 'flight' and s.dismissed.aim == 'flight'
+        and s.dismissed.word == 'flight')
+    check('and says so in chat', s.printed and s.printed:find('game buttons', 1, true))
+    check('with nothing opening by itself, no eye', not s.ns.FlightGameOffered('flight'))
+    check('the game buttons stay', s.button('quiz').shown)
+    s.set('flightGame', 'off')
+    check('Off shows no eye either', not s.ns.FlightGameOffered('flight'))
 end
 do
     local s = fixture({ flightGame = 'word' })

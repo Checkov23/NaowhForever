@@ -73,6 +73,11 @@ local GAMES_BUTTON = ns.L("Game buttons, nothing opens by itself")
 local GAMES_AIM_OFF = ns.L("Aim Trainer, but it is off: nothing opens")
 local GAMES_WORD_OFF = ns.L("Daily Word, but it is off: nothing opens")
 local GAMES_WHEN = ns.L(" when a flight starts")
+local TEXT_NOT_ON_FLIGHTS = ns.L("Don't Show on Flights")
+local TIP_NOT_ON_FLIGHTS = ns.L("Stops the games opening by themselves; the Flight Timer's buttons still have them.")
+local TEXT_STOPPED = ns.L("Flight Games won't open by themselves now; the Flight Timer's game buttons still have them.")
+local OPENS_BY_ITSELF = { quiz = true, aim = true, word = true }
+local HIDE_KIND = "notOnFlights"
 
 local bar, poll, unlocked, Apply, FadeBlizzardStop, StyleText
 local stopFaded = false
@@ -311,11 +316,11 @@ local function NewFoot(f)
     f.nextTime:SetPoint("LEFT", f.sep, "RIGHT", 0, 0)
 end
 
-local function IconButton(f, kind)
-    local b = ns.Button(f, "", BTN_H, BTN_H)
+local function IconButton(f, kind, texture, size)
+    local b = ns.Button(f, "", size or BTN_H, size or BTN_H)
     b.kind = kind
     b.icon = b:CreateTexture(nil, "ARTWORK")
-    b.icon:SetTexture(ICON_MEDIA .. kind, nil, nil, "TRILINEAR")
+    b.icon:SetTexture(texture or ICON_MEDIA .. kind, nil, nil, "TRILINEAR")
     b.icon:SetSize(ICON_SIZE, ICON_SIZE)
     b.icon:SetPoint("CENTER")
     b.icon:SetVertexColor(T.accentSoft.r, T.accentSoft.g, T.accentSoft.b)
@@ -645,6 +650,26 @@ local function OfferGame()
     elseif game == "word" then
         if ns.DailyWordOffer then ns.DailyWordOffer("flight") end
     end
+end
+
+local function StopOffering()
+    S.Set("flightGame", "none")
+    if ns.QuizDismiss then ns.QuizDismiss("flight") end
+    if ns.AimDismiss then ns.AimDismiss("flight") end
+    if ns.DailyWordDismiss then ns.DailyWordDismiss("flight") end
+    ns.Print(TEXT_STOPPED)
+end
+
+function ns.FlightGameHideButton(parent, size)
+    local button = IconButton(parent, HIDE_KIND, St.EYE_OFF, size)
+    button._onClick = StopOffering
+    ns.Tooltip(button, TEXT_NOT_ON_FLIGHTS, TIP_NOT_ON_FLIGHTS)
+    button:Hide()
+    return button
+end
+
+function ns.FlightGameOffered(reason)
+    return reason == "flight" and OPENS_BY_ITSELF[Game()] == true
 end
 
 local function Board(route)

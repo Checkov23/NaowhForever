@@ -597,6 +597,10 @@ NaowhForever_QoL/
 - The Flight Timer has one icon button per game (the Quiz, each Aim Trainer mode and the Daily
   Word), so a game opens in one click. A game whose feature is off keeps its button, greyed out,
   with a tooltip saying where to turn it on, as the old Games menu did for the Aim Trainer.
+- A game a flight opened by itself shows an eye beside its close button
+  (`ns.FlightGameHideButton`, `ns.FlightGameOffered`), so a player can stop that from the game
+  instead of the settings. It sets Flight Games to Buttons only, so the games stay one click away.
+  The Aim Trainer hides it with its other header buttons while a round runs.
 - Flight times come from the route data at 30.4 yards a second (`FLIGHT_SPEED`), fitted to
   measured Classic flight times. Frequent Flier, node 110300 of the Adventure Legacy tree (1188),
   makes flight path mounts 20% faster; Legacy perks are bought per character, and a character

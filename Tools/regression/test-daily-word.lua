@@ -74,6 +74,13 @@ local function fixture(settings)
         end,
         AccentBorder = function(f) return f end,
         RegisterMinimapFeature = function(feature) s.minimap = feature end,
+        FlightGameHideButton = function(parent)
+            local b = frame("Button", nil, parent)
+            b.shown = false
+            s.hide = b
+            return b
+        end,
+        FlightGameOffered = function(reason) return reason == "flight" end,
     }
     local env = setmetatable({
         _G = { NaowhForever = ns },
@@ -197,6 +204,7 @@ do
     check("no more guesses once solved", #d.guesses == 2)
     check("the card's summary", s.card.summary() == "Solved today in 2/6, streak 1")
 
+    check("opened by hand, no Don't Show on Flights eye", not s.hide.shown)
     w:Hide()
     check("closing stops the clock and the combat watch", s.tick == nil and not s.watching())
     s.ns.DailyWordOffer("flight")
@@ -206,6 +214,7 @@ do
     s.ns.DailyWordOffer("flight")
     check("the next day's word opens for a flight, without taking the keyboard", w.shown and not w.input.focus
         and w.number.text == "#2")
+    check("a flight opening it shows the Don't Show on Flights eye", s.hide.shown)
     for _ = 1, 6 do s.guess("crane") end
     check("six misses end the game with the word", w.message.text == "The word was SPIRE")
     check("a miss ends the streak and keeps the best", d.played == 2 and d.won == 1 and d.streak == 0 and d.best == 1)
