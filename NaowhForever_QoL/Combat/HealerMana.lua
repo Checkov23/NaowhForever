@@ -22,6 +22,13 @@ local PCT_FORMAT = "%.1f%%"
 local DEAD, OFFLINE, UNKNOWN = ns.L("Dead"), ns.L("Offline"), "--"
 local NO_RANK = math.huge
 local PLACE = { point = "LEFT", relPoint = "LEFT", x = 40, y = -120 }
+local EDGE = { down = "TOP", up = "BOTTOM" }
+local TOWARD = { down = 1, up = -1 }
+local MOVER_GROW = { down = "DOWN", up = "UP" }
+local SIDE = { TOPLEFT = "LEFT", TOP = "", TOPRIGHT = "RIGHT", LEFT = "LEFT", CENTER = "", RIGHT = "RIGHT",
+    BOTTOMLEFT = "LEFT", BOTTOM = "", BOTTOMRIGHT = "RIGHT" }
+local RISE = { TOPLEFT = 1, TOP = 1, TOPRIGHT = 1, LEFT = 0, CENTER = 0, RIGHT = 0,
+    BOTTOMLEFT = -1, BOTTOM = -1, BOTTOMRIGHT = -1 }
 local UNIT_EVENTS = { "UNIT_POWER_UPDATE", "UNIT_MAXPOWER", "UNIT_DISPLAYPOWER", "UNIT_CONNECTION", "UNIT_AURA" }
 local GROUP_EVENTS = { "GROUP_ROSTER_UPDATE", "PLAYER_ROLES_ASSIGNED", "PLAYER_ENTERING_WORLD" }
 
@@ -261,13 +268,17 @@ function Look.Paint(row, m, drinks)
     row:Show()
 end
 
+local function CardHeight(count, step)
+    return count * step + 2 * PAD
+end
+
 local function FitCard(owner, count, step)
     local backdrop = backdrops[owner] or Parts.HudBackdrop(owner)
     backdrops[owner] = backdrop
     if owner.look == look and owner.count == count then return end
     owner.look, owner.count = look, count
     backdrop:SetMode(S.Get("healerManaBackground"))
-    owner:SetSize(S.Get("healerManaWidth"), count * step + 2 * PAD)
+    owner:SetSize(S.Get("healerManaWidth"), CardHeight(count, step))
 end
 
 local function PoolRow(owner, pool, i)
@@ -333,10 +344,20 @@ local function Soon()
     C_Timer.After(UPDATE_DELAY, Flush)
 end
 
+local function HeldEdge(pos)
+    local grow = S.Get("healerManaGrow")
+    local edge, rise = EDGE[grow], RISE[pos.point]
+    if unlocked or not (edge and rise) then return pos.point, pos.y end
+    local half = CardHeight(#SAMPLE, S.Get("healerManaFontSize") + ROW_PAD) / 2
+    return edge .. SIDE[pos.point], pos.y + (TOWARD[grow] - rise) * half
+end
+
 local function Place()
     local pos = S.Get("healerManaPos") or PLACE
+    local point, y = HeldEdge(pos)
     frame:ClearAllPoints()
-    frame:SetPoint(pos.point, UIParent, pos.relPoint, pos.x, pos.y)
+    frame:SetPoint(point, UIParent, pos.relPoint, pos.x, y)
+    ns.UI.SetMoverGrow(frame.mover, MOVER_GROW[S.Get("healerManaGrow")])
 end
 
 local events = CreateFrame("Frame")
@@ -456,6 +477,7 @@ local STATES = {
     { key = "group", label = "In a Group", tip = "Your healers' mana, with sample healers." },
 }
 local WHERE = { { instance = "Dungeons & Raids", group = "Any Group" }, { "instance", "group" } }
+local GROW = { { center = "Centred", down = "Down", up = "Up" }, { "center", "down", "up" } }
 
 local function NewPreview(stage)
     local preview = CreateFrame("Frame", nil, stage)
@@ -500,6 +522,8 @@ Settings.Page("QoL/Combat", S):Card({
           help = "A cup beside a healer who is drinking." },
         Settings.Group("Size"),
         { key = "healerManaWidth", label = "Width", slider = WIDTH_RANGE },
+        { key = "healerManaGrow", label = "Growth Direction", choice = GROW,
+          help = "Which way the list grows as healers join." },
         Settings.Look("healerMana", { text = true, size = TEXT_RANGE, background = "card" }),
     },
 })

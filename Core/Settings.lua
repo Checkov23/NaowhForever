@@ -85,7 +85,7 @@ local S = UI.ModuleSettings("qol", {
     groupXPFont = "", groupXPFontSize = 12, groupXPOutline = "OUTLINE", groupXPTexture = "", groupXPBgAlpha = 0.85,
     healerMana = F.healerMana, healerManaWhere = "instance", healerManaShowSelf = true, healerManaDrinking = true,
     healerManaWidth = 160, healerManaFont = "", healerManaFontSize = 12, healerManaOutline = "OUTLINE",
-    healerManaBackground = "card",
+    healerManaBackground = "card", healerManaGrow = "center",
     playerHistory = F.playerHistory, playerHistoryChats = true, playerHistoryDays = 90, playerNotesTooltip = true,
     naowhScore = F.naowhScore, naowhScoreShare = true, naowhScoreTooltip = true, naowhScoreScan = true, naowhScoreNearby = true,
     naowhScoreCompare = "level",

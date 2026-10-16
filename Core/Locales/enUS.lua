@@ -180,6 +180,7 @@ L["1 death"] = true
 L["Abandon"] = true
 L["Which way the bar grows from its first button. A column puts the class labels beside the buttons."] = true
 L["Which way the bar grows from its first button."] = true
+L["Which way the list grows as healers join."] = true
 L["Which way the buttons line up from the first one."] = true
 L["Which way the second button sits from the first."] = true
 L["Which way the second trinket sits from the first."] = true

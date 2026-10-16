@@ -555,6 +555,9 @@ NaowhForever_QoL/
   unit only, so the rest of the raid's power and aura events never reach it; drinking is read
   from each aura event's own changes; a burst of roster events or mana ticks is one redraw
   (0.25s). Unit names are made once, so a roster pass makes no strings.
+- Healer Mana's Growth Direction holds the top or bottom edge of the four-healer sample box placed in
+  the HUD Editor, so the list starts at that edge whatever the group size. In the HUD Editor it is
+  placed by its centre, as every mover saves it.
 - Drink is found by the name of spell 430 (in the client's language), which is the buff's. Auras
   go secret during boss pulls; the last answer stands until they clear.
 - Unit data can come back secret in restricted content, and is never compared then. While a

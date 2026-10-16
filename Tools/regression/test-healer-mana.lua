@@ -7,7 +7,7 @@ local function Noop() end
 local NOOP_META = { __index = function() return Noop end }
 local DEFAULTS = { enabled = true, healerMana = true, healerManaWhere = "instance", healerManaShowSelf = true,
     healerManaDrinking = true, healerManaWidth = 160, healerManaFont = "", healerManaFontSize = 12,
-    healerManaOutline = "OUTLINE", healerManaBackground = "card" }
+    healerManaOutline = "OUTLINE", healerManaBackground = "card", healerManaGrow = "center" }
 local UNIT_EVENTS = { "UNIT_POWER_UPDATE", "UNIT_MAXPOWER", "UNIT_DISPLAYPOWER", "UNIT_CONNECTION", "UNIT_AURA" }
 local SECRET = { secret = true }
 local GREEN, YELLOW, RED = { r = 0, g = 1, b = 0 }, { r = 1, g = 1, b = 0 }, { r = 1, g = 0, b = 0 }
@@ -35,6 +35,7 @@ local function boot(settings, units)
         function f:SetShown(v) self.shown = v and true or false end
         function f:SetSize(w, h) self.w, self.h = w, h end
         function f:SetHeight(h) self.h = h end
+        function f:SetPoint(p, _, rp, x, y) self.at = ("%s %s %s %s"):format(p, tostring(rp), tostring(x), tostring(y)) end
         function f:SetText(t) self.text = t end
         function f:SetFormattedText(fmt, v) self.text = fmt:format(v) end
         function f:SetTextColor(r, g, b) self.r, self.g, self.b = r, g, b end
@@ -52,7 +53,7 @@ local function boot(settings, units)
         end,
         Apply = function() end, ShowUnlockMode = function() end,
         HideUnlockMode = function() end,
-        UI = { AttachMover = function() return frame("Mover") end },
+        UI = { AttachMover = function() return frame("Mover") end, SetMoverGrow = function() end },
         Shared = { Style = St, Parts = {
             HudFont = function(fs, font, size, outline) fs.font = font .. " " .. size .. " " .. outline end,
             HudBackdrop = function(owner)
@@ -387,6 +388,23 @@ do -- a share that did not move is not written again
     s.fire("UNIT_POWER_UPDATE", "party1", "MANA")
     s.run(0.25)
     check("a new share is", writes == 1 and s.rows():find("Holy 21.0%", 1, true) == 1)
+end
+
+do -- growth direction: the list holds the top or bottom edge of the box placed in the HUD Editor
+    local s = boot({ healerManaPos = { point = "CENTER", relPoint = "CENTER", x = 10, y = 20 } })
+    check("centred by default, at the saved spot", s.display.at == "CENTER CENTER 10 20")
+    s.S.Set("healerManaGrow", "down")
+    check("down holds the sample box's top edge", s.display.at == "TOP CENTER 10 58")
+    s.S.Set("healerManaGrow", "up")
+    check("up holds its bottom edge", s.display.at == "BOTTOM CENTER 10 -18")
+    s.S.Set("healerManaPos", { point = "LEFT", relPoint = "LEFT", x = 40, y = -120 })
+    s.S.Set("healerManaGrow", "down")
+    check("a side anchor keeps its side", s.display.at == "TOPLEFT LEFT 40 -82")
+    local ns = s.env._G.NaowhForever
+    ns.ShowUnlockMode()
+    check("the HUD Editor moves it by its centre spot", s.display.at == "LEFT LEFT 40 -120")
+    ns.HideUnlockMode()
+    check("and it holds the edge again after", s.display.at == "TOPLEFT LEFT 40 -82")
 end
 
 do -- cost: a mana tick redraw makes no garbage
