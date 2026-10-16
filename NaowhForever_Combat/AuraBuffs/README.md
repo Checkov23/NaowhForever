@@ -44,7 +44,7 @@ NaowhForever_Combat/AuraBuffs/
   LowHealth.lua                the item to offer and the curve that shows it (A.LowHealth)
   View/
     Style.lua                  its look (A.Style), on top of Shared/Style.lua
-    Glow.lua                   a reminder's glow, Pixel or Standard, from its glow settings (A.Glow)
+    Glow.lua                   a reminder's glow, with optional proc style, from its glow settings (A.Glow)
     BuffCell.lua               a buff reminder icon (A.BuffCell)
     CampIcon.lua               the campfire art and the Round look (A.CampIcon)
     CampBar.lua                the Simple bar (A.CampBar)
@@ -59,6 +59,7 @@ NaowhForever_Combat/AuraBuffs/
     LowHealthCard.lua          the Low Health card
     BuffMenu.lua               the carried items a buff reminder offers, as secure buttons
     BuffReminders.lua          the buff reminder row on screen
+    ClassBuffs.lua             secure self-buff buttons and managed active icons
     BuffsCard.lua              the Buffs & Consumables card
     WindowPages.lua            the window's page: consumables, with list import and export, and
                                items dragged onto a section
@@ -281,3 +282,37 @@ NaowhForever_Combat/AuraBuffs/
 - `lua Tools/regression/test-icon-look.lua`: Low Health's text.
 - `lua Tools/regression/test-robin-final.lua`: consumable entries and the Round campfire.
 - `lua Tools/regression/test-combat-perf.lua`: the buff reminders' cost in a raid.
+
+## Class Buff Tracker
+
+- Off by default, under AuraBuffs / Class Buff Tracker, with its own HUD Editor mover.
+  It shows known personal and raid buff families of your class, following the existing
+  personal and raid buff picks independently of the reminder switches.
+- Secure spell buttons target `player`; their configured spell and layout change only
+  outside combat. Enabling, disabling or changing picks in combat waits for
+  `PLAYER_REGEN_ENABLED`. Alternative-buff families cast their first known spell;
+  the full native spell tooltip describes that cast.
+- Blizzard's `CustomAuraContainerTemplate` overlays active icons during combat using
+  helpful spell-ID filters, and an own-caster filter for aspects. No code reads the
+  managed icon, its visibility or hidden aura data. Weapon enchants and target debuffs
+  are excluded. The existing consumable and group reminders are unchanged.
+- Missing-buff glow is off by default and updates only when aura data is readable.
+  It shares one bounded scan across all icons, reusing scratch tables. A secret ID,
+  unknown required caster or incomplete scan suppresses the warning. Combat entry
+  clears glows immediately, before lockdown may become true; combat end refreshes them.
+- Glow uses the shared Pixel/Standard wrapper plus an optional Gold style using the
+  embedded library's proc outline, without an opening flash. Other callers keep their
+  existing choices. Gold is the tracker's default style, with glow itself still off.
+- `HOME_Y` puts the tracker below the default reminder position. `ACTIVE_LEVEL` puts
+  the managed icon above its grey placeholder. The shared icon crop, one-pixel inset
+  and outlined short labels match the suite's bars. Labels fit the icon spacing.
+- No frames or events are created before first enable. Disabling unregisters events,
+  disables managed containers and stops glows. Construction failures hide the tracker,
+  print an unavailable message and retain the original error through the error handler.
+- Opening or closing settings updates only the mover overlay and missing-buff glow,
+  without hiding unchanged buttons. Tooltip ownership is cleared when its button hides.
+- User confirmed self-casting, labels, tooltips and settings/glow behavior in the Forever
+  client. Restricted-instance coverage and before/after in-game screenshots are missing.
+- Offline checks: `lua Tools/regression/test-class-buffs.lua` covers lifecycle, native
+  tooltip wiring, secure self-cast attributes, one shared scan, buff removal, unknown
+  data, combat deferral, feature disable and mover open/close.
