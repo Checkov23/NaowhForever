@@ -521,8 +521,9 @@ What a comment in the code used to say, in short. The house rules behind it are 
   skin and its onboarding preview keep their stone and shading. Settings cards reuse the
   row engine's pooled card frame, with the theme's line color around each section. Their
   heights follow the visible rows, including folded and filtered cards.
-- Settings rows have horizontal dividers, and paired controls have a center divider. An
-  unpaired control has no center divider. Open card headings and group titles have rules.
+- Naowh settings have dividers at category boundaries rather than between related rows.
+  Paired controls keep a center divider; an unpaired control has none. Open card headings
+  and group titles keep their rules. The optional Forever skin retains its row dividers.
 - The sidebar is shaded by `SIDEBAR_SHADE`, and preview stages by `PREVIEW_SHADE`, over the
   chosen background so custom palettes retain their colors. Both are flat fills.
 - Naowh tabs share a recessed rail, a filled accent selection with a complete outline and a

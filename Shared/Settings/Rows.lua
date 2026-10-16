@@ -206,6 +206,7 @@ local function NewSetting(view)
     row.Set = function(...) RowSet(row, ...) end
     row.controls = {}
     row.rule = Rule(row)
+    row.rule:SetShown(ns.foreverSkin == true)
     row.split = Split(row)
     row.dot = Dot(row)
     row.label = ns.Font(row, LABEL_SIZE, nil, ns.foreverSkin and T.accent or T.fg)
