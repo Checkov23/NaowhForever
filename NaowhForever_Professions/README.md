@@ -229,6 +229,11 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   Shopping List. Start Queue only selects the next ready entry, and each Craft Next hardware click starts
   one batch because Blizzard does not allow automated profession opening or unattended crafting. The
   window stays open when the profession window closes.
+- Queue rows can be dragged within their section. Their order is kept with that character's queue, while
+  prerequisite crafts always remain ahead of regular crafts.
+  The drop target is the row under the cursor when the drag stops (`GetMouseFoci`): the dragged row keeps
+  the mouse, so other rows get no OnEnter during a drag. Reordering while a craft is prepared but not
+  started picks the next craft again; once it has started, rows cannot be dragged.
 - When every queued craft is blocked, the queue reads the game's unmet recipe requirements and names
   missing tools and locations, such as a Blacksmith Hammer or Forge. The generic material warning is
   used only when no recipe requirement explains the block.

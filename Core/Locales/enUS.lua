@@ -2000,6 +2000,7 @@ L["Drag to move it, right-click to take it off."] = true
 L["Drag to move, x to remove, + to add."] = true
 L["Drag to move. Click x to remove."] = true
 L["Drag to place it."] = true
+L["Drag to reorder within this section."] = true
 L["Drag to resize. Turn off Lock Window first; resizing is available outside combat."] = true
 L["Drag to turn"] = true
 L["Drag up or down to change the gap between your aura and the class buttons."] = true

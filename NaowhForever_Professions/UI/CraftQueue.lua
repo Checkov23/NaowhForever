@@ -58,11 +58,13 @@ local TIP_FEWER, TIP_FEWER_HELP = ns.L("One Fewer"), ns.L("Takes the materials f
 local TIP_START_HELP = ns.L("Prepares the next ready craft; each Craft Next click makes one batch.")
 local TIP_CLEAR_HELP = ns.L("Empties the crafting queue and removes its materials from the Shopping List.")
 local TIP_ADD_MISSING_HELP = ns.L("Refreshes the Shopping List with the queue's missing auction-house materials.")
+local TIP_REORDER = ns.L("Drag to reorder within this section.")
 
 local View = {}
 P.CraftQueueView = View
 
 local window, scroll, content, empty, start, clear, addMissing, events
+local dragged
 local heads = {}
 local pools = { prerequisites = {}, crafts = {} }
 local sectionEntries = { prerequisites = {}, crafts = {} }
@@ -71,13 +73,41 @@ local function On()
     return S.Get("enabled") and S.Get("shoppingList") and S.Get("craftQueue")
 end
 
+local function Reorderable()
+    local active = Queue.Active()
+    return not (active and active.started)
+end
+
+local function RowUnderCursor()
+    local node = GetMouseFoci()[1]
+    while node do
+        if node.entry and node:GetParent() == content then return node end
+        node = node:GetParent()
+    end
+end
+
 local function OnRowEnter(self)
     if not self.spell then return end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     if not pcall(GameTooltip.SetRecipeResultItem, GameTooltip, self.spell) then
         GameTooltip:SetSpellByID(self.spell)
     end
+    if Reorderable() then GameTooltip:AddLine(TIP_REORDER, T.muted.r, T.muted.g, T.muted.b) end
     GameTooltip:Show()
+end
+
+local function OnDragStart(self)
+    if not (self.entry and Reorderable()) then return end
+    dragged = self
+    GameTooltip_Hide()
+end
+
+local function OnDragStop(self)
+    if dragged ~= self then return end
+    dragged = nil
+    local target = RowUnderCursor()
+    if not (target and target.entry.prerequisite == self.entry.prerequisite) then return end
+    Queue.Move(self.entry.recipeID, self.entry.prerequisite, target.entry.recipeID)
 end
 
 local function OnMissingEnter(self)
@@ -111,6 +141,7 @@ local function NewRow(pool, index)
     row = CreateFrame("Frame", nil, content)
     row:SetHeight(ROW_H - ROW_SHRINK)
     row:EnableMouse(true)
+    row:RegisterForDrag("LeftButton")
     row.warning = CreateFrame("Button", nil, row)
     row.warning:SetSize(SMALL_BUTTON, SMALL_BUTTON)
     row.warning:SetPoint("LEFT")
@@ -144,6 +175,8 @@ local function NewRow(pool, index)
     ns.Tooltip(row.minus, TIP_FEWER, TIP_FEWER_HELP)
     row:SetScript("OnEnter", OnRowEnter)
     row:SetScript("OnLeave", GameTooltip_Hide)
+    row:SetScript("OnDragStart", OnDragStart)
+    row:SetScript("OnDragStop", OnDragStop)
     pool[index] = row
     return row
 end
