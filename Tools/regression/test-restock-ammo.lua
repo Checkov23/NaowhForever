@@ -51,22 +51,31 @@ end)
 
 -- Synthetic item IDs exercise subclass detection without assuming a Forever item catalog.
 local THROWN, BOW = 900001, 900002
-local function WantedFor(class, settings, inventory)
+local function WantedFor(class, settings, inventory, stackSize)
+    local requests, pending = {}, {}
+    local loadedStack = stackSize == nil and 200 or stackSize
     local env = setmetatable({
         PLAYER_CLASS = class, AMMO_SLOT = 0, RANGED_SLOT = 18,
         WEAPON_CLASS = 2, THROWN_SUBCLASS = 16, THROWN_CLASSES = { ROGUE = true, WARRIOR = true },
-        FAMILIES = {}, S = { Get = function(key) return settings[key] end },
+        FAMILIES = {}, pendingItems = pending,
+        events = { RegisterEvent = function(_, event) assert(event == "GET_ITEM_INFO_RECEIVED") end },
+        S = { Get = function(key) return settings[key] end },
         GetInventoryItemID = function(_, slot) return inventory[slot] end,
         C_Item = { GetItemInfoInstant = function(id)
             return id, nil, nil, nil, nil, 2, id == THROWN and 16 or 2
-        end },
+        end,
+        GetItemInfo = function()
+            if loadedStack == false then return end
+            return nil, nil, nil, nil, nil, nil, nil, loadedStack
+        end,
+        RequestLoadItemDataByID = function(id) requests[#requests + 1] = id end },
     }, { __index = _G })
-    local start = source:find("local function CarriedAmmo()", 1, true) and "local function CarriedAmmo()"
-        or "local function Wanted()"
+    local start = "local function RequestItem("
     local chunk = assert(loadstring(Slice(start, "\nlocal function FoodLevel(")
-        .. "\nreturn Wanted()"))
+        .. "\nreturn Wanted"))
     setfenv(chunk, env)
-    return chunk()
+    local wanted = chunk()
+    return wanted(), requests, function(value) loadedStack = value; return wanted() end
 end
 local saved = { restockAmmo = true, restockAmmoTarget = 700 }
 Case("rogue and warrior count their equipped thrown weapon using the saved carry target", function()
@@ -77,10 +86,22 @@ Case("rogue and warrior count their equipped thrown weapon using the saved carry
 end)
 Case("a bow keeps legacy ammo-slot behavior; an empty slot contributes nothing", function()
     assert(WantedFor("ROGUE", saved, { [18] = BOW, [0] = ARROWS })[ARROWS] == 700)
-    assert(next(WantedFor("WARRIOR", saved, {})) == nil)
+    assert(next((WantedFor("WARRIOR", saved, {}))) == nil)
 end)
 Case("hunters retain ammo-slot targets; thrown restocking respects the existing toggle", function()
     assert(WantedFor("HUNTER", saved, { [18] = BOW, [0] = ARROWS })[ARROWS] == 700)
-    assert(next(WantedFor("ROGUE", { restockAmmo = false }, { [18] = THROWN })) == nil)
+    assert(next((WantedFor("ROGUE", { restockAmmo = false }, { [18] = THROWN }))) == nil)
+end)
+Case("non-stackable thrown weapons do not produce a restock target or fall back to stale ammo", function()
+    for _, class in ipairs({ "ROGUE", "WARRIOR" }) do
+        assert(next((WantedFor(class, saved, { [18] = THROWN, [0] = ARROWS }, 1))) == nil)
+    end
+end)
+Case("uncached thrown data is deferred and requested only once until it arrives", function()
+    local want, requests, retry = WantedFor("ROGUE", saved, { [18] = THROWN, [0] = ARROWS }, false)
+    assert(next(want) == nil and #requests == 1 and requests[1] == THROWN)
+    assert(next(retry(false)) == nil and #requests == 1)
+    assert(retry(200)[THROWN] == 700)
+    assert(next(retry(1)) == nil)
 end)
 print(count .. " total restock ammo regressions passed")

@@ -960,6 +960,9 @@ NaowhForever_QoL/
 - `FAMILIES` are the class spells that use a vendor reagent on Forever, from its SpellReagents data (build 1.60.1.69913). Each family lists its ranks from lowest; the highest rank you know sets the reagent, so a rank 2 Prayer of Fortitude asks for Sacred Candles, not Holy Candles.
 - `TARGETS` is how many of each reagent to carry unless the player sets their own.
 - Forever reports an empty ammo slot as item 0, not nil.
+- Equipped thrown weapons are restocked only when their maximum stack size exceeds one;
+  permanent single weapons are not ammunition. Uncached item data is requested once and the
+  existing GET_ITEM_INFO_RECEIVED path checks again, without guessing a restock target.
 - Food and drink are Consumable: Food & Drink (`FOOD_CLASS`, `FOOD_SUBCLASS`). Drink is told apart by its spell: `DRINK_ITEM` (159, Refreshing Spring Water) carries the localized Drink spell, so its data is asked for up front.
 - Quivers, ammo pouches and soul bags do not count as room: only plain bags (`PLAIN_BAG`) add free slots.
 - The reminder pulses `FLASH_LOOPS` times when it appears, then stays solid until it is dealt with; refreshed as bags change, only a new appearance pulses.
