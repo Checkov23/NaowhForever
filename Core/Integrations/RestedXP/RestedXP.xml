@@ -5,4 +5,5 @@
     <Script file="WindowModel.lua"/>
     <Script file="Window.lua"/>
     <Script file="Icons.lua"/>
+    <Script file="Waypoint.lua"/>
 </Ui>

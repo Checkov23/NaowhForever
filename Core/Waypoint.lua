@@ -4,7 +4,7 @@ local ns = _G.NaowhForever
 local PERCENT = 100
 local ARRIVED_WITHIN = 0.05
 local ROUTE_MIN_STOPS = 2
-local PLACE_FIELDS = 7
+local PLACE_FIELDS = 8
 local TOMTOM_FROM = "Naowh Forever"
 local TEXT_SPOT = "%s%s: %s %.1f, %.1f"
 local TEXT_TOMTOM = ns.L("TomTom waypoint for ")
@@ -65,8 +65,8 @@ end
 
 local WatchDungeon
 
-local function SetNow(title, map, x, y, note, icon, clearInside)
-    ns.placedWaypoint = { title = title, note = note, icon = icon, map = map, x = x, y = y }
+local function SetNow(title, map, x, y, note, icon, clearInside, details)
+    ns.placedWaypoint = { title = title, note = note, icon = icon, map = map, x = x, y = y, details = details }
     WatchDungeon(clearInside)
     C_Map.SetUserWaypoint(MapPoint(map, x, y))
     if C_SuperTrack then C_SuperTrack.SetSuperTrackedUserWaypoint(true) end
@@ -154,12 +154,12 @@ local function Hold(change)
     preview:RefreshAllData()
 end
 
-local function SetGameWaypoint(title, map, x, y, note, icon, clearInside)
+local function SetGameWaypoint(title, map, x, y, note, icon, clearInside, details)
     if not MapOpen() then
-        SetNow(title, map, x, y, note, icon, clearInside)
+        SetNow(title, map, x, y, note, icon, clearInside, details)
         return false
     end
-    Hold({ title, map, x, y, note, icon, clearInside })
+    Hold({ title, map, x, y, note, icon, clearInside, details })
     return true
 end
 
@@ -206,6 +206,27 @@ local function StillPlaced()
     local point, placed = C_Map.GetUserWaypoint(), ns.placedWaypoint
     return point ~= nil and placed ~= nil and point.uiMapID == placed.map and Near(point.position.x, placed.x)
         and Near(point.position.y, placed.y)
+end
+
+function ns.GuideWaypointIsCurrent()
+    if pending then return pending[PLACE_FIELDS] and pending[PLACE_FIELDS].guide == true or false end
+    if C_SuperTrack.IsSuperTrackingUserWaypoint and not C_SuperTrack.IsSuperTrackingUserWaypoint() then return false end
+    local placed = ns.placedWaypoint
+    return placed and placed.details and placed.details.guide == true and StillPlaced() or false
+end
+
+function ns.SetGuideWaypoint(title, map, x, y, details)
+    if not C_Map.CanSetUserWaypointOnMap(map) then return false end
+    if ns.JourneyCancel then ns.JourneyCancel() end
+    EndRoute()
+    SetGameWaypoint(title, map, x, y, nil, nil, false, details)
+    return true
+end
+
+function ns.ClearGuideWaypoint()
+    if pending and pending[PLACE_FIELDS] and pending[PLACE_FIELDS].guide == true then DropPending() end
+    if not ns.GuideWaypointIsCurrent() then return end
+    if MapOpen() then Hold(CLEAR) else ClearNow() end
 end
 
 local function InDungeon()

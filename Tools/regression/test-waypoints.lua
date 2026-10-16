@@ -41,6 +41,8 @@ function Frame:SetPoint(...)
 end
 function Frame:SetText(t) self.text = t end
 function Frame:GetText() return self.text end
+function Frame:GetStringHeight() return 13 * (select(2, (self.text or ""):gsub("\n", "")) + 1) end
+function Frame:UnregisterEvent(e) self.events[e] = nil end
 function Frame:GetStringWidth() return #(self.text or "") * GLYPH_W end
 function Frame:SetJustifyH(j) self.justify = j end
 function Frame:SetRotation(r) self.rotation = r end
@@ -72,6 +74,7 @@ local parents = { [1500] = 88 }   -- a leaf zone inside the waypoint's map
 local timers, played, printed = {}, {}, {}
 local speed = 0
 local now = 0
+local questObjectives = {}
 local tracking = 1   -- Enum.SuperTrackingType.UserWaypoint
 
 local gameMarker = {}
@@ -117,6 +120,7 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
 
 local env = setmetatable({
     NaowhForever = ns,
+    wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
     UIParent = UIParent,
     CreateFrame = function(kind, _, parent) return NewFrame(kind, parent) end,
     C_Navigation = {
@@ -141,7 +145,8 @@ local env = setmetatable({
         ClearUserWaypoint = function() userWaypoint = nil; cleared = cleared + 1 end,
         GetMapInfo = function(id) return { name = "Thunder Bluff", parentMapID = parents[id] or 0 } end,
     },
-    C_QuestLog = { GetTitleForQuestID = function() return "The Barrens Oases" end },
+    C_QuestLog = { GetTitleForQuestID = function() return "The Barrens Oases" end,
+        GetQuestObjectives = function() return questObjectives end },
     C_Timer = { After = function(delay, fn) timers[#timers + 1] = { delay = delay, fn = fn } end },
     Enum = { SuperTrackingType = { Quest = 0, UserWaypoint = 1, Corpse = 2 } },
     SuperTrackedFrame = gameMarker,
@@ -586,5 +591,71 @@ S.Set("waypoints", false)
 Check(next(events.events) == nil and not pin:IsShown() and driver.scripts.OnUpdate == nil, "off, it stops listening")
 Check(gameMarker.Icon.alpha == 1 and gameMarker.IconBorder.alpha == 1, "and the game's marker is back")
 Check(#printed == 0, "nothing printed")
+
+-- Optional objectives and downward arrows use the existing pin and update on quest progress.
+tracking, nav.frame, nav.distance = 0, navFrame, 20
+questObjectives = { { text = "0/10 Highlands Bandit slain", finished = false },
+    { text = "0/1 Bennic slain", finished = false }, { text = "Done", finished = true } }
+S.Set("waypoints", true)
+Check(pin.objectives == nil and pin.down == nil, "new presentation switches default off without extra frames/textures")
+S.Set("waypointObjectives", true)
+S.Set("waypointDownArrows", true)
+driver.scripts.OnUpdate()
+Check(pin:IsShown() and pin.objectives.shown, "objectives keep the quest pin visible inside its area")
+Check(pin.objectives.text.text == "0/10 Highlands Bandit slain\n0/1 Bennic slain", "only unfinished objectives shown")
+Check(pin.down[1].shown and pin.down[3].shown and pin.down[1].rotation == -math.pi / 2, "three downward chevrons")
+Check(pin.card.point[5] > 8, "title card makes room above the arrows")
+questObjectives[1].text = "1/10 Highlands Bandit slain"
+events.scripts.OnEvent(events, "QUEST_LOG_UPDATE")
+driver.scripts.OnUpdate()
+Check(pin.objectives.text.text:find("1/10", 1, true), "quest progress updates in place")
+questObjectives[1].text = "secret"
+events.scripts.OnEvent(events, "QUEST_LOG_UPDATE")
+driver.scripts.OnUpdate()
+Check(pin.objectives.text.text == "0/1 Bennic slain", "restricted objective text is skipped")
+questObjectives[1].text = "1/10 Highlands Bandit slain"
+questObjectives[1].finished, questObjectives[2].finished = true, true
+events.scripts.OnEvent(events, "QUEST_LOG_UPDATE")
+driver.scripts.OnUpdate()
+Check(not pin.objectives.shown, "completed objectives do not leave a stale panel")
+questObjectives[1].finished, questObjectives[2].finished = false, false
+events.scripts.OnEvent(events, "QUEST_LOG_UPDATE")
+driver.scripts.OnUpdate()
+events.scripts.OnEvent(events, "NAVIGATION_DESTINATION_REACHED", false)
+Check(driver.scripts.OnUpdate ~= nil and pin:IsShown(), "arrival does not hide unfinished quest objectives")
+nav.distance, nav.clamped, nav.x, nav.y = 300, true, 1900, 700
+driver.scripts.OnUpdate()
+Check(not pin.objectives.shown and not pin.down[1].shown, "off-screen direction does not show downward arrows or objective panel")
+nav.clamped, nav.x, nav.y = false, 1100, 700
+S.Set("waypointCard", false)
+driver.scripts.OnUpdate()
+Check(pin.objectives.shown and not pin.card.shown and pin.objectives.point[5] > 8,
+    "objectives work without the name card and leave room for chevrons")
+S.Set("waypointObjectives", false)
+driver.scripts.OnUpdate()
+Check(not pin.objectives.shown and not events.events.QUEST_LOG_UPDATE, "objectives off releases its event")
+S.Set("waypoints", false)
+Check(next(events.events) == nil and driver.scripts.OnUpdate == nil, "all waypoint features stop while off")
+
+questObjectives = {}
+tracking, nav.distance = 1, 3
+userWaypoint = { uiMapID = 88, position = { x = 0.45, y = 0.60 } }
+ns.placedWaypoint = { title = "Guide step", map = 88, x = 45, y = 60,
+    details = { guide = true, quest = 7, title = "The Criminal Element", objectives = "0/10 Bandits" } }
+S.Set("waypoints", true)
+S.Set("waypointObjectives", true)
+S.Set("waypointCard", true)
+driver.scripts.OnUpdate()
+Check(pin.card.name.text == "The Criminal Element" and pin.objectives.text.text == "0/10 Bandits",
+    "guide title and objective context reach the world pin")
+local guideClears = cleared
+nav.distance = 100
+driver.scripts.OnUpdate()
+nav.distance = 3
+driver.scripts.OnUpdate()
+Check(cleared == guideClears and pin:IsShown(), "guide pin skips manual distance auto-clear")
+events.scripts.OnEvent(events, "NAVIGATION_DESTINATION_REACHED", false)
+Check(driver.scripts.OnUpdate ~= nil, "guide arrival leaves guide advancement in charge")
+S.Set("waypoints", false)
 
 print(("test-waypoints: %d checks passed"):format(checks))
