@@ -129,6 +129,7 @@ ns.FEATURES = {
         enabled = true,
         levelUpToast = true,
         trainerPanel = true,
+        spellbook = false,
     },
     discovery = {
         enabled = false,

@@ -130,6 +130,9 @@ page:Card({
           why = TEXT_OFF,
           help = "A small bar with your next trainer visit and your gold, to leave up while you level. Move it "
               .. "by dragging." },
+        { key = "spellbook", label = "Spellbook Tab", toggle = true, needs = Training.On, why = TEXT_OFF,
+          help = "A Trainable tab under your spellbook that lists the spells you can train.",
+          search = "spell book trainable" },
     },
 })
 

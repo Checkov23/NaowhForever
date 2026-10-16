@@ -3,7 +3,8 @@
 Every spell your class still has to learn: what you can train now, what each level brings and what
 it costs, with the trainer's own prices once you have visited one. A road to 60 with a dot for every
 level that brings spells, a Builds tab with talent builds level by level (Naowh's, saved, imported,
-edited, followed as you level), a mini bar, a level-up toast and a panel beside your class trainer.
+edited, followed as you level), a mini bar, a level-up toast, a panel beside your class trainer and a
+Trainable tab under the spellbook.
 Laid out like the [Dungeon Journal](../NaowhForever_DungeonJournal/README.md), on
 [`Shared/`](../Shared/README.md).
 
@@ -37,6 +38,7 @@ NaowhForever_Training/
     MiniBar.lua      the mini bar
     Toast.lua        the Level-Up Toast
     TrainerPanel.lua the Panel at the Trainer
+    Spellbook.lua    the Trainable tab under the spellbook and its panel
     SettingsPage.lua its settings page (Training Planner/Settings), declared as cards
 ```
 
@@ -45,7 +47,7 @@ view files and the window share.
 
 ## Why
 
-- The on/off switches' defaults (`enabled`, `levelUpToast`, `trainerPanel`) are read from
+- The on/off switches' defaults (`enabled`, `levelUpToast`, `trainerPanel`, `spellbook`) are read from
   `ns.FEATURES.training`; the Trainer Popup card's switch belongs to the QoL store, and QoL's `Questing/Trainer.lua` declares
   that card on this page, so it goes when QoL is off.
 - TrainingData rows are `{ level, spellID, cost, flags }` in level order; cost is the trainer's base
@@ -98,6 +100,14 @@ view files and the window share.
   line and letter in them blurs. Its dots are drawn from the circle art itself, tinted, without pixel
   snapping, which would leave small circles jagged.
 - Text has a soft drop shadow, which reads sharper than flat text on the dark cards.
+- Forever's spellbook is `PlayerSpellsFrame.SpellBookFrame` in the load-on-demand `Blizzard_PlayerSpells`, so the
+  Spellbook Tab hooks it once that addon loads, and only after the switch is first turned on. It only post-hooks
+  the book's OnShow and OnHide: its tab and panel are parented to UIParent and anchored to the book, never put
+  inside it, and are drawn a frame later from a timer, outside the game's own show. Nothing of the book's is
+  called, changed or hidden: it casts from its own buttons' clicks, which must stay untainted.
+- The book has no secure frames on Forever, so the tab and panel show in combat too.
+- The tab sits where the game anchors its own bottom tabs (`TAB_X`, `TAB_Y`: 22 in, 2 up); Forever hides those,
+  as its book and talents open as separate windows.
 
 ## Checking
 
@@ -106,5 +116,7 @@ view files and the window share.
   Trainer.lua), and what a rank adds (Upgrades.lua).
 - `lua Tools/regression/test-training-builds.lua`: builds (Builds.lua) and every shipped tree.
 - `lua Tools/regression/test-training-waypoint.lua`: the nearest trainer and the route (Route.lua).
+- `lua Tools/regression/test-training-spellbook.lua`: the Spellbook Tab (UI/Spellbook.lua): off and free by default,
+  what it lists, and showing and hiding with the book.
 - `lua Tools/regression/test-training-window.lua`: every file Training.xml lists, the window opened
   and every part of it clicked.

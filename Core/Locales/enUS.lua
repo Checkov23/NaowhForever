@@ -2,6 +2,14 @@
 local L = _G.NaowhForeverLocale or {}
 _G.NaowhForeverLocale = L
 
+L["A Trainable tab under your spellbook that lists the spells you can train."] = true
+L["Nearest trainer: %s"] = true
+L["Nothing to train in the next few levels."] = true
+L["Spellbook Tab"] = true
+L["The spells you can train now and in the next few levels."] = true
+L["Trainable"] = true
+L["Trainable (%d)"] = true
+L["and %d more in the planner"] = true
 L["Next rank:"] = true
 L["%s (%s)"] = true
 L["A right click on the title bar opens a menu to switch these."] = true
