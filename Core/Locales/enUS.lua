@@ -2,6 +2,8 @@
 local L = _G.NaowhForeverLocale or {}
 _G.NaowhForeverLocale = L
 
+L["Skill-up Thresholds"] = true
+L["Shows when the selected recipe turns yellow, green and grey beneath its name."] = true
 L["Clicking the card also puts a skull on the rare, which your group can see."] = true
 L["Skull on Click"] = true
 L["Apply %s to every setting? Your positions, lists, notes and saved picks stay. Cannot be undone."] = true

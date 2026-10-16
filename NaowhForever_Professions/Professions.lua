@@ -5,6 +5,7 @@ local F = ns.FEATURES.professions
 
 local S = ns.UI.ModuleSettings("professions", {
     enabled = F.enabled,
+    skillThresholds = F.skillThresholds,
     recipeFinder = F.recipeFinder, rankAlert = F.rankAlert, bagReagents = F.bagReagents,
     bankReagents = F.bankReagents, vendorMaterials = F.vendorMaterials,
     craftOrders = F.craftOrders, orderTip = 10,

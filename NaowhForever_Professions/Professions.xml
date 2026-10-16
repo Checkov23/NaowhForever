@@ -25,6 +25,7 @@
     <Script file="Disenchant.lua"/>
     <Script file="View\Style.lua"/>
     <Script file="View\Widgets.lua"/>
+    <Script file="UI\SkillThresholds.lua"/>
     <Script file="View\Popup.lua"/>
     <Script file="UI\RecipeList.lua"/>
     <Script file="UI\Reagents.lua"/>

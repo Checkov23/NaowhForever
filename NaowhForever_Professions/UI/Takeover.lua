@@ -31,6 +31,7 @@ local EVENTS = { "TRADE_SKILL_SHOW", "TRADE_SKILL_CLOSE", "TRADE_SKILL_LIST_UPDA
     "PLAYERBANKSLOTS_CHANGED", "AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED",
     "TRACKED_RECIPE_UPDATE", "GROUP_ROSTER_UPDATE", "TRADE_SKILL_FAVORITES_CHANGED" }
 local REDRAW_KEYS = { vendorMaterials = true, bagReagents = true, bankReagents = true, ahSearch = true,
+    skillThresholds = true,
     craftProfit = true, craftProfitList = true, buyMaterials = true, buyVendor = true, craftOrders = true,
     orderTip = true }
 local PROFESSIONS_ADDON = "Blizzard_Professions"

@@ -6,6 +6,15 @@ local OPACITY_MIN, PERCENT_MAX, PERCENT_STEP = 40, 100, 5
 local MEDIA = "Interface\\AddOns\\NaowhForever\\Core\\Media\\"
 
 Shared.Style = {
+    THRESHOLD_HEIGHT = 31,
+    THRESHOLD_BAR_HEIGHT = 10,
+    THRESHOLD_FONT_SIZE = 10,
+    THRESHOLD_LABEL_GAP = 4,
+    THRESHOLD_LABEL_HEIGHT = 12,
+    THRESHOLD_LABEL_ROWS = 3,
+    THRESHOLD_GREY_SHARE = 0.12,
+    THRESHOLD_MARKER_WIDTH = 2,
+    THRESHOLD_MARKER_OUT = 3,
     BORDER_RGB = { r = 0, g = 0, b = 0 },
     BACKDROP_ALPHA = 0.97,
     HUD_SHADOW_RGB = { r = 0, g = 0, b = 0 },

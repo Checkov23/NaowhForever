@@ -43,6 +43,7 @@ local function Profession()
     prof.name = (base and base.professionName) or src.professionName or ""
     prof.skill = src.skillLevel or 0
     prof.max = src.maxSkillLevel or 0
+    prof.modifier = src.skillModifier or 0
     return prof
 end
 

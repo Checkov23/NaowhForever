@@ -43,6 +43,7 @@ P.Style = setmetatable({
     FONT_HEAD = 14,
     FONT_TITLE = 15,
     FONT_NAME = 16,
+    SKILL_BAR_GAP = 8,
 
     PAD = PAD,
     LEFT_W = LEFT_W,

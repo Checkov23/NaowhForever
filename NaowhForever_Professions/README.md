@@ -18,7 +18,8 @@ NaowhForever_Professions/
                        the window's shared state (P.State)
   Constants.lua        the numbers several files share: AH timeouts, the craft cap, coins, NPC rows (P.C)
   Data/
-    RecipeData.lua     where each recipe, rank and trainer is (ns.RecipeData), by hand from Wowhead Forever
+    RecipeData.lua     where each recipe, rank and trainer is (ns.RecipeData), by hand from Wowhead Forever;
+                       each recipe's yellow and grey skill from Tools/build/skill_thresholds.py
     VendorReagents.lua the reagents trade-goods vendors sell (P.VendorReagents)
     CooldownRecipes.lua the classic recipes on a cooldown (P.CooldownRecipes)
     ConsumableItems.lua the consumables the Shopping List offers, the stats each is for, each class's stats
@@ -45,6 +46,7 @@ NaowhForever_Professions/
     Widgets.lua        flat checkbox, skill bar, star, count box, Search AH button (P.Widgets)
     Popup.lua          the small window beside the trainer or the auction house (P.Popup)
   UI/
+    SkillThresholds.lua the optional difficulty line beneath a selected recipe (P.SkillThresholds)
     RecipeList.lua     the recipe list and its scrollbar (P.List)
     Reagents.lua       a recipe's reagent rows (P.Reagents)
     ProfitLines.lua    lined-up amounts and the crafting profit (P.Lines)
@@ -72,6 +74,26 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
 
 ## Why
 
+- Skill-up Thresholds is off by default. It creates its line only when an enabled recipe pane first
+  needs it. Selection and skill updates use the existing redraw path; this feature adds no events,
+  hooks, timers, route planning or polling.
+- Each recipe's `yellow` and `grey` in `RecipeData.lua` are written by `Tools/build/skill_thresholds.py`
+  from the game's own `SkillLineAbility` table (`TrivialSkillLineRankLow` and `TrivialSkillLineRankHigh`),
+  through `Tools/sources/wago.py` with the build's hotfixes. They sit on the recipe entries that already
+  exist rather than in a table of their own, which cost about 165 KB at login and 415 KB more once used;
+  on the entries they add about 55 KB. Rerun the tool when `wago.BUILD` changes or recipes are added: it
+  rewrites only those two fields. Only crafting skill lines and recipe categories are read;
+  contradictory ranges and conflicting duplicate spell rows are left out.
+- Orange starts at the skill the recipe is learned at (`skill`), not the table's `MinSkillLineRank`,
+  which is 1 for nearly every recipe. A recipe learned past its yellow is yellow from the start, so
+  yellow and green are at least the learn skill. Green is the rounded-down midpoint of yellow and grey.
+  A positive live `maxTrivialLevel` replaces the bundled grey, and green is recalculated with it.
+  A grey at or below yellow or the learn skill draws no line. These are difficulty ranges, not
+  measured skill-up probabilities. The recipe name's colour still comes from the game's
+  `relativeDifficulty`.
+- The line is drawn below the icon, with the description and reagents beneath it. Its current-skill
+  marker adds the profession's `skillModifier`. Linked professions have no marker or range: their
+  recipes belong to someone else, not the current character.
 - The on/off switches' defaults (`enabled` and each feature's switch) are read from
   `ns.FEATURES.professions`; their options keep their own defaults in `Professions.lua`.
 - Blizzard's window stays open under ours at zero alpha: hiding it would close the trade skill (its
