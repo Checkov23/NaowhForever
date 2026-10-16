@@ -12,7 +12,7 @@ local POSITIONS = {
         "consumableBarX", "consumableBarY",
         "foodBarPos", "foodBarAnchor", "foodBarAnchorPoint", "foodBarAnchorRelPoint", "foodBarX", "foodBarY",
         "coTankPos", "coTankAnchor", "coTankX", "coTankY" },
-    auraBuffs = { "buffsPos", "campPos", "lowHealthPos" },
+    auraBuffs = { "buffsPos", "classBuffPos", "campPos", "lowHealthPos" },
     pvp = { "pos", "focusPos", "scoresPos", "timerPos", "flagButtonPos" },
     swingTimer = { "swingPos" },
     threatMeter = { "threatPos", "width", "height" },

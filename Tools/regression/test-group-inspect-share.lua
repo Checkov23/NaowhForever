@@ -242,6 +242,8 @@ do
     calls = c.statsCalls
     GI.StatsFromGear(record)
     check("the per-link cache is bounded: old links are read again after it fills", c.statsCalls > calls)
+    -- Warm the VM string table with distinct IDs before measuring retained cache growth.
+    for i = 1, 5000 do c.ns.StatWeights.Stats("item:7" .. i) end
     collectgarbage("collect")
     local before = collectgarbage("count")
     for i = 1, 5000 do c.ns.StatWeights.Stats("item:8" .. i) end

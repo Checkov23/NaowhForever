@@ -23,6 +23,7 @@
     <Script file="UI\BuffMenu.lua"/>
     <Script file="UI\BuffReminders.lua"/>
     <Script file="UI\BuffsCard.lua"/>
+    <Script file="UI\ClassBuffs.lua"/>
     <Script file="UI\WindowPages.lua"/>
     <Script file="UI\Window.lua"/>
 </Ui>

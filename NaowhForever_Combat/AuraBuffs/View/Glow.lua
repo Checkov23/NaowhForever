@@ -1,4 +1,4 @@
--- Glow.lua: the glow on a reminder, Pixel or Standard (LibCustomGlow), from a feature's glow settings.
+-- Glow.lua: shared reminder glows, with an optional proc outline, from a feature's glow settings.
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
@@ -17,6 +17,8 @@ local active = setmetatable({}, { __mode = "k" })
 local pressed = setmetatable({}, { __mode = "k" })
 
 Glow.TYPES = { { pixel = "Pixel Glow", standard = "Standard Glow" }, { "pixel", "standard" } }
+Glow.TRACKER_TYPES = { { pixel = "Pixel Glow", standard = "Standard Glow", proc = "Gold Glow" },
+    { "proc", "pixel", "standard" } }
 Glow.PRESS_TIME = PRESS_TIME
 
 local function Stop(frame)
@@ -24,7 +26,9 @@ local function Stop(frame)
     if not glow then return end
     active[frame] = nil
     local LCG = LibStub(LIB, true)
-    if glow.kind == "pixel" then LCG.PixelGlow_Stop(frame) else LCG.ButtonGlow_Stop(frame) end
+    if glow.kind == "proc" then LCG.ProcGlow_Stop(frame)
+    elseif glow.kind == "pixel" then LCG.PixelGlow_Stop(frame)
+    else LCG.ButtonGlow_Stop(frame) end
 end
 
 function Glow.Set(frame, on, prefix)
@@ -37,7 +41,9 @@ function Glow.Set(frame, on, prefix)
     local LCG = LibStub(LIB, true)
     if not LCG then return end
     local color = { c.r, c.g, c.b, 1 }
-    if kind == "pixel" then
+    if kind == "proc" then
+        LCG.ProcGlow_Start(frame, { color = color, startAnim = false })
+    elseif kind == "pixel" then
         LCG.PixelGlow_Start(frame, color, lines, 1 / (SPEED_TOP - speed), nil, thickness)
     else
         LCG.ButtonGlow_Start(frame, color)
