@@ -562,6 +562,28 @@ check("saving the player's continent does not depend on a recognized taxi map",
     account.flightPoints[GUID].seenMaps[EASTERN_KINGDOMS] == true
     and Text() == "Learn the Darkshire flight point")
 
+local ZEPHRAS, ZEPHRAS_TOO, AZEROTH = 2521, 2665, 947
+local mapInfo = env.C_Map.GetMapInfo
+env.C_Map.GetMapInfo = function(id)
+    if id == ZEPHRAS then return { mapID = ZEPHRAS, mapType = 3, parentMapID = AZEROTH } end
+    if id == ZEPHRAS_TOO then return { mapID = ZEPHRAS_TOO, mapType = 3, parentMapID = 0 } end
+    if id == AZEROTH then return { mapID = AZEROTH, mapType = 1, parentMapID = 0 } end
+    return mapInfo(id)
+end
+account.flightPoints = nil
+local zephrasNode = Node("Windshaper's Rest, Zephras Isle", NEUTRAL, 50, true, 3001)
+check("Zephras Isle, under no continent, asks for the flight map at first",
+    At(ZEPHRAS_TOO, { zephrasNode }) == "Open a flight master's map to save the points you know")
+state.taxiMap, state.openNodes = ZEPHRAS, { { nodeID = 3001, state = CURRENT } }
+Fire("TAXIMAP_OPENED")
+check("opening the flight map there marks the island seen and its point known",
+    account.flightPoints[GUID].seenMaps[ZEPHRAS] == true and At(ZEPHRAS_TOO, { zephrasNode }) == nil)
+check("so the island stops asking on either of its maps", At(ZEPHRAS, { zephrasNode }) == nil)
+check("an unknown point on the island is named, not asked about",
+    At(ZEPHRAS, { Node("Skyreach, Zephras Isle", NEUTRAL, 50, true, 3002) }) == "Learn the Skyreach flight point")
+env.C_Map.GetMapInfo = mapInfo
+state.taxiMap = DARKSHORE
+
 state.subzone, state.pos, state.faction = "The Sepulcher", nil, "Horde"
 local sepulcher = Node("The Sepulcher, Silverpine Forest", HORDE, 8000, false, 69)
 check("the sentence drops a leading The while the town still matches its original subzone",

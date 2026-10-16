@@ -118,7 +118,7 @@ end
 
 local function Seen(mine, zone)
     local maps = mine and mine.seenMaps
-    local continent = Up(zone, CONTINENT)
+    local continent = Up(zone, CONTINENT) or zone
     return maps and continent and (maps[continent] or maps[TAXI_MAPS[continent]])
 end
 
@@ -127,7 +127,8 @@ local function Learn()
     local taxi = mine and GetTaxiMapID()
     if not taxi then return end
     local taxiContinent = Up(taxi, CONTINENT)
-    local continent = Up(C_Map.GetBestMapForUnit(PLAYER), CONTINENT)
+    local here = C_Map.GetBestMapForUnit(PLAYER)
+    local continent = Up(here, CONTINENT) or Up(SameMap(here), ZONE)
     mine.seenMaps = mine.seenMaps or {}
     mine.seenMaps[taxi] = true
     if taxiContinent then mine.seenMaps[taxiContinent] = true end
