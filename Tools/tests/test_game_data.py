@@ -1,6 +1,6 @@
-"""Tests for the tools that read the game's own tables: Tools/sources/wago.py and
-Tools/build/factions.py (the rewards added by hand on top). Offline: wago.tools is never
-asked; its answers are made up here. From the repo root:
+"""Tests for the tools that read the game's own tables: Tools/sources/wago.py,
+Tools/build/factions.py (the rewards added by hand on top) and Tools/build/same_maps.py.
+Offline: wago.tools is never asked; its answers are made up here. From the repo root:
 
     python -m unittest discover -s Tools/tests
 """
@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402,F401
 import factions  # noqa: E402
+import same_maps  # noqa: E402
 import wago  # noqa: E402
 
 
@@ -172,6 +173,42 @@ class CarriedOver(unittest.TestCase):
         _, rewards, carried = factions.game_items("new")
         self.assertEqual(carried, set())
         self.assertNotIn(2798, rewards)
+
+
+class SameMaps(unittest.TestCase):
+    """Zone maps the game has under two IDs, as Zephras Isle's 2521 and 2665."""
+
+    @staticmethod
+    def ui_map(map_id, name, parent):
+        return {"ID": str(map_id), "Name_lang": name, "Type": "3", "ParentUiMapID": str(parent)}
+
+    @staticmethod
+    def placed(map_id, continent, left, top=-1331.25, order="0"):
+        return {"UiMapID": str(map_id), "MapID": str(continent), "OrderIndex": order, "Region_0": str(left),
+                "Region_1": str(top), "Region_3": "4956.25", "Region_4": "4231.25"}
+
+    def test_the_one_without_a_parent_reads_the_other(self):
+        ui_maps = [self.ui_map(2521, "Zephras Isle", 947), self.ui_map(2665, "Zephras Isle", 0),
+                   self.ui_map(1411, "Durotar", 1414)]
+        assignments = [self.placed(2521, 2991, 1247.9169921875), self.placed(2665, 2991, 1247.9200439453),
+                       self.placed(1411, 1, 1247.9169921875)]
+        self.assertEqual(same_maps.same_maps(ui_maps, assignments), {2665: 2521})
+
+    def test_not_the_same_place(self):
+        ui_maps = [self.ui_map(1, "Isle", 947), self.ui_map(2, "Isle", 0), self.ui_map(3, "Other", 0)]
+        self.assertEqual(same_maps.same_maps(ui_maps, [self.placed(1, 9, 0), self.placed(2, 9, 0, top=-2000)]),
+                         {}, "other bounds")
+        self.assertEqual(same_maps.same_maps(ui_maps, [self.placed(1, 9, 0), self.placed(2, 8, 0)]), {},
+                         "another continent")
+        self.assertEqual(same_maps.same_maps(ui_maps, [self.placed(1, 9, 0), self.placed(3, 9, 0)]), {},
+                         "another name")
+        self.assertEqual(same_maps.same_maps(ui_maps, [self.placed(1, 9, 0), self.placed(2, 9, 0, order="1")]),
+                         {}, "only a map's first assignment places it")
+
+    def test_which_one_reads_the_other_must_be_clear(self):
+        ui_maps = [self.ui_map(1, "Isle", 0), self.ui_map(2, "Isle", 0)]
+        with self.assertRaises(SystemExit):
+            same_maps.same_maps(ui_maps, [self.placed(1, 9, 0), self.placed(2, 9, 0)])
 
 
 class Builds(unittest.TestCase):

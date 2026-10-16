@@ -4,6 +4,7 @@ local ns = _G.NaowhForever
 local S = ns.QoLSettings
 local T = ns.THEME
 local Parts, St = ns.Shared.Parts, ns.Shared.Style
+local SameMap = ns.Shared.Places.SameMap
 
 local MEDIA = ns.MEDIA
 local SHAPES = {
@@ -381,9 +382,9 @@ end
 local function OnWaypointMap()
     local point = C_Map.GetUserWaypoint()
     if not point then return false end
-    local map = C_Map.GetBestMapForUnit("player")
+    local map = SameMap(C_Map.GetBestMapForUnit("player"))
     while map and map ~= 0 do
-        if map == point.uiMapID then return true end
+        if map == SameMap(point.uiMapID) then return true end
         local info = C_Map.GetMapInfo(map)
         map = info and info.parentMapID
     end

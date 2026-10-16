@@ -4,6 +4,7 @@ local ns = _G.NaowhForever
 local GetServerTime = GetServerTime
 local S = ns.QoLSettings
 local T = ns.THEME
+local SameMap = ns.Shared.Places.SameMap
 local Times = ns.TransportTimes
 local Data = ns.TransportData
 
@@ -105,8 +106,9 @@ local function Refresh()
     local map = On() and C_Map.GetBestMapForUnit(PLAYER)
     if map then
         local side = UnitFactionGroup(PLAYER) == HORDE and "H" or "A"
+        local same = SameMap(map)
         for key, stop in pairs(Data) do
-            if stop.map == map and stop.side:find(side, 1, true) then
+            if stop.map == same and stop.side:find(side, 1, true) then
                 if not stop.mapX then
                     local _, pos = C_Map.GetMapPosFromWorldPos(stop.continent, CreateVector2D(stop.x, stop.y), map)
                     stop.mapX, stop.mapY = pos:GetXY()

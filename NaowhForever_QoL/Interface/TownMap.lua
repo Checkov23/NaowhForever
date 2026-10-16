@@ -3,6 +3,7 @@ local ns = _G.NaowhForever
 
 local S = ns.QoLSettings
 local ScalePin = ns.Shared.ScalePin
+local SameMap = ns.Shared.Places.SameMap
 
 local TEMPLATE = "NaowhForeverTownPinTemplate"
 local LINK_TEMPLATE = "NaowhForeverZoneLinkPinTemplate"
@@ -355,7 +356,7 @@ function provider:RefreshAllData()
     self:RemoveAllData()
     if not On() then return end
     local map = self:GetMap()
-    local mapID = map:GetMapID()
+    local mapID = SameMap(map:GetMapID())
     local shops = not S.Get("townCapitalsOnly") or CAPITALS[mapID]
     if S.Get("townZoneLinks") then AddExits(map, mapID) end
     local faction = UnitFactionGroup("player") == "Horde" and "H" or "A"
@@ -456,8 +457,8 @@ local function MiniRefresh()
     wipe(miniSpots)
     miniMap = MiniOn() and C_Map.GetBestMapForUnit("player")
     if miniMap and MiniFit(miniMap) then
-        if S.Get("townMinimap") then AddSpots(ns.TownMailboxes[miniMap]) end
-        if S.Get("townMinimapSpirit") then AddSpots(ns.TownSpiritHealers[miniMap]) end
+        if S.Get("townMinimap") then AddSpots(ns.TownMailboxes[SameMap(miniMap)]) end
+        if S.Get("townMinimapSpirit") then AddSpots(ns.TownSpiritHealers[SameMap(miniMap)]) end
         miniWidth, miniHeight = C_Map.GetMapWorldSize(miniMap)
     end
     for i = #miniSpots + 1, #miniPins do miniPins[i]:Hide() end
@@ -519,7 +520,7 @@ local function OnAuditEvent()
     local x, y = pos:GetXY()
     x, y = Tenths(x), Tenths(y)
     Record(map, name, x, y)
-    for _, npc in ipairs(ns.TownNPCs[map] or EMPTY) do
+    for _, npc in ipairs(ns.TownNPCs[SameMap(map)] or EMPTY) do
         if npc[4] == name then
             ns.Print(TEXT_AUDIT_NEAR:format(name, x, y, npc[1], npc[2], math.sqrt((x - npc[1]) ^ 2 + (y - npc[2]) ^ 2)))
             return

@@ -100,6 +100,7 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
         SoundPathFor = function(key) if key ~= "none" then return "sound:" .. key end end,
     },
     Shared = {
+        Places = dofile("Tools/regression/shared_places.lua"),
         Style = setmetatable({ ROUND = "round", PLACE_DOT = " . " },
             { __index = dofile("Tools/regression/shared_style.lua") }),
         Parts = {

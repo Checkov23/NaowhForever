@@ -113,6 +113,7 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, QoLSettings = S,
     AlertStack = function(frame) state.alertFrame = frame end,
     Apply = function() end, ShowUnlockMode = function() end, HideUnlockMode = function() end,
     Shared = {
+        Places = dofile("Tools/regression/shared_places.lua"),
         Parts = { HudBackdrop = function()
             return { SetMode = function(_, mode) return mode end }
         end, HudFont = function() end },

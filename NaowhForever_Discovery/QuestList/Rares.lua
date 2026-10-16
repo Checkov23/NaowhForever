@@ -5,6 +5,7 @@ local T = ns.THEME
 local Completo = ns.Completo
 local C = Completo.C
 local St = ns.Shared.Style
+local SameMap = ns.Shared.Places.SameMap
 local D = ns.CompletoRareData
 
 local NAME, LOW, HIGH, ELITE, REACT_A, REACT_H, MAP, SPOTS, TRAIL = 1, 2, 3, 4, 5, 6, 7, 8, 9
@@ -229,7 +230,7 @@ function R.ZoneList(zone)
 end
 
 function R.CurrentZone()
-    local map = C_Map.GetBestMapForUnit("player")
+    local map = SameMap(C_Map.GetBestMapForUnit("player"))
     while map do
         local zone = ZoneFor(map)
         if zone then return zone end
@@ -263,7 +264,7 @@ function R.Spot(npc)
     local rare = D.Rares[npc]
     local spots = rare[SPOTS]
     if #spots == 0 then return end
-    local pos = C_Map.GetPlayerMapPosition and C_Map.GetBestMapForUnit("player") == rare[MAP]
+    local pos = C_Map.GetPlayerMapPosition and SameMap(C_Map.GetBestMapForUnit("player")) == rare[MAP]
         and C_Map.GetPlayerMapPosition(rare[MAP], "player")
     if not pos then return rare[MAP], spots[1], spots[2] end
     local px, py = pos:GetXY()
@@ -293,7 +294,7 @@ end
 function R.OnMap(mapID)
     Prepare()
     if not byMap then BuildByMap() end
-    return byMap[mapID] or NONE
+    return byMap[SameMap(mapID)] or NONE
 end
 
 function R.Waypoint(npc)

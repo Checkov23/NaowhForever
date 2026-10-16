@@ -31,7 +31,7 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
     QoLSettings = S, Apply = function() end, ThemeTint = function() end,
     TownCapitals = { [2] = true }, TownNPCs = { [1] = Town(), [2] = Town() },
     TownMailboxes = {}, TownSpiritHealers = {}, ZoneExits = {}, TownTravel = {},
-    Shared = { Style = dofile("Tools/regression/shared_style.lua"),
+    Shared = { Style = dofile("Tools/regression/shared_style.lua"), Places = dofile("Tools/regression/shared_places.lua"),
         Settings = { Group = function() end, Page = function() return { Card = function() end } end } },
 }
 

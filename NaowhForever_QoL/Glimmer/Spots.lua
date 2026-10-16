@@ -5,6 +5,7 @@ local G = ns.Glimmer
 local S = G.Settings
 local C = G.C
 local Target = G.Target
+local SameMap = ns.Shared.Places.SameMap
 
 local GATHERED = "glimmerGathered"
 local KEY = "%d:%d:%d"
@@ -40,7 +41,7 @@ end
 
 function Spots.ForMap(mapID, out)
     wipe(out)
-    local all = ns.GlimmerSpots and ns.GlimmerSpots[mapID]
+    local all = ns.GlimmerSpots and ns.GlimmerSpots[SameMap(mapID)]
     if not all then return 0 end
     wipe(wanted)
     for _, category in ipairs(GATHER_KINDS) do wanted[category] = Spots.Wanted(category) end
@@ -75,7 +76,7 @@ local function Snap(mapID, gathered, objectID, x, y)
         end
     end
     if best < C.SNAP * C.SNAP then return bestX, bestY end
-    local all = ns.GlimmerSpots and ns.GlimmerSpots[mapID]
+    local all = ns.GlimmerSpots and ns.GlimmerSpots[SameMap(mapID)]
     for i = 1, all and #all or 0, 3 do
         if all[i] == objectID then
             local d = (all[i + 1] - x) ^ 2 + (all[i + 2] - y) ^ 2

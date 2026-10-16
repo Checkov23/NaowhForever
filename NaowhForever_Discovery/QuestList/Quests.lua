@@ -3,6 +3,7 @@ local ns = _G.NaowhForever
 
 local Completo = ns.Completo
 local D = ns.CompletoQuestData
+local SameMap = ns.Shared.Places.SameMap
 
 local NAME, LEVEL, REQ_LEVEL, SIDE, RACES, CLASSES, MAP, X, Y, GIVER, ITEM = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 local ALLIANCE, HORDE = 1, 2
@@ -396,7 +397,7 @@ function Q.Search(text, limit)
 end
 
 function Q.CurrentZone()
-    local map = C_Map.GetBestMapForUnit("player")
+    local map = SameMap(C_Map.GetBestMapForUnit("player"))
     while map do
         for _, zone in ipairs(D.Zones) do
             if zone.map == map then return zone end
@@ -439,7 +440,7 @@ function Q.Givers(mapID, grey, chainsOnly)
     Prepare()
     Index()
     RecycleGivers()
-    for _, id in ipairs(byMap[mapID] or NONE) do
+    for _, id in ipairs(byMap[SameMap(mapID)] or NONE) do
         if Wanted(id, chainsOnly) then
             local trivial = Q.Trivial(id)
             if grey or not trivial then AddToGiver(id, trivial) end

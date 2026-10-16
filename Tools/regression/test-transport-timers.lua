@@ -2,7 +2,7 @@
 local checks = 0
 local function Check(ok, why) assert(ok, why); checks = checks + 1 end
 local now = 100
-local ns = { Shared = { Parts = {}, Settings = {} }, THEME = { accent = { r = 0, g = 0.5, b = 1 } }, UI = {},
+local ns = { Shared = { Parts = {}, Settings = {}, Places = dofile("Tools/regression/shared_places.lua") }, THEME = { accent = { r = 0, g = 0.5, b = 1 } }, UI = {},
     QoLConstants = { PERCENT = 100, SECONDS_PER_MINUTE = 60, SECONDS_PER_DAY = 86400,
         HINT_RGB = { r = 0.3, g = 0.71, b = 0.96 } } }
 _G.NaowhForever = ns
@@ -168,7 +168,7 @@ _G.C_Minimap = { GetViewRadius = function() return 100 end }
 _G.C_CVar = { GetCVarBool = function() return false end }
 _G.CreateVector2D = function(x, y) return { x = x, y = y, GetXY = function(v) return v.x, v.y end } end
 local faction, playerMap, playerWorld = "Alliance", 1413, nil
-local CONTINENT = { [1411] = 1, [1413] = 1, [1429] = 0 }
+local CONTINENT = { [1411] = 1, [1413] = 1, [1429] = 0, [2521] = 2991, [2665] = 2991 }
 _G.UnitFactionGroup = function() return faction end
 _G.C_Map = {
     GetBestMapForUnit = function() mapReads = mapReads + 1; return playerMap end,
@@ -293,6 +293,15 @@ now = now + 60 + 30
 PinFor(UC).scripts.OnEnter(PinFor(UC))
 Check(TipStatus() == "Arrives in ~2:29", "Orgrimmar-Undercity counts down its published 3:59 cycle: " .. TipStatus())
 PinFor(UC).scripts.OnLeave(PinFor(UC))
+
+local MULGORE = "2521:Zeppelin to Mulgore"
+playerMap = 2665
+playerWorld = { ns.TransportData[MULGORE].x, ns.TransportData[MULGORE].y }
+Event("ZONE_CHANGED_NEW_AREA")
+Check(#Pins() == 1 and PinFor(MULGORE), "on Zephras Isle's second map, 2665, the island's zeppelin shows")
+playerMap = 1411
+playerWorld = { ns.TransportData[UC].x, ns.TransportData[UC].y }
+Event("ZONE_CHANGED_NEW_AREA")
 
 local layerFrame
 for _, w in ipairs(widgets) do if w.kind == "Frame" and w ~= events then layerFrame = w end end

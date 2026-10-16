@@ -39,7 +39,8 @@ end
 -- 8911 warlock).
 local function QuestList(who)
     local ns = { AccountSettings = function() return {} end,
-        Completo = { CharKey = function() return "Me-Realm" end }, CompletoQuestData = {} }
+        Completo = { CharKey = function() return "Me-Realm" end }, CompletoQuestData = {},
+        Shared = { Places = dofile("Tools/regression/shared_places.lua") } }
     local env = Env(ns, who)
     Run("NaowhForever_DiscoveryData/Quests.lua", env)
     Run("NaowhForever_Discovery/QuestList/Quests.lua", env)

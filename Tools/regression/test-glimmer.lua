@@ -9,7 +9,7 @@ table.insert(FILES, 1, "Core/Features.lua")
 table.insert(FILES, 2, "Shared/UI/MinimapPins.lua")
 
 local SHARED = {}
-dofile("Tools/regression/load_files.lua")({ "Shared/Style.lua" }, { _G = { NaowhForever = {
+dofile("Tools/regression/load_files.lua")({ "Shared/Style.lua", "Shared/Data/SameMaps.lua", "Shared/Game/Places.lua" }, { _G = { NaowhForever = {
     L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = SHARED } } })
 
 local COPPER, TIN, CHEST, BOBBER = 1731, 1732, 2843, 35591

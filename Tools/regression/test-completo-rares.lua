@@ -249,7 +249,7 @@ local function Fixture(settings, units)
         if opts.background == "card" then rows[#rows + 1] = { key = prefix .. "Background" } end
         return rows
     end
-    ns.Shared = { Settings = Settings, MapPins = {}, ScalePin = function() end,
+    ns.Shared = { Settings = Settings, MapPins = {}, ScalePin = function() end, Places = dofile("Tools/regression/shared_places.lua"),
         -- Per character, by the player's GUID.
         CharacterData = function(key)
             account[key] = account[key] or {}
