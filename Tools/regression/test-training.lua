@@ -142,6 +142,23 @@ Case("the followed build's skipped spells leave the lists, for any character tha
     assert(other.Plan() == "now: 1953 3561; later: 10151 25306; talent: 12505", other.Plan())
     assert(not other.Skipped(1953))
 end)
+Case("a build that skips only rank 3 of a spell still trains ranks 1 and 2", function()
+    local t = Fixture({ level = 12, account = { trainingIgnored = {} }, skip = { [145] = true }, follow = true })
+    assert(not t.Skipped(133) and not t.Skipped(143) and t.Skipped(145) and not t.Skipped(10151))
+    local want = "now: 133 5143; rank: 143; later: 5144 1953 3561 10151 25306; talent: 12505; ignored: 145"
+    assert(t.Plan() == want, t.Plan())
+    t = Fixture({ level = 12, known = { [133] = true }, account = { trainingIgnored = {} }, skip = { [145] = true },
+        follow = true })
+    want = "now: 143 5143; later: 5144 1953 3561 10151 25306; talent: 12505; ignored: 145"
+    assert(t.Plan() == want, t.Plan())
+end)
+Case("a build saved with a whole spell skipped still skips every rank of it", function()
+    local t = Fixture({ level = 60, account = { trainingIgnored = {} }, follow = true,
+        skip = { [133] = true, [143] = true, [145] = true, [10151] = true } })
+    for _, id in ipairs({ 133, 143, 145, 10151 }) do assert(t.Skipped(id), id) end
+    local plan = t.Plan()
+    assert(plan:find("ignored: 133 143 145 10151", 1, true) and not plan:find("now: 133", 1, true), plan)
+end)
 Case("trainer prices are matched by name and level; a header matches nothing", function()
     local t = Fixture({ services = {
         { "Fireball", nil, 0 },

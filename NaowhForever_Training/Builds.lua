@@ -60,6 +60,13 @@ function Training.Ranks(talents)
     return ranks
 end
 
+function Training.TalentEntry(classID, node)
+    local _, _, myClass = UnitClass("player")
+    local config = classID == myClass and C_ClassTalents.GetActiveConfigID()
+    if not config then return nil end
+    return C_Traits.GetNodeInfo(config, node).entryIDs[1]
+end
+
 function Training.SkipGroups(classID)
     local groups, byName = {}, {}
     for _, entry in ipairs(ns.TrainingData[classID] or {}) do
@@ -67,24 +74,31 @@ function Training.SkipGroups(classID)
         if name then
             local group = byName[name]
             if not group then
-                group = { name = name, level = entry[LEVEL], spell = entry[SPELL], spells = {} }
+                group = { name = name, spells = {}, levels = {} }
                 byName[name] = group
                 groups[#groups + 1] = group
             end
             group.spells[#group.spells + 1] = entry[SPELL]
+            group.levels[#group.levels + 1] = entry[LEVEL]
         end
     end
     return groups
 end
 
-function Training.IsSkipping(build, group)
-    return build.skip ~= nil and build.skip[group.spell] == true
+function Training.IsSkipping(build, group, rank)
+    local skip = build.skip or {}
+    for i, spell in ipairs(group.spells) do
+        if (not rank or i == rank) and not skip[spell] then return false end
+    end
+    return true
 end
 
-function Training.ToggleSkip(build, group)
-    local on = not Training.IsSkipping(build, group)
+function Training.ToggleSkip(build, group, rank)
+    local on = not Training.IsSkipping(build, group, rank)
     build.skip = build.skip or {}
-    for _, spell in ipairs(group.spells) do build.skip[spell] = on or nil end
+    for i, spell in ipairs(group.spells) do
+        if not rank or i == rank then build.skip[spell] = on or nil end
+    end
     if next(build.skip) == nil then build.skip = nil end
     Changed()
 end

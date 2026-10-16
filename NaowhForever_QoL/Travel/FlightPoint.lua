@@ -6,6 +6,7 @@ local issecretvalue = issecretvalue
 local S = ns.QoLSettings
 local T = ns.THEME
 local Parts, St = ns.Shared.Parts, ns.Shared.Style
+local SameMap = ns.Shared.Places.SameMap
 
 local WIDTH, ROOM = 300, 10
 local STACK_ORDER = 6
@@ -239,7 +240,7 @@ end
 
 local function Nearest(zoneWide)
     if inCombat or UnitOnTaxi(PLAYER) then return nil end
-    local zone = Up(C_Map.GetBestMapForUnit(PLAYER), ZONE)
+    local zone = Up(SameMap(C_Map.GetBestMapForUnit(PLAYER)), ZONE)
     if not zone then return nil end
     local here = C_Map.GetBestMapForUnit(PLAYER)
     local player, secret = WorldOf(here, here and C_Map.GetPlayerMapPosition(here, PLAYER))
@@ -379,7 +380,7 @@ end
 
 function ns.FlightPointReminderForPin(map, npc)
     if not On() then return nil end
-    local zone = Up(map, ZONE)
+    local zone = Up(SameMap(map), ZONE)
     if not zone then return nil end
     local world, secret = WorldOf(map, CreateVector2D(npc[1] / PERCENT, npc[2] / PERCENT))
     if secret or not world then return nil end

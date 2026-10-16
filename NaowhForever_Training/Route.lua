@@ -121,9 +121,16 @@ local function ProfessionStops(map, from, side)
     return stops
 end
 
-function Training.MasterPlace(entry)
-    local npc, map = Training.NearestMaster(entry)
+local function Place(npc, map)
     return npc and (npc[NPC_NAME] .. ", " .. C_Map.GetMapInfo(map).name) or ""
+end
+
+function Training.MasterPlace(entry)
+    return Place(Training.NearestMaster(entry))
+end
+
+function Training.TrainerPlace()
+    return Place(Training.NearestTrainer())
 end
 
 function Training.WaypointToMaster(entry)

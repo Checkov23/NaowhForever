@@ -6,7 +6,8 @@ local UI = ns.UI
 local F = ns.FEATURES.training
 
 local S = UI.ModuleSettings("training", { enabled = F.enabled, levelUpToast = F.levelUpToast,
-    trainerPanel = F.trainerPanel, showLearned = true, miniShown = false })
+    trainerPanel = F.trainerPanel, spellbook = F.spellbook, spellbookOpen = true, showLearned = true,
+    miniShown = false })
 ns.TrainingSettings = S
 
 local Training = { Settings = S }

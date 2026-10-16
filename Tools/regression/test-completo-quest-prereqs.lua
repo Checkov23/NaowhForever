@@ -10,7 +10,8 @@ local checks = 0
 local function Check(ok, label) assert(ok, label); checks = checks + 1 end
 
 local account, completed, level = {}, {}, 60
-local ns = { AccountSettings = function() return account end, Completo = { CharKey = function() return "Me-Realm" end } }
+local ns = { AccountSettings = function() return account end, Completo = { CharKey = function() return "Me-Realm" end },
+    Shared = { Places = dofile("Tools/regression/shared_places.lua") } }
 local env = setmetatable({
     _G = { NaowhForever = ns },
     wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,

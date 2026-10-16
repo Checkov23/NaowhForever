@@ -5,6 +5,7 @@
     <Script file="Data\Forever.lua"/>
     <Script file="Data\ItemFacts.lua"/>
     <Script file="Data\FactionItems.lua"/>
+    <Script file="Data\SameMaps.lua"/>
     <Script file="Decode.lua"/>
     <Script file="Game\Items.lua"/>
     <Script file="Game\Gear.lua"/>

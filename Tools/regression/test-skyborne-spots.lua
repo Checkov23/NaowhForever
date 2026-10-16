@@ -120,7 +120,7 @@ for kind, list in pairs(ns.SkyborneSpots) do
         shipped = shipped + 1
     end
 end
-Check(#ns.SkyborneSpots.leyline == 36 and #ns.SkyborneSpots.convergence == 30, "36 ley lines, 30 convergences")
+Check(#ns.SkyborneSpots.leyline == 76 and #ns.SkyborneSpots.convergence == 56, "76 ley lines, 56 convergences")
 Check(Read("NaowhForever_QoL/Interface/SkyborneData.lua"):find("Copyright (c) 2026 tr0tsky", 1, true), "with tr0tsky's notice")
 
 Check(Read("Core/Settings.lua"):find("mapSkyborne = F.mapSkyborne,", 1, true)
@@ -137,8 +137,15 @@ local function CastAt(spellID, buffID, duration)
     RunTimers()
 end
 
+-- A spot found before it shipped with the addon is dropped from the found list on the first draw.
+local shipped2521
+for _, spot in ipairs(ns.SkyborneSpots.convergence) do
+    if spot[1] == 2521 then shipped2521 = spot break end
+end
+account.skyborneSpots = { convergence = { { shipped2521[1], shipped2521[2], shipped2521[3] } } }
 boot.onEvent(boot, "PLAYER_LOGIN")
 Check(watch.unitEvents.UNIT_SPELLCAST_SUCCEEDED, "a Skyborne watches its casts")
+Check(#account.skyborneSpots.convergence == 0, "a found spot that now ships with the addon is dropped")
 
 CastAt(SKY_CAST, nil)
 Check(not account.skyborneSpots or #account.skyborneSpots.convergence == 0, "Skysight away from a spot saves nothing")

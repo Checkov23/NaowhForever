@@ -28,6 +28,7 @@ local NODE, NODE_GAP, NODE_ROW = 36, 12, 56
 local COUNT_GAP = 2
 local CHECK, CHECK_X, TICK_INSET, CHECK_GAP = 16, 10, 4, 10
 local SKIP_LEVEL_W = 70
+local RANK_INDENT = 20
 local TREE_ROWS, TREE_SLOTS = 7, 4
 local SPEC_H = 28
 local NODE_SPELL, NODE_RANKS, NODE_ROW_INDEX, NODE_COLUMN, NODE_SLOT = C.NODE_SPELL, C.NODE_RANKS, C.NODE_ROW, C.NODE_COLUMN, 5
@@ -41,6 +42,8 @@ local TEXT_TAKEN = ns.L("Taken")
 local TEXT_NEXT_NOW = ns.L("Next, spend it now")
 local TEXT_NEXT_AT = ns.L("Next, at level ")
 local TEXT_NODE_RANK = ns.L("Rank %d of %d")
+local TEXT_NEXT_RANK = ns.L("Next rank:")
+local TEXT_NAME_RANK = ns.L("%s (%s)")
 local TEXT_NODE_HINT = ns.L("Click to take the next point here, right-click to give one back.")
 local TEXT_UNDO, TEXT_CLEAR, TEXT_DONE = "Undo", "Clear", "Done"
 local TEXT_SELECT_ALL = "Select All"
@@ -149,10 +152,28 @@ local function BuildList(builds, y)
     return y
 end
 
+local function TalentTip(self, rank)
+    local entry = Training.TalentEntry(self.classID, self.node)
+    if not entry then
+        GameTooltip:SetSpellByID(self.spell)
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddLine(TEXT_NODE_RANK:format(rank, self.max), 1, 1, 1)
+        return
+    end
+    GameTooltip_SetTitle(GameTooltip, C_Spell.GetSpellName(self.spell) or "")
+    GameTooltip:AddLine(TEXT_NODE_RANK:format(rank, self.max), 1, 1, 1)
+    if rank > 0 then GameTooltip:AppendInfo("GetTraitEntry", entry, rank) end
+    if rank < self.max then
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddLine(TEXT_NEXT_RANK, 1, 1, 1)
+        GameTooltip:AppendInfo("GetTraitEntry", entry, rank + 1)
+    end
+end
+
 local function StepEnter(self)
     self.band:SetAlpha(Style.HOVER)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetSpellByID(self.spell)
+    TalentTip(self, self.last)
     GameTooltip:Show()
 end
 
@@ -194,7 +215,7 @@ local function StepState(ranks, node, first, last, from, level, found)
     return T.accent, level >= at and TEXT_NEXT_NOW or (TEXT_NEXT_AT .. at), false, true
 end
 
-local function Steps(build, talents, ranks, level, y)
+local function Steps(classID, build, talents, ranks, level, y)
     local points, count = build.points, {}
     local i, found = 1, false
     while i <= #points do
@@ -208,7 +229,7 @@ local function Steps(build, talents, ranks, level, y)
         local r = Take("step", NewStep)
         r:SetPoint("TOPLEFT", V.body, "TOPLEFT", V.paneX, y)
         r:SetPoint("TOPRIGHT", V.body, "TOPRIGHT", 0, y)
-        r.spell = spell
+        r.spell, r.classID, r.node, r.last, r.max = spell, classID, node, last, max
         r.level:SetText(Span(from, to, TEXT_LEVEL, TEXT_LEVELS))
         r.icon:SetTexture(C_Spell.GetSpellTexture(spell))
         r.name:SetText(C_Spell.GetSpellName(spell) or "")
@@ -229,9 +250,7 @@ end
 local function NodeEnter(self)
     self.border:SetColor(T.accent.r, T.accent.g, T.accent.b, 1)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetSpellByID(self.spell)
-    GameTooltip:AddLine(" ")
-    GameTooltip:AddLine(TEXT_NODE_RANK:format(self.rank, self.max), 1, 1, 1)
+    TalentTip(self, self.rank)
     if self.why then
         local c = Style.WARN_RGB
         GameTooltip:AddLine(self.why, c.r, c.g, c.b, true)
@@ -328,7 +347,7 @@ end
 local function SkipEnter(self)
     self.band:SetAlpha(Style.HOVER)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetSpellByID(self.group.spell)
+    GameTooltip:SetSpellByID(self.spell)
     GameTooltip:Show()
 end
 
@@ -339,6 +358,7 @@ local function NewSkipRow()
     local check = CreateFrame("Frame", nil, r)
     check:SetSize(CHECK, CHECK)
     check:SetPoint("LEFT", CHECK_X, 0)
+    r.check = check
     ns.Solid(check, "BACKGROUND", T.panel, 1):SetAllPoints()
     r.box = ns.Border(check, T.line)
     r.tick = ns.Solid(check, "ARTWORK", T.accent, 1)
@@ -357,25 +377,39 @@ local function NewSkipRow()
     return r
 end
 
+local function SkipRankName(group, rank)
+    local subtext = C_Spell.GetSpellSubtext(group.spells[rank])
+    if not subtext or subtext == "" then return group.name end
+    return TEXT_NAME_RANK:format(group.name, subtext)
+end
+
+local function SkipRow(build, group, rank, y)
+    local r = Take("skip", NewSkipRow)
+    r:SetPoint("TOPLEFT", V.body, "TOPLEFT", V.paneX, y)
+    r:SetPoint("TOPRIGHT", V.body, "TOPRIGHT", 0, y)
+    r.check:SetPoint("LEFT", CHECK_X + (rank and RANK_INDENT or 0), 0)
+    r.group, r.rank, r.spell = group, rank, group.spells[rank or 1]
+    local on = Training.IsSkipping(build, group, rank)
+    r.tick:SetShown(on)
+    local c = on and T.accent or T.line
+    r.box:SetColor(c.r, c.g, c.b, 1)
+    r.icon:SetTexture(C_Spell.GetSpellTexture(r.spell))
+    r.name:SetText(rank and SkipRankName(group, rank) or group.name)
+    r.level:SetText(TEXT_LEVEL .. group.levels[rank or 1])
+    r:SetAlpha(on and 1 or Style.LEARNED_ALPHA)
+    r:SetScript("OnClick", function() Training.ToggleSkip(build, group, rank) end)
+    Rows.Stripe(r)
+    return y - Style.ROW_H
+end
+
 local function DrawSkips(classID, build, y)
     local skipped = Training.SkipCount(build)
     y = Header(y, TEXT_SKIPS, skipped > 0 and skipped or nil, TEXT_SKIPS_NOTE)
     for _, group in ipairs(Training.SkipGroups(classID)) do
-        local r = Take("skip", NewSkipRow)
-        r:SetPoint("TOPLEFT", V.body, "TOPLEFT", V.paneX, y)
-        r:SetPoint("TOPRIGHT", V.body, "TOPRIGHT", 0, y)
-        r.group = group
-        local on = Training.IsSkipping(build, group)
-        r.tick:SetShown(on)
-        local c = on and T.accent or T.line
-        r.box:SetColor(c.r, c.g, c.b, 1)
-        r.icon:SetTexture(C_Spell.GetSpellTexture(group.spell))
-        r.name:SetText(group.name)
-        r.level:SetText(TEXT_LEVEL .. group.level)
-        r:SetAlpha(on and 1 or Style.LEARNED_ALPHA)
-        r:SetScript("OnClick", function() Training.ToggleSkip(build, group) end)
-        Rows.Stripe(r)
-        y = y - Style.ROW_H
+        y = SkipRow(build, group, nil, y)
+        if #group.spells > 1 then
+            for rank = 1, #group.spells do y = SkipRow(build, group, rank, y) end
+        end
     end
     return y - Style.SECTION_GAP
 end
@@ -390,11 +424,11 @@ local function Spent(tree, points)
     return count, spent
 end
 
-local function DrawNode(tree, build, node, talent, count, x, y)
+local function DrawNode(classID, tree, build, node, talent, count, x, y)
     local points = build.points
     local b = Take("node", NewNode)
     b:SetPoint("TOPLEFT", V.body, "TOPLEFT", x, y)
-    b.spell, b.rank, b.max = talent[NODE_SPELL], count[node] or 0, talent[NODE_RANKS]
+    b.spell, b.classID, b.node, b.rank, b.max = talent[NODE_SPELL], classID, node, count[node] or 0, talent[NODE_RANKS]
     points[#points + 1] = node
     b.why = Training.CheckBuild(tree, points)
     points[#points] = nil
@@ -434,11 +468,11 @@ local function DrawEditor(classID, tree, build, level, y)
     local top = y - SPEC_H
     for node, talent in pairs(tree.talents) do
         local col, row, slot = talent[NODE_COLUMN], talent[NODE_ROW_INDEX], talent[NODE_SLOT]
-        DrawNode(tree, build, node, talent, count, Left(col) + (slot - 1) * (NODE + NODE_GAP), top - (row - 1) * NODE_ROW)
+        DrawNode(classID, tree, build, node, talent, count, Left(col) + (slot - 1) * (NODE + NODE_GAP), top - (row - 1) * NODE_ROW)
     end
     y = top - TREE_ROWS * NODE_ROW - Style.SECTION_GAP
     y = Header(y, TEXT_BY_LEVEL, #points, TEXT_BY_LEVEL_NOTE)
-    return Steps(build, tree.talents, nil, level, y)
+    return Steps(classID, build, tree.talents, nil, level, y)
 end
 
 local function NewActionButton()
@@ -530,7 +564,7 @@ local function DrawPicked(classID, myClass, tree, build, level, y)
     local ranks = classID == myClass and Training.Ranks(tree.talents) or nil
     local bottom = Header(y, build.name:upper(), nil, TakenNote(build, ranks))
     bottom = BuildActions(classID, build, ranks ~= nil, bottom)
-    return Steps(build, tree.talents, ranks, level, bottom)
+    return Steps(classID, build, tree.talents, ranks, level, bottom)
 end
 
 function BuildsView.Draw(level, y)

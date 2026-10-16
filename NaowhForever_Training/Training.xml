@@ -20,5 +20,6 @@
     <Script file="UI\MiniBar.lua"/>
     <Script file="UI\Toast.lua"/>
     <Script file="UI\TrainerPanel.lua"/>
+    <Script file="UI\Spellbook.lua"/>
     <Script file="UI\SettingsPage.lua"/>
 </Ui>

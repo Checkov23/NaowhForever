@@ -19,6 +19,8 @@ Shared/
                      client loads it (Shared.ItemFacts), from Tools/build/journal.py: the Journal's loot,
                      the BiS List's levels and the Naowh Score's best read it
     FactionItems.lua the same for the factions' rewards, added to it, from Tools/build/factions.py
+    SameMaps.lua     the maps the game has under two IDs, each to the one whose data it reads
+                     (Shared.SameMaps), from Tools/build/same_maps.py
   Decode.lua       a pasted import string read back as plain data, with size, depth and bomb caps, and
                    outside text cleaned for display (Decode.String, Decode.Text)
   Game/Items.lua   item helpers: an ID from a link or URL, its name and quality color, In Bag and In Bank,
@@ -35,7 +37,8 @@ Shared/
   Game/ActionKeys.lua the keys on action buttons: the game's bars, LibActionButton bars and EllesmereUI's
                    (Shared.ActionKeys): the Consumable Bar's and the Food & Drink Bar's Show Keybinds
   Game/Roster.lua  our part of a player's tooltip in the Guild & Communities and Friends lists (Badges, Naowh Score)
-  Game/Places.lua  zones by name, and showing one on the world map
+  Game/Places.lua  zones by name, the map whose data a map reads (Places.SameMap), and showing one on the
+                   world map
   Game/Towns.lua   town service NPCs by world map (ns.TownNPCs) and the capitals (ns.TownCapitals), by hand:
                    QoL's town pins, the Training Planner's trainers and Professions' rank alerts read it
   Game/Played.lua  the character's /played time, asked for once with the chat print muted (XP Bar, XP per Hour)
@@ -375,6 +378,15 @@ What a comment in the code used to say, in short. The house rules behind it are 
   the Friends tooltip stops showing that row. List rows are hooked with `HookScript`, after the
   game's own, once each. A GUID is used only when it is a readable string, never a secret value.
 - `Places.ShowMap` opens the world map only out of combat, where addon code may open it.
+- Forever has Zephras Isle twice: map 2521 (under Azeroth) and map 2665 (no parent), with the
+  same name, continent (2991) and bounds in the game's UiMapAssignment, so a map percentage is
+  the same spot on both; the game puts players on 2665 too (the Nightclaw Druids' Wowhead data
+  lists both). The addon's map data is keyed by 2521, so a lookup by the player's or the world
+  map's ID goes through `Places.SameMap`, which turns 2665 into 2521. The player's position is
+  still read on the game's own ID; the Flight Point Reminder asks for 2521's flight points.
+  Unexplored Areas does not alias: 2665 has its own map art, which 2521's
+  overlays do not fit. `Tools/build/same_maps.py` finds such pairs in the game's tables, so a
+  new one is caught when the build moves on.
 - /played is asked for with `TIME_PLAYED_MSG` unregistered from the chat frames for our request
   only. They get it back on the next frame after the answer, so they do not print it, or after
   `MUTE_LIMIT` seconds if no answer comes. A ding starts the level's time again; a /played the

@@ -218,8 +218,8 @@ function Rows.Stripe(row)
     row.stripe:SetShown(listed % 2 == 0)
 end
 
-local function SpellButton(height, list)
-    local b = CreateFrame("Button", nil, V.body)
+local function SpellButton(height, list, parent)
+    local b = CreateFrame("Button", nil, parent or V.body)
     b:SetHeight(height)
     b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     if list then
@@ -270,8 +270,8 @@ local function Card(entry, state, x, y, w)
     return c
 end
 
-local function NewRow()
-    local r = SpellButton(Style.ROW_H, true)
+function Rows.NewRow(parent)
+    local r = SpellButton(Style.ROW_H, true, parent)
     r.icon = Icon(r, Style.ROW_ICON)
     r.icon.edge:SetPoint("LEFT", ROW_ICON_X, 0)
     r.name = Text(r, FONT_ROW, nil)
@@ -287,10 +287,7 @@ local function NewRow()
     return r
 end
 
-function Rows.Row(entry, state, y, why)
-    local r = Take("row", NewRow)
-    r:SetPoint("TOPLEFT", V.body, "TOPLEFT", 0, y)
-    r:SetPoint("TOPRIGHT", V.body, "TOPRIGHT", 0, y)
+function Rows.FillRow(r, entry, state, why)
     r.entry, r.state = entry, state
     r.icon:SetTexture(C_Spell.GetSpellTexture(entry[SPELL]))
     r.icon:SetDesaturated(true)
@@ -303,12 +300,19 @@ function Rows.Row(entry, state, y, why)
     r.why:SetShown(state ~= "ignored" or fromBuild)
     r.restore:SetShown(state == "ignored" and not fromBuild)
     r.restore._onClick = function() Training.SetIgnored(entry[SPELL], false, false) end
+end
+
+function Rows.Row(entry, state, y, why)
+    local r = Take("row", Rows.NewRow)
+    r:SetPoint("TOPLEFT", V.body, "TOPLEFT", 0, y)
+    r:SetPoint("TOPRIGHT", V.body, "TOPRIGHT", 0, y)
+    Rows.FillRow(r, entry, state, why)
     Rows.Stripe(r)
     return y - Style.ROW_H
 end
 
-local function NewHeader()
-    local h = CreateFrame("Frame", nil, V.body)
+function Rows.NewHeader(parent)
+    local h = CreateFrame("Frame", nil, parent or V.body)
     h:SetHeight(Style.SECTION_H)
     h.title = Text(h, FONT, nil, T.accentSoft)
     h.title:SetPoint("BOTTOMLEFT", 0, TITLE_LIFT)
@@ -321,12 +325,16 @@ local function NewHeader()
     return h
 end
 
-function Rows.Header(y, title, count, note)
-    local h = Take("header", NewHeader)
-    h:SetPoint("TOPLEFT", V.body, "TOPLEFT", V.paneX, y)
-    h:SetPoint("TOPRIGHT", V.body, "TOPRIGHT", 0, y)
+function Rows.FillHeader(h, title, count, note)
     h.title:SetText(title .. (count and (COUNT_GAP .. ns.Color("muted", count)) or ""))
     h.note:SetText(note or "")
+end
+
+function Rows.Header(y, title, count, note)
+    local h = Take("header", Rows.NewHeader)
+    h:SetPoint("TOPLEFT", V.body, "TOPLEFT", V.paneX, y)
+    h:SetPoint("TOPRIGHT", V.body, "TOPRIGHT", 0, y)
+    Rows.FillHeader(h, title, count, note)
     listed = 0
     return y - Style.SECTION_H - Style.SECTION_SPACE
 end

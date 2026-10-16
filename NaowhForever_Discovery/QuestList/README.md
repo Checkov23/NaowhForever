@@ -81,6 +81,8 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
 
 ## Why
 
+- The zone you stand in and the quest givers and rares on a map are read through `Places.SameMap`,
+  so Zephras Isle's second map (2665) finds 2521's quests and rares (Shared/README.md, Why).
 - Nothing runs until one of its tabs is open: it reads what you have done when it draws, and listens
   for quest events only while it is shown. Which quests are yours (faction, race, class) is worked
   out once, the first time it is asked; none of it changes while you play.

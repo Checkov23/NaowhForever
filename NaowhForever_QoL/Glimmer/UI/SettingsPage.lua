@@ -203,7 +203,7 @@ local function PinsOn() return G.On() and S.Get("gatheredPins") end
 
 page:Card({
     id = "minimap", name = "Minimap Icons", order = ORDER_MINIMAP, switch = "minimapIcons",
-    help = "Every spot herbs and ore grow near you, on the minimap, ringed in its skill-up color.",
+    help = "Every spot herbs and ore grow near you, on the minimap, ringed in its skill-up color. With Find Herbs or Find Minerals on, the ring is left open and the game's own dot shows in it while the node is up.",
     rows = {
         { key = "minimapSize", label = "Icon Size", slider = MINIMAP_SIZE, needs = Enabled, why = OFF },
         { key = "myProfessions", label = "Only My Professions", toggle = true, needs = Enabled, why = OFF,

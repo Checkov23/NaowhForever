@@ -3,7 +3,8 @@
 Every spell your class still has to learn: what you can train now, what each level brings and what
 it costs, with the trainer's own prices once you have visited one. A road to 60 with a dot for every
 level that brings spells, a Builds tab with talent builds level by level (Naowh's, saved, imported,
-edited, followed as you level), a mini bar, a level-up toast and a panel beside your class trainer.
+edited, followed as you level), a mini bar, a level-up toast, a panel beside your class trainer and a
+Trainable tab under the spellbook.
 Laid out like the [Dungeon Journal](../NaowhForever_DungeonJournal/README.md), on
 [`Shared/`](../Shared/README.md).
 
@@ -37,6 +38,7 @@ NaowhForever_Training/
     MiniBar.lua      the mini bar
     Toast.lua        the Level-Up Toast
     TrainerPanel.lua the Panel at the Trainer
+    Spellbook.lua    the Trainable tab under the spellbook and its panel
     SettingsPage.lua its settings page (Training Planner/Settings), declared as cards
 ```
 
@@ -45,7 +47,7 @@ view files and the window share.
 
 ## Why
 
-- The on/off switches' defaults (`enabled`, `levelUpToast`, `trainerPanel`) are read from
+- The on/off switches' defaults (`enabled`, `levelUpToast`, `trainerPanel`, `spellbook`) are read from
   `ns.FEATURES.training`; the Trainer Popup card's switch belongs to the QoL store, and QoL's `Questing/Trainer.lua` declares
   that card on this page, so it goes when QoL is off.
 - TrainingData rows are `{ level, spellID, cost, flags }` in level order; cost is the trainer's base
@@ -61,6 +63,9 @@ view files and the window share.
   No price is known, so they read "At the trainer".
 - A talent node is `{ spell, ranks, row, column, slot in the row, the node it needs at full rank }`; a
   build's points are nodes, one per point from level 10, 51 in all, 5 in a column for each row above.
+- A talent's spell shows its full rank's text, so its tooltip reads the text of its rank and the next from
+  the node's trait entry (GetTraitEntry), as the game's talent frame does. Another class's nodes are not in
+  your talent config, so their tooltip shows the spell.
 - A rank counts as learned once a later rank is: some ranks replace the one before. A rank before
   that no trainer sells (granted at level 1) is not in the data, so the game is asked. PLAYER_LEVEL_UP
   says the new level before UnitLevel does, so the toast plans for the level it was given.
@@ -86,12 +91,23 @@ view files and the window share.
   and what the Spells tab calls skipped, next to the character's own right-click skips. Those own skips
   are kept per character, so they never reach a new one; the build's are account-wide, travel in a
   build's export string and the Profiles share, and a new character gets them by following the build.
+- The editor's Spells tab lists a spell with more than one rank on a row of its own, which skips every
+  rank, then each rank on its own row. A skip has always been kept by rank, the whole-spell row writing
+  every rank's ID, so builds saved or shared before skips by rank still skip every rank.
 - Coins are written as text, each coin's letter in its colour: the game's coin icons blur when drawn
   large.
 - The window and the mini bar sit on whole screen pixels, and are sized in whole pixels, or every
   line and letter in them blurs. Its dots are drawn from the circle art itself, tinted, without pixel
   snapping, which would leave small circles jagged.
 - Text has a soft drop shadow, which reads sharper than flat text on the dark cards.
+- Forever's spellbook is `PlayerSpellsFrame.SpellBookFrame` in the load-on-demand `Blizzard_PlayerSpells`, so the
+  Spellbook Tab hooks it once that addon loads, and only after the switch is first turned on. It only post-hooks
+  the book's OnShow and OnHide: its tab and panel are parented to UIParent and anchored to the book, never put
+  inside it, and are drawn a frame later from a timer, outside the game's own show. Nothing of the book's is
+  called, changed or hidden: it casts from its own buttons' clicks, which must stay untainted.
+- The book has no secure frames on Forever, so the tab and panel show in combat too.
+- The tab sits where the game anchors its own bottom tabs (`TAB_X`, `TAB_Y`: 22 in, 2 up); Forever hides those,
+  as its book and talents open as separate windows.
 
 ## Checking
 
@@ -100,5 +116,7 @@ view files and the window share.
   Trainer.lua), and what a rank adds (Upgrades.lua).
 - `lua Tools/regression/test-training-builds.lua`: builds (Builds.lua) and every shipped tree.
 - `lua Tools/regression/test-training-waypoint.lua`: the nearest trainer and the route (Route.lua).
+- `lua Tools/regression/test-training-spellbook.lua`: the Spellbook Tab (UI/Spellbook.lua): off and free by default,
+  what it lists, and showing and hiding with the book.
 - `lua Tools/regression/test-training-window.lua`: every file Training.xml lists, the window opened
   and every part of it clicked.

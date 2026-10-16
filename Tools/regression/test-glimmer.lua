@@ -9,7 +9,7 @@ table.insert(FILES, 1, "Core/Features.lua")
 table.insert(FILES, 2, "Shared/UI/MinimapPins.lua")
 
 local SHARED = {}
-dofile("Tools/regression/load_files.lua")({ "Shared/Style.lua" }, { _G = { NaowhForever = {
+dofile("Tools/regression/load_files.lua")({ "Shared/Style.lua", "Shared/Data/SameMaps.lua", "Shared/Game/Places.lua" }, { _G = { NaowhForever = {
     L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = SHARED } } })
 
 local COPPER, TIN, CHEST, BOBBER = 1731, 1732, 2843, 35591
@@ -151,7 +151,14 @@ local function Session(settings, opts)
             end,
             GetMapWorldSize = function() return 1000, 1000 end,
         },
-        C_Minimap = { GetViewRadius = function() return 100 end },
+        C_Minimap = {
+            GetViewRadius = function() return 100 end,
+            GetNumTrackingTypes = function() return 2 end,
+            GetTrackingInfo = function(i)
+                local spell = i == 1 and 2580 or 2383
+                return { spellID = spell, active = game.tracking == spell }
+            end,
+        },
         C_Spell = { GetSpellTexture = function(id) return "spell" .. id end },
         UnitPosition = function() return game.px * 1000, game.py * 1000, 0, 0 end,
         GetPlayerFacing = function() return 0 end,
@@ -506,6 +513,36 @@ do
     check("an herbalist and miner sees both", n == 2)
 end
 
+-- Only My Professions: a character with neither gathering profession sees no spots; switched off, all of them.
+do
+    local m = Session({ enabled = true, minimapIcons = true })
+    m.game.mining = 0
+    m.Login()
+    local function Shown()
+        local n = 0
+        for _, f in ipairs(m.frames) do if f.ring and f.shown and f.id then n = n + 1 end end
+        return n
+    end
+    check("no herbalism or mining: no spots, and the spot data stays packed", Shown() == 0 and m.dataLoaded == nil)
+    m.Set("myProfessions", false)
+    check("Only My Professions off: every near spot", Shown() == 2)
+end
+
+-- Find Minerals on: the vein's icon moves onto the ring, leaving the game's own dot to show inside it.
+do
+    local m = Session({ enabled = true, minimapIcons = true })
+    m.Login()
+    local pin
+    for _, f in ipairs(m.frames) do if f.ring and f.shown and f.id then pin = f end end
+    check("not tracking: the icon sits in the middle", pin.icon.point[1] == "CENTER" and pin.icon.point[2] == nil)
+    m.game.tracking = 2580
+    m.Fire("MINIMAP_UPDATE_TRACKING")
+    check("Find Minerals on: the icon moves to the ring's edge", pin.icon.point[2] > 0 and pin.icon.point[3] < 0)
+    m.game.tracking = 2383
+    m.Fire("MINIMAP_UPDATE_TRACKING")
+    check("Find Herbs alone leaves a vein's icon in the middle", pin.icon.point[2] == nil)
+end
+
 -- Gathered: noted on loot, at the spot it grows, and shown on the world map.
 do
     local g = Session({ enabled = true, gatheredPins = true })
@@ -531,6 +568,9 @@ do
     g.game.mapShown = true
     g.provider:RefreshAllData()
     check("on the world map", #g.game.pins == 1 and g.game.pins[1] == entry)
+    g.game.mining = 0
+    g.provider:RefreshAllData()
+    check("an alt with no gathering still sees the account's gathers", #g.game.pins == 1)
     g.Set("ore", false)
     g.provider:RefreshAllData()
     check("ore off: not on the map", #g.game.pins == 0)

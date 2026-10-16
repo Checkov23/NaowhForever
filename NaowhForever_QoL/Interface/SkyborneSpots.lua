@@ -40,7 +40,7 @@ local TEXT_OFF = ns.L("Skyborne Spots off")
 
 local waiting
 local events
-local provider, added
+local provider, added, pruned
 local waitingForMap = false
 local watch = CreateFrame("Frame")
 local Redraw
@@ -94,6 +94,17 @@ local function AnyNear(list, continent, wx, wy)
         if Near(spot, continent, wx, wy) then return true end
     end
     return false
+end
+
+local function PruneFound()
+    pruned = true
+    for kind, found in pairs(ns.AccountSettings().skyborneSpots or {}) do
+        local known = ns.SkyborneSpots[kind]
+        for i = #found, 1, -1 do
+            local continent, wx, wy = World(found[i][1], found[i][2], found[i][3])
+            if known and continent and AnyNear(known, continent, wx, wy) then table.remove(found, i) end
+        end
+    end
 end
 
 local function Save(kind, map, x, y)
@@ -265,6 +276,7 @@ local function MakeProvider()
         local map = self:GetMap()
         local mapID = map:GetMapID()
         if not mapID then return end
+        if not pruned then PruneFound() end
         AcquireAll(map, mapID, kind, ns.SkyborneSpots[kind], false)
         AcquireAll(map, mapID, kind, Found(kind), true)
     end

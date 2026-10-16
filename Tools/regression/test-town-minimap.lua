@@ -21,7 +21,7 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
     TownCapitals = {}, TownNPCs = {},
     TownMailboxes = { [1] = { { 55, 50, "mail", "Mailbox", "", nil, "AH" }, { 50, 30, "mail", "Mailbox", "", nil, "AH" } } },
     TownSpiritHealers = { [1] = { { 50, 55, "spirit", "Spirit Healer", "Graveyard", nil, "AH" } } },
-    Shared = { Style = dofile("Tools/regression/shared_style.lua"),
+    Shared = { Style = dofile("Tools/regression/shared_style.lua"), Places = dofile("Tools/regression/shared_places.lua"),
         Settings = { Group = function() end, Page = function() return { Card = function() end } end } },
 }
 
@@ -45,6 +45,7 @@ end
 
 local player = { 0.5, 0.5 }
 local facing, rotate, walking, continent = 0, false, false, 0
+local bestMap = 1
 -- World coordinates as the game has them: the axes swapped and mirrored from the map's.
 local function World(x, y) return 5000 - y * 1000, 3000 - x * 1000 end
 local function Vector(x, y) return { GetXY = function() return x, y end } end
@@ -58,7 +59,7 @@ local env = setmetatable({
         dataProviders = {}, EnumeratePinsByTemplate = function() return function() end end },
     Minimap = { GetWidth = function() return 200 end, GetHeight = function() return 200 end },
     C_Map = {
-        GetBestMapForUnit = function() return 1 end,
+        GetBestMapForUnit = function() return bestMap end,
         GetMapWorldSize = function() return 1000, 1000 end,
         GetWorldPosFromMapPos = function(_, pos) return 0, Vector(World(pos:GetXY())) end,
         GetPlayerMapPosition = function() error("makes a table on every tick") end,
@@ -155,6 +156,18 @@ walking = false
 settings.townMinimap, settings.townMinimapSpirit = true, true
 boot.scripts.OnEvent()
 Check(mini.scripts.OnUpdate == nil, "back on while standing still, nothing runs")
+
+ns.TownMailboxes[2521], ns.TownSpiritHealers[2521] = ns.TownMailboxes[1], ns.TownSpiritHealers[1]
+bestMap = 2665
+boot.scripts.OnEvent()
+Check(Shown() == "mailbox healer", "on Zephras Isle's second map, the pins of its first (2521)")
+bestMap = 2521
+boot.scripts.OnEvent()
+Check(Shown() == "mailbox healer", "and on 2521 itself")
+bestMap = 7
+boot.scripts.OnEvent()
+Check(Shown() == "", "a map with no data has no pins")
+bestMap = 1
 settings.townMinimap = false
 boot.scripts.OnEvent()
 

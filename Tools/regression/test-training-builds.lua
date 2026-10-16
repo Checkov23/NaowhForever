@@ -15,8 +15,10 @@ local TREE = { [8] = {
 TREE[1] = { specs = { "Arms", "Fury", "Protection" }, talents = { [21] = { 2001, 5, 1, 1, 1 } } }
 
 -- The mage's trainer spells: two ranks of Fireball, Blink, and a quest spell that no trainer sells.
-local SPELLS = { [8] = { { 1, 133, 0 }, { 6, 143, 100 }, { 20, 1953, 2000 }, { 30, 777, 0, quest = true } } }
-local SPELL_NAMES = { [133] = "Fireball", [143] = "Fireball", [1953] = "Blink", [777] = "Quest Spell" }
+local SPELLS = { [8] = { { 1, 133, 0 }, { 6, 143, 100 }, { 12, 145, 600 }, { 20, 1953, 2000 },
+    { 30, 777, 0, quest = true } } }
+local SPELL_NAMES = { [133] = "Fireball", [143] = "Fireball", [145] = "Fireball", [1953] = "Blink",
+    [777] = "Quest Spell" }
 
 local function Fixture(o)
     o = o or {}
@@ -36,7 +38,9 @@ local function Fixture(o)
         GetClassInfo = function(id) return ({ [1] = "Warrior", [8] = "Mage" })[id] end,
         C_ClassTalents = { GetActiveConfigID = function() return o.config end },
         C_Traits = {
-            GetNodeInfo = function(_, node) return { activeRank = (o.ranks or {})[node] or 0 } end,
+            GetNodeInfo = function(_, node)
+                return { activeRank = (o.ranks or {})[node] or 0, entryIDs = { node + 9000 } }
+            end,
             -- Buys while points are left: o.points of them.
             PurchaseRank = function(_, node)
                 if (o.points or 0) <= #bought then return false end
@@ -252,13 +256,65 @@ Case("a saved build skips a spell by every rank, learned or not, and quest spell
     local index = t.T.NewBuild(8, "Skips")
     local build = t.T.Builds(8)[index]
     local groups = t.T.SkipGroups(8)
-    assert(#groups == 2 and groups[1].name == "Fireball" and #groups[1].spells == 2 and groups[2].name == "Blink",
-        "one row per spell, ranks together, no quest spell")
+    assert(#groups == 2 and groups[1].name == "Fireball" and #groups[1].spells == 3 and groups[2].name == "Blink",
+        "one group per spell, ranks together, no quest spell")
+    assert(table.concat(groups[1].spells, " ") == "133 143 145" and table.concat(groups[1].levels, " ") == "1 6 12",
+        "ranks by level")
     assert(t.T.SkipCount(build) == 0 and not t.T.IsSkipping(build, groups[1]))
     t.T.ToggleSkip(build, groups[1])
-    assert(build.skip[133] and build.skip[143] and t.T.IsSkipping(build, groups[1]) and t.T.SkipCount(build) == 2)
+    assert(build.skip[133] and build.skip[143] and build.skip[145] and t.T.IsSkipping(build, groups[1])
+        and t.T.SkipCount(build) == 3)
     t.T.ToggleSkip(build, groups[1])
     assert(build.skip == nil and t.T.SkipCount(build) == 0, "an empty list is not kept")
+end)
+
+Case("a single rank can be skipped, and the spell's row then skips the rest", function()
+    local t = Fixture()
+    local index = t.T.NewBuild(8, "Skips")
+    local build = t.T.Builds(8)[index]
+    local fireball = t.T.SkipGroups(8)[1]
+    t.T.ToggleSkip(build, fireball, 3)
+    assert(build.skip[145] and not build.skip[133] and not build.skip[143] and t.T.SkipCount(build) == 1, "rank 3 only")
+    assert(t.T.IsSkipping(build, fireball, 3) and not t.T.IsSkipping(build, fireball, 1)
+        and not t.T.IsSkipping(build, fireball), "the spell is not skipped as a whole")
+    t.T.ToggleSkip(build, fireball)
+    assert(t.T.SkipCount(build) == 3 and t.T.IsSkipping(build, fireball), "the spell's row skips every rank")
+    t.T.ToggleSkip(build, fireball, 2)
+    assert(build.skip[133] and not build.skip[143] and build.skip[145], "rank 2 back on its own")
+    t.T.ToggleSkip(build, fireball)
+    assert(t.T.SkipCount(build) == 3, "a partly skipped spell's row skips the rest")
+end)
+
+Case("a build saved before skips by rank still skips every rank of its spells", function()
+    local t = Fixture()
+    local index = t.T.NewBuild(8, "Old")
+    local build = t.T.Builds(8)[index]
+    build.skip = { [133] = true, [143] = true, [145] = true }
+    local fireball = t.T.SkipGroups(8)[1]
+    assert(t.T.IsSkipping(build, fireball), "the spell's row is ticked")
+    for rank = 1, 3 do assert(t.T.IsSkipping(build, fireball, rank), "rank " .. rank) end
+    local got = Import(t, t.Pack({ v = 1, class = 8, name = "Old String", spec = "x", points = TREE[8][1].points,
+        skip = { 133, 143, 145 } }))
+    local imported = t.T.Builds(8)[got[2]]
+    assert(t.T.IsSkipping(imported, fireball) and t.T.SkipCount(imported) == 3, "an old string imports every rank")
+end)
+
+Case("a skip of one rank goes out in an export and comes back as it went", function()
+    local t = Fixture()
+    local index = t.T.NewBuild(8, "Rank Three", TREE[8][1])
+    local build = t.T.Builds(8)[index]
+    t.T.ToggleSkip(build, t.T.SkipGroups(8)[1], 3)
+    local got = Import(t, t.T.ExportBuild(8, build))
+    local imported = t.T.Builds(8)[got[2]]
+    assert(imported.skip[145] and t.T.SkipCount(imported) == 1, "only rank 3")
+    assert(table.concat(t.T.SkipList(imported), " ") == "145", "the list")
+end)
+
+Case("a talent's trait entry is read from your talent config, for your own class only", function()
+    local t = Fixture({ config = 1 })
+    assert(t.T.TalentEntry(8, 13) == 9013, "your class")
+    assert(t.T.TalentEntry(1, 21) == nil, "another class")
+    assert(Fixture().T.TalentEntry(8, 13) == nil, "no config")
 end)
 
 Case("Select All skips every rank of every spell, Clear empties the list", function()
@@ -266,7 +322,7 @@ Case("Select All skips every rank of every spell, Clear empties the list", funct
     local index = t.T.NewBuild(8, "Skips")
     local build = t.T.Builds(8)[index]
     t.T.SkipAll(8, build, true)
-    assert(t.T.SkipCount(build) == 3 and build.skip[133] and build.skip[143] and build.skip[1953])
+    assert(t.T.SkipCount(build) == 4 and build.skip[133] and build.skip[143] and build.skip[145] and build.skip[1953])
     t.T.SkipAll(8, build, false)
     assert(build.skip == nil and t.T.SkipCount(build) == 0)
 end)

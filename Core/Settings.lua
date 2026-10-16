@@ -265,8 +265,7 @@ local S = UI.ModuleSettings("qol", {
     trainerPos = { point = "TOP", relPoint = "TOP", x = -274, y = -77 },
 
     flightTimer = F.flightTimer, flightTimerScale = 1, flightTimerAlpha = 1, flightEarlyLanding = true, flightTimerMapTime = false,
-    transportTimers = F.transportTimers, transportDock = "nearby",
-    transportTimersPos = { point = "TOP", relPoint = "TOP", x = 274, y = -77 },
+    transportTimers = F.transportTimers,
     flightPoint = F.flightPoint, flightPointFont = "",
     flightPointFontSize = 12, flightPointOutline = "OUTLINE", flightPointBackground = "none",
     flightPointCustom = false, flightPointColor = { r = ns.THEME.accent.r, g = ns.THEME.accent.g, b = ns.THEME.accent.b },
