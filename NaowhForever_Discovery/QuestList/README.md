@@ -141,9 +141,12 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   every nameplate comes through. Any creature the game calls rare counts, in the data or not.
 - `AGAIN_AFTER` is 300: each rare alerts once in five minutes, not every time its nameplate comes
   back. A rare you killed alerts only with Alert for Killed Rares.
-- Completo never marks a rare: raid marks are Blizzard-only on Forever (`SetRaidTarget` has
-  `HasRestrictions`), so an addon calling it is blocked. A marking feature would need a secure
-  click button running the game's `/tm`.
+- Completo's Lua never marks a rare: raid marks are Blizzard-only on Forever (`SetRaidTarget` has
+  `HasRestrictions`), so an addon calling it is blocked. With Skull on Click, the targeting button
+  below runs the game's own `/tm !8` after `/targetexact`: the `!` leaves a skull already on the
+  rare in place instead of toggling it off. `/cleartarget` comes first, so a rare out of reach
+  leaves nothing targeted and the skull never lands on what you had targeted before. It is off by
+  default because a mark is seen by your whole group.
 - Targeting is protected too, so a left-click on the alert targets its rare through a secure
   button running `/targetexact` and the rare's name. It is laid over the card, all but its pin,
   only while the pointer is on the card, and draws nothing, so the card looks and reads as it did.
@@ -191,7 +194,7 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
 - `luacheck NaowhForever_Discovery` from the repo root.
 - `lua Tools/regression/test-completo-rares.lua`: the rare rules, counting kills, Rare Alerts,
   their settings and preview, and the rare map pins and their focus. Its `SetRaidTarget` raises
-  an error, so no rare path may set a raid mark.
+  an error, so no rare path may set a raid mark; Skull on Click only adds `/tm` to the button's macro.
 - `lua Tools/regression/test-completo-quest-prereqs.lua`: requirements, what a row says is missing, and a quest
   its giver offers.
 - `lua Tools/regression/test-completo-quest-pins.lua`: the quest pins are Pin Size and keep one

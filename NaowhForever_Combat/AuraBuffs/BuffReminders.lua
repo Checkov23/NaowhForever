@@ -59,9 +59,10 @@ local function Buffs(unit)
     return buffs
 end
 
-local function Find(buffs, ids)
+local function Find(buffs, ids, own)
     for _, id in ipairs(ids) do
-        if buffs[id] then return buffs[id] end
+        local aura = buffs[id]
+        if aura and (not own or Secret(aura.sourceUnit) or aura.sourceUnit == "player") then return aura end
     end
 end
 
@@ -428,7 +429,7 @@ end
 local function Has(family, buffs, warn)
     if family.weapons then return Enchanted(family.weapons, warn) end
     if family.target then return not EliteTarget() or TargetHas(family.spells) end
-    local aura = Find(buffs, family.spells)
+    local aura = Find(buffs, family.spells, family.own)
     local duration = aura and not Secret(aura.duration) and aura.duration or nil
     return aura and Lasts(Left(aura), warn, duration), aura
 end

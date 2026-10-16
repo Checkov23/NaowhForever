@@ -133,7 +133,7 @@
       "wings": [
       { "bosses": ["High Inquisitor Fairbanks", "Scarlet Commander Mograine",
                    "High Inquisitor Whitemane"] } ] },
-    { "key": "RazorfenDowns", "name": "Razorfen Downs", "wowsrc": "razorfen-downs", "zone": 722,
+    { "key": "RazorfenDowns", "name": "Razorfen Downs", "wowsrc": "razorfen-downs", "zone": 722, "open": false,
       "entranceZone": 17, "entrance": { "map": 1413, "x": 50.9, "y": 92.9, "source": "the Classic client's instance portal (area trigger), on the Forever map, at the mouth" },
       "wings": [
       { "bosses": ["Tuten'kash", "Mordresh Fire Eye", "Glutton", "Amnennar the Coldbringer"],
@@ -145,7 +145,7 @@
       "entranceZone": 33, "entrance": { "map": 1434, "x": 21.4, "y": 27.9, "source": "the game's terrain, build 1.60.1.70124: the underwater instance portal in The Vile Reef" },
       "wings": [
       { "bosses": ["Zul'Alai", "Var'Taka", "Captain Dreadrise", "Deathless Marrow", "Min'loth the Serpent"] } ] },
-    { "key": "Uldaman", "name": "Uldaman", "wowsrc": "uldaman", "zone": 1337,
+    { "key": "Uldaman", "name": "Uldaman", "wowsrc": "uldaman", "zone": 1337, "open": false,
       "entranceZone": 3, "entrance": { "map": 1418, "x": 44.0, "y": 12.0, "source": "Warcraft Tavern classic guide, front entrance; back entrance (65.2, 43.5)" },
       "wings": [
       { "bosses": ["Revelosh", "Ironaya", "Obsidian Sentinel", "Ancient Stone Keeper", "Galgann Firehammer",

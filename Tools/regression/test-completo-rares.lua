@@ -9,7 +9,8 @@
 -- Alert, Unlock Mode, the settings preview) may call them.
 -- Rare Alert targeting: hovering the card out of combat lays an invisible secure button over it
 -- (all but its pin) running /targetexact on the rare; it hides when combat starts and its macro
--- is never set in combat; right-clicking it still closes the card.
+-- is never set in combat; right-clicking it still closes the card. Skull on Click (off by default)
+-- adds the game's /tm !8 after /cleartarget and /targetexact.
 -- Map Pins: hover a star for its tooltip, click it for a waypoint, right-click it to keep its spots
 -- and way shown (no panel).
 
@@ -616,6 +617,13 @@ do
     Check(target.textures == 0, "it draws nothing: the card looks as it did")
     Check(#env.tip == 1 and env.tip[1][1] == "Right-click to close it." and env.tipOwner == alert,
         "the card's tooltip is as it was")
+    ns.CompletoSettings.Set("rareAlertSkull", true)
+    alert.OnEnter(alert)
+    Check(target.attrs.macrotext1 == "/cleartarget\n/targetexact Mist Howler\n/tm !8",
+        "with Skull on Click it clears the target first, then targets the rare and skulls it without toggling")
+    ns.CompletoSettings.Set("rareAlertSkull", false)
+    alert.OnEnter(alert)
+    Check(target.attrs.macrotext1 == "/targetexact Mist Howler", "with it off again it only targets")
     env.overTarget = true
     alert.OnLeave(alert)
     Check(target:IsShown() and not env.tipHidden, "the pointer going onto it from the card keeps it and the tooltip")

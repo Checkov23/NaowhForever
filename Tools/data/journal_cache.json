@@ -5630,6 +5630,19 @@
     "reqlevel": 39,
     "slot": 21,
     "subclass": 4
+   },
+   {
+    "class": 4,
+    "count": 10794,
+    "id": 7722,
+    "kills": 16162,
+    "level": 44,
+    "name": "Triune Amulet",
+    "new": false,
+    "quality": 3,
+    "reqlevel": 39,
+    "slot": 2,
+    "subclass": -3
    }
   ],
   "new": false
@@ -9843,6 +9856,19 @@
     "reqlevel": 33,
     "slot": 15,
     "subclass": 19
+   },
+   {
+    "class": 2,
+    "count": 1969,
+    "id": 9419,
+    "kills": 5553,
+    "level": 47,
+    "name": "Galgann's Firehammer",
+    "new": false,
+    "quality": 3,
+    "reqlevel": 42,
+    "slot": 21,
+    "subclass": 4
    },
    {
     "class": 4,

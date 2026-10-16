@@ -143,6 +143,8 @@ page:Card({
         Settings.Group("Alert"),
         { key = "rareAlertKilled", label = "Alert for Killed Rares", toggle = true, needs = Enabled, why = TEXT_OFF,
           help = "Also warns about rares you have killed before." },
+        { key = "rareAlertSkull", label = "Skull on Click", toggle = true, needs = Enabled, why = TEXT_OFF,
+          help = "Clicking the card also puts a skull on the rare, which your group can see." },
         { key = "rareSound", label = "Play a Sound", toggle = true, needs = Enabled, why = TEXT_OFF,
           help = "Plays when the warning comes up, and flashes the game's icon on your taskbar." },
         { key = "rareSoundKey", label = "Sound", choice = Sounds.Choices, needs = SoundOn, why = TEXT_SOUND_OFF,

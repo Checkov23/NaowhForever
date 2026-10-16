@@ -18,6 +18,8 @@ local HOLDER_NAME, CARD_NAME = "NaowhForeverRareAlertHolder", "NaowhForeverRareA
 local TARGET_NAME = "NaowhForeverRareAlertTarget"
 local TARGET_STRATA = "DIALOG"
 local TARGET_MACRO = "/targetexact %s"
+local SKULL = 8
+local SKULL_MACRO = "/cleartarget\n" .. TARGET_MACRO .. "\n/tm !" .. SKULL
 local MOVER_LABEL, MOVER_PAGE, MOVER_FEATURE = "Rare Alert", "Discovery/Rares", "Discovery/Rares:rareAlert"
 local RARE = { rare = true, rareelite = true }
 local LOOK_PREFIX = "^rareAlert"
@@ -120,7 +122,8 @@ local function CoverCard()
     if not target then BuildTarget() end
     local scale = alert:GetEffectiveScale() / UIParent:GetEffectiveScale()
     local right = alert.pin:IsShown() and alert.pin:GetLeft() or alert:GetRight()
-    target:SetAttribute("macrotext1", TARGET_MACRO:format(name))
+    local macro = S.Get("rareAlertSkull") and SKULL_MACRO or TARGET_MACRO
+    target:SetAttribute("macrotext1", macro:format(name))
     target:ClearAllPoints()
     target:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", left * scale, alert:GetBottom() * scale)
     target:SetSize((right - left) * scale, alert:GetHeight() * scale)

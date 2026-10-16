@@ -45,7 +45,7 @@ local function Fixture(opts)
         now = 1000, secret = false, combat = false, resting = false,
         instance = opts.instance or "none",
         bags = opts.bags or {},                     -- flat list of item IDs
-        -- unit -> list of { spellID, seconds left at the start, duration }
+        -- unit -> list of { spellID, seconds left at the start, duration, caster (default player) }
         auras = opts.auras or { player = {} },
         group = opts.group,                         -- nil solo, "party" or "raid"
         units = opts.units or {},                   -- unit -> class; player included
@@ -207,7 +207,7 @@ local function Fixture(opts)
                 local a = (state.auras[unit] or {})[i]
                 if not a then return nil end
                 return { spellId = a[1], name = SPELL_NAMES[a[1]], duration = a[3] or 0,
-                    expirationTime = a[2] and 1000 + a[2] or 0 }
+                    expirationTime = a[2] and 1000 + a[2] or 0, sourceUnit = a[4] or "player" }
             end,
         },
         C_Container = {
@@ -1070,6 +1070,63 @@ do
     Check("trueshot missing", t.Shown(), "spell:19506")
 end
 
+-- Aspect: any aspect the hunter cast counts, one from another hunter does not, once one is known.
+do
+    local t = Fixture({ units = { player = "HUNTER" } })
+    t.Login()
+    Check("no aspect known", t.Shown(), "")
+    t.state.known[13163] = true
+    t.Fire("SPELLS_CHANGED")
+    t.Advance(0.5)
+    Check("monkey known, none up", t.Shown(), "spell:13163")
+    t.state.known[13165] = true
+    t.Fire("SPELLS_CHANGED")
+    t.Advance(0.5)
+    Check("the best known aspect is the icon", t.Shown(), "spell:13165")
+    t.state.auras.player = { { 5118 } }
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("own untimed cheetah counts", t.Shown(), "")
+    Check("an untimed aspect arms nothing", t.Pending(), 0)
+    t.state.auras.player = { { 13159, nil, nil, "party1" } }
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("another hunter's pack does not count", t.Shown(), "spell:13165")
+    t.state.auras.player = { { 13159, nil, nil, "party1" }, { 13165 } }
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("own hawk beside their pack counts", t.Shown(), "")
+    t.state.auras.player = {}
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    t.state.combat = true
+    t.state.auras.player = { { 13165 } }
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("combat: held", t.Shown(), "spell:13165")
+    t.state.combat = false
+    t.state.secret = true
+    t.Fire("PLAYER_REGEN_ENABLED")
+    t.Advance(0.5)
+    Check("secret auras: held", t.Shown(), "spell:13165")
+    t.state.secret = false
+    t.Fire("PLAYER_REGEN_ENABLED")
+    t.Advance(0.5)
+    Check("after combat, own hawk counts", t.Shown(), "")
+    t.state.auras.player = { { 13161, nil, nil, SECRET } }
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("a secret caster is not read and does not nag", t.Shown(), "")
+    t.Set("personalBuffPicks", { aspect = false })
+    t.state.auras.player = {}
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("aspect picked off", t.Shown(), "")
+    local m = Fixture({ units = { player = "MAGE" }, known = { [13165] = true } })
+    m.Login()
+    Check("another class never gets it", m.Shown(), "")
+end
+
 -- The card lists every class's personal buffs, the player's first and the rest in grey.
 do
     local t = Fixture({ page = true, units = { player = "SHAMAN" } })
@@ -1079,7 +1136,7 @@ do
         if row.key == "personalBuffPicks" then fields[#fields + 1] = row.field end
     end
     Check("shaman picks come first, then every other class", table.concat(fields, " "),
-        "imbue shield demonArmor mageArmor poisons battleShout innerFire shadowform trueshot huntersMark thorns")
+        "imbue shield demonArmor mageArmor poisons battleShout innerFire shadowform aspect trueshot huntersMark thorns")
     local byField = {}
     for _, row in ipairs(card.rows) do
         if row.key == "personalBuffPicks" then byField[row.field] = row end

@@ -7,7 +7,7 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
 
 - **Buffs & Consumables:** a row of icons for missing food, flask and elixir buffs from the
   consumables you watch, class buffs missing in your group, and your own class buff (armor, Inner
-  Fire, Battle Shout, poisons, a weapon imbue) when it is missing. Click one to use the item it
+  Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
   shows, or hover it to pick another carried item.
   Worn Gear Reminder (off by default) adds an icon while you wear gear with a drawback where it
   matters (`D.WORN`): Cloak of Hermitic Bliss in Wailing Caverns. Its tooltip is the item's own.
@@ -192,6 +192,12 @@ NaowhForever_Combat/AuraBuffs/
   `ZONE_CHANGED_NEW_AREA` and `PLAYER_ENTERING_WORLD`, registered only while the switch is on.
 - Hunter's Mark is asked for only with a hostile elite, rare elite or boss targeted, read from the
   target's debuffs; like every reminder it holds what it showed once combat starts.
+- Aspect: any aspect counts, so Cheetah or Pack while travelling does not remind. Another hunter's
+  Pack or Wild lands on you too, so the family is `own`: only an aura whose `sourceUnit` is the
+  player counts. The IDs are every rank Forever has, from the Training data (game build
+  1.60.1.70178), names checked on Wowhead's Forever spells: Forever adds Aspect of the Beast ranks
+  2 to 4 (1299445 to 1299447), and 25296 is Hawk rank 7, from a book. The best Hawk comes first,
+  so the icon is Monkey below level 10. Mounted or not makes no difference, as for every reminder.
 - The buff menu holds secure buttons, so it can only be hidden outside combat. It uses
   `IsMouseOver` on the frame: the old `MouseIsOver` global is gone from the game.
 - The buff menu's icons are the row's Icon Size, centred under the icon you hover and spreading both
