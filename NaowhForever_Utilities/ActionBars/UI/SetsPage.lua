@@ -99,6 +99,10 @@ function ns.BuildActionBarsPage(parent, y)
     hint:SetPoint("LEFT", save, "RIGHT", HINT_GAP, 0)
     hint:SetText(TEXT_HINT:format(UnitClass("player")))
     y = y - BUTTON_H - SAVE_ROW_GAP
+    local import = UI.KeepButton(parent, "barsWebsiteImport", "Import Website Code", SAVE_W, BUTTON_H, A.Sharing.Prompt)
+    import:ClearAllPoints()
+    import:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
+    y = y - BUTTON_H - SAVE_ROW_GAP
     local names = A.SortedNames()
     _, h = W:SectionHeader(parent, TEXT_HEADER, y); y = y - h
     if #names == 0 then

@@ -669,6 +669,15 @@ Case("the dialogs: export shows the string, import ticks parts and lands what is
     import.click()
     assert(opened == "  !NFB1!abc\n", "a build goes to the Training Planner's import")
 
+    ns.ImportActionBarString = function(t) opened = t end
+    ns.ShowProfileImport()
+    paste.text = "!NFA1!abc"
+    paste.scripts.OnTextChanged(paste, true)
+    assert(import.label == "Add Bar Set" and import.shown)
+    import.click()
+    assert(opened == "!NFA1!abc", "a bar layout goes to the Action Bars import")
+    ns.ImportActionBarString = nil
+
     w.active = "Default"
     w.db.profiles.Default.qol.sellJunk = true
     ns.ShowProfileImport()

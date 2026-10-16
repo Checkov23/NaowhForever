@@ -99,3 +99,17 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   commands against a small fake of the bars, spellbook, macros and cursor.
 - `lua Tools/regression/test-action-bars-window.lua`: the window's three views built from the
   real files, the builder's clicks becoming the saved set's choices, and the preview's Import.
+
+## Website imports
+
+Import Website Code, and the Profiles page's Import, accept versioned !NFA1! layouts from the Forever website.
+Sharing.lua validates the class, slots, action types, byte limits and decode limits before
+saving anything. Confirmation creates a uniquely named set and opens the existing preview;
+it never places actions. Applying remains the normal out-of-combat player action.
+Unfilled website slots and keys not assigned by the website build are preserved.
+Keybinds are restricted to known action-button commands and ordinary keyboard/mouse keys. Macro bodies are data only;
+the preview lets players inspect them before import. No hooks, events or frames are added
+until the player opens the existing window.
+The layout's macro list (`macros`, at most `MAX_MACROS`) is made with the macros on its bars, whether
+placed or not, each once by name and text. A macro is a character macro unless the layout marks it
+account-wide, and keeps the icon it was given, except a `#showtooltip` macro (above).

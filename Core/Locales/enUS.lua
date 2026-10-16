@@ -5021,6 +5021,7 @@ L["This Hour"] = true
 L["This is a BiS list. It is added next to your own lists."] = true
 L["This is a new adventure for all of us. Naowh Forever is crafted by a small, dedicated team with a lot of passion, and we hope you enjoy every bit of it."] = true
 L["This is a talent build. It is added to your builds in the Training Planner."] = true
+L["This is an action bar layout. It is saved as a new bar set for you to review."] = true
 L["This is not a Naowh Forever profile string."] = true
 L["This item's own settings on the bar."] = true
 L["This Level:|r "] = true

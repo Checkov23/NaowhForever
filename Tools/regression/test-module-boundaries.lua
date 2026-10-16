@@ -36,6 +36,8 @@ local ALLOWED = {
       reason = "the macro hand-off's Add button shows only when ns[needs] (ImportMacroString) is set" },
     { addon = "NaowhForever", field = "ImportBisList", file = "Core/Profiles/ProfileDialogs.lua",
       reason = "the BiS hand-off's Add button shows only when ns[needs] (ImportBisList) is set" },
+    { addon = "NaowhForever", field = "ImportActionBarString", file = "Core/Profiles/ProfileDialogs.lua",
+      reason = "the bar set hand-off's Add button shows only when ns[needs] (ImportActionBarString) is set" },
     { addon = "NaowhForever_BiS", field = "Journal", file = "NaowhForever_BiS/BiS/Quests.lua",
       reason = "Rewards, Choice and Zones run only after Quests.Available() checks ns.Journal" },
     { addon = "NaowhForever_BiS", field = "Journal", file = "NaowhForever_BiS/BiS/View/QuestsPage.lua",

@@ -24,6 +24,9 @@ local HANDOFFS = {
     { prefix = "!NBIS1!", button = "Add BiS List", module = "BiS List", addon = "NaowhForever_BiS", needs = "ImportBisList",
       what = ns.L("This is a BiS list. It is added next to your own lists."),
       go = function(text) ns.ImportBisList(text) end },
+    { prefix = "!NFA1!", button = "Add Bar Set", module = "Action Bars", needs = "ImportActionBarString",
+      what = ns.L("This is an action bar layout. It is saved as a new bar set for you to review."),
+      go = function(text) ns.ImportActionBarString(text) end },
 }
 local ACTING_LINE = ns.L("It also turns on settings that act for you: %s; they stay off unless you tick Also Import.")
 local ACTING_HELP = ns.L("Turns those settings on in the new profile")
