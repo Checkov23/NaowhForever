@@ -3,8 +3,9 @@ name: Release
 # A push to main builds a package. A tag publishes a release. Run workflow makes the release
 # commit and tag (Tools/release/release.py) and pushes them with the release deploy key, which is on
 # Protect main's bypass list; that tag push then runs the release.
-# Every Wednesday the same runs by itself, when main has anything for players since the last
-# release. Every night a beta: main's version stamped on a commit of its own, tagged
+# Every day the same runs by itself, after the daily reset: with what main has for players, or on
+# a quiet day with the day's Daily Word as its one line, a release that posts nothing to Discord
+# or the website. Every night a beta: main's version stamped on a commit of its own, tagged
 # "<next>-beta.<n>" but never pushed to main. The packager publishes a beta tag on
 # CurseForge's beta channel; betas post nothing to Discord.
 on:
@@ -14,8 +15,8 @@ on:
     tags:
       - "*"
   schedule:
-    # Wednesday, after the US realms' Tuesday maintenance and its hotfixes.
-    - cron: "0 18 * * 3"
+    # Daily, half an hour after the US realms' daily reset (15:00 UTC), when the Daily Word changes.
+    - cron: "30 15 * * *"
     # Nightly, after the daily watch (20:00, up to 75 minutes) has merged the day's data.
     - cron: "0 22 * * *"
   workflow_dispatch:
@@ -47,7 +48,7 @@ jobs:
   prepare:
     if: >-
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && !inputs.beta)
-      || (github.event_name == 'schedule' && github.event.schedule == '0 18 * * 3')
+      || (github.event_name == 'schedule' && github.event.schedule == '30 15 * * *')
 
     runs-on: ubuntu-24.04
 
@@ -67,16 +68,20 @@ jobs:
       - name: Release commit and tag
         env:
           BUMP: ${{ inputs.bump || 'patch' }}
+          # The UTC day before the Daily Word's #1 (NaowhForever_QoL/Travel/DailyWord.lua's FIRST_DAY).
+          DAILY_WORD_DAY_ZERO: 20740
           VERSION: ${{ inputs.version }}
-          WEEKLY: ${{ github.event_name == 'schedule' }}
+          DAILY: ${{ github.event_name == 'schedule' }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           RELEASE_DEPLOY_KEY: ${{ secrets.RELEASE_DEPLOY_KEY }}
         run: |
-          # A quiet week: nothing for players since the last release, so no release.
-          if [ "$WEEKLY" = "true" ] && ! python3 Tools/release/release.py pending | tail -n +2 | grep -q .; then
-            echo "Nothing for players since the last release: no weekly release."
-            exit 0
+          # A quiet day: nothing for players since the last release, so the day's Daily Word is
+          # the release's one line.
+          if [ "$DAILY" = "true" ] && ! python3 Tools/release/release.py pending | tail -n +2 | grep -q .; then
+            number=$(( $(date -u +%s) / 86400 - DAILY_WORD_DAY_ZERO ))
+            printf 'Changed: Daily Word #%d is out (QoL > Travel, or /nf word).\n' "$number" \
+              | python3 Tools/release/release.py add-unreleased
           fi
           args=(prepare --bump "$BUMP" --no-beta)
           if [ -n "$VERSION" ]; then args+=(--version "$VERSION"); fi
@@ -199,8 +204,19 @@ jobs:
           # packager adds when Forever is the only game in the TOCs.
           args: ${{ env.TAG != '' && '-p 1721187 -n {package-name}-{project-version}:{project-version}' || '-n {package-name}-{project-version}:{project-version}' }}
 
+      # A quiet day's release, only the day's Daily Word, posts nothing to Discord or the website.
+      - name: Daily Word only
+        id: kind
+        if: env.TAG != ''
+        run: |
+          lines=$(awk -v heading="## $TAG" '$0 == heading { on = 1; next } /^## / { on = 0 } on' CHANGELOG.md \
+            | grep -v -e '^[[:space:]]*$' -e '^### ' || true)
+          if [ "$(printf '%s\n' "$lines" | wc -l)" -eq 1 ] && printf '%s' "$lines" | grep -q '^- Daily Word #'; then
+            echo "word_only=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Post changelog to Discord
-        if: env.TAG != '' && !contains(env.TAG, '-beta.')
+        if: env.TAG != '' && !contains(env.TAG, '-beta.') && steps.kind.outputs.word_only != 'true'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}
         run: |
@@ -215,7 +231,7 @@ jobs:
           done < discord.jsonl
 
       - name: Update the website
-        if: env.TAG != '' && !contains(env.TAG, '-beta.')
+        if: env.TAG != '' && !contains(env.TAG, '-beta.') && steps.kind.outputs.word_only != 'true'
         # Without the token, or if it fails, the site picks the notes up on its next scheduled rebuild.
         continue-on-error: true
         env:

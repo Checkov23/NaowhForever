@@ -207,8 +207,11 @@ already says: the PRs' lines are added by the workflow.
 
 ### On a schedule
 
-- **Every Wednesday at 18:00 UTC** the same release runs by itself, as a patch, when main has
-  anything for players since the last release. A quiet week releases nothing.
+- **Every day at 15:30 UTC**, after the US realms' daily reset, the same release runs by itself,
+  as a patch. On a day with nothing for players since the last release, its one changelog line
+  is the day's Daily Word (`Changed: Daily Word #N is out`). A release whose notes are only that
+  line uploads to CurseForge and GitHub but posts nothing to Discord or the website; a day with
+  changes for players releases them as usual, with the Discord post.
 - **Every night at 22:00 UTC** a beta: main's version is stamped on a commit of its own and
   tagged `<next>-beta.<n>` (after `1.0.6`: `1.0.7-beta.1`, `1.0.7-beta.2`, ...). That commit is
   never pushed to `main`. CurseForge publishes it on the beta channel, and the GitHub release's
