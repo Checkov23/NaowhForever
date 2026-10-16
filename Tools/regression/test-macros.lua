@@ -41,6 +41,9 @@ local function Fixture(opts)
     local macros, created, edited, deleted, printed = opts.macros or {}, 0, 0, 0, {}
     local account = {}
     local combat, group = false, opts.group
+    local level = opts.level or 60
+    local missing = opts.missing or {}
+    local levels = opts.levels or {}
     local consts = { MAX_ACCOUNT_MACROS = opts.max or 30 }
     local frames = {}
     local globals = {}
@@ -152,6 +155,7 @@ local function Fixture(opts)
         IsInRaid = function() return group == "raid" end,
         IsInGroup = function() return group ~= nil end,
         UnitClass = function() return "Class", opts.class or "MAGE" end,
+        UnitLevel = function() return level end,
         wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
         C_Container = {
             GetContainerNumSlots = function() return #bags end,
@@ -162,7 +166,8 @@ local function Fixture(opts)
             GetItemIconByID = function(id) return "icon" .. id end,
             GetItemSpell = function(id) return ITEMS[id] and ITEMS[id][1] end,
             GetItemInfo = function(id)
-                return "item", nil, nil, nil, ITEMS[id] and ITEMS[id][2]
+                if missing[id] then return end
+                return "item", nil, nil, nil, levels[id] or (ITEMS[id] and ITEMS[id][2]) or 0
             end,
         },
         C_Spell = { GetSpellName = function(id) return id == 433 and FOOD or DRINK end },
@@ -240,9 +245,9 @@ local function Fixture(opts)
         list[#list + 1] = btn
         return btn
     end
-    function t.Fire(event)
+    function t.Fire(event, ...)
         for _, fr in ipairs(frames) do
-            if fr.events[event] then fr.handler(fr, event) end
+            if fr.events[event] then fr.handler(fr, event, ...) end
         end
     end
     function t.FoodBar()
@@ -263,6 +268,7 @@ local function Fixture(opts)
     function t.Body(name) local i = Find(name); return i > 0 and macros[i].body or nil end
     function t.Macro(name) local i = Find(name); return i > 0 and macros[i] or nil end
     function t.Combat(on) combat = on end
+    function t.Level(value) level = value end
     function t.Bags(list) bags = list end
     function t.Counts() return created, edited, deleted end
     function t.Profile(new) settings = new; ns.Apply() end
@@ -326,6 +332,73 @@ do
     t.Fire("PLAYER_ENTERING_WORLD")
     Check("health, potion first puts the stone second", t.Body("NF Health"),
         "#showtooltip\n/castsequence reset=combat item:13446, item:5509" .. superiors)
+end
+
+-- Level 12 carrying a level-14 potion: all generated item paths exclude it.
+do
+    local t = Fixture({ level = 12, levels = { [929] = 14, [858] = 3, [3385] = 14, [2455] = 5,
+        [5509] = 20, [5512] = 1, [2581] = 14, [1251] = 1 },
+        settings = { health = true, healthPotion = true, healthstone = true, mana = true, bandage = true },
+        bags = { 929, 858, 3385, 2455, 5509, 5512, 2581, 1251 } })
+    t.Fire("PLAYER_ENTERING_WORLD")
+    Check("under-level potion omitted from combined sequence", t.Body("NF Health"),
+        "#showtooltip\n/castsequence reset=combat item:5512, item:858")
+    Check("under-level healing potion omitted", t.Body("NF Health Potion"), "#showtooltip\n/use item:858")
+    Check("under-level healthstone omitted", t.Body("NF Healthstone"), "#showtooltip\n/use item:5512")
+    Check("under-level mana potion omitted", t.Body("NF Mana"), "#showtooltip\n/use item:2455")
+    Check("under-level bandage omitted", t.Body("NF Bandage"), "#showtooltip\n/use [@player] item:1251")
+    t.Level(14)
+    t.Fire("UNIT_LEVEL", "target")
+    Check("another unit leveling is ignored", t.Body("NF Health Potion"), "#showtooltip\n/use item:858")
+    t.Fire("UNIT_LEVEL", "player")
+    Check("exact required level adds higher rank without bag change", t.Body("NF Health Potion"),
+        "#showtooltip\n/castsequence reset=combat item:929, item:858")
+end
+
+-- A reload replaces an old unusable macro even if there is no eligible fallback.
+do
+    local t = Fixture({ level = 12, levels = { [929] = 14 }, settings = { healthPotion = true },
+        bags = { 929 }, macros = { { name = "NF Health Potion", body = "#showtooltip\n/use item:929" } } })
+    t.Fire("PLAYER_ENTERING_WORLD")
+    Check("old over-level macro cleared", t.Body("NF Health Potion"), "#showtooltip")
+end
+
+-- Food/drink bars share the same eligibility and preserve conjured priority only among eligible items.
+do
+    local t = Fixture({ level = 12, settings = { food = true, drink = true }, qol = { foodBar = true },
+        bags = { 8932, 4599, 5349, 8079, 8766, 1179 } })
+    t.Fire("PLAYER_ENTERING_WORLD")
+    Check("low-level food and drink", t.Body("NF Food"), "#showtooltip\n/use item:5349\n/use item:1179")
+    Check("low-level drink macro", t.Body("NF Drink"), "#showtooltip\n/use item:1179")
+    Check("food bar avoids over-level drink", t.FoodBar().buttons[2].attrs.item1, "item:1179")
+    t.Combat(true)
+    t.Level(45)
+    t.Fire("UNIT_LEVEL", "player")
+    Check("level change does not write macros in combat", t.Body("NF Drink"), "#showtooltip\n/use item:1179")
+    Check("level change does not change secure bar in combat", t.FoodBar().buttons[2].attrs.item1, "item:1179")
+    t.Combat(false)
+    t.Fire("PLAYER_REGEN_ENABLED")
+    Check("eligible conjured drink after combat", t.Body("NF Drink"), "#showtooltip\n/use item:8079")
+    Check("bar catches up after combat", t.FoodBar().buttons[2].attrs.item1, "item:8079")
+end
+
+-- Unknown requirements are skipped and the successful cache event updates without a bag change.
+do
+    local missing = { [929] = true, [8079] = true }
+    local t = Fixture({ settings = { healthPotion = true, drink = true }, qol = { foodBar = true },
+        levels = { [929] = 14 }, missing = missing, bags = { 929, 858, 8079, 1179 } })
+    t.Fire("PLAYER_ENTERING_WORLD")
+    Check("unknown potion requirement skipped", t.Body("NF Health Potion"), "#showtooltip\n/use item:858")
+    Check("unknown conjured drink requirement skipped", t.Body("NF Drink"), "#showtooltip\n/use item:1179")
+    missing[929], missing[8079] = nil, nil
+    t.Fire("GET_ITEM_INFO_RECEIVED", 929, false)
+    Check("failed cache event ignored", t.Body("NF Health Potion"), "#showtooltip\n/use item:858")
+    t.Fire("GET_ITEM_INFO_RECEIVED", 929, true)
+    Check("loaded potion becomes eligible", t.Body("NF Health Potion"),
+        "#showtooltip\n/castsequence reset=combat item:929, item:858")
+    t.Fire("GET_ITEM_INFO_RECEIVED", 8079, true)
+    Check("loaded drink updates macro", t.Body("NF Drink"), "#showtooltip\n/use item:8079")
+    Check("loaded drink updates bar", t.FoodBar().buttons[2].attrs.item1, "item:8079")
 end
 
 -- Food and drink: conjured wins over a higher level, the best level wins otherwise.
@@ -785,10 +858,15 @@ do
         return table.concat(list, ",")
     end
     Check("nothing kept: no events", Heard(), "")
+    Check("nothing kept: no level events", t.Listening("UNIT_LEVEL"), false)
+    Check("nothing kept: no item-data events", t.Listening("GET_ITEM_INFO_RECEIVED"), false)
     t.Set("trinket1", true)
     Check("a trinket macro: macro changes only", Heard(), "UPDATE_MACROS")
+    Check("a trinket macro needs no level events", t.Listening("UNIT_LEVEL"), false)
     t.Set("food", true)
     Check("a food macro: bag changes too", Heard(), "BAG_UPDATE_DELAYED,UPDATE_MACROS")
+    Check("a food macro listens for levels", t.Listening("UNIT_LEVEL"), true)
+    Check("a food macro listens for item data", t.Listening("GET_ITEM_INFO_RECEIVED"), true)
     t.Set("focus", true)
     t.Set("focusAnnounce", true)
     Check("an announced focus: group changes too", Heard(), "BAG_UPDATE_DELAYED,UPDATE_MACROS,GROUP_ROSTER_UPDATE")
@@ -800,6 +878,8 @@ do
     Check("and stops listening after it", t.Listening("PLAYER_REGEN_ENABLED"), false)
     t.Set("enabled", false)
     Check("module off: no events", Heard(), "")
+    Check("module off: no level events", t.Listening("UNIT_LEVEL"), false)
+    Check("module off: no item-data events", t.Listening("GET_ITEM_INFO_RECEIVED"), false)
     t.Profile({ health = true })
     Check("a profile switch listens for what it keeps", Heard(), "BAG_UPDATE_DELAYED,UPDATE_MACROS")
 end

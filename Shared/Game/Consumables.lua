@@ -43,8 +43,16 @@ for _, range in ipairs({ { 1248377, 1248384 }, { 1248386, 1248401 }, { 1248687, 
 end
 for _, id in ipairs({ 5004, 5006, 18124, 21149, 24869, 25660 }) do ns.FOOD_SPELLS[id] = true end
 
+function ns.ConsumableLevelAllowed(id)
+    local required = select(REQUIRED_LEVEL, C_Item.GetItemInfo(id))
+    local level = UnitLevel("player")
+    if issecretvalue and (issecretvalue(required) or issecretvalue(level)) then return false end
+    return type(required) == "number" and type(level) == "number" and level > 0 and required <= level, required
+end
+
 local function Score(id)
-    return (CONJURED[id] and CONJURED_BONUS or 0) + (select(REQUIRED_LEVEL, C_Item.GetItemInfo(id)) or 0)
+    local allowed, required = ns.ConsumableLevelAllowed(id)
+    if allowed then return (CONJURED[id] and CONJURED_BONUS or 0) + required end
 end
 
 local function BestFoodAndDrink()
@@ -56,9 +64,9 @@ local function BestFoodAndDrink()
             local spell = id and C_Item.GetItemSpell(id)
             if spell and (spell == foodName or spell == drinkName) then
                 local s = Score(id)
-                if spell == foodName then
+                if s and spell == foodName then
                     if not foodScore or s > foodScore then food, foodScore = id, s end
-                elseif not drinkScore or s > drinkScore then
+                elseif s and spell == drinkName and (not drinkScore or s > drinkScore) then
                     drink, drinkScore = id, s
                 end
             end

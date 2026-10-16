@@ -62,7 +62,7 @@ end
 
 local function FirstCarried(list)
     for _, id in ipairs(list) do
-        if C_Item.GetItemCount(id) > 0 then return id end
+        if C_Item.GetItemCount(id) > 0 and ns.ConsumableLevelAllowed(id) then return id end
     end
 end
 
@@ -84,7 +84,10 @@ end
 local function PotionSteps()
     wipe(steps)
     for _, id in ipairs(ns.HEALING_POTIONS) do
-        for _ = 1, math.min(C_Item.GetItemCount(id), POTION_STEPS - #steps) do steps[#steps + 1] = id end
+        local count = C_Item.GetItemCount(id)
+        if count > 0 and ns.ConsumableLevelAllowed(id) then
+            for _ = 1, math.min(count, POTION_STEPS - #steps) do steps[#steps + 1] = id end
+        end
     end
 end
 
@@ -205,8 +208,17 @@ end
 local function SyncEvents()
     local any, bags = Wanted()
     Listen("BAG_UPDATE_DELAYED", bags)
+    Listen("UNIT_LEVEL", bags)
+    Listen("GET_ITEM_INFO_RECEIVED", bags)
     Listen("UPDATE_MACROS", any)
     Listen("GROUP_ROSTER_UPDATE", S.Get("enabled") and S.Get("focus") and S.Get("focusAnnounce"))
+end
+
+local function UnusableItems(body)
+    for id in body:gmatch("item:(%d+)") do
+        if not ns.ConsumableLevelAllowed(tonumber(id)) then return true end
+    end
+    return false
 end
 
 local function Keep(m)
@@ -215,7 +227,9 @@ local function Keep(m)
     if not body and BAG_MACROS[m.key] then
         local index = GetMacroIndexByName(m.name)
         local current = index > 0 and GetMacroBody(index) or ""
-        if index == 0 or refresh[m.key] or not current:find("item:", 1, true) then body = WithExtra(m, PLACEHOLDER) end
+        if index == 0 or refresh[m.key] or not current:find("item:", 1, true) or UnusableItems(current) then
+            body = WithExtra(m, PLACEHOLDER)
+        end
     end
     refresh[m.key] = nil
     if body then Write(m, body) end
@@ -267,7 +281,9 @@ local function Reapply()
     Update()
 end
 
-local function OnEvent(_, event)
+local function OnEvent(_, event, unit, success)
+    if event == "UNIT_LEVEL" and unit ~= "player" then return end
+    if event == "GET_ITEM_INFO_RECEIVED" and (not success or C_Item.GetItemCount(unit) == 0) then return end
     if event == "PLAYER_ENTERING_WORLD" then
         ready = true
         SyncEvents()
