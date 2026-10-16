@@ -1,6 +1,34 @@
 # Changelog
 
-## Unreleased
+## 1.1.23
+
+### Added
+- AuraBuffs: an optional Class Buff Tracker with clickable self-buffs, short labels, full spell
+  tooltips and missing-buff glow outside combat.
+- AuraBuffs: adjust Gold Glow thickness under Class Buff Tracker.
+- Training Planner: a Spellbook Tab setting (Settings > Window) puts a Trainable tab under your
+  spellbook, listing the spells you can train now and in the next two levels, with their cost and a
+  waypoint to your trainer.
+
+### Changed
+- Training Planner: a build's Spells tab lists every rank of a spell, so a build can skip only some
+  ranks (say Rank 3) and still train the others.
+- Boat and Zeppelin Timers (QoL > Travel) now shows on the minimap: hover a dock's boat or zeppelin
+  pin for its countdown, left-click when it arrives and right-click when it leaves. The timer window
+  is gone.
+
+### Fixed
+- Skyborne Spots: the new ley lines and Elemental Convergences Forever added across Eastern Kingdoms
+  and Kalimdor are on the world map (76 ley lines, 56 convergences).
+- Training Planner: talent tooltips in the build editor show the text of the rank you have and the
+  next rank, instead of always the full rank.
+- Boat and Zeppelin Timers: each zeppelin at a shared Horde tower keeps its own timer, and the
+  Orgrimmar-Undercity and Undercity-Grom'gol zeppelins use their published cycle times.
+- Glimmer: with Find Herbs or Find Minerals on, minimap icons leave the game's tracking dot visible
+  inside the ring, so you can see which nodes are up. Only My Professions now shows nothing on a
+  character with neither Herbalism nor Mining.
+- Zephras Isle: zeppelin docks, town pins, quest givers, rares and herb and ore spots show on the
+  island whichever of its two map IDs the game puts you on.
 
 ## 1.1.22
 
