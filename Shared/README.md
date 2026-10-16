@@ -287,6 +287,9 @@ Colors and sizes come from `ns.THEME` and `Style.lua`, never written as numbers 
 
 ## Why
 
+- `ConsumableLevelAllowed` checks the fifth `C_Item.GetItemInfo` return (minimum level), not item level. Unknown or secret requirements are skipped until item data is available. Food and drink keep their existing ranking among eligible items.
+
+
 What a comment in the code used to say, in short. The house rules behind it are in
 [CONTRIBUTING.md](../.github/CONTRIBUTING.md) and [STYLE.md](../.github/STYLE.md).
 

@@ -120,6 +120,9 @@ Each layer uses only the ones above it. `M.Forge` holds the tabs' shared state (
 - The known commands come from the client's `SLASH_` and `EMOTE_CMD` strings. Commands of addons
   that are not loaded are missing from that list, so an unknown command is a warning, not an error.
 - The Smart Macros' item lists are classic-era item IDs, best first.
+
+- Smart item macros skip items above the player level and items whose minimum level is unknown. Player `UNIT_LEVEL` and successful carried-item `GET_ITEM_INFO_RECEIVED` events refresh them, with writes deferred until combat ends. A stale unusable macro becomes a placeholder when no eligible item remains; eligible spent items keep their existing tooltip behavior.
+
 - Chat commands take no conditionals, so NF Focus's announce channel is chosen when the macro is
   written, and the macro is written again on roster changes.
 - Only switching a Smart Macro or the module off deletes its macro. A profile or spec switch that

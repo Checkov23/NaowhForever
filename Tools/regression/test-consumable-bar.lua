@@ -48,7 +48,7 @@ KNOWN[1179] = { 132794, 0, 430, 5 }    -- Ice Cold Milk
 KNOWN[13444] = { 134854, 0, 17531, 1 } -- Major Mana Potion
 
 local function fixture(settings, noMacros, class)
-    local s = { frames = {}, combat = false, counts = {}, cooldowns = {}, auras = {},
+    local s = { level = 60, levels = {}, missing = {}, frames = {}, combat = false, counts = {}, cooldowns = {}, auras = {},
         settings = settings or {}, built = 0, blocked = 0, now = 100, timers = {},
         secretAuras = false, auraReads = 0, bags = {}, focus = {}, mouseDown = false,
         enchant = {}, actions = {}, actionButtons = {}, bindings = {}, macros = {}, labButtons = nil,
@@ -327,6 +327,7 @@ local function fixture(settings, noMacros, class)
         wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
         C_Spell = { GetSpellName = function(id) return id == 430 and 'Drink' or id == 433 and 'Food' or 'Spell' end },
         UnitClass = function() return 'Class', class or 'MAGE' end,
+        UnitLevel = function() return s.level end,
         GetBindingKey = function(command) return s.bindings[command] end,
         GetBindingText = function(key, short) return short and ('*' .. key) or key end,
         GetMacroInfo = function(index) return s.macros[index] end,
@@ -356,7 +357,10 @@ local function fixture(settings, noMacros, class)
                 local k = KNOWN[id]
                 if k and k[3] then return SPELL_NAMES[id] or 'Spell', k[3] end
             end,
-            GetItemInfo = function() end,
+            GetItemInfo = function(id)
+                if s.missing[id] then return end
+                return 'Item', nil, nil, nil, s.levels[id] or 0
+            end,
             RequestLoadItemDataByID = function() end,
             GetItemCount = function(id) return s.counts[id] or 0 end },
         C_Container = {
@@ -2216,6 +2220,29 @@ do
     mage.CB.ScanBags()
     check('the buttons cover food and drink', table.concat(mage.settings.consumableBarItems, ',')
         == 'smart:food,smart:drink,14530')
+end
+
+-- Smart food/drink follows player levels and cache completion, including combat deferral.
+do
+    local s = fixture({ consumableBar = true, consumableBarItems = { 'smart:drink' } })
+    s.level, s.levels[8766], s.levels[1179] = 12, 45, 5
+    s.bags[0], s.counts[8766], s.counts[1179] = { 8766, 1179 }, 1, 1
+    s.fire('BAG_UPDATE_DELAYED')
+    check('smart drink chooses an eligible lower rank', s.CB.Resolve('smart:drink') == 1179)
+    s.level = 45
+    s.fire('UNIT_LEVEL', 'target')
+    check('another unit leveling leaves smart drink alone', s.CB.Resolve('smart:drink') == 1179)
+    s.fight(true)
+    s.fire('UNIT_LEVEL', 'player')
+    check('smart drink level refresh waits in combat', s.CB.Resolve('smart:drink') == 1179)
+    s.fight(false)
+    check('smart drink upgrades after combat', s.CB.Resolve('smart:drink') == 8766)
+    s.missing[8766] = true
+    s.fire('BAG_UPDATE_DELAYED')
+    check('smart drink skips unknown requirements', s.CB.Resolve('smart:drink') == 1179)
+    s.missing[8766] = nil
+    s.fire('GET_ITEM_INFO_RECEIVED', 8766, true)
+    check('smart drink upgrades when item data arrives', s.CB.Resolve('smart:drink') == 8766)
 end
 
 -- One button left alone: either one is the Food & Drink buttons being on the bar, and each covers

@@ -124,6 +124,8 @@ NaowhForever_QoL/
     AimBoard.lua        the Aim Trainer's leaderboard (ns.AimBoard)
     QuizData.lua        the quiz questions (ns.QUIZ_QUESTIONS)
     Quiz.lua            the Quiz (ns.ToggleQuiz, ns.QuizOffer, ns.QuizDismiss)
+    DailyWordData.lua   the Daily Word's answers and accepted words, generated
+    DailyWord.lua       the Daily Word (/nf word, ns.DailyWordPlay, ns.DailyWordOffer, ns.DailyWordDismiss)
   System/
     SlashCommands.lua   Custom Slash Commands and their editor (ns.SlashCommandList, ns.RefreshSlashCommands)
     Performance.lua     QoL > System > Performance: recommended game settings and their backups
@@ -131,6 +133,8 @@ NaowhForever_QoL/
     crosshair_ring.tga  the Crosshair's ring
     MouseRing/          the Mouse Ring's rings, glows and trail
     Glimmer/            Glimmer's glow, flare, ring, beam and bracket, drawn by
+                        Tools/media/make_media.py
+    Flight/             the Flight Timer's Land Early and game button icons, drawn by
                         Tools/media/make_media.py
     TopBar/             the Top Bar's button icons and resting glyph
   README.md           this file
@@ -585,8 +589,11 @@ NaowhForever_QoL/
   `fromNodeID * 10000 + toNodeID`, generated from the TaxiPath data of WoW Forever build
   1.60.1.69913.
 - Flight Games (`flightGame`) is the one choice of what opens by itself when a flight starts: the
-  button only, the Quiz or the Aim Trainer (Off hides the button). It was migrated once from the
-  old `quizFlight` and `aimAutoFlight`.
+  buttons only, the Quiz, the Aim Trainer or the Daily Word (Off hides the game buttons). It was
+  migrated once from the old `quizFlight` and `aimAutoFlight`.
+- The Flight Timer has one icon button per game (the Quiz, each Aim Trainer mode and the Daily
+  Word), so a game opens in one click. A game whose feature is off keeps its button, greyed out,
+  with a tooltip saying where to turn it on, as the old Games menu did for the Aim Trainer.
 - Flight times come from the route data at 30.4 yards a second (`FLIGHT_SPEED`), fitted to
   measured Classic flight times. Frequent Flier, node 110300 of the Adventure Legacy tree (1188),
   makes flight path mounts 20% faster; Legacy perks are bought per character, and a character
@@ -667,7 +674,7 @@ NaowhForever_QoL/
   limited (12 a minute per sender, 400 senders) and capped (200 entries a mode, the weakest and
   oldest dropped first). A best is kept only from the player its GUID names, found in your group
   or guild (`ns.SenderIs`), and an entry saved under one name is not replaced from another.
-- The Aim Trainer opens from /nfaim, the Flight Timer's Games button or a flight starting (Flight
+- The Aim Trainer opens from /nfaim, the Flight Timer's mode buttons or a flight starting (Flight
   Games). A miss costs 50 points and pops a "-50" where it landed. Every round is the same for
   everyone (fixed 30s length, target size and play area), so bests compare on the leaderboard;
   `ns.AimRules.Ceiling` caps a believable score (20 clicks a second at most) so a forged one is
@@ -782,10 +789,34 @@ NaowhForever_QoL/
 - A reminder is fitted to its text only with a background, so elements anchored to it keep their spot.
 
 ### Quiz
+- The Quiz and Flight Timer use HIGH strata, like the Aim Trainer, so reminder text stays behind their controls.
 - `CAMPFIRE_SEATED` (1229739) is Forever's "Welcoming Campfire" aura, present only while seated at a campfire (probed 2026-09-24). "Campfire Nearby" (1283391) is an area aura from simply walking past one, so it is not used.
 - Auras cannot be read in combat, so the camp check pauses there rather than reading a missing aura as having walked away.
 - A dismiss with no reason is the close button; one with a reason closes only what that reason opened, so landing never shuts a quiz opened by hand.
 - In `QuizData.lua` the first answer is the right one; the quiz shuffles them before showing.
+
+### Daily Word
+- Everyone gets the same word on the same day without any server: the day is the one the next
+  daily reset falls on, less one (`GetServerTime` plus `C_DateAndTime.GetSecondsUntilDailyReset`,
+  in days), so the word changes at the daily reset, and `FIRST_DAY` (20741, 15 October 2026 UTC)
+  is #1. Day N's answer is the Nth in `ns.DailyWordAnswers`, starting over after the last.
+- `Tools/build/daily_word.py` shuffles the answers with a fixed seed, so a run gives the same
+  order. Rebuilding with other sources, words left out or seed changes the words of days already
+  played, and players comparing a day's result would have had different words.
+- The words are public domain: the answers are the five-letter words of 12dicts' 2of12 also in its
+  3esl learners' list, less plurals and past tenses and a hand-picked list of slurs and crude
+  words; every answer and every five-letter word of ENABLE is accepted as a guess. 12dicts asks
+  for acknowledgment, which is on the Credits page.
+- The words are two strings of five-letter words, not tables: the accepted ones are sorted, so a
+  guess is a binary search, and nothing is built when the file loads.
+- The letters are typed into an invisible edit box over the grid, which keeps the keyboard while
+  it has focus: Play and the game buttons focus it, a flight opening it by itself does not, and
+  Escape, a finished game and closing it all let go.
+- A result is saved for the account, so every character shares the day's game, streak and best.
+  A streak counts consecutive days won; a day skipped breaks it.
+- Shared results mark each letter with raid target icons, `{rt4}` (green triangle) in place,
+  `{rt1}` (yellow star) elsewhere in the word and `{rt5}` (moon) not in it: chat cannot color text
+  or show the colored squares other word games share.
 
 ### Boat and Zeppelin Timers
 - The game draws nothing for a boat or zeppelin on the minimap: no tracking type, area POI or

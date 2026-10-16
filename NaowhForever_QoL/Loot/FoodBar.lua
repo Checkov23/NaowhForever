@@ -145,7 +145,15 @@ local function Apply()
         if bar then bar:Hide() end
         return
     end
-    if On() then events:RegisterEvent("BAG_UPDATE_DELAYED") else events:UnregisterEvent("BAG_UPDATE_DELAYED") end
+    if On() then
+        events:RegisterEvent("BAG_UPDATE_DELAYED")
+        events:RegisterEvent("UNIT_LEVEL")
+        events:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+    else
+        events:UnregisterEvent("BAG_UPDATE_DELAYED")
+        events:UnregisterEvent("UNIT_LEVEL")
+        events:UnregisterEvent("GET_ITEM_INFO_RECEIVED")
+    end
     ActionKeys.Listen(events, S.Get("foodBarKeybinds"))
     if not bar then Build() end
     Look.Layout(bar, S.Get("foodBarSize"))
@@ -157,11 +165,13 @@ local function Apply()
     bar:SetShown(shown)
 end
 
-local function OnEvent(_, event)
+local function OnEvent(_, event, unit, success)
+    if event == "UNIT_LEVEL" and unit ~= "player" then return end
+    if event == "GET_ITEM_INFO_RECEIVED" and (not success or C_Item.GetItemCount(unit) == 0) then return end
     if event == "PLAYER_REGEN_ENABLED" then
         events:UnregisterEvent("PLAYER_REGEN_ENABLED")
         if not pending then return end
-    elseif event == "BAG_UPDATE_DELAYED" then
+    elseif event == "BAG_UPDATE_DELAYED" or event == "UNIT_LEVEL" or event == "GET_ITEM_INFO_RECEIVED" then
         if bar and Kept() and not InCombatLockdown() then
             Fill()
             QueueKeys()

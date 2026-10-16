@@ -277,7 +277,14 @@ local function AnyHideUsed()
     return false
 end
 
-local function OnEvent(_, event, unit, _, spellID)
+local function OnEvent(_, event, unit, success, spellID)
+    if event == "UNIT_LEVEL" or event == "GET_ITEM_INFO_RECEIVED" then
+        if event == "UNIT_LEVEL" and unit ~= "player" then return end
+        if event == "GET_ITEM_INFO_RECEIVED" and (not success or C_Item.GetItemCount(unit) == 0) then return end
+        RefreshSmart()
+        if OutChanged() then Apply() end
+        return
+    end
     if event == "PLAYER_LOGIN" then
         Apply()
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
@@ -313,6 +320,10 @@ end
 
 local function Listen(hideUsed)
     events:RegisterEvent("BAG_UPDATE_DELAYED")
+    if HasSmart() then
+        events:RegisterEvent("UNIT_LEVEL")
+        events:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+    end
     if HasMacros() then events:RegisterEvent("UPDATE_MACROS") end
     events:RegisterEvent("PLAYER_ENTERING_WORLD")
     events:RegisterEvent("PLAYER_REGEN_ENABLED")

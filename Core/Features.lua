@@ -104,6 +104,7 @@ ns.FEATURES = {
         transportTimers = false,
         quizCamp = true,
         aimTrainer = true,
+        dailyWord = false,
         waypoints = true,
     },
     topBar = {

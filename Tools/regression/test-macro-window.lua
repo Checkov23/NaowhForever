@@ -269,10 +269,11 @@ local env = setmetatable({
     },
     GetMacroBody = function() return nil end,
     GetInventoryItemID = function() return 19949 end,
+    UnitLevel = function() return 60 end,
     NUM_BAG_SLOTS = 0,
     C_Container = { GetContainerNumSlots = function() return 0 end },
     C_Item = { GetItemCount = function(id) return id == 5509 and 1 or 0 end, GetItemIconByID = function() return 133939 end,
-        GetItemNameByID = function(id) return "Item " .. id end, GetItemSpell = NOTHING, GetItemInfo = NOTHING },
+        GetItemNameByID = function(id) return "Item " .. id end, GetItemSpell = NOTHING, GetItemInfo = function() return "Item", nil, nil, nil, 0 end },
     C_Spell = { GetSpellName = function(id) return "Spell " .. id end, GetSpellTexture = function() return 135846 end },
     LibStub = function()
         return {

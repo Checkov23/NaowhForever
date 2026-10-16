@@ -871,6 +871,30 @@ for name, pixel in JOURNEY_ICONS.items():
     write_tga(os.path.join(JOURNEYS_OUT, name + ".tga"), 64, pixel)
 
 
+FLIGHT_OUT = os.path.join(paths.ROOT, "NaowhForever_QoL", "Media", "Flight")
+HEXAKILL = [(0.5 + 0.32 * math.cos(math.radians(-90 + 60 * i)), 0.5 + 0.32 * math.sin(math.radians(-90 + 60 * i)))
+            for i in range(6)]
+TILES = [(0.19 + 0.31 * col, 0.19 + 0.31 * row) for row in range(3) for col in range(3)]
+TILE_FILL = {0: 1.0, 2: 0.45, 4: 1.0}
+FLIGHT_ICONS = {
+    "land": line_icon(path([(0.5, 0.12), (0.5, 0.66)]), arrow_head((0.5, 0.68), (0.5, 0.3), 0.24, 40),
+                      path([(0.14, 0.88), (0.86, 0.88)]), width=0.09),
+    "quiz": line_icon(box(0.5, 0.42, 0.38, 0.31, 0.1), path([(0.34, 0.73), (0.27, 0.9), (0.52, 0.73)]),
+                      path(arc(0.5, 0.33, 0.11, 180, 450) + [(0.5, 0.5)]), dot(0.5, 0.6, 0.05), width=0.08),
+    "gridshot": line_icon(*[part for x, y in ((0.26, 0.3), (0.74, 0.3), (0.5, 0.72))
+                            for part in (ring(x, y, 0.15), dot(x, y, 0.045))], width=0.08),
+    "hexakill": line_icon(*[ring(x, y, 0.1) for x, y in HEXAKILL], dot(0.5, 0.5, 0.06), width=0.075),
+    "reflex": line_icon(*[path(arc(0.5, 0.5, 0.4, 45 * i, 45 * i + 25, 8)) for i in range(8)],
+                        ring(0.5, 0.5, 0.2), dot(0.5, 0.5, 0.07), width=0.08),
+    "word": line_icon(*[solid_box(x, y, 0.11, 0.11, 0.025, TILE_FILL[i]) if i in TILE_FILL
+                        else box(x, y, 0.105, 0.105, 0.025, 0.5 if i > 5 else 1.0)
+                        for i, (x, y) in enumerate(TILES)], width=0.065),
+}
+os.makedirs(FLIGHT_OUT, exist_ok=True)
+for name, pixel in FLIGHT_ICONS.items():
+    write_tga(os.path.join(FLIGHT_OUT, name + ".tga"), 64, pixel)
+
+
 GLIMMER_OUT = os.path.join(paths.ROOT, "NaowhForever_QoL", "Media", "Glimmer")
 
 
