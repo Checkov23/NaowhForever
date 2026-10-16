@@ -145,6 +145,8 @@ Theme
 - Player colors are written into `ns.THEME`'s tables in place, once per load and before any window
   is built, so every file's `local T = ns.THEME` sees them; a new pick takes a reload. Read
   `ns.Color` and `ns.ThemeTint` when a frame is built, never at file load.
+- The default Naowh surfaces match the reference charcoal: background `#191b1d` and
+  panels `#1e2022`. Existing named themes and custom color picks remain unchanged.
 - The lighter accent and the selection fill follow the accent and the line. A pick equal to the
   shipped color is not a change: Custom starts as a copy, and the color picker hands back what it
   opened with.

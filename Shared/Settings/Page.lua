@@ -47,7 +47,7 @@ local function AddPair(view, row, second, w)
     local top = view.cursor
     local pair = second and second.kind ~= "group" and not second.wide
     view.width = half
-    view:Add("setting", row, true)
+    view:Add("setting", row, pair == true)
     if not pair then return 1 end
     view.cursor = top
     view.left, view.width = half, w - half
@@ -65,6 +65,16 @@ local function OnlyOf(card, found)
         end
     end
     return only, cogOwner
+end
+
+local function OpenCardFrame(view)
+    view.left, view.width = 0, view:GetWidth()
+    local frame = view:Acquire("card")
+    frame:SetFrameLevel(view:GetFrameLevel())
+    local edge = ns.THEME.line
+    frame.edge:SetColor(edge.r, edge.g, edge.b, 1)
+    frame.note:Hide()
+    return frame
 end
 
 local function FlushSettings(view)
@@ -225,9 +235,11 @@ function Draw:Card(card, found)
     local isOpen = (found ~= nil or Settings.IsOpen(card)) and Settings.Openable(card)
     if not isOpen and cog and cog:IsShown() and cog.card == card then cog:Hide() end
     if ns.foreverSkin then return BarCard(self, card, found, isOpen) end
-    self.left, self.width = 0, self:GetWidth()
+    local top = self.cursor
+    local frame = OpenCardFrame(self)
     self:Add("cardHead", card, isOpen, found ~= nil)
     if isOpen then self:CardBody(card, found) end
+    frame:SetHeight(self.cursor - top)
     self:Space(CARD_GAP)
 end
 

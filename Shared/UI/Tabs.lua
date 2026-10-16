@@ -9,7 +9,8 @@ local TipLines = Parts.TipLines
 local BORDER_RGB = St.BORDER_RGB
 local TAB_SIZE, TAB_H, TAB_LINE, TAB_FILL = St.TAB_SIZE, St.TAB_H, St.TAB_LINE, St.TAB_FILL
 local FILL_SUBLEVEL = 1
-local TEXT_TAB_INSET = 8
+local TEXT_TAB_INSET = St.TAB_TEXT_INSET
+local MARK_ROOM = St.TAB_MARK_SIZE + St.TAB_MARK_GAP
 local SEARCH_ICON_SIZE, SEARCH_ICON_LEFT, SEARCH_ICON_GAP = 13, 7, 6
 local SEARCH_TEXT_LEFT = SEARCH_ICON_LEFT + SEARCH_ICON_SIZE + SEARCH_ICON_GAP
 local SEARCH_TEXT_RIGHT = 22
@@ -23,7 +24,14 @@ local function TabClicked(button)
 end
 
 local function TabEnter(button)
-    if button.key ~= button:GetParent().shown then button.text:SetTextColor(T.fg.r, T.fg.g, T.fg.b) end
+    if button.key ~= button:GetParent().shown then
+        button.text:SetTextColor(T.fg.r, T.fg.g, T.fg.b)
+        if button.border then
+            button.border:SetColor(T.accent.r, T.accent.g, T.accent.b, 1)
+            button.fill:SetColorTexture(T.accent.r, T.accent.g, T.accent.b, St.TAB_HOVER_FILL)
+            button.fill:Show()
+        end
+    end
     if button.tip or button.cut then TipLines(button, "ANCHOR_BOTTOM", button.label, button.tip) end
 end
 
@@ -44,11 +52,18 @@ local function NewTab(bar)
     button.line:SetPoint("BOTTOMLEFT")
     button.line:SetPoint("BOTTOMRIGHT")
     button.line:SetHeight(TAB_LINE)
-    if bar.plain then
-        button.line:ClearAllPoints()
-        button.line:SetPoint("BOTTOMLEFT", TEXT_TAB_INSET, 0)
-        button.line:SetPoint("BOTTOMRIGHT", -TEXT_TAB_INSET, 0)
+    if not ns.foreverSkin then
+        button.border = ns.Border(button, T.line)
+        button.mark = ns.Solid(button, "ARTWORK", T.accent, 1)
+        button.mark:SetSize(St.TAB_MARK_SIZE, St.TAB_MARK_SIZE)
+        button.mark:SetRotation(St.TAB_MARK_ROTATION)
+        button.mark:SetPoint("RIGHT", button.text, "LEFT", -St.TAB_MARK_GAP, 0)
+        button.text:ClearAllPoints()
+        button.text:SetPoint("CENTER", MARK_ROOM / 2, 0)
         button.text:SetWordWrap(false)
+        button.mark:Hide()
+        button.fill:Hide()
+        button.line:Hide()
     end
     if ns.foreverSkin then Parts.ForeverTab(button) end
     button:SetScript("OnClick", TabClicked)
@@ -63,26 +78,15 @@ local function FillTabs(bar, items)
         local button = bar.buttons[i] or NewTab(bar)
         bar.buttons[i] = button
         button.key, button.label, button.tip = item.key, item.label, item.tip
+        button.text:SetWidth(0)
         button.text:SetText(ns.L(item.label))
-        button.want = math.ceil(button.text:GetStringWidth()) + (button.capRoom or 0)
+        button.want = math.ceil(button.text:GetStringWidth()) + (button.capRoom or MARK_ROOM)
         words = words + button.want
         button:Show()
     end
     for i = #items + 1, #bar.buttons do bar.buttons[i]:Hide() end
     for i = 1, #bar.splits do bar.splits[i]:Hide() end
     return words
-end
-
-local function Split(bar, i, x)
-    local split = bar.splits[i - 1]
-    if not split then
-        split = ns.Solid(bar, "BORDER", BORDER_RGB, 1)
-        ns.Hairline(split, "v")
-        bar.splits[i - 1] = split
-    end
-    split:SetPoint("TOPLEFT", x, 0)
-    split:SetPoint("BOTTOMLEFT", x, 0)
-    split:Show()
 end
 
 local function Edge(box, color)
@@ -99,8 +103,15 @@ function Parts.PaintTabs(bar, shown)
         local on = button.key == shown
         local color = on and T.fg or T.muted
         button.text:SetTextColor(color.r, color.g, color.b)
-        button.fill:SetShown(on and not bar.plain)
-        button.line:SetShown(on)
+        button.fill:SetAlpha(1)
+        button.fill:SetColorTexture(T.accent.r, T.accent.g, T.accent.b, ns.foreverSkin and TAB_FILL or St.TAB_SELECTED_FILL)
+        button.fill:SetShown(on)
+        button.line:SetShown(on and ns.foreverSkin or false)
+        if button.border then
+            local edge = on and T.accent or T.line
+            button.border:SetColor(edge.r, edge.g, edge.b, 1)
+            button.mark:SetShown(on)
+        end
         if ns.foreverSkin then Parts.PaintForeverTab(button, on) end
     end
 end
@@ -122,6 +133,25 @@ local function CutWidest(count, room, total)
             return
         end
     end
+end
+
+local function FitSegments(bar, count, width)
+    local room, total = math.max(count, width), 0
+    local minimum = math.min(TEXT_TAB_INSET * 2 + MARK_ROOM + 1, math.max(1, math.floor(room / count)))
+    for i = 1, count do
+        local button = bar.buttons[i]
+        button.fit, button.pad = button.want + TEXT_TAB_INSET * 2, minimum
+        fitOrder[i] = button
+        total = total + button.fit
+    end
+    for i = count + 1, #fitOrder do fitOrder[i] = nil end
+    if total <= room then
+        local spare = (room - total) / count
+        for i = 1, count do bar.buttons[i].fit = math.floor(bar.buttons[i].fit + spare) end
+        return
+    end
+    table.sort(fitOrder, Widest)
+    CutWidest(count, room, total)
 end
 
 local function FitForeverTabs(bar, count, width)
@@ -160,24 +190,29 @@ end
 
 function Parts.SetTabs(bar, items)
     local width = bar:GetWidth()
-    local words = FillTabs(bar, items)
+    FillTabs(bar, items)
     if #items == 0 then return PlaceRail(bar, 0) end
-    if ns.foreverSkin then FitForeverTabs(bar, #items, width) end
-    local spare, x = (width - words) / #items, 0
+    if ns.foreverSkin then
+        FitForeverTabs(bar, #items, width)
+    else
+        FitSegments(bar, #items, width)
+    end
+    local x = 0
     for i = 1, #items do
         local button = bar.buttons[i]
-        local w = i == #items and width - x or math.floor(button.want + spare + 0.5)
-        if ns.foreverSkin then w = button.fit end
+        local w = button.fit
+        if not ns.foreverSkin and i == #items then w = math.max(1, width - x) end
         button:SetSize(w, TAB_H)
         button:SetPoint("LEFT", x, 0)
-        if bar.plain then
-            button.text:SetWidth(math.max(1, w - TEXT_TAB_INSET * 2))
-            button.cut = button.want > w - TEXT_TAB_INSET * 2
+        if not ns.foreverSkin then
+            local textW = math.max(1, w - TEXT_TAB_INSET * 2 - MARK_ROOM)
+            button.text:SetWidth(math.max(1, math.min(button.want - MARK_ROOM, textW)))
+            button.cut = button.want - MARK_ROOM > textW
         end
-        if i > 1 and not ns.foreverSkin and not bar.plain then Split(bar, i, x) end
         x = x + w + (ns.foreverSkin and St.FOREVER_TAB_GAP or 0)
     end
     PlaceRail(bar, x - St.FOREVER_TAB_GAP)
+    Parts.PaintTabs(bar, bar.shown)
 end
 
 function Parts.FitTabs(bar, items, margin, maxW)
@@ -192,7 +227,7 @@ function Parts.Tabs(parent, width, items, onPick, noRail, plain)
     local bar = CreateFrame("Frame", nil, parent)
     bar:SetSize(width, TAB_H)
     bar.plain = plain and not ns.foreverSkin
-    if not ns.foreverSkin and not bar.plain then
+    if not ns.foreverSkin then
         ns.Solid(bar, "BACKGROUND", T.panel, 1):SetAllPoints()
         ns.Border(bar, BORDER_RGB)
     elseif ns.foreverSkin and not noRail then

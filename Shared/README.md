@@ -514,8 +514,21 @@ What a comment in the code used to say, in short. The house rules behind it are 
 - A hidden row is set on the card's preview instead; it is still searched, counted and reset. A
   search match on a hidden row shows the card whole, and part of a card shows no reset, which
   would reset what is left out too.
-- The Naowh options skin uses solid surfaces and open settings groups. `Parts.Tabs` accepts
-  a sixth `plain` argument for text tabs with an accent underline; the Forever skin keeps its art.
+- The Naowh skin uses solid charcoal surfaces and outlined settings cards. Windows and side
+  panels paint one background color at both ends of their backdrop; the optional Forever
+  skin and its onboarding preview keep their stone and shading. Settings cards reuse the
+  row engine's pooled card frame, with the theme's line color around each section. Their
+  heights follow the visible rows, including folded and filtered cards.
+- Settings rows have horizontal dividers, and paired controls have a center divider. An
+  unpaired control has no center divider. Open card headings and group titles have rules.
+- The sidebar is shaded by `SIDEBAR_SHADE`, and preview stages by `PREVIEW_SHADE`, over the
+  chosen background so custom palettes retain their colors. Both are flat fills.
+- Naowh tabs share a recessed rail, a filled accent selection with a complete outline and a
+  small diamond. The diamond's room is reserved in every tab so labels do not shift on a pick.
+  `Parts.Tabs` keeps its sixth `plain` input for callers; all Naowh strips use the same segments,
+  including preview states and module windows. The Forever skin keeps its own art and fitting.
+- Tab labels shorten only when their strip has no room, and show the full label on hover.
+  Changing the tab list repaints reused buttons so a previous selection cannot stay lit.
 - `Settings.Reset` and `Settings.ResetRow` retain one session-only undo, exposed through
   `CanUndoReset(card)` and `UndoReset(card)`. Undo copies raw values back through each store,
   once per key. A different profile or a subsequent edit to any affected key invalidates it.

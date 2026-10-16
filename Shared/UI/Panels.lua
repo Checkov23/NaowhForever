@@ -49,8 +49,13 @@ end
 function Backdrop:Paint(alpha, colors)
     local palette = colors or T
     local top, bg = palette.panel, palette.bg
-    self.bottom:SetRGBA((top.r + bg.r) / 2, (top.g + bg.g) / 2, (top.b + bg.b) / 2, alpha)
-    self.top:SetRGBA(top.r, top.g, top.b, alpha)
+    if self.pattern then
+        self.bottom:SetRGBA((top.r + bg.r) / 2, (top.g + bg.g) / 2, (top.b + bg.b) / 2, alpha)
+        self.top:SetRGBA(top.r, top.g, top.b, alpha)
+    else
+        self.bottom:SetRGBA(bg.r, bg.g, bg.b, alpha)
+        self.top:SetRGBA(bg.r, bg.g, bg.b, alpha)
+    end
     self.gradient:SetGradient("VERTICAL", self.bottom, self.top)
     local pattern = self.pattern
     if pattern then

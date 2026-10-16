@@ -274,13 +274,13 @@ do
         return ("%02x%02x%02x"):format(math.floor(c.r * 255 + 0.5), math.floor(c.g * 255 + 0.5), math.floor(c.b * 255 + 0.5))
     end
     local default, midnight = Chips({}), Chips({ themePreset = "midnight" })
-    Check(Hex(default[1]) == "191b1e" and Hex(default[3]) == "0091ed", "default: the shipped background and accent")
+    Check(Hex(default[1]) == "191b1d" and Hex(default[3]) == "0091ed", "default: the shipped background and accent")
     Check(Hex(midnight[1]) == "0b1020" and Hex(midnight[2]) == "eef2ff" and Hex(midnight[3]) == "5b8cff",
         "a preset: its own background, text and accent")
     local custom = Chips({ themePreset = "custom", themeColors = { bg = { r = 1, g = 0, b = 0 } } })
     Check(Hex(custom[1]) == "ff0000" and Hex(custom[2]) == Hex(default[2]), "custom: the saved pick, the shipped color for the rest")
     local invalid = Chips({ themePreset = "bogus" })
-    Check(Hex(invalid[1]) == "191b1e", "an invalid preset previews the default")
+    Check(Hex(invalid[1]) == "191b1d", "an invalid preset previews the default")
 end
 
 -- The chips themselves: the control is cut out of Widgets.lua and run with stub frames.

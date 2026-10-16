@@ -111,6 +111,7 @@ local function Load(account, atlases, files, extra)
         InCombatLockdown = function() return false end,
         UnitGUID = function() return "Player-1" end,
         GameTooltip = New("Frame"),
+        Menu = { GetManager = function() return { IsAnyMenuOpen = function() return false end } end },
         Mixin = function(object, ...)
             for i = 1, select("#", ...) do
                 for k, v in pairs((select(i, ...))) do object[k] = v end
@@ -240,6 +241,50 @@ do
     check("Naowh: no Forever frame, button, tab or check", window.forever == nil and not btn._forever
         and tabs.buttons[1].idleArt == nil and tabs.buttons[1].idleFill == nil and c.toggle.w == 40)
     check("Naowh: the game's art is never asked for", #atlasCalls == 0 and #layouts == 0 and window.backdrop.pattern == nil)
+end
+
+-- Naowh segments preserve selection and fit long labels when a reused strip changes width.
+do
+    local ns = Load({})
+    local Parts = ns.Shared.Parts
+    local picked
+    local items = { { key = "a", label = "A" }, { key = "b", label = "A much longer label" },
+        { key = "c", label = "Another long category" } }
+    local tabs = Parts.Tabs(New("Frame"), 180, items, function(key) picked = key end, true, true)
+    for _, button in ipairs(tabs.buttons) do
+        button.text.GetStringWidth = function(self) return #self.text * 7 end
+    end
+    Parts.SetTabs(tabs, items)
+    Parts.PaintTabs(tabs, "a")
+    local a, b = tabs.buttons[1], tabs.buttons[2]
+    check("Naowh: selection has a fill and mark, with no underline", a.fill.shown and a.mark.shown and not a.line.shown)
+    check("Naowh: other tabs start unfilled", not b.fill.shown and not b.mark.shown)
+    b.scripts.OnEnter(b)
+    check("Naowh: hovering does not move the selection", b.fill.shown and not b.mark.shown and tabs.shown == "a")
+    b.scripts.OnLeave(b)
+    check("Naowh: leaving clears the hover", not b.fill.shown and a.mark.shown)
+    a.scripts.OnClick(a)
+    check("Naowh: clicking the selection does nothing", picked == nil)
+    b.scripts.OnClick(b)
+    check("Naowh: another segment calls the page picker", picked == "b")
+    local width = 0
+    for _, button in ipairs(tabs.buttons) do
+        width = width + button.w
+        check("Naowh: compressed segments keep positive widths", button.w > 0 and button.text.w > 0)
+    end
+    check("Naowh: long labels fit inside the strip", width == 180 and b.cut and not a.cut)
+    tabs:SetWidth(800)
+    Parts.SetTabs(tabs, items)
+    check("Naowh: widening restores full labels", not a.cut and not b.cut and not tabs.buttons[3].cut)
+    Parts.SetTabs(tabs, { items[2], items[1] })
+    check("Naowh: reused buttons follow keys after reordering", not a.mark.shown and b.mark.shown and not tabs.buttons[3].shown)
+    Parts.SetTabs(tabs, {})
+    check("Naowh: an empty list hides old buttons", not a.shown and not b.shown)
+    local backdrop = Parts.Backdrop(New("Frame"))
+    backdrop:Paint(0.6)
+    check("Naowh: the window surface is flat at its chosen opacity", backdrop.top.r == ns.THEME.bg.r
+        and backdrop.top.g == backdrop.bottom.g and backdrop.top.b == backdrop.bottom.b
+        and backdrop.top.a == 0.6 and backdrop.bottom.a == 0.6)
 end
 
 -- A picture of a Forever window (the onboarding's skin step) on the Naowh skin: the rock in the palette

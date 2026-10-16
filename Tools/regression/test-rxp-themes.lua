@@ -208,8 +208,8 @@ do
     end
 
     local default, midnight = list["NaowhForever:default"], list["NaowhForever:midnight"]
-    Check(Hex(default.background) == "25282c" and Hex(default.bottomFrameBG) == "25282c", "Naowh: Panels for the window and the quest panels")
-    Check(Hex(default.dividerColor) == "3a3e44" and Hex(midnight.dividerColor) == "2a3550", "the rules: Naowh's and Midnight's Borders & Lines")
+    Check(Hex(default.background) == "1e2022" and Hex(default.bottomFrameBG) == "1e2022", "Naowh: Panels for the window and the quest panels")
+    Check(Hex(default.dividerColor) == "373b40" and Hex(midnight.dividerColor) == "2a3550", "the rules: Naowh's and Midnight's Borders & Lines")
     Check(Hex(default.mapPins) == "0091ed" and default.tooltip == "|cff0091ed", "Naowh: the blue Accent")
     Check(Hex(default.textColor) == "f0f1f3", "Naowh: Text")
     Check(Hex(midnight.background) == "151c30" and Hex(midnight.mapPins) == "5b8cff", "Midnight: Panels and Accent")
@@ -236,7 +236,7 @@ do
         local list = env.RXPGuides_Themes
         Check(Count(list) == REGISTERED, "still the same themes")
         Check(ns.THEME.accent.r ~= 0 or ns.THEME.accent.g ~= 0x91 / 255, "the player's theme is applied to the addon itself")
-        Check(Hex(list["NaowhForever:default"].mapPins) == "0091ed" and Hex(list["NaowhForever:default"].background) == "25282c",
+        Check(Hex(list["NaowhForever:default"].mapPins) == "0091ed" and Hex(list["NaowhForever:default"].background) == "1e2022",
             "Naowh is still the default theme's colors")
         Check(Hex(list["NaowhForever:crimson"].mapPins) == "ef4b56", "Crimson is still Crimson")
     end
@@ -252,7 +252,7 @@ do
     local theme = Current({ rxpThemes = true })
     Check(theme and theme.name == "NaowhForever:current" and theme.displayName == "Naowh (current)"
         and theme.author == "Naowh Forever", "registered under its own name")
-    Check(Hex(theme.background) == "25282c" and Hex(theme.mapPins) == "0091ed" and Hex(theme.dividerColor) == "3a3e44"
+    Check(Hex(theme.background) == "1e2022" and Hex(theme.mapPins) == "0091ed" and Hex(theme.dividerColor) == "373b40"
         and Hex(theme.textColor) == "f0f1f3", "with Naowh's default theme: Naowh's colors")
     Check(theme.edges.edge == BORDER and theme.texturePath == TEX .. "DarkMode/", "and the 1px black frame")
 
@@ -283,15 +283,15 @@ do
 
     theme, list = Current({ rxpThemes = true, themePreset = "custom",
         themeColors = { bg = { r = 1, g = 0, b = 0 }, accent = { r = 0, g = 1, b = 0 }, fg = { r = 0, g = 0, b = 1 } } })
-    Check(Hex(theme.background) == "25282c" and Hex(theme.bottomFrameBG) == "25282c", "with Custom colors: Panels as shipped, for both")
+    Check(Hex(theme.background) == "1e2022" and Hex(theme.bottomFrameBG) == "1e2022", "with Custom colors: Panels as shipped, for both")
     local panelTheme = Current({ rxpThemes = true, themePreset = "custom", themeColors = { panel = { r = 0, g = 1, b = 0 } } })
     Check(Same(panelTheme.background, { 0, 1, 0, 1 }) and Same(panelTheme.bottomFrameBG, { 0, 1, 0, 1 }), "a Custom Panels pick colors both")
     Check(Same(theme.mapPins, { 0, 1, 0, 1 }) and Same(theme.bottomFrameHighlight, { 0, 1, 0, 0.5 }) and theme.tooltip == "|cff00ff00",
         "and the Accent")
     Check(Same(theme.textColor, { 0, 0, 1 }), "and the Text")
-    Check(Hex(theme.dividerColor) == "3a3e44", "a color not picked is the addon's own")
+    Check(Hex(theme.dividerColor) == "373b40", "a color not picked is the addon's own")
     Check(theme.edges.edge == BORDER, "with the black frame")
-    Check(Hex(list["NaowhForever:default"].background) == "25282c" and Hex(list["NaowhForever:midnight"].background) == "151c30",
+    Check(Hex(list["NaowhForever:default"].background) == "1e2022" and Hex(list["NaowhForever:midnight"].background) == "151c30",
         "and the fixed themes are untouched")
 
     local env, _, frames = Load({ rxpThemes = true, rxpFont = false, rxpTextColor = false }, true)

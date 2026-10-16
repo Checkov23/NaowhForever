@@ -42,6 +42,9 @@ local function NewStudio(view)
     row.stage:SetPoint("BOTTOMLEFT", PAD, PAD)
     row.stage:SetPoint("BOTTOMRIGHT", -PAD, PAD)
     ns.Solid(row.stage, "BACKGROUND", T.bg, 1):SetAllPoints()
+    if not ns.foreverSkin then
+        ns.Solid(row.stage, "BACKGROUND", BORDER_RGB, SS.PREVIEW_SHADE):SetAllPoints()
+    end
     ns.Border(row.stage, BORDER_RGB)
     row.stage:SetClipsChildren(true)
     row.previews = {}

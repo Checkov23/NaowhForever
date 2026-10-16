@@ -744,7 +744,11 @@ local function Brand(top, border)
     local brand = CreateFrame("Frame", nil, top)
     brand:SetPoint("TOPLEFT")
     brand:SetSize(SIDEBAR_W, TOP_H)
-    ns.Solid(brand, "BACKGROUND", T.panel, 1):SetAllPoints()
+    ns.Solid(brand, "BACKGROUND", ns.foreverSkin and T.panel or T.bg, 1):SetAllPoints()
+    if not ns.foreverSkin then
+        local St = ns.Shared.Style
+        ns.Solid(brand, "BACKGROUND", St.BORDER_RGB, St.SIDEBAR_SHADE):SetAllPoints()
+    end
     local brandEdge = ns.Solid(brand, "ARTWORK", T.line, 1)
     brandEdge:SetPoint("TOPRIGHT"); brandEdge:SetPoint("BOTTOMRIGHT"); ns.Hairline(brandEdge, "v")
     local logo = brand:CreateTexture(nil, "ARTWORK")
@@ -910,6 +914,11 @@ local function Sidebar()
     local sidebar = CreateFrame("Frame", nil, window)
     sidebar:SetPoint("TOPLEFT", 0, -(window.forever and Forever.Top() or TOP_H)); sidebar:SetPoint("BOTTOMLEFT")
     sidebar:SetWidth(SIDEBAR_W)
+    if not window.forever then
+        local St = ns.Shared.Style
+        ns.Solid(sidebar, "BACKGROUND", T.bg, 1):SetAllPoints()
+        ns.Solid(sidebar, "BACKGROUND", St.BORDER_RGB, St.SIDEBAR_SHADE):SetAllPoints()
+    end
     local edge = ns.Solid(sidebar, "ARTWORK", T.line, 1)
     edge:SetPoint("TOPRIGHT"); edge:SetPoint("BOTTOMRIGHT"); ns.Hairline(edge, "v")
     if window.forever then edge:Hide() end
