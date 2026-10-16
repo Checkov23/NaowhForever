@@ -21,11 +21,11 @@ local added
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 
 local function LevelsOn()
-    return S.Get("enabled") and S.Get("zoneLevels")
+    return S.Get("enabled") and S.Get("zoneLevels") and not S.Get("zoneInfo")
 end
 
 local function FishingOn()
-    return S.Get("enabled") and S.Get("mapFishing")
+    return S.Get("enabled") and S.Get("mapFishing") and not S.Get("zoneInfo")
 end
 
 local function On()
@@ -133,7 +133,7 @@ local function Apply()
 end
 
 hooksecurefunc(S, "Set", function(key)
-    if key == "enabled" or key == "zoneLevels" or key == "mapFishing" then Apply() end
+    if key == "enabled" or key == "zoneLevels" or key == "mapFishing" or key == "zoneInfo" then Apply() end
 end)
 hooksecurefunc(ns, "Apply", Apply)
 

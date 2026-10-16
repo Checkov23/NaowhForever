@@ -67,6 +67,7 @@
     <Script file="Interface\ZoneLevelsData.lua"/>
     <Script file="Interface\FishingLevelsData.lua"/>
     <Script file="Interface\ZoneLevels.lua"/>
+    <Include file="Interface\ZoneInfo\ZoneInfo.xml"/>
     <Script file="Interface\SkyborneData.lua"/>
     <Include file="Interface\SkyborneSpots.xml"/>
     <Script file="Questing\Trainer.lua"/>

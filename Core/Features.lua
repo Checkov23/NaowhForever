@@ -69,6 +69,8 @@ ns.FEATURES = {
         townMap = true,
         mapUnexplored = true,
         zoneLevels = false,
+        zoneInfo = false, zoneInfoOnMap = false, zoneInfoCurrent = false, zoneInfoDungeons = false, zoneInfoFishing = false,
+        zoneInfoTravel = false, zoneInfoGathering = false, zoneInfoHideCombat = false, zoneInfoOnlyProfessions = false,
         mapFishing = false,
         mapSkyborne = false,
         gearSets = true,

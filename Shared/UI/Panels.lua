@@ -136,7 +136,7 @@ function Parts.Backdrop(frame, forever)
     return backdrop
 end
 
-function Parts.Panel(title, windowLook)
+function Parts.Panel(title, windowLook, opacity)
     local panel = CreateFrame("Frame", nil, UIParent)
     panel:SetWidth(PANEL_W)
     panel:SetClampedToScreen(true)
@@ -144,7 +144,7 @@ function Parts.Panel(title, windowLook)
     if windowLook then
         panel.backdrop = Parts.Backdrop(panel)
     else
-        ns.Solid(panel, "BACKGROUND", T.bg, PANEL_ALPHA):SetAllPoints()
+        ns.Solid(panel, "BACKGROUND", T.bg, opacity or PANEL_ALPHA):SetAllPoints()
     end
     ns.Border(panel, BORDER_RGB)
     panel.title = ns.Font(panel, St.TEXT_SIZE, nil, T.accent)

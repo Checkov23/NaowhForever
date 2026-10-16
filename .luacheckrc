@@ -62,7 +62,7 @@ read_globals = {
     "C_CurrencyInfo", "C_CurveUtil", "C_CVar", "C_DamageMeter", "C_DurationUtil",
     "C_EquipmentSet",
     "C_ActionBar", "C_FriendList", "C_GamepadUI", "C_GossipInfo", "C_GuildInfo",
-    "C_Item", "C_KeyBindings", "C_LFGList", "C_LootHistory", "C_MajorFactions", "C_Map", "C_Navigation", "C_MountJournal", "C_Transmog", "C_MerchantFrame", "C_NamePlate", "C_PaperDollInfo",
+    "C_Item", "C_KeyBindings", "C_LFGList", "C_LootHistory", "C_MajorFactions", "C_Map", "C_PvP", "C_Navigation", "C_MountJournal", "C_Transmog", "C_MerchantFrame", "C_NamePlate", "C_PaperDollInfo",
     "C_PartyInfo", "C_QuestLog", "C_Reputation", "C_SeasonInfo",
     "C_Secrets", "C_SpecializationInfo", "C_Spell", "C_SpellBook",
     "C_StringUtil", "C_SuperTrack", "SuperTrackedFrame", "C_SwingTimer", "C_TaxiMap", "C_Texture", "NineSliceUtil", "C_Timer",

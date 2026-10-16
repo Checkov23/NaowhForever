@@ -55,6 +55,8 @@ NaowhForever_QoL/
     ZoneLevelsData.lua  each zone's level range (ns.ZoneLevels), generated
     FishingLevelsData.lua  each zone's Fishing skill range (ns.FishingLevels)
     ZoneLevels.lua      Zone Levels and Fishing Levels on the world map
+    ZoneInfo/           Model.lua (zone details), View.lua (panels), Runtime.lua (map and HUD lifecycle),
+                        SettingsPage.lua (Map & Pins card), loaded by ZoneInfo.xml
     SkyborneData.lua    the Skyborne spots every player starts with (ns.SkyborneSpots), MIT notice inside
     SkyborneSpots.xml   the Skyborne pin template, then SkyborneSpots.lua
     SkyborneSpots.lua   Skyborne Spots on the world map
@@ -1207,3 +1209,62 @@ NaowhForever_QoL/
 - Every on/off switch default in the QoL store is read from `ns.FEATURES.qol`; the values are unchanged.
 - The supporter badges are on by default so everyone sees them, except the group banner, which Naowh asked to start off.
 - The Character Panel's slot marks are on by default, an exception to off by default: they are marks on the game's own panel, with no restyle.
+
+
+### Zone Info
+
+- QoL > Map & Pins > Zone Info adds a compact map hover and a pinned details panel.
+  Apply beside Recommended Details enables the master switch and dungeon, fishing and travel content; the HUD and
+  gathering tab stay optional. Every new feature switch is off by default in Core/Features.lua.
+- The existing zone-level and fishing labels stand aside while Zone Info is enabled, without
+  changing their saved switches, and return when it is disabled.
+- Map hover queries run only while the map is visible and the cursor moves, at most once per
+  0.08 seconds. Closing the map clears the ticker; disabling removes the provider and unregisters
+  every feature event. No event frame, provider or HUD is constructed while the feature is off.
+- Pin details holds one zone through unrelated hovers and map changes. The saved map ID belongs
+  to the current profile. The map button pins the hovered zone, the displayed zone, or the player's
+  zone. Current Zone Details opens our own panel when the map is closed, without opening Blizzard UI.
+- The current-zone HUD belongs to the shared HUD Editor, with position and scale in QoL settings.
+  Zone, skill and level events refresh it, not a per-frame ticker. Combat hides it when requested;
+  otherwise it keeps its last checked character information until combat ends.
+- Profession skill includes GetProfessionInfo's eighth return (rankModifier). Levels, skills and
+  map fields are checked before use; unavailable skills are not treated as missing or ready.
+  Difficulty colors use the checked cached level and static house colors, not a helper which
+  reads UnitEffectiveLevel again. PLAYER_LEVEL_UP's level payload refreshes the cached level.
+- Dungeon entries reuse the enabled Journal's registry, entrances and level ranges. No Journal
+  means an explanation, not an assumed dependency. Journal settings repaint a visible zone panel.
+  Opening a dungeon is an explicit click on our own Journal UI. Waypoint actions use PlaceWaypoint
+  and are unavailable during combat; they never open or modify Blizzard's own frames.
+- Travel reuses TownNPCs flight masters, TownTravel stops and ZoneExits roads, filtering faction
+  stops against the checked character faction. SameMap resolves equivalent map IDs as it does
+  for existing map pins. Missing data is labeled rather than guessed.
+- Gathering reuses Glimmer's node definitions and compressed location data. It decodes only
+  when the gathering tab is requested outside combat and indexes unique node names per map.
+  Glimmer itself need not be enabled and none of its switches change. A waypoint is a known
+  historical location, not a claim that the object is currently spawned or the nearest node.
+- Fishing distinguishes the minimum skill from the reliable threshold and displays the player's
+  checked skill. Territory text is shown only for the current zone, from the client's PvP API;
+  territory for a different hovered zone is omitted because the existing registries do not supply it.
+- Details use shared panels, tabs, buttons, fonts and pooled row drawing. The preview uses the
+  same HUD drawing with sample Westfall data; it does not activate the feature or register a mover.
+
+- Map panels use an opaque theme fill, with their layer set above the canvas after parenting,
+  so the map cannot cover their background, title or metadata. Parts.Panel accepts an optional
+  flat-fill opacity; other callers retain their existing opacity.
+- Pinned map details dock outside the whole Map and Quest Log window on its right, with
+  width fitted to the available screen space. If only the left side has room, they dock there.
+- The compact hover card uses the same external dock; visible pinned details stack below it.
+  The map button sits above the two coordinate lines rather than covering their text.
+- On-map Summary is an off-by-default alternative to docked cards: centered outlined text
+  shows the selected zone, or the hovered/current zone on continent maps. Map Text Only > Apply
+  enables all content, disables the HUD, clears the pinned selection and selects this layout.
+  Recommended Details > Apply returns to the docked layout. Content switches still apply.
+- Map text is pooled, mouse-transparent and refreshed by the existing map provider and zone,
+  profession and level events. It has no additional ticker. Gathering remains known static
+  data; a short list ends with a count when there are more entries. Missing data is omitted.
+- The built-in area-label frame is faded while our map summary is visible, then restored to
+  its original alpha when the map closes or this layout is disabled; no Blizzard script,
+  label content or layout is replaced. This avoids duplicate zone names at the top of the map.
+- A hover selection stays available across empty map space, the canvas boundary, same-map
+  redraws and character refreshes so its Pin Details action remains reachable. Another valid
+  zone replaces it; closing or changing the map, disabling the feature or combat clears it.
