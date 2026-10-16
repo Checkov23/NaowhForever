@@ -1,4 +1,4 @@
--- TransportTimes.lua: saved server-clock sightings and estimates for each transport dock, per realm.
+-- TransportTimes.lua: saved server-clock sightings and estimates for each transport stop, per realm.
 local ns = _G.NaowhForever
 
 local ARRIVAL, DEPARTURE = "arrival", "departure"
@@ -31,29 +31,24 @@ function Times.Prune(now)
     end
 end
 
-function Times.Clear(key)
-    local timing = ns.TransportData[key]
-    if timing then Rows()[timing.sighting] = nil end
-end
-
 function Times.Record(key, kind, now)
     local timing = ns.TransportData[key]
     if not timing or (kind ~= ARRIVAL and kind ~= DEPARTURE) then return false end
     local rows = Rows()
-    local row = rows[timing.sighting]
+    local row = rows[key]
     if row and now == row.last then return false end
     local period = row and row.period
     if row and row.kind == kind and now > row.last then
         period = Refine(now - row.last, timing.period) or period
     end
-    rows[timing.sighting] = { arrival = kind == ARRIVAL and now or now - timing.dwell, last = now, kind = kind,
+    rows[key] = { arrival = kind == ARRIVAL and now or now - timing.dwell, last = now, kind = kind,
         period = period }
     return true
 end
 
 function Times.Next(key, now)
     local timing = ns.TransportData[key]
-    local row = timing and Rows()[timing.sighting]
+    local row = timing and Rows()[key]
     if not row then return nil, "new" end
     if now < row.last then return nil, "stale" end
     local period = row.period or timing.period

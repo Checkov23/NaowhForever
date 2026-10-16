@@ -206,6 +206,10 @@ local function TravelArt(label)
     return TRAVEL_ATLAS
 end
 
+local function SetTravelIcon(icon, label)
+    TryArt(icon, TravelArt(label))
+end
+
 local function ScaleTownPin(pin)
     ScalePin(pin, TOWN_PIN_SCALE)
 end
@@ -595,6 +599,7 @@ boot:SetScript("OnEvent", Apply)
 ns.TownPinRows = PIN_ROWS
 ns.TownPinRange = PIN_RANGE
 ns.TownPinTexts = { group = TEXT_TOWN, switch = TEXT_TOWN_PINS, tip = TEXT_TOWN_TIP }
+ns.TownTravelIcon = SetTravelIcon
 
 local page = ns.Shared.Settings.Page("QoL/Map & Pins", S)
 
