@@ -59,7 +59,7 @@ NaowhForever_Combat/AuraBuffs/
     LowHealthCard.lua          the Low Health card
     BuffMenu.lua               the carried items a buff reminder offers, as secure buttons
     BuffReminders.lua          the buff reminder row on screen
-    ClassBuffs.lua             secure self-buff buttons and managed active icons
+    ClassBuffs.lua             secure self-buff buttons for missing buffs, and managed active icons
     BuffsCard.lua              the Buffs & Consumables card
     WindowPages.lua            the window's page: consumables, with list import and export, and
                                items dragged onto a section
@@ -309,6 +309,13 @@ NaowhForever_Combat/AuraBuffs/
 - No frames or events are created before first enable. Disabling unregisters events,
   disables managed containers and stops glows. Construction failures hide the tracker,
   print an unavailable message and retain the original error through the error handler.
+- Out of combat, a buff you have is left off the row and the rest close up, so the row is
+  only what is missing; one that drops comes back. The buttons are secure, so the row can
+  only be laid out out of combat: in combat it holds as it was, Blizzard's container still
+  showing the active icons on it, and combat end lays it out again. Aura data that cannot
+  be read keeps every button. Unlock Mode shows every button so the row can be placed.
+- An aura change reads the auras once; only one that changes which buffs are active lays
+  the row out again (a second read, by the layout).
 - Opening or closing settings updates only the mover overlay and missing-buff glow,
   without hiding unchanged buttons. Tooltip ownership is cleared when its button hides.
 - User confirmed self-casting, labels, tooltips and settings/glow behavior in the Forever

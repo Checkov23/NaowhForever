@@ -154,11 +154,18 @@ assert(cell.glowing, "opening settings/mover mode keeps missing-buff glow")
 s.ns.HideUnlockMode()
 assert(cell.glowing, "closing settings keeps missing-buff glow")
 assert((cell.hides or 0) == hidesBefore, "opening and closing settings must not hide/rebuild buff cells")
-s.auras = { { spellId = 168, sourceUnit = "player" } }
+s.auras = { { spellId = 999 } }
 s.auraReads = 0
 s:Event("UNIT_AURA")
-assert(s.auraReads == 2, "multiple buff slots share one aura scan")
+assert(s.auraReads == 2, "an aura change that hides nothing is one scan for every slot")
+s.auras = { { spellId = 168, sourceUnit = "player" } }
+s:Event("UNIT_AURA")
+assert(not cell.shown and s.count == 1, "an active buff's slot goes away and the rest close up")
 assert(not cell.glowing, "applying buff stops glow")
+s.ns.ShowUnlockMode()
+assert(cell.shown and s.count == 2, "Unlock Mode shows every slot to place the row")
+s.ns.HideUnlockMode()
+assert(not cell.shown and s.count == 1, "and hides the active one again after")
 s.auras = {}
 for i = 1, 42 do s.auras[i] = { spellId = 900000 + i } end
 s.auras[43] = { spellId = 168, sourceUnit = "player" }
@@ -171,6 +178,7 @@ assert(not cell.glowing, "unreadable aura suppresses glow")
 s.secretValue = nil
 s.auras = {}
 s:Event("UNIT_AURA")
+assert(cell.shown and s.count == 2, "a buff that drops shows its slot again")
 assert(cell.glowing, "removing buff restarts glow")
 s.secret = true
 s:Event("UNIT_AURA")
@@ -180,6 +188,18 @@ s:Event("UNIT_AURA")
 assert(cell.glowing)
 s:Event("PLAYER_REGEN_DISABLED")
 assert(not cell.glowing, "combat event suppresses glow before lockdown flag changes")
+s.combat = true
+s.auras = { { spellId = 168, sourceUnit = "player" } }
+s.auraReads = 0
+s:Event("UNIT_AURA")
+assert(cell.shown and s.auraReads == 0, "in combat the row holds and no aura is read")
+s.combat = false
+s:Event("PLAYER_REGEN_ENABLED")
+assert(not cell.shown and s.count == 1, "after combat a buff gained during it hides its slot")
+s.auras = {}
+s:Event("UNIT_AURA")
+assert(cell.shown, "and its slot comes back when it drops")
+s:Event("PLAYER_REGEN_DISABLED")
 s.combat = true
 s:Event("SPELLS_CHANGED")
 s.settings.Set("classBuffTracker", false)

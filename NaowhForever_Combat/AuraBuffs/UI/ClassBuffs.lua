@@ -1,4 +1,4 @@
--- ClassBuffs.lua: clickable self-buff slots whose active icons are drawn by Blizzard, in combat too.
+-- ClassBuffs.lua: clickable self-buff slots for the buffs you are missing; in combat the row holds and Blizzard draws its active icons.
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
@@ -81,9 +81,12 @@ local function Missing(cell)
     if not unknown then return true end
 end
 
-local function RefreshGlows(restricted)
+local function RefreshGlows(restricted, read)
     restricted = restricted or InCombatLockdown() or C_Secrets.ShouldAurasBeSecret()
-    local readable = not restricted and On() and S.Get("classBuffGlow") and ReadBuffs()
+    local readable = false
+    if not restricted and On() and S.Get("classBuffGlow") then
+        if read == nil then readable = ReadBuffs() else readable = read end
+    end
     for _, cell in pairs(cells) do
         cell.missing = nil
         if readable and cell.selected then cell.missing = Missing(cell) end
@@ -161,7 +164,11 @@ local function FitLabel(cell)
     label:SetWidth(width)
 end
 
-local function AddFamilies(families, picks, count, class)
+local function Active(cell, readable)
+    return readable and not unlocked and Missing(cell) == false
+end
+
+local function AddFamilies(families, picks, count, class, readable)
     for _, family in ipairs(families) do
         if family.class == class and not family.weapons and not family.target
             and picks[family.key] ~= false then
@@ -169,15 +176,19 @@ local function AddFamilies(families, picks, count, class)
             if spell then
                 local cell = cells[family.key]
                 if not cell then cell = NewCell(family); cells[family.key] = cell end
-                count = count + 1
-                local icon = C_Spell.GetSpellTexture(spell)
-                Cell.Place(cell, frame, count, S.Get("classBuffSize"), icon)
-                FitLabel(cell)
-                cell:SetAttribute("spell1", spell)
-                cell.spell = spell
-                cell.selected = true
-                cell:Show()
-                cell.watch:SetEnabled(true)
+                cell.picked = true
+                cell.active = Active(cell, readable)
+                if not cell.active then
+                    count = count + 1
+                    local icon = C_Spell.GetSpellTexture(spell)
+                    Cell.Place(cell, frame, count, S.Get("classBuffSize"), icon)
+                    FitLabel(cell)
+                    cell:SetAttribute("spell1", spell)
+                    cell.spell = spell
+                    cell.selected = true
+                    cell:Show()
+                    cell.watch:SetEnabled(true)
+                end
             end
         end
     end
@@ -198,11 +209,12 @@ local function Paint()
         frame.mover = ns.UI.AttachMover(frame, TITLE, SavePosition, A.PAGE, CARD)
     end
     for _, cell in pairs(cells) do
-        cell.selected = false
+        cell.selected, cell.picked, cell.active = false, false, false
     end
+    local readable = not C_Secrets.ShouldAurasBeSecret() and ReadBuffs()
     local _, class = UnitClass("player")
-    local count = AddFamilies(D.PERSONAL, S.Get("personalBuffPicks"), 0, class)
-    count = AddFamilies(D.RAID, S.Get("raidBuffPicks"), count, class)
+    local count = AddFamilies(D.PERSONAL, S.Get("personalBuffPicks"), 0, class, readable)
+    count = AddFamilies(D.RAID, S.Get("raidBuffPicks"), count, class, readable)
     for _, cell in pairs(cells) do
         if not cell.selected then
             cell.watch:SetEnabled(false)
@@ -219,12 +231,27 @@ local function Paint()
     end
     frame.mover:SetShown(unlocked == true and On())
     frame:SetShown(count > 0)
-    RefreshGlows()
+    RefreshGlows(nil, readable)
+end
+
+local function Readable()
+    return not InCombatLockdown() and not C_Secrets.ShouldAurasBeSecret() and ReadBuffs()
+end
+
+local function ActiveChanged()
+    for _, cell in pairs(cells) do
+        if cell.picked and Active(cell, true) ~= cell.active then return true end
+    end
+    return false
 end
 
 local function OnEvent(_, event)
     if event == "PLAYER_REGEN_DISABLED" then return RefreshGlows(true) end
-    if event == "UNIT_AURA" then return RefreshGlows() end
+    if event == "UNIT_AURA" then
+        local read = Readable()
+        if read and ActiveChanged() then return Apply() end
+        return RefreshGlows(nil, read)
+    end
     Apply()
 end
 
@@ -261,7 +288,7 @@ function Apply()
         return
     end
     Listen()
-    if S.Get("classBuffGlow") then events:RegisterUnitEvent("UNIT_AURA", "player") end
+    events:RegisterUnitEvent("UNIT_AURA", "player")
     events:RegisterEvent("PLAYER_REGEN_DISABLED")
     events:RegisterEvent("SPELLS_CHANGED")
     events:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -272,7 +299,7 @@ local function OnSet(key)
 end
 
 local function UpdateMover()
-    if not frame or InCombatLockdown() then return Apply() end
+    if not frame or InCombatLockdown() or (Readable() and ActiveChanged()) then return Apply() end
     frame.mover:SetShown(unlocked == true and On())
     RefreshGlows()
 end
