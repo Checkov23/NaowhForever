@@ -35,7 +35,6 @@ end
 function Spots.Wanted(category)
     if not S.Get(category) then return false end
     if not S.Get("myProfessions") then return true end
-    if not (Has("ore") or Has("herb")) then return true end
     return Has(category)
 end
 

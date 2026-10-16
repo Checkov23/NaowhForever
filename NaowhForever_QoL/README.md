@@ -1129,8 +1129,9 @@ NaowhForever_QoL/
 - The game does not tell an addon where its tracking dots are, and it cannot switch tracking for you:
   Find Herbs and Find Minerals are casts, which only a click may start. So the minimap icons come from
   where Wowhead Forever has each herb and vein growing (`ns.GlimmerSpots`, unpacked from
-  Data/Spots.lua on first use), and herbs and ore show together whatever you track. The game's own dot on
-  top of an icon is a node up right now.
+  Data/Spots.lua on first use), and herbs and ore show together whatever you track. The icons draw over
+  the game's tracking dot, so while Find Herbs or Find Minerals tracks (`MINIMAP_UPDATE_TRACKING`),
+  that kind's icon moves onto its ring and the dot shows inside the ring when the node is up.
 - The minimap shows at most `MINIMAP_MAX` icons, the spots inside its view. Placing them is
   `Parts.MinimapLayer` (Shared/UI/MinimapPins.lua): it moves them only while you move or the minimap
   turns.
@@ -1138,8 +1139,10 @@ NaowhForever_QoL/
   not something to rely on, so it waits for the fight to end, and only then does `PLAYER_REGEN_ENABLED`
   redraw the icons. A skill-up repaints their rings, and redraws them only when it changes whether
   herbs or ore show. Gathered on the Map alone never loads the data.
-- Only My Professions shows herbs to an herbalist and ore to a miner; a character with neither sees
-  both, so the icons still help someone deciding what to learn.
+- Only My Professions shows herbs to an herbalist and ore to a miner, and nothing to a character with
+  neither (the spot data is not even unpacked); players read a character with no gathering showing both
+  as the setting not working. It is a Minimap Icons setting: Gathered on the Map shows the account's
+  gathers on any character.
 - A gather is noted when the loot window opens while the soft target is a herb or vein in reach and
   the loot came from it (`GetLootSourceInfo`), so it needs no spell IDs and a corpse looted beside a
   node does not count. One node counts once per loot window, even if it is opened again. Where it is

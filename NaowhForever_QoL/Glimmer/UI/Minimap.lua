@@ -1,4 +1,5 @@
--- Minimap.lua: where herbs and veins grow, on the minimap, each in its own icon and ringed in its skill-up color.
+-- Minimap.lua: where herbs and veins grow, on the minimap, each in its own icon and ringed in its skill-up color;
+-- while its Find spell tracks, the icon sits on the ring so the game's own dot shows inside when the node is up.
 local ns = _G.NaowhForever
 
 local G = ns.Glimmer
@@ -8,12 +9,15 @@ local Spots = G.Spots
 
 local RING_GROW = 1.6
 local ICON_SHARE = 0.7
+local BADGE_SHARE = 0.45
+local BADGE_AT = 0.57
 local OWN_KEYS = { enabled = true, minimapIcons = true, minimapSize = true, myProfessions = true, ore = true,
     herb = true, skillColors = true, oreColor = true, herbColor = true }
 local TEXT_LINE = "%s (%d)"
 
 local layer, events, kinds
 local spots = {}
+local tracked = {}
 
 local function On()
     return G.On() and S.Get("minimapIcons")
@@ -55,11 +59,30 @@ local function Paint(pin, list, i)
     pin.id, pin.node = id, node
     pin:SetSize(size, size)
     pin.ring:SetSize(size * RING_GROW, size * RING_GROW)
-    pin.icon:SetSize(size * ICON_SHARE, size * ICON_SHARE)
+    pin.icon:ClearAllPoints()
+    if tracked[node[1]] then
+        pin.icon:SetPoint("CENTER", size * BADGE_AT, -size * BADGE_AT)
+        pin.icon:SetSize(size * BADGE_SHARE, size * BADGE_SHARE)
+    else
+        pin.icon:SetPoint("CENTER")
+        pin.icon:SetSize(size * ICON_SHARE, size * ICON_SHARE)
+    end
     pin.icon:SetTexture(C_Spell.GetSpellTexture(C.ICON_SPELL[node[1]]))
     local tier = S.Get("skillColors") and Spots.Tier(id)
     local c = tier and St.TIER_RGB[tier] or S.Get(node[1] .. "Color")
     pin.ring:SetVertexColor(c.r, c.g, c.b)
+end
+
+local function Track()
+    wipe(tracked)
+    for i = 1, C_Minimap.GetNumTrackingTypes() do
+        local info = C_Minimap.GetTrackingInfo(i)
+        if info and info.active then
+            for category, spell in pairs(C.ICON_SPELL) do
+                if info.spellID == spell then tracked[category] = true end
+            end
+        end
+    end
 end
 
 local function Kinds()
@@ -68,10 +91,11 @@ end
 
 local function Refresh()
     kinds = Kinds()
-    if not On() or not Spots.Load() then
+    if not On() or kinds == "" or not Spots.Load() then
         if layer then layer:Set(nil) end
         return
     end
+    Track()
     layer = layer or ns.Shared.Parts.MinimapLayer({ max = C.MINIMAP_MAX, new = NewPin, paint = Paint, xy = Spots.XY })
     local mapID = C_Map.GetBestMapForUnit("player")
     layer:Set(mapID, spots, mapID and Spots.ForMap(mapID, spots) or 0)
@@ -80,6 +104,9 @@ end
 local function OnEvent(_, event)
     if event == "PLAYER_REGEN_ENABLED" then
         if not ns.GlimmerSpots then Refresh() end
+    elseif event == "MINIMAP_UPDATE_TRACKING" then
+        Track()
+        if layer then layer:Repaint() end
     elseif event == "SKILL_LINES_CHANGED" then
         if Kinds() ~= kinds then Refresh() elseif layer then layer:Repaint() end
     else

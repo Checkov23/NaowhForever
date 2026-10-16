@@ -90,7 +90,7 @@ function provider:RefreshAllData()
     local map = self:GetMap()
     for _, entry in pairs(Spots.Gathered(map:GetMapID()) or {}) do
         local node = G.NODES[entry.id]
-        if node and Spots.Wanted(node[1]) then map:AcquirePin(TEMPLATE, entry) end
+        if node and S.Get(node[1]) then map:AcquirePin(TEMPLATE, entry) end
     end
 end
 
