@@ -27,7 +27,7 @@ local HANDOFFS = {
 }
 local ACTING_LINE = ns.L("It also turns on settings that act for you: %s; they stay off unless you tick Also Import.")
 local ACTING_HELP = ns.L("Turns those settings on in the new profile")
-local TEXT_KEEP_POSITIONS = "Keep My Positions"
+local TEXT_KEEP_POSITIONS = ns.L("Keep My Positions")
 local KEEP_POSITIONS_HELP = ns.L("Your frames stay where you put them")
 local TEXT_EXPORT_TITLE, TEXT_IMPORT_TITLE = ns.L("Export Profile"), ns.L("Import")
 local TEXT_PROFILE = ns.L("Profile: %s. %s.")
