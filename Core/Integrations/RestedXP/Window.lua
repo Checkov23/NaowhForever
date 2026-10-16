@@ -40,7 +40,7 @@ local DRAG_BUTTON, TIP_ANCHOR = "LeftButton", "ANCHOR_TOP"
 local ACCENT = "accent"
 local TARGET_PLACEHOLDER, MOB_PLACEHOLDER = 2056011, 135274
 local PLACEHOLDER_GLYPHS = { [TARGET_PLACEHOLDER] = "gossip", [MOB_PLACEHOLDER] = "combat" }
-local OUTLINE_FLAGS = { outline = "OUTLINE", thick = "THICKOUTLINE" }
+local OUTLINE_FLAGS = { outline = "OUTLINE", thick = "THICKOUTLINE", slug = "OUTLINE, SLUG" }
 
 local window, active, started, pending, styled, wantsBags
 local retake = true

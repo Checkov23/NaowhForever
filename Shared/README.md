@@ -246,7 +246,7 @@ Each file uses only the ones above it in `Shared.xml`. Every part sits on `ns.Sh
   defaults stay in the module's `UI.ModuleSettings`, at today's look (`outline = "OUTLINE"` for
   outlined text, `""` for the rest). To draw it, `Parts.HudFont(fs, font, size, outline,
   background)` sets the font (a SharedMedia name, `""` for the Addon Font), size and outline (one
-  of `Parts.HUD_OUTLINES`: `"NONE"` plain text, `""` Shadow, `"OUTLINE"`, `"THICKOUTLINE"`) and gives
+  of `Parts.HUD_OUTLINES`: `"NONE"` plain text, `""` Shadow, `"OUTLINE"`, `"THICKOUTLINE"`, `"OUTLINE, SLUG"`) and gives
   Shadow the HUD shadow for its `background` mode. Text set by hand takes its flags from
   `Parts.HudFlags(outline)`, never the raw choice: the game rejects `"NONE"` as a font flag.
   A bar's texture is `ns.UI.TexturePath(name, own)`: the

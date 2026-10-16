@@ -4554,6 +4554,7 @@ L["Sleeping Bag, step %d"] = true
 L["Sleeping Bag: step %d of %d"] = true
 L["Slim marks along the bottom of the bar at every 10%."] = true
 L["Slot "] = true
+L["Slug Outline"] = true
 L["Slot %d: %s"] = true
 L["slot %s"] = true
 L["Slot Marks"] = true

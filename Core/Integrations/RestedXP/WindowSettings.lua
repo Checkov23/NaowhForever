@@ -14,14 +14,14 @@ local COLORS_KEY, THEME_KEY = "rxpWindowColors", "rxpWindowTheme"
 local CUSTOM, FOLLOW, FOREVER = "custom", "", "forever"
 local BLACK = { r = 0, g = 0, b = 0 }
 
-local OUTLINES = { shadow = "Shadow", outline = "Outline", thick = "Thick Outline", none = "None" }
+local OUTLINES = { shadow = "Shadow", outline = "Outline", thick = "Thick Outline", slug = "Slug Outline", none = "None" }
 local SKIPS = { shift = "Shift-click", click = "Click", off = "Off" }
 local LINES = { bar = "Progress Bar", rule = "Line", none = "Nothing" }
 local OPTIONS = {
     { key = "rxpWindowFont", group = "Text", kind = "font", label = "Window Font",
       tip = "The face of every text in the window." },
     { key = "rxpWindowOutline", group = "Text", kind = "choice", label = "Text Outline", default = "shadow",
-      values = OUTLINES, order = { "shadow", "outline", "thick", "none" },
+      values = OUTLINES, order = { "shadow", "outline", "thick", "slug", "none" },
       tip = "How the text is kept readable over the world." },
     { key = "rxpWindowTitleSize", group = "Text", kind = "number", label = "Title Size", default = 16, min = 10,
       max = 28, tip = "The guide's name and its progress." },

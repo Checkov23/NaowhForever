@@ -13,8 +13,10 @@ local SHADOWS = {
     soft = { x = St.HUD_SHADOW_X, y = St.HUD_SHADOW_Y, a = St.HUD_SOFT_SHADOW_ALPHA },
     none = { x = St.HUD_BARE_SHADOW_X, y = St.HUD_BARE_SHADOW_Y, a = St.HUD_BARE_SHADOW_ALPHA },
 }
-local OUTLINE_NAMES = { NONE = "None", [""] = "Shadow", OUTLINE = "Outline", THICKOUTLINE = "Thick Outline" }
-local OUTLINE_ORDER = { "NONE", "", "OUTLINE", "THICKOUTLINE" }
+local OUTLINE_NAMES = {
+    NONE = "None", [""] = "Shadow", OUTLINE = "Outline", THICKOUTLINE = "Thick Outline", ["OUTLINE, SLUG"] = "Slug Outline",
+}
+local OUTLINE_ORDER = { "NONE", "", "OUTLINE", "THICKOUTLINE", "OUTLINE, SLUG" }
 local BACKGROUND_NAMES = { card = "Card", soft = "Soft", none = "None" }
 local BACKGROUND_ORDER = { "card", "soft", "none" }
 local NO_OUTLINE = "NONE"
