@@ -154,6 +154,7 @@ local env = setmetatable({
     UIParent = Frame(),
     GameTooltip = Frame(),
     GameTooltip_Hide = NOTHING,
+    GameTooltip_SetTitle = function(tooltip, text) tooltip:AddLine(text) end,
     CreateFrame = function(_, _, parent) return Frame(parent) end,
     CreateColor = function() return { SetRGBA = NOTHING } end,
     hooksecurefunc = NOTHING,
@@ -187,7 +188,8 @@ local env = setmetatable({
     C_SpellBook = { IsSpellKnown = function() return false end },
     C_Item = {},
     C_ClassTalents = { GetActiveConfigID = function() return 1 end, HasUnspentTalentPoints = function() return true end },
-    C_Traits = { GetNodeInfo = function() return { activeRank = 0 } end, PurchaseRank = function() return true end,
+    C_Traits = { GetNodeInfo = function(_, node) return { activeRank = 0, entryIDs = { node + 500000 } } end,
+        PurchaseRank = function() return true end,
         CommitConfig = function() return true end },
     C_Timer = { After = function(_, fn) fn() end },
     PixelUtil = { SetPoint = NOTHING, SetSize = NOTHING },
@@ -272,6 +274,51 @@ for _, f in ipairs(Clickables()) do
     if rawget(f, "spell") then Click(f) end
 end
 check("clicking talents takes points", #account.trainingBuilds[8][1].points > 0)
+
+-- A talent's tooltip: the text of its rank in the build, then the next rank's, from its trait entry.
+local tip = {}
+env.GameTooltip.AddLine = function(_, text) tip[#tip + 1] = text end
+env.GameTooltip.AppendInfo = function(_, getter, entry, rank) tip[#tip + 1] = getter .. " " .. entry .. " " .. rank end
+env.GameTooltip.SetSpellByID = function(_, spell) tip[#tip + 1] = "spell " .. spell end
+local function Hover(f)
+    for k in pairs(tip) do tip[k] = nil end
+    f.scripts.OnEnter(f)
+    return table.concat(tip, " / ")
+end
+local function Nodes()
+    local none, some, full
+    for _, f in ipairs(frames) do
+        if rawget(f, "node") and rawget(f, "count") and f:IsShown() then
+            if f.rank == 0 then none = none or f
+            elseif f.rank < f.max then some = some or f
+            else full = full or f end
+        end
+    end
+    return none, some, full
+end
+local none, some = Nodes()
+local function Starts(text, prefix) return text:sub(1, #prefix) == prefix end
+check("a talent with no points shows rank 1 as its next rank", none and Starts(Hover(none),
+    ("Spell %d / Rank 0 of %d /   / Next rank: / GetTraitEntry %d 1 / "):format(none.spell, none.max, none.node + 500000)))
+check("one with some points shows its rank, then the next", some and Starts(Hover(some),
+    ("Spell %d / Rank %d of %d / GetTraitEntry %d %d /   / Next rank: / GetTraitEntry %d %d / "):format(some.spell,
+        some.rank, some.max, some.node + 500000, some.rank, some.node + 500000, some.rank + 1)))
+local node = some.node
+for _ = some.rank + 1, some.max do
+    for _, f in ipairs(frames) do
+        if rawget(f, "count") and rawget(f, "node") == node and f:IsShown() then Click(f) break end
+    end
+end
+local _, _, full = Nodes()
+check("one at full rank shows only its rank", full and Starts(Hover(full),
+    ("Spell %d / Rank %d of %d / GetTraitEntry %d %d / "):format(full.spell, full.max, full.max, full.node + 500000,
+        full.max)) and not Hover(full):find("Next rank", 1, true))
+local step
+for _, f in ipairs(frames) do
+    if rawget(f, "last") and f:IsShown() then step = step or f end
+end
+check("a level-by-level row's tooltip reads the rank that step reaches", step and Hover(step):find(
+    ("GetTraitEntry %d %d"):format(step.node + 500000, step.last), 1, true))
 local tabs
 for _, f in ipairs(frames) do
     if rawget(f, "onPick") and f ~= window.switch and f:IsShown() then tabs = f end
@@ -288,6 +335,34 @@ for _, f in ipairs(Clickables()) do
 end
 check("the editor's Spells tab lists the class's spells to skip, and a click skips one", skips == 1
     and ns.Training.SkipCount(account.trainingBuilds[8][1]) > 0)
+
+-- Two ranks of one spell: the spell's row, then a row per rank, each skipped on its own.
+local first, second
+for _, entry in ipairs(ns.TrainingData[8]) do
+    if not entry.quest then
+        if not first then first = entry[2] elseif not second then second = entry[2] end
+    end
+end
+local spellName = env.C_Spell.GetSpellName
+env.C_Spell.GetSpellName = function(id)
+    if id == first or id == second then return "Same" end
+    return spellName(id)
+end
+env.C_Spell.GetSpellSubtext = function(id) return id == second and "Rank 2" or "Rank 1" end
+ns.Training.SkipAll(8, account.trainingBuilds[8][1], false)
+local whole, rankTwo
+for _, f in ipairs(frames) do
+    if rawget(f, "group") and f.group.name == "Same" and f:IsShown() then
+        if f.rank == nil then whole = f elseif f.rank == 2 then rankTwo = f end
+    end
+end
+check("a spell with ranks has its own row and one per rank", whole and rankTwo
+    and rankTwo.name:GetText() == "Same (Rank 2)" and whole.name:GetText() == "Same")
+Click(rankTwo)
+local skip = account.trainingBuilds[8][1].skip
+check("a rank's row skips only that rank", skip and skip[second] and not skip[first])
+env.C_Spell.GetSpellName = spellName
+env.C_Spell.GetSpellSubtext = function() return "Rank 1" end
 Click(window.save)
 Click(window.import)
 for _ = 1, 2 do

@@ -2,6 +2,8 @@
 local L = _G.NaowhForeverLocale or {}
 _G.NaowhForeverLocale = L
 
+L["Next rank:"] = true
+L["%s (%s)"] = true
 L["A right click on the title bar opens a menu to switch these."] = true
 L["Blizzard (Default)"] = true
 L["Colors each bar by class, unless Bar Color picks another color."] = true

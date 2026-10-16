@@ -61,6 +61,9 @@ view files and the window share.
   No price is known, so they read "At the trainer".
 - A talent node is `{ spell, ranks, row, column, slot in the row, the node it needs at full rank }`; a
   build's points are nodes, one per point from level 10, 51 in all, 5 in a column for each row above.
+- A talent's spell shows its full rank's text, so its tooltip reads the text of its rank and the next from
+  the node's trait entry (GetTraitEntry), as the game's talent frame does. Another class's nodes are not in
+  your talent config, so their tooltip shows the spell.
 - A rank counts as learned once a later rank is: some ranks replace the one before. A rank before
   that no trainer sells (granted at level 1) is not in the data, so the game is asked. PLAYER_LEVEL_UP
   says the new level before UnitLevel does, so the toast plans for the level it was given.
@@ -86,6 +89,9 @@ view files and the window share.
   and what the Spells tab calls skipped, next to the character's own right-click skips. Those own skips
   are kept per character, so they never reach a new one; the build's are account-wide, travel in a
   build's export string and the Profiles share, and a new character gets them by following the build.
+- The editor's Spells tab lists a spell with more than one rank on a row of its own, which skips every
+  rank, then each rank on its own row. A skip has always been kept by rank, the whole-spell row writing
+  every rank's ID, so builds saved or shared before skips by rank still skip every rank.
 - Coins are written as text, each coin's letter in its colour: the game's coin icons blur when drawn
   large.
 - The window and the mini bar sit on whole screen pixels, and are sized in whole pixels, or every
