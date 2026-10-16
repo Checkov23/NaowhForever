@@ -242,9 +242,11 @@ do
     calls = c.statsCalls
     GI.StatsFromGear(record)
     check("the per-link cache is bounded: old links are read again after it fills", c.statsCalls > calls)
+    local links = {}
+    for i = 1, 5000 do links[i] = "item:8" .. i end
     collectgarbage("collect")
     local before = collectgarbage("count")
-    for i = 1, 5000 do c.ns.StatWeights.Stats("item:8" .. i) end
+    for i = 1, 5000 do c.ns.StatWeights.Stats(links[i]) end
     collectgarbage("collect")
     check("the per-link cache stays small however many links pass", collectgarbage("count") - before < 120)
 
