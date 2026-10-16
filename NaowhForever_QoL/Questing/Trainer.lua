@@ -55,7 +55,7 @@ local TEXT_CLOSE = "X"
 local learned = {}
 local listed = {}
 local manual = false
-local atTrainer, showQueued, showPending = false, false, 0
+local atTrainer, rankTrainer, showQueued, showPending = false, false, false, 0
 local popup
 local glowing = {}
 local glowQueued = false
@@ -389,7 +389,7 @@ end
 Render = function()
     local ups = (manual or S.Get("trainerRanks")) and Upgrades() or {}
     local rows, swappable = Rows(ups)
-    if #rows == 0 then
+    if #rows == 0 or (#listed == 0 and not manual and #swappable == 0) then
         if popup then popup:Hide() end
         return false
     end
@@ -453,9 +453,14 @@ local function OnEvent(_, event, arg1, _, arg3)
         Used(arg3)
     elseif event == "TRAINER_SHOW" then
         atTrainer = true
+        rankTrainer = not IsTradeskillTrainer()
     elseif event == "TRAINER_CLOSED" then
-        atTrainer = false
-        if #learned > 0 then Show() end
+        local ranks = atTrainer and rankTrainer and S.Get("trainerRanks")
+        atTrainer, rankTrainer = false, false
+        if #learned > 0 or ranks then
+            listed, manual = {}, false
+            Show()
+        end
     elseif event == "PLAYER_REGEN_DISABLED" then
         if popup and popup:IsShown() then
             popup:Hide()
@@ -499,7 +504,7 @@ local function Apply()
     events:UnregisterAllEvents()
     if not On() then
         learned, listed = {}, {}
-        showQueued, atTrainer = false, false
+        showQueued, atTrainer, rankTrainer = false, false, false
         if popup then popup:Hide() end
         if next(glowing) then RefreshGlow() end
         return
