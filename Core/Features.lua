@@ -106,6 +106,9 @@ ns.FEATURES = {
         aimTrainer = true,
         dailyWord = false,
         waypoints = true,
+        waypointRestedXP = false,
+        waypointObjectives = false,
+        waypointDownArrows = false,
     },
     topBar = {
         enabled = true,

@@ -6708,3 +6708,12 @@ L["What opens when a flight starts; Off hides the game buttons."] = true
 L["/nf word: the Daily Word"] = true
 L["Alan Beale's 12dicts and the ENABLE word list, the public-domain words behind the Daily Word."] = true
 L["Buttons only"] = true
+
+L["Follow RestedXP"] = true
+L["Quest Objectives"] = true
+L["Downward Arrows"] = true
+L["Guide destination"] = true
+L["Uses your active RestedXP guide destination for the world pin."] = true
+L["Shows unfinished quest objectives above the destination."] = true
+L["Adds three downward arrows pointing to the destination pin."] = true
+L["0/10 Highlands Bandit slain\n0/1 Badwind Bennic slain"] = true

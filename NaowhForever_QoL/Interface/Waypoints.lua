@@ -15,6 +15,9 @@ local SHAPES = {
 local CHEVRON, CHECK, CROSS = MEDIA .. "chevron", MEDIA .. "check", MEDIA .. "cross"
 
 local PIN, MARK, ARROW = 36, 12, 18
+local DOWN_COUNT, DOWN_SIZE, DOWN_GAP = 3, 14, 2
+local OBJECTIVE_W, OBJECTIVE_SIZE, OBJECTIVE_MAX = 240, 13, 6
+local OBJECTIVE_HEIGHT_MAX = 150
 local MARK_LAYER = 2
 local FILL_ALPHA = 0.2
 local CARD_W, CARD_PAD, CARD_GAP = 180, 8, 8
@@ -150,6 +153,29 @@ function Look.NewPin(parent)
     return pin
 end
 
+local function NewDownArrows(pin)
+    pin.down = {}
+    for i = 1, DOWN_COUNT do
+        local arrow = Trilinear(pin:CreateTexture(nil, "ARTWORK"), CHEVRON)
+        arrow:SetSize(DOWN_SIZE, DOWN_SIZE)
+        arrow:SetPoint("BOTTOM", pin, "TOP", 0, CARD_GAP + (i - 1) * (DOWN_SIZE + DOWN_GAP))
+        arrow:SetRotation(DOWN)
+        pin.down[i] = arrow
+    end
+end
+
+local function NewObjectives(pin)
+    local objectives = Card(pin, OBJECTIVE_W)
+    objectives.text = Parts.HudText(ns.Font(objectives, OBJECTIVE_SIZE))
+    objectives.text:SetPoint("TOPLEFT", CARD_PAD, -CARD_PAD)
+    objectives.text:SetPoint("RIGHT", -CARD_PAD, 0)
+    objectives.text:SetJustifyH("LEFT")
+    objectives.text:SetWordWrap(true)
+    objectives:SetClipsChildren(true)
+    objectives:Hide()
+    pin.objectives = objectives
+end
+
 function Look.PaintPin(pin, o)
     local a = T.accent
     local shape = SHAPES[o.shape] or SHAPES.hex
@@ -165,7 +191,26 @@ function Look.PaintPin(pin, o)
     pin.ground:SetShown(o.beam and not edge)
     pin.ground:SetVertexColor(a.r, a.g, a.b, 1)
 
+    local down = o.down and not edge and not arrived
+    if down and not pin.down then NewDownArrows(pin) end
+    if pin.down then
+        for _, arrow in ipairs(pin.down) do
+            arrow:SetShown(down)
+            arrow:SetVertexColor(a.r, a.g, a.b, 1)
+        end
+    end
     local card = pin.card
+    card.downHeight = down and DOWN_COUNT * (DOWN_SIZE + DOWN_GAP) or 0
+    Look.PlaceCard(pin, card, edge, o.angle or 0)
+    if o.objectives and not pin.objectives then NewObjectives(pin) end
+    local objectives = pin.objectives
+    if objectives then objectives:SetShown(o.objectives ~= nil and not edge and not arrived) end
+    if o.objectives then
+        objectives.text:SetText(o.objectives)
+        objectives:SetHeight(math.min(OBJECTIVE_HEIGHT_MAX, objectives.text:GetStringHeight() + CARD_PAD * 2))
+        objectives:ClearAllPoints()
+        objectives:SetPoint("BOTTOM", o.card and card or pin, "TOP", 0, CARD_GAP + (not o.card and card.downHeight or 0))
+    end
     card:SetShown(o.card)
     if not o.card then return end
     card.icon:SetShown(o.icon ~= nil)
@@ -196,7 +241,7 @@ function Look.PlaceCard(pin, card, edge, angle)
     card:ClearAllPoints()
     local cos, sin = math.cos(angle), math.sin(angle)
     if not edge then
-        card:SetPoint("BOTTOM", pin, "TOP", 0, CARD_GAP)
+        card:SetPoint("BOTTOM", pin, "TOP", 0, CARD_GAP + (card.downHeight or 0))
     elseif math.abs(cos) >= math.abs(sin) then
         if cos > 0 then card:SetPoint("RIGHT", pin, "LEFT", -CARD_GAP, 0) else card:SetPoint("LEFT", pin, "RIGHT", CARD_GAP, 0) end
     elseif sin > 0 then
@@ -292,7 +337,7 @@ local function UserTarget()
     local info = point and C_Map.GetMapInfo(point.uiMapID)
     local where = info and info.name
     if IsPlaced(placed, point) then
-        return placed.title, where, NoteText(placed.note), placed.icon, true
+        return placed.details and placed.details.title or placed.title, where, NoteText(placed.note), placed.icon, true, placed.details
     end
     return TEXT_MAP_PIN, where
 end
@@ -393,6 +438,7 @@ end
 
 local function CheckReached(yards, near)
     local leave = near + LEAVE_MARGIN
+    if shown.quest and shown.objectives then reached = false return end
     if shown.quest then near, leave = QUEST_NEAR, QUEST_LEAVE end
     if shown.ground or yards > leave then
         reached = false
@@ -475,7 +521,7 @@ local function Update()
     if yards > REACHED + LEAVE_MARGIN then seenAway = true end
     if yards > near + LEAVE_MARGIN then seenFar = true end
     local reach = seenFar and near or REACHED
-    if shown.user and not shown.onRoute and not selfCleared and seenAway and yards <= reach and OnWaypointMap() then
+    if shown.user and not shown.guide and not shown.onRoute and not selfCleared and seenAway and yards <= reach and OnWaypointMap() then
         selfCleared = true
         Arrived()
         ns.ClearWaypoint()
@@ -486,12 +532,40 @@ local function Update()
     Paint(mode, side, yards, WalkSeconds(yards), angle)
 end
 
+local objectiveLines = {}
+
+local function Objectives(quest, details)
+    if not S.Get("waypointObjectives") then return end
+    if issecretvalue and issecretvalue(quest) then return end
+    if quest and C_QuestLog.GetQuestObjectives then
+        local list = C_QuestLog.GetQuestObjectives(quest)
+        if list and not (issecrettable and issecrettable(list)) and #list > 0 then
+            wipe(objectiveLines)
+            for _, objective in ipairs(list) do
+                if not (issecrettable and issecrettable(objective)) then
+                    local text, finished = objective.text, objective.finished
+                    if not (issecretvalue and (issecretvalue(text) or issecretvalue(finished)))
+                        and not finished and type(text) == "string" and text ~= "" then
+                        objectiveLines[#objectiveLines + 1] = text
+                        if #objectiveLines == OBJECTIVE_MAX then break end
+                    end
+                end
+            end
+            return #objectiveLines > 0 and table.concat(objectiveLines, "\n") or nil
+        end
+    end
+    return details and details.objectives
+end
+
 local function Retitle()
     dirty = true
     sampleAt, closing = nil, nil
-    local where, placed
+    local where, placed, details
     local kind, types = C_SuperTrack.GetHighestPrioritySuperTrackingType(), Enum.SuperTrackingType
-    shown.name, where, shown.note, shown.icon, placed = Target(kind)
+    shown.name, where, shown.note, shown.icon, placed, details = Target(kind)
+    local quest = kind == types.Quest and C_SuperTrack.GetSuperTrackedQuestID() or details and details.quest
+    shown.objectives = Objectives(quest, details)
+    shown.down = S.Get("waypointDownArrows")
     shown.sub = shown.note and where and (shown.note .. St.PLACE_DOT .. where) or shown.note or where
     local route, at, n = ns.WaypointRoute()
     shown.onRoute = placed and route ~= nil
@@ -499,9 +573,14 @@ local function Retitle()
     shown.shape = S.Get("waypointShape")
     shown.user = kind == types.UserWaypoint
     shown.quest = kind == types.Quest
+    shown.guide = details and details.guide == true
     shown.ground = shown.user or kind == types.Corpse
     shown.card, shown.beam = S.Get("waypointCard"), S.Get("waypointBeam") and shown.ground
     pin.onNav, reached = false, false
+end
+
+function ns.RefreshWaypointPin()
+    if On() and navFrame and not arrived then Retitle() end
 end
 
 local function Detach()
@@ -615,7 +694,7 @@ local function OnEvent(_, event, isWaypoint)
     elseif event == "NAVIGATION_FRAME_DESTROYED" then
         Detach()
     elseif event == "NAVIGATION_DESTINATION_REACHED" then
-        if not isWaypoint then Arrived() end
+        if not isWaypoint and not shown.guide and not (shown.quest and shown.objectives) then Arrived() end
     elseif not C_SuperTrack.GetHighestPrioritySuperTrackingType() then
         if navFrame then Detach() end
     elseif not navFrame then
@@ -652,6 +731,11 @@ local function Apply()
     events:RegisterEvent("NAVIGATION_DESTINATION_REACHED")
     events:RegisterEvent("SUPER_TRACKING_CHANGED")
     events:RegisterEvent("USER_WAYPOINT_UPDATED")
+    if S.Get("waypointObjectives") then
+        events:RegisterEvent("QUEST_LOG_UPDATE")
+    else
+        events:UnregisterEvent("QUEST_LOG_UPDATE")
+    end
     if not driver then Build() end
     if C_Navigation.GetFrame() then Attach() else Detach() end
     if unlocked then nav.mover:Show() end
@@ -699,6 +783,8 @@ local function PaintPreview(preview, state)
     o.seconds = S.Get("waypointTime") and SAMPLE.seconds or nil
     o.shape, o.card, o.beam = S.Get("waypointShape"), S.Get("waypointCard"), S.Get("waypointBeam")
     o.mode, o.angle = state, 0
+    o.down = S.Get("waypointDownArrows")
+    o.objectives = S.Get("waypointObjectives") and ns.L("0/10 Highlands Bandit slain\n0/1 Badwind Bennic slain") or nil
     local sample = preview.pin
     sample:SetScale(S.Get("waypointScale"))
     sample:ClearAllPoints()
@@ -720,6 +806,12 @@ Settings.Page("QoL/Interface", S):Card({
     summary = Summary,
     studio = { height = STAGE_H, states = STATES, new = NewPreview, paint = PaintPreview },
     rows = {
+        { key = "waypointRestedXP", label = "Follow RestedXP", toggle = true,
+          help = "Uses your active RestedXP guide destination for the world pin." },
+        { key = "waypointObjectives", label = "Quest Objectives", toggle = true,
+          help = "Shows unfinished quest objectives above the destination." },
+        { key = "waypointDownArrows", label = "Downward Arrows", toggle = true,
+          help = "Adds three downward arrows pointing to the destination pin." },
         { key = "waypointShape", label = "Pin Shape", choice = SHAPE_CHOICES },
         { key = "waypointScale", label = "Pin Size", slider = SCALE_RANGE, unit = "%", scale = PERCENT_SCALE },
         { key = "waypointCard", label = "Name and Distance", toggle = true,

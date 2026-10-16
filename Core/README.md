@@ -361,6 +361,7 @@ Profile strings
   loaded here, and an export never writes to the profile it reads.
 
 Waypoints
+- Guide waypoints carry optional quest/objective context through the same map-open hold as other placements. `GuideWaypointIsCurrent` checks coordinates before a guide clears anything, so a manual replacement is preserved.
 - The game redraws the world map's waypoint pin inside every change to its waypoint, so while that
   map is open a change waits for it to close: made from addon code it would taint the pin and the
   game would block its Share.

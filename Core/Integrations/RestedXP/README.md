@@ -18,6 +18,7 @@ Core/Integrations/RestedXP/
   WindowModel.lua     what RestedXP shows, read as plain data for the window to draw
   Window.lua     the Naowh guide window: its frames, drawing, clicks and the look of the two small windows
   Icons.lua      Naowh's step icons, put in RestedXP's icon table as it loads
+  Waypoint.lua   optional current guide destination feed for the world pin
   Media/         the themes' arrow, frame and grip art (rxp_*.tga), drawn by Tools/media/make_media.py
   Media/Icons/   the step icons, line/ and filled/ (28 each), drawn by Tools/media/make_rxp_icons.py
 ```
@@ -353,3 +354,6 @@ Core/Integrations/RestedXP/
   loot all of them yet") has no bar and no icon: it has nothing to be open or done. RestedXP hides the icon of
   such a line but its frame keeps the text of the element it showed last, so an icon is only read from a
   frame that is shown (`IsShown() == false` is none); that is what put a question mark on it.
+
+- Follow RestedXP is a separate QoL > Interface > Waypoint Pin switch, independent of the theme/window. It hooks guide map/goto refreshes only after first enable, with no added polling. Only zone/map coordinates the native waypoint supports are forwarded; unsupported or world-only guide targets keep the original arrow.
+- The guide arrow's texture and text are faded while its destination is owned, with their original alpha restored on disable, manual replacement or missing guide. No RestedXP settings, frame scripts or guide completion state are changed.
