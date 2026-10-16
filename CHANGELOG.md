@@ -1,6 +1,21 @@
 # Changelog
 
-## Unreleased
+## 1.1.24
+
+### Added
+- Daily Word (QoL > Travel, or /nf word): guess the day's five-letter word in six tries. Everyone
+  gets the same word, which changes at the daily reset, and you can share your result in chat.
+- Waypoint Pin: optional RestedXP guide destinations, live quest objectives and downward arrows.
+
+### Changed
+- Flight Timer: the Land and Games buttons are now icon buttons, one per game (Quiz, Gridshot,
+  Hexakill, Reflex, Daily Word), so a game opens in one click.
+- The default Naowh theme is a little lighter: the window background, panels and borders. Theme
+  presets and your own custom colors are unchanged.
+
+### Fixed
+- Quiz and Flight Timer windows appear above reminder overlays.
+- Smart consumable macros and food/drink buttons skip items above your level.
 
 ## 1.1.23
 
