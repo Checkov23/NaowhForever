@@ -158,8 +158,12 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   short of Create, hence the Buy row's 4 overhang.
 - Bind on Equip also counts items that never bind (bindType 0): on the beta much crafted gear does not
   bind and still sells on the auction house.
-- Favourites are kept by spell ID, which is also a known recipe's recipeID. A known one is told to
-  the game too, so Blizzard's own favourites count; an unlearned one lives only in the profile.
+- Favourites are kept per character by spell ID, which is also a known recipe's recipeID. A known one
+  is told to the game too, so Blizzard's own favourites count; an unlearned one lives in the account
+  store under that character's name and realm. Each character starts from the former profile-wide
+  list the first time it loads, and that list stays in the profile for the others. Favourites and the
+  crafting queue are empty and unsaved while the game still names the player Unknown; once it names
+  them, the name and realm key is kept, as the favourite filter asks for it once per recipe.
 - Prices: a reagent costs its vendor price once a merchant was seen selling it, else the lowest buyout
   at the last scan; the auction house keeps 5% of a sale. Profit is cached per recipe until the next
   full draw, so scrolling and the filter do not price every recipe again. Reagents unchecked in the
@@ -246,8 +250,9 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   listens to bag changes and level ups only while it shows. The plan tells it of every list change
   (`Shopping.OnChange`); changes and bag updates redraw at most once a frame and only rewrite the rows'
   amounts and counts, while opening, a level up, the toggle and items loading pick the rows again.
-- A starred pick is a favourite: it moves out of its kind into Favorites at the top, in kind order. Favourites
-  are kept in the profile by item ID (`shopFavorites`), like the favourite recipes. Only what the picker
+- A starred pick is a favourite: it moves out of its kind into Favorites at the top, in kind order.
+  Favourites are kept in the profile by item ID (`shopFavorites`), unlike the per-character recipe
+  favourites. Only what the picker
   offers can show there, so a favourite the class filter or your level leaves out stays hidden until it is
   offered again.
 - The search box above the list keeps the rows whose name holds what is typed, any case. Typing and a star

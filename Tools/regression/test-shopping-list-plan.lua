@@ -14,8 +14,9 @@ local profSettings = {}
 local recipes, cooldownBase, cooldownLeft, dayCooldown = {}, {}, {}, {}
 local ALCHEMY, MINING, TAILORING = 171, 186, 197
 local openProf, myLines = ALCHEMY, { ALCHEMY, MINING }
+local playerName = "Grim"
 local env = {
-    UnitName = function() return "Grim" end,
+    UnitName = function() return playerName end,
     GetRealmName = function() return "Realm" end,
     wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
     C_Item = { GetItemNameByID = function(id) return "item" .. id end, RequestLoadItemDataByID = function() end },
@@ -78,6 +79,15 @@ local function Only(t, item, qty)
     return t[item] == qty
 end
 local function Empty(t) return next(t) == nil end
+
+Craft(9, { [ORE] = 1 })
+playerName = "Alt"
+check("another character starts with an empty Shopping List", Empty(SL.List()))
+Craft(8, { [BAR] = 1 })
+check("the second character has an independent Shopping List", SL.List()[8] and not SL.List()[9])
+playerName = "Grim"
+check("switching back restores the first character's Shopping List", SL.List()[9] and not SL.List()[8])
+SL.Clear()
 
 -- Making is cheaper: the ore is bought, the bars made first.
 Reset(); Learned({ [BAR] = SMELT }); Craft(10, { [BAR] = 20 })

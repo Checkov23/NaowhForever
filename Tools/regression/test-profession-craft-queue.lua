@@ -11,6 +11,7 @@ local openProfession = 1
 local protectedOpenCalls = 0
 local settings = { enabled = true, shoppingList = true, craftQueue = false }
 local settingChanged
+local playerName = "Tester"
 
 local function Wipe(t) for key in pairs(t) do t[key] = nil end return t end
 local function CreateFrame()
@@ -123,11 +124,12 @@ local env = setmetatable({
     ProfessionsFrame = professionsFrame,
     CreateFrame = CreateFrame,
     GetRealmName = function() return "Realm" end,
-    UnitName = function() return "Tester" end,
+    UnitName = function() return playerName end,
     hooksecurefunc = function(_, name, fn)
         if name == "CraftRecipe" then craftHook = fn elseif name == "Apply" then applyHook = fn end
     end,
     InCombatLockdown = function() return false end,
+    UNKNOWNOBJECT = "Unknown",
     wipe = Wipe,
 }, { __index = _G })
 env._G = env
@@ -299,5 +301,26 @@ settings.craftQueue = true
 applyHook()
 assert(shoppingAdds[100] == 1, "turning the queue back on through a profile did not restore its demand")
 queue.Clear()
+
+queue.Add(tradeSkill.GetRecipeInfo(100), 1)
+playerName = "Alt"
+Load({ "NaowhForever_Professions/CraftQueue.lua" }, env)
+local alt = ns.Professions.CraftQueue
+assert(next(alt.List().crafts) == nil and next(alt.List().prerequisites) == nil,
+    "another character inherited the first character's crafting queue")
+alt.Add(tradeSkill.GetRecipeInfo(101), 1)
+assert(alt.List().crafts[101] and not alt.List().crafts[100],
+    "the second character did not get an independent crafting queue")
+assert(queue.List().crafts[100] and not queue.List().crafts[101],
+    "the first character's crafting queue changed with the second character's")
+
+playerName = "Unknown"
+Load({ "NaowhForever_Professions/CraftQueue.lua" }, env)
+local unknown = ns.Professions.CraftQueue
+unknown.Add(tradeSkill.GetRecipeInfo(101), 1)
+assert(account.profCraftQueue["Unknown-Realm"] == nil, "the queue was saved under an unknown character")
+playerName = "Late"
+assert(next(unknown.List().crafts) == nil and account.profCraftQueue["Late-Realm"],
+    "the queue did not pick up the character once its name was known")
 
 print("Crafting queue regression test: PASS")

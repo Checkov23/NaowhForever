@@ -12,7 +12,6 @@ local V = P.Vendors
 local MAX_DEPTH = 4
 local PLAN_VERSION = 2
 local QUEUE_DELAY = C.QUEUE_DELAY
-local TEXT_UNKNOWN = "?"
 local TEXT_NOTHING = ns.L("Nothing in the crafting queue can be crafted with the materials in your bags.")
 local TEXT_OPEN_REQUIRED = ns.L("Open the required profession manually, then click Craft Next again.")
 local EMPTY = {}
@@ -40,11 +39,13 @@ local function ShoppingOn()
 end
 
 local function Mine()
+    if not ownerKey then
+        local name, realm = UnitName("player"), GetRealmName()
+        if not name or name == _G.UNKNOWNOBJECT or not realm then return { prerequisites = {}, crafts = {} } end
+        ownerKey = name .. "-" .. realm
+    end
     local account = ns.AccountSettings()
     if type(account.profCraftQueue) ~= "table" then account.profCraftQueue = {} end
-    if not ownerKey then
-        ownerKey = (UnitName("player") or TEXT_UNKNOWN) .. "-" .. (GetRealmName() or TEXT_UNKNOWN)
-    end
     local mine = account.profCraftQueue[ownerKey]
     if type(mine) ~= "table" then
         mine = { prerequisites = {}, crafts = {} }
