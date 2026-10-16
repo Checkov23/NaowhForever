@@ -14,10 +14,12 @@ local PLAN_VERSION = 2
 local QUEUE_DELAY = C.QUEUE_DELAY
 local TEXT_NOTHING = ns.L("Nothing in the crafting queue can be crafted with the materials in your bags.")
 local TEXT_OPEN_REQUIRED = ns.L("Open the required profession manually, then click Craft Next again.")
+local TEXT_REQUIRES = ns.L("Requires: %s")
 local EMPTY = {}
 local BUCKET_ORDER = { true, false }
 local APPLY_KEYS = { enabled = true, shoppingList = true, craftQueue = true }
 local orderedEntries = {}
+local unmetNames = {}
 
 local Queue = {}
 P.CraftQueue = Queue
@@ -266,9 +268,16 @@ local function CanCraft(entry)
     if okCooldown and cooldown and cooldown > 0 then return false end
     local okRequirements, requirements = pcall(C_TradeSkillUI.GetRecipeRequirements, entry.recipeID)
     if okRequirements and requirements then
+        local unmet = false
+        wipe(unmetNames)
         for _, requirement in ipairs(requirements) do
-            if requirement.met == false then return false end
+            if requirement.met == false then
+                unmet = true
+                if requirement.name then unmetNames[#unmetNames + 1] = requirement.name end
+            end
         end
+        if #unmetNames > 0 then return false, table.concat(unmetNames, ", ") end
+        if unmet then return false end
     end
     return true
 end
@@ -372,13 +381,15 @@ function PrepareNext()
     if not running then return end
     local entries = Ordered()
     if #entries == 0 then return Stop() end
-    local chosen
+    local chosen, blockedRequirement
     for _, entry in ipairs(entries) do
-        if CanCraft(entry) then chosen = entry break end
+        local canCraft, requirement = CanCraft(entry)
+        if canCraft then chosen = entry break end
+        blockedRequirement = blockedRequirement or requirement
     end
     if not chosen then
         Stop()
-        return ns.Print(TEXT_NOTHING)
+        return ns.Print(blockedRequirement and TEXT_REQUIRES:format(blockedRequirement) or TEXT_NOTHING)
     end
     local count = tonumber(chosen.count) or 1
     active = { recipeID = chosen.recipeID, prerequisite = chosen.prerequisite,

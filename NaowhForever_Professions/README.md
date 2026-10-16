@@ -220,6 +220,9 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   Shopping List. Start Queue only selects the next ready entry, and each Craft Next hardware click starts
   one batch because Blizzard does not allow automated profession opening or unattended crafting. The
   window stays open when the profession window closes.
+- When every queued craft is blocked, the queue reads the game's unmet recipe requirements and names
+  missing tools and locations, such as a Blacksmith Hammer or Forge. The generic material warning is
+  used only when no recipe requirement explains the block.
 - The queue's Shopping List demand is derived: every finished craft and bag change during a run re-syncs
   it, so a crafted queue leaves nothing behind. A row's +/- on the Shopping List changes only your own
   count on top of the queue's, and X takes the row off, the queued craft included. The next entry is

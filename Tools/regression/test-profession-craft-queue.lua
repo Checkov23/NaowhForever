@@ -11,6 +11,8 @@ local openProfession = 1
 local protectedOpenCalls = 0
 local settings = { enabled = true, shoppingList = true, craftQueue = false }
 local settingChanged
+local printed
+local recipeRequirements = {}
 local playerName = "Tester"
 
 local function Wipe(t) for key in pairs(t) do t[key] = nil end return t end
@@ -36,7 +38,7 @@ local tradeSkill = {
         return { recipeID = id, name = name, icon = id, learned = true }
     end,
     GetRecipeCooldown = function() return nil end,
-    GetRecipeRequirements = function() return {} end,
+    GetRecipeRequirements = function() return recipeRequirements end,
     CraftRecipe = function(id, count)
         crafts[#crafts + 1] = { id = id, count = count }
         if craftHook then craftHook(id, count) end
@@ -58,7 +60,7 @@ local reagents = {
 local ns
 ns = {
     L = function(text) return text end,
-    Print = function() end,
+    Print = function(text) printed = text end,
     AccountSettings = function() return account end,
     Professions = {
         Settings = {
@@ -285,6 +287,19 @@ assert(ns.Professions.State.selectedID == 300 and #crafts == craftedBefore2 + 1,
     "Craft Next did not craft once the right profession was open")
 queue.Clear()
 openProfession = 1
+
+inventory[2000] = 1
+recipeRequirements = {
+    { name = "Forge", met = false },
+    { name = "Blacksmith Hammer", met = false },
+}
+queue.Add(tradeSkill.GetRecipeInfo(101), 1)
+queue.Click()
+assert(printed == "Requires: Forge, Blacksmith Hammer",
+    "an unmet tool or location reported the missing-material message")
+assert(not queue.Running(), "a queue blocked by a tool or location remained stuck as running")
+recipeRequirements = {}
+queue.Clear()
 
 queue.Add(tradeSkill.GetRecipeInfo(100), 1)
 Wipe(shoppingAdds)
