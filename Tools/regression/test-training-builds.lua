@@ -22,7 +22,7 @@ local SPELL_NAMES = { [133] = "Fireball", [143] = "Fireball", [145] = "Fireball"
 
 local function Fixture(o)
     o = o or {}
-    local account, printed, changes = {}, {}, 0
+    local account, printed, changes = o.account or {}, {}, 0
     local bought, commits = {}, 0
     -- A stand-in codec: what goes into the payload and what comes back out is the point here.
     local vault = {}
@@ -345,6 +345,20 @@ Case("the skip list goes with an export, an import and a copy, and only the clas
     assert(copy.skip[1953] and copy.skip ~= build.skip, "a copy has its own list")
 end)
 
+Case("a saved build drops the talents the game took out of the tree, the rest kept in order", function()
+    local t = Fixture({ account = { trainingBuilds = { [8] = {
+        { name = "Old", spec = "Fire", points = { 13, 99, 13, 15, 98 }, saved = true },
+        { name = "Gone", spec = "Fire", points = { 99 }, saved = true },
+        { name = "Fine", spec = "Fire", points = { 15 }, saved = true },
+    } } } })
+    assert(#t.T.Builds(8) == 4, "Naowh's and the three saved")
+    local old, gone, fine = t.Saved(8)[1], t.Saved(8)[2], t.Saved(8)[3]
+    assert(table.concat(old.points, " ") == "13 13 15" and old.spec == "Arcane", table.concat(old.points, " "))
+    assert(#gone.points == 0 and gone.spec == "No points yet", "nothing left")
+    assert(fine.points[1] == 15 and fine.spec == "Fire", "a build that fits is left alone")
+    assert(t.T.CheckBuild(TREE[8], old.points) == nil, "what is left still passes")
+end)
+
 Case("every class has its tree, and any build that ships passes the rules", function()
     local data = assert(io.open(DIR .. "/Data/TrainingBuilds.lua", "rb")):read("*a")
     local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
@@ -352,6 +366,15 @@ Case("every class has its tree, and any build that ships passes the rules", func
     local t, classes = Fixture(), 0
     for class, tree in pairs(ns.TrainingBuilds) do
         assert(#tree.specs == 3 and next(tree.talents), "specs and talents " .. class)
+        for node, talent in pairs(tree.talents) do
+            local where = class .. " " .. node
+            assert(talent[1] > 0 and talent[2] >= 1 and talent[2] <= 5, "spell and ranks " .. where)
+            assert(talent[3] >= 1 and talent[3] <= 7 and talent[4] >= 1 and talent[4] <= 3
+                and talent[5] >= 1 and talent[5] <= 4, "in the grid " .. where)
+            local need = talent[6] and tree.talents[talent[6]]
+            assert(not talent[6] or (need and need[4] == talent[4] and need[3] <= talent[3]),
+                "needs one above it in its tree " .. where)
+        end
         for _, build in ipairs(tree) do
             local why = t.T.CheckBuild(tree, build.points)
             assert(why == nil and #build.points > 0, class .. " " .. build.name .. ": " .. tostring(why))

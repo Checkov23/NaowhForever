@@ -62,6 +62,7 @@ purpose.
 | Tool | What it does | Why |
 | --- | --- | --- |
 | `training_weapons.py` | Builds `NaowhForever_Training/Data/TrainingWeapons.lua`: the weapon skills each class can learn and the weapon masters that teach them, from the masters' Wowhead Forever NPC pages (cached in `data/training_weapons_cache.json`), with the level a class may learn one at from the game's tables (via `wago.py`). | Wowhead's class lists leave the weapon skills out. |
+| `training_builds.py` | Builds `NaowhForever_Training/Data/TrainingBuilds.lua`: each class's talent trees, every talent's first rank spell, ranks, row, tree, column and the talent it needs, from the game's own talent tables (TraitNode, TraitNodeEntry, TraitDefinition, TraitEdge, via `wago.py`). Talents the game parks outside the grid are left out. Run it again when a patch changes a tree. | The planner shows and checks every class's tree, and builds imported from naowh.gg carry these node IDs, so they must match the game. |
 | `training.py` | Builds `NaowhForever_Training/Data/TrainingData.lua`: every spell each class learns from a trainer or a quest, with its level, base price, the rank before it, the talent it needs and its races. Spells, levels and prices from Wowhead Forever's class lists (cached in `data/training_cache.json`), talents from the game's tables (via `wago.py`). | The client has no list of what a trainer will teach you later, nor its prices. The addon updates a price from the trainer window once you open it. |
 
 ## build/: Completo

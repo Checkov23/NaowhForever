@@ -38,11 +38,31 @@ local TEXT_RESET_ASK = ns.L("Your talent points were refunded. Learn %s again?")
 local TEXT_LEARN_AGAIN, TEXT_STOP_FOLLOW = ns.L("Learn Again"), ns.L("Stop Following")
 
 local learning, asking = false, false
+local pruned = {}
+local MainSpec
 
 local function Saved(classID)
     local all = Account("trainingBuilds")
-    all[classID] = all[classID] or {}
-    return all[classID]
+    local list = all[classID] or {}
+    all[classID] = list
+    local tree = ns.TrainingBuilds[classID]
+    if tree and not pruned[classID] then
+        pruned[classID] = true
+        for _, build in ipairs(list) do
+            local points, kept = build.points, 0
+            for i = 1, #points do
+                if tree.talents[points[i]] then
+                    kept = kept + 1
+                    points[kept] = points[i]
+                end
+            end
+            if kept < #points then
+                for i = #points, kept + 1, -1 do points[i] = nil end
+                build.spec = MainSpec(tree, points)
+            end
+        end
+    end
+    return list
 end
 
 function Training.Builds(classID)
@@ -157,7 +177,7 @@ function Training.CheckBuild(tree, points)
     end
 end
 
-local function MainSpec(tree, points)
+MainSpec = function(tree, points)
     local spent, best = {}, nil
     for _, node in ipairs(points) do
         local col = tree.talents[node][NODE_COLUMN]
