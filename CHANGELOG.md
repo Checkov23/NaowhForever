@@ -1,12 +1,61 @@
 # Changelog
 
-## Unreleased
+## 1.1.25
+
+### Added
+- German: the Crafting Queue, the Class Buff Tracker, the Trainable tab and the other new parts up
+  to 1.1.23 now show in German on German clients.
+- Healer Mana: Growth Direction (Centred, Down or Up) under Size, so the list can grow down or up
+  from where you placed it.
+- Professions: optional gold stars mark favorite unlearned recipes at open trainers and merchants.
+- Professions: drag Crafting Queue rows to choose their order within each section.
+- Professions: Favorite Patterns now highlights recipes the current character can learn immediately.
+- BiS List: your third pick has a copper star, next to your BiS's orange and your second pick's
+  silver.
+- Action Bars: Import Website Code brings in a bar layout from naowh.gg, with its macros and
+  keybinds; the Profiles Import box takes it too.
+- Fonts: a new Slug Outline choice in every Outline setting, for a smoother outline than Outline.
+- Flight Games that open by themselves have an eye icon by their close button to stop them opening
+  on flights, without going to the settings.
+- Zone Info in QoL > Map & Pins, with pinned zone details, Journal and waypoint shortcuts,
+  profession requirements and an optional current-zone panel.
+- An optional On-map Summary layout and Map Text Only preset for zone information directly on the
+  map.
 
 ### Changed
 - Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70425: 5 faction rewards changed
   (quality, item levels, required levels).
 - Naowh Score: refitted to the latest Forever items.
 - Dungeon Journal: drop chances updated from Wowhead's latest kill counts.
+- Naowh skin: compact segmented tabs highlight the selected page with a blue outline, fill and
+  diamond.
+- Naowh skin: settings and windows use dark solid charcoal backgrounds with darker sidebar and
+  preview areas.
+- Settings cards: restored outlines and dividers between sections, rows and paired controls.
+- Naowh settings: removed lines between related options while keeping category and card dividers.
+- AuraBuffs: the Class Buff Tracker shows only the buffs you are missing, so a buff's icon goes away
+  once it is up and comes back when it drops (out of combat; in combat the row stays as it was).
+
+### Fixed
+- German: the settings search, Undo reset, Keep My Positions in the profile import and a few help
+  texts no longer stay English.
+- Professions: changing characters no longer carries over the previous character's Crafting Queue,
+  Shopping List demand, or recipe favorites.
+- Professions: the Crafting Queue now names missing recipe tools and locations instead of
+  incorrectly reporting missing materials.
+- Trainer Popup automatically checks for lower ranks after a trainer visit without requiring Check
+  Bars.
+- Consumable Bar, Food & Drink Bar and Action Bars: keys bound to a mouse button show short, like M4
+  or SM5, instead of "Mouse Button 4".
+- The addon's keybind fields now take the middle mouse button and mouse buttons 4 and 5, with Shift,
+  Ctrl or Alt.
+- Flight Point Reminder: on Zephras Isle it no longer keeps asking you to open a flight master's map
+  after you have.
+- BiS List: an item's tooltip no longer repeats its rank ("#3 #3 on your BiS list").
+- Restock Reminder no longer asks rogues and warriors to restock permanent, non-stackable thrown
+  weapons.
+- Modules: ticking the Combat or Utilities addon in the AddOns list with all of its modules off
+  turns its default modules on instead of switching it back off after a reload.
 
 ## 1.1.24
 
