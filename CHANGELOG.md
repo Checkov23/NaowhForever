@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## 1.1.26
+
+### Fixed
+- BiS List: opening a list from the dropdown no longer lands on an empty spec tab when its picks are
+  under another spec.
+- BiS List: hovering a gear slot on the Quests tab no longer errors.
 
 ## 1.1.25
 
