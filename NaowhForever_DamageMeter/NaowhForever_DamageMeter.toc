@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Damage Meter
 ## Notes: Damage, healing and more for your group, from the game's own damage meter data.
 ## Author: Naowh
-## Version: 1.1.26
+## Version: 1.1.27
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga

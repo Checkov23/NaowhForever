@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## 1.1.27
+
+### Fixed
+- Training Planner: the Warrior, Priest, Shaman, Mage, Paladin and Warlock talent trees match the
+  game again, so builds from naowh.gg import for every class.
+- Training Planner: a saved build with a talent the game removed no longer errors; that talent is
+  dropped and the rest of the build is kept.
 
 ## 1.1.26
 
