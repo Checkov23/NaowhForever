@@ -128,6 +128,14 @@ local function SwitchSpec(key)
     return list
 end
 
+local function OpenOnPicks(list)
+    if next(list.slots) or not list.bySpec then return end
+    for _, spec in ipairs(R.ClassSpecs()) do
+        local picks = list.bySpec[spec.key]
+        if picks and next(picks.slots) then return SwitchSpec(spec.key) end
+    end
+end
+
 local function Rebuild()
     lookup = {}
     local list = List()
@@ -249,6 +257,7 @@ function ns.SelectBisList(id)
     for _, l in ipairs((ClassLists()).lists) do
         if l.id == id then
             Use(l)
+            OpenOnPicks(List())
             return Changed()
         end
     end

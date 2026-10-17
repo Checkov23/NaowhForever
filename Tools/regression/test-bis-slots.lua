@@ -449,6 +449,24 @@ Case("switching spec swaps the picks but keeps the list's name", function()
     assert(Picks(e, 1) == "103", "fire's picks came back")
 end)
 
+Case("opening a list left on an empty spec shows the spec that has its picks", function()
+    local e = Fixture()
+    assert(e.ns.NewBisList("A"))
+    e.ns.AddBisPick(1, 103)
+    e.ns.SetBisSpec("frost-mage")
+    assert(e.ns.NewBisList("B"))
+    local a = e.ns.BisListChoices()
+    for id, name in pairs(a) do
+        if name == "A" then e.ns.SelectBisList(id) end
+    end
+    assert(Saved(e).name == "A" and Picks(e, 1) == "103", "A opens on fire, with its pick")
+    e.ns.SetBisSpec("frost-mage")
+    for id, name in pairs(e.ns.BisListChoices()) do
+        if name == "B" then e.ns.SelectBisList(id) end
+    end
+    assert(Saved(e).name == "B" and Picks(e, 1) == "", "a list with no picks anywhere stays where it is")
+end)
+
 Case("a moved list whose name is taken gets a free one", function()
     local e = Fixture({ ["Tester-Realm"] = { name = "Raid", slots = {} } })
     e.account.bisLists = { MAGE = { lists = { { id = 1, name = "raid", slots = {}, extra = {} } }, nextID = 2 } }
