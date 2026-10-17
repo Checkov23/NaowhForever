@@ -168,7 +168,7 @@ end
 
 local function DollHover(slot)
     view:Light(slot)
-    if slot then view:ScrollTo(slot) end
+    if slot and page == "list" then view:ScrollTo(slot) end
 end
 
 local function DollClicked(slot, button)

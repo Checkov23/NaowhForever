@@ -848,6 +848,10 @@ questsOff.onLink(questsOff.linkArg)
 check("the link turns the Dungeon Journal on", state.turnedOn == "NaowhForever_DungeonJournal")
 view:Redraw()
 check("and a redraw keeps that page", SectionIn(view, "Quests for your BiS") ~= nil)
+local listParent = view:GetParent()
+view.parent = nil
+check("hovering a slot on the Quests page has no list to scroll", pcall(head.scripts.OnEnter, head))
+view.parent = listParent
 window.pages.onPick("list")
 check("Run next asks for it for each dungeon's levels and quests", SectionIn(view, "Run next")
     and NoteIn(view, "each dungeon's levels and quests"))
