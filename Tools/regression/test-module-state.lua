@@ -128,6 +128,18 @@ do
 end
 
 do
+    local w = Game({ qol = { gearSets = false, blessings = false }, auraBuffs = { enabled = false },
+        threatMeter = { enabled = false }, pvp = { enabled = false }, swingTimer = { enabled = false } })
+    w.ns.ReconcileModules()
+    w.enabled[COMBAT] = true
+    check("the Combat addon ticked by hand with every module off: the modules on by default come on, not the rest",
+        w.ns.ReconcileModules() == 0 and w.enabled[COMBAT] and w.On("gearSets") and w.On("blessings")
+        and w.On("auraBuffs") and w.On("threatMeter") and w.On("swingTimer") and not w.On("pvp")
+        and #w.reloads == 1)
+    check("and it stays on at the next check", w.ns.ReconcileModules() == 0 and w.enabled[COMBAT])
+end
+
+do
     local w = Game({ qol = { groupInspect = true }, macros = { enabled = false } })
     check("a Utilities module its profile turns off: its switch only, the Utilities addon stays for the rest",
         w.ns.ReconcileModules() == 0 and w.enabled[UTILITIES] and #Writes(w) == 0 and not w.On("macros")
