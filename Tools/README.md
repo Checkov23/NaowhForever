@@ -96,6 +96,7 @@ purpose.
 | `spell_efficiency.py` | Builds `NaowhForever_QoL/Interface/SpellEfficiencyData.lua`: every class spell rank that costs mana and heals or deals damage, its amounts (base, per level, bonus coefficient, ticks), level and school, from the game's spell tables (wago.tools). Also each spell's talent mods (percent talents by rank, Illumination, Elemental Focus), read through the talent nodes in `NaowhForever_Training/Data/TrainingBuilds.lua`. Spells whose amount is elsewhere (weapon, proc, script) are left out; area triggers (Blizzard, Consecration) and Holy Shock are read from the spell their description names. Run it again when `wago.BUILD` moves on. | QoL's Mana Efficiency, without reading tooltip text. |
 | `pvp_auras.py` | Builds `NaowhForever_Combat/PvP/Data/Spells.lua`: PvP Auras' crowd control and debuff spell IDs, from the game's spell tables (wago.tools). | Forever's classic spells carry no aura flags to filter by. |
 | `skill_thresholds.py` | Writes each recipe's yellow and grey skill into `NaowhForever_Professions/Data/RecipeData.lua`, from the game's `SkillLineAbility` table (wago.tools); `--csv` reads a saved copy instead. Run it again when `wago.BUILD` moves on, or after adding recipes. | The Professions Skill-up Thresholds bar. |
+| `vendor_spots.py` | Builds `NaowhForever_Professions/Data/VendorSellers.lua`: the unlimited-stock sellers on Wowhead Classic for each vendor reagent, limited to NPC names already in the addon's Forever-adjusted town data. Cached in `data/vendor_sellers.json`; `--offline` rebuilds without Wowhead. | Shopping List vendor pins work before visiting a merchant and need no other addon at runtime. |
 | `presets.lua` | Writes `Core/Profiles/Presets.lua`, the setups a player can start from, one preset at a time: `lua5.1 Tools/build/presets.lua minimalist Tools/data/preset_minimalist.lua Naowh` (and `recommended`). | Naowh's two setups, kept in `data/` and rebuilt from there. |
 | `search_index.lua` | Writes `NaowhForever_SearchIndex/SearchIndex.lua`, every module page's search entries, by running every addon file against stubs: `lua5.1 Tools/build/search_index.lua`. Git keeps an empty placeholder; the release and package workflows build the real one over it before packaging, and `test-search-index-build.lua` checks it builds. | A turned-off module never loads, so the search reads its settings from here. |
 
@@ -181,4 +182,4 @@ purpose.
   machines, by hand: `build/quest_chains.py`,
   `build/bis_spots.py`, `build/enchants.py`, `build/bis_quests.py`, `build/abilities.py`,
   `build/boss_quests.py`, the Completo and town map builders that read Wowhead, and
-  `build/forever_new.py`.
+  `build/forever_new.py`, `build/vendor_spots.py`.

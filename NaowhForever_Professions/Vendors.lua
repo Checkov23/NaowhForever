@@ -8,8 +8,13 @@ local Text = P.Text
 
 local UNLIMITED = -1
 local CLASS_INDEX = 12
+local PERCENT = 100
+local PLAYER, NPC = "player", "npc"
+local SPOT_NAME, SPOT_MAP, SPOT_X, SPOT_Y, SPOT_SIDE = 1, 2, 3, 4, 5
+local TOWN_X, TOWN_Y, TOWN_NAME, TOWN_SIDE = 1, 2, 4, 7
 local TEXT_TOO_DEAR = ns.L("Buy at Vendor: that costs %s, more than you have.")
 local TEXT_BOUGHT = ns.L("Bought %s for %s.")
+local TEXT_NO_VENDOR = ns.L("Visit a vendor that sells this item to remember its location.")
 local TEXT_PART = "%dx %s"
 local MERCHANT_EVENTS = { "MERCHANT_SHOW", "MERCHANT_UPDATE", "MERCHANT_CLOSED" }
 local MERCHANT_KEYS = { enabled = true, shoppingList = true, shoppingVendor = true, vendorMaterials = true,
@@ -19,6 +24,7 @@ local WAIT_EVENTS = { "BAG_UPDATE_DELAYED", "UI_ERROR_MESSAGE" }
 local merchant
 local shoppingList, shoppingPool, buyList, buyPool, buyParts = {}, {}, {}, {}, {}
 local expected, counted = {}, {}
+local townSpots
 local waiting = false
 
 local function LearnedVendorItems()
@@ -35,6 +41,110 @@ local function VendorPrices()
     local account = ns.AccountSettings()
     account.profVendorPrices = account.profVendorPrices or {}
     return account.profVendorPrices
+end
+
+local function LearnedSpots()
+    local account = ns.AccountSettings()
+    account.profVendorSpots = account.profVendorSpots or {}
+    return account.profVendorSpots
+end
+
+local function TownSpots()
+    if townSpots then return townSpots end
+    townSpots = {}
+    local wanted = {}
+    for _, name in ipairs(P.VendorSellerNames or {}) do wanted[name] = true end
+    for map, npcs in pairs(ns.TownNPCs or {}) do
+        for _, npc in ipairs(npcs) do
+            local name = npc[TOWN_NAME]
+            if wanted[name] then
+                local spots = townSpots[name]
+                if not spots then spots = {}; townSpots[name] = spots end
+                spots[#spots + 1] = { name, map, npc[TOWN_X], npc[TOWN_Y], npc[TOWN_SIDE] }
+            end
+        end
+    end
+    return townSpots
+end
+
+local function MerchantSpot()
+    if not (UnitName and C_Map and C_Map.GetBestMapForUnit and C_Map.GetPlayerMapPosition) then return end
+    local name = UnitName(NPC)
+    if name and issecretvalue and issecretvalue(name) then name = nil end
+    local map = C_Map.GetBestMapForUnit(PLAYER)
+    local position = map and C_Map.GetPlayerMapPosition(map, PLAYER)
+    if not (name and position) then return end
+    local x, y = position:GetXY()
+    return name, map, x * PERCENT, y * PERCENT, UnitFactionGroup and UnitFactionGroup(PLAYER)
+end
+
+local function RememberSpot(itemID, name, map, x, y, side)
+    if not name then return end
+    local byItem = LearnedSpots()
+    local sellers = byItem[itemID]
+    if not sellers then sellers = {}; byItem[itemID] = sellers end
+    for _, seller in ipairs(sellers) do
+        if seller[SPOT_NAME] == name and seller[SPOT_MAP] == map and seller[SPOT_SIDE] == side then
+            seller[SPOT_X], seller[SPOT_Y] = x, y
+            return
+        end
+    end
+    sellers[#sellers + 1] = { name, map, x, y, side }
+end
+
+local function WorldPosition(map, x, y)
+    local ok, continent, position = pcall(C_Map.GetWorldPosFromMapPos, map, CreateVector2D(x, y))
+    if ok and continent and position then return continent, position end
+end
+
+local function SpotDistance(spot, continent, position)
+    if not (continent and position) then return math.huge end
+    local spotContinent, spotPosition = WorldPosition(spot[SPOT_MAP],
+        spot[SPOT_X] / PERCENT, spot[SPOT_Y] / PERCENT)
+    if spotContinent ~= continent then return math.huge end
+    local x1, y1 = position:GetXY()
+    local x2, y2 = spotPosition:GetXY()
+    return (x1 - x2) ^ 2 + (y1 - y2) ^ 2
+end
+
+local function SameSide(side, faction)
+    return side == "AH" or side == faction or faction == "Alliance" and side == "A"
+        or faction == "Horde" and side == "H"
+end
+
+local function NearestVendor(itemID)
+    local map = C_Map.GetBestMapForUnit(PLAYER)
+    local here = map and C_Map.GetPlayerMapPosition(map, PLAYER)
+    local continent, position
+    if here then continent, position = WorldPosition(map, here:GetXY()) end
+    local side = UnitFactionGroup(PLAYER)
+    local nearest, distance
+    local function Consider(seller)
+        if SameSide(seller[SPOT_SIDE], side) then
+            local candidate = SpotDistance(seller, continent, position)
+            if not nearest or candidate < distance or candidate == distance
+                and seller[SPOT_NAME] < nearest[SPOT_NAME] then
+                nearest, distance = seller, candidate
+            end
+        end
+    end
+    local names = P.VendorSellerNames or {}
+    local spots = TownSpots()
+    for _, index in ipairs((P.VendorSellers or {})[itemID] or {}) do
+        for _, seller in ipairs(spots[names[index]] or {}) do Consider(seller) end
+    end
+    for _, seller in ipairs(LearnedSpots()[itemID] or {}) do Consider(seller) end
+    return nearest
+end
+
+local function VendorWaypoint(itemID)
+    local seller = NearestVendor(itemID)
+    if not seller then
+        ns.Print(TEXT_NO_VENDOR)
+        return false
+    end
+    if not ns.PlaceWaypoint then return false end
+    return ns.PlaceWaypoint(seller[SPOT_NAME], seller[SPOT_MAP], seller[SPOT_X], seller[SPOT_Y])
 end
 
 local function MerchantInfo(i)
@@ -56,6 +166,8 @@ local function ScanMerchant()
     local learn, price = S.Get("vendorMaterials") or shopping, S.Get("craftProfit") or shopping
     if not (learn or price) then return end
     local learned, prices = LearnedVendorItems(), VendorPrices()
+    local spotName, spotMap, spotX, spotY, spotSide
+    if shopping then spotName, spotMap, spotX, spotY, spotSide = MerchantSpot() end
     for i = 1, GetMerchantNumItems() do
         local itemID = GetMerchantItemID(i)
         local cost, stack, available, extended = MerchantInfo(i)
@@ -63,6 +175,7 @@ local function ScanMerchant()
             and select(CLASS_INDEX, C_Item.GetItemInfo(itemID)) == Enum.ItemClass.Tradegoods then
             if learn then learned[itemID] = true end
             if price then prices[itemID] = cost / math.max(stack or 1, 1) end
+            if shopping then RememberSpot(itemID, spotName, spotMap, spotX, spotY, spotSide) end
         end
     end
 end
@@ -256,6 +369,7 @@ P.Vendors = {
     ShoppingNeeds = ShoppingNeeds,
     BuyShoppingItem = BuyShoppingItem,
     BuyShoppingAll = BuyShoppingAll,
+    VendorWaypoint = VendorWaypoint,
     Waiting = Waiting,
 }
 

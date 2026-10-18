@@ -4,6 +4,7 @@
     <Script file="Constants.lua"/>
     <Script file="Data\RecipeData.lua"/>
     <Script file="Data\VendorReagents.lua"/>
+    <Script file="Data\VendorSellers.lua"/>
     <Script file="Data\CooldownRecipes.lua"/>
     <Script file="Data\ConsumableItems.lua"/>
     <Script file="Text.lua"/>

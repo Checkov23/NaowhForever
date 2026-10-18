@@ -10,6 +10,7 @@ local S = P.Settings
 local Shopping = P.Shopping
 local Text = P.Text
 local Style = P.Style
+local V = P.Vendors
 local Widgets = P.Widgets
 
 local PAGE = "Professions/Settings"
@@ -34,6 +35,7 @@ local ROW_X = 2
 local CLEAR_W, CLEAR_H = 80, 24
 local SMALL_BUTTON = 16
 local STEP_GAP, MINUS_GAP = 6, 2
+local PIN_GAP = 4
 local MAKE_W, KEEP_W = 40, 34
 local SUMMARY_SIZE = 12
 local EVENTS = { "BAG_UPDATE_DELAYED" }
@@ -73,6 +75,7 @@ local TIP_QTY, TIP_QTY_HELP = ns.L("How Many"), ns.L("How many of the item to ad
 local TIP_ADD_HELP = ns.L("Puts that many of the item on the list.")
 local TEXT_CONSUMABLES = ns.L("Consumables")
 local TIP_CONSUMABLES_HELP = ns.L("Picks food, flasks, elixirs and more for your class to buy.")
+local TIP_VENDOR_WAYPOINT = ns.L("Sets a waypoint to the nearest known vendor for this material.")
 
 local window, side, scroll, input, qty, empty, total, clear, picker, pickerFullWidth, events
 local crafts, craftPool, items, itemPool, madeList, madePool = {}, {}, {}, {}, {}, {}
@@ -274,13 +277,22 @@ local function DrawMaterials(materials, plan, y)
     return y
 end
 
+local function OnVendorWaypoint(button)
+    if button.item then V.VendorWaypoint(button.item) end
+end
+
 local function DrawVendorMaterials(materials, y)
     if #materials > 0 then y = PlaceHead(heads.vendor, y - SECTION_GAP) end
     local pool = pools.vendor
     for i, m in ipairs(materials) do
         local row = SideRow(pool, i)
+        if not row.pin then
+            row.pin = Parts.IconButton(row, OnVendorWaypoint, St.PIN, 0, TIP_VENDOR_WAYPOINT)
+            row.pin:SetPoint("RIGHT")
+        end
+        row.pin.item = m.item
         row.note:ClearAllPoints()
-        row.note:SetPoint("RIGHT")
+        row.note:SetPoint("RIGHT", row.pin, "LEFT", -PIN_GAP, 0)
         row.item, row.key, row.spell = m.item, nil, nil
         row.icon:SetTexture(C_Item.GetItemIconByID(m.item))
         row.name:SetText(TEXT_ROW:format(m.qty, Shopping.ItemName(m.item) or (TEXT_ITEM .. m.item)))

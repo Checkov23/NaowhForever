@@ -10,6 +10,10 @@ local merchantShown = false
 local purchases, messages, drops = {}, {}, {}
 local bags, freeSlots = {}, 10
 local redraws, viewEvents = 0, 0
+local vendorName, vendorMap, vendorX, vendorY = "Far Supplies", 10, 0.8, 0.8
+local playerMap, playerX, playerY = 10, 0.1, 0.1
+local playerFaction = "Alliance"
+local waypoint
 local registry = {}
 local merchantItems = {
     { item = 111, price = 200, stack = 5, available = -1 },
@@ -22,6 +26,9 @@ local materials = {
 }
 
 local function Noop() end
+local function Vector(x, y)
+    return { x = x, y = y, GetXY = function(self) return self.x, self.y end }
+end
 local frameMethods = {}
 function frameMethods.RegisterEvent(frame, event) registry[event] = frame end
 function frameMethods.UnregisterEvent(frame, event)
@@ -62,6 +69,16 @@ local ns = {
     ProfWindowAPI = {},
     AccountSettings = function() return settings.account end,
     Print = function(message) messages[#messages + 1] = message end,
+    PlaceWaypoint = function(name, map, x, y)
+        waypoint = { name = name, map = map, x = x, y = y }
+        return true
+    end,
+    TownNPCs = {
+        [10] = {
+            { 30, 30, "trade", "Catalog Supplies", "Trade Supplies", nil, "A" },
+            { 5, 5, "trade", "Horde Catalog", "Trade Supplies", nil, "H" },
+        },
+    },
 }
 settings.account = {}
 
@@ -85,9 +102,22 @@ local env = setmetatable({
         end,
     },
     C_Container = { CalculateTotalNumberOfFreeBagSlots = function() return freeSlots end },
+    C_Map = {
+        GetBestMapForUnit = function(unit) return unit == "player" and playerMap end,
+        GetPlayerMapPosition = function(map, unit)
+            if unit == "npc" then return end
+            if map == vendorMap and unit == "player" and merchantShown then return Vector(vendorX, vendorY) end
+            if map == playerMap and unit == "player" then return Vector(playerX, playerY) end
+        end,
+        GetWorldPosFromMapPos = function(map, position) return map, position end,
+    },
+    CreateVector2D = Vector,
     ERR_INV_FULL = "Inventory is full.",
     Enum = { ItemClass = { Tradegoods = 7 } },
     MerchantFrame = { IsShown = function() return merchantShown end },
+    UnitName = function(unit) return unit == "npc" and vendorName or "Player" end,
+    UnitFactionGroup = function() return playerFaction end,
+    issecretvalue = function() return false end,
     GetMerchantNumItems = function() return #merchantItems end,
     GetMerchantItemID = function(index) return merchantItems[index] and merchantItems[index].item end,
     GetMerchantItemMaxStack = function(index) return merchantItems[index].stack end,
@@ -100,6 +130,8 @@ env._G = env
 
 Load({ "Core/Features.lua", "NaowhForever_Professions/Professions.lua" }, env)
 local P = ns.Professions
+P.VendorSellerNames = { "Catalog Supplies", "Horde Catalog" }
+P.VendorSellers = { [333] = { 1, 2 } }
 P.Recipes = {
     Link = function(itemID) return "item:" .. itemID end,
     Owned = function() return {} end,
@@ -118,6 +150,11 @@ P.ShoppingVendorView = { Hide = Noop, OnMerchantEvent = function() viewEvents = 
 Load({ "NaowhForever_Professions/Vendors.lua" }, env)
 local V = P.Vendors
 
+check("a built-in vendor waypoint works before any merchant visit", V.VendorWaypoint(333) == true
+    and waypoint.name == "Catalog Supplies" and waypoint.map == 10 and waypoint.x == 30 and waypoint.y == 30)
+check("a built-in vendor waypoint ignores the other faction even when it is nearer",
+    waypoint.name ~= "Horde Catalog")
+
 local list, total = V.ShoppingNeeds()
 check("only Shopping List materials sold by this merchant are listed", #list == 2)
 check("unlimited stock rounds seven items to two five-item bundles",
@@ -133,6 +170,27 @@ check("Shopping List alone learns nothing at a merchant", settings.account.profV
 P.Settings.Set("shoppingVendor", true)
 check("Vendor Items on Shopping List learns vendor trade goods", settings.account.profVendorItems[111] == true)
 check("and records the vendor unit price", settings.account.profVendorPrices[111] == 40)
+check("and remembers which merchant sold each item",
+    settings.account.profVendorSpots[111][1][1] == "Far Supplies")
+
+vendorName, vendorX, vendorY = "Near Supplies", 0.2, 0.2
+Fire("MERCHANT_SHOW")
+check("seeing another seller keeps both locations", #settings.account.profVendorSpots[111] == 2)
+playerFaction, vendorName, vendorX, vendorY = "Horde", "Horde Supplies", 0.1, 0.1
+Fire("MERCHANT_SHOW")
+check("a merchant visit remembers the visiting faction", settings.account.profVendorSpots[111][3][5] == "Horde")
+merchantShown = false
+playerFaction = "Alliance"
+check("a vendor waypoint picks the nearest learned seller", V.VendorWaypoint(111) == true
+    and waypoint.name == "Near Supplies" and waypoint.map == 10 and waypoint.x == 20 and waypoint.y == 20)
+check("a vendor waypoint ignores sellers learned by the other faction", waypoint.name ~= "Horde Supplies")
+playerX, playerY = 0.9, 0.9
+check("the same item can route to a different seller from another position", V.VendorWaypoint(111) == true
+    and waypoint.name == "Far Supplies")
+check("an item with no known seller does not guess a location", V.VendorWaypoint(444) == false)
+check("and explains how to teach it a vendor", messages[#messages]:find("Visit a vendor", 1, true) ~= nil)
+messages = {}
+merchantShown = true
 
 check("buying one shortage succeeds", V.BuyShoppingItem(111) == true)
 check("a click buys the rounded item count in merchant-sized chunks",
@@ -194,5 +252,11 @@ freeSlots = 10
 V.BuyShoppingItem(111)
 P.Settings.Set("shoppingVendor", false)
 check("turning the setting off drops a pending purchase", not V.Waiting() and registry.BAG_UPDATE_DELAYED == nil)
+
+local file = assert(io.open("NaowhForever_Professions/UI/ShoppingWindow.lua", "rb"))
+local source = file:read("*a")
+file:close()
+check("vendor rows build their pin from the shared icon button", source:find("Parts.IconButton", 1, true) ~= nil)
+check("the vendor-row pin calls the vendor waypoint model", source:find("V.VendorWaypoint", 1, true) ~= nil)
 
 print(("test-profession-shopping-vendor: %d checks passed"):format(checks))
