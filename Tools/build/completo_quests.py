@@ -6,6 +6,10 @@ class, profession and holiday quests that merely start there). Each quest page
 (/forever/quest=<id>) then gives its chain, the "Series" box parsed the same way as
 Tools/build/quest_chains.py does, and where its quest giver stands.
 
+The dungeon and raid quests, which Wowhead files under the dungeon and so no zone lists, come
+from completo_dungeon.json (Tools/build/dungeon_quests.py): each goes in the zone its quest giver
+stands in, marked in D.Dungeon.
+
 Answers are cached, so a run that dies on Wowhead's rate limit resumes where it stopped:
 completo_zones.json (each zone's quest rows) and completo_quests.json (each quest's
 { chain, start }). Delete an entry to fetch it again. --offline writes from the caches only.
@@ -31,6 +35,7 @@ OUT = ROOT / "NaowhForever_DiscoveryData" / "Quests.lua"
 ZONES = paths.DATA / "completo_zones.json"
 QUESTS = paths.DATA / "completo_quests.json"
 REQUIRES = paths.DATA / "completo_requires.json"
+DUNGEON = paths.DATA / "completo_dungeon.json"
 # Wowhead answers 403 after ~125 pages at 1.5s apart; 5s ran clean.
 GAP = 4
 
@@ -375,7 +380,7 @@ def main():
             save(ITEMS, items)
             time.sleep(GAP)
 
-    write(zones, quests, requires, items)
+    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}))
     for line in failed:
         print("FAILED", line, file=sys.stderr)
 
@@ -385,9 +390,22 @@ def main():
 PLACEHOLDER = re.compile(r"^\s*[<(]|unused|\bnyi\b", re.I)
 
 
-def write(zones, quests, requires, items):
+def write(zones, quests, requires, items, dungeon):
     for z in zones.values():
         z["quests"] = [q for q in z["quests"] if not PLACEHOLDER.search(q["name"])]
+    # A dungeon quest's spot is Forever's already, and its giver's zone is the one it goes in.
+    area_of = {m: a for a, m in ZONE_MAP.items()}
+    own = {q["id"] for z in zones.values() for q in z["quests"]}
+    spots, requires = {}, dict(requires)
+    for key, d in dungeon.items():
+        zone = zones.get(str(area_of.get(d["map"])))
+        if int(key) in own or not zone:
+            continue
+        zone["quests"].append({"id": int(key), "name": d["name"], "level": d["level"], "reqlevel": d["reqlevel"],
+                               "side": d["side"], "reqrace": d["reqrace"], "reqclass": d["reqclass"]})
+        spots[int(key)] = d
+        if d["after"] and not requires.get(key):
+            requires[key] = {"quests": d["after"]}
     rows = {q["id"]: (int(area), q) for area, z in zones.items() for q in z["quests"]}
     before = prerequisites(quests, requires, rows)
     chains = chains_of(quests, before, rows)
@@ -402,7 +420,7 @@ def write(zones, quests, requires, items):
         ids = sorted(q["id"] for q in z["quests"])
         if not ids:
             continue
-        conts = [q.get("category2", 0) for q in z["quests"]]
+        conts = [q.get("category2", 0) for q in z["quests"] if q["id"] not in spots]
         cont = max(set(conts), key=conts.count)
         lines.append(f"    {{ map = {ZONE_MAP[int(area)]}, name = {lua_string(z['name'])}, "
                      f"continent = {cont}, quests = {{ {', '.join(map(str, ids))} }} }},")
@@ -415,7 +433,11 @@ def write(zones, quests, requires, items):
         area, q = rows[qid]
         start = (quests.get(str(qid)) or {}).get("start")
         spot = "nil, nil, nil, nil"
-        if start and start.get("coord") and start["zone"] in ZONE_MAP:
+        if qid in spots:
+            d = spots[qid]
+            giver = lua_string(d["giver"]) if d["giver"] else "nil"
+            spot = f"{d['map']}, {d['x']:.1f}, {d['y']:.1f}, {giver}"
+        elif start and start.get("coord") and start["zone"] in ZONE_MAP:
             m = ZONE_MAP[start["zone"]]
             x, y = forever_spot(m, *start["coord"])
             giver = lua_string(start["npc"]) if start.get("npc") else "nil"
@@ -436,6 +458,13 @@ def write(zones, quests, requires, items):
         "D.Repeatable = {",
     ]
     for qid in repeatable:
+        lines.append(f"    [{qid}] = true,")
+    lines += [
+        "}",
+        "",
+        "D.Dungeon = {",
+    ]
+    for qid in sorted(spots):
         lines.append(f"    [{qid}] = true,")
     lines += [
         "}",

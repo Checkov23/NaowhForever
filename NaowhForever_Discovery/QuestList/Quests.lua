@@ -219,6 +219,7 @@ function Q.Zones() return D.Zones end
 function Q.Giver(id) return D.Quests[id][GIVER] end
 function Q.Item(id) return D.Quests[id][ITEM] end
 function Q.Repeatable(id) return D.Repeatable ~= nil and D.Repeatable[id] == true end
+function Q.Dungeon(id) return D.Dungeon ~= nil and D.Dungeon[id] == true end
 
 function Q.Spot(id)
     local quest = D.Quests[id]
@@ -330,7 +331,7 @@ end
 function Q.ZoneProgress(zone)
     local n, total, low, high = 0, 0, nil, nil
     for _, id in ipairs(zone.quests) do
-        if mine[id] and not Q.Repeatable(id) then
+        if mine[id] and not Q.Repeatable(id) and not Q.Dungeon(id) then
             total = total + 1
             if done[id] then n = n + 1 end
             local level = QuestLevel(id)

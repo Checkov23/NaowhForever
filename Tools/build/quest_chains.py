@@ -32,6 +32,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402
+import wowhead  # noqa: E402
 
 ROOT = paths.ROOT
 DATA = ROOT / "NaowhForever_DungeonJournal" / "Data" / "Quests.lua"
@@ -75,7 +76,7 @@ FIT_MAP = 1453
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": wowhead.AGENT})
     # Wowhead's CDN answers 403 once requests come too fast; it lifts after a pause.
     for wait in (30, 60, 120, 240, None):
         try:

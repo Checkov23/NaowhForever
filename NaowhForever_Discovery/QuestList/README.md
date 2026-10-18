@@ -65,6 +65,11 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   that drops it as its giver, and the item. Spots on the maps Forever redrew are moved from
   Wowhead's classic ones onto Forever's.
 - `D.Repeatable[questID] = true`: quests you can do again and again (Wowhead's repeatable flag).
+- `D.Dungeon[questID] = true`: dungeon and raid quests, listed in the zone their quest giver stands
+  in. Wowhead files them under the dungeon, so no zone page has them: they come from
+  `Tools/build/dungeon_quests.py` (the Dungeon Journal's list and spots, CMaNGOS's levels, races,
+  classes and prerequisites, wowsrc.com's levels for Forever's new ones). They get pins and rows like
+  any other, but a zone's progress leaves them out, as it does the repeatable ones.
 - `D.Requires[questID]`: what must be done before it opens, every element of the list. An element is a
   quest, or a list of alternatives one of which will do: quests of one name (each class's or faction's
   version) and the quests the zones lack, which cannot be told apart. From Forever's Series box and

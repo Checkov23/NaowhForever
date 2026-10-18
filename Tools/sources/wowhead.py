@@ -12,6 +12,8 @@ import urllib.parse
 import urllib.request
 
 WOWHEAD = "https://www.wowhead.com/forever"
+# Named, as wago.py and wowsrc.py name us, so Wowhead can tell the tools apart and allow them.
+AGENT = "NaowhForever-tools (+https://github.com/naowh-gaming/NaowhForever)"
 # Wowhead inventory types that go in a gear slot: no shirt (4), bag (18), tabard (19),
 # ammo (24) or quiver (27).
 EQUIPPABLE = {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 21, 22, 23, 25, 26, 28}
@@ -19,7 +21,7 @@ SEP = " \u00b7 "
 
 
 def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": AGENT})
     # Wowhead's CDN answers 403 once requests come too fast; it lifts after a pause.
     for wait in (30, 60, 120, 240, None):
         try:
