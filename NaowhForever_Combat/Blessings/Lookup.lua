@@ -4,6 +4,7 @@ local ns = _G.NaowhForever
 local B = ns.Blessings
 
 local QUESTION = 134400
+local TEXT_SALVATION = ns.L("Salvation")
 
 local BY_KEY, BY_CODE, FAMILY, IDS, GREATER = {}, {}, {}, {}, {}
 
@@ -40,6 +41,7 @@ end
 
 function B.SpellName(key)
     local entry = BY_KEY[key]
+    if entry and entry.salvation then return TEXT_SALVATION end
     return entry and C_Spell.GetSpellName(entry.ranks[1]) or key
 end
 

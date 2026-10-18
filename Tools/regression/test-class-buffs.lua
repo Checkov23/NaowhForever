@@ -87,6 +87,7 @@ local function Fixture(class, known)
         },
         InCombatLockdown = function() return state.combat end,
         UnitClass = function() assert(not state.combat); return class, class end,
+        GetNumGroupMembers = function() return state.groupSize or 0 end,
         C_AddOns = { LoadAddOn = function() assert(not state.combat) end },
         C_SpellBook = { IsSpellKnown = function(id) assert(not state.combat); return known[id] end },
         C_Spell = { GetSpellName = function(id) return "Spell " .. id end, GetSpellTexture = function(id) return id, id + 100000 end },
@@ -119,6 +120,34 @@ local function Fixture(class, known)
     end
     return state
 end
+
+local paladin = Fixture("PALADIN", { [19740] = true, [1038] = true })
+paladin.groupSize = 2
+paladin.settings.Set("raidBuffPicks", { blessing = true, salvation = true })
+paladin.settings.Set("classBuffTracker", true)
+assert(paladin.count == 2, "selected paladin buffs show with the filter off")
+paladin.settings.Set("hideBlessingsOnPaladin", true)
+assert(paladin.count == 0, "grouped paladin hides blessing slots immediately")
+paladin.groupSize = 0
+paladin:Event("GROUP_ROSTER_UPDATE")
+assert(paladin.count == 2, "leaving a group restores paladin self-buff slots")
+paladin.groupSize = 2
+paladin:Event("GROUP_ROSTER_UPDATE")
+assert(paladin.count == 0, "joining a group hides the self-buff slots again")
+paladin.settings.Set("hideBlessingsOnPaladin", false)
+assert(paladin.count == 2, "turning the filter off restores paladin self-buff slots")
+paladin.combat = true
+paladin.settings.Set("hideBlessingsOnPaladin", true)
+assert(paladin.count == 2, "changing the filter in combat holds the secure slots")
+paladin.combat = false
+paladin:Event("PLAYER_REGEN_ENABLED")
+assert(paladin.count == 0, "the filter applies after combat ends")
+paladin.combat, paladin.groupSize = true, 0
+paladin:Event("GROUP_ROSTER_UPDATE")
+assert(paladin.count == 0, "leaving the group in combat waits to restore secure slots")
+paladin.combat = false
+paladin:Event("PLAYER_REGEN_ENABLED")
+assert(paladin.count == 2, "the solo slots restore after combat ends")
 
 local s = Fixture("MAGE", { [168] = true, [1459] = true })
 assert(#s.frames == 0, "off creates no frames")

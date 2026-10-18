@@ -297,6 +297,11 @@ local function Picked(family)
     return on
 end
 
+local function HideBlessings()
+    return S.Get("hideBlessingsOnPaladin") and select(2, UnitClass("player")) == "PALADIN"
+        and GetNumGroupMembers() > 0
+end
+
 local function Knows(spells)
     for _, id in ipairs(spells) do
         if C_SpellBook.IsSpellKnown(id) then return id end
@@ -351,8 +356,9 @@ end
 local function RaidBuffs(list, playerBuffs)
     AddGroup(playerBuffs)
     local own = S.Get("raidBuffsOwn")
+    local hideBlessings = HideBlessings()
     for _, family in ipairs(D.RAID) do
-        local picked = Picked(family)
+        local picked = Picked(family) and not (hideBlessings and family.class == "PALADIN")
         local spell = picked and Knows(family.spells)
         if picked and (spell or not (own or family.talent) and classes[family.class]) then
             local units
@@ -612,8 +618,10 @@ Reminders.ItemIcon = ItemIcon
 function Reminders.RaidSample()
     if not S.Get("raidBuffs") then return nil end
     local own = S.Get("raidBuffsOwn")
+    local hideBlessings = HideBlessings()
     for _, family in ipairs(D.RAID) do
-        if Picked(family) and (Knows(family.spells) or not (own or family.talent)) then return family.spells[1] end
+        if Picked(family) and not (hideBlessings and family.class == "PALADIN")
+            and (Knows(family.spells) or not (own or family.talent)) then return family.spells[1] end
     end
 end
 

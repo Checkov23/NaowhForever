@@ -9,6 +9,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     consumablesWhere = "instance", consumablesMinutes = 2,
     onlyIfCarried = true, carriedPicks = {}, hideResting = true,
     raidBuffs = F.raidBuffs, raidBuffsOwn = true, raidBuffRange = F.raidBuffRange,
+    hideBlessingsOnPaladin = F.hideBlessingsOnPaladin,
     raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false, salvation = false },
     personalBuffs = F.personalBuffs, personalBuffPicks = {}, weaponEnhancements = F.weaponEnhancements,
     wornReminders = F.wornReminders, fishingPoleReminder = F.fishingPoleReminder, fishingPoleWhere = "always",

@@ -29,7 +29,7 @@ local WHY_OFF = ns.L("Turn on the Class Buff Tracker")
 local TEXT_SUMMARY = ns.L("Grey when inactive; left-click to buff yourself.")
 local TEXT_UNAVAILABLE = ns.L("Class Buff Tracker could not load Blizzard's aura display.")
 local KEYS = { enabled = true, classBuffTracker = true, classBuffSize = true,
-    personalBuffPicks = true, raidBuffPicks = true, buffsFont = true, buffsBorderColor = true,
+    personalBuffPicks = true, raidBuffPicks = true, hideBlessingsOnPaladin = true, buffsFont = true, buffsBorderColor = true,
     classBuffGlow = true, classBuffGlowType = true,
     classBuffGlowColor = true, classBuffGlowLines = true, classBuffGlowThickness = true,
     classBuffGlowSpeed = true }
@@ -168,10 +168,10 @@ local function Active(cell, readable)
     return readable and not unlocked and Missing(cell) == false
 end
 
-local function AddFamilies(families, picks, count, class, readable)
+local function AddFamilies(families, picks, count, class, readable, hideBlessings)
     for _, family in ipairs(families) do
         if family.class == class and not family.weapons and not family.target
-            and picks[family.key] ~= false then
+            and picks[family.key] ~= false and not (hideBlessings and family.class == "PALADIN") then
             local spell = Known(family)
             if spell then
                 local cell = cells[family.key]
@@ -214,7 +214,8 @@ local function Paint()
     local readable = not C_Secrets.ShouldAurasBeSecret() and ReadBuffs()
     local _, class = UnitClass("player")
     local count = AddFamilies(D.PERSONAL, S.Get("personalBuffPicks"), 0, class, readable)
-    count = AddFamilies(D.RAID, S.Get("raidBuffPicks"), count, class, readable)
+    local hideBlessings = S.Get("hideBlessingsOnPaladin") and class == "PALADIN" and GetNumGroupMembers() > 0
+    count = AddFamilies(D.RAID, S.Get("raidBuffPicks"), count, class, readable, hideBlessings)
     for _, cell in pairs(cells) do
         if not cell.selected then
             cell.watch:SetEnabled(false)
@@ -292,6 +293,7 @@ function Apply()
     events:RegisterEvent("PLAYER_REGEN_DISABLED")
     events:RegisterEvent("SPELLS_CHANGED")
     events:RegisterEvent("PLAYER_ENTERING_WORLD")
+    if S.Get("hideBlessingsOnPaladin") then events:RegisterEvent("GROUP_ROSTER_UPDATE") end
 end
 
 local function OnSet(key)

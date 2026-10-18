@@ -216,6 +216,9 @@ rows[#rows + 1] = { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggl
 rows[#rows + 1] = { key = "raidBuffRange", label = "Show Buff Range", toggle = true, needs = RaidBuffsOn,
     why = NEEDS_RAID, help = "Shows how many missing buffs are in casting range and dims icons with none confirmed." }
 for _, family in ipairs(D.RAID) do rows[#rows + 1] = PickRow(family) end
+rows[#rows + 1] = { key = "hideBlessingsOnPaladin", label = "Hide Blessings on Paladins", toggle = true,
+    needs = RaidBuffsOn, why = NEEDS_RAID, hidden = function() return playerClass ~= "PALADIN" end,
+    help = "Hides blessing reminders while your paladin is grouped; use the Blessings tab instead." }
 rows[#rows + 1] = Group("Personal Buffs")
 rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", toggle = true, needs = Enabled,
     why = OFF, help = "Your class buffs when they are missing or about to run out." }

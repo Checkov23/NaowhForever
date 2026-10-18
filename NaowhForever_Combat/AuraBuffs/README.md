@@ -127,6 +127,10 @@ NaowhForever_Combat/AuraBuffs/
   buffs; cooked food moved to Forever-only "Nutritious Food" spells with one shared Well Fed aura
   per stat (Wowhead's Forever data, build 1.60.1). Flask of Petrification is left out: it is a
   minute of stone form, not a buff to keep up.
+- Hide Blessings on Paladins (`hideBlessingsOnPaladin`, off by default) suppresses both paladin
+  raid reminder families and Class Buff Tracker slots while the player is a grouped paladin, since
+  the Blessings tab already covers them. It keeps the saved picks and does not hide the Blessing bar.
+  Leaving the group, turning the option off, or playing another class restores the selected reminders.
 - Paladin blessings start off in the raid buff picks: the Blessings module covers them. Salvation is a raid
   buff of its own, since it stacks with the other blessings: a member with only Salvation still lacks a blessing,
   and one with only a blessing still lacks Salvation. It skips members whose assigned role is Tank (a secret

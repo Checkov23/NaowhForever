@@ -21,7 +21,7 @@ local TEXT_HIDE = ns.L("Ctrl-click to hide it until you take it off.")
 local KEYS = {
     consumableEntries = true, enabled = true, consumablesWhere = true, consumablesMinutes = true,
     onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
-    buffIconMode = true, raidBuffRange = true,
+    buffIconMode = true, raidBuffRange = true, hideBlessingsOnPaladin = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true, wornReminders = true,
     fishingPoleReminder = true, fishingPoleWhere = true,
     buffsFont = true, buffsFontSize = true, buffsOutline = true, buffsBorderColor = true,

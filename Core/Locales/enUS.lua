@@ -7027,3 +7027,5 @@ L["Paste an Action Bars & Macros import code from naowh.gg"] = true
 L["Save %s as a new bar set and review it? Your bars stay unchanged until you apply the preview."] = true
 L["That is not a valid website bar layout for your class."] = true
 L["There are too many saved bar sets with that name."] = true
+L["Hide Blessings on Paladins"] = true
+L["Hides blessing reminders while your paladin is grouped; use the Blessings tab instead."] = true

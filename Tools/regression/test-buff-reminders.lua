@@ -877,6 +877,40 @@ do
     Check("and a blessing does not stand in for Salvation", t.Shown(), "spell:25291x3 spell:1038x3")
 end
 
+-- Grouped paladins can leave blessing reminders to their own tab without losing their saved picks.
+do
+    local picks = { intellect = true, stamina = false, spirit = false, wild = false, blessing = true, salvation = true }
+    local t = Fixture({ settings = { raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = picks },
+        group = "party", units = { player = "PALADIN", party1 = "MAGE" },
+        known = { [19740] = true, [1038] = true }, auras = { player = {}, party1 = {} } })
+    t.Login()
+    Check("paladin default: selected blessings remain shown", t.Shown(), "spell:25291x2 spell:1038x2")
+    t.Set("hideBlessingsOnPaladin", true)
+    Check("grouped paladin: both blessing reminders hide immediately", t.Shown(), "")
+    Check("grouped paladin: preview hides the blessings too", t.ns.AuraBuffs.Buffs.RaidSample(), nil)
+    Check("hiding keeps the blessing pick", t.Get("raidBuffPicks").blessing, true)
+    Check("hiding keeps the Salvation pick", t.Get("raidBuffPicks").salvation, true)
+    t.Set("hideBlessingsOnPaladin", false)
+    Check("switch off: both reminders return", t.Shown(), "spell:25291x2 spell:1038x2")
+    t.Set("hideBlessingsOnPaladin", true)
+    t.state.group = nil
+    t.Fire("GROUP_ROSTER_UPDATE"); t.Advance(0.5)
+    Check("leaving the group restores solo reminders", t.Shown(), "spell:25291 spell:1038")
+    t.state.group = "party"
+    t.Fire("GROUP_ROSTER_UPDATE"); t.Advance(0.5)
+    Check("joining the group hides them again", t.Shown(), "")
+    t.state.units.player = "MAGE"
+    t.state.units.party1 = "PALADIN"
+    t.state.known = { [1460] = true }
+    t.Set("raidBuffsOwn", false)
+    Check("another class keeps all selected reminders", t.Shown(), "spell:10157x2 spell:25291x2 spell:1038x2")
+    local p = Fixture({ page = true, units = { player = "PALADIN" } })
+    local rows = p.ns.Shared.Settings.pages["AuraBuffs/Settings"].cards.buffs.rows
+    local option
+    for _, row in ipairs(rows) do if row.key == "hideBlessingsOnPaladin" then option = row end end
+    Check("the option is available to paladins", option and not option.hidden(), true)
+end
+
 -- The card has a switch per raid buff, each with its own changed dot and reset.
 do
     local t = Fixture({ page = true })
