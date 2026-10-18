@@ -46,14 +46,14 @@ QUESTS_PAGE = f"{wowsrc.SITE}/quests/"
 
 TABLES = {
     "quest_template": ("entry", "MinLevel", "QuestLevel", "RequiredClasses", "RequiredRaces",
-                       "PrevQuestId", "NextQuestId", "Title"),
+                       "PrevQuestId", "NextQuestId", "Title", "ZoneOrSort"),
     "creature_questrelation": ("id", "quest"),
     "gameobject_questrelation": ("id", "quest"),
     "creature_template": ("Entry", "Name"),
     "gameobject_template": ("entry", "name"),
 }
 # The quest fields read here, which an update must be understood to change.
-READ = {"MinLevel", "QuestLevel", "RequiredClasses", "RequiredRaces", "PrevQuestId", "NextQuestId"}
+READ = {"MinLevel", "QuestLevel", "RequiredClasses", "RequiredRaces", "PrevQuestId", "NextQuestId", "ZoneOrSort"}
 ALLIANCE, HORDE = 1 | 4 | 8 | 64, 2 | 16 | 32 | 128   # race bits: 1 << (raceID - 1)
 ALL_RACES = 255
 SIDES = {"A": 1, "H": 2, "B": 3}
@@ -307,7 +307,9 @@ def side_of(races):
     return 3, races
 
 
-def main():
+def cmangos():
+    """CMaNGOS's tables with its updates applied, as (data, { questID: its row },
+    { questID: [giver names] }, { questID: { the quests before it } })."""
     data = read_dump(cached("dump.sql.gz", raw(DUMP)))
     for path in update_files():
         for s in statements(path):
@@ -326,6 +328,11 @@ def main():
             after.setdefault(qid, set()).add(int(q["PrevQuestId"]))
         if int(q["NextQuestId"]) > 0:
             after.setdefault(int(q["NextQuestId"]), set()).add(qid)
+    return data, quests, givers, after
+
+
+def main():
+    _, quests, givers, after = cmangos()
     levels = wowsrc_levels()
 
     out, forever, sides = {}, [], []

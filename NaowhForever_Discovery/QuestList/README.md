@@ -65,11 +65,17 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   that drops it as its giver, and the item. Spots on the maps Forever redrew are moved from
   Wowhead's classic ones onto Forever's.
 - `D.Repeatable[questID] = true`: quests you can do again and again (Wowhead's repeatable flag).
-- `D.Dungeon[questID] = true`: dungeon and raid quests, listed in the zone their quest giver stands
-  in. Wowhead files them under the dungeon, so no zone page has them: they come from
+- `D.Dungeon[questID] = true`: dungeon, raid and battleground quests, listed in the zone their quest
+  giver stands in. Wowhead files them under the instance, so no zone page has them: they come from
   `Tools/build/dungeon_quests.py` (the Dungeon Journal's list and spots, CMaNGOS's levels, races,
-  classes and prerequisites, wowsrc.com's levels for Forever's new ones). They get pins and rows like
-  any other, but a zone's progress leaves them out, as it does the repeatable ones.
+  classes and prerequisites, wowsrc.com's levels for Forever's new ones), and the ones the Journal
+  lacks from `Tools/build/elsewhere_quests.py`. They get pins and rows like any other, but a zone's
+  progress leaves them out, as it does the repeatable ones.
+- `D.Elsewhere[questID] = true`: class, reputation and epic quests, which Wowhead files under their
+  category, from `Tools/build/elsewhere_quests.py`: CMaNGOS's quests that Forever's client has
+  (wago.tools' QuestV2), at the spot Wowhead gives their giver for another quest. A giver with no
+  such spot leaves its quests out, and holiday, event and profession quests are left out. A zone's
+  progress leaves them out too.
 - `D.Requires[questID]`: what must be done before it opens, every element of the list. An element is a
   quest, or a list of alternatives one of which will do: quests of one name (each class's or faction's
   version) and the quests the zones lack, which cannot be told apart. From Forever's Series box and

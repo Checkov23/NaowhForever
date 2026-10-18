@@ -1,0 +1,2828 @@
+{
+ "build": "1.60.1.70450",
+ "cmangos": "ec4f596146be6467ea93c57397858e329e2db852",
+ "quests": {
+  "1489": {
+   "after": [
+    880
+   ],
+   "dungeon": true,
+   "giver": "Tonga Runetotem",
+   "level": 16,
+   "map": 1413,
+   "name": "Hamuul Runetotem",
+   "reqclass": 0,
+   "reqlevel": 12,
+   "reqrace": 0,
+   "side": 2,
+   "x": 52.2,
+   "y": 31.8
+  },
+  "1490": {
+   "after": [
+    1489
+   ],
+   "dungeon": true,
+   "giver": "Arch Druid Hamuul Runetotem",
+   "level": 16,
+   "map": 1456,
+   "name": "Nara Wildmane",
+   "reqclass": 0,
+   "reqlevel": 12,
+   "reqrace": 0,
+   "side": 2,
+   "x": 78.2,
+   "y": 28.4
+  },
+  "1505": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Krang Stonehoof",
+   "level": 10,
+   "map": 1412,
+   "name": "Veteran Uzzek",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 48.2,
+   "y": 63.6
+  },
+  "1510": {
+   "after": [
+    1509
+   ],
+   "dungeon": false,
+   "giver": "Gazrog",
+   "level": 20,
+   "map": 1413,
+   "name": "News of Dogran",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 51.8,
+   "y": 30.2
+  },
+  "1515": {
+   "after": [
+    1511
+   ],
+   "dungeon": false,
+   "giver": "Grunt Logmar",
+   "level": 20,
+   "map": 1413,
+   "name": "Dogran's Captivity",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 44.6,
+   "y": 59.2
+  },
+  "1530": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Islen Waterseer",
+   "level": 22,
+   "map": 1413,
+   "name": "Call of Water",
+   "reqclass": 64,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 65.8,
+   "y": 43.8
+  },
+  "1667": {
+   "after": [
+    1666
+   ],
+   "dungeon": false,
+   "giver": "Marshal Haggard",
+   "level": 10,
+   "map": 1429,
+   "name": "Dead-tooth Jack",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 84.6,
+   "y": 69.4
+  },
+  "1705": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Grimand Elmore",
+   "level": 28,
+   "map": 1453,
+   "name": "Burning Blood",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 59.6,
+   "y": 33.9
+  },
+  "1706": {
+   "after": [
+    1705
+   ],
+   "dungeon": false,
+   "giver": "Grimand Elmore",
+   "level": 30,
+   "map": 1453,
+   "name": "Grimand's Armor",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 59.6,
+   "y": 33.9
+  },
+  "1708": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Klockmort Spannerspan",
+   "level": 29,
+   "map": 1455,
+   "name": "Iron Coral",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 68.2,
+   "y": 46.2
+  },
+  "1709": {
+   "after": [
+    1708
+   ],
+   "dungeon": false,
+   "giver": "Klockmort Spannerspan",
+   "level": 30,
+   "map": 1455,
+   "name": "Klockmort's Creation",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 68.2,
+   "y": 46.2
+  },
+  "1712": {
+   "after": [
+    1791
+   ],
+   "dungeon": false,
+   "giver": "Bath'rah the Windwatcher",
+   "level": 40,
+   "map": 1416,
+   "name": "Cyclonian",
+   "reqclass": 1,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 80.4,
+   "y": 66.8
+  },
+  "1713": {
+   "after": [
+    1712
+   ],
+   "dungeon": false,
+   "giver": "Bath'rah the Windwatcher",
+   "level": 40,
+   "map": 1416,
+   "name": "The Summoning",
+   "reqclass": 1,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 80.4,
+   "y": 66.8
+  },
+  "1792": {
+   "after": [
+    1713
+   ],
+   "dungeon": false,
+   "giver": "Bath'rah the Windwatcher",
+   "level": 40,
+   "map": 1416,
+   "name": "Whirlwind Weapon",
+   "reqclass": 1,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 80.4,
+   "y": 66.8
+  },
+  "1819": {
+   "after": [
+    1818
+   ],
+   "dungeon": false,
+   "giver": "Deathguard Dillinger",
+   "level": 10,
+   "map": 1420,
+   "name": "Ulag the Cleaver",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 58.2,
+   "y": 51.4
+  },
+  "1820": {
+   "after": [
+    1819
+   ],
+   "dungeon": false,
+   "giver": "Deathguard Dillinger",
+   "level": 10,
+   "map": 1420,
+   "name": "Speak with Coleman",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 58.2,
+   "y": 51.4
+  },
+  "1821": {
+   "after": [
+    1820
+   ],
+   "dungeon": false,
+   "giver": "Coleman Farthing",
+   "level": 11,
+   "map": 1420,
+   "name": "Agamand Heirlooms",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 61.8,
+   "y": 52.4
+  },
+  "1822": {
+   "after": [
+    1821
+   ],
+   "dungeon": false,
+   "giver": "Coleman Farthing",
+   "level": 11,
+   "map": 1420,
+   "name": "Heirloom Weapon",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 61.8,
+   "y": 52.4
+  },
+  "1899": {
+   "after": [
+    1898
+   ],
+   "dungeon": false,
+   "giver": "Andron Gant",
+   "level": 13,
+   "map": 1458,
+   "name": "The Deathstalkers",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 54.8,
+   "y": 75.6
+  },
+  "1938": {
+   "after": [],
+   "dungeon": false,
+   "giver": "High Sorcerer Andromath",
+   "level": 28,
+   "map": 1453,
+   "name": "Ur's Treatise on Shadow Magic",
+   "reqclass": 128,
+   "reqlevel": 26,
+   "reqrace": 65,
+   "side": 1,
+   "x": 48.8,
+   "y": 87.6
+  },
+  "1940": {
+   "after": [
+    1938
+   ],
+   "dungeon": false,
+   "giver": "High Sorcerer Andromath",
+   "level": 26,
+   "map": 1453,
+   "name": "Pristine Spider Silk",
+   "reqclass": 128,
+   "reqlevel": 26,
+   "reqrace": 65,
+   "side": 1,
+   "x": 48.8,
+   "y": 87.6
+  },
+  "2199": {
+   "after": [
+    2198
+   ],
+   "dungeon": true,
+   "giver": "Talvash del Kissel",
+   "level": 41,
+   "map": 1455,
+   "name": "Lore for a Price",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 0,
+   "side": 1,
+   "x": 36,
+   "y": 4
+  },
+  "2200": {
+   "after": [
+    2199
+   ],
+   "dungeon": true,
+   "giver": "Talvash del Kissel",
+   "level": 42,
+   "map": 1455,
+   "name": "Back to Uldaman",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 0,
+   "side": 1,
+   "x": 36,
+   "y": 4
+  },
+  "2206": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Master Mathias Shaw",
+   "level": 10,
+   "map": 1453,
+   "name": "Snatch and Grab",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 78.3,
+   "y": 70.7
+  },
+  "2283": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Dran Droffers",
+   "level": 41,
+   "map": 1454,
+   "name": "Necklace Recovery",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 690,
+   "side": 3,
+   "x": 59.4,
+   "y": 36.8
+  },
+  "2284": {
+   "after": [
+    2283
+   ],
+   "dungeon": true,
+   "giver": "Dran Droffers",
+   "level": 41,
+   "map": 1454,
+   "name": "Necklace Recovery, Take 2",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 0,
+   "side": 2,
+   "x": 59.4,
+   "y": 36.8
+  },
+  "2338": {
+   "after": [
+    2318
+   ],
+   "dungeon": true,
+   "giver": "Jarkal Mossmeld",
+   "level": 42,
+   "map": 1418,
+   "name": "Translating the Journal",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 0,
+   "side": 2,
+   "x": 2.6,
+   "y": 46
+  },
+  "2339": {
+   "after": [
+    2338
+   ],
+   "dungeon": true,
+   "giver": "Jarkal Mossmeld",
+   "level": 44,
+   "map": 1418,
+   "name": "Find the Gems and Power Source",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 0,
+   "side": 2,
+   "x": 2.6,
+   "y": 46
+  },
+  "2340": {
+   "after": [
+    2339
+   ],
+   "dungeon": true,
+   "giver": "Jarkal Mossmeld",
+   "level": 44,
+   "map": 1418,
+   "name": "Deliver the Gems",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 0,
+   "side": 2,
+   "x": 2.6,
+   "y": 46
+  },
+  "2341": {
+   "after": [
+    2340
+   ],
+   "dungeon": true,
+   "giver": "Dran Droffers",
+   "level": 44,
+   "map": 1454,
+   "name": "Necklace Recovery, Take 3",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 2,
+   "x": 59.4,
+   "y": 36.8
+  },
+  "2360": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Master Mathias Shaw",
+   "level": 20,
+   "map": 1453,
+   "name": "Mathias and the Defias",
+   "reqclass": 8,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 78.3,
+   "y": 70.7
+  },
+  "2361": {
+   "after": [
+    2204
+   ],
+   "dungeon": true,
+   "giver": "Talvash del Kissel",
+   "level": 44,
+   "map": 1455,
+   "name": "Restoring the Necklace",
+   "reqclass": 0,
+   "reqlevel": 37,
+   "reqrace": 0,
+   "side": 1,
+   "x": 36,
+   "y": 4
+  },
+  "2381": {
+   "after": [
+    2382
+   ],
+   "dungeon": false,
+   "giver": "Wrenix the Wretched",
+   "level": 18,
+   "map": 1413,
+   "name": "Plundering the Plunderers",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 2,
+   "x": 63,
+   "y": 36.4
+  },
+  "2383": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Simple Parchment",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 2,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "26": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Mathrengyl Bearwalker",
+   "level": 16,
+   "map": 1457,
+   "name": "A Lesson to Learn",
+   "reqclass": 1024,
+   "reqlevel": 16,
+   "reqrace": 8,
+   "side": 1,
+   "x": 35.2,
+   "y": 8
+  },
+  "2607": {
+   "after": [
+    2359
+   ],
+   "dungeon": false,
+   "giver": "Master Mathias Shaw",
+   "level": 20,
+   "map": 1453,
+   "name": "The Touch of Zanzil",
+   "reqclass": 8,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 78.3,
+   "y": 70.7
+  },
+  "2864": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Krazek",
+   "level": 45,
+   "map": 1434,
+   "name": "Tran'rek",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 3,
+   "x": 27,
+   "y": 77.2
+  },
+  "2927": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Gnoarn",
+   "level": 27,
+   "map": 1455,
+   "name": "The Day After",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 69.4,
+   "y": 50.6
+  },
+  "2931": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Gaxim Rustfizzle",
+   "level": 28,
+   "map": 1442,
+   "name": "Castpipe's Task",
+   "reqclass": 0,
+   "reqlevel": 25,
+   "reqrace": 0,
+   "side": 1,
+   "x": 59.4,
+   "y": 67.2
+  },
+  "3000": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 12,
+   "map": 1453,
+   "name": "Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "3065": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Simple Tablet",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3082": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Etched Tablet",
+   "reqclass": 4,
+   "reqlevel": 1,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3083": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Encrypted Tablet",
+   "reqclass": 8,
+   "reqlevel": 1,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3084": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Rune-Inscribed Tablet",
+   "reqclass": 64,
+   "reqlevel": 1,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3085": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Hallowed Tablet",
+   "reqclass": 16,
+   "reqlevel": 1,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3086": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Glyphic Tablet",
+   "reqclass": 128,
+   "reqlevel": 1,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3087": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Etched Parchment",
+   "reqclass": 4,
+   "reqlevel": 1,
+   "reqrace": 2,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3088": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Encrypted Parchment",
+   "reqclass": 8,
+   "reqlevel": 1,
+   "reqrace": 2,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3089": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Rune-Inscribed Parchment",
+   "reqclass": 64,
+   "reqlevel": 1,
+   "reqrace": 2,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3090": {
+   "after": [
+    788
+   ],
+   "dungeon": false,
+   "giver": "Gornek",
+   "level": 1,
+   "map": 1411,
+   "name": "Tainted Parchment",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 0,
+   "side": 2,
+   "x": 42,
+   "y": 68.4
+  },
+  "3091": {
+   "after": [
+    747
+   ],
+   "dungeon": false,
+   "giver": "Grull Hawkwind",
+   "level": 1,
+   "map": 1412,
+   "name": "Simple Note",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 32,
+   "side": 2,
+   "x": 44.4,
+   "y": 77.6
+  },
+  "3092": {
+   "after": [
+    747
+   ],
+   "dungeon": false,
+   "giver": "Grull Hawkwind",
+   "level": 1,
+   "map": 1412,
+   "name": "Etched Note",
+   "reqclass": 4,
+   "reqlevel": 1,
+   "reqrace": 32,
+   "side": 2,
+   "x": 44.4,
+   "y": 77.6
+  },
+  "3093": {
+   "after": [
+    747
+   ],
+   "dungeon": false,
+   "giver": "Grull Hawkwind",
+   "level": 1,
+   "map": 1412,
+   "name": "Rune-Inscribed Note",
+   "reqclass": 64,
+   "reqlevel": 1,
+   "reqrace": 32,
+   "side": 2,
+   "x": 44.4,
+   "y": 77.6
+  },
+  "3094": {
+   "after": [
+    747
+   ],
+   "dungeon": false,
+   "giver": "Grull Hawkwind",
+   "level": 1,
+   "map": 1412,
+   "name": "Verdant Note",
+   "reqclass": 1024,
+   "reqlevel": 1,
+   "reqrace": 32,
+   "side": 2,
+   "x": 44.4,
+   "y": 77.6
+  },
+  "3095": {
+   "after": [
+    364
+   ],
+   "dungeon": false,
+   "giver": "Shadow Priest Sarvis",
+   "level": 1,
+   "map": 1420,
+   "name": "Simple Scroll",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 16,
+   "side": 2,
+   "x": 30.8,
+   "y": 66.2
+  },
+  "3096": {
+   "after": [
+    364
+   ],
+   "dungeon": false,
+   "giver": "Shadow Priest Sarvis",
+   "level": 1,
+   "map": 1420,
+   "name": "Encrypted Scroll",
+   "reqclass": 8,
+   "reqlevel": 1,
+   "reqrace": 16,
+   "side": 2,
+   "x": 30.8,
+   "y": 66.2
+  },
+  "3097": {
+   "after": [
+    364
+   ],
+   "dungeon": false,
+   "giver": "Shadow Priest Sarvis",
+   "level": 1,
+   "map": 1420,
+   "name": "Hallowed Scroll",
+   "reqclass": 16,
+   "reqlevel": 1,
+   "reqrace": 16,
+   "side": 2,
+   "x": 30.8,
+   "y": 66.2
+  },
+  "3098": {
+   "after": [
+    364
+   ],
+   "dungeon": false,
+   "giver": "Shadow Priest Sarvis",
+   "level": 1,
+   "map": 1420,
+   "name": "Glyphic Scroll",
+   "reqclass": 128,
+   "reqlevel": 1,
+   "reqrace": 16,
+   "side": 2,
+   "x": 30.8,
+   "y": 66.2
+  },
+  "3099": {
+   "after": [
+    364
+   ],
+   "dungeon": false,
+   "giver": "Shadow Priest Sarvis",
+   "level": 1,
+   "map": 1420,
+   "name": "Tainted Scroll",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 16,
+   "side": 2,
+   "x": 30.8,
+   "y": 66.2
+  },
+  "3100": {
+   "after": [
+    7
+   ],
+   "dungeon": false,
+   "giver": "Marshal McBride",
+   "level": 1,
+   "map": 1429,
+   "name": "Simple Letter",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 1,
+   "side": 1,
+   "x": 48.8,
+   "y": 41.6
+  },
+  "3101": {
+   "after": [
+    7
+   ],
+   "dungeon": false,
+   "giver": "Marshal McBride",
+   "level": 1,
+   "map": 1429,
+   "name": "Consecrated Letter",
+   "reqclass": 2,
+   "reqlevel": 1,
+   "reqrace": 1,
+   "side": 1,
+   "x": 48.8,
+   "y": 41.6
+  },
+  "3102": {
+   "after": [
+    7
+   ],
+   "dungeon": false,
+   "giver": "Marshal McBride",
+   "level": 1,
+   "map": 1429,
+   "name": "Encrypted Letter",
+   "reqclass": 8,
+   "reqlevel": 1,
+   "reqrace": 1,
+   "side": 1,
+   "x": 48.8,
+   "y": 41.6
+  },
+  "3103": {
+   "after": [
+    7
+   ],
+   "dungeon": false,
+   "giver": "Marshal McBride",
+   "level": 1,
+   "map": 1429,
+   "name": "Hallowed Letter",
+   "reqclass": 16,
+   "reqlevel": 1,
+   "reqrace": 1,
+   "side": 1,
+   "x": 48.8,
+   "y": 41.6
+  },
+  "3104": {
+   "after": [
+    7
+   ],
+   "dungeon": false,
+   "giver": "Marshal McBride",
+   "level": 1,
+   "map": 1429,
+   "name": "Glyphic Letter",
+   "reqclass": 128,
+   "reqlevel": 1,
+   "reqrace": 1,
+   "side": 1,
+   "x": 48.8,
+   "y": 41.6
+  },
+  "3105": {
+   "after": [
+    7
+   ],
+   "dungeon": false,
+   "giver": "Marshal McBride",
+   "level": 1,
+   "map": 1429,
+   "name": "Tainted Letter",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 1,
+   "side": 1,
+   "x": 48.8,
+   "y": 41.6
+  },
+  "3106": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Simple Rune",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 4,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3107": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Consecrated Rune",
+   "reqclass": 2,
+   "reqlevel": 1,
+   "reqrace": 4,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3108": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Etched Rune",
+   "reqclass": 4,
+   "reqlevel": 1,
+   "reqrace": 4,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3109": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Encrypted Rune",
+   "reqclass": 8,
+   "reqlevel": 1,
+   "reqrace": 4,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3110": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Hallowed Rune",
+   "reqclass": 16,
+   "reqlevel": 1,
+   "reqrace": 4,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3112": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Simple Memorandum",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 64,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3113": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Encrypted Memorandum",
+   "reqclass": 8,
+   "reqlevel": 1,
+   "reqrace": 64,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3114": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Glyphic Memorandum",
+   "reqclass": 128,
+   "reqlevel": 1,
+   "reqrace": 64,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3115": {
+   "after": [
+    179
+   ],
+   "dungeon": false,
+   "giver": "Sten Stoutarm",
+   "level": 1,
+   "map": 1426,
+   "name": "Tainted Memorandum",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 64,
+   "side": 1,
+   "x": 29.8,
+   "y": 71.2
+  },
+  "3116": {
+   "after": [
+    456
+   ],
+   "dungeon": false,
+   "giver": "Conservator Ilthalaine",
+   "level": 1,
+   "map": 1438,
+   "name": "Simple Sigil",
+   "reqclass": 1,
+   "reqlevel": 1,
+   "reqrace": 8,
+   "side": 1,
+   "x": 58.6,
+   "y": 44.2
+  },
+  "3117": {
+   "after": [
+    456
+   ],
+   "dungeon": false,
+   "giver": "Conservator Ilthalaine",
+   "level": 1,
+   "map": 1438,
+   "name": "Etched Sigil",
+   "reqclass": 4,
+   "reqlevel": 1,
+   "reqrace": 8,
+   "side": 1,
+   "x": 58.6,
+   "y": 44.2
+  },
+  "3118": {
+   "after": [
+    456
+   ],
+   "dungeon": false,
+   "giver": "Conservator Ilthalaine",
+   "level": 1,
+   "map": 1438,
+   "name": "Encrypted Sigil",
+   "reqclass": 8,
+   "reqlevel": 1,
+   "reqrace": 8,
+   "side": 1,
+   "x": 58.6,
+   "y": 44.2
+  },
+  "3119": {
+   "after": [
+    456
+   ],
+   "dungeon": false,
+   "giver": "Conservator Ilthalaine",
+   "level": 1,
+   "map": 1438,
+   "name": "Hallowed Sigil",
+   "reqclass": 16,
+   "reqlevel": 1,
+   "reqrace": 8,
+   "side": 1,
+   "x": 58.6,
+   "y": 44.2
+  },
+  "3120": {
+   "after": [
+    456
+   ],
+   "dungeon": false,
+   "giver": "Conservator Ilthalaine",
+   "level": 1,
+   "map": 1438,
+   "name": "Verdant Sigil",
+   "reqclass": 1024,
+   "reqlevel": 1,
+   "reqrace": 8,
+   "side": 1,
+   "x": 58.6,
+   "y": 44.2
+  },
+  "3380": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Witch Doctor Uzer'i",
+   "level": 51,
+   "map": 1444,
+   "name": "The Sunken Temple",
+   "reqclass": 0,
+   "reqlevel": 46,
+   "reqrace": 0,
+   "side": 2,
+   "x": 74.4,
+   "y": 43.4
+  },
+  "3661": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Erelas Ambersky",
+   "level": 47,
+   "map": 1438,
+   "name": "Favored of Elune?",
+   "reqclass": 0,
+   "reqlevel": 42,
+   "reqrace": 0,
+   "side": 1,
+   "x": 55.4,
+   "y": 92
+  },
+  "4002": {
+   "after": [
+    4001
+   ],
+   "dungeon": true,
+   "giver": "Thrall",
+   "level": 54,
+   "map": 1454,
+   "name": "The Eastern Kingdom",
+   "reqclass": 0,
+   "reqlevel": 48,
+   "reqrace": 0,
+   "side": 2,
+   "x": 32,
+   "y": 37.8
+  },
+  "4133": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Apothecary Zinge",
+   "level": 55,
+   "map": 1458,
+   "name": "Vivian Lagrave",
+   "reqclass": 0,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 2,
+   "x": 50,
+   "y": 68.4
+  },
+  "4734": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Tinkee Steamboil",
+   "level": 60,
+   "map": 1428,
+   "name": "Egg Freezing",
+   "reqclass": 0,
+   "reqlevel": 57,
+   "reqrace": 0,
+   "side": 3,
+   "x": 65.2,
+   "y": 23.8
+  },
+  "4766": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Count Remington Ridgewell",
+   "level": 60,
+   "map": 1453,
+   "name": "Mayara Brightwing",
+   "reqclass": 0,
+   "reqlevel": 57,
+   "reqrace": 0,
+   "side": 1,
+   "x": 76.9,
+   "y": 47.6
+  },
+  "4769": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Apothecary Zinge",
+   "level": 60,
+   "map": 1458,
+   "name": "Vivian Lagrave and the Darkstone Tablet",
+   "reqclass": 0,
+   "reqlevel": 57,
+   "reqrace": 0,
+   "side": 2,
+   "x": 50,
+   "y": 68.4
+  },
+  "4907": {
+   "after": [
+    4810
+   ],
+   "dungeon": true,
+   "giver": "Felnok Steelspring",
+   "level": 60,
+   "map": 1452,
+   "name": "Tinkee Steamboil",
+   "reqclass": 0,
+   "reqlevel": 57,
+   "reqrace": 0,
+   "side": 3,
+   "x": 61.6,
+   "y": 38.6
+  },
+  "5081": {
+   "after": [
+    5002
+   ],
+   "dungeon": true,
+   "giver": "Marshal Maxwell",
+   "level": 60,
+   "map": 1428,
+   "name": "Maxwell's Mission",
+   "reqclass": 0,
+   "reqlevel": 55,
+   "reqrace": 0,
+   "side": 1,
+   "x": 84.6,
+   "y": 68.8
+  },
+  "5250": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Daryn Lightwind",
+   "level": 56,
+   "map": 1438,
+   "name": "Starfall",
+   "reqclass": 0,
+   "reqlevel": 53,
+   "reqrace": 0,
+   "side": 1,
+   "x": 55.4,
+   "y": 92.2
+  },
+  "5531": {
+   "after": [
+    5522
+   ],
+   "dungeon": true,
+   "giver": "Leonid Barthalomew the Revered",
+   "level": 60,
+   "map": 1423,
+   "name": "Betina Bigglezink",
+   "reqclass": 0,
+   "reqlevel": 57,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.8,
+   "y": 48.3
+  },
+  "5621": {
+   "after": [
+    5622
+   ],
+   "dungeon": false,
+   "giver": "Laurna Morninglight",
+   "level": 4,
+   "map": 1438,
+   "name": "Garments of the Moon",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 8,
+   "side": 1,
+   "x": 55.6,
+   "y": 56.8
+  },
+  "5625": {
+   "after": [
+    5626
+   ],
+   "dungeon": false,
+   "giver": "Maxan Anvol",
+   "level": 4,
+   "map": 1426,
+   "name": "Garments of the Light",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 4,
+   "side": 1,
+   "x": 47.2,
+   "y": 52.2
+  },
+  "5629": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Laurna Morninglight",
+   "level": 10,
+   "map": 1438,
+   "name": "Returning Home",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 55.6,
+   "y": 56.8
+  },
+  "5630": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Maxan Anvol",
+   "level": 10,
+   "map": 1426,
+   "name": "Returning Home",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 47.2,
+   "y": 52.2
+  },
+  "5634": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Lariia",
+   "level": 10,
+   "map": 1457,
+   "name": "Desperate Prayer",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 5,
+   "side": 1,
+   "x": 40.2,
+   "y": 88.4
+  },
+  "5635": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Maxan Anvol",
+   "level": 10,
+   "map": 1426,
+   "name": "Desperate Prayer",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 5,
+   "side": 1,
+   "x": 47.2,
+   "y": 52.2
+  },
+  "5636": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Laurna Morninglight",
+   "level": 10,
+   "map": 1438,
+   "name": "Desperate Prayer",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 5,
+   "side": 1,
+   "x": 55.6,
+   "y": 56.8
+  },
+  "5647": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Lariia",
+   "level": 20,
+   "map": 1457,
+   "name": "A Lack of Fear",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 4,
+   "side": 1,
+   "x": 40.2,
+   "y": 88.4
+  },
+  "5672": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Laurna Morninglight",
+   "level": 20,
+   "map": 1438,
+   "name": "Elune's Grace",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 8,
+   "side": 1,
+   "x": 55.6,
+   "y": 56.8
+  },
+  "5921": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Mathrengyl Bearwalker",
+   "level": 10,
+   "map": 1457,
+   "name": "Moonglade",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 35.2,
+   "y": 8
+  },
+  "5926": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Innkeeper Pala",
+   "level": 10,
+   "map": 1456,
+   "name": "Heeding the Call",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 45.8,
+   "y": 64.4
+  },
+  "5927": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Innkeeper Gryshka",
+   "level": 10,
+   "map": 1454,
+   "name": "Heeding the Call",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 54.2,
+   "y": 68.4
+  },
+  "6001": {
+   "after": [
+    5931
+   ],
+   "dungeon": false,
+   "giver": "Mathrengyl Bearwalker",
+   "level": 10,
+   "map": 1457,
+   "name": "Body and Heart",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 35.2,
+   "y": 8
+  },
+  "6061": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Yaw Sharpmane",
+   "level": 10,
+   "map": 1412,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 46.1,
+   "y": 62.9
+  },
+  "6087": {
+   "after": [
+    6061
+   ],
+   "dungeon": false,
+   "giver": "Yaw Sharpmane",
+   "level": 10,
+   "map": 1412,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 46.1,
+   "y": 62.9
+  },
+  "6088": {
+   "after": [
+    6087
+   ],
+   "dungeon": false,
+   "giver": "Yaw Sharpmane",
+   "level": 10,
+   "map": 1412,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 46.1,
+   "y": 62.9
+  },
+  "6089": {
+   "after": [
+    6088
+   ],
+   "dungeon": false,
+   "giver": "Yaw Sharpmane",
+   "level": 10,
+   "map": 1412,
+   "name": "Training the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 46.1,
+   "y": 62.9
+  },
+  "6121": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Mathrengyl Bearwalker",
+   "level": 14,
+   "map": 1457,
+   "name": "Lessons Anew",
+   "reqclass": 1024,
+   "reqlevel": 14,
+   "reqrace": 8,
+   "side": 1,
+   "x": 35.2,
+   "y": 8
+  },
+  "6128": {
+   "after": [
+    6127
+   ],
+   "dungeon": false,
+   "giver": "Tonga Runetotem",
+   "level": 14,
+   "map": 1413,
+   "name": "Gathering the Cure",
+   "reqclass": 1024,
+   "reqlevel": 14,
+   "reqrace": 32,
+   "side": 2,
+   "x": 52.2,
+   "y": 31.8
+  },
+  "6129": {
+   "after": [
+    6128
+   ],
+   "dungeon": false,
+   "giver": "Tonga Runetotem",
+   "level": 14,
+   "map": 1413,
+   "name": "Curing the Sick",
+   "reqclass": 1024,
+   "reqlevel": 14,
+   "reqrace": 32,
+   "side": 2,
+   "x": 52.2,
+   "y": 31.8
+  },
+  "63": {
+   "after": [
+    220
+   ],
+   "dungeon": false,
+   "giver": "Islen Waterseer",
+   "level": 23,
+   "map": 1413,
+   "name": "Call of Water",
+   "reqclass": 64,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 65.8,
+   "y": 43.8
+  },
+  "6562": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Tsunaman",
+   "level": 22,
+   "map": 1442,
+   "name": "Trouble in the Deeps",
+   "reqclass": 0,
+   "reqlevel": 17,
+   "reqrace": 0,
+   "side": 2,
+   "x": 47.2,
+   "y": 64.2
+  },
+  "6569": {
+   "after": [
+    6568
+   ],
+   "dungeon": true,
+   "giver": "Myranda the Hag",
+   "level": 60,
+   "map": 1422,
+   "name": "Oculus Illusions",
+   "reqclass": 0,
+   "reqlevel": 55,
+   "reqrace": 0,
+   "side": 2,
+   "x": 50.8,
+   "y": 77.8
+  },
+  "721": {
+   "after": [
+    720
+   ],
+   "dungeon": true,
+   "giver": "Prospector Ryedol",
+   "level": 35,
+   "map": 1418,
+   "name": "A Sign of Hope",
+   "reqclass": 0,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 1,
+   "x": 53.4,
+   "y": 43.2
+  },
+  "7492": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warcaller Gorlach",
+   "level": 57,
+   "map": 1454,
+   "name": "Camp Mojache",
+   "reqclass": 0,
+   "reqlevel": 54,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 64.6
+  },
+  "7637": {
+   "after": [
+    7638
+   ],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 60,
+   "map": 1453,
+   "name": "Emphasis on Sacrifice",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "7640": {
+   "after": [
+    7639
+   ],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 60,
+   "map": 1453,
+   "name": "Exorcising Terrordale",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "7641": {
+   "after": [
+    7640
+   ],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 60,
+   "map": 1453,
+   "name": "The Work of Grimand Elmore",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "7642": {
+   "after": [
+    7641
+   ],
+   "dungeon": false,
+   "giver": "Grimand Elmore",
+   "level": 60,
+   "map": 1453,
+   "name": "Collection of Goods",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 59.6,
+   "y": 33.9
+  },
+  "7643": {
+   "after": [
+    7642
+   ],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 60,
+   "map": 1453,
+   "name": "Ancient Equine Spirit",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "7646": {
+   "after": [
+    7644
+   ],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 60,
+   "map": 1453,
+   "name": "The Divination Scryer",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "7647": {
+   "after": [
+    7646
+   ],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 60,
+   "map": 1453,
+   "name": "Judgment and Redemption",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "7648": {
+   "after": [
+    7642
+   ],
+   "dungeon": false,
+   "giver": "Grimand Elmore",
+   "level": 60,
+   "map": 1453,
+   "name": "Grimand's Finest Work",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 59.6,
+   "y": 33.9
+  },
+  "8151": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Olmin Burningbeard",
+   "level": 52,
+   "map": 1455,
+   "name": "The Hunter's Charm",
+   "reqclass": 4,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 70.6,
+   "y": 83.8
+  },
+  "8181": {
+   "after": [
+    4788
+   ],
+   "dungeon": true,
+   "giver": "Prospector Ironboot",
+   "level": 58,
+   "map": 1446,
+   "name": "Confront Yeh'kinya",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 3,
+   "x": 66.8,
+   "y": 24
+  },
+  "8235": {
+   "after": [
+    8234
+   ],
+   "dungeon": false,
+   "giver": "Archmage Xylem",
+   "level": 52,
+   "map": 1447,
+   "name": "Encoded Fragments",
+   "reqclass": 8,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.2,
+   "y": 40.2
+  },
+  "8236": {
+   "after": [
+    8235
+   ],
+   "dungeon": false,
+   "giver": "Archmage Xylem",
+   "level": 52,
+   "map": 1447,
+   "name": "The Azure Key",
+   "reqclass": 8,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.2,
+   "y": 40.2
+  },
+  "8251": {
+   "after": [
+    8250
+   ],
+   "dungeon": false,
+   "giver": "Archmage Xylem",
+   "level": 52,
+   "map": 1447,
+   "name": "Magic Dust",
+   "reqclass": 128,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.2,
+   "y": 40.2
+  },
+  "8252": {
+   "after": [
+    8251
+   ],
+   "dungeon": false,
+   "giver": "Archmage Xylem",
+   "level": 52,
+   "map": 1447,
+   "name": "The Siren's Coral",
+   "reqclass": 128,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.2,
+   "y": 40.2
+  },
+  "8253": {
+   "after": [
+    8252
+   ],
+   "dungeon": false,
+   "giver": "Archmage Xylem",
+   "level": 52,
+   "map": 1447,
+   "name": "Destroy Morphaz",
+   "reqclass": 128,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.2,
+   "y": 40.2
+  },
+  "8288": {
+   "after": [
+    8286
+   ],
+   "dungeon": true,
+   "giver": "Baristolth of the Shifting Sands",
+   "level": 60,
+   "map": 1451,
+   "name": "Only One May Rise",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 49.4,
+   "y": 36.6
+  },
+  "8368": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 19,
+   "map": 1413,
+   "name": "Battle of Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8369": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 60,
+   "map": 1413,
+   "name": "Invaders of Alterac Valley",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8370": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 29,
+   "map": 1413,
+   "name": "Conquering Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8371": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Alliance Brigadier General",
+   "level": 60,
+   "map": 1416,
+   "name": "Concerted Efforts",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8372": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 19,
+   "map": 1416,
+   "name": "Fight for Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8374": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 29,
+   "map": 1416,
+   "name": "Claiming Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8375": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 60,
+   "map": 1416,
+   "name": "Remember Alterac Valley!",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8393": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 39,
+   "map": 1416,
+   "name": "Claiming Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8394": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 49,
+   "map": 1416,
+   "name": "Claiming Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8395": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 59,
+   "map": 1416,
+   "name": "Claiming Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8396": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 60,
+   "map": 1416,
+   "name": "Claiming Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8399": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 29,
+   "map": 1416,
+   "name": "Fight for Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8400": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 39,
+   "map": 1416,
+   "name": "Fight for Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8401": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 49,
+   "map": 1416,
+   "name": "Fight for Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8402": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 59,
+   "map": 1416,
+   "name": "Fight for Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8403": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Alliance Brigadier General",
+   "level": 60,
+   "map": 1416,
+   "name": "Fight for Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.4,
+   "y": 82.2
+  },
+  "8411": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Bath'rah the Windwatcher",
+   "level": 50,
+   "map": 1416,
+   "name": "Mastering the Elements",
+   "reqclass": 64,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 2,
+   "x": 80.4,
+   "y": 66.8
+  },
+  "8412": {
+   "after": [
+    8410
+   ],
+   "dungeon": false,
+   "giver": "Bath'rah the Windwatcher",
+   "level": 52,
+   "map": 1416,
+   "name": "Spirit Totem",
+   "reqclass": 64,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 2,
+   "x": 80.4,
+   "y": 66.8
+  },
+  "8413": {
+   "after": [
+    8412
+   ],
+   "dungeon": false,
+   "giver": "Bath'rah the Windwatcher",
+   "level": 52,
+   "map": 1416,
+   "name": "Da Voodoo",
+   "reqclass": 64,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 2,
+   "x": 80.4,
+   "y": 66.8
+  },
+  "8414": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Commander Ashlam Valorfist",
+   "level": 52,
+   "map": 1422,
+   "name": "Dispelling Evil",
+   "reqclass": 2,
+   "reqlevel": 50,
+   "reqrace": 5,
+   "side": 1,
+   "x": 42.8,
+   "y": 84
+  },
+  "8415": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Lord Grayson Shadowbreaker",
+   "level": 52,
+   "map": 1453,
+   "name": "Chillwind Point",
+   "reqclass": 2,
+   "reqlevel": 50,
+   "reqrace": 5,
+   "side": 1,
+   "x": 48.5,
+   "y": 50.0
+  },
+  "8418": {
+   "after": [
+    8416
+   ],
+   "dungeon": false,
+   "giver": "Commander Ashlam Valorfist",
+   "level": 52,
+   "map": 1422,
+   "name": "Forging the Mightstone",
+   "reqclass": 2,
+   "reqlevel": 50,
+   "reqrace": 5,
+   "side": 1,
+   "x": 42.8,
+   "y": 84
+  },
+  "8423": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Fallen Hero of the Horde",
+   "level": 52,
+   "map": 1435,
+   "name": "Warrior Kinship",
+   "reqclass": 1,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 34.2,
+   "y": 66
+  },
+  "8424": {
+   "after": [
+    8423
+   ],
+   "dungeon": false,
+   "giver": "Fallen Hero of the Horde",
+   "level": 52,
+   "map": 1435,
+   "name": "War on the Shadowsworn",
+   "reqclass": 1,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 34.2,
+   "y": 66
+  },
+  "8425": {
+   "after": [
+    8424
+   ],
+   "dungeon": false,
+   "giver": "Fallen Hero of the Horde",
+   "level": 52,
+   "map": 1435,
+   "name": "Voodoo Feathers",
+   "reqclass": 1,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 34.2,
+   "y": 66
+  },
+  "8426": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 29,
+   "map": 1413,
+   "name": "Battle of Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8427": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 39,
+   "map": 1413,
+   "name": "Battle of Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8428": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 49,
+   "map": 1413,
+   "name": "Battle of Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8429": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 59,
+   "map": 1413,
+   "name": "Battle of Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8430": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 60,
+   "map": 1413,
+   "name": "Battle of Warsong Gulch",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8436": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 39,
+   "map": 1413,
+   "name": "Conquering Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8437": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 49,
+   "map": 1413,
+   "name": "Conquering Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8439": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Horde Warbringer",
+   "level": 60,
+   "map": 1413,
+   "name": "Conquering Arathi Basin",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 46.6,
+   "y": 8.6
+  },
+  "8447": {
+   "after": [
+    8446
+   ],
+   "dungeon": false,
+   "giver": "Keeper Remulos",
+   "level": 60,
+   "map": 1450,
+   "name": "Waking Legends",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 36.2,
+   "y": 41.8
+  },
+  "8461": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Nafien",
+   "level": 55,
+   "map": 1448,
+   "name": "Deadwood of the North",
+   "reqclass": 0,
+   "reqlevel": 45,
+   "reqrace": 0,
+   "side": 3,
+   "x": 64.8,
+   "y": 8.2
+  },
+  "8464": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Salfa",
+   "level": 58,
+   "map": 1452,
+   "name": "Winterfall Activity",
+   "reqclass": 0,
+   "reqlevel": 45,
+   "reqrace": 0,
+   "side": 3,
+   "x": 27.8,
+   "y": 34.4
+  },
+  "8960": {
+   "after": [
+    8951,
+    8952,
+    8953,
+    8954,
+    8955,
+    8956,
+    8958,
+    8959
+   ],
+   "dungeon": true,
+   "giver": "Deliana",
+   "level": 60,
+   "map": 1455,
+   "name": "Bodley's Unfortunate Fate",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 1,
+   "x": 43.4,
+   "y": 52.2
+  },
+  "9032": {
+   "after": [
+    8957,
+    9016,
+    9017,
+    9018,
+    9019,
+    9020,
+    9021,
+    9022
+   ],
+   "dungeon": true,
+   "giver": "Mokvar",
+   "level": 60,
+   "map": 1454,
+   "name": "Bodley's Unfortunate Fate",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 2,
+   "x": 34.8,
+   "y": 38
+  },
+  "9051": {
+   "after": [
+    9052
+   ],
+   "dungeon": false,
+   "giver": "Torwa Pathfinder",
+   "level": 52,
+   "map": 1449,
+   "name": "Toxic Test",
+   "reqclass": 1024,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.6,
+   "y": 76
+  },
+  "9052": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Torwa Pathfinder",
+   "level": 52,
+   "map": 1449,
+   "name": "Bloodpetal Poison",
+   "reqclass": 1024,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.6,
+   "y": 76
+  },
+  "9053": {
+   "after": [
+    9051
+   ],
+   "dungeon": false,
+   "giver": "Torwa Pathfinder",
+   "level": 52,
+   "map": 1449,
+   "name": "A Better Ingredient",
+   "reqclass": 1024,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.6,
+   "y": 76
+  },
+  "9063": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Mathrengyl Bearwalker",
+   "level": 52,
+   "map": 1457,
+   "name": "Torwa Pathfinder",
+   "reqclass": 1024,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 35.2,
+   "y": 8
+  },
+  "9229": {
+   "after": [
+    9033
+   ],
+   "dungeon": true,
+   "giver": "Korfax, Champion of the Light",
+   "level": 60,
+   "map": 1423,
+   "name": "The Fate of Ramaladni",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.8,
+   "y": 48.4
+  },
+  "9230": {
+   "after": [
+    9229
+   ],
+   "dungeon": true,
+   "giver": "Korfax, Champion of the Light",
+   "level": 60,
+   "map": 1423,
+   "name": "Ramaladni's Icy Grasp",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.8,
+   "y": 48.4
+  },
+  "9251": {
+   "after": [
+    9250
+   ],
+   "dungeon": false,
+   "giver": "Anachronos",
+   "level": 60,
+   "map": 1446,
+   "name": "Atiesh, the Befouled Greatstaff",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 65.2,
+   "y": 50
+  },
+  "9257": {
+   "after": [
+    9251
+   ],
+   "dungeon": false,
+   "giver": "Anachronos",
+   "level": 60,
+   "map": 1446,
+   "name": "Atiesh, Greatstaff of the Guardian",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 65.2,
+   "y": 50
+  },
+  "9269": {
+   "after": [
+    9251
+   ],
+   "dungeon": false,
+   "giver": "Anachronos",
+   "level": 60,
+   "map": 1446,
+   "name": "Atiesh, Greatstaff of the Guardian",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 65.2,
+   "y": 50
+  },
+  "9270": {
+   "after": [
+    9251
+   ],
+   "dungeon": false,
+   "giver": "Anachronos",
+   "level": 60,
+   "map": 1446,
+   "name": "Atiesh, Greatstaff of the Guardian",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 65.2,
+   "y": 50
+  },
+  "9271": {
+   "after": [
+    9251
+   ],
+   "dungeon": false,
+   "giver": "Anachronos",
+   "level": 60,
+   "map": 1446,
+   "name": "Atiesh, Greatstaff of the Guardian",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 65.2,
+   "y": 50
+  },
+  "9362": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Archmage Xylem",
+   "level": 60,
+   "map": 1447,
+   "name": "Warlord Krellian",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.2,
+   "y": 40.2
+  },
+  "9364": {
+   "after": [
+    9362
+   ],
+   "dungeon": false,
+   "giver": "Archmage Xylem",
+   "level": 60,
+   "map": 1447,
+   "name": "Fragmented Magic",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.2,
+   "y": 40.2
+  },
+  "978": {
+   "after": [
+    3661
+   ],
+   "dungeon": true,
+   "giver": "Erelas Ambersky",
+   "level": 55,
+   "map": 1438,
+   "name": "Moontouched Wildkin",
+   "reqclass": 0,
+   "reqlevel": 52,
+   "reqrace": 0,
+   "side": 1,
+   "x": 55.4,
+   "y": 92
+  },
+  "979": {
+   "after": [
+    978
+   ],
+   "dungeon": true,
+   "giver": "Erelas Ambersky",
+   "level": 57,
+   "map": 1438,
+   "name": "Find Ranshalla",
+   "reqclass": 0,
+   "reqlevel": 52,
+   "reqrace": 0,
+   "side": 1,
+   "x": 55.4,
+   "y": 92
+  }
+ }
+}

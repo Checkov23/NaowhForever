@@ -8,7 +8,8 @@ Tools/build/quest_chains.py does, and where its quest giver stands.
 
 The dungeon and raid quests, which Wowhead files under the dungeon and so no zone lists, come
 from completo_dungeon.json (Tools/build/dungeon_quests.py): each goes in the zone its quest giver
-stands in, marked in D.Dungeon.
+stands in, marked in D.Dungeon. The class quests and the instance quests the Journal lacks come
+from completo_elsewhere.json (Tools/build/elsewhere_quests.py), marked in D.Elsewhere or D.Dungeon.
 
 Answers are cached, so a run that dies on Wowhead's rate limit resumes where it stopped:
 completo_zones.json (each zone's quest rows) and completo_quests.json (each quest's
@@ -36,6 +37,7 @@ ZONES = paths.DATA / "completo_zones.json"
 QUESTS = paths.DATA / "completo_quests.json"
 REQUIRES = paths.DATA / "completo_requires.json"
 DUNGEON = paths.DATA / "completo_dungeon.json"
+ELSEWHERE = paths.DATA / "completo_elsewhere.json"
 # Wowhead answers 403 after ~125 pages at 1.5s apart; 5s ran clean.
 GAP = 4
 
@@ -380,7 +382,7 @@ def main():
             save(ITEMS, items)
             time.sleep(GAP)
 
-    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}))
+    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}))
     for line in failed:
         print("FAILED", line, file=sys.stderr)
 
@@ -390,14 +392,15 @@ def main():
 PLACEHOLDER = re.compile(r"^\s*[<(]|unused|\bnyi\b", re.I)
 
 
-def write(zones, quests, requires, items, dungeon):
+def write(zones, quests, requires, items, dungeon, elsewhere):
     for z in zones.values():
         z["quests"] = [q for q in z["quests"] if not PLACEHOLDER.search(q["name"])]
-    # A dungeon quest's spot is Forever's already, and its giver's zone is the one it goes in.
+    # A dungeon or elsewhere quest's spot is Forever's already, and its giver's zone is the one it
+    # goes in.
     area_of = {m: a for a, m in ZONE_MAP.items()}
     own = {q["id"] for z in zones.values() for q in z["quests"]}
     spots, requires = {}, dict(requires)
-    for key, d in dungeon.items():
+    for key, d in {**{k: dict(d, dungeon=True) for k, d in dungeon.items()}, **elsewhere}.items():
         zone = zones.get(str(area_of.get(d["map"])))
         if int(key) in own or not zone:
             continue
@@ -464,7 +467,14 @@ def write(zones, quests, requires, items, dungeon):
         "",
         "D.Dungeon = {",
     ]
-    for qid in sorted(spots):
+    for qid in sorted(q for q, d in spots.items() if d["dungeon"]):
+        lines.append(f"    [{qid}] = true,")
+    lines += [
+        "}",
+        "",
+        "D.Elsewhere = {",
+    ]
+    for qid in sorted(q for q, d in spots.items() if not d["dungeon"]):
         lines.append(f"    [{qid}] = true,")
     lines += [
         "}",
