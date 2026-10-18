@@ -1218,8 +1218,9 @@ NaowhForever_QoL/
   change must hold for `STATE_HOLD` before it shows, so the edge of reach does not flicker. That
   check runs only while something is lit; nothing runs while no object is.
 - A quest giver's nameplate is the game's friendly one, with its health bar and level. Hide Health Bar and Level
-  (`giverHideBar`, off by default) sets the alpha of the plate's `HealthBarsContainer` and `LevelFrame` to 0 while
-  Glimmer lights a giver, leaving the name; the plate's unit frame is pooled by the game, so both are set back to 1
+  (`giverHideBar`, off by default) sets the alpha of the plate's `HealthBarsContainer`, `LevelFrame` and `PlayerLevelDiffFrame` to 0 while
+  Glimmer lights a giver, leaving the name. Forever's plate shows the level in `PlayerLevelDiffFrame`, the boxed
+  number beside the bar; `LevelFrame` is the retail one it keeps hidden. The plate's unit frame is pooled by the game, so all three are set back to 1
   when the effect is released. Effect Height (`giverOffset`, pixels, 0 by default) moves a giver's effect from the
   same anchor an object's uses, since a plate over a creature's head sits at a different height than one over an
   object. Both apply on the next frame, like the other settings.

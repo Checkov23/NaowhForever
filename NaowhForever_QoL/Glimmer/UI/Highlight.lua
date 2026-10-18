@@ -24,7 +24,7 @@ local wantReady, wantSince
 local read = {}
 local queued, fullQueued, cvarsQueued = false, false, false
 local FULL_KEYS = { enabled = true, questSparkle = true, giverHideBar = true, giverOffset = true }
-local BAR_PARTS = { "HealthBarsContainer", "LevelFrame" }
+local BAR_PARTS = { "HealthBarsContainer", "LevelFrame", "PlayerLevelDiffFrame" }
 local CVAR_KEYS = { range = true, arc = true }
 
 local function Paused()

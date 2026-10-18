@@ -370,21 +370,24 @@ check("a quest giver with a quest to hand in lights up, though the game only giv
 log.game.cursor = "Interface\\Cursor\\Quest"
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "y", "z")
 check("and one with a quest to pick up", Lit(log) ~= nil)
-local unitFrame = { HealthBarsContainer = Widget(log), LevelFrame = Widget(log) }
+local unitFrame = { HealthBarsContainer = Widget(log), LevelFrame = Widget(log), PlayerLevelDiffFrame = Widget(log) }
 log.game.plate.UnitFrame = unitFrame
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
 check("a quest giver's plate keeps its bar and level by default",
-    unitFrame.HealthBarsContainer.alpha == nil and unitFrame.LevelFrame.alpha == nil)
+    unitFrame.HealthBarsContainer.alpha == nil and unitFrame.LevelFrame.alpha == nil
+    and unitFrame.PlayerLevelDiffFrame.alpha == nil)
 check("and the effect sits at the usual height", Lit(log).point[5] == -40)
 log.Set("giverHideBar", true)
-check("Hide Health Bar and Level: both go, the name stays",
-    unitFrame.HealthBarsContainer.alpha == 0 and unitFrame.LevelFrame.alpha == 0)
+check("Hide Health Bar and Level: the bar and both level frames go, the name stays",
+    unitFrame.HealthBarsContainer.alpha == 0 and unitFrame.LevelFrame.alpha == 0
+    and unitFrame.PlayerLevelDiffFrame.alpha == 0)
 log.Set("giverOffset", 30)
 check("a quest giver's effect moves by its own height", Lit(log).point[5] == -10)
 log.game.guid, log.game.object, log.game.cursor = GUID(COPPER), true, nil
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "y", "z")
 check("the plate gets its bar back when it stops being a quest giver's",
-    unitFrame.HealthBarsContainer.alpha == 1 and unitFrame.LevelFrame.alpha == 1)
+    unitFrame.HealthBarsContainer.alpha == 1 and unitFrame.LevelFrame.alpha == 1
+    and unitFrame.PlayerLevelDiffFrame.alpha == 1)
 check("and an object's effect keeps the usual height", Lit(log).point[5] == -40)
 log.Set("giverHideBar", false)
 log.Set("giverOffset", 0)
