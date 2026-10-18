@@ -33,8 +33,10 @@ NaowhForever_Utilities/Journeys/
 - A step is placed with `ns.ShowJourneyStep`, the game's own waypoint, so the Waypoint Pin draws it.
   `ns.WaypointRoute` reports the journey, so the pin does not clear a step on arrival and its navigator
   shows "step N of M" and the next step.
-- The game clears a user waypoint itself when you reach it, so a waypoint cleared near the step means
-  arrived; a waypoint set anywhere else ends the journey, as clearing it from the navigator does.
+- The game clears a user waypoint itself when you reach it, from its arrival event, so a waypoint
+  cleared in the same frame as `NAVIGATION_DESTINATION_REACHED` means arrived (or off the continents,
+  where the journey holds). Any other clear is you removing the pin, and ends the journey; so does a
+  waypoint set anywhere else, as clearing it from the navigator does.
 - Reaching the game's own destination only clears its super-tracking, not the pin itself, so the last
   stop of a journey with no quest to hand back to clears the waypoint on arrival; otherwise it would
   sit on the map pointing at where you already are.
