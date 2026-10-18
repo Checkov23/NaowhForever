@@ -358,13 +358,20 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   one short string. Without C_Item.GetItemGUID, right-click keeps every copy.
 - Enchanting's profession ID is 333; the window's Disenchant button shows for your own Enchanting only.
 - Disenchant Deals is a separate opt-in feature. It reads the immutable lowest-buyout map from the
-  last manual Scan Prices; it never starts or repeats an auction scan. Its compact outcome bands are
-  original tables for classic-era Uncommon, Rare and Epic weapons and armor. A deal is omitted when
-  any possible material has no scan price, instead of overstating an incomplete expected value.
+  last manual Scan Prices; it never starts or repeats an auction scan. The material bands, quantities
+  and odds are the classic-era facts from Warcraft Wiki's
+  [Disenchanting tables](https://warcraft.wiki.gg/wiki/Disenchanting_tables)
+  ([CC BY-SA 4.0](https://warcraft.wiki.gg/wiki/Warcraft_Wiki:Copyrights)), represented
+  in original compact rows for Uncommon, Rare and Epic weapons and armor. A deal is omitted when any
+  possible material has no scan price, instead of overstating an incomplete expected value.
 - Profit mode ranks positive expected returns after the 5% auction cut by profit and ROI. It includes
   every skill level unless For my Enchant Lvl is checked. Guaranteed profit means even the least
   valuable possible result is worth more than the item. Level Up ranks items the character can disenchant by
   low cash investment first, keeps only ten visible choices, and shows none at skill 60 or above.
+- Level Up's skill-up bands come from Forever build 1.60.1.70425's `SkillLineAbility` row for
+  Disenchant (13262), read through [wago.tools](https://wago.tools/db2/SkillLineAbility): minimum 1,
+  low trivial 20 and high trivial 60. Those thresholds map to guaranteed below 20, likely from 20 to
+  39, unlikely from 40 to 59 and no skill-up at 60; they do not vary with the item being disenchanted.
 - Calculations run only after Find Deals, in bounded chunks. Item data loads five at a time; closing
   the auction house or changing modes pauses at the saved cursor, and the completed results stay
   cached until Scan Prices changes. Crossing a disenchant skill bracket invalidates only Level Up.
