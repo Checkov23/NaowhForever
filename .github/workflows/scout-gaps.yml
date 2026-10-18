@@ -1,0 +1,86 @@
+name: scout-gaps
+
+# On demand: reads Wowhead Forever's page of every creature Scout's data has no spells for from the
+# CMaNGOS database (Forever's new creatures, bosses whose spells are in the server's code), with
+# Tools/build/scout.py --fetch-gaps, and opens a pull request with what it read. Wowhead is read
+# one page at a time at scout.py's pace, waiting out a block as it does on our machines. The pages
+# read are kept in Tools/data/scout.json as they come, so a run cut short still brings what it
+# read, and the next run starts where it stopped.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: scout-gaps
+  cancel-in-progress: false
+
+jobs:
+  scout:
+    name: scout
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      # Stopped short of the job's own limit, so the pages read so far are kept and built from.
+      - name: Read the gaps from Wowhead
+        run: |
+          timeout 320m python Tools/build/scout.py --fetch-gaps \
+            || echo "::warning::Cut short (exit $?), building from the pages read so far."
+
+      - name: Build Scout's data
+        run: python Tools/build/scout.py
+
+      - name: Open the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if git diff --quiet; then
+            echo "Nothing new from Wowhead."
+            exit 0
+          fi
+          branch=scout-gaps
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -qam "feat(scout): abilities for the creatures the database lacks"
+          gh auth setup-git
+          git push --force origin "HEAD:refs/heads/$branch"
+          {
+            echo "## What does this PR do?"
+            echo
+            echo "Scout's abilities and tameable beasts for the creatures the CMaNGOS database has no spells for,"
+            echo "read from their Wowhead Forever pages by the scout-gaps workflow."
+            echo
+            echo "## Changelog"
+            echo
+            echo "Changed: Scout: shows the abilities of more creatures, Forever's new ones and dungeon bosses among them."
+            echo
+            echo "---"
+            echo "Opened by .github/workflows/scout-gaps.yml: $SERVER/$REPO/actions/runs/$RUN_ID."
+            echo "Checks do not run on a pull request a workflow opens: close and reopen it to run them."
+          } > "$RUNNER_TEMP/pr.md"
+          pr="$(gh pr list --head "$branch" --state open --json url --jq '.[0].url // empty')"
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --body-file "$RUNNER_TEMP/pr.md"
+            echo "Brought up to date: $pr"
+          else
+            gh pr create --base main --head "$branch" --title "feat(scout): abilities for the creatures the database lacks" \
+              --body-file "$RUNNER_TEMP/pr.md" \
+              || echo "::warning::Could not open the pull request: $SERVER/$REPO/compare/main...$branch?quick_pull=1"
+          fi

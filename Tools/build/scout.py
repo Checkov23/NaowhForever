@@ -2,7 +2,8 @@
 hunter can tame, for the creatures of every open-world zone and Dungeon Journal instance.
 
 The creatures come from the zone pages of Wowhead Forever (Tools/data/scout.json, "zones"): the ones
-some faction can attack, other than critters. Their stats come from the CMaNGOS classic database
+some faction can attack, other than critters, and the bosses the Journal names by NPC ID (an
+instance Wowhead has no zone page for has only those). Their stats come from the CMaNGOS classic database
 (github.com/cmangos/classic-db, GPL-3.0), downloaded each run (or --dump FILE):
   - what a creature casts: the spells its EventAI scripts cast (action 11), leaving out the events
     that are not a fight (it spawns, is out of combat, evades, reaches home, a quest or an emote), and
@@ -85,6 +86,13 @@ def save(cache):
 def instances():
     dungeons = json.loads(DUNGEONS.read_text(encoding="utf-8"))["dungeons"]
     return {d["zone"] for d in dungeons if d.get("zone")}
+
+
+def instance_npcs():
+    """{ npcID: name } of the bosses the Journal names by ID, so an instance with no zone page on
+    Wowhead (Forever's new ones, the raids) still has its bosses looked up."""
+    dungeons = json.loads(DUNGEONS.read_text(encoding="utf-8"))["dungeons"]
+    return {npc: name for d in dungeons for name, npc in (d.get("npcs") or {}).items()}
 
 
 def zones():
@@ -226,6 +234,9 @@ def creatures(cache):
             names[row["id"]] = row["name"]
             if area in instances():
                 first.add(row["id"])
+    for npc, name in instance_npcs().items():
+        names.setdefault(npc, name)
+        first.add(npc)
     return names, first
 
 
