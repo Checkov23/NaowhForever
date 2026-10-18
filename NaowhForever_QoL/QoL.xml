@@ -41,6 +41,8 @@
     <Script file="Combat\DamageMeterLayout.lua"/>
     <Script file="Combat\DamageMeterPreview.lua"/>
     <Script file="Combat\DamageMeterSkin.lua"/>
+    <Script file="Combat\ScoutData.lua"/>
+    <Script file="Combat\Scout.lua"/>
     <Script file="System\Performance.lua"/>
     <Script file="Loot\LootFeed.lua"/>
     <Script file="Loot\AuctionPrices.lua"/>

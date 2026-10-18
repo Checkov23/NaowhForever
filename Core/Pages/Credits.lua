@@ -41,6 +41,7 @@ local DATA = {
     { icon = "bars", color = GOLD, name = "WoWSims", role = "Data", line = ns.L("The stat weights each spec starts with.") },
     { icon = "map", color = GOLD, name = "Santiago Reyes", role = "Maps", line = ns.L("For his maps of the new Forever dungeons.") },
     { icon = "map", color = GOLD, name = "tr0tsky", role = "Data", line = ns.L("Ley lines and Elemental Convergences behind Skyborne Spots, from the Skyborne Ley Line & Convergence Marker addon.") },
+    { icon = "search", color = GOLD, name = "CMaNGOS", role = "Data", line = ns.L("The classic creature database behind Scout's abilities, armor, immunities and tameable beasts.") },
     { icon = "notes", color = GOLD, name = "12dicts and ENABLE", role = "Data", line = ns.L("Alan Beale's 12dicts and the ENABLE word list, the public-domain words behind the Daily Word.") },
 }
 

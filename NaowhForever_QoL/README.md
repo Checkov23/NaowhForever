@@ -78,6 +78,8 @@ NaowhForever_QoL/
     DamageMeterSkin.lua the card Default Damage Meter: the game's meter in the theme, and its place
     StealthReminder.lua the Stealth Reminder
     PetTracker.lua      the Pet Tracker
+    ScoutData.lua       Scout's creature abilities and tameable beasts (packed) and armor by level, generated
+    Scout.lua           Scout: abilities, armor and pet family on a creature's tooltip
   Questing/
     BuffThanks.lua      Buff Thank You Message and its line editor
     Invites.lua         the people you keep an invite button for and their editor (ns.InvitePerson,
@@ -792,6 +794,46 @@ NaowhForever_QoL/
 - The sacrifice aura is read out of combat only: in combat the client hides the player's own auras from addons, so the last answer from before the fight stands.
 - A pet can take a few seconds to come back after dismounting: `DISMOUNT_DELAY` (5 s) keeps the warning away meanwhile.
 - The warning is fitted to its text only with a background, so elements anchored to it keep their spot.
+
+### Scout
+- The game gives addons no list of what a creature casts or how it is built, so Scout's data is
+  built by Tools/build/scout.py from the CMaNGOS classic database (GPL-3.0, credited on the Credits
+  page): what a creature's scripts and spell list cast (not the casts when it spawns, is out of combat,
+  evades, reaches home, or for a quest or an emote), its Armor, its six Resistance columns, its
+  immunity masks and whether it can be tamed. Wowhead Forever's creature pages fill in the creatures
+  the database has no spells for: most raid bosses, whose abilities are in the server's code, and
+  Forever's new creatures.
+- Spells are cleaned with the game's own SpellName table: one the client has no name for, a
+  creature's spell to summon itself, spells the scripts put on creatures that never cast them
+  (Meathook, Dazed, the campfire's Camp Benefits and Boosted Rest) are dropped, and of each spell
+  name only the newest is kept (older ranks are another creature's version). Names, icons, range,
+  cast time and descriptions are read from the game for each spell, so they are the client's own
+  text; there is no cooldown to read for a creature's spell.
+- Armor is the creature's own where the database has it (Ragnaros has 4691, more than a level 63's
+  3731); the game's ExpectedStat for its level, shown with a `~`, where it does not. The cut of your
+  physical damage is classic's: armor / (armor + 400 + 85 x your level), at most 75%
+  (ExpectedStat's ArmorConstant is that 400 + 85 x level). A `??` creature counts as level 63 if it
+  is a world boss, else as ten levels above you, the furthest a level shows.
+- Immunities are the creature's two masks: the schools (bit 1 physical, 2 holy, 4 fire, 8 nature,
+  16 frost, 32 shadow, 64 arcane) and the mechanics (bit n - 1 for MECHANIC n: stun 12, fear 5,
+  root 7, snare 11, silence 9, sleep 10, charm 1, polymorph 17, banish 18, disorient 2, interrupt
+  26, bleed 15, shackle 20, disarm 3). Only those a player can cast are listed. A negative
+  resistance is left out.
+- The database is classic 1.12, so a creature Forever has changed may differ from it.
+- Hunters can tame a beast of their level or lower, so a tameable one above it reads
+  "Untameable until level N" in red, and one whose level shows as `??` "Untameable at your level".
+  The family is the game's (UnitCreatureFamily); whether it can be tamed at all is the database's.
+- The data is packed like Glimmer's spots and unpacked when Scout is first on, out of combat;
+  turned on in combat it waits for combat to end. A creature whose ID is hidden gets nothing
+  added; one whose level is hidden gets its abilities but no armor or pet family. A spell the
+  client has no data for is left out.
+- The details are Scout's own tooltips (GameTooltip copies), shown while the details key is held
+  (MODIFIER_STATE_CHANGED, that key only) and hidden with the creature's tooltip: under it for In
+  the Tooltip, or the game's own spell tooltips beside it, on the side with more screen. The
+  creature's tooltip is never redrawn: refreshing Blizzard's tooltip from addon code would re-run
+  its unit code under taint, where combat's secret values break it.
+- A spell whose description is empty is asked of the client once (Spell:ContinueOnSpellLoad); some
+  creature spells have none, so asking again would never end.
 
 ### Performance
 - The game keeps its settings per computer, so the values the recommended ones replaced live in the account store (`cvarBackups`), not the profile.

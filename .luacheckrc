@@ -135,7 +135,7 @@ read_globals = {
     "TooltipDataProcessor", "TRADE_SKILLS", "TSM_API", "UIErrorsFrame", "UiMapPoint",
     "TimerTracker", "UIParent", "UIWidgetTopCenterContainerFrame", "UNKNOWNOBJECT", "UnitAffectingCombat", "UnitAttackSpeed", "UnitCanAttack",
     "SpellIsTargeting", "SpellStopTargeting", "UnitCastingDuration", "UnitCastingInfo", "UnitChannelDuration", "UnitChannelInfo",
-    "UnitClass", "UnitDetailedThreatSituation", "UnitExists", "UnitFactionGroup",
+    "UnitClass", "UnitCreatureFamily", "UnitDetailedThreatSituation", "UnitExists", "UnitFactionGroup",
     "UnitFullName", "UnitGetTotalAbsorbs", "UnitGroupRolesAssigned", "UnitGUID", "UnitHealth", "UnitHealthMax",
     "UnitHealthPercent", "UnitInParty", "UnitInRaid", "UnitIsAFK", "UnitIsConnected", "UnitIsDead", "UnitIsTapDenied", "UnitClassification",
     "FlashClientIcon", "C_VignetteInfo", "UnitIsDeadOrGhost",
