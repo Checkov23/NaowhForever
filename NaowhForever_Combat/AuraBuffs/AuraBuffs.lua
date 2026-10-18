@@ -19,6 +19,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 }, buffGlowLines = 8,
     buffGlowThickness = 2, buffGlowSpeed = 5,
     iconSize = 48, buffIconMode = "default", buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
+    buffsBorderColor = false,
     buffsPos = { point = "TOP", relPoint = "TOP", x = 0, y = -232 },
 
     campfire = F.campfire, campTimer = true, campBuffs = true,

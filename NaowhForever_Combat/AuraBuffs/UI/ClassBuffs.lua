@@ -29,7 +29,7 @@ local WHY_OFF = ns.L("Turn on the Class Buff Tracker")
 local TEXT_SUMMARY = ns.L("Grey when inactive; left-click to buff yourself.")
 local TEXT_UNAVAILABLE = ns.L("Class Buff Tracker could not load Blizzard's aura display.")
 local KEYS = { enabled = true, classBuffTracker = true, classBuffSize = true,
-    personalBuffPicks = true, raidBuffPicks = true, buffsFont = true,
+    personalBuffPicks = true, raidBuffPicks = true, buffsFont = true, buffsBorderColor = true,
     classBuffGlow = true, classBuffGlowType = true,
     classBuffGlowColor = true, classBuffGlowLines = true, classBuffGlowThickness = true,
     classBuffGlowSpeed = true }

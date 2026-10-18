@@ -24,7 +24,7 @@ local KEYS = {
     buffIconMode = true, raidBuffRange = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true, wornReminders = true,
     fishingPoleReminder = true, fishingPoleWhere = true,
-    buffsFont = true, buffsFontSize = true, buffsOutline = true,
+    buffsFont = true, buffsFontSize = true, buffsOutline = true, buffsBorderColor = true,
     buffGlow = true, buffGlowType = true, buffGlowColor = true, buffGlowLines = true, buffGlowThickness = true,
     buffGlowSpeed = true,
 }

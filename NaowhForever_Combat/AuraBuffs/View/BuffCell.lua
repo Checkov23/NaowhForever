@@ -19,10 +19,26 @@ function Cell.New(parent, template)
     cell.icon = cell:CreateTexture(nil, "ARTWORK")
     cell.icon:SetAllPoints()
     cell.icon:SetTexCoord(CROP, 1 - CROP, CROP, 1 - CROP)
-    ns.Border(cell, ns.ThemeTint("line", St.BLACK))
+    Cell.Edge(cell)
     cell.count = ns.Font(cell, COUNT_SIZE, "OUTLINE")
     cell.count:SetPoint("BOTTOMRIGHT", -COUNT_INSET, COUNT_INSET)
     return cell
+end
+
+function Cell.EdgeColor()
+    return S.Get("buffsBorderColor") or ns.ThemeTint("line", St.BLACK)
+end
+
+function Cell.Edge(frame)
+    local c = Cell.EdgeColor()
+    frame.border, frame.edgeColor = ns.Border(frame, c), c
+end
+
+function Cell.PaintEdge(frame)
+    local c = Cell.EdgeColor()
+    if frame.edgeColor == c then return end
+    frame.edgeColor = c
+    frame.border:SetColor(c.r, c.g, c.b)
 end
 
 function Cell.Snap(region, value)
@@ -36,6 +52,7 @@ function Cell.Place(cell, parent, i, size, icon, count)
     cell:ClearAllPoints()
     cell:SetPoint("LEFT", parent, "LEFT", (i - 1) * Cell.Snap(parent, size + GAP), 0)
     cell.icon:SetTexture(icon)
+    Cell.PaintEdge(cell)
     Parts.HudFont(cell.count, S.Get("buffsFont"), S.Get("buffsFontSize"), S.Get("buffsOutline"))
     cell.count:SetText(count or "")
 end

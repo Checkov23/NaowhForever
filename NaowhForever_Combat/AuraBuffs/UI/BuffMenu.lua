@@ -72,7 +72,7 @@ local function Button(count)
     button.icon = button:CreateTexture(nil, "ARTWORK")
     button.icon:SetAllPoints()
     button.icon:SetTexCoord(CROP, 1 - CROP, CROP, 1 - CROP)
-    ns.Border(button, ns.ThemeTint("line", St.BLACK))
+    Cell.Edge(button)
     button:SetScript("PostClick", OnItemUsed)
     button:SetScript("OnEnter", OnItemEnter)
     button:SetScript("OnLeave", OnItemLeave)
@@ -91,6 +91,7 @@ local function Fill(items)
             button.itemID = id
             button:SetAttribute("item1", "item:" .. id)
             button.icon:SetTexture(R.ItemIcon(id))
+            Cell.PaintEdge(button)
             button:Show()
         end
     end

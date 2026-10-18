@@ -236,6 +236,13 @@ rows[#rows + 1] = { key = "iconSize", label = "Icon Size", slider = ICON_RANGE, 
 rows[#rows + 1] = { key = "buffIconMode", label = "Icon", choice = ICON_MODES, needs = Enabled, why = OFF,
     help = "Default: the item you carry, or the kind's usual icon. Last Used: the icon of the food, flask, "
         .. "elixir, scroll or weapon item you used last." }
+rows[#rows + 1] = { key = "buffsBorderColor", label = "Border Color", colour = true, needs = Enabled, why = OFF,
+    get = function()
+        local c = Cell.EdgeColor()
+        return c.r, c.g, c.b, 1
+    end,
+    set = function(r, g, b) S.Set("buffsBorderColor", { r = r, g = g, b = b }) end,
+    help = "Follows your theme until you pick one." }
 rows[#rows + 1] = Settings.Look("buffs", { text = true, size = TEXT_RANGE, needs = Enabled, why = OFF })
 
 if A.OLD_COPY then return end
