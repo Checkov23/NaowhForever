@@ -11,6 +11,7 @@ local TEXT_PLAYERS, TEXT_ASSIGNMENTS = ns.L("Players"), ns.L("Assignments")
 local TEXT_OWN_ONE, TEXT_OWN_MANY = ns.L("1 player has their own blessing"), ns.L("%d players have their own blessing")
 local TEXT_CLEAR_OWN = ns.L("Give them the class blessing")
 local TEXT_SALV = ns.L("Give Salvation")
+local TEXT_SEAL = ns.L("Seal")
 
 local function OwnAura()
     return Store().aura
@@ -66,6 +67,15 @@ local function SetAura(key)
     B.SetOwn(AURA_COLUMN, key)
 end
 
+function B.SetSeal(key)
+    Store().seal = key
+    B.Changed()
+end
+
+function B.SealMenu(owner)
+    B.OpenMenu(owner, TEXT_SEAL, B.SEALS, function() return Store().seal end, B.SetSeal, TEXT_DEFAULT)
+end
+
 function B.AuraMenu(owner)
     B.OpenMenu(owner, TEXT_AURA, AURAS, OwnAura, SetAura, TEXT_DEFAULT)
 end
@@ -112,7 +122,7 @@ function B.ClassMenu(owner, class, inSettings)
         end
         root:CreateDivider()
         if Learned(B.SALVATION) then root:CreateCheckbox(TEXT_SALV, SalvOn, ToggleSalv) end
-        if not inSettings then
+        if not inSettings and B.Settings.Get("blessPlayerList") then
             root:CreateCheckbox(TEXT_PLAYERS, function() return B.PlayerList.Showing() == class end,
                 function() B.PlayerList.Toggle(class) end)
         end

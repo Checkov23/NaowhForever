@@ -16,7 +16,7 @@ local STEP = [[
     self:SetAttribute("step", i + 1)
 ]]
 
-local keyNext, keyGreater
+local keyNext, keyGreater, keyAuto
 
 local function NewKeyButton(name, handler)
     local btn = CreateFrame("Button", name, UIParent, "SecureActionButtonTemplate")
@@ -29,14 +29,15 @@ local function NewKeyButton(name, handler)
     return btn
 end
 
-local function SetQueue(btn, list)
+local function SetQueue(btn, list, kind)
+    kind = kind or ""
     table.sort(list, ByUrgency)
     for i, entry in ipairs(list) do
-        btn:SetAttribute("unit" .. i, entry.unit)
-        btn:SetAttribute("spell" .. i, entry.spell)
+        btn:SetAttribute("unit" .. kind .. i, entry.unit)
+        btn:SetAttribute("spell" .. kind .. i, entry.spell)
     end
-    btn:SetAttribute("count", #list)
-    btn:SetAttribute("step", 1)
+    btn:SetAttribute("count" .. kind, #list)
+    btn:SetAttribute("step" .. kind, 1)
 end
 
 local function Singles(members, single, shared)
@@ -86,12 +87,8 @@ function Keys.Build(handler)
     keyGreater = NewKeyButton(NEXT_GREATER, handler)
 end
 
-function Keys.Next()
-    return keyNext
-end
-
-function Keys.NextGreater()
-    return keyGreater
+function Keys.SetAuto(btn)
+    keyAuto = btn
 end
 
 function Keys.Peek()
@@ -102,6 +99,10 @@ end
 function Keys.Clear()
     if keyNext then keyNext:SetAttribute("count", 0) end
     if keyGreater then keyGreater:SetAttribute("count", 0) end
+    if keyAuto then
+        keyAuto:SetAttribute("countN", 0)
+        keyAuto:SetAttribute("countG", 0)
+    end
 end
 
 function Keys.Fill(byClass, salvMembers, tankClass)
@@ -117,4 +118,8 @@ function Keys.Fill(byClass, salvMembers, tankClass)
     if salvMembers then Salvation(salvMembers, tankClass, single, greater, symbols) end
     SetQueue(keyNext, single)
     SetQueue(keyGreater, greater)
+    if keyAuto then
+        SetQueue(keyAuto, single, "N")
+        SetQueue(keyAuto, greater, "G")
+    end
 end

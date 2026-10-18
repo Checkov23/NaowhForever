@@ -20,7 +20,7 @@ local ROW_NAME = "NaowhForeverBlessRow"
 local TEXT_DEFAULT = ns.L("Class default")
 local TEXT_BLESS = ns.L("Bless")
 local TEXT_BLESS_TIP = ns.L("Left-click: cast this player's blessing.\nRight-click: give "
-    .. "them their own blessing, or back to the class default.")
+    .. "them their own blessing, or back to the class default.\nCtrl-click: toggle Main Tank in a raid.")
 local TEXT_AFTER_COMBAT = ns.L("The player list opens after combat.")
 local TEXT_CLOSE = "X"
 
@@ -54,6 +54,8 @@ local function NewRow(index)
     Look.Icon(row.slot)
     row.header, row.cast = B.Recipient(row.slot, ROW_NAME .. index)
     B.SizeRecipient(row.header, row.cast, SLOT)
+    row.cast:SetAttribute("ctrl-type1", "maintank")
+    row.cast:SetAttribute("ctrl-action1", "toggle")
     row.cast:SetScript("PostClick", function(self, button, down)
         if button == "RightButton" and not down and row.member then PlayerMenu(self, row.member) end
         if button == "LeftButton" then B.NoteCast(self:GetAttribute("unit"), self:GetAttribute("spell1")) end
@@ -112,7 +114,7 @@ function PlayerList.Arrange(roster)
     for _, member in ipairs(roster) do
         if member.class == flyoutClass then members[#members + 1] = member end
     end
-    if #members == 0 then flyoutClass = nil end
+    if #members == 0 or not B.Settings.Get("blessPlayerList") then flyoutClass = nil end
     if not flyoutClass then
         flyout:Hide()
         return

@@ -165,16 +165,25 @@ NaowhForever_Combat/Blessings/
   resolve in `Assigned`, so the class button casts singles for a class with a tank, since a Greater Blessing
   would give the tank the class one. A tank is the Tank role or a Main Tank mark (`IsTank`, also what skips tanks
   for Salvation and in Aura Buff Reminders).
-- The Auto Buff button (off by default) is a secure button that clicks the Next Blessing key button on a left
-  click and the Next Greater Blessing one on a right click, so it steps through the same queues and shows the
-  next spell and how many are due. The buttons take `/click` in a macro: `NaowhForeverBlessNext`,
-  `NaowhForeverBlessNextGreater`, `NaowhForeverBlessAuto`, `NaowhForeverBlessAura` and `NaowhForeverBlessFury`.
-  The wheel on the aura button cycles through the auras you know, out of combat.
-  Class Buttons off hides every class button, leaving the Auto Buff button, Salvation and the key bindings.
+- The Auto Buff button (off by default) is a secure button with its own copy of the two key-binding queues
+  (`countN` and `countG`, filled by `Keys.Fill`): a left click casts the next blessing and a right click the next
+  Greater one, or the other way round with Auto Buff Greater First (`leftKind`). The secure `click` action cannot
+  stand in: it calls the target's `Click` with no key-down flag and the key buttons only listen for key down. It
+  shows the next spell and how many are due. The buttons take `/click` in a macro: `NaowhForeverBlessNext`,
+  `NaowhForeverBlessNextGreater`, `NaowhForeverBlessAuto`, `NaowhForeverBlessAura`, `NaowhForeverBlessFury` and
+  `NaowhForeverBlessSeal`. The wheel on the aura button cycles through the auras you know, and on the seal button
+  through your seals, out of combat. The Seal Button (off) casts the seal you picked by name, so it is always your
+  highest rank; seals cannot be tracked in combat, so it shows no state. Class Buttons off hides every class
+  button, leaving the Auto Buff button, Salvation and the key bindings; Player List off removes the player list.
+  Ctrl-click on a player in the list toggles their Main Tank mark (the secure `maintank` action).
 - Use in Party and Use When Solo (both on) hide the bar in a party or alone; a raid always shows it. Hide the
   Bench (off) drops the raid members past `ceil(size / 5)` groups in a raid dungeon, from `GetInstanceInfo`'s
   size and the group each member is in. The status colors (missing, running out, only own blessings) can be
-  picked unless Apply Theme to Status Colors is on.
+  picked unless Apply Theme to Status Colors is on. Button Border is black, the theme's Accent or none, and Bar
+  Background lays a Shared Media texture behind the whole bar in the theme's background color at the chosen
+  opacity. Show Tooltips off hides the tooltips on the bar's buttons by closing each as it opens. The Blessings
+  window's size is a setting (Window Size) and a grip in its corner: drag it to scale the window, right-click to
+  reset it.
 - Salvation used to be one of the five class blessings. A saved plan with it for a class or a player is read
   once into "Salvation on" with that class or player cleared (`salvSplit`), and one turned off stays off.
 - The preset is one saved set of plans for the account, by paladin name. Loading it plans only the

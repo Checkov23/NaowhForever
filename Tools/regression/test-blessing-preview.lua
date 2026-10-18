@@ -533,6 +533,19 @@ check("turns its class Salvation into Salvation on",
     B.Store().classes.MAGE == nil and B.Store().classes.WARRIOR == "might" and B.Store().salv == true)
 B.Store().salv = nil
 
+-- The seal button: seals are looked up like the other spells, picked from a menu and kept in your plan.
+check("the seals are indexed by key and spell", B.BY_KEY.sealCommand.ranks[1] == 20375 and B.FAMILY[20375] == "sealCommand")
+check("a seal has a name and an icon", B.SpellName("sealFury") == "Spell 1311649" and B.SpellIcon("sealFury") == 1311649)
+B.SealMenu({})
+local sealLabels = {}
+for _, item in ipairs(menu.items) do sealLabels[#sealLabels + 1] = item.label end
+check("the seal menu lists every seal you know, then the default", #sealLabels == #B.SEALS + 2
+    and sealLabels[2] == "Spell 20154" and sealLabels[#sealLabels] == "Default")
+B.SetSeal("sealCommand")
+check("choosing a seal keeps it and refreshes", B.Store().seal == "sealCommand" and refreshed > 0)
+B.SetSeal(nil)
+check("and Default clears it", B.Store().seal == nil)
+
 -- Clear empties your whole plan.
 local plan = B.Store()
 plan.classes.WARRIOR, plan.aura, plan.salv, plan.players.me = "might", "retribution", true, "kings"

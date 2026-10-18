@@ -23,6 +23,7 @@ local SECONDS = 60
 local ROUND = B.ROUND
 local MINUTES = "m"
 local MARK = "!"
+local BACKDROP_PAD = 4
 local EDGE = { RIGHT = "LEFT", LEFT = "RIGHT", DOWN = "TOP", UP = "BOTTOM" }
 local TOWARD = { RIGHT = 1, LEFT = -1, DOWN = -1, UP = 1 }
 
@@ -97,11 +98,41 @@ function Look.Icon(frame)
     frame.icon = frame:CreateTexture(nil, "ARTWORK")
     ns.PixelInset(frame.icon, 1)
     frame.icon:SetTexCoord(ICON_CROP, 1 - ICON_CROP, ICON_CROP, 1 - ICON_CROP)
-    ns.Border(frame, ICON_BORDER)
+    frame.border = ns.Border(frame, ICON_BORDER)
     frame.mark = ns.Font(frame, MARK_SIZE, "OUTLINE", RED)
     frame.mark:SetPoint("CENTER")
     frame.timer = ns.Font(frame, TIMER_SIZE, "OUTLINE")
     frame.timer:SetPoint("BOTTOM", 0, TIMER_Y)
+end
+
+function Look.Border(frame)
+    local border = frame.border
+    if not border then return end
+    local style = S.Get("blessBorder")
+    border._frame:SetShown(style ~= "none")
+    local color = style == "accent" and T.accent or ICON_BORDER
+    border:SetColor(color.r, color.g, color.b)
+end
+
+function Look.Backdrop(bar)
+    local name = S.Get("blessBackground")
+    local back = bar.backdrop
+    if name == "none" then
+        if back then back:Hide() end
+        return
+    end
+    if not back then
+        back = bar:CreateTexture(nil, "BACKGROUND")
+        bar.backdrop = back
+    end
+    back:ClearAllPoints()
+    back:SetPoint("TOPLEFT", bar, "TOPLEFT", -BACKDROP_PAD, BACKDROP_PAD)
+    back:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", BACKDROP_PAD, -BACKDROP_PAD)
+    local LSM = LibStub("LibSharedMedia-3.0", true)
+    local path = LSM and LSM:Fetch("statusbar", name, true)
+    if path then back:SetTexture(path) else back:SetColorTexture(1, 1, 1) end
+    back:SetVertexColor(T.bg.r, T.bg.g, T.bg.b, S.Get("blessBackgroundAlpha"))
+    back:Show()
 end
 
 function Look.Label(cell, class, text)
@@ -141,6 +172,7 @@ function Look.Place(frame, row, x)
     Parts.HudFont(frame.mark, font, MARK_SIZE, outline)
     frame.mark:SetTextColor(missing.r, missing.g, missing.b)
     if frame.label then PlaceLabel(frame, size) end
+    Look.Border(frame)
     Look.Pin(frame, row, x)
     frame:Show()
     return x + size + Look.gap

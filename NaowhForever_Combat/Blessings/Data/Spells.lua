@@ -24,6 +24,16 @@ B.AURAS = {
 
 B.FURY = { key = "fury", ranks = { 25780 } }
 
+B.SEALS = {
+    { key = "sealRighteousness", ranks = { 20154 } },
+    { key = "sealCommand", ranks = { 20375 } },
+    { key = "sealFury", ranks = { 1311649 } },
+    { key = "sealCrusader", ranks = { 21082 } },
+    { key = "sealJustice", ranks = { 20164 } },
+    { key = "sealLight", ranks = { 20165 } },
+    { key = "sealWisdom", ranks = { 20166 } },
+}
+
 B.SYMBOL_OF_KINGS = 21177
 
 B.SALV_FLAG, B.FREE_FLAG = "Y", "X"

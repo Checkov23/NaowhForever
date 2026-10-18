@@ -12,6 +12,10 @@ local CARD = 6
 local SCROLL_GAP = 4
 local TOP_Y = -6
 local WINDOW_KEY = "blessingsWindow"
+local GRIP_SIZE, GRIP_INSET = 16, 4
+local GRIP_TEXTURE = "Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up"
+local SCALE_MIN, SCALE_MAX, SCALE_STEP = 0.6, 1.5, 0.05
+local TEXT_GRIP = ns.L("Drag to resize the window. Right-click to reset its size.")
 local TEXT_TITLE = ns.L("Blessings")
 local TEXT_TITLE_TIP = ns.L("Paladin blessings by class and player, shared with the group's paladins.")
 
@@ -39,6 +43,34 @@ local function RedrawSoon()
     C_Timer.After(0, Redraw)
 end
 
+local function Scale()
+    return ns.UIScale() * B.Settings.Get("blessWindowScale")
+end
+
+local function Rescale(grip)
+    local factor = 1 + (GetCursorPosition() - grip.startX) / (WIDTH * grip.startEffective)
+    local scale = math.min(SCALE_MAX, math.max(SCALE_MIN, grip.startScale * factor))
+    grip.scale = math.floor(scale / SCALE_STEP + 0.5) * SCALE_STEP
+    window:SetScale(ns.UIScale() * grip.scale)
+end
+
+local function StartResize(grip, button)
+    if button == "RightButton" then
+        grip.scale = nil
+        B.Settings.Set("blessWindowScale", 1)
+        return
+    end
+    grip.startX, grip.startScale, grip.startEffective = GetCursorPosition(), B.Settings.Get("blessWindowScale"),
+        window:GetEffectiveScale()
+    grip.scale = grip.startScale
+    grip:SetScript("OnUpdate", Rescale)
+end
+
+local function StopResize(grip)
+    grip:SetScript("OnUpdate", nil)
+    if grip.scale and grip.scale ~= B.Settings.Get("blessWindowScale") then B.Settings.Set("blessWindowScale", grip.scale) end
+end
+
 local function Build()
     window = Parts.Window(WIDTH, HEIGHT, WINDOW_KEY)
     window.backdrop:Card(CARD, HEADER + CARD, CARD, FOOTER + CARD)
@@ -52,11 +84,19 @@ local function Build()
     content = CreateFrame("Frame", nil, scroll)
     content:SetSize(WIDTH - left - CARD - SCROLLBAR - INSET, 1)
     scroll:SetScrollChild(content)
+    local grip = CreateFrame("Button", nil, window)
+    grip:SetSize(GRIP_SIZE, GRIP_SIZE)
+    grip:SetPoint("BOTTOMRIGHT", -GRIP_INSET, GRIP_INSET)
+    grip:SetNormalTexture(GRIP_TEXTURE)
+    grip:RegisterForClicks("AnyDown", "AnyUp")
+    grip:SetScript("OnMouseDown", StartResize)
+    grip:SetScript("OnMouseUp", StopResize)
+    ns.Tooltip(grip, TEXT_TITLE, TEXT_GRIP)
 end
 
 function ns.OpenBlessingsWindow()
     if not window then Build() end
-    window:SetScale(ns.UIScale())
+    window:SetScale(Scale())
     window:Show()
     Redraw()
 end
@@ -67,3 +107,6 @@ end
 
 hooksecurefunc(ns.UI, "RefreshPage", RedrawSoon)
 hooksecurefunc(ns, "Apply", RedrawSoon)
+hooksecurefunc(B.Settings, "Set", function(key)
+    if key == "blessWindowScale" and window then window:SetScale(Scale()) end
+end)

@@ -22,6 +22,7 @@ end
 for _, entry in ipairs(B.BLESSINGS) do entry.blessing = true; Index(entry) end
 for _, entry in ipairs(B.AURAS) do Index(entry) end
 Index(B.SALVATION)
+for _, entry in ipairs(B.SEALS) do Index(entry) end
 Index(B.FURY)
 
 B.BY_KEY, B.BY_CODE, B.FAMILY, B.IDS, B.GREATER = BY_KEY, BY_CODE, FAMILY, IDS, GREATER
