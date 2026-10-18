@@ -9,7 +9,6 @@ local TEXT_GUIDE = ns.L("Guide destination")
 local hooked, settingsHooked, active
 local lastElement, lastMap, lastX, lastY
 local details, lastTitle
-local hidden, oldTextureAlpha, oldTextAlpha
 local lines = {}
 local events
 local OnSetting, OnEvent
@@ -26,24 +25,6 @@ local function Plain(text)
     text = text:gsub("|T.-|t", ""):gsub("|A.-|a", ""):gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
     text = text:match("^%s*(.-)%s*$")
     if text ~= "" then return text end
-end
-
-local function RestoreArrow()
-    if not hidden then return end
-    hidden.texture:SetAlpha(oldTextureAlpha)
-    hidden.text:SetAlpha(oldTextAlpha)
-    hidden = nil
-end
-
-local function FadeArrow(arrow)
-    if not arrow.texture or not arrow.text then return end
-    if hidden ~= arrow then
-        RestoreArrow()
-        hidden = arrow
-        oldTextureAlpha, oldTextAlpha = arrow.texture:GetAlpha(), arrow.text:GetAlpha()
-    end
-    arrow.texture:SetAlpha(0)
-    arrow.text:SetAlpha(0)
 end
 
 local function ElementText(element)
@@ -76,7 +57,6 @@ end
 
 local function Stop()
     ns.ClearGuideWaypoint()
-    RestoreArrow()
     lastElement, lastMap, lastX, lastY, lastTitle, details = nil, nil, nil, nil, nil, nil
 end
 
@@ -97,7 +77,7 @@ local function Sync(force)
         return
     end
     local changed = element ~= lastElement or map ~= lastMap or x ~= lastX or y ~= lastY
-    if not force and not changed and not ns.GuideWaypointIsCurrent() then RestoreArrow() return end
+    if not force and not changed and not ns.GuideWaypointIsCurrent() then return end
     local title, quest, objectives = ReadDetails(element)
     if force or changed then
         details = { guide = true, quest = quest, objectives = objectives, title = title }
@@ -110,7 +90,6 @@ local function Sync(force)
         lastTitle = title
         if ns.RefreshWaypointPin then ns.RefreshWaypointPin() end
     end
-    FadeArrow(arrow)
 end
 
 local function OnGuideUpdate()
@@ -146,8 +125,6 @@ local function Apply()
     active = true
     HookGuide()
     if not hooked then events:RegisterEvent("ADDON_LOADED") end
-    events:RegisterEvent("USER_WAYPOINT_UPDATED")
-    events:RegisterEvent("SUPER_TRACKING_CHANGED")
     Sync(first)
 end
 
@@ -156,14 +133,10 @@ function OnSetting(key)
 end
 
 function OnEvent(_, event, name)
-    if event == "ADDON_LOADED" then
-        if name == ADDON then
-            HookGuide()
-            if hooked then events:UnregisterEvent("ADDON_LOADED") end
-            Sync(true)
-        end
-    elseif not ns.GuideWaypointIsCurrent() then
-        RestoreArrow()
+    if event == "ADDON_LOADED" and name == ADDON then
+        HookGuide()
+        if hooked then events:UnregisterEvent("ADDON_LOADED") end
+        Sync(true)
     end
 end
 

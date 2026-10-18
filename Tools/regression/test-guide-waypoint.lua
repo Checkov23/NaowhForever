@@ -23,9 +23,10 @@ ns.SetGuideWaypoint = function(title, map, x, y, details)
     ns.placedWaypoint = current
     return true
 end
+local alphaWrites = 0
 local function Part(alpha)
     return { alpha = alpha, GetAlpha = function(self) return self.alpha end,
-        SetAlpha = function(self, value) self.alpha = value end }
+        SetAlpha = function(self, value) alphaWrites = alphaWrites + 1; self.alpha = value end }
 end
 local env = setmetatable({ NaowhForever = ns,
     wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
@@ -65,7 +66,8 @@ Check(hooks == 2 and writes == 1 and current.map == 88 and current.x == 45 and c
     "late guide load follows the active destination")
 Check(current.title == "The Criminal Element" and current.details.quest == 7
     and current.details.objectives == "0/10 Bandits", "guide quest context reaches the pin")
-Check(arrow.texture.alpha == 0 and arrow.text.alpha == 0, "original arrow parts faded while owned")
+Check(alphaWrites == 0, "guide arrow stays visible while the pin follows it")
+Check(next(frames[1].events) == nil, "following the guide registers no waypoint or tracking events")
 rxp.UpdateGotoSteps()
 Check(writes == 1, "unchanged guide destination does not rewrite the game waypoint")
 objective.frame.text.GetText = function() return "1/10 Bandits" end
@@ -73,16 +75,14 @@ rxp.UpdateGotoSteps()
 Check(writes == 1 and refreshes == 1 and current.details.objectives == "1/10 Bandits",
     "guide objective progress refreshes metadata without a map write")
 current = { guide = false, title = "Manual pin" }
-Fire("USER_WAYPOINT_UPDATED")
-Check(arrow.texture.alpha == 0.8 and arrow.text.alpha == 0.6, "manual waypoint restores original arrow alphas")
 rxp.UpdateGotoSteps()
 Check(writes == 1 and current.title == "Manual pin", "same guide step does not steal a manual waypoint")
 arrow.element = { zone = 88, x = 55, y = 60, title = "Next stop", step = { active = true } }
 rxp.UpdateMap()
 Check(writes == 2 and current.title == "Next stop", "next guide destination resumes following")
 S.Set("waypointRestedXP", false)
-Check(current == nil and clears == 1 and arrow.texture.alpha == 0.8 and next(frames[1].events) == nil,
-    "disable clears only the owned pin and restores the arrow")
+Check(current == nil and clears == 1 and next(frames[1].events) == nil,
+    "disable clears only the owned pin")
 S.Set("waypointRestedXP", true)
 Check(hooks == 2 and writes == 3, "re-enable reuses hooks and follows current step")
 current = { guide = false, title = "Manual again" }
@@ -91,26 +91,24 @@ Check(current.title == "Manual again" and clears == 1, "disable preserves a manu
 S.Set("waypointRestedXP", true)
 rxp.currentGuide = nil
 rxp.UpdateGotoSteps()
-Check(current == nil and arrow.texture.alpha == 0.8, "unloading the guide releases its destination")
+Check(current == nil, "unloading the guide releases its destination")
 rxp.currentGuide = {}
 arrow.element.x = 101
 rxp.UpdateMap()
-Check(current == nil and arrow.texture.alpha == 0.8, "invalid coordinates do not create a pin or hide original arrow")
+Check(current == nil, "invalid coordinates do not create a pin")
 arrow.element.x, available = 40, false
 rxp.UpdateMap()
-Check(current == nil and arrow.texture.alpha == 0.8, "unsupported map leaves original arrow available")
+Check(current == nil, "unsupported map does not create a pin")
 available = true
 rxp.UpdateMap()
 Check(current and current.x == 40, "valid guide destination recovers")
 local beforeUntrack = writes
 tracking = false
-Fire("SUPER_TRACKING_CHANGED")
-Check(arrow.texture.alpha == 0.8 and arrow.text.alpha == 0.6,
-    "native arrival or another tracking source restores the original guide arrow")
 rxp.UpdateGotoSteps()
 Check(writes == beforeUntrack, "ending native navigation does not repeatedly recreate the same destination")
 S.Set("enabled", false)
 Check(current and not tracking and next(frames[1].events) == nil, "module off releases events without clearing an untracked pin")
 rxp.UpdateGotoSteps()
 Check(current and not tracking, "installed hooks remain inert while off")
+Check(alphaWrites == 0, "guide arrow is never touched")
 print(("test-guide-waypoint: %d checks passed"):format(checks))

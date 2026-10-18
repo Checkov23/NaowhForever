@@ -355,5 +355,5 @@ Core/Integrations/RestedXP/
   such a line but its frame keeps the text of the element it showed last, so an icon is only read from a
   frame that is shown (`IsShown() == false` is none); that is what put a question mark on it.
 
-- Follow RestedXP is a separate QoL > Interface > Waypoint Pin switch, independent of the theme/window. It hooks guide map/goto refreshes only after first enable, with no added polling. Only zone/map coordinates the native waypoint supports are forwarded; unsupported or world-only guide targets keep the original arrow.
-- The guide arrow's texture and text are faded while its destination is owned, with their original alpha restored on disable, manual replacement or missing guide. No RestedXP settings, frame scripts or guide completion state are changed.
+- Follow RestedXP is a separate QoL > Interface > Waypoint Pin switch, independent of the theme/window. It hooks guide map/goto refreshes only after first enable, with no added polling. Only zone/map coordinates the native waypoint supports are forwarded; unsupported or world-only guide targets get no pin.
+- RestedXP's guide arrow stays as it is beside the pin. No RestedXP settings, frames, frame scripts or guide completion state are changed.
