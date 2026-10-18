@@ -31,7 +31,7 @@ local OFF = ns.L("Turn on AuraBuffs")
 local NEEDS_RAID = ns.L("Needs Raid Buff Reminders")
 local NEEDS_PERSONAL = ns.L("Needs Personal Buff Reminders")
 local NEEDS_WEAPON = ns.L("Needs Weapon Enhancement Reminder")
-local NEEDS_WORN = ns.L("Needs Worn Gear Reminder")
+local NEEDS_FISHING = ns.L("Needs Fishing Pole Reminder")
 local TEXT_WEAPON = "Weapon Enhancement"
 local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
 local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
@@ -52,7 +52,7 @@ local Enabled = A.Enabled
 local RaidBuffsOn = A.Needs("raidBuffs")
 local PersonalBuffsOn = A.Needs("personalBuffs")
 local WeaponOn = A.Needs("weaponEnhancements")
-local WornOn = A.Needs("wornReminders")
+local FishingOn = A.Needs("fishingPoleReminder")
 
 local function OpenList()
     ns.OpenAuraBuffsWindow("consumables")
@@ -222,9 +222,11 @@ rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", to
 for _, family in ipairs(ALL_PERSONAL) do rows[#rows + 1] = PersonalRow(family) end
 rows[#rows + 1] = Group("Gear")
 rows[#rows + 1] = { key = "wornReminders", label = "Worn Gear Reminder", toggle = true, needs = Enabled, why = OFF,
-    help = "An icon while you wear a fishing pole, or Cloak of Hermitic Bliss in Wailing Caverns." }
-rows[#rows + 1] = { key = "fishingPoleWhere", label = "Fishing Pole Shows In", choice = POLE_WHERE, needs = WornOn,
-    why = NEEDS_WORN }
+    help = "An icon while you wear Cloak of Hermitic Bliss in Wailing Caverns, so you remember to swap it." }
+rows[#rows + 1] = { key = "fishingPoleReminder", label = "Fishing Pole Reminder", toggle = true, needs = Enabled,
+    why = OFF, help = "An icon while you have a fishing pole equipped, so you remember to swap it." }
+rows[#rows + 1] = { key = "fishingPoleWhere", label = "Fishing Pole Shows In", choice = POLE_WHERE, needs = FishingOn,
+    why = NEEDS_FISHING }
 rows[#rows + 1] = Group("Glow")
 rows[#rows + 1] = { key = "buffGlow", label = "Glow", toggle = true, needs = Enabled, why = OFF,
     help = "A glow around each reminder icon, since each is a buff that is missing or running out." }

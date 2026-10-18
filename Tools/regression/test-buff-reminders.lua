@@ -111,7 +111,8 @@ local function Fixture(opts)
         raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
-        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false, fishingPoleWhere = "always",
+        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false, fishingPoleReminder = false,
+        fishingPoleWhere = "always",
         buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 },
         buffGlowLines = 8, buffGlowThickness = 2, buffGlowSpeed = 5,
     }
@@ -1443,6 +1444,9 @@ do
     t.Login()
     Check("worn: off by default", t.Shown(), "")
     Check("worn: no gear events while off", t.Listening("PLAYER_EQUIPMENT_CHANGED"), false)
+    t.Set("fishingPoleReminder", true)
+    Check("the fishing pole switch alone leaves the cloak out", t.Shown(), "")
+    t.Set("fishingPoleReminder", false)
     t.Set("wornReminders", true)
     Check("cloak worn in Wailing Caverns", t.Shown(), "item:273084")
     t.state.worn[15] = nil
@@ -1466,13 +1470,17 @@ do
     Check("switched off", t.Shown(), "")
 end
 
--- Worn Gear Reminder: any fishing pole in the main hand, anywhere.
+-- Fishing Pole Reminder: any fishing pole in the main hand, anywhere, off by default.
 do
     local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20, [2901] = 14 },
         settings = { consumableEntries = {} } })
     t.Login()
     Check("pole: off by default", t.Shown(), "")
     t.Set("wornReminders", true)
+    Check("Worn Gear Reminder alone leaves the pole out", t.Shown(), "")
+    t.Set("wornReminders", false)
+    t.Set("fishingPoleReminder", true)
+    Check("its own switch listens for gear changes", t.Listening("PLAYER_EQUIPMENT_CHANGED"), true)
     Check("fishing pole worn outside", t.Shown(), "item:6256")
     t.state.instance, t.state.instanceID = "party", 36
     t.Fire("PLAYER_ENTERING_WORLD")
@@ -1491,7 +1499,7 @@ end
 -- The fishing pole: shown only in dungeons and raids when picked, and Ctrl-click hides it until it comes off.
 do
     local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20 },
-        settings = { consumableEntries = {}, wornReminders = true, fishingPoleWhere = "instance" } })
+        settings = { consumableEntries = {}, fishingPoleReminder = true, fishingPoleWhere = "instance" } })
     t.Login()
     Check("pole set to dungeons and raids, out in the world", t.Shown(), "")
     t.state.instance, t.state.instanceID = "raid", 409

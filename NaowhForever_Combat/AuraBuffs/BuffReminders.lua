@@ -487,7 +487,7 @@ local function Worn(list)
         local slot = worn.slot
         local id = GetInventoryItemID("player", slot)
         if dismissed[slot] ~= id then dismissed[slot] = nil end
-        if id and not dismissed[slot] and WornHere(worn, here) and Wearing(worn, id) then
+        if id and not dismissed[slot] and S.Get(worn.setting) and WornHere(worn, here) and Wearing(worn, id) then
             list[#list + 1] = { icon = C_Item.GetItemIconByID(id), slot = slot }
         end
     end
@@ -638,6 +638,6 @@ function Reminders.Collect()
     end
     if S.Get("personalBuffs") then PersonalBuffs(list, buffs) end
     if S.Get("raidBuffs") then RaidBuffs(list, buffs) end
-    if S.Get("wornReminders") then Worn(list) end
+    if S.Get("wornReminders") or S.Get("fishingPoleReminder") then Worn(list) end
     return list
 end

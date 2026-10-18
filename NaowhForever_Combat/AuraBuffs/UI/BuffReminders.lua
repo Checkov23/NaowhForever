@@ -23,7 +23,7 @@ local KEYS = {
     onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
     buffIconMode = true, raidBuffRange = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true, wornReminders = true,
-    fishingPoleWhere = true,
+    fishingPoleReminder = true, fishingPoleWhere = true,
     buffsFont = true, buffsFontSize = true, buffsOutline = true,
     buffGlow = true, buffGlowType = true, buffGlowColor = true, buffGlowLines = true, buffGlowThickness = true,
     buffGlowSpeed = true,
@@ -262,7 +262,7 @@ local function Listen()
     if R.WatchesImbue() or not R.Carried("food") or S.Get("buffIconMode") == "last" then
         events:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
     end
-    if S.Get("wornReminders") then
+    if S.Get("wornReminders") or S.Get("fishingPoleReminder") then
         events:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
         events:RegisterEvent("ZONE_CHANGED_NEW_AREA")
     end

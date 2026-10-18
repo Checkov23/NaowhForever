@@ -210,6 +210,7 @@ ns.FEATURES = {
         classBuffGlow = false,
         weaponEnhancements = false,
         wornReminders = false,
+        fishingPoleReminder = false,
         campfire = true,
         campNearbyAlert = true,
         lowHealth = true,
