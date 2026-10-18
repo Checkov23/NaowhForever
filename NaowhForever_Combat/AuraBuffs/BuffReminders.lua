@@ -37,6 +37,7 @@ local CLASSIC_WEAPON_ICON = {}
 for _, icon in pairs(D.WEAPON_ICONS) do CLASSIC_WEAPON_ICON[icon] = true end
 
 local buffPool, members, memberCount, classes = {}, {}, 0, {}
+local missingUnits = {}
 local itemBuffs, requested = {}, {}
 local carried
 local wellFedName
@@ -312,7 +313,7 @@ local function AddMember(unit, playerBuffs)
     memberCount = memberCount + 1
     local member = members[memberCount]
     if not member then member = {}; members[memberCount] = member end
-    member.class, member.buffs = class, buffs
+    member.class, member.buffs, member.unit = class, buffs, unit
 end
 
 local function AddGroup(playerBuffs)
@@ -327,12 +328,14 @@ local function AddGroup(playerBuffs)
     end
 end
 
-local function Missing(family)
+local function Missing(family, units)
     local missing = 0
+    if units then wipe(units) end
     for m = 1, memberCount do
         local member = members[m]
         if not (family.skip and family.skip[member.class]) and not Find(member.buffs, family.spells) then
             missing = missing + 1
+            if units then units[missing] = member.unit end
         end
     end
     return missing
@@ -342,11 +345,18 @@ local function RaidBuffs(list, playerBuffs)
     AddGroup(playerBuffs)
     local own = S.Get("raidBuffsOwn")
     for _, family in ipairs(D.RAID) do
-        if Picked(family) and (Knows(family.spells) or not (own or family.talent) and classes[family.class]) then
-            local missing = Missing(family)
+        local picked = Picked(family)
+        local spell = picked and Knows(family.spells)
+        if picked and (spell or not (own or family.talent) and classes[family.class]) then
+            local units
+            if S.Get("raidBuffRange") then
+                units = missingUnits[family.key]
+                if not units then units = {}; missingUnits[family.key] = units end
+            end
+            local missing = Missing(family, units)
             if missing > 0 then
                 list[#list + 1] = { icon = C_Spell.GetSpellTexture(family.spells[1]),
-                    count = memberCount > 1 and missing }
+                    count = memberCount > 1 and missing, rangeUnits = units, rangeSpell = units and spell }
             end
         end
     end
@@ -474,6 +484,22 @@ Reminders.Left = Left
 Reminders.Picked = Picked
 Reminders.PersonalPicked = PersonalPicked
 Reminders.Secret = Secret
+
+function Reminders.InRange(entry)
+    local count = 0
+    if not entry.rangeSpell or InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then return count end
+    for _, unit in ipairs(entry.rangeUnits) do
+        if UnitIsConnected(unit) and not UnitIsDeadOrGhost(unit) and UnitIsVisible(unit) then
+            if UnitIsUnit(unit, "player") then
+                count = count + 1
+            else
+                local inRange = C_Spell.IsSpellInRange(entry.rangeSpell, unit)
+                if not Secret(inRange) and inRange == true then count = count + 1 end
+            end
+        end
+    end
+    return count
+end
 
 function Reminders.On()
     return S.Get("enabled")

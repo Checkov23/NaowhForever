@@ -12,6 +12,7 @@ local QUEUE_DELAY = 0.3
 local ELIXIR_ICON = 13454
 local WAKE_PAD = 0.1
 local WAKE_SAME = 0.01
+local RANGE_INTERVAL = 0.5
 local HOME_Y = 220
 local CARD = A.PAGE .. ":buffs"
 local TEXT_MOVER = "Buff Reminders"
@@ -19,7 +20,7 @@ local TEXT_WORN = ns.L("You are wearing this.")
 local KEYS = {
     consumableEntries = true, enabled = true, consumablesWhere = true, consumablesMinutes = true,
     onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
-    buffIconMode = true,
+    buffIconMode = true, raidBuffRange = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true, wornReminders = true,
     buffsFont = true, buffsFontSize = true, buffsOutline = true,
     buffGlow = true, buffGlowType = true, buffGlowColor = true, buffGlowLines = true, buffGlowThickness = true,
@@ -32,6 +33,7 @@ local PREVIEW = {
 
 local frame, unlocked, pending, held
 local wakeTimer, wakeDue
+local rangeTicker, rangeList
 local cells = {}
 local events = CreateFrame("Frame")
 
@@ -84,22 +86,60 @@ local function ShowTimer(cell, aura)
     end
 end
 
+local function StopRange()
+    if rangeTicker then rangeTicker:Cancel() end
+    rangeTicker, rangeList = nil, nil
+end
+
+local function PaintRange(cell, entry)
+    local missing = entry.rangeUnits and #entry.rangeUnits
+    local inRange = missing and R.InRange(entry)
+    if missing or cell.rangeTracked then
+        Cell.Range(cell, inRange, missing)
+        cell.rangeTracked = missing ~= nil and true or nil
+    end
+    Glow.Set(cell, S.Get("buffGlow") and not unlocked and (not missing or inRange > 0), "buffGlow")
+end
+
+local function OnRangeTick()
+    if not R.On() or not S.Get("raidBuffRange") or not frame:IsShown() then return StopRange() end
+    if InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then return end
+    for i, entry in ipairs(rangeList) do
+        if entry.rangeUnits then PaintRange(cells[i], entry) end
+    end
+end
+
+local function RangeMoves(entry)
+    if not (entry.rangeUnits and entry.rangeSpell) then return false end
+    for _, unit in ipairs(entry.rangeUnits) do
+        if not UnitIsUnit(unit, "player") then return true end
+    end
+    return false
+end
+
 local function Show(list)
     local size = S.Get("iconSize")
+    local moving = false
     for i, entry in ipairs(list) do
         local cell = GetCell(i)
         Cell.Place(cell, frame, i, size, entry.icon, entry.count)
+        cell.rangeIn, cell.rangeMissing = nil, nil
         cell.items, cell.slot = entry.items, entry.slot
         ItemBar.SetItem(cell, entry.item)
         ShowTimer(cell, entry.aura)
         cell:Show()
-        Glow.Set(cell, S.Get("buffGlow") and not unlocked, "buffGlow")
+        PaintRange(cell, entry)
+        if RangeMoves(entry) then moving = true end
     end
     for i = #list + 1, #cells do
         Glow.Set(cells[i], false)
         cells[i]:Hide()
     end
     Cell.Fit(frame, #list, size)
+    if moving then
+        rangeList = list
+        rangeTicker = C_Timer.NewTicker(RANGE_INTERVAL, OnRangeTick)
+    end
     local owner = Menu.Owner()
     if not owner then return end
     if owner:IsShown() and owner.items then Menu.Open(owner) else Menu.Hide() end
@@ -111,7 +151,7 @@ local function PreviewList()
         local spell = p.raid and R.RaidSample() or p.spell
         if p.item or spell then
             list[#list + 1] = { icon = p.item and C_Item.GetItemIconByID(p.item) or C_Spell.GetSpellTexture(spell),
-                count = p.count }
+                count = p.raid and S.Get("raidBuffRange") and ("1/" .. p.count) or p.count }
         end
     end
     return list
@@ -140,6 +180,7 @@ end
 function Refresh()
     pending = nil
     if not frame or InCombatLockdown() then return end
+    StopRange()
     if unlocked then return Show(PreviewList()) end
     if not R.On() then return Show({}) end
     local list = R.Collect()
@@ -159,6 +200,7 @@ local function OnEvent(_, event, unit, _, spellID)
     if event == "UNIT_AURA" and (InCombatLockdown() or Secret(unit)
         or not (GROUP_UNIT[unit] or unit == "target" and R.WatchesTarget())) then return end
     if event == "PLAYER_REGEN_DISABLED" then
+        StopRange()
         Menu.Hide()
         return
     end
@@ -232,6 +274,7 @@ function Apply()
     Menu.Hide()
     events:UnregisterAllEvents()
     StopWake()
+    StopRange()
     if not (R.On() or unlocked) then
         if frame then frame:Hide() end
         return

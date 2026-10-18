@@ -104,6 +104,18 @@ NaowhForever_Combat/AuraBuffs/
   yet, up to `MAX_ENTRIES` (500, the same limit the profile import enforces).
 - Group auras change in bursts, so a buff refresh waits `QUEUE_DELAY` and covers the lot. Nothing
   fires as a buff runs down, so the earliest one to cross the warning time is timed.
+- Show Buff Range starts off. When enabled, raid buff reminders show confirmed recipients in
+  casting range over the eligible members missing that buff. The check uses a learned rank of
+  that family's spell. A missing buff on yourself is in range; an unknown, secret or unavailable
+  result is unconfirmed, contributes zero, and never adds an unknown label. With none confirmed,
+  the icon dims to `BUFF_RANGE_DIM` and its glow stops. Other reminder icons keep their usual look.
+- `SPELL_RANGE_CHECK_UPDATE` / `C_Spell.EnableSpellRangeCheck` only track the current target.
+  Group movement across a buff's casting range therefore uses a narrow exception to event-only
+  updates: a `RANGE_INTERVAL` (0.5 seconds) ticker checking only cached missing recipients, without
+  rescanning auras or bags or rebuilding the row. It exists only while range tracking is enabled
+  and a visible reminder has a learned spell and another missing group member. It stops on combat,
+  disable, Unlock Mode or no remaining reminders; restriction transitions freeze reads. Self-only
+  and uncastable buffs need no ticker. Aura and roster events still rebuild the missing lists.
 - `ELIXIR_ICON` (13454, Greater Arcane Elixir) stands for "no elixir at all" in the preview.
 - The preview's raid buff (Unlock Mode and the card) is the first picked one the reminders would track for you
   (`A.Buffs.RaidSample`): one you know, or with Only Buffs I Can Cast off any non-talent one. With Raid Buff

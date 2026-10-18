@@ -113,7 +113,10 @@ local function PaintPreview(shot, state)
     if personal then Put(shot.personal, C_Spell.GetSpellTexture(personal)) end
     shot.personal:SetShown(personal and true or false)
     local raidCell = shot.cells[RAID_SAMPLE]
-    if raid then Put(raidCell, C_Spell.GetSpellTexture(raid), PREVIEW[RAID_SAMPLE].count) end
+    if raid then
+        local count = PREVIEW[RAID_SAMPLE].count
+        Put(raidCell, C_Spell.GetSpellTexture(raid), S.Get("raidBuffRange") and ("1/" .. count) or count)
+    end
     raidCell:SetShown(raid and true or false)
     Cell.Fit(shot.row, n, size)
     Fit(shot)
@@ -207,6 +210,8 @@ rows[#rows + 1] = { key = "raidBuffs", label = "Raid Buff Reminders", toggle = t
         .. "so it still counts as missing." }
 rows[#rows + 1] = { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggle = true, needs = RaidBuffsOn,
     why = NEEDS_RAID, help = "Off: every buff a class in your group can cast." }
+rows[#rows + 1] = { key = "raidBuffRange", label = "Show Buff Range", toggle = true, needs = RaidBuffsOn,
+    why = NEEDS_RAID, help = "Shows how many missing buffs are in casting range and dims icons with none confirmed." }
 for _, family in ipairs(D.RAID) do rows[#rows + 1] = PickRow(family) end
 rows[#rows + 1] = Group("Personal Buffs")
 rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", toggle = true, needs = Enabled,

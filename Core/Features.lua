@@ -204,6 +204,7 @@ ns.FEATURES = {
     auraBuffs = {
         enabled = true,
         raidBuffs = false,
+        raidBuffRange = false,
         personalBuffs = true,
         classBuffTracker = false,
         classBuffGlow = false,

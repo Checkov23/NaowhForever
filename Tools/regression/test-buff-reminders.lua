@@ -64,6 +64,7 @@ local function Fixture(opts)
         glows = {},
         presses = {},
         reads = 0,
+        ranges = opts.ranges or {}, rangeReads = 0, tickers = {}, rangePaints = 0,
     }
     local timers, frames = {}, {}
 
@@ -91,6 +92,7 @@ local function Fixture(opts)
         function f:CreateTexture()
             local t = Recorder()
             function t:SetTexture(tex) t.texture = tex end
+            function t:SetAlpha(alpha) t.alpha = alpha; state.rangePaints = state.rangePaints + 1 end
             return t
         end
         if template == "CooldownFrameTemplate" then
@@ -104,7 +106,7 @@ local function Fixture(opts)
         enabled = true,
         consumablesWhere = "instance", consumablesMinutes = 2,
         onlyIfCarried = true, carriedPicks = {}, hideResting = true,
-        raidBuffs = false, raidBuffsOwn = true, iconSize = 36, buffIconMode = "default",
+        raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
         personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false,
@@ -133,6 +135,10 @@ local function Fixture(opts)
         Font = function()
             local fs = Recorder()
             function fs:SetText(v) fs.text = v end
+            function fs:SetFormattedText(format, ...)
+                fs.text = format:format(...)
+                state.rangePaints = state.rangePaints + 1
+            end
             return fs
         end,
         UI = { AttachMover = function() return NewFrame() end, ModuleSettings = function() return S end },
@@ -241,9 +247,21 @@ local function Fixture(opts)
         C_Spell = {
             GetSpellTexture = function(id) return "spell:" .. id end,
             GetSpellName = function(id) return SPELL_NAMES[id] end,
+            IsSpellInRange = function(id, unit)
+                state.rangeReads = state.rangeReads + 1
+                state.rangeSpell = id
+                return state.ranges[unit]
+            end,
         },
         C_SpellBook = { IsSpellKnown = function(id) return state.known[id] == true end },
         C_Timer = {
+            NewTicker = function(delay, fn)
+                local ticker = { at = state.now + delay, fn = fn, interval = delay }
+                function ticker:Cancel() self.cancelled = true end
+                timers[#timers + 1] = ticker
+                state.tickers[#state.tickers + 1] = ticker
+                return ticker
+            end,
             After = function(delay, fn) timers[#timers + 1] = { at = state.now + delay, fn = fn } end,
             NewTimer = function(delay, fn)
                 local t = { at = state.now + delay, fn = fn }
@@ -292,6 +310,10 @@ local function Fixture(opts)
             table.remove(timers, 1)
             state.now = nextTimer.at
             if not nextTimer.cancelled then nextTimer.fn() end
+            if nextTimer.interval and not nextTimer.cancelled then
+                nextTimer.at = state.now + nextTimer.interval
+                timers[#timers + 1] = nextTimer
+            end
         end
         state.now = stop
     end
@@ -711,6 +733,87 @@ do
     t.Fire("UNIT_AURA", "party1")
     t.Advance(0.5)
     Check("everyone buffed", t.Shown(), "")
+end
+
+-- Range follows the learned rank, treats unavailable results as out, and never rescans auras on a tick.
+do
+    local t = Fixture({ settings = { raidBuffs = true, personalBuffs = false }, group = "party",
+        units = { player = "MAGE", party1 = "PRIEST", party2 = "DRUID" }, known = { [1460] = true },
+        auras = { player = { { 1460 } } }, ranges = { party1 = true, party2 = false } })
+    local function Icon()
+        for _, frame in ipairs(t.frames) do if rawget(frame, "icon") and frame.shown then return frame.icon end end
+    end
+    t.Login()
+    Check("range off: original missing count", t.Shown(), "spell:10157x2")
+    Check("range off: no checks or ticker", t.state.rangeReads + #t.state.tickers, 0)
+    t.Set("raidBuffRange", true)
+    Check("range shows reachable over missing", t.Shown(), "spell:10157x1/2")
+    Check("range checks the learned rank", t.state.rangeSpell, 1460)
+    Check("reachable: full brightness", Icon().alpha, 1)
+    local paints = t.state.rangePaints
+    t.Advance(0.5)
+    Check("unchanged range results do not repaint", t.state.rangePaints, paints)
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    Check("a full refresh restores the ratio after placing the cell", t.Shown(), "spell:10157x1/2")
+    local reads = t.state.reads
+    t.state.ranges.party1 = nil
+    t.Advance(0.5)
+    Check("unknown range counts as unconfirmed", t.Shown(), "spell:10157x0/2")
+    Check("unknown and out of range: dim", Icon().alpha, t.ns.AuraBuffs.Style.BUFF_RANGE_DIM)
+    Check("range ticks do not scan buffs", t.state.reads, reads)
+    t.state.ranges.party1, t.state.ranges.party2 = SECRET, true
+    t.Advance(0.5)
+    Check("secret range results are not compared", t.Shown(), "spell:10157x1/2")
+    Check("returning to range brightens the icon", Icon().alpha, 1)
+    local rangeReads = t.state.rangeReads
+    t.state.secret = true
+    t.Advance(0.5)
+    Check("restricted transition freezes range checks", t.state.rangeReads, rangeReads)
+    t.state.secret, t.state.combat = false, true
+    t.Fire("PLAYER_REGEN_DISABLED")
+    Check("combat cancels the range ticker", t.state.tickers[#t.state.tickers].cancelled, true)
+    t.Advance(1)
+    Check("combat performs no range reads", t.state.rangeReads, rangeReads)
+    t.state.combat = false
+    t.Fire("PLAYER_REGEN_ENABLED"); t.Advance(0.5)
+    t.Set("raidBuffRange", false)
+    Check("disabling range restores the original count", t.Shown(), "spell:10157x2")
+    Check("disabling range cancels its ticker", t.state.tickers[#t.state.tickers].cancelled, true)
+    Check("disabling range restores brightness", Icon().alpha, 1)
+    t.Set("raidBuffRange", true)
+    t.state.auras.party1, t.state.auras.party2 = { { 1460 } }, { { 1460 } }
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    Check("buffing everyone removes the icon", t.Shown(), "")
+    Check("no missing buffs leaves no running range ticker", t.state.tickers[#t.state.tickers].cancelled, true)
+    t.state.auras.party1 = {}
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    t.ns.ShowUnlockMode()
+    Check("Unlock Mode cancels live range tracking", t.state.tickers[#t.state.tickers].cancelled, true)
+    t.ns.HideUnlockMode()
+    t.Set("enabled", false)
+    Check("disabling reminders cancels range tracking", t.state.tickers[#t.state.tickers].cancelled, true)
+    rangeReads = t.state.rangeReads
+    t.Advance(1)
+    Check("disabled reminders have no range checks", t.state.rangeReads, rangeReads)
+end
+
+-- Self needs no moving-range ticker; a buff we cannot cast stays dim without a fake range result.
+do
+    local solo = Fixture({ settings = { raidBuffs = true, raidBuffRange = true, personalBuffs = false },
+        units = { player = "MAGE" }, known = { [1460] = true } })
+    solo.Login()
+    Check("self is confirmed in range", solo.Shown(), "spell:10157x1/1")
+    Check("self-only range requires no ticker", #solo.state.tickers, 0)
+    local other = Fixture({ settings = { raidBuffs = true, raidBuffRange = true, raidBuffsOwn = false,
+        personalBuffs = false }, group = "party", units = { player = "WARRIOR", party1 = "MAGE" } })
+    other.Login()
+    Check("uncastable buff has no confirmed recipients", other.Shown(), "spell:10157x0/1")
+    Check("unknown spell range requires no repeated checks", other.state.rangeReads + #other.state.tickers, 0)
+    for _, cell in ipairs(other.frames) do
+        if rawget(cell, "icon") and cell.shown then
+            Check("uncastable buff stays dim", cell.icon.alpha, other.ns.AuraBuffs.Style.BUFF_RANGE_DIM)
+        end
+    end
 end
 
 -- Picked raid buffs: paladin blessings start off, the rest on; a buff switched off never reminds.
