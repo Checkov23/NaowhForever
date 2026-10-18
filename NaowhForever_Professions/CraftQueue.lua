@@ -15,6 +15,7 @@ local QUEUE_DELAY = C.QUEUE_DELAY
 local TEXT_NOTHING = ns.L("Nothing in the crafting queue can be crafted with the materials in your bags.")
 local TEXT_OPEN_REQUIRED = ns.L("Open the required profession manually, then click Craft Next again.")
 local TEXT_REQUIRES = ns.L("Requires: %s")
+local TEXT_BAG_ROOM = ns.L("Your bags do not have room for %s.")
 local EMPTY = {}
 local BUCKET_ORDER = { true, false }
 local APPLY_KEYS = { enabled = true, shoppingList = true, craftQueue = true }
@@ -22,6 +23,7 @@ local orderedEntries = {}
 local missingEntries = {}
 local orderedRecipes = {}
 local unmetNames = {}
+local roomByEntry = setmetatable({}, { __mode = "k" })
 
 local Queue = {}
 P.CraftQueue = Queue
@@ -260,9 +262,30 @@ local function ProfessionOpen(entry)
     return id ~= nil and (not entry.prof or id == entry.prof)
 end
 
+local function BagRoom(entry, limit)
+    if not entry.output then return limit end
+    local reagents = roomByEntry[entry]
+    if not reagents then
+        reagents = {}
+        roomByEntry[entry] = reagents
+    end
+    if #reagents == 0 and next(entry.need or EMPTY) then
+        for itemID, need in pairs(entry.need or EMPTY) do
+            reagents[#reagents + 1] = { itemID = itemID, need = need }
+        end
+    end
+    return ns.CraftBagRoom(entry.output, entry.made, reagents, limit)
+end
+
 local function CanCraft(entry)
     if Missing(entry) then return false end
-    if not ProfessionOpen(entry) then return true end
+    local count = tonumber(entry.count) or 1
+    local room = BagRoom(entry, count)
+    if room == 0 then
+        local output = R.ItemName(entry.output) or entry.name
+        return false, TEXT_BAG_ROOM:format(output)
+    end
+    if not ProfessionOpen(entry) then return true, nil, room end
     local ok, info = pcall(C_TradeSkillUI.GetRecipeInfo, entry.recipeID)
     if not ok then return false end
     if not (info and info.learned ~= false) then return false end
@@ -278,10 +301,10 @@ local function CanCraft(entry)
                 if requirement.name then unmetNames[#unmetNames + 1] = requirement.name end
             end
         end
-        if #unmetNames > 0 then return false, table.concat(unmetNames, ", ") end
+        if #unmetNames > 0 then return false, TEXT_REQUIRES:format(table.concat(unmetNames, ", ")) end
         if unmet then return false end
     end
-    return true
+    return true, nil, room
 end
 
 local function ByEntryName(a, b)
@@ -404,13 +427,13 @@ local function OnCraftEvent(_, event, unit, _, spellID)
     end
 end
 
-local function SelectForCrafting(entry)
+local function SelectForCrafting(entry, count)
     if not ProfessionOpen(entry) then return end
     W.selectedID, W.selectedUnlearned = entry.recipeID, nil
     if P.List and P.List.Render then P.List.Render() end
     if P.Detail and P.Detail.Render then P.Detail.Render() end
     local frame = W.frame
-    if frame and frame.qty then frame.qty:SetText(tostring(entry.count)) end
+    if frame and frame.qty then frame.qty:SetText(tostring(count or entry.count)) end
 end
 
 local function CraftContextReady(entry)
@@ -420,7 +443,7 @@ local function CraftContextReady(entry)
 end
 
 local function PrepareCraftContext(entry)
-    SelectForCrafting(entry)
+    SelectForCrafting(entry, active and active.requested)
     if CraftContextReady(entry) then return true end
     ns.Print(TEXT_OPEN_REQUIRED)
     return false
@@ -430,20 +453,21 @@ function PrepareNext()
     if not running then return end
     local entries = Ordered()
     if #entries == 0 then return Stop() end
-    local chosen, blockedRequirement
+    local chosen, chosenRoom, blockedRequirement
     for _, entry in ipairs(entries) do
-        local canCraft, requirement = CanCraft(entry)
-        if canCraft then chosen = entry break end
+        local canCraft, requirement, room = CanCraft(entry)
+        if canCraft then chosen, chosenRoom = entry, room break end
         blockedRequirement = blockedRequirement or requirement
     end
     if not chosen then
         Stop()
-        return ns.Print(blockedRequirement and TEXT_REQUIRES:format(blockedRequirement) or TEXT_NOTHING)
+        return ns.Print(blockedRequirement or TEXT_NOTHING)
     end
     local count = tonumber(chosen.count) or 1
+    local requested = math.min(count, chosenRoom or count)
     active = { recipeID = chosen.recipeID, prerequisite = chosen.prerequisite,
-        requested = count, done = 0, started = false }
-    SelectForCrafting(chosen)
+        requested = requested, done = 0, started = false }
+    SelectForCrafting(chosen, requested)
     Redraw()
 end
 
@@ -500,6 +524,14 @@ local function Click()
     local entry = Bucket(active.prerequisite)[active.recipeID]
     if not entry then return Stop() end
     if not PrepareCraftContext(entry) then return end
+    local room = BagRoom(entry, active.requested)
+    if room == 0 then
+        local output = R.ItemName(entry.output) or entry.name
+        Stop()
+        return ns.Print(TEXT_BAG_ROOM:format(output))
+    end
+    active.requested = math.min(active.requested, room or active.requested)
+    SelectForCrafting(entry, active.requested)
     R.Craft(active.requested)
 end
 

@@ -5555,6 +5555,7 @@ L["Your %s weights"] = true
 L["Your action bars saved by name and put back whenever you want them."] = true
 L["Your bags hold enough to hand it in %d times"] = true
 L["Your bags hold enough to hand it in once"] = true
+L["Your bags do not have room for %s."] = true
 L["Your bar in a darker shade of your theme's Accent instead of the color picked above. The tank and aggro line colors stay as picked."] = true
 L["YOUR BARS AFTER THE IMPORT"] = true
 L["Your best bandage on yourself, through NF Bandage."] = true

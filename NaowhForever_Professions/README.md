@@ -320,6 +320,8 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
 - Bag room is played out craft by craft on what the bags hold: the item onto a stack with room, else
   a free slot that can take it; the reagents out, smallest stack first (seen in game 2026-09-30), each
   emptied stack freeing its slot. A profession bag takes only its kind, the reagent bag only reagents.
+  The Crafting Queue uses the same simulation before every batch, caps the batch to what fits and does
+  not start when no result fits.
 - RecipeData's NPC rows are `{ npcID, name, faction ("A", "H", "AH" or "-"), uiMapID, x, y [, cost] }`
   (`P.C.NPC_*`); `t` lists are indices into the profession's trainers. Drops are `{ mob, areaID,
   minLevel, maxLevel, chance }`. Costs are copper. Stormwind and Eastern Plaguelands rows were moved
