@@ -59,7 +59,7 @@ local function NewTab(bar)
         button.mark:SetRotation(St.TAB_MARK_ROTATION)
         button.mark:SetPoint("RIGHT", button.text, "LEFT", -St.TAB_MARK_GAP, 0)
         button.text:ClearAllPoints()
-        button.text:SetPoint("CENTER", MARK_ROOM / 2, 0)
+        button.text:SetPoint("CENTER", 0, 0)
         button.text:SetWordWrap(false)
         button.mark:Hide()
         button.fill:Hide()
@@ -111,6 +111,8 @@ function Parts.PaintTabs(bar, shown)
             local edge = on and T.accent or T.line
             button.border:SetColor(edge.r, edge.g, edge.b, 1)
             button.mark:SetShown(on)
+            button.text:ClearAllPoints()
+            button.text:SetPoint("CENTER", on and MARK_ROOM / 2 or 0, 0)
         end
         if ns.foreverSkin then Parts.PaintForeverTab(button, on) end
     end

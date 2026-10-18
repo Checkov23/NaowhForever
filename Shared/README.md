@@ -527,7 +527,9 @@ What a comment in the code used to say, in short. The house rules behind it are 
 - The sidebar is shaded by `SIDEBAR_SHADE`, and preview stages by `PREVIEW_SHADE`, over the
   chosen background so custom palettes retain their colors. Both are flat fills.
 - Naowh tabs share a recessed rail, a filled accent selection with a complete outline and a
-  small diamond. The diamond's room is reserved in every tab so labels do not shift on a pick.
+  small diamond. A label sits in the middle of its tab, and the picked one moves right by half
+  the diamond's room so the diamond and label are centered together. Every tab's width still
+  holds that room, so picking one never resizes the strip.
   `Parts.Tabs` keeps its sixth `plain` input for callers; all Naowh strips use the same segments,
   including preview states and module windows. The Forever skin keeps its own art and fitting.
 - Tab labels shorten only when their strip has no room, and show the full label on hover.

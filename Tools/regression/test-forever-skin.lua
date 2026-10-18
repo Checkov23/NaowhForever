@@ -259,6 +259,13 @@ do
     local a, b = tabs.buttons[1], tabs.buttons[2]
     check("Naowh: selection has a fill and mark, with no underline", a.fill.shown and a.mark.shown and not a.line.shown)
     check("Naowh: other tabs start unfilled", not b.fill.shown and not b.mark.shown)
+    local function TextX(button)
+        local p = button.text.points
+        return #p == 1 and p[1][1] == "CENTER" and p[1][2]
+    end
+    local markRoom = ns.Shared.Style.TAB_MARK_SIZE + ns.Shared.Style.TAB_MARK_GAP
+    check("Naowh: the picked label moves right by half the diamond's room", TextX(a) == markRoom / 2)
+    check("Naowh: other labels sit in the middle of their tab", TextX(b) == 0 and TextX(tabs.buttons[3]) == 0)
     b.scripts.OnEnter(b)
     check("Naowh: hovering does not move the selection", b.fill.shown and not b.mark.shown and tabs.shown == "a")
     b.scripts.OnLeave(b)
@@ -278,6 +285,7 @@ do
     check("Naowh: widening restores full labels", not a.cut and not b.cut and not tabs.buttons[3].cut)
     Parts.SetTabs(tabs, { items[2], items[1] })
     check("Naowh: reused buttons follow keys after reordering", not a.mark.shown and b.mark.shown and not tabs.buttons[3].shown)
+    check("Naowh: a label moves back to the middle once its tab is no longer picked", TextX(a) == 0 and TextX(b) == markRoom / 2)
     Parts.SetTabs(tabs, {})
     check("Naowh: an empty list hides old buttons", not a.shown and not b.shown)
     local backdrop = Parts.Backdrop(New("Frame"))
