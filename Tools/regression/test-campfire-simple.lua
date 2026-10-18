@@ -142,6 +142,9 @@ local function Fixture(settings)
         GetStringWidth = function(f) return Width(rawget(f, "text") or "", rawget(f, "size") or 12) end,
         SetFont = function(f, path, size, outline) f.font, f.path, f.size, f.outline, f.flags = path, path, size, outline, outline end,
         SetAlpha = function(f, a) f.alpha = a end,
+        SetCooldownFromExpirationTime = function(f, expiry, duration)
+            f.cooldownExpiry, f.cooldownDuration = expiry, duration
+        end,
         SetDesaturated = function(f, on) f.desaturated = on end,
         SetVertexColor = function(f, r, g, b, a) f.r, f.g, f.b, f.a = r, g, b, a end,
         SetColorTexture = function(f, r, g, b, a) f.r, f.g, f.b, f.a = r, g, b, a end,
@@ -429,6 +432,33 @@ end
 
 local function Same(c, want) return c.r == want.r and c.g == want.g and c.b == want.b end
 local function Aura(points) return { points = points } end
+
+-- An existing two-hour buff can have begun before the current clock's origin after a relog.
+do
+    local s = Fixture()
+    s.auras[CAMP] = { duration = 7200, expirationTime = s.now + 1320, auraInstanceID = 1 }
+    s.fire("PLAYER_LOGIN")
+    local icon = s.named.NaowhForeverCampfire
+    check("relog: the old buff would have a negative reconstructed start",
+        s.auras[CAMP].expirationTime - s.auras[CAMP].duration < 0)
+    check("relog: the countdown uses the aura deadline, with 22 minutes left",
+        icon.timer.cooldownExpiry == s.now + 1320 and icon.timer.cooldownDuration == 7200)
+    check("relog: the ring uses the same deadline and full duration",
+        icon.drain.cooldownExpiry == icon.timer.cooldownExpiry and icon.drain.cooldownDuration == 7200)
+    s.auras[CAMP].expirationTime = 0
+    s.fire("UNIT_AURA")
+    check("an unavailable deadline does not invent a full-duration timer", not icon.timer.shown and not icon.drain.shown)
+    s.auras[CAMP].expirationTime = nil
+    s.fire("UNIT_AURA")
+    check("a missing deadline leaves the countdown hidden", not icon.timer.shown)
+    s.auras[CAMP].expirationTime = s.now + 1200
+    s.fire("UNIT_AURA")
+    check("the timer recovers when the aura's deadline arrives",
+        icon.timer.shown and icon.timer.cooldownExpiry - s.now == 1200)
+    s.auras[CAMP].expirationTime = s.now - 1
+    s.fire("UNIT_AURA")
+    check("an expired deadline does not restart a two-hour timer", not icon.timer.shown)
+end
 
 -- Round: the default, its tags from the same reader as the bar.
 do

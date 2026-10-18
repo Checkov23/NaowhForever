@@ -21,6 +21,7 @@ local LOOK = { consumableBarFont = true, consumableBarFontSize = true, consumabl
 local BAR_NAME = "NaowhForeverConsumableBar"
 local RULE_COMBAT_HIDE = "[combat] hide; show"
 local RULE_COMBAT_SHOW = "[combat] show; hide"
+local SPOT = { TOPLEFT = { -1, 1 }, TOPRIGHT = { 1, 1 }, BOTTOMLEFT = { -1, -1 }, BOTTOMRIGHT = { 1, -1 } }
 
 local frame, pending, wakeDue
 local syncedMacros = ""
@@ -82,6 +83,18 @@ end
 local function SavePosition(pos)
     S.Set("consumableBarPos", pos)
     if ItemBar.Anchored(S, CB.PREFIX) then S.Set("consumableBarAnchor", "UIParent") end
+end
+
+local function Hold()
+    if CB.unlocked then return end
+    local point, rel, relPoint, x, y = frame:GetPoint(1)
+    if point ~= "CENTER" or rel ~= UIParent then return end
+    local size, gap, grow, perRow, height, flip = CB.Grid()
+    local w, h = ItemBar.Size(#CB.Items(), size, gap, grow, perRow, height)
+    local corner = ItemBar.Corner(grow, flip)
+    local to = SPOT[corner]
+    frame:ClearAllPoints()
+    frame:SetPoint(corner, UIParent, relPoint, x + to[1] * w / 2, y + to[2] * h / 2)
 end
 
 local function Build()
@@ -365,6 +378,7 @@ function Apply()
     Events()
     Layout()
     ItemBar.Put(frame, S, CB.PREFIX, C.HOME_Y)
+    Hold()
     frame.mover:SetShown(CB.unlocked == true)
     Listen(AnyHideUsed())
     UpdateCounts()

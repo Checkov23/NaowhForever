@@ -102,9 +102,9 @@ local function Lines(id)
     return table.concat(out, " | ")
 end
 
-check("held by you and an alt, most first", Lines(10) == "|cff0091edNaowh|r owned = 12"
+check("held by you and an alt, most first", Lines(10) == "Total owned = 12"
     .. " |   |cfff58cbaYou|r = 6 bags, 3 bank |   |cff69ccf0Alt|r = 2 bags, 1 mail")
-check("held only by an alt", Lines(20) == "|cff0091edNaowh|r owned = 4 |   |cfffff569Third|r = 4 bags")
+check("held only by an alt", Lines(20) == "Total owned = 4 |   |cfffff569Third|r = 4 bags")
 BAGS[0][2] = { itemID = 30, stackCount = 7 }
 events.scripts.OnEvent(events, "BAG_UPDATE_DELAYED")
 check("only in the bags you look at: no lines", Lines(30) == "")

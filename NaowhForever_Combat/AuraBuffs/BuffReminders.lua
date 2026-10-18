@@ -37,7 +37,8 @@ local CLASSIC_WEAPON_ICON = {}
 for _, icon in pairs(D.WEAPON_ICONS) do CLASSIC_WEAPON_ICON[icon] = true end
 
 local buffPool, members, memberCount, classes = {}, {}, 0, {}
-local itemBuffs, requested = {}, {}
+local missingUnits = {}
+local itemBuffs, requested, dismissed = {}, {}, {}
 local carried
 local wellFedName
 local wakeAt
@@ -312,7 +313,7 @@ local function AddMember(unit, playerBuffs)
     memberCount = memberCount + 1
     local member = members[memberCount]
     if not member then member = {}; members[memberCount] = member end
-    member.class, member.buffs = class, buffs
+    member.class, member.buffs, member.unit = class, buffs, unit
 end
 
 local function AddGroup(playerBuffs)
@@ -327,12 +328,14 @@ local function AddGroup(playerBuffs)
     end
 end
 
-local function Missing(family)
+local function Missing(family, units)
     local missing = 0
+    if units then wipe(units) end
     for m = 1, memberCount do
         local member = members[m]
         if not (family.skip and family.skip[member.class]) and not Find(member.buffs, family.spells) then
             missing = missing + 1
+            if units then units[missing] = member.unit end
         end
     end
     return missing
@@ -342,11 +345,18 @@ local function RaidBuffs(list, playerBuffs)
     AddGroup(playerBuffs)
     local own = S.Get("raidBuffsOwn")
     for _, family in ipairs(D.RAID) do
-        if Picked(family) and (Knows(family.spells) or not (own or family.talent) and classes[family.class]) then
-            local missing = Missing(family)
+        local picked = Picked(family)
+        local spell = picked and Knows(family.spells)
+        if picked and (spell or not (own or family.talent) and classes[family.class]) then
+            local units
+            if S.Get("raidBuffRange") then
+                units = missingUnits[family.key]
+                if not units then units = {}; missingUnits[family.key] = units end
+            end
+            local missing = Missing(family, units)
             if missing > 0 then
                 list[#list + 1] = { icon = C_Spell.GetSpellTexture(family.spells[1]),
-                    count = memberCount > 1 and missing }
+                    count = memberCount > 1 and missing, rangeUnits = units, rangeSpell = units and spell }
             end
         end
     end
@@ -456,11 +466,29 @@ local function PersonalBuffs(list, buffs)
     end
 end
 
+local function Wearing(worn, id)
+    if worn.item then return id == worn.item end
+    local _, _, _, _, _, class, subclass = C_Item.GetItemInfoInstant(id)
+    return class == Enum.ItemClass.Weapon and subclass == Enum.ItemWeaponSubclass[worn.weapon]
+end
+
+local function WornHere(worn, here)
+    if worn.instance then return worn.instance == here end
+    if worn.where and S.Get(worn.where) == "instance" then
+        local _, kind = IsInInstance()
+        return kind == "party" or kind == "raid"
+    end
+    return true
+end
+
 local function Worn(list)
     local here = select(INSTANCE_ID, GetInstanceInfo())
     for _, worn in ipairs(D.WORN) do
-        if worn.instance == here and GetInventoryItemID("player", worn.slot) == worn.item then
-            list[#list + 1] = { icon = C_Item.GetItemIconByID(worn.item), slot = worn.slot }
+        local slot = worn.slot
+        local id = GetInventoryItemID("player", slot)
+        if dismissed[slot] ~= id then dismissed[slot] = nil end
+        if id and not dismissed[slot] and S.Get(worn.setting) and WornHere(worn, here) and Wearing(worn, id) then
+            list[#list + 1] = { icon = C_Item.GetItemIconByID(id), slot = slot }
         end
     end
 end
@@ -474,6 +502,22 @@ Reminders.Left = Left
 Reminders.Picked = Picked
 Reminders.PersonalPicked = PersonalPicked
 Reminders.Secret = Secret
+
+function Reminders.InRange(entry)
+    local count = 0
+    if not entry.rangeSpell or InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then return count end
+    for _, unit in ipairs(entry.rangeUnits) do
+        if UnitIsConnected(unit) and not UnitIsDeadOrGhost(unit) and UnitIsVisible(unit) then
+            if UnitIsUnit(unit, "player") then
+                count = count + 1
+            else
+                local inRange = C_Spell.IsSpellInRange(entry.rangeSpell, unit)
+                if not Secret(inRange) and inRange == true then count = count + 1 end
+            end
+        end
+    end
+    return count
+end
 
 function Reminders.On()
     return S.Get("enabled")
@@ -570,6 +614,14 @@ function Reminders.Requested(itemID)
     return requested[itemID] == true
 end
 
+function Reminders.Dismiss(slot)
+    dismissed[slot] = GetInventoryItemID("player", slot)
+end
+
+function Reminders.Undismiss(slot)
+    dismissed[slot] = nil
+end
+
 function Reminders.WakeAt()
     return wakeAt
 end
@@ -586,6 +638,6 @@ function Reminders.Collect()
     end
     if S.Get("personalBuffs") then PersonalBuffs(list, buffs) end
     if S.Get("raidBuffs") then RaidBuffs(list, buffs) end
-    if S.Get("wornReminders") then Worn(list) end
+    if S.Get("wornReminders") or S.Get("fishingPoleReminder") then Worn(list) end
     return list
 end

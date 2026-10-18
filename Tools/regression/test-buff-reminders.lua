@@ -52,7 +52,9 @@ local function Fixture(opts)
         known = opts.known or {},
         shields = opts.shields or {},               -- slot -> true for a shield in that slot
         weapons = opts.weapons or {},               -- slot -> enchant seconds left, false for none
-        worn = opts.worn or {},                     -- slot -> item ID worn there, other than weapons
+        worn = opts.worn or {},                     -- slot -> item ID worn there
+        subclasses = opts.subclasses or {},         -- itemID -> its subclass
+        classes = opts.classes or {},               -- itemID -> its class, when not a weapon
         instanceID = opts.instanceID,               -- GetInstanceInfo's instance ID
         target = opts.target,                       -- nil, or the target's classification
         itemSpells = opts.itemSpells or {},         -- itemID -> use spell, once the item is cached
@@ -64,6 +66,7 @@ local function Fixture(opts)
         glows = {},
         presses = {},
         reads = 0,
+        ranges = opts.ranges or {}, rangeReads = 0, tickers = {}, rangePaints = 0,
     }
     local timers, frames = {}, {}
 
@@ -91,6 +94,7 @@ local function Fixture(opts)
         function f:CreateTexture()
             local t = Recorder()
             function t:SetTexture(tex) t.texture = tex end
+            function t:SetAlpha(alpha) t.alpha = alpha; state.rangePaints = state.rangePaints + 1 end
             return t
         end
         if template == "CooldownFrameTemplate" then
@@ -104,10 +108,11 @@ local function Fixture(opts)
         enabled = true,
         consumablesWhere = "instance", consumablesMinutes = 2,
         onlyIfCarried = true, carriedPicks = {}, hideResting = true,
-        raidBuffs = false, raidBuffsOwn = true, iconSize = 36, buffIconMode = "default",
+        raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
-        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false,
+        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false, fishingPoleReminder = false,
+        fishingPoleWhere = "always",
         buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 },
         buffGlowLines = 8, buffGlowThickness = 2, buffGlowSpeed = 5,
     }
@@ -133,6 +138,10 @@ local function Fixture(opts)
         Font = function()
             local fs = Recorder()
             function fs:SetText(v) fs.text = v end
+            function fs:SetFormattedText(format, ...)
+                fs.text = format:format(...)
+                state.rangePaints = state.rangePaints + 1
+            end
             return fs
         end,
         UI = { AttachMover = function() return NewFrame() end, ModuleSettings = function() return S end },
@@ -177,7 +186,7 @@ local function Fixture(opts)
             return color
         end }),
         LOCALIZED_CLASS_NAMES_MALE = setmetatable({}, { __index = function(_, class) return class:lower() end }),
-        Enum = { ItemClass = { Weapon = 2 } },
+        Enum = { ItemClass = { Weapon = 2 }, ItemWeaponSubclass = { Fishingpole = 20 } },
         GetTime = function() return state.now end,
         InCombatLockdown = function() return state.combat end,
         IsResting = function() return state.resting end,
@@ -234,16 +243,28 @@ local function Fixture(opts)
                     { hasEnchant = left and true or false, timeLeft = left and left * 1000 or 0 } }
             end,
             GetItemInfoInstant = function(id)
-                local class = state.shields[id - 1000] and 4 or 2
-                return id, nil, nil, nil, nil, class
+                local class = state.classes[id] or state.shields[id - 1000] and 4 or 2
+                return id, nil, nil, nil, nil, class, state.subclasses[id]
             end,
         },
         C_Spell = {
             GetSpellTexture = function(id) return "spell:" .. id end,
             GetSpellName = function(id) return SPELL_NAMES[id] end,
+            IsSpellInRange = function(id, unit)
+                state.rangeReads = state.rangeReads + 1
+                state.rangeSpell = id
+                return state.ranges[unit]
+            end,
         },
         C_SpellBook = { IsSpellKnown = function(id) return state.known[id] == true end },
         C_Timer = {
+            NewTicker = function(delay, fn)
+                local ticker = { at = state.now + delay, fn = fn, interval = delay }
+                function ticker:Cancel() self.cancelled = true end
+                timers[#timers + 1] = ticker
+                state.tickers[#state.tickers + 1] = ticker
+                return ticker
+            end,
             After = function(delay, fn) timers[#timers + 1] = { at = state.now + delay, fn = fn } end,
             NewTimer = function(delay, fn)
                 local t = { at = state.now + delay, fn = fn }
@@ -292,6 +313,10 @@ local function Fixture(opts)
             table.remove(timers, 1)
             state.now = nextTimer.at
             if not nextTimer.cancelled then nextTimer.fn() end
+            if nextTimer.interval and not nextTimer.cancelled then
+                nextTimer.at = state.now + nextTimer.interval
+                timers[#timers + 1] = nextTimer
+            end
         end
         state.now = stop
     end
@@ -711,6 +736,87 @@ do
     t.Fire("UNIT_AURA", "party1")
     t.Advance(0.5)
     Check("everyone buffed", t.Shown(), "")
+end
+
+-- Range follows the learned rank, treats unavailable results as out, and never rescans auras on a tick.
+do
+    local t = Fixture({ settings = { raidBuffs = true, personalBuffs = false }, group = "party",
+        units = { player = "MAGE", party1 = "PRIEST", party2 = "DRUID" }, known = { [1460] = true },
+        auras = { player = { { 1460 } } }, ranges = { party1 = true, party2 = false } })
+    local function Icon()
+        for _, frame in ipairs(t.frames) do if rawget(frame, "icon") and frame.shown then return frame.icon end end
+    end
+    t.Login()
+    Check("range off: original missing count", t.Shown(), "spell:10157x2")
+    Check("range off: no checks or ticker", t.state.rangeReads + #t.state.tickers, 0)
+    t.Set("raidBuffRange", true)
+    Check("range shows reachable over missing", t.Shown(), "spell:10157x1/2")
+    Check("range checks the learned rank", t.state.rangeSpell, 1460)
+    Check("reachable: full brightness", Icon().alpha, 1)
+    local paints = t.state.rangePaints
+    t.Advance(0.5)
+    Check("unchanged range results do not repaint", t.state.rangePaints, paints)
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    Check("a full refresh restores the ratio after placing the cell", t.Shown(), "spell:10157x1/2")
+    local reads = t.state.reads
+    t.state.ranges.party1 = nil
+    t.Advance(0.5)
+    Check("unknown range counts as unconfirmed", t.Shown(), "spell:10157x0/2")
+    Check("unknown and out of range: dim", Icon().alpha, t.ns.AuraBuffs.Style.BUFF_RANGE_DIM)
+    Check("range ticks do not scan buffs", t.state.reads, reads)
+    t.state.ranges.party1, t.state.ranges.party2 = SECRET, true
+    t.Advance(0.5)
+    Check("secret range results are not compared", t.Shown(), "spell:10157x1/2")
+    Check("returning to range brightens the icon", Icon().alpha, 1)
+    local rangeReads = t.state.rangeReads
+    t.state.secret = true
+    t.Advance(0.5)
+    Check("restricted transition freezes range checks", t.state.rangeReads, rangeReads)
+    t.state.secret, t.state.combat = false, true
+    t.Fire("PLAYER_REGEN_DISABLED")
+    Check("combat cancels the range ticker", t.state.tickers[#t.state.tickers].cancelled, true)
+    t.Advance(1)
+    Check("combat performs no range reads", t.state.rangeReads, rangeReads)
+    t.state.combat = false
+    t.Fire("PLAYER_REGEN_ENABLED"); t.Advance(0.5)
+    t.Set("raidBuffRange", false)
+    Check("disabling range restores the original count", t.Shown(), "spell:10157x2")
+    Check("disabling range cancels its ticker", t.state.tickers[#t.state.tickers].cancelled, true)
+    Check("disabling range restores brightness", Icon().alpha, 1)
+    t.Set("raidBuffRange", true)
+    t.state.auras.party1, t.state.auras.party2 = { { 1460 } }, { { 1460 } }
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    Check("buffing everyone removes the icon", t.Shown(), "")
+    Check("no missing buffs leaves no running range ticker", t.state.tickers[#t.state.tickers].cancelled, true)
+    t.state.auras.party1 = {}
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    t.ns.ShowUnlockMode()
+    Check("Unlock Mode cancels live range tracking", t.state.tickers[#t.state.tickers].cancelled, true)
+    t.ns.HideUnlockMode()
+    t.Set("enabled", false)
+    Check("disabling reminders cancels range tracking", t.state.tickers[#t.state.tickers].cancelled, true)
+    rangeReads = t.state.rangeReads
+    t.Advance(1)
+    Check("disabled reminders have no range checks", t.state.rangeReads, rangeReads)
+end
+
+-- Self needs no moving-range ticker; a buff we cannot cast stays dim without a fake range result.
+do
+    local solo = Fixture({ settings = { raidBuffs = true, raidBuffRange = true, personalBuffs = false },
+        units = { player = "MAGE" }, known = { [1460] = true } })
+    solo.Login()
+    Check("self is confirmed in range", solo.Shown(), "spell:10157x1/1")
+    Check("self-only range requires no ticker", #solo.state.tickers, 0)
+    local other = Fixture({ settings = { raidBuffs = true, raidBuffRange = true, raidBuffsOwn = false,
+        personalBuffs = false }, group = "party", units = { player = "WARRIOR", party1 = "MAGE" } })
+    other.Login()
+    Check("uncastable buff has no confirmed recipients", other.Shown(), "spell:10157x0/1")
+    Check("unknown spell range requires no repeated checks", other.state.rangeReads + #other.state.tickers, 0)
+    for _, cell in ipairs(other.frames) do
+        if rawget(cell, "icon") and cell.shown then
+            Check("uncastable buff stays dim", cell.icon.alpha, other.ns.AuraBuffs.Style.BUFF_RANGE_DIM)
+        end
+    end
 end
 
 -- Picked raid buffs: paladin blessings start off, the rest on; a buff switched off never reminds.
@@ -1338,6 +1444,9 @@ do
     t.Login()
     Check("worn: off by default", t.Shown(), "")
     Check("worn: no gear events while off", t.Listening("PLAYER_EQUIPMENT_CHANGED"), false)
+    t.Set("fishingPoleReminder", true)
+    Check("the fishing pole switch alone leaves the cloak out", t.Shown(), "")
+    t.Set("fishingPoleReminder", false)
     t.Set("wornReminders", true)
     Check("cloak worn in Wailing Caverns", t.Shown(), "item:273084")
     t.state.worn[15] = nil
@@ -1359,6 +1468,65 @@ do
     Check("back in Wailing Caverns", t.Shown(), "item:273084")
     t.Set("wornReminders", false)
     Check("switched off", t.Shown(), "")
+end
+
+-- Fishing Pole Reminder: any fishing pole in the main hand, anywhere, off by default.
+do
+    local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20, [2901] = 14 },
+        settings = { consumableEntries = {} } })
+    t.Login()
+    Check("pole: off by default", t.Shown(), "")
+    t.Set("wornReminders", true)
+    Check("Worn Gear Reminder alone leaves the pole out", t.Shown(), "")
+    t.Set("wornReminders", false)
+    t.Set("fishingPoleReminder", true)
+    Check("its own switch listens for gear changes", t.Listening("PLAYER_EQUIPMENT_CHANGED"), true)
+    Check("fishing pole worn outside", t.Shown(), "item:6256")
+    t.state.instance, t.state.instanceID = "party", 36
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("and in a dungeon", t.Shown(), "item:6256")
+    t.state.worn[16] = 2901
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
+    t.Advance(0.5)
+    Check("another weapon in its place", t.Shown(), "")
+    t.state.worn[16], t.state.classes[2901], t.state.subclasses[2901] = 2901, 15, 20
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
+    t.Advance(0.5)
+    Check("something not a weapon with a pole's subclass number", t.Shown(), "")
+end
+
+-- The fishing pole: shown only in dungeons and raids when picked, and Ctrl-click hides it until it comes off.
+do
+    local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20 },
+        settings = { consumableEntries = {}, fishingPoleReminder = true, fishingPoleWhere = "instance" } })
+    t.Login()
+    Check("pole set to dungeons and raids, out in the world", t.Shown(), "")
+    t.state.instance, t.state.instanceID = "raid", 409
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("and in a raid", t.Shown(), "item:6256")
+    t.Set("fishingPoleWhere", "always")
+    local cell
+    for _, f in ipairs(t.frames) do if rawget(f, "slot") == 16 and f.shown then cell = f end end
+    local ctrl = false
+    t.env.IsControlKeyDown = function() return ctrl end
+    cell.scripts.PostClick(cell)
+    t.Advance(0.5)
+    Check("a plain click keeps it", t.Shown(), "item:6256")
+    ctrl = true
+    cell.scripts.PostClick(cell)
+    t.Advance(0.5)
+    Check("Ctrl-click hides it", t.Shown(), "")
+    t.Fire("ZONE_CHANGED_NEW_AREA")
+    t.Advance(0.5)
+    Check("and it stays hidden while worn", t.Shown(), "")
+    t.state.worn[16] = nil
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, false)
+    t.state.worn[16] = 6256
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
+    t.Advance(0.5)
+    Check("taken off and put back on, it shows again", t.Shown(), "item:6256")
 end
 
 -- A class with its own poison reminder does not get the generic one.

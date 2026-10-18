@@ -9,6 +9,7 @@ local Parts = ns.Shared.Parts
 local GAP = St.BUFF_GAP
 local CROP = St.BUFF_CROP
 local COUNT_SIZE, COUNT_INSET = St.BUFF_COUNT_SIZE, St.BUFF_COUNT_INSET
+local RANGE_COUNT = "%d/%d"
 
 local Cell = {}
 A.BuffCell = Cell
@@ -42,4 +43,16 @@ end
 function Cell.Fit(parent, n, size)
     size = Cell.Snap(parent, size)
     parent:SetSize((math.max(n, 1) - 1) * Cell.Snap(parent, size + GAP) + size, size)
+end
+
+function Cell.Range(cell, inRange, missing)
+    local alpha = missing and inRange == 0 and St.BUFF_RANGE_DIM or 1
+    if cell.rangeAlpha ~= alpha then
+        cell.icon:SetAlpha(alpha)
+        cell.rangeAlpha = alpha
+    end
+    if missing and (cell.rangeIn ~= inRange or cell.rangeMissing ~= missing) then
+        cell.count:SetFormattedText(RANGE_COUNT, inRange, missing)
+    end
+    cell.rangeIn, cell.rangeMissing = inRange, missing
 end

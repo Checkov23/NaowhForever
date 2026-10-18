@@ -10,6 +10,7 @@ ns.AuraBuffs.Style = setmetatable({
     BUFF_CROP = 0.07,
     BUFF_COUNT_SIZE = 14,
     BUFF_COUNT_INSET = 2,
+    BUFF_RANGE_DIM = 0.35,
     MENU_COLS = 8,
     MENU_PAD = 4,
     MENU_GAP = 2,

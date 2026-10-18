@@ -9,8 +9,10 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
   consumables you watch, class buffs missing in your group, and your own class buff (armor, Inner
   Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
   shows, or hover it to pick another carried item.
-  Worn Gear Reminder (off by default) adds an icon while you wear gear with a drawback where it
-  matters (`D.WORN`): Cloak of Hermitic Bliss in Wailing Caverns. Its tooltip is the item's own.
+  Worn Gear Reminder and Fishing Pole Reminder (both off by default) add an icon while you wear
+  gear with a drawback where it matters (`D.WORN`, each entry naming its switch): Cloak of Hermitic
+  Bliss in Wailing Caverns, and a fishing pole (Everywhere, or Dungeons & Raids by Fishing Pole
+  Shows In). Its tooltip is the item's own; Ctrl-click hides it until that item comes off.
 - **Campfire:** in two looks on one mover. Round, a camp icon with a time ring and a countdown;
   Simple, a bar in the windows' backdrop with the campfire at its left, the camp's bonuses with
   their amounts, and the time left on the right over a line that runs down green, yellow, then
@@ -104,6 +106,18 @@ NaowhForever_Combat/AuraBuffs/
   yet, up to `MAX_ENTRIES` (500, the same limit the profile import enforces).
 - Group auras change in bursts, so a buff refresh waits `QUEUE_DELAY` and covers the lot. Nothing
   fires as a buff runs down, so the earliest one to cross the warning time is timed.
+- Show Buff Range starts off. When enabled, raid buff reminders show confirmed recipients in
+  casting range over the eligible members missing that buff. The check uses a learned rank of
+  that family's spell. A missing buff on yourself is in range; an unknown, secret or unavailable
+  result is unconfirmed, contributes zero, and never adds an unknown label. With none confirmed,
+  the icon dims to `BUFF_RANGE_DIM` and its glow stops. Other reminder icons keep their usual look.
+- `SPELL_RANGE_CHECK_UPDATE` / `C_Spell.EnableSpellRangeCheck` only track the current target.
+  Group movement across a buff's casting range therefore uses a narrow exception to event-only
+  updates: a `RANGE_INTERVAL` (0.5 seconds) ticker checking only cached missing recipients, without
+  rescanning auras or bags or rebuilding the row. It exists only while range tracking is enabled
+  and a visible reminder has a learned spell and another missing group member. It stops on combat,
+  disable, Unlock Mode or no remaining reminders; restriction transitions freeze reads. Self-only
+  and uncastable buffs need no ticker. Aura and roster events still rebuild the missing lists.
 - `ELIXIR_ICON` (13454, Greater Arcane Elixir) stands for "no elixir at all" in the preview.
 - The preview's raid buff (Unlock Mode and the card) is the first picked one the reminders would track for you
   (`A.Buffs.RaidSample`): one you know, or with Only Buffs I Can Cast off any non-talent one. With Raid Buff
@@ -194,6 +208,14 @@ NaowhForever_Combat/AuraBuffs/
   is instance ID 43 (`GetInstanceInfo`'s eighth value). Item and effects from Wowhead's Forever
   tooltip, 2026-10-14; not yet checked in the client. It is read on `PLAYER_EQUIPMENT_CHANGED`,
   `ZONE_CHANGED_NEW_AREA` and `PLAYER_ENTERING_WORLD`, registered only while the switch is on.
+- Fishing Pole Reminder has its own switch so its name says what it does. A fishing pole in the
+  main hand reminds anywhere by default (Robin asked for it), or only in dungeons and raids
+  (`fishingPoleWhere`). It is matched by its weapon subclass, `Enum.ItemWeaponSubclass.Fishingpole`,
+  not by item ID or name, so every pole counts in
+  every locale; `GetItemInfoInstant` needs no cached item. Its icon stays up while you fish, so
+  Ctrl-click hides it for that item (`dismissed`, per slot, not saved): a different item there, or
+  `PLAYER_EQUIPMENT_CHANGED` taking it off, shows it again. The click is a `PostClick` on the secure
+  icon, which has no item set for worn gear, so it uses nothing.
 - Hunter's Mark is asked for only with a hostile elite, rare elite or boss targeted, read from the
   target's debuffs; like every reminder it holds what it showed once combat starts.
 - Aspect: any aspect counts, so Cheetah or Pack while travelling does not remind. Another hunter's
@@ -231,6 +253,11 @@ NaowhForever_Combat/AuraBuffs/
   it, its numbers read in the description's order (the Lute's armor, stats, resistances; the Mana
   Well's mana, then its 5 seconds). The tooltip is kept once per Camp Benefits as soon as a read
   finds anything; an empty read is tried again at most every `LINE.RETRY` seconds.
+- The Round countdown and ring use `SetCooldownFromExpirationTime` with the aura's deadline and
+  full duration. A buff that was already running before login can have a negative reconstructed
+  start, so it is not handed to the cooldown's start-time setter. Missing, zero or expired
+  deadlines leave the countdown hidden until an aura update supplies a valid one. Simple keeps
+  its duration-backed timer line.
 - The time ring's color by time left: green above 30 minutes, yellow above 5, red below. Nothing
   fires as the buff runs down, so each color change is timed, and a generation number throws away
   a timer armed for an older state.

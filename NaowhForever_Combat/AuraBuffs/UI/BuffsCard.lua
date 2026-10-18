@@ -19,6 +19,7 @@ local PREVIEW = A.BuffPreview
 local RAID_SAMPLE = #PREVIEW
 local WHERE = { { always = "Everywhere", instance = "Dungeons & Raids", raid = "Raids Only" },
     { "always", "instance", "raid" } }
+local POLE_WHERE = { { always = "Everywhere", instance = "Dungeons & Raids" }, { "always", "instance" } }
 local STATES = {
     { key = "raid", label = "In a Raid", tip = "In a raid, where every Show In choice reminds you." },
     { key = "world", label = "Open World", tip = "Out in the world, where only Everywhere reminds you." },
@@ -30,6 +31,7 @@ local OFF = ns.L("Turn on AuraBuffs")
 local NEEDS_RAID = ns.L("Needs Raid Buff Reminders")
 local NEEDS_PERSONAL = ns.L("Needs Personal Buff Reminders")
 local NEEDS_WEAPON = ns.L("Needs Weapon Enhancement Reminder")
+local NEEDS_FISHING = ns.L("Needs Fishing Pole Reminder")
 local TEXT_WEAPON = "Weapon Enhancement"
 local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
 local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
@@ -50,6 +52,7 @@ local Enabled = A.Enabled
 local RaidBuffsOn = A.Needs("raidBuffs")
 local PersonalBuffsOn = A.Needs("personalBuffs")
 local WeaponOn = A.Needs("weaponEnhancements")
+local FishingOn = A.Needs("fishingPoleReminder")
 
 local function OpenList()
     ns.OpenAuraBuffsWindow("consumables")
@@ -113,7 +116,10 @@ local function PaintPreview(shot, state)
     if personal then Put(shot.personal, C_Spell.GetSpellTexture(personal)) end
     shot.personal:SetShown(personal and true or false)
     local raidCell = shot.cells[RAID_SAMPLE]
-    if raid then Put(raidCell, C_Spell.GetSpellTexture(raid), PREVIEW[RAID_SAMPLE].count) end
+    if raid then
+        local count = PREVIEW[RAID_SAMPLE].count
+        Put(raidCell, C_Spell.GetSpellTexture(raid), S.Get("raidBuffRange") and ("1/" .. count) or count)
+    end
     raidCell:SetShown(raid and true or false)
     Cell.Fit(shot.row, n, size)
     Fit(shot)
@@ -207,6 +213,8 @@ rows[#rows + 1] = { key = "raidBuffs", label = "Raid Buff Reminders", toggle = t
         .. "so it still counts as missing." }
 rows[#rows + 1] = { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggle = true, needs = RaidBuffsOn,
     why = NEEDS_RAID, help = "Off: every buff a class in your group can cast." }
+rows[#rows + 1] = { key = "raidBuffRange", label = "Show Buff Range", toggle = true, needs = RaidBuffsOn,
+    why = NEEDS_RAID, help = "Shows how many missing buffs are in casting range and dims icons with none confirmed." }
 for _, family in ipairs(D.RAID) do rows[#rows + 1] = PickRow(family) end
 rows[#rows + 1] = Group("Personal Buffs")
 rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", toggle = true, needs = Enabled,
@@ -215,6 +223,10 @@ for _, family in ipairs(ALL_PERSONAL) do rows[#rows + 1] = PersonalRow(family) e
 rows[#rows + 1] = Group("Gear")
 rows[#rows + 1] = { key = "wornReminders", label = "Worn Gear Reminder", toggle = true, needs = Enabled, why = OFF,
     help = "An icon while you wear Cloak of Hermitic Bliss in Wailing Caverns, so you remember to swap it." }
+rows[#rows + 1] = { key = "fishingPoleReminder", label = "Fishing Pole Reminder", toggle = true, needs = Enabled,
+    why = OFF, help = "An icon while you have a fishing pole equipped, so you remember to swap it." }
+rows[#rows + 1] = { key = "fishingPoleWhere", label = "Fishing Pole Shows In", choice = POLE_WHERE, needs = FishingOn,
+    why = NEEDS_FISHING }
 rows[#rows + 1] = Group("Glow")
 rows[#rows + 1] = { key = "buffGlow", label = "Glow", toggle = true, needs = Enabled, why = OFF,
     help = "A glow around each reminder icon, since each is a buff that is missing or running out." }

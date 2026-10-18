@@ -30,6 +30,7 @@ local QUESTS = { [101] = { 1457, 0.5, 0.5 }, [102] = { 1455, 0.5, 0.5 }, [106] =
 local here = { x = -4821.8, y = -1155.4, c = 0 }
 local current, placedAtSet
 local combat = false
+local now = 0
 local account = {}
 local store = {}
 
@@ -106,7 +107,7 @@ local env = setmetatable({
     GetRealmName = function() return "Forever" end,
     UnitFactionGroup = function() return "Alliance" end,
     GetServerTime = function() return 0 end,
-    GetTime = function() return 0 end,
+    GetTime = function() return now end,
     InCombatLockdown = function() return combat end,
     GetBindLocation = function() return "Ironforge" end,
     CreateVector2D = function(x, y) return { x = x, y = y } end,
@@ -318,6 +319,41 @@ RunTimers()
 Check(not Jy.Guide.Current(), "with Journeys to Map Pins off, a pin is left alone")
 Jy.Settings.Set("mapPins", true)
 env.C_Map.ClearUserWaypoint()
+
+-- Removing the pin yourself ends its journey; the game clearing it as you arrive does not.
+local function PinJourney()
+    now = now + 1
+    env.C_Map.SetUserWaypoint({ map = DARNASSUS, x = 0.5, y = 0.5 })
+    RunTimers()
+    now = now + 1
+    return Jy.Guide.Current() ~= nil and current ~= nil
+end
+Check(PinJourney(), "a pin journey for the removal test")
+env.C_Map.ClearUserWaypoint()
+RunTimers()
+Check(not Jy.Guide.Current() and current == nil, "removing its pin ends it, and the pin stays gone")
+Check(PinJourney(), "a pin journey for the arrival test")
+Fire("NAVIGATION_DESTINATION_REACHED", true)
+env.C_Map.ClearUserWaypoint()
+RunTimers()
+RunTimers()
+Check(Jy.Guide.Current() and current ~= nil, "a pin cleared as the game arrives: the journey goes on")
+Jy.Guide.Cancel()
+Check(PinJourney(), "a pin journey for the arrival heard after the clear")
+env.C_Map.ClearUserWaypoint()
+Fire("NAVIGATION_DESTINATION_REACHED", false)
+RunTimers()
+RunTimers()
+Check(Jy.Guide.Current() ~= nil, "the arrival heard after the clear, in the same frame, still counts")
+Jy.Guide.Cancel()
+Check(PinJourney(), "a pin journey for the tram test")
+here = { x = 20, y = 30, c = 369 }
+env.C_Map.ClearUserWaypoint()
+RunTimers()
+Check(Jy.Guide.Current() ~= nil, "a pin cleared off the continents leaves the journey to hold")
+Jy.Guide.Cancel()
+env.C_Map.ClearUserWaypoint()
+here = { x = -4821.8, y = -1155.4, c = 0 }
 
 -- Inside the tram (an instance, outside the continents) the journey holds, and picks up on the way out.
 Check(ns.PlaceWaypoint(unpack(DESTINATION)) and Jy.Guide.Current(), "a journey for the tram test")

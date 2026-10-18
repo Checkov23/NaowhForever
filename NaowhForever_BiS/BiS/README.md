@@ -89,6 +89,8 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   bySpec = { [spec] = { slots, extra } } }`: `slots[slot]` is a slot's BiS, `extra[slot]` its next
   picks in order. Each spec keeps its own picks on a list; switching parks the current ones under
   `bySpec`.
+- Picking a class list keeps the spec tab you are on, even when the list has no picks there:
+  the tab is the spec you are editing, and its spec-only lists are offered beside it.
 - Lists are kept per class in the account store, so every character of a class shares them and none
   travels in an exported profile; each character remembers which one it uses.
 - A list made with "Only for <spec>" ticked is `specOnly`: it keeps one spec's picks (no

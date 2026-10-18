@@ -141,7 +141,7 @@ local function Run(code, env)
     return chunk()
 end
 
-local TAGS = { { "NaowhForever_BiS/BiS/Alerts.lua", "|cff0091edNaowh BiS|r" }, { "NaowhForever_QoL/Loot/Alts.lua", "|cff0091edNaowh|r" },
+local TAGS = { { "NaowhForever_BiS/BiS/Alerts.lua", "|cff0091edNaowh BiS|r" },
     { "NaowhForever_QoL/Loot/AuctionPrices.lua", "|cff0091edNaowh AH|r" }, { "NaowhForever_QoL/Loot/Mail.lua", "|cff0091edNaowh Mail|r" } }
 for _, t in ipairs(TAGS) do
     local code = Slice(t[1], "local function Tag()", " end") .. "\nreturn Tag()"

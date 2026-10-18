@@ -126,6 +126,10 @@ local function Steps(size, gap, grow, height)
     return size + gap, height + gap
 end
 
+function ItemBar.Corner(grow, flip)
+    return (flip and FLIPPED_CORNER or CORNER)[grow] or CORNER.RIGHT
+end
+
 function ItemBar.Place(button, parent, index, size, gap, grow, perRow, height, flip)
     local alongStep, acrossStep = Steps(size, gap, grow, height)
     local along = (index - 1) % perRow * alongStep
@@ -136,7 +140,7 @@ function ItemBar.Place(button, parent, index, size, gap, grow, perRow, height, f
     elseif grow == "UP" then x, y = across, along
     elseif grow == "DOWN" then x, y = across, -along
     else x, y = along, -across end
-    local corner = (flip and FLIPPED_CORNER or CORNER)[grow] or CORNER.RIGHT
+    local corner = ItemBar.Corner(grow, flip)
     button:ClearAllPoints()
     button:SetPoint(corner, parent, corner, x, y)
 end

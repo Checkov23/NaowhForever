@@ -3,7 +3,6 @@ local ns = _G.NaowhForever
 
 local S = ns.QoLSettings
 
-local function Tag() return ns.Color("accent", "Naowh") end
 local MAIL_ATTACHMENTS = 16
 local MAX_TOOLTIP_ROWS = 8
 local SECONDS_PER_DAY = ns.QoLConstants.SECONDS_PER_DAY
@@ -14,7 +13,7 @@ local WHITE = ns.QoLConstants.WHITE_RGB
 local PLACE_RGB = { r = 0.8, g = 0.8, b = 0.8 }
 local LIST_JOIN, INDENT = ", ", "  "
 local TEXT_BAGS, TEXT_BANK, TEXT_MAIL = ns.L(" bags"), ns.L(" bank"), ns.L(" mail")
-local TEXT_OWNED = ns.L(" owned")
+local TEXT_OWNED = ns.L("Total owned")
 local TEXT_FORGET_TITLE = ns.L("Forget a character")
 local TEXT_NONE = ns.L("No characters recorded yet.")
 local TEXT_FORGET = ns.L("Forget %s on %s? It comes back the next time you log in on it with a Mail & Alts option on.")
@@ -256,7 +255,7 @@ local function OnItemTooltip(tooltip, data)
     local total, elsewhere = Gather(id)
     if not elsewhere then return end
     table.sort(rows, MostFirst)
-    tooltip:AddDoubleLine(Tag() .. TEXT_OWNED, total, WHITE.r, WHITE.g, WHITE.b, WHITE.r, WHITE.g, WHITE.b)
+    tooltip:AddDoubleLine(TEXT_OWNED, total, WHITE.r, WHITE.g, WHITE.b, WHITE.r, WHITE.g, WHITE.b)
     for i = 1, math.min(#rows, MAX_TOOLTIP_ROWS) do
         local r = rows[i]
         tooltip:AddDoubleLine(INDENT .. ns.ClassColoredName(r.name, r.class), r.text, WHITE.r, WHITE.g, WHITE.b,

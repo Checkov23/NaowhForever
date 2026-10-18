@@ -32,10 +32,12 @@ local env = setmetatable({
 
 local function Quest(name, side) return { name, 10, 1, side or 3, 0, 0 } end
 ns.CompletoQuestData = {
-    Zones = { { map = 1, name = "Zone", quests = { 1, 2, 3, 4, 5, 6 } } },
+    Zones = { { map = 1, name = "Zone", quests = { 1, 2, 3, 4, 5, 6, 7 } } },
     Quests = { [1] = Quest("First"), [2] = Quest("Second A"), [3] = Quest("Second B"), [4] = Quest("Last"),
-        [5] = Quest("Horde Only", 2), [6] = Quest("Alone") },
+        [5] = Quest("Horde Only", 2), [6] = Quest("Alone"),
+        [7] = { "Into the Dungeon", 10, 1, 3, 0, 0, 1, 40.0, 50.0, "Dungeon Giver" } },
     Repeatable = {},
+    Dungeon = { [7] = true },
     Requires = { [4] = { 1, { 2, 3 }, 900 }, [6] = { { 5 } } },
     Chains = {},
 }
@@ -75,6 +77,11 @@ Fresh()
 Check(Q.State(6) == "open", "the other faction's quest is no requirement")
 Check(Q.State(1) == "open" and #Q.Blocking(1) == 0, "no requirements, nothing blocks")
 
+local givers = Q.Givers(1, true, false)
+Check(#givers == 1 and givers[1].quests[1] == 7 and Q.State(7) == "open", "a dungeon quest gets its giver's pin")
+local _, total = Q.ZoneProgress(ns.CompletoQuestData.Zones[1])
+Check(total == 5, "a dungeon quest is left out of the zone's progress")
+
 local real = setmetatable({ _G = { NaowhForever = { AccountSettings = ns.AccountSettings, CompletoQuestData = {} } } },
     { __index = env })
 local data = assert(loadstring(Read("NaowhForever_DiscoveryData/Quests.lua")))
@@ -84,5 +91,17 @@ local D = real._G.NaowhForever.CompletoQuestData
 local covert = D.Requires[1079]
 Check(covert[1] == 1074 and covert[2] == 1077, "Covert Ops - Alpha needs both quests before it")
 Check(type(D.Requires[1000][1]) == "table" and #D.Requires[1000] == 1, "the versions of one quest are alternatives")
+local brother = D.Quests[167]
+Check(D.Dungeon[167] and brother[7] == 1453 and brother[10] == "Wilder Thistlenettle",
+    "Oh Brother. . . is pinned at its giver in Stormwind")
+Check(D.Dungeon[1654] and D.Quests[1654][6] == 2 and D.Requires[1654][1] == 1653,
+    "a class's dungeon quest keeps its class and the quest before it")
+local inStormwind = false
+for _, zone in ipairs(D.Zones) do
+    if zone.map == 1453 then
+        for _, id in ipairs(zone.quests) do inStormwind = inStormwind or id == 167 end
+    end
+end
+Check(inStormwind, "a dungeon quest is listed in its giver's zone")
 
 print(("test-completo-quest-prereqs: %d checks passed"):format(checks))

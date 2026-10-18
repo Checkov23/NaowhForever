@@ -31,6 +31,7 @@ Jy.Guide = Guide
 
 local journey, events, step, working, driver, dismissed, hinted
 local replanQueued = false
+local reachedAt
 local ticker, ticks
 local listeners = {}
 
@@ -310,12 +311,23 @@ local function OnLearned()
     if journey then QueueReplan() end
 end
 
+local function Cleared(at)
+    if not journey or C_Map.GetUserWaypoint() then return end
+    local here = World.Player()
+    if reachedAt == at or not here or not C.CONTINENTS[here.c] then return QueueReplan() end
+    Guide.Cancel()
+end
+
 local function OnEvent(_, event, isWaypoint)
     if event == "USER_WAYPOINT_UPDATED" then
         local point = C_Map.GetUserWaypoint()
         if point and not OnStep(point) then return Guide.Cancel() end
-        if not point then QueueReplan() end
+        if not point then
+            local at = GetTime()
+            C_Timer.After(0, function() Cleared(at) end)
+        end
     elseif event == "NAVIGATION_DESTINATION_REACHED" then
+        reachedAt = GetTime()
         if isWaypoint then return end
         if not S.Get("stepEnds") and journey.corners and (journey.corner + 1) * 2 <= #journey.corners then
             journey.corner = journey.corner + 1

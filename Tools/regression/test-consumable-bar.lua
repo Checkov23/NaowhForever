@@ -91,6 +91,7 @@ local function fixture(settings, noMacros, class)
         function f:SetSize(w, h) assert(type(w) == 'number' and type(h) == 'number'); self.w, self.h = w, h end
         function f:SetHeight(h) self.h = h end
         function f:GetWidth() return self.w or 0 end
+        function f:GetPoint() return unpack(rawget(self, 'point') or {}) end
         function f:GetFrameLevel() return self.level end
         function f:SetFrameLevel(v) self.level = v end
         function f:SetTexCoord(...) self.texCoord = { ... } end
@@ -1537,11 +1538,47 @@ do
     local s = fixture({ consumableBar = true, consumableBarItems = { 13446 } })
     check('the mover opens the bar\'s card', s.bar.mover.page == 'Consumable Bar/Settings'
         and s.bar.mover.card == 'Consumable Bar/Settings:bar')
-    check('it starts under the middle of the screen', s.bar.point[1] == 'CENTER' and s.bar.point[5] == -260)
+    check('it starts under the middle of the screen, held by its first icon', s.bar.point[1] == 'TOPLEFT'
+        and s.bar.point[4] == -s.bar.w / 2 and s.bar.point[5] == -260 + s.bar.h / 2)
     s.bar.mover.onMoved({ point = 'TOPLEFT', relPoint = 'TOPLEFT', x = 10, y = -20 })
     check('a drag is saved', s.settings.consumableBarPos.x == 10)
     s.set('consumableBarSize', 40)
     check('and kept when the bar is laid out again', s.bar.point[1] == 'TOPLEFT' and s.bar.point[4] == 10)
+end
+
+-- Its place holds the first icon still as the bar grows and shrinks
+do
+    local s = fixture({ consumableBar = true, consumableBarItems = { 13446, 5512, 14530 },
+        consumableBarSize = 30, consumableBarSpacing = 2, consumableBarGrow = 'LEFT' })
+    s.counts[13446], s.counts[5512], s.counts[14530] = 1, 1, 1
+    local full = 3 * 32 - 2
+    s.ns.ShowUnlockMode()
+    check('in the HUD Editor it is placed by its middle, for Undo and saved layouts', s.bar.point[1] == 'CENTER')
+    s.bar.mover.onMoved({ point = 'CENTER', relPoint = 'CENTER', x = 100, y = -200 })
+    check('a drag is saved by its middle, as the HUD Editor saves it', s.settings.consumableBarPos.point == 'CENTER'
+        and s.settings.consumableBarPos.x == 100)
+    s.ns.HideUnlockMode()
+    check('outside it, growing left, the bar is held by its right edge', s.bar.point[1] == 'TOPRIGHT'
+        and s.bar.point[2] == s.G.UIParent and s.bar.point[4] == 100 + full / 2 and s.bar.point[5] == -200 + 15)
+    s.set('consumableBarHideEmpty', true)
+    s.counts[14530] = 0
+    s.fire('BAG_UPDATE_DELAYED')
+    check('running out of one leaves the right edge where it was', #s.buttons() == 2 and s.bar.w == 2 * 32 - 2
+        and s.bar.point[1] == 'TOPRIGHT' and s.bar.point[4] == 100 + full / 2)
+    s.set('consumableBarGrow', 'RIGHT')
+    check('growing right, the left edge', s.bar.point[1] == 'TOPLEFT' and s.bar.point[4] == 100 - full / 2)
+    s.set('consumableBarFlipRows', true)
+    check('flipped rows hold the bottom corner', s.bar.point[1] == 'BOTTOMLEFT' and s.bar.point[5] == -200 - 15)
+    check('and the saved place never changes', s.settings.consumableBarPos.point == 'CENTER'
+        and s.settings.consumableBarPos.x == 100 and s.settings.consumableBarPos.y == -200)
+    local player = s.frame('Button', 'PlayerFrame', s.G.UIParent)
+    function player:IsProtected() return true end
+    player.attrs.unit = 'player'
+    s.set('consumableBarAnchor', 'PlayerFrame')
+    check('held to a unit frame, its own points are kept', s.bar.point[1] == 'CENTER' and s.bar.point[2] == player)
+    s.set('consumableBarAnchor', 'MissingFrame')
+    check('and with that frame missing, on the screen it is held by its corner again',
+        s.bar.point[1] == 'BOTTOMLEFT' and s.bar.point[2] == s.G.UIParent)
 end
 
 -- Every setting the addon reads has its default in QoL's settings
@@ -1585,7 +1622,7 @@ do
     check('and the bar sits on the frame', s.bar.point[2] == player and s.bar.point[1] == 'CENTER')
     back.open()
     check('the back icon puts the bar on the screen', s.settings.consumableBarAnchor == 'UIParent'
-        and s.bar.point[2] == s.G.UIParent and s.bar.point[5] == -260)
+        and s.bar.point[2] == s.G.UIParent and s.bar.point[5] == -260 + s.bar.h / 2)
     s.set('consumableBarAnchor', 'PlayerFrame')
     s.bar.mover.onMoved({ point = 'TOPLEFT', relPoint = 'TOPLEFT', x = 10, y = -20 })
     check('dragging it in the HUD Editor puts it on the screen there', s.settings.consumableBarAnchor == 'UIParent'

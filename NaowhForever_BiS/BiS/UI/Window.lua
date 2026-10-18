@@ -114,10 +114,22 @@ local function PaintPages(list)
     Parts.PaintTabs(window.pages, page)
 end
 
+local function PaintSide()
+    local list, spec = L.List(), L.CurrentSpec()
+    Parts.PaintTabs(window.specs, spec and spec.key)
+    window.list.text:SetText((list.name:gsub("||", "|")))
+    doll:Paint(list)
+    PaintUpdated(spec)
+    PaintPages(list)
+end
+
 local function DrawPage()
     if page ~= "quests" then
         view:DrawList()
-    elseif questsView then
+        return
+    end
+    PaintSide()
+    if questsView then
         questsView:Redraw()
     else
         view:DrawQuestsOff()
@@ -154,15 +166,6 @@ local function IsQuest(row, questID)
         end
     end
     return false
-end
-
-local function PaintSide()
-    local list, spec = view.list, L.CurrentSpec()
-    Parts.PaintTabs(window.specs, spec and spec.key)
-    window.list.text:SetText((list.name:gsub("||", "|")))
-    doll:Paint(list)
-    PaintUpdated(spec)
-    PaintPages(list)
 end
 
 local function DollHover(slot)
@@ -235,6 +238,10 @@ local function OnSetting(key)
     if key == "bis" and window and not B.On() then window:Hide() end
 end
 
+local function ListChanged()
+    if page ~= "list" and window and window:IsShown() then DrawPage() end
+end
+
 local function Reapply()
     if window and window:IsShown() then
         Paint()
@@ -295,4 +302,5 @@ function NaowhForever_ToggleBis()
 end
 
 S.OnChange(OnSetting)
+B.OnListChange(ListChanged)
 hooksecurefunc(ns, "Apply", Reapply)
