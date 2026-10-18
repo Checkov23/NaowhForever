@@ -111,6 +111,13 @@ function B.AutoAssign()
     ApplyPlans(AutoPlans())
 end
 
+function B.ClearAll()
+    local plans = {}
+    for _, p in ipairs(Paladins()) do plans[p.who] = { classes = {} } end
+    if IsPaladin() then Store().players = {} end
+    ApplyPlans(plans)
+end
+
 function B.CanPlanAll()
     return next(others) == nil or CanAssign("player")
 end

@@ -36,6 +36,16 @@ local TEXT_SALV_ON = ns.L("Gives Salvation to everyone but tanks")
 local TEXT_NOTHING = ns.L("Nothing assigned")
 local TEXT_CHANGE = ns.L("\nClick to change.")
 local TEXT_NONE = ns.L("None")
+local TEXT_CLEAR_ASK = ns.L("Clear every paladin's blessings and auras?")
+local TEXT_ASKED = ns.L("Asked the group's paladins for their plans.")
+local TEXT_REPORT_TO = ns.L("Report the blessings to")
+local TEXT_FREE = ns.L("Free Assignment")
+local TEXT_FREE_TIP = ns.L("Lets other paladins change your blessings without being the leader or an assistant.")
+local TEXT_SYMBOLS = ns.L("%d Symbols")
+local TEXT_LOH = ns.L("LoH %s")
+local TEXT_DI = ns.L("DI %s")
+local TEXT_READY = ns.L("ready")
+local STATUS_SIZE, STATUS_GAP = 10, 1
 
 local function NewCell(parent)
     local btn = CreateFrame("Button", nil, parent)
@@ -90,6 +100,29 @@ local function SavePreset()
     if B.HasPreset() then ns.Confirm(TEXT_REPLACE_PRESET, SaveNow) else SaveNow() end
 end
 
+local function ClearNow()
+    B.ClearAll()
+    ns.UI:RefreshPage(true)
+end
+
+local function ClearAll()
+    if Allowed() then ns.Confirm(TEXT_CLEAR_ASK, ClearNow) end
+end
+
+local function AskPlans()
+    B.SyncSoon()
+    ns.Print(TEXT_ASKED)
+end
+
+local function ReportMenu()
+    MenuUtil.CreateContextMenu(UIParent, function(_, root)
+        root:CreateTitle(TEXT_REPORT_TO)
+        for _, channel in ipairs(B.ReportChannels()) do
+            root:CreateButton(channel.label, function() B.Report(channel.key) end)
+        end
+    end)
+end
+
 local function Planning(parent, y)
     local W = ns.UI.Widgets
     local _, h = W:SectionHeader(parent, "PLANNING", y)
@@ -100,7 +133,16 @@ local function Planning(parent, y)
     y = y - h
     _, h = W:DualRow(parent, y,
         { type = "button", text = "Save the plan below as the preset", buttonText = "Save", onClick = SavePreset },
-        { type = "label", text = "" })
+        { type = "button", text = "Report the blessings", buttonText = "Report", onClick = ReportMenu })
+    y = y - h
+    _, h = W:DualRow(parent, y,
+        { type = "button", text = "Clear every paladin's plan", buttonText = "Clear", onClick = ClearAll },
+        { type = "button", text = "Ask the paladins for their plans", buttonText = "Refresh", onClick = AskPlans })
+    y = y - h
+    local free = B.IsPaladin() and { type = "toggle", text = TEXT_FREE, tooltip = TEXT_FREE_TIP,
+        getValue = function() return B.Store().free == true end,
+        setValue = function(on) B.SetFree(on) end } or { type = "label", text = "" }
+    _, h = W:DualRow(parent, y, free, { type = "label", text = "" })
     return y - h
 end
 
@@ -131,6 +173,7 @@ local function Rows(roster)
             set = B.SetOwn }
     end
     local others = B.Others()
+    local mayFree = B.IsPaladin()
     local names = {}
     for who in pairs(others) do names[#names + 1] = who end
     table.sort(names)
@@ -138,7 +181,7 @@ local function Rows(roster)
         local plan = others[who]
         rows[#rows + 1] = { who = who, plan = plan, players = plan.players,
             can = function(entry) return plan.known[entry.key] end,
-            set = lead and function(column, key)
+            set = (lead or (mayFree and plan.free)) and function(column, key)
                 B.SetFor(who, column, key)
                 ns.UI:RefreshPage(true)
             end }
@@ -194,6 +237,31 @@ local function PlanCells(parent, y, left, columns, row, roster)
     end
 end
 
+local function Remaining(left)
+    if not left then return end
+    return left > 0 and (math.ceil(left / 60) .. "m") or TEXT_READY
+end
+
+local function StatusText(row)
+    local symbols, loh, di
+    if row.you then
+        symbols, loh, di = B.OwnStatus()
+        if loh < 0 then loh = nil end
+        if di < 0 then di = nil end
+    elseif row.plan.status then
+        local status, now = row.plan.status, GetTime()
+        symbols = status.symbols
+        loh = status.loh and status.loh - now
+        di = status.di and status.di - now
+    else
+        return ""
+    end
+    local parts = { TEXT_SYMBOLS:format(symbols) }
+    if loh then parts[#parts + 1] = TEXT_LOH:format(Remaining(loh)) end
+    if di then parts[#parts + 1] = TEXT_DI:format(Remaining(di)) end
+    return table.concat(parts, "  ")
+end
+
 local function Row(parent, y, left, columns, row, roster)
     local UI = ns.UI
     local label = UI.KeepFont(parent, "name", NAME_SIZE, "OUTLINE", RAID_CLASS_COLORS.PALADIN)
@@ -201,7 +269,15 @@ local function Row(parent, y, left, columns, row, roster)
     label:SetWidth(NAME_WIDTH - NAME_PAD)
     label:SetJustifyH("LEFT")
     label:SetText(Ambiguate(row.who, "short") .. (row.you and TEXT_YOU or ""))
-    if row.plan then return PlanCells(parent, y, left, columns, row, roster) end
+    if row.plan then
+        local status = UI.KeepFont(parent, "status", STATUS_SIZE, nil, T.muted)
+        status:SetPoint("TOPLEFT", parent, "TOPLEFT", left, y - NAME_Y - NAME_SIZE - STATUS_GAP)
+        status:SetWidth(NAME_WIDTH - NAME_PAD)
+        status:SetJustifyH("LEFT")
+        status:SetWordWrap(false)
+        status:SetText(StatusText(row))
+        return PlanCells(parent, y, left, columns, row, roster)
+    end
     local note = UI.KeepFont(parent, "noAddon", NOTE_SIZE, nil, T.muted)
     note:SetPoint("TOPLEFT", parent, "TOPLEFT", left + NAME_WIDTH, y - NOTE_Y)
     note:SetText(TEXT_NO_ADDON)

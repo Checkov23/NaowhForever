@@ -26,4 +26,4 @@ B.FURY = { key = "fury", ranks = { 25780 } }
 
 B.SYMBOL_OF_KINGS = 21177
 
-B.SALV_FLAG = "Y"
+B.SALV_FLAG, B.FREE_FLAG = "Y", "X"

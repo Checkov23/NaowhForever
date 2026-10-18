@@ -7,6 +7,8 @@
     <Script file="Memory.lua"/>
     <Script file="Buffs.lua"/>
     <Script file="Plans.lua"/>
+    <Script file="Status.lua"/>
+    <Script file="Report.lua"/>
     <Script file="AutoAssign.lua"/>
     <Script file="View\Look.lua"/>
     <Script file="View\Watch.lua"/>

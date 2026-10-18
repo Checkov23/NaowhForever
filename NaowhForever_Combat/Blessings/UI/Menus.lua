@@ -70,6 +70,12 @@ function B.AuraMenu(owner)
     B.OpenMenu(owner, TEXT_AURA, AURAS, OwnAura, SetAura, TEXT_DEFAULT)
 end
 
+function B.SetFree(on)
+    Store().free = on and true or nil
+    B.BroadcastSoon()
+    B.Changed()
+end
+
 local function SalvOn()
     return Store().salv == true
 end

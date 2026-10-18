@@ -7,12 +7,13 @@ local BY_KEY, BY_CODE = B.BY_KEY, B.BY_CODE
 local others = B.others
 local Learned, Store, Roster, InGroup, CanAssign = B.Learned, B.Store, B.Roster, B.InGroup, B.CanAssign
 local MyName, IsPaladin = B.MyName, B.IsPaladin
-local SALVATION, SALV_FLAG = B.SALVATION, B.SALV_FLAG
+local SALVATION, SALV_FLAG, FREE_FLAG = B.SALVATION, B.SALV_FLAG, B.FREE_FLAG
 
 local PREFIX = "NaowhBless"
 local NONE = "-"
 local PLAYER_BATCH = 200
 local MAX_PLAYER_CHOICES = 40
+local MAX_SYMBOLS = 9999
 local BATCH_DELAY = 1
 local TEXT_UPDATED = ns.L(" updated your blessings.")
 
@@ -56,7 +57,9 @@ local function KnownCodes()
     for _, entry in ipairs(BLESSINGS) do if Learned(entry) then codes[#codes + 1] = entry.code end end
     if Learned(SALVATION) then codes[#codes + 1] = SALVATION.code end
     for _, entry in ipairs(AURAS) do if Learned(entry) then codes[#codes + 1] = entry.code end end
-    if Store().salv then codes[#codes + 1] = SALV_FLAG end
+    local store = Store()
+    if store.salv then codes[#codes + 1] = SALV_FLAG end
+    if store.free then codes[#codes + 1] = FREE_FLAG end
     return table.concat(codes)
 end
 
@@ -107,6 +110,7 @@ local function Broadcast()
     local store = Store()
     Send("F|" .. EncodePlan(store.classes, store.aura) .. "|" .. KnownCodes())
     SendPlayers()
+    Send(B.StatusMessage(), "I")
 end
 
 local function BroadcastNow()
@@ -120,10 +124,14 @@ local function BroadcastSoon()
     C_Timer.After(BATCH_DELAY, BroadcastNow)
 end
 
+local function MayPlan(from)
+    return from and (CanAssign(from.unit) or (Store().free and from.class == "PALADIN"))
+end
+
 local function OnAssigned(who, target, plan)
     local from = InGroup(who)
     local classes, aura, salv = DecodePlan(plan)
-    if not (IsPaladin() and classes and from and CanAssign(from.unit)
+    if not (IsPaladin() and classes and MayPlan(from)
             and target == MyName() .. "-" .. GetNormalizedRealmName()) then
         return
     end
@@ -141,7 +149,7 @@ end
 
 local function OnSalvAssigned(who, target, on)
     local from = InGroup(who)
-    if not (IsPaladin() and from and CanAssign(from.unit)
+    if not (IsPaladin() and MayPlan(from)
             and target == MyName() .. "-" .. GetNormalizedRealmName()) then
         return
     end
@@ -149,6 +157,18 @@ local function OnSalvAssigned(who, target, on)
     ns.Print(who .. TEXT_UPDATED)
     BroadcastSoon()
     B.Changed()
+end
+
+local function OnStatus(who, symbols, loh, di)
+    local from = others[who]
+    if not from then return end
+    local now = GetTime()
+    local function Ends(left)
+        left = tonumber(left)
+        return left >= 0 and now + left or nil
+    end
+    from.status = { symbols = math.min(tonumber(symbols), MAX_SYMBOLS), loh = Ends(loh), di = Ends(di) }
+    RefreshPage()
 end
 
 local function OnPlayers(who, part, list)
@@ -173,14 +193,15 @@ local function OnPlan(who, body, known)
     if not (member and member.class == "PALADIN") then return end
     local classes, aura, salv = DecodePlan(body)
     if not classes then return end
-    local set = {}
+    local set, free = {}, nil
     for code in known:gmatch(".") do
         if BY_CODE[code] then set[BY_CODE[code].key] = true end
         if code == SALV_FLAG then salv = true end
+        if code == FREE_FLAG then free = true end
     end
     local was = others[who]
-    others[who] = { classes = classes, aura = aura, salv = salv or nil, known = set,
-        players = was and was.players or {}, choices = was and was.choices or 0 }
+    others[who] = { classes = classes, aura = aura, salv = salv or nil, free = free, known = set,
+        players = was and was.players or {}, choices = was and was.choices or 0, status = was and was.status }
     RefreshPage()
 end
 
@@ -206,6 +227,8 @@ function B.OnMessage(msg, sender)
     if target then return OnAssigned(who, target, plan) end
     local salvTarget, salvOn = msg:match("^V|([^|]+)|([01])$")
     if salvTarget then return OnSalvAssigned(who, salvTarget, salvOn == "1") end
+    local symbols, loh, di = msg:match("^I|(%d+)|(%-?%d+)|(%-?%d+)$")
+    if symbols then return OnStatus(who, symbols, loh, di) end
     local part, list = msg:match("^P|(%d+)|(.*)$")
     if part then return OnPlayers(who, part, list) end
     local body, known = msg:match("^F|(%S+)|(%a*)$")

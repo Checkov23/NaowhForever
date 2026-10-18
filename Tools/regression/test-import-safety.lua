@@ -216,6 +216,7 @@ end
 -------------------------------------------------------------------------------
 do
     local frames = {}
+    local account = {}
     local meta = { __index = function() return function() end end }
     local function Frame()
         local f = setmetatable({ scripts = {} }, meta)
@@ -228,12 +229,14 @@ do
         party1 = { "Holy Man", "Holy", "PALADIN" },
     }
     local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = { Get = function() return true end, Set = function() end },
-        THEME = { fg = {}, muted = {}, accent = {}, bg = {} }, AccountSettings = function() return {} end,
+        THEME = { fg = {}, muted = {}, accent = {}, bg = {} }, AccountSettings = function() return account end,
+        Print = function() end,
         Apply = function() end, UI = { RefreshPage = function() end },
         Shared = { Style = dofile("Tools/regression/shared_style.lua"), Parts = { HudFont = function() end } },
         ShowUnlockMode = function() end, HideUnlockMode = function() end }
     local env = setmetatable({ NaowhForever = ns, CreateFrame = Frame, hooksecurefunc = function() end,
         C_Timer = { After = function() end }, GetTime = function() return 0 end,
+        GetRealmName = function() return "Forever" end, C_SpellBook = { IsSpellKnown = function() return true end },
         IsInRaid = function() return false end, GetNumSubgroupMembers = function() return 1 end,
         GetNumGroupMembers = function() return 2 end, GetNormalizedRealmName = function() return "Forever" end,
         UnitFullName = function(u) return units[u] and units[u][1] end,
@@ -305,6 +308,39 @@ do
     check("a player's own Salvation from an older client is not kept", own == 0)
     Send("V|Me Self-Forever|1")
     check("a Salvation setting from a player who cannot assign is ignored", ns.Blessings.Others()["Holy Man"].salv == true)
+
+    -- Symbols of Kings and cooldowns come as numbers and are clamped; Free Assignment is a flag.
+    Send("I|12|600|-1")
+    local status = ns.Blessings.Others()["Holy Man"].status
+    check("a paladin's Symbols and cooldowns are kept", status.symbols == 12 and status.loh == 600 and status.di == nil)
+    Send("I|99999|0|0")
+    check("a silly Symbol count is clamped", ns.Blessings.Others()["Holy Man"].status.symbols == 9999)
+    Send("I|abc|0|0")
+    Send("I|5|x|0")
+    check("a status that is not numbers is ignored", ns.Blessings.Others()["Holy Man"].status.symbols == 9999)
+    Send("I|7|0|0", "Stranger Danger")
+    check("a status from a sender with no plan is ignored", ns.Blessings.Others()["Stranger Danger"] == nil)
+    Send("F|----------|mwX")
+    check("the flag in the known list says Free Assignment is on", ns.Blessings.Others()["Holy Man"].free == true)
+    Send("F|----------|mw")
+    check("and its absence says it is off", ns.Blessings.Others()["Holy Man"].free == nil)
+    check("a plan update keeps the last status", ns.Blessings.Others()["Holy Man"].status.symbols == 9999)
+
+    units.player[3] = "PALADIN"
+    local store = ns.Blessings.Store()
+    Send("S|Me Self-Forever|k---------")
+    check("a paladin who does not lead cannot plan for you", next(store.classes) == nil)
+    store.free = true
+    Send("S|Me Self-Forever|k---------")
+    check("with Free Assignment on, a paladin in the group can", store.classes.WARRIOR == "kings")
+    Send("S|Me Self-Forever|-m--------", "Stranger Danger")
+    check("with it on, someone who is not in the group still cannot", store.classes.WARRIOR == "kings"
+        and store.classes.PALADIN == nil)
+    units.party1[3] = "WARRIOR"
+    Send("S|Me Self-Forever|-m--------")
+    check("with it on, a player who is not a paladin and not an assistant cannot", store.classes.PALADIN == nil)
+    units.party1[3] = "PALADIN"
+    units.player[3] = "WARRIOR"
 end
 
 print(("PASS import safety: %d checks"):format(checks))

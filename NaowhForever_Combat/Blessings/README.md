@@ -21,6 +21,8 @@ NaowhForever_Combat/Blessings/
   Memory.lua                   the blessings you cast in a battleground or arena, where auras are hidden
   Buffs.lua                    who has which blessing for how long, who is in range, who is next
   Plans.lua                    plans shared with the group's paladins over addon messages
+  Status.lua                   your Symbols of Kings and Lay on Hands and Divine Intervention cooldowns
+  Report.lua                   the paladins' blessings as lines of chat
   AutoAssign.lua               Auto-Assign and the saved preset
   View/
     Look.lua                   the bar's look, on the bar and the preview (B.Look)
@@ -141,6 +143,17 @@ NaowhForever_Combat/Blessings/
   Salvation when two or more of it need it and a Symbol of Kings is carried, a single one otherwise, so the
   reagent is not spent on one player. The cell's queue is every class's, most urgent first, trimmed like a class
   button's: those due, or the one with least left. The key bindings step through the same list.
+- Free Assignment is a flag on your plan (`X` in the known list, `free`): with it on, any paladin in the group
+  may set your plan, not only the leader or an assistant (`MayPlan`); without it nothing changes. A paladin
+  with it on shows as editable in everyone's Blessings window.
+- Each paladin shares their Symbols of Kings and the time left on Lay on Hands and Divine Intervention
+  (`I|symbols|loh|di`, seconds, -1 for a spell they do not know) with the plan, and again when the Symbols change
+  (checked every `TICK`) or one of those spells is cast. The window counts the time down from when it arrived; a
+  cooldown the client hides reads as ready. The numbers are parsed as data and the Symbols clamped.
+- Report sends every paladin's plan as lines (`Name: Might (Warrior, Rogue), Kings (Mage), Salvation, Devotion
+  Aura`), split before the chat limit, to yourself, say, party, raid, an instance group or the guild, whichever you
+  are in. It is refused in combat. Clear empties your classes, aura, Salvation and own choices, and every paladin's
+  plan you may set; Refresh asks the group for their plans again.
 - Salvation used to be one of the five class blessings. A saved plan with it for a class or a player is read
   once into "Salvation on" with that class or player cleared (`salvSplit`), and one turned off stays off.
 - The preset is one saved set of plans for the account, by paladin name. Loading it plans only the
