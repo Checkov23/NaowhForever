@@ -5,28 +5,19 @@ local B = ns.Blessings
 local CLASSES, BLESSINGS, AURAS = B.CLASSES, B.BLESSINGS, B.AURAS
 local others = B.others
 local IsPaladin, Learned, MyName, Store, CanAssign = B.IsPaladin, B.Learned, B.MyName, B.Store, B.CanAssign
-local Secret = B.Secret
+local SALVATION = B.SALVATION
 
 local WANTED = {
     WARRIOR = { "might", "kings", "light" },
-    ROGUE = { "might", "kings", "salvation", "light" },
-    HUNTER = { "might", "kings", "wisdom", "salvation", "light" },
+    ROGUE = { "might", "kings", "light" },
+    HUNTER = { "might", "kings", "wisdom", "light" },
     PALADIN = { "wisdom", "kings", "might", "light" },
-    PRIEST = { "wisdom", "kings", "salvation", "light" },
-    MAGE = { "wisdom", "kings", "salvation", "light" },
-    WARLOCK = { "wisdom", "kings", "salvation", "light" },
-    SHAMAN = { "wisdom", "kings", "might", "salvation", "light" },
+    PRIEST = { "wisdom", "kings", "light" },
+    MAGE = { "wisdom", "kings", "light" },
+    WARLOCK = { "wisdom", "kings", "light" },
+    SHAMAN = { "wisdom", "kings", "might", "light" },
     DRUID = { "wisdom", "kings", "might", "light" },
 }
-local WANTED_RAID = {
-    ROGUE = { "salvation", "might", "kings", "light" },
-    HUNTER = { "salvation", "might", "kings", "wisdom", "light" },
-    PRIEST = { "salvation", "wisdom", "kings", "light" },
-    MAGE = { "salvation", "wisdom", "kings", "light" },
-    WARLOCK = { "salvation", "wisdom", "kings", "light" },
-    SHAMAN = { "salvation", "wisdom", "kings", "might", "light" },
-}
-local PALADIN_SALVATION = { "salvation", "wisdom", "kings", "might", "light" }
 local AURA_ORDER = { "devotion", "retribution", "concentration", "fire", "frost", "shadow", "sanctity" }
 
 local function FewestFirst(a, b)
@@ -40,6 +31,7 @@ local function Paladins()
         local known = {}
         for _, entry in ipairs(BLESSINGS) do if Learned(entry) then known[entry.key] = true end end
         for _, entry in ipairs(AURAS) do if Learned(entry) then known[entry.key] = true end end
+        if Learned(SALVATION) then known[SALVATION.key] = true end
         list[1] = { who = MyName(), known = known, you = true }
     end
     for who, plan in pairs(others) do list[#list + 1] = { who = who, known = plan.known } end
@@ -49,18 +41,6 @@ local function Paladins()
     end
     table.sort(list, FewestFirst)
     return list
-end
-
-local function SalvationForPaladins()
-    local count = 0
-    for _, member in ipairs(B.Roster()) do
-        if member.class == "PALADIN" then
-            local role = UnitGroupRolesAssigned(member.unit)
-            if not Secret(role) and role == "TANK" then return false end
-            count = count + 1
-        end
-    end
-    return count >= 2
 end
 
 local function Pick(paladins, wanted, give)
@@ -77,16 +57,14 @@ local function Pick(paladins, wanted, give)
     end
 end
 
-local function AutoPlans(raid)
+local function AutoPlans()
     local paladins = Paladins()
     local plans = {}
     for _, p in ipairs(paladins) do plans[p.who] = { classes = {} } end
-    local salvation = SalvationForPaladins()
     for _, class in ipairs(CLASSES) do
-        local wanted = raid and WANTED_RAID[class] or WANTED[class]
-        if class == "PALADIN" and salvation then wanted = PALADIN_SALVATION end
-        Pick(paladins, wanted, function(p, key) plans[p.who].classes[class] = key end)
+        Pick(paladins, WANTED[class], function(p, key) plans[p.who].classes[class] = key end)
     end
+    Pick(paladins, { SALVATION.key }, function(p) plans[p.who].salv = true end)
     Pick(paladins, AURA_ORDER, function(p, key) plans[p.who].aura = key end)
     return plans
 end
@@ -98,9 +76,11 @@ local function ApplyPlans(plans)
             store.classes = {}
             for class, key in pairs(plan.classes) do store.classes[class] = key end
             store.aura = plan.aura
+            store.salv = plan.salv
             B.BroadcastSoon()
         elseif others[who] then
             B.SendPlan(who, plan.classes, plan.aura)
+            B.SendSalv(who, plan.salv)
         end
     end
     B.Changed()
@@ -114,15 +94,21 @@ end
 
 local function SavedPlan(p, saved)
     local plan = { classes = {} }
+    local salv = saved.salv
     for class, key in pairs(saved.classes or {}) do
-        if p.known[key] then plan.classes[class] = key end
+        if key == SALVATION.key then
+            salv = true
+        elseif p.known[key] then
+            plan.classes[class] = key
+        end
     end
     plan.aura = saved.aura and p.known[saved.aura] and saved.aura or nil
+    plan.salv = salv and p.known[SALVATION.key] or nil
     return plan
 end
 
 function B.AutoAssign()
-    ApplyPlans(AutoPlans(IsInRaid()))
+    ApplyPlans(AutoPlans())
 end
 
 function B.CanPlanAll()
@@ -137,7 +123,7 @@ function B.SavePreset()
         local plan = p.you and Store() or others[p.who]
         local classes = {}
         for class, key in pairs(plan.classes) do classes[class] = key end
-        preset[p.who] = { classes = classes, aura = plan.aura }
+        preset[p.who] = { classes = classes, aura = plan.aura, salv = plan.salv }
     end
     ns.AccountSettings().blessingPreset = preset
     return true
@@ -164,6 +150,7 @@ end
 function B.SetFor(who, column, key)
     local plan = others[who]
     if not plan then return end
+    if column == B.SALV_COLUMN then return B.SendSalv(who, key ~= nil) end
     if column == "AURA" then plan.aura = key else plan.classes[column] = key end
     B.SendPlan(who, plan.classes, plan.aura)
 end

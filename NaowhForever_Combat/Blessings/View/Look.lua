@@ -60,7 +60,7 @@ local function ClassIcon(frame)
     icon = CreateFrame("Frame", nil, frame)
     icon.tex = icon:CreateTexture(nil, "ARTWORK")
     icon.tex:SetAllPoints()
-    icon.tex:SetTexture(CLASS_ICON_PATH .. frame.class)
+    icon.tex:SetTexture(frame.labelIcon or CLASS_ICON_PATH .. frame.class)
     icon.tex:SetTexCoord(ICON_CROP, 1 - ICON_CROP, ICON_CROP, 1 - ICON_CROP)
     ns.Border(icon, ICON_BORDER)
     frame.classIcon = icon
@@ -104,11 +104,11 @@ function Look.Icon(frame)
     frame.timer:SetPoint("BOTTOM", 0, TIMER_Y)
 end
 
-function Look.Label(cell, class)
+function Look.Label(cell, class, text)
     cell.label = ns.Font(cell, LABEL_SIZE, "OUTLINE")
     cell.label:SetPoint("TOP", cell, "BOTTOM", 0, -LABEL_DROP)
     cell.label:SetWordWrap(false)
-    cell.labelText = B.ClassName(class)
+    cell.labelText = text or B.ClassName(class)
     cell.label:SetText(cell.labelText)
 end
 

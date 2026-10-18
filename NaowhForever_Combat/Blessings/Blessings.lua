@@ -14,6 +14,7 @@ local B = {
     CLASSES = CLASSES,
     PAGE = "Blessings/Settings",
     AURA_COLUMN = "AURA",
+    SALV_COLUMN = "SALV",
     NOBODY = "-",
     ROUND = 0.5,
     AURA_TIP = ns.L("Left-click: cast your aura.\nRight-click: choose it."),
@@ -49,6 +50,17 @@ end
 
 function B.Changed() end
 
+local function SplitSalvation(store)
+    if store.salvSplit then return end
+    store.salvSplit = true
+    for class, key in pairs(store.classes) do
+        if key == "salvation" then store.classes[class], store.salv = nil, true end
+    end
+    for guid, key in pairs(store.players) do
+        if key == "salvation" then store.players[guid], store.salv = nil, true end
+    end
+end
+
 function B.Store()
     local account = ns.AccountSettings()
     account.blessings = account.blessings or {}
@@ -62,5 +74,6 @@ function B.Store()
         store = { classes = classes, players = {} }
         account.blessings[key] = store
     end
+    SplitSalvation(store)
     return store
 end

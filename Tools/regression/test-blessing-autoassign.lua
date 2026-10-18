@@ -1,8 +1,7 @@
 -- Run with Lua 5.1 from the repository root: Blessings Auto-Assign. One blessing per paladin per
--- class, never the same blessing twice in a class, nothing a paladin has not learned, Salvation
--- never on warriors or druids, the most wanted blessings first, one aura each, and a paladin who
--- knows little is served before one who knows everything. With two paladins in the group the
--- paladins get Salvation too, unless one of them tanks.
+-- class, never the same blessing twice in a class, nothing a paladin has not learned, the most
+-- wanted blessings first, one aura each, and a paladin who knows little is served before one who
+-- knows everything. Salvation is no class blessing: one paladin who knows it gives it to the group.
 local checks = 0
 local function check(label, value) assert(value, label); checks = checks + 1 end
 
@@ -16,13 +15,12 @@ local chunk = source:sub(first, last - 1) .. "return AutoPlans"
 local CLASSES = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID" }
 local mine = {}
 local others = {}
-local roster, roles = { { class = "PALADIN", unit = "player" } }, {}
+local roster = { { class = "PALADIN", unit = "player" } }
 local env = {
     B = { Roster = function() return roster end },
-    Secret = function() return false end,
-    UnitGroupRolesAssigned = function(unit) return roles[unit] or "NONE" end,
     CLASSES = CLASSES,
-    BLESSINGS = { { key = "might" }, { key = "wisdom" }, { key = "kings" }, { key = "salvation" }, { key = "light" } },
+    SALVATION = { key = "salvation" },
+    BLESSINGS = { { key = "might" }, { key = "wisdom" }, { key = "kings" }, { key = "light" } },
     AURAS = { { key = "devotion" }, { key = "retribution" }, { key = "concentration" } },
     IsPaladin = function() return true end,
     Learned = function(entry) return mine[entry.key] end,
@@ -42,7 +40,7 @@ end
 -- You know everything; another paladin knows only Might and Devotion.
 mine = Set("might", "wisdom", "kings", "salvation", "light", "devotion", "retribution", "concentration")
 others["Bram Hollow"] = { known = Set("might", "devotion") }
-local plans = AutoPlans(false)
+local plans = AutoPlans()
 local me, bram = plans["Glyadin Skywolf"], plans["Bram Hollow"]
 check("the paladin who knows only Might gives warriors Might", bram.classes.WARRIOR == "might")
 check("you then give warriors the next one, Kings", me.classes.WARRIOR == "kings")
@@ -53,41 +51,26 @@ for _, class in ipairs(CLASSES) do
     local a, b = me.classes[class], bram.classes[class]
     check(class .. ": never the same blessing twice", not (a and b and a == b))
     check(class .. ": nothing the other paladin has not learned", b == nil or b == "might")
+    check(class .. ": Salvation is not a class blessing", a ~= "salvation" and b ~= "salvation")
 end
 
--- Raid: Salvation leads for casters, never reaches warriors or druids.
-others["Bram Hollow"] = nil
-plans = AutoPlans(true)
-me = plans["Glyadin Skywolf"]
-check("raid: a lone paladin gives mages Salvation first", me.classes.MAGE == "salvation")
-check("raid: warriors get Might, not Salvation", me.classes.WARRIOR == "might")
-check("raid: druids never get Salvation", me.classes.DRUID ~= "salvation")
-for _, raid in ipairs({ true, false }) do
-    local p = AutoPlans(raid)["Glyadin Skywolf"]
-    check("paladins never get Salvation", p.classes.PALADIN ~= "salvation")
-end
-plans = AutoPlans(false)
-check("party: a lone paladin gives mages Wisdom", plans["Glyadin Skywolf"].classes.MAGE == "wisdom")
+check("Salvation goes to the paladin who knows it", me.salv == true and bram.salv == nil)
+check("a lone paladin gives mages Wisdom, in a party or a raid", plans["Glyadin Skywolf"].classes.MAGE == "wisdom")
 
--- Two paladins in the group: the paladins get Salvation, in a party and in a raid, unless one tanks.
+-- Two paladins who both know Salvation: the one who knows less gives it, once.
 others["Bram Hollow"] = { known = Set("might", "wisdom", "kings", "salvation", "light", "devotion") }
 roster = { { class = "PALADIN", unit = "player" }, { class = "PALADIN", unit = "party1" },
     { class = "MAGE", unit = "party2" } }
-for _, raid in ipairs({ false, true }) do
-    local p = AutoPlans(raid)
-    check("two paladins: the paladin who knows less gives the paladins Salvation",
-        p["Bram Hollow"].classes.PALADIN == "salvation")
-    check("two paladins: you give them the next one, Wisdom", p["Glyadin Skywolf"].classes.PALADIN == "wisdom")
-end
-check("two paladins: the other classes are unchanged", AutoPlans(false)["Glyadin Skywolf"].classes.MAGE == "kings"
-    and AutoPlans(false)["Bram Hollow"].classes.MAGE == "wisdom")
-roles.party1 = "TANK"
-local tanked = AutoPlans(false)
-check("a paladin tank in the group: no Salvation for paladins",
-    tanked["Glyadin Skywolf"].classes.PALADIN ~= "salvation" and tanked["Bram Hollow"].classes.PALADIN ~= "salvation")
-roles.party1 = "DAMAGER"
-roster = { { class = "PALADIN", unit = "player" }, { class = "MAGE", unit = "party1" } }
-check("one paladin and a mage: no Salvation for paladins",
-    AutoPlans(false)["Glyadin Skywolf"].classes.PALADIN ~= "salvation")
+plans = AutoPlans()
+check("two paladins: the paladin who knows less gives Salvation", plans["Bram Hollow"].salv == true
+    and plans["Glyadin Skywolf"].salv == nil)
+check("two paladins: the class blessings are unchanged by it", plans["Bram Hollow"].classes.PALADIN == "wisdom"
+    and plans["Glyadin Skywolf"].classes.PALADIN == "kings")
+
+-- Nobody knows Salvation: nobody is given it.
+mine.salvation, others["Bram Hollow"].known.salvation = nil, nil
+plans = AutoPlans()
+check("nobody knows Salvation: nobody gives it", plans["Glyadin Skywolf"].salv == nil
+    and plans["Bram Hollow"].salv == nil)
 
 print(("test-blessing-autoassign: %d checks passed"):format(checks))

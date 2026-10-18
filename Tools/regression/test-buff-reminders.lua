@@ -50,6 +50,7 @@ local function Fixture(opts)
         group = opts.group,                         -- nil solo, "party" or "raid"
         units = opts.units or {},                   -- unit -> class; player included
         known = opts.known or {},
+        roles = opts.roles or {},                   -- unit -> its assigned group role
         shields = opts.shields or {},               -- slot -> true for a shield in that slot
         weapons = opts.weapons or {},               -- slot -> enchant seconds left, false for none
         worn = opts.worn or {},                     -- slot -> item ID worn there
@@ -197,6 +198,7 @@ local function Fixture(opts)
         UnitLevel = function() return state.level end,
         UnitIsConnected = function() return true end,
         UnitIsDeadOrGhost = function() return false end,
+        UnitGroupRolesAssigned = function(unit) return state.roles[unit] or "NONE" end,
         UnitIsVisible = function() return true end,
         UnitIsUnit = function(a, b) return a == b end,
         UnitExists = function(unit) return unit ~= "target" or state.target ~= nil end,
@@ -835,6 +837,35 @@ do
     t.state.known = { [1460] = true }
     t.Set("raidBuffsOwn", true)
     Check("own and not picked: nothing", t.Shown(), "")
+end
+
+-- Salvation is its own raid buff, separate from the blessings, off until picked, and never asked of a tank.
+do
+    local t = Fixture({ settings = { raidBuffs = true, raidBuffsOwn = false },
+        group = "party", units = { player = "MAGE", party1 = "PALADIN", party2 = "WARRIOR", party3 = "DRUID" },
+        auras = { player = {}, party1 = {}, party2 = {}, party3 = {} } })
+    t.Login()
+    Check("salvation is off until picked", t.Shown(), "spell:10157x3 spell:9885x4")
+    t.Set("raidBuffPicks", { intellect = false, stamina = false, spirit = false, wild = false, blessing = false,
+        salvation = true })
+    Check("salvation picked: everyone is missing it", t.Shown(), "spell:1038x4")
+    t.state.roles.party2 = "TANK"
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    Check("a tank is not asked to have it", t.Shown(), "spell:1038x3")
+    t.state.auras.party3 = { { 1038 } }
+    t.Fire("UNIT_AURA", "party3"); t.Advance(0.5)
+    Check("one who has it is not missing it", t.Shown(), "spell:1038x2")
+    t.state.auras.party3 = { { 25895 } }
+    t.Fire("UNIT_AURA", "party3"); t.Advance(0.5)
+    Check("the Greater one counts too", t.Shown(), "spell:1038x2")
+    t.Set("raidBuffPicks", { intellect = false, stamina = false, spirit = false, wild = false, blessing = true,
+        salvation = false })
+    Check("Salvation does not stand in for a blessing", t.Shown(), "spell:25291x4")
+    t.state.auras.party3 = { { 19740 } }
+    t.Fire("UNIT_AURA", "party3"); t.Advance(0.5)
+    t.Set("raidBuffPicks", { intellect = false, stamina = false, spirit = false, wild = false, blessing = true,
+        salvation = true })
+    Check("and a blessing does not stand in for Salvation", t.Shown(), "spell:25291x3 spell:1038x3")
 end
 
 -- The card has a switch per raid buff, each with its own changed dot and reset.

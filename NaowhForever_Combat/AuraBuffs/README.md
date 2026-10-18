@@ -127,7 +127,10 @@ NaowhForever_Combat/AuraBuffs/
   buffs; cooked food moved to Forever-only "Nutritious Food" spells with one shared Well Fed aura
   per stat (Wowhead's Forever data, build 1.60.1). Flask of Petrification is left out: it is a
   minute of stone form, not a buff to keep up.
-- Paladin blessings start off in the raid buff picks: the Blessings module covers them. A talent
+- Paladin blessings start off in the raid buff picks: the Blessings module covers them. Salvation is a raid
+  buff of its own, since it stacks with the other blessings: a member with only Salvation still lacks a blessing,
+  and one with only a blessing still lacks Salvation. It skips members whose assigned role is Tank (a secret
+  role counts as not a tank), and is off until picked like the rest. A talent
   buff (Divine Spirit) only counts when you can cast it, since another player's talents cannot be
   seen. A camp buff standing in for a class buff is not seen, so it still counts as missing.
 - Personal buffs (`D.PERSONAL`) fire only for the player's class and once a spell of the family is

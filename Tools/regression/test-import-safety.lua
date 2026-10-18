@@ -285,6 +285,26 @@ do
     check("a fresh list starts over", count == 1)
     Send("P|1|Player-9-000001=k", "Stranger Danger")
     check("a sender with no plan is ignored", ns.Blessings.Others()["Stranger Danger"] == nil)
+
+    -- Salvation is no class blessing any more: an older client's class Salvation reads as Salvation given,
+    -- the flag in the known list says the same, and a Salvation code in the aura place is no plan at all.
+    Send("F|-s--------|msw")
+    local holy = ns.Blessings.Others()["Holy Man"]
+    check("an older client's class Salvation becomes Salvation given", holy.classes.PALADIN == nil and holy.salv == true)
+    check("and it is a spell they know", holy.known.salvation == true)
+    Send("F|----------|mw")
+    check("no code and no flag: no Salvation", ns.Blessings.Others()["Holy Man"].salv == nil)
+    Send("F|----------|mwsY")
+    check("the flag in the known list says Salvation is on", ns.Blessings.Others()["Holy Man"].salv == true)
+    Send("F|---------s|m")
+    check("Salvation in the aura place is refused, the plan left as it was",
+        ns.Blessings.Others()["Holy Man"].salv == true and ns.Blessings.Others()["Holy Man"].aura == nil)
+    Send("P|1|Player-9-000002=s")
+    local own = 0
+    for _ in pairs(ns.Blessings.Others()["Holy Man"].players) do own = own + 1 end
+    check("a player's own Salvation from an older client is not kept", own == 0)
+    Send("V|Me Self-Forever|1")
+    check("a Salvation setting from a player who cannot assign is ignored", ns.Blessings.Others()["Holy Man"].salv == true)
 end
 
 print(("PASS import safety: %d checks"):format(checks))

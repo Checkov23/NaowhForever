@@ -464,7 +464,14 @@ local classRows
 for _, row in ipairs(cards.bar.rows) do
     if row[1] and row[1].group == "Blessings by Class" then classRows = row end
 end
-check("the card has a Blessings by Class group, a row per class", classRows and #classRows == #B.CLASSES + 1)
+check("the card has a Blessings by Class group, a row per class and Salvation",
+    classRows and #classRows == #B.CLASSES + 2)
+local salvRow = classRows[#classRows]
+check("the last row is Salvation, off to begin with", salvRow.get() == "none")
+salvRow.set("give")
+check("giving Salvation writes your plan", B.Store().salv == true and salvRow.get() == "give")
+salvRow.set("none")
+check("and None turns it off", B.Store().salv == nil)
 local warriorRow = classRows[2]
 check("each row is named for its class", warriorRow.label == "Warrior")
 check("its help names the blessings, so a search for one finds it",
@@ -491,5 +498,31 @@ local kings = Search("kings")
 check("the options search finds Kings on the Blessing Bar card, a row per class",
     #kings >= #B.CLASSES and kings[1].label == "Warrior" and kings[1].card == "Blessings/Settings:bar")
 check("and finds them by \"greater\"", #Search("greater") >= #B.CLASSES)
+
+-- Saved plans from before Salvation was split off the class blessings: each Salvation becomes "Salvation on",
+-- once, and the plan keeps its other blessings.
+account.blessings["Glyadin-Forever"] = { classes = { MAGE = "salvation", WARRIOR = "might" },
+    players = { me = "salvation", you = "kings" } }
+local migrated = B.Store()
+check("an old class Salvation is cleared", migrated.classes.MAGE == nil and migrated.classes.WARRIOR == "might")
+check("an old player Salvation is cleared, the others kept", migrated.players.me == nil and migrated.players.you == "kings")
+check("and Salvation is on", migrated.salv == true)
+migrated.salv = nil
+check("it does not come back once turned off", B.Store().salv == nil)
+
+-- The preset keeps whether you give Salvation.
+class = "PALADIN"
+B.Store().salv = true
+check("saving the preset", B.SavePreset())
+check("the preset keeps Salvation", account.blessingPreset["Glyadin"].salv == true)
+B.Store().salv = nil
+check("loading the preset gives it back", B.LoadPreset() and B.Store().salv == true)
+B.Store().salv = nil
+account.blessingPreset = { Glyadin = { classes = { MAGE = "salvation", WARRIOR = "might" } } }
+check("loading a preset from before the split", B.LoadPreset())
+check("turns its class Salvation into Salvation on",
+    B.Store().classes.MAGE == nil and B.Store().classes.WARRIOR == "might" and B.Store().salv == true)
+B.Store().salv = nil
+class = "WARRIOR"
 
 print(("test-blessing-preview: %d checks passed"):format(checks))

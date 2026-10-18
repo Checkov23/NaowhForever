@@ -100,7 +100,10 @@ NaowhForever_Combat/Blessings/
   secret and refitting it raises. When the header points a player-list button at another unit mid
   fight, the display follows.
 - A plan travels as ten characters: a blessing code per class in `CLASSES` order, then the aura's,
-  "-" for none. Per-player choices travel as GUID=code pairs in batches; "P|1|" starts the list over,
+  "-" for none. Salvation travels beside it, so an older client still reads the plan: `s` in the list of
+  what a paladin knows, `Y` in the same list when they give it, and `V|name|1` or `V|name|0` when a leader
+  or assistant sets it for them. An older client's class Salvation (an `s` in the plan, or in a player's
+  choice) reads as Salvation given. Per-player choices travel as GUID=code pairs in batches; "P|1|" starts the list over,
   so an empty one clears what the others had, and at most `MAX_PLAYER_CHOICES` are kept per paladin.
 - Messages are parsed as data: only valid codes from a paladin in the group are kept, and only the
   leader or an assistant can set someone else's plan. Nothing is sent in combat: what would have
@@ -114,14 +117,22 @@ NaowhForever_Combat/Blessings/
   rescan already covers it, and in combat a refresh would only mark the bar dirty, so both skip the
   unit test. Range and time left change with nothing to announce them, so the bar rescans every
   `TICK` seconds out of combat.
-- Auto-Assign: each class's blessings, most wanted first. In a raid Salvation moves up for classes
-  that do not tank; warriors and druids never get it, so a tank is never handed it. Paladins get it
-  only when the group holds two or more of them and none has the Tank role (the class blessing cannot
-  tell a Retribution paladin from a Protection one, so the role is the check). Whoever
-  knows least picks first, so a paladin with few blessings is not left with none, and each wanted
+- Auto-Assign: each class's blessings, most wanted first. Salvation is not one of them: it stacks with the
+  class blessing, so it is a switch on the paladin's plan (`salv`), given to everyone but tanks. The first
+  paladin in the order below who knows it gets it, once for the group. Whoever knows least picks first, so a
+  paladin with few blessings is not left with none, and each wanted
   blessing goes to the first paladin still free who knows it; one aura each. Another paladin's plan
   is kept here until their broadcast confirms it, and sent to them; planning everyone's needs the
   leader or an assistant when another paladin is involved.
+- Salvation is its own cell on the bar, after the class buttons, shown while you give it (Give Salvation in a
+  class button's menu, the Salvation row of the settings card, or its column in the Blessings window). It is for
+  every member whose assigned role is not Tank; a secret role counts as not a tank, and `PLAYER_ROLES_ASSIGNED`
+  rescans. A class with a tank in it is blessed one player at a time. A class with no tank gets one Greater
+  Salvation when two or more of it need it and a Symbol of Kings is carried, a single one otherwise, so the
+  reagent is not spent on one player. The cell's queue is every class's, most urgent first, trimmed like a class
+  button's: those due, or the one with least left. The key bindings step through the same list.
+- Salvation used to be one of the five class blessings. A saved plan with it for a class or a player is read
+  once into "Salvation on" with that class or player cleared (`salvSplit`), and one turned off stays off.
 - The preset is one saved set of plans for the account, by paladin name. Loading it plans only the
   paladins in it who are here now, each keeping to what they have learned.
 - A class label too long for its slot under the bar (the button plus the gap after it) first shrinks,

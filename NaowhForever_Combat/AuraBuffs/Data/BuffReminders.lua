@@ -81,7 +81,9 @@ D.RAID = {
     { key = "blessing", name = "Paladin Blessings", class = "PALADIN",
         spells = { 25291, 19838, 19837, 19836, 19835, 19834, 19740, 25916, 25782,
             25290, 19854, 19853, 19852, 19850, 19742, 25918, 25894,
-            20217, 25898, 1038, 25895, 19979, 19978, 19977, 25890 } },
+            20217, 25898, 19979, 19978, 19977, 25890 } },
+    { key = "salvation", name = "Blessing of Salvation", class = "PALADIN", skipTanks = true,
+        spells = { 1038, 25895 } },
 }
 
 local raidSpells = {}

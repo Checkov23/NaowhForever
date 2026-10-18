@@ -328,12 +328,18 @@ local function AddGroup(playerBuffs)
     end
 end
 
+local function IsTank(unit)
+    local role = UnitGroupRolesAssigned(unit)
+    return not Secret(role) and role == "TANK"
+end
+
 local function Missing(family, units)
     local missing = 0
     if units then wipe(units) end
     for m = 1, memberCount do
         local member = members[m]
-        if not (family.skip and family.skip[member.class]) and not Find(member.buffs, family.spells) then
+        if not (family.skip and family.skip[member.class]) and not (family.skipTanks and IsTank(member.unit))
+            and not Find(member.buffs, family.spells) then
             missing = missing + 1
             if units then units[missing] = member.unit end
         end

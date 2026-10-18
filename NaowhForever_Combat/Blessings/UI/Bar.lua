@@ -23,6 +23,7 @@ local RESCAN_DELAY = 1
 local LANDING_WINDOW = 1
 local TICK = 3
 local NOBODY = B.NOBODY
+local SALV = B.SALV_COLUMN
 local CARD = B.PAGE .. ":bar"
 local CELL_NAME = "NaowhForeverBless"
 local TEXT_MOVER = "Blessings"
@@ -31,6 +32,7 @@ local TEXT_FURY = "Righteous Fury"
 local TEXT_TARGET = ns.L("Left-click: bless %s.\n")
 local TEXT_NEXT = ns.L("In combat each click blesses the next who needed it.\n")
 local TEXT_MENU = ns.L("Right-click: choose the blessing, the player list or assignments.")
+local TEXT_SALV_MENU = ns.L("Right-click: turn Salvation off or open assignments.")
 local CLASS_STEP = [[
     if button ~= "LeftButton" then return end
     local n = self:GetAttribute("count") or 0
@@ -85,12 +87,9 @@ local function QueueCell(cell, queue)
     cell.cast:SetAttribute("count", #queue)
 end
 
-local function PrepareCell(cell)
-    local members = cell.members
-    local s = Survey(members)
+local function PaintCell(cell, s, key)
     local queue = s.queue
-    local key = Store().classes[cell.class]
-    local shown = s.spell or (key and CastSpell(key, members))
+    local shown = s.spell or (key and CastSpell(key, cell.members))
     cell.icon:SetTexture(shown and C_Spell.GetSpellTexture(shown) or QUESTION)
     QueueCell(cell, queue)
     cell.cast:SetAttribute("step", 1)
@@ -102,37 +101,54 @@ local function PrepareCell(cell)
     Glow(cell, s.classMissing > 0 and Look.Tint(RED))
 end
 
+local function PrepareCell(cell)
+    PaintCell(cell, Survey(cell.members), Store().classes[cell.class])
+end
+
+local function PrepareSalv(cell)
+    PaintCell(cell, B.SalvationSurvey(cell.members, cell.tankClass), B.SALVATION.key)
+end
+
+local function CellName(class)
+    return class == SALV and B.SpellName(B.SALVATION.key) or ClassName(class)
+end
+
+local function OpenMenu(owner, class)
+    if class == SALV then B.SalvMenu(owner) else B.ClassMenu(owner, class) end
+end
+
 local function CellTip(cell)
     local target = cell.target and Ambiguate(cell.target.who, "short")
     return (target and TEXT_TARGET:format(target) or "")
         .. ((cell.queued or 0) > 1 and TEXT_NEXT or "")
-        .. TEXT_MENU
+        .. (cell.class == SALV and TEXT_SALV_MENU or TEXT_MENU)
 end
 
 local function NewCell(class)
     local cell = CreateFrame("Frame", nil, bar)
     cell.class = class
+    if class == SALV then cell.labelIcon = B.SpellIcon(B.SALVATION.key) end
     Look.Icon(cell)
-    Look.Label(cell, class)
+    Look.Label(cell, class, CellName(class))
     cell.header, cell.cast = B.Recipient(cell, CELL_NAME .. class)
     cell.cast:RegisterForClicks("AnyUp")
     cell.cast:SetAttribute("useOnKeyDown", false)
     cell.cast:SetAttribute("count", 0)
     cell.cast:SetScript("PreClick", function(_, button)
         if button == "LeftButton" and not InCombatLockdown() and not C_Secrets.ShouldAurasBeSecret() then
-            PrepareCell(cell)
+            if class == SALV then PrepareSalv(cell) else PrepareCell(cell) end
         end
     end)
     SecureHandlerWrapScript(cell.cast, "OnClick", secureHandler, CLASS_STEP)
     cell.cast:SetScript("PostClick", function(self, button, down)
-        if button == "RightButton" and not down then B.ClassMenu(self, class) end
+        if button == "RightButton" and not down then OpenMenu(self, class) end
     end)
     local function Tip() return CellTip(cell) end
-    ns.Tooltip(cell.cast, ClassName(class), Tip)
-    ns.Tooltip(cell, ClassName(class), Tip)
+    ns.Tooltip(cell.cast, CellName(class), Tip)
+    ns.Tooltip(cell, CellName(class), Tip)
     cell:EnableMouse(true)
     cell:SetScript("OnMouseUp", function(self, button)
-        if button == "RightButton" then B.ClassMenu(self, class) end
+        if button == "RightButton" then OpenMenu(self, class) end
     end)
     return cell
 end
@@ -194,6 +210,13 @@ local function ByClass(roster)
     return byClass
 end
 
+local function HideCell(cell)
+    B.SetNames(cell.header, NOBODY)
+    LibStub(GLOW_LIB).PixelGlow_Stop(cell, GLOW_KEY)
+    cell.glowing = nil
+    cell:Hide()
+end
+
 local function PlaceCells(byClass, x)
     local size = Look.size
     for _, class in ipairs(CLASSES) do
@@ -207,11 +230,23 @@ local function PlaceCells(byClass, x)
             x = Look.Place(cell, bar, x)
             PrepareCell(cell)
         elseif cell then
-            B.SetNames(cell.header, NOBODY)
-            LibStub(GLOW_LIB).PixelGlow_Stop(cell, GLOW_KEY)
-            cell.glowing = nil
-            cell:Hide()
+            HideCell(cell)
         end
+    end
+    return x
+end
+
+local function PlaceSalv(members, tankClass, x)
+    local cell = cells[SALV]
+    if members and #members > 0 then
+        cell = cell or NewCell(SALV)
+        cells[SALV] = cell
+        cell.members, cell.tankClass = members, tankClass
+        B.SizeRecipient(cell.header, cell.cast, Look.size)
+        x = Look.Place(cell, bar, x)
+        PrepareSalv(cell)
+    elseif cell then
+        HideCell(cell)
     end
     return x
 end
@@ -294,8 +329,11 @@ function Refresh()
     local roster = Roster()
     local byClass = ByClass(roster)
     x = PlaceCells(byClass, x)
+    local members, tankClass
+    if Store().salv and Learned(B.SALVATION) then members, tankClass = B.SalvationGroup(roster) end
+    x = PlaceSalv(members, tankClass, x)
     PlayerList.Arrange(roster)
-    Keys.Fill(byClass)
+    Keys.Fill(byClass, members, tankClass)
     B.EndAuraMemo()
     Look.Fit(bar, x)
     Settle()
@@ -388,6 +426,8 @@ local function OnEvent(_, event, ...)
         RefreshSoon()
     elseif event == "PARTY_LEADER_CHANGED" then
         if ns.UI.RefreshPage then ns.UI:RefreshPage(true) end
+    elseif event == "PLAYER_ROLES_ASSIGNED" then
+        RefreshSoon()
     elseif event == "PLAYER_REGEN_ENABLED" then
         OnCombatEnded()
     elseif event == "PLAYER_REGEN_DISABLED" then
@@ -428,6 +468,7 @@ end
 
 local function ListenPaladin()
     events:RegisterEvent("UNIT_AURA")
+    events:RegisterEvent("PLAYER_ROLES_ASSIGNED")
     events:RegisterEvent("SPELLS_CHANGED")
     events:RegisterEvent("PLAYER_REGEN_DISABLED")
     events:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")

@@ -2,6 +2,13 @@
 local L = _G.NaowhForeverLocale or {}
 _G.NaowhForeverLocale = L
 
+L["Right-click: turn Salvation off or open assignments."] = true
+L["Gives Salvation, on top of the class blessing, to everyone but tanks."] = true
+L["Gives Salvation to everyone but tanks"] = true
+L["Everyone but tanks"] = true
+L["Give Salvation"] = true
+L["Salvation"] = true
+L["Blessing of Salvation"] = true
 L["Start From"] = true
 L["Spec's Picks"] = true
 L["Class lists"] = true
@@ -5433,7 +5440,7 @@ L["Where? on Whispers"] = true
 L["Whether a healthstone or a potion comes first."] = true
 L["Whether a new mark counts on every character or only this one."] = true
 L["Whether NF Food leaves drinks to NF Drink."] = true
-L["Which blessing you give this class: Might, Wisdom, Kings, Salvation or Light."] = true
+L["Which blessing you give this class: Might, Wisdom, Kings or Light."] = true
 L["Which crowd control shows, by ability: every rank, and the same spell from items and creatures."] = true
 L["Which debuffs show beside crowd control: off until you light them."] = true
 L["Which guild and title lines show with players' names, saved by the game itself."] = true
