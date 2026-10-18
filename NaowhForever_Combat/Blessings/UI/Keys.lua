@@ -52,6 +52,7 @@ end
 
 local function Greater(members, shared, symbols)
     local spell = shared and symbols and HighestKnown(BY_KEY[shared].greater)
+    if spell and not B.WaitedFor(members, spell) then spell = nil end
     local best
     for _, member in ipairs(spell and members or {}) do
         local rank, left = Due(member, shared, spell)
@@ -83,6 +84,19 @@ B.Keys = Keys
 function Keys.Build(handler)
     keyNext = NewKeyButton(NEXT, handler)
     keyGreater = NewKeyButton(NEXT_GREATER, handler)
+end
+
+function Keys.Next()
+    return keyNext
+end
+
+function Keys.NextGreater()
+    return keyGreater
+end
+
+function Keys.Peek()
+    if not keyNext then return end
+    return keyNext:GetAttribute("spell1") or keyGreater:GetAttribute("spell1"), keyNext:GetAttribute("count") or 0
 end
 
 function Keys.Clear()

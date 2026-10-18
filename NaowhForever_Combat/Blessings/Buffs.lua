@@ -81,6 +81,16 @@ local function InRange(member, spell)
     return inRange
 end
 
+local function WaitedFor(members, spell)
+    if not B.Settings.Get("blessWait") then return true end
+    for _, member in ipairs(members) do
+        if UnitIsConnected(member.unit) and not UnitIsDeadOrGhost(member.unit) and InRange(member, spell) == false then
+            return false
+        end
+    end
+    return true
+end
+
 local function ByUrgency(a, b)
     if a.rank ~= b.rank then return a.rank < b.rank end
     return a.left < b.left
@@ -95,7 +105,11 @@ local function Survey(members, fixed)
     local spells = {}
     for _, member in ipairs(members) do
         local key = fixed and fixed.key or Assigned(member)
-        if key and spells[key] == nil then spells[key] = fixed and fixed.spell or CastSpell(key, members) or false end
+        if key and spells[key] == nil then
+            local cast = fixed and fixed.spell or CastSpell(key, members)
+            if cast and GREATER[cast] and not WaitedFor(members, cast) then cast = HighestKnown(BY_KEY[key].ranks) end
+            spells[key] = cast or false
+        end
         local spell = key and spells[key]
         if spell and UnitIsConnected(member.unit) and not UnitIsDeadOrGhost(member.unit) then
             local has, remaining = BuffState(member.unit, key)
@@ -130,7 +144,9 @@ local function Survey(members, fixed)
     local due = 0
     for _, entry in ipairs(queue) do if entry.rank < 2 then due = due + 1 end end
     if GREATER[queue[1] and queue[1].spell] then due = math.min(due, 1) end
-    for i = #queue, math.max(due, 1) + 1, -1 do queue[i] = nil end
+    local keep = B.Settings.Get("blessRespect") and 0 or 1
+    for i = #queue, math.max(due, keep) + 1, -1 do queue[i] = nil end
+    if due == 0 and keep == 0 then s.target = nil end
     s.rank, s.left = rank, left
     return s
 end
@@ -138,8 +154,7 @@ end
 local function SalvationGroup(roster)
     local members, tankClass = {}, {}
     for _, member in ipairs(roster) do
-        local role = UnitGroupRolesAssigned(member.unit)
-        if not Secret(role) and role == "TANK" then
+        if B.IsTank(member.unit) then
             tankClass[member.class] = true
         else
             members[#members + 1] = member
@@ -163,6 +178,7 @@ local function SalvationSurvey(members, tankClass)
         local list = byClass[class]
         if list then
             local greater = not tankClass[class] and #list > 1 and symbols and HighestKnown(entry.greater)
+            if greater and not WaitedFor(list, greater) then greater = nil end
             local s = Survey(list, { key = entry.key, spell = greater or single })
             if greater and s.missingNear + s.expiringNear < 2 then
                 s = Survey(list, { key = entry.key, spell = single })
@@ -183,7 +199,9 @@ local function SalvationSurvey(members, tankClass)
     table.sort(all.queue, ByUrgency)
     local due = 0
     for _, queued in ipairs(all.queue) do if queued.rank < 2 then due = due + 1 end end
-    for i = #all.queue, math.max(due, 1) + 1, -1 do all.queue[i] = nil end
+    local keep = B.Settings.Get("blessRespect") and 0 or 1
+    for i = #all.queue, math.max(due, keep) + 1, -1 do all.queue[i] = nil end
+    if due == 0 and keep == 0 then all.target = nil end
     return all
 end
 
@@ -200,6 +218,7 @@ B.BeginAuraMemo, B.EndAuraMemo = BeginAuraMemo, EndAuraMemo
 B.BuffState = BuffState
 B.ByUrgency = ByUrgency
 B.Survey = Survey
+B.WaitedFor = WaitedFor
 B.SalvationGroup = SalvationGroup
 B.SalvationSurvey = SalvationSurvey
 B.Due = Due

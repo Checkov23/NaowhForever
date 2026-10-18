@@ -216,9 +216,12 @@ local function PlanCell(parent, x, y, column, row, roster)
     local key = aura and row.plan.aura or row.plan.classes[column]
     local title = aura and TEXT_AURA or B.ClassName(column)
     local onClick = row.set and function(btn)
+        local function Can(entry)
+            return row.can(entry) and (aura or key == entry.key or B.Allowed(column, entry.key))
+        end
         B.OpenMenu(btn, title, aura and B.AURAS or B.BLESSINGS,
             function() return aura and row.plan.aura or row.plan.classes[column] end,
-            function(choice) row.set(column, choice) end, TEXT_NONE, row.can)
+            function(choice) row.set(column, choice) end, TEXT_NONE, Can)
     end
     Cell(parent, x, y, key and B.SpellIcon(key) or EMPTY, key ~= nil, title,
         (key and B.SpellName(key) or TEXT_NOTHING)

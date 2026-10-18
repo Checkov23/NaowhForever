@@ -123,7 +123,8 @@ function Look.Read()
         deepAccent = deepAccent or { r = T.accent.r * DEEP_SHADE, g = T.accent.g * DEEP_SHADE, b = T.accent.b * DEEP_SHADE }
         tints[RED], tints[YELLOW], tints[BLUE] = T.accent, T.accentSoft, deepAccent
     else
-        tints[RED], tints[YELLOW], tints[BLUE] = RED, YELLOW, BLUE
+        tints[RED], tints[YELLOW], tints[BLUE] = S.Get("blessColorMissing"), S.Get("blessColorExpiring"),
+            S.Get("blessColorOwn")
     end
 end
 

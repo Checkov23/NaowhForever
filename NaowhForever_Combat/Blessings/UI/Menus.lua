@@ -97,7 +97,7 @@ function B.ClassMenu(owner, class, inSettings)
     MenuUtil.CreateContextMenu(owner, function(_, root)
         root:CreateTitle(ClassName(class))
         for _, entry in ipairs(BLESSINGS) do
-            if Learned(entry) then
+            if Learned(entry) and (Store().classes[class] == entry.key or B.Allowed(class, entry.key)) then
                 root:CreateRadio(SpellName(entry.key), function() return Store().classes[class] == entry.key end,
                     function() B.SetOwn(class, entry.key) end)
             end

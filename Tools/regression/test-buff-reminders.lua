@@ -51,6 +51,7 @@ local function Fixture(opts)
         units = opts.units or {},                   -- unit -> class; player included
         known = opts.known or {},
         roles = opts.roles or {},                   -- unit -> its assigned group role
+        mainTanks = opts.mainTanks or {},           -- unit -> true when flagged main tank
         shields = opts.shields or {},               -- slot -> true for a shield in that slot
         weapons = opts.weapons or {},               -- slot -> enchant seconds left, false for none
         worn = opts.worn or {},                     -- slot -> item ID worn there
@@ -199,6 +200,7 @@ local function Fixture(opts)
         UnitIsConnected = function() return true end,
         UnitIsDeadOrGhost = function() return false end,
         UnitGroupRolesAssigned = function(unit) return state.roles[unit] or "NONE" end,
+        GetPartyAssignment = function(_, unit) return state.mainTanks[unit] end,
         UnitIsVisible = function() return true end,
         UnitIsUnit = function(a, b) return a == b end,
         UnitExists = function(unit) return unit ~= "target" or state.target ~= nil end,
@@ -852,6 +854,10 @@ do
     t.state.roles.party2 = "TANK"
     t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
     Check("a tank is not asked to have it", t.Shown(), "spell:1038x3")
+    t.state.roles.party2 = nil
+    t.state.mainTanks.party2 = true
+    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
+    Check("a player flagged main tank is not asked either", t.Shown(), "spell:1038x3")
     t.state.auras.party3 = { { 1038 } }
     t.Fire("UNIT_AURA", "party3"); t.Advance(0.5)
     Check("one who has it is not missing it", t.Shown(), "spell:1038x2")

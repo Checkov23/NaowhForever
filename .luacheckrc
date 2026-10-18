@@ -90,7 +90,7 @@ read_globals = {
     "GetNumAvailableQuests", "GetAvailableQuestInfo", "GetAvailableTitle", "GetNumClasses", "GetNumGroupMembers", "GetNumGuildMembers", "GetNumSavedInstances",
     "GetNumLootItems", "GetNumBindings", "GetNumMacros", "GetNumQuestChoices", "GetNumRoutes",
     "GetNumShapeshiftForms", "GetNumSubgroupMembers", "GetNumTrainerServices",
-    "GetPartyAssignment", "GetPetActionInfo", "GetPlayerInfoByGUID",
+    "GetPartyAssignment", "SetPartyAssignment", "ClearPartyAssignment", "GetPetActionInfo", "GetPlayerInfoByGUID",
     "GetProfessionInfo", "GetProfessions", "GetQuestDifficultyColor", "GetQuestGreenRange", "GetQuestID", "GetQuestLink", "GetQuestLogChoiceInfo",
     "GetQuestLogQuestText", "GetQuestLogRewardInfo", "GetQuestLogRewardMoney", "GetQuestLogRewardXP",
     "GetNumQuestLogChoices", "GetNumQuestLogRewards", "QuestUtils_IsQuestWatched",

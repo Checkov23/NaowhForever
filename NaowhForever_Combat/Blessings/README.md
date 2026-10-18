@@ -154,6 +154,27 @@ NaowhForever_Combat/Blessings/
   Aura`), split before the chat limit, to yourself, say, party, raid, an instance group or the guild, whichever you
   are in. It is refused in combat. Clear empties your classes, aura, Salvation and own choices, and every paladin's
   plan you may set; Refresh asks the group for their plans again.
+- Rules, all off by default and all local to you (they are not shared in the plan): Smart Blessings leaves
+  Wisdom out of the menus for warriors and rogues and Might out for priests, mages and warlocks (`UNSUITED`; a
+  blessing already chosen stays listed); Respect Blessing Time trims the queue to those who are due, so a click
+  never refreshes a blessing with time left (otherwise one click refreshes the player with least left); Wait for
+  Players casts a Greater Blessing only when nobody alive and connected in the class is out of range
+  (`WaitedFor`, also for Salvation and the key bindings), a single one otherwise.
+- Tanks Get and Main Assist Gets give those players a blessing of your choice in place of the class one, for
+  warriors, druids and paladins only (`TANKING`), never over a player's own choice and only if you know it. They
+  resolve in `Assigned`, so the class button casts singles for a class with a tank, since a Greater Blessing
+  would give the tank the class one. A tank is the Tank role or a Main Tank mark (`IsTank`, also what skips tanks
+  for Salvation and in Aura Buff Reminders).
+- The Auto Buff button (off by default) is a secure button that clicks the Next Blessing key button on a left
+  click and the Next Greater Blessing one on a right click, so it steps through the same queues and shows the
+  next spell and how many are due. The buttons take `/click` in a macro: `NaowhForeverBlessNext`,
+  `NaowhForeverBlessNextGreater`, `NaowhForeverBlessAuto`, `NaowhForeverBlessAura` and `NaowhForeverBlessFury`.
+  The wheel on the aura button cycles through the auras you know, out of combat.
+  Class Buttons off hides every class button, leaving the Auto Buff button, Salvation and the key bindings.
+- Use in Party and Use When Solo (both on) hide the bar in a party or alone; a raid always shows it. Hide the
+  Bench (off) drops the raid members past `ceil(size / 5)` groups in a raid dungeon, from `GetInstanceInfo`'s
+  size and the group each member is in. The status colors (missing, running out, only own blessings) can be
+  picked unless Apply Theme to Status Colors is on.
 - Salvation used to be one of the five class blessings. A saved plan with it for a class or a player is read
   once into "Salvation on" with that class or player cleared (`salvSplit`), and one turned off stays off.
 - The preset is one saved set of plans for the account, by paladin name. Loading it plans only the

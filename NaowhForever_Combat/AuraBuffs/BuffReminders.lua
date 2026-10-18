@@ -330,7 +330,8 @@ end
 
 local function IsTank(unit)
     local role = UnitGroupRolesAssigned(unit)
-    return not Secret(role) and role == "TANK"
+    if not Secret(role) and role == "TANK" then return true end
+    return GetPartyAssignment("MAINTANK", unit) and true or false
 end
 
 local function Missing(family, units)

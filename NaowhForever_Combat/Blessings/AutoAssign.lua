@@ -64,7 +64,9 @@ local function AutoPlans()
     for _, class in ipairs(CLASSES) do
         Pick(paladins, WANTED[class], function(p, key) plans[p.who].classes[class] = key end)
     end
-    Pick(paladins, { SALVATION.key }, function(p) plans[p.who].salv = true end)
+    if not B.HiddenAuras() then
+        Pick(paladins, { SALVATION.key }, function(p) plans[p.who].salv = true end)
+    end
     Pick(paladins, AURA_ORDER, function(p, key) plans[p.who].aura = key end)
     return plans
 end

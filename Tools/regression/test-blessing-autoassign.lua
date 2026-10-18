@@ -16,8 +16,9 @@ local CLASSES = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "
 local mine = {}
 local others = {}
 local roster = { { class = "PALADIN", unit = "player" } }
+local hidden = false
 local env = {
-    B = { Roster = function() return roster end },
+    B = { Roster = function() return roster end, HiddenAuras = function() return hidden end },
     CLASSES = CLASSES,
     SALVATION = { key = "salvation" },
     BLESSINGS = { { key = "might" }, { key = "wisdom" }, { key = "kings" }, { key = "light" } },
@@ -72,5 +73,13 @@ mine.salvation, others["Bram Hollow"].known.salvation = nil, nil
 plans = AutoPlans()
 check("nobody knows Salvation: nobody gives it", plans["Glyadin Skywolf"].salv == nil
     and plans["Bram Hollow"].salv == nil)
+
+-- A battleground has no tanks to spare Salvation for.
+mine.salvation, others["Bram Hollow"].known.salvation, hidden = true, true, true
+plans = AutoPlans()
+check("in a battleground nobody gives Salvation", plans["Glyadin Skywolf"].salv == nil
+    and plans["Bram Hollow"].salv == nil)
+hidden = false
+check("and out of it they do again", AutoPlans()["Bram Hollow"].salv == true)
 
 print(("test-blessing-autoassign: %d checks passed"):format(checks))

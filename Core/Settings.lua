@@ -170,6 +170,10 @@ local S = UI.ModuleSettings("qol", {
     blessings = F.blessings, blessSpacing = 6, blessGroupSpacing = 6, blessTimerSize = 14, blessShowLabels = true, blessBarSize = 30, blessTimers = true, blessShowAura = true,
     blessShowFury = false, blessFont = "", blessOutline = "OUTLINE", blessThemeColors = false,
     blessLabelStyle = "name",
+    blessSmart = false, blessRespect = false, blessWait = false, blessTank = "none", blessAssist = "none",
+    blessInParty = true, blessSolo = true, blessBench = false, blessShowAuto = false, blessShowClasses = true,
+    blessColorMissing = { r = 0.97, g = 0.27, b = 0.27 }, blessColorExpiring = { r = 1, g = 0.85, b = 0.3 },
+    blessColorOwn = { r = 0.35, g = 0.6, b = 1 },
     blessLayout = "horizontal", blessAnchor = "UIParent", blessAnchorPoint = "BOTTOMLEFT", blessAnchorRelPoint = "TOPLEFT",
     blessX = 0, blessY = 0,
 

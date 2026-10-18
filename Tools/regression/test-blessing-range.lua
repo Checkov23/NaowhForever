@@ -15,10 +15,13 @@ local chunk = source:sub(first, last - 1) .. "return Survey, SalvationGroup, Sal
 local state = {}
 local players = {}   -- guid -> a player's own blessing
 local castSpell = 19740
-local roles, symbols = {}, 0
+local roles, symbols, setting = {}, 0, {}
 local SALV = { key = "salvation", ranks = { 1038 }, greater = { 25895 } }
 local env = {
-    B = { SALVATION = SALV, CLASSES = { "WARRIOR", "MAGE", "PRIEST" } },
+    B = { SALVATION = SALV, CLASSES = { "WARRIOR", "MAGE", "PRIEST" },
+        Settings = { Get = function(key) return setting[key] end },
+        IsTank = function(unit) return roles[unit] == "TANK" end },
+    BY_KEY = { might = { ranks = { 19740 } } },
     HighestKnown = function(ids) return ids[#ids] end,
     SYMBOL_OF_KINGS = 21177,
     C_Item = { GetItemCount = function() return symbols end },
@@ -99,6 +102,34 @@ check("queue: a member the header cannot find is left out", queue[1].names == "p
 members[2].targetable = true
 
 -- Salvation: everyone but tanks, a Greater one once for a class with no tank and two who need it.
+-- Wait for Players: a Greater Blessing only when everyone in the class is in range.
+castSpell = 25782
+state = { party1 = { false, nil, true }, party2 = { false, nil, true }, party3 = { true, 200, true },
+    party4 = { false, nil, false } }
+setting.blessWait = true
+queue = Survey(members).queue
+check("wait: someone out of range, so single blessings", #queue == 3 and queue[1].spell == 19740)
+state.party4 = { false, nil, true }
+queue = Survey(members).queue
+check("wait: everyone in range, one Greater", #queue == 1 and queue[1].spell == 25782)
+setting.blessWait = nil
+state.party4 = { false, nil, false }
+queue = Survey(members).queue
+check("no wait: the Greater is cast anyway", #queue == 1 and queue[1].spell == 25782)
+castSpell = 19740
+
+-- Respect durations: with nobody due the class button has nothing to cast.
+state = { party1 = { true, 3000, true }, party2 = { true, 2500, true }, party3 = { true, 3000, true },
+    party4 = { true, 900, true } }
+check("by default a click refreshes the one with least left", #Survey(members).queue == 1)
+setting.blessRespect = true
+s = Survey(members)
+check("respecting durations: nothing to cast and no target", #s.queue == 0 and s.target == nil)
+state.party3 = { true, 120, true }
+s = Survey(members)
+check("respecting durations: one running out is still blessed", #s.queue == 1 and s.queue[1].names == "party3")
+setting.blessRespect = nil
+
 local function Of(unit, class)
     local m = Member(unit)
     m.class = class

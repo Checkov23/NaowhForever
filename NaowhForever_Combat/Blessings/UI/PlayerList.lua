@@ -29,13 +29,16 @@ local members = {}
 
 local function PlayerMenu(owner, member)
     local store = Store()
+    local function Can(entry)
+        return B.Learned(entry) and (store.players[member.guid] == entry.key or B.Allowed(member.class, entry.key))
+    end
     B.OpenMenu(owner, Ambiguate(member.who, "short"), BLESSINGS,
         function() return store.players[member.guid] end,
         function(key)
             store.players[member.guid] = key
             B.BroadcastSoon()
             B.Changed()
-        end, TEXT_DEFAULT)
+        end, TEXT_DEFAULT, Can)
 end
 
 local function NewRow(index)

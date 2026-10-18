@@ -58,7 +58,9 @@ function methods:CreateFontString() return New("FontString", self) end
 local settings = {}
 local defaults = { blessings = true, blessBarSize = 30, blessSpacing = 6, blessGroupSpacing = 6,
     blessTimerSize = 14, blessShowLabels = true, blessTimers = true, blessShowAura = true, blessShowFury = false,
-    blessLabelStyle = "name", blessLayout = "horizontal" }
+    blessLabelStyle = "name", blessLayout = "horizontal", blessTank = "none", blessAssist = "none",
+    blessColorMissing = { r = 0.97, g = 0.27, b = 0.27 }, blessColorExpiring = { r = 1, g = 0.85, b = 0.3 },
+    blessColorOwn = { r = 0.35, g = 0.6, b = 1 } }
 local sets = 0
 local S = {}
 function S.Get(k) local v = settings[k]; if v == nil then return defaults[k] end return v end
@@ -307,6 +309,13 @@ local look
 for _, row in ipairs(cards.bar.rows) do if row[1] and row[1].look then look = row[1] end end
 check("the card has the standard Text rows on the timer size", look and look.look == "bless"
     and look.opts.keys.FontSize == "blessTimerSize")
+settings.blessThemeColors = false
+settings.blessColorMissing = { r = 0, g = 1, b = 0 }
+settings.blessColorExpiring = { r = 1, g = 0, b = 1 }
+studio.paint(preview, "group")
+check("your own colors replace the missing and running out ones", warriorCell.icon.vertex[2] == 1
+    and warriorCell.icon.vertex[1] == 0 and priestCell.icon.vertex[3] == 1 and priestCell.icon.vertex[2] == 0)
+settings.blessColorMissing, settings.blessColorExpiring = nil, nil
 settings.blessFont, settings.blessOutline, settings.blessTimerSize, settings.blessThemeColors = nil, nil, nil, nil
 
 -- Class names keep to their own slot, the button plus the gap: a long one shrinks down to 7 pt,
