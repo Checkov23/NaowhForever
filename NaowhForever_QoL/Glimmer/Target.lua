@@ -52,10 +52,10 @@ local function FromName(name)
     return nil, unable
 end
 
-local function Cursor(unit)
+local function Cursor(unit, lowPriority)
     if not cursorIDs then CursorIDs() end
     probe = probe or CreateFrame("Frame"):CreateTexture()
-    if not SetUnitCursorTexture(probe, unit) then return end
+    if not SetUnitCursorTexture(probe, unit, nil, lowPriority) then return end
     local texture = probe:GetTexture()
     if not Plain(texture) then return end
     local known = cursorIDs[texture]
@@ -108,7 +108,7 @@ function Target.Reach(unit)
 end
 
 local function QuestGiver(unit, info)
-    local category, unable = Cursor(unit)
+    local category, unable = Cursor(unit, true)
     if category ~= "quest" then return end
     wipe(info)
     info.category, info.unable = "giver", unable or false

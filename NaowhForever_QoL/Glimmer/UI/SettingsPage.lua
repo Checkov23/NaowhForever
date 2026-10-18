@@ -20,6 +20,7 @@ local NOTE_Y, NOTE_SIZE = St.STAGE_NOTE_Y, St.STAGE_NOTE_SIZE
 local SAMPLE_Y = 8
 local SIZE_RANGE, BRIGHT_RANGE = { 60, 160, 5 }, { 30, 150, 5 }
 local RANGE_RANGE = { 5, 15, 1 }
+local OFFSET_RANGE = { -120, 120, 5 }
 local TO_FRACTION = St.PERCENT_SCALE
 local ORDER_WINDOW, ORDER_LOOK, ORDER_OBJECTS, ORDER_HIDE = 5, 10, 20, 30
 local ORDER_DETECT, ORDER_MINIMAP, ORDER_GATHERED, ORDER_RESTORE = 40, 44, 46, 60
@@ -137,6 +138,12 @@ local function ObjectRows()
         rows[#rows + 1] = { key = key .. "Style", label = "Effect", choice = OWN_STYLES,
             needs = Enabled, why = OFF }
         rows[#rows + 1] = { key = key .. "Color", label = "Color", colour = true, needs = Enabled, why = OFF }
+        if key == "giver" then
+            rows[#rows + 1] = { key = "giverHideBar", label = "Hide Health Bar and Level", toggle = true,
+                needs = Enabled, why = OFF, help = "Only the name on a quest giver's nameplate." }
+            rows[#rows + 1] = { key = "giverOffset", label = "Effect Height", slider = OFFSET_RANGE, unit = " px",
+                needs = Enabled, why = OFF, help = "Moves a quest giver's effect up or down." }
+        end
     end
     return rows
 end

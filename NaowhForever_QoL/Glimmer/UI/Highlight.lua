@@ -19,11 +19,12 @@ local EVENTS = {
 }
 
 local events, watch, fx, line
-local plate, shown
+local plate, shown, barOwner
 local wantReady, wantSince
 local read = {}
 local queued, fullQueued, cvarsQueued = false, false, false
-local FULL_KEYS = { enabled = true, questSparkle = true }
+local FULL_KEYS = { enabled = true, questSparkle = true, giverHideBar = true, giverOffset = true }
+local BAR_PARTS = { "HealthBarsContainer", "LevelFrame" }
 local CVAR_KEYS = { range = true, arc = true }
 
 local function Paused()
@@ -31,8 +32,22 @@ local function Paused()
     return S.Get("hideInstance") and IsInInstance() and true or false
 end
 
+local function ShowBar()
+    if not barOwner then return end
+    for _, name in ipairs(BAR_PARTS) do barOwner[name]:SetAlpha(1) end
+    barOwner = nil
+end
+
+local function HideBar(to)
+    local unitFrame = to.UnitFrame
+    if not unitFrame then return end
+    barOwner = unitFrame
+    for _, name in ipairs(BAR_PARTS) do unitFrame[name]:SetAlpha(0) end
+end
+
 local function Release()
     if not plate then return end
+    ShowBar()
     fx:Hide()
     fx:ClearAllPoints()
     fx:SetParent(nil)
@@ -80,7 +95,9 @@ local function Attach(to, info)
     if Plain(level) then fx:SetFrameLevel(math.max(level - 1, 0)) end
     fx:SetIgnoreParentAlpha(true)
     fx:ClearAllPoints()
-    fx:SetPoint("CENTER", to, "CENTER", 0, St.PLATE_Y)
+    local giver = info.category == "giver"
+    fx:SetPoint("CENTER", to, "CENTER", 0, giver and St.PLATE_Y + S.Get("giverOffset") or St.PLATE_Y)
+    if giver and S.Get("giverHideBar") then HideBar(to) end
     line:ClearAllPoints()
     line:SetPoint("TOP", to, "BOTTOM", 0, St.LINE_Y)
     plate, shown = to, info

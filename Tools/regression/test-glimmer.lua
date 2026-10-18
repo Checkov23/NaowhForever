@@ -28,6 +28,7 @@ local function Widget(log)
     function w:Hide() self.shown = false end
     function w:IsShown() return self.shown end
     function w:SetParent(p) self.parent = p end
+    function w:SetAlpha(a) self.alpha = a end
     function w:GetFrameLevel() return 5 end
     function w:SetText(t) self.text = t end
     function w:SetTextColor(r, g, b) self.textColor = { r, g, b } end
@@ -127,9 +128,11 @@ local function Session(settings, opts)
         UnitIsUnit = function(unit) return unit ~= "nameplate9" end,
         GetNumLootItems = function() return 1 end,
         GetLootSourceInfo = function() return game.lootFrom or game.guid end,
-        SetUnitCursorTexture = function(texture)
-            texture.texture = game.cursor
-            return game.cursor ~= nil
+        SetUnitCursorTexture = function(texture, _, _, lowPriority)
+            local cursor = game.cursor
+            if game.cursorLow and not lowPriority then cursor = nil end
+            texture.texture = cursor
+            return cursor ~= nil
         end,
         GetFileIDFromPath = function() return nil end,
         GetProfessions = function() return 1, game.herbalism > 0 and 2 or nil end,
@@ -360,17 +363,38 @@ log.game.guid, log.game.cursor, log.game.mining = GUID(TIN), nil, 70
 log.game.guid, log.game.object = "Creature-0-1-2-3-4-5", false
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "y", "z")
 check("an NPC closes the nameplate", cv.SoftTargetNameplateInteract == "0" and Lit(log) == nil)
-log.game.cursor = "Interface\\Cursor\\QuestTurnIn"
+log.game.cursor, log.game.cursorLow = "Cursor Crosshair_QuestTurnIn_64", true
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
-check("a quest giver with a quest to hand in lights up", Lit(log) ~= nil)
+check("a quest giver with a quest to hand in lights up, though the game only gives its cursor as low priority",
+    Lit(log) ~= nil)
 log.game.cursor = "Interface\\Cursor\\Quest"
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "y", "z")
 check("and one with a quest to pick up", Lit(log) ~= nil)
+local unitFrame = { HealthBarsContainer = Widget(log), LevelFrame = Widget(log) }
+log.game.plate.UnitFrame = unitFrame
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
+check("a quest giver's plate keeps its bar and level by default",
+    unitFrame.HealthBarsContainer.alpha == nil and unitFrame.LevelFrame.alpha == nil)
+check("and the effect sits at the usual height", Lit(log).point[5] == -40)
+log.Set("giverHideBar", true)
+check("Hide Health Bar and Level: both go, the name stays",
+    unitFrame.HealthBarsContainer.alpha == 0 and unitFrame.LevelFrame.alpha == 0)
+log.Set("giverOffset", 30)
+check("a quest giver's effect moves by its own height", Lit(log).point[5] == -10)
+log.game.guid, log.game.object, log.game.cursor = GUID(COPPER), true, nil
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "y", "z")
+check("the plate gets its bar back when it stops being a quest giver's",
+    unitFrame.HealthBarsContainer.alpha == 1 and unitFrame.LevelFrame.alpha == 1)
+check("and an object's effect keeps the usual height", Lit(log).point[5] == -40)
+log.Set("giverHideBar", false)
+log.Set("giverOffset", 0)
+log.game.guid, log.game.object, log.game.cursor = "Creature-0-1-2-3-4-5", false, "Interface\\Cursor\\Quest"
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
 log.Set("giver", false)
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
 check("quest givers switched off: dark, and no nameplate opened", cv.SoftTargetNameplateInteract == "0" and Lit(log) == nil)
 log.Set("giver", true)
-log.game.cursor = nil
+log.game.cursor, log.game.cursorLow = nil, nil
 log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "z", "y")
 check("an NPC with no quest stays dark", Lit(log) == nil)
 log.game.object = true

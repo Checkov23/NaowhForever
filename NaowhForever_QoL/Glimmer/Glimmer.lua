@@ -21,6 +21,7 @@ local S = ns.UI.ModuleSettings("glimmer", {
     herbColor = { r = 0.49, g = 0.83, b = 0.54 },
     questColor = { r = 1, g = 0.84, b = 0.35 },
     giverColor = { r = 1, g = 0.84, b = 0.35 },
+    giverHideBar = false, giverOffset = 0,
     chestColor = { r = 0.30, g = 0.71, b = 0.96 },
     bobberColor = { r = 1, g = 0.48, b = 0.42 },
 })
