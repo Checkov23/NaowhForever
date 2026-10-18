@@ -24,6 +24,7 @@ local LANDING_WINDOW = 1
 local TICK = 3
 local NOBODY = B.NOBODY
 local SALV = B.SALV_COLUMN
+local HiddenAuras, NoteCast = B.HiddenAuras, B.NoteCast
 local CARD = B.PAGE .. ":bar"
 local CELL_NAME = "NaowhForeverBless"
 local TEXT_MOVER = "Blessings"
@@ -135,13 +136,15 @@ local function NewCell(class)
     cell.cast:SetAttribute("useOnKeyDown", false)
     cell.cast:SetAttribute("count", 0)
     cell.cast:SetScript("PreClick", function(_, button)
-        if button == "LeftButton" and not InCombatLockdown() and not C_Secrets.ShouldAurasBeSecret() then
+        if button == "LeftButton" and not InCombatLockdown()
+            and not (C_Secrets.ShouldAurasBeSecret() and not HiddenAuras()) then
             if class == SALV then PrepareSalv(cell) else PrepareCell(cell) end
         end
     end)
     SecureHandlerWrapScript(cell.cast, "OnClick", secureHandler, CLASS_STEP)
     cell.cast:SetScript("PostClick", function(self, button, down)
         if button == "RightButton" and not down then OpenMenu(self, class) end
+        if button == "LeftButton" then NoteCast(self:GetAttribute("unit"), self:GetAttribute("spell1")) end
     end)
     local function Tip() return CellTip(cell) end
     ns.Tooltip(cell.cast, CellName(class), Tip)
@@ -306,7 +309,7 @@ end
 
 function Refresh()
     if not bar then return end
-    if InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then
+    if InCombatLockdown() or (C_Secrets.ShouldAurasBeSecret() and not HiddenAuras()) then
         dirty = true
         return
     end
@@ -347,7 +350,12 @@ local function SavePosition(pos)
     if ItemBar.Anchored(S, PREFIX) then S.Set("blessAnchor", SCREEN) end
 end
 
+local function OnSelfClick(self, button)
+    if button == "LeftButton" then NoteCast(self:GetAttribute("unit1"), self:GetAttribute("spell1")) end
+end
+
 local function OnAuraClick(self, button, down)
+    OnSelfClick(self, button)
     if button ~= "RightButton" or down then return end
     B.AuraMenu(self)
 end
@@ -362,6 +370,7 @@ local function BuildBar()
     auraButton:SetScript("PostClick", OnAuraClick)
     ns.Tooltip(auraButton, TEXT_AURA, B.AURA_TIP)
     furyButton = NewSelfButton("NaowhForeverBlessFury")
+    furyButton:SetScript("PostClick", OnSelfClick)
     ns.Tooltip(furyButton, FuryName(), B.FURY_TIP)
     secureHandler = CreateFrame("Frame", nil, UIParent, "SecureHandlerBaseTemplate")
     Keys.Build(secureHandler)
@@ -422,6 +431,14 @@ local function OnEvent(_, event, ...)
     if event == "CHAT_MSG_ADDON" then
         OnAddonMessage(...)
     elseif event == "GROUP_ROSTER_UPDATE" or event == "PLAYER_ENTERING_WORLD" then
+        if event == "PLAYER_ENTERING_WORLD" then
+            if HiddenAuras() and IsPaladin() then
+                events:RegisterEvent("UNIT_HEALTH")
+            else
+                events:UnregisterEvent("UNIT_HEALTH")
+                B.ForgetCasts()
+            end
+        end
         B.SyncSoon()
         RefreshSoon()
     elseif event == "PARTY_LEADER_CHANGED" then
@@ -435,9 +452,17 @@ local function OnEvent(_, event, ...)
     elseif event == "SPELLS_CHANGED" then
         B.BroadcastSoon()
         RefreshSoon()
+    elseif event == "UNIT_SPELLCAST_SENT" then
+        local _, _, castGUID, spellID = ...
+        if Secret(castGUID) or Secret(spellID) or not FAMILY[spellID] then return end
+        B.CastSent(castGUID, spellID)
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
-        local _, _, spellID = ...
-        if not InCombatLockdown() and not Secret(spellID) and FAMILY[spellID] then landing = GetTime() end
+        local _, castGUID, spellID = ...
+        if Secret(castGUID) or Secret(spellID) or not FAMILY[spellID] then return end
+        B.CastDone(castGUID)
+        if not InCombatLockdown() then landing = GetTime() end
+    elseif event == "UNIT_HEALTH" then
+        B.ForgetIfDead(...)
     elseif event == "UNIT_AURA" then
         OnUnitAura(...)
     end
@@ -471,6 +496,7 @@ local function ListenPaladin()
     events:RegisterEvent("PLAYER_ROLES_ASSIGNED")
     events:RegisterEvent("SPELLS_CHANGED")
     events:RegisterEvent("PLAYER_REGEN_DISABLED")
+    events:RegisterUnitEvent("UNIT_SPELLCAST_SENT", "player")
     events:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
 end
 

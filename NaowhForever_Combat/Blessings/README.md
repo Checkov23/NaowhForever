@@ -18,6 +18,7 @@ NaowhForever_Combat/Blessings/
     Spells.lua                 the blessings, auras and Righteous Fury, every rank, and plan codes
   Lookup.lua                   the spells by key, code and spell ID, and which ranks you know
   Group.lua                    your group: each member's names, class and GUID, who can plan
+  Memory.lua                   the blessings you cast in a battleground or arena, where auras are hidden
   Buffs.lua                    who has which blessing for how long, who is in range, who is next
   Plans.lua                    plans shared with the group's paladins over addon messages
   AutoAssign.lua               Auto-Assign and the saved preset
@@ -61,6 +62,15 @@ NaowhForever_Combat/Blessings/
 - A Greater Blessing reaches the whole class, so it is only cast when everyone in the class is down
   for the same blessing; otherwise the single one, so nobody's own choice is replaced. It uses a
   Symbol of Kings (`SYMBOL_OF_KINGS`), and covers the whole class, so it is cast once.
+- In a battleground or arena (`IsInInstance` says `pvp` or `arena`) the game hides other players' auras, so
+  the bar would show nobody blessed or nothing at all. There the bar remembers what you cast instead
+  (`Memory.lua`): a click that sent a cast (`UNIT_SPELLCAST_SENT`, in the same frame) notes who it was aimed
+  at (the whole class for a Greater Blessing) under that cast's GUID, the same cast succeeding confirms it
+  within `CAST_WINDOW`, and the blessing counts down an hour (`BLESSING_TIME`), an aura or Righteous Fury
+  never ends. A click that cast nothing, such as one during the global cooldown, notes nothing. A death
+  forgets it (`UNIT_HEALTH`, registered only there), and so does leaving. Whoever you did not bless reads as
+  missing, so the bar keeps working and a click blesses them; what another paladin cast cannot be seen.
+  Elsewhere, hidden auras (a boss pull) stay unknown, not missing, and the bar holds as it was.
 - A buff's state is present (with the time left when it runs out), missing, or nil when unreadable.
   Aura access can be withdrawn outside combat lockdown too (seen on boss pulls), and
   `GetAuraDataByIndex` then raises instead of returning nil, so the restriction is checked before the

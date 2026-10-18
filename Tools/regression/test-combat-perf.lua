@@ -329,6 +329,7 @@ do
     local state = { reads = 0, now = 500, secretAuras = false }
     local auras = {}
     local env = {
+        B = { HiddenAuras = function() return false end },
         MAX_AURAS = tonumber((assert(source:match("\nlocal MAX_AURAS = (%d+)\n"), "MAX_AURAS is missing"))),
         FAMILY = { [19740] = "might", [25291] = "might", [20217] = "kings", [25898] = "kings",
             [19742] = "wisdom", [465] = "devotion" },

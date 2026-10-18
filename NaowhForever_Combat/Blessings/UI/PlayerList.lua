@@ -53,6 +53,7 @@ local function NewRow(index)
     B.SizeRecipient(row.header, row.cast, SLOT)
     row.cast:SetScript("PostClick", function(self, button, down)
         if button == "RightButton" and not down and row.member then PlayerMenu(self, row.member) end
+        if button == "LeftButton" then B.NoteCast(self:GetAttribute("unit"), self:GetAttribute("spell1")) end
     end)
     ns.Tooltip(row.cast, TEXT_BLESS, TEXT_BLESS_TIP)
     B.Watch(row.slot)

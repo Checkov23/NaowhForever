@@ -4,6 +4,7 @@
     <Script file="Data\Spells.lua"/>
     <Script file="Lookup.lua"/>
     <Script file="Group.lua"/>
+    <Script file="Memory.lua"/>
     <Script file="Buffs.lua"/>
     <Script file="Plans.lua"/>
     <Script file="AutoAssign.lua"/>

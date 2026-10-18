@@ -38,7 +38,10 @@ local function Found(v)
 end
 
 local function BuffState(unit, key)
-    if C_Secrets.ShouldAurasBeSecret() then return nil end
+    if C_Secrets.ShouldAurasBeSecret() then
+        if B.HiddenAuras() then return B.Remembered(unit, key) end
+        return nil
+    end
     local seen
     if memoAt and memoAt == GetTime() then
         seen = memo[unit]

@@ -25,6 +25,7 @@ local function NewKeyButton(name, handler)
     btn:SetAttribute("type", "spell")
     btn:SetAttribute("count", 0)
     SecureHandlerWrapScript(btn, "OnClick", handler, STEP)
+    btn:SetScript("PostClick", function(self) B.NoteCast(self:GetAttribute("unit"), self:GetAttribute("spell")) end)
     return btn
 end
 
