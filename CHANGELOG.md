@@ -1,6 +1,50 @@
 # Changelog
 
-## Unreleased
+## 1.1.30
+
+### Added
+- AuraBuffs: optional Show Buff Range counts recipients in casting range and dims reminders when
+  none are confirmed in range.
+- AuraBuffs: Worn Gear Reminder shows an icon while you have a fishing pole equipped; Ctrl-click it
+  to hide it until you take it off.
+- AuraBuffs: Fishing Pole Shows In, to show the fishing pole icon everywhere or only in dungeons and
+  raids.
+- Discovery > Quest List: dungeon and raid quests show on the world map at their quest givers and in
+  their zone's list.
+- German: Disenchant Deals, Scout and the other new parts up to 1.1.29 now show in German on German
+  clients.
+- Aura Buff Reminders: Blessing of Salvation as a raid buff of its own, skipping tanks.
+- Professions: Detailed Deal Tooltips can now appear everywhere or be limited to Enchanting
+  characters and the auction house.
+- Blessings: a Report of every paladin's blessings to chat, a Free Assignment switch, Symbols of
+  Kings and Lay on Hands and Divine Intervention cooldowns under each paladin, and Clear and Refresh
+  buttons.
+
+### Changed
+- Alt Item Counts: the total line on item tooltips reads "Total owned" instead of "Naowh owned".
+- BiS List: picking a list from the dropdown keeps the spec tab you are on, instead of jumping to a
+  spec that has picks.
+- QoL > Interface > Waypoint Pin: Follow RestedXP no longer hides RestedXP's guide arrow.
+- AuraBuffs: the fishing pole reminder has its own Fishing Pole Reminder switch under Gear, instead
+  of Worn Gear Reminder.
+- Tab labels sit in the middle of their tabs, and the picked tab's label moves over for its diamond.
+- Scout: knows the stats of a few more raid bosses.
+- Blessings: Salvation is its own buff on top of the class blessing, given to everyone but tanks,
+  with its own button on the bar.
+
+### Fixed
+- BiS List: picking another list or spec on the Quests page now updates the page, the paperdoll and
+  the list name straight away.
+- Campfire: use the buff's expiration time for the round countdown after relogging.
+- Journeys: Ctrl-clicking a map pin removes it and ends its journey, instead of the pin coming back.
+- Consumable Bar: with Hide When Out, the other icons stay in place when you run out of an item,
+  instead of sliding toward the middle.
+- RestedXP Naowh Window (V2): restore guide quest auto-accept when a step reuses its existing rows.
+- German: Scout's key hint names the key as the German client does (Strg, Umschalt) instead of Ctrl
+  or Shift.
+- Consumable Bar: docked to another element in the HUD Editor, the icons stay in place when you run
+  out of an item, instead of sliding toward the middle.
+- Blessings: the bar works in battlegrounds and arenas, tracking the blessings you cast there.
 
 ## 1.1.29
 
