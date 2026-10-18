@@ -1,10 +1,42 @@
 # Changelog
 
-## Unreleased
+## 1.1.29
+
+### Added
+- Questing & Group: Auto-Accept Layer Swap accepts the layer swap prompt when you join a group. Off
+  by default.
+- Glimmer: Hide Health Bar and Level and Effect Height for quest givers, under Objects.
+- Scout (QoL > Combat), off by default: a creature's tooltip shows its abilities (hold Ctrl, Alt or
+  Shift for what each does), its armor and how much of your physical damage it takes, what it is
+  immune to or resists, and for hunters a beast's pet family and whether you can tame it yet.
+- German: Zone Info, the Daily Word and the other new parts up to 1.1.27 now show in German on
+  German clients.
+- BiS List: New List has an "Only for <spec>" box; a list made with it only shows on that spec's
+  tab.
+- BiS List: New List can start from one of your lists, and you choose which slots to copy.
+- Professions: vendor materials on the Shopping List can set a waypoint to the nearest known seller.
+- Professions: Disenchant Deals finds profitable or low-cost items from the last auction scan beside
+  the auction house.
+- Bag Space: Count Filled Slots, to show used slots instead of free ones.
+- Bag Space: Slot Count on the Right, to put the count at the card's top right.
+- Bag Space: Larger Cheapest Icon, to draw the cheapest item a size up.
 
 ### Changed
 - Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70450.
 - Naowh Score: refitted to the latest Forever items.
+- AuraBuffs: Only If I Carry One is set per kind (food, flask, scroll, elixirs, weapon enhancement),
+  under its own group on the Buffs & Consumables card, so buff food can remind you even with none in
+  your bags.
+
+### Fixed
+- Opening the options window no longer throws a secret boolean error.
+- Discovery: opening a quest from an item or a restricted NPC no longer throws a secret GUID error.
+- Glimmer: quest givers with a quest to pick up or hand in light up.
+- The Flight Timer no longer shows on top of the game's Settings window.
+- German: the naowh.gg bar layout import and Zone Info's Fishing section no longer stay English.
+- Professions: Crafting Queue now stops before crafting when the bags cannot hold the result.
+- Professions: characters that share a first name no longer share crafting queues, shopping lists,
+  favourites, or other character state.
 
 ## 1.1.28
 
