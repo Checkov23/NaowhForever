@@ -1,6 +1,26 @@
 # Changelog
 
-## Unreleased
+## 1.1.32
+
+### Added
+- AuraBuffs: paladins can enable Hide Blessings on Paladins under Raid Buffs to hide blessing and
+  Salvation reminders in parties and raids.
+- Discovery > Quest List: class, reputation and battleground quests show on the world map at their
+  quest givers, and so do the dungeon quests it was missing, like Trouble in the Deeps at Tsunaman.
+- AuraBuffs: Hide Out of Range, under Show Buff Range, keeps a raid buff reminder hidden until
+  someone missing it is in casting range.
+
+### Changed
+- Blessings and AuraBuffs label Blessing of Salvation as Salvation.
+- AuraBuffs: the page and the Buffs & Consumables card no longer ask you to add consumables, since
+  the built-in ones are already watched.
+- Worn Gear Reminder and Fishing Pole Reminder moved from AuraBuffs to their own Gear Reminders card
+  on QoL > Loot & Items, with their own mover and icon size; your settings carry over.
+- Action Bars: website layouts can import primary and secondary keybinds using punctuation, number
+  pad keys, navigation keys, extended mouse buttons and more modifiers.
+
+### Fixed
+- Discovery > Quest List: The Stone Circle no longer needs both factions' Sunken Temple quest.
 
 ## 1.1.31
 
