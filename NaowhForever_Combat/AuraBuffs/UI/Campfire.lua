@@ -289,12 +289,12 @@ local function PaintTime(color, low)
     end
 end
 
-local function RunTimer(start, duration, prefix)
+local function RunTimer(expiry, duration, prefix)
     if BarShown() then
-        simpleBar.line:Run(start, duration, prefix)
+        simpleBar.line:Run(expiry - duration, duration, prefix)
     else
-        icon.timer:SetCooldown(start, duration)
-        icon.drain:SetCooldown(start, duration)
+        icon.timer:SetCooldownFromExpirationTime(expiry, duration)
+        icon.drain:SetCooldownFromExpirationTime(expiry, duration)
     end
 end
 
@@ -315,7 +315,7 @@ local function ColorRing(expiry)
 end
 
 local function ShowUp(duration, expiry, text, labels, icons, n)
-    local timed = S.Get("campTimer") and duration and duration > 0 and true or false
+    local timed = S.Get("campTimer") and duration and duration > 0 and expiry and expiry > GetTime() or false
     campState, campExpiry = "up", expiry
     if BarShown() then
         Bar.Up(simpleBar, labels, icons, n, timed)
@@ -327,7 +327,7 @@ local function ShowUp(duration, expiry, text, labels, icons, n)
     ShowSit(false)
     if timed then
         if shownExpiry ~= expiry then
-            RunTimer(expiry - duration, duration)
+            RunTimer(expiry, duration)
             ColorRing(expiry)
             shownExpiry = expiry
         end
@@ -341,7 +341,7 @@ local function ShowUp(duration, expiry, text, labels, icons, n)
 end
 
 local function ShowSitting(duration, expiry, upcoming)
-    local timed = S.Get("campTimer") and true or false
+    local timed = S.Get("campTimer") and expiry and expiry > GetTime() or false
     campState, campExpiry, campUpcoming = "sitting", expiry, upcoming
     if BarShown() then
         Bar.Sitting(simpleBar, Camp.barLabels, Camp.barIcons, Camp.barCount, timed, upcoming)
@@ -352,7 +352,7 @@ local function ShowSitting(duration, expiry, upcoming)
     ShowSit(false)
     ringGen = ringGen + 1
     if timed and shownExpiry ~= expiry then
-        RunTimer(expiry - duration, duration, SIT_PREFIX)
+        RunTimer(expiry, duration, SIT_PREFIX)
         PaintTime(T.accent, false)
         shownExpiry = expiry
     elseif not timed then

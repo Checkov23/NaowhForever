@@ -243,6 +243,11 @@ NaowhForever_Combat/AuraBuffs/
   it, its numbers read in the description's order (the Lute's armor, stats, resistances; the Mana
   Well's mana, then its 5 seconds). The tooltip is kept once per Camp Benefits as soon as a read
   finds anything; an empty read is tried again at most every `LINE.RETRY` seconds.
+- The Round countdown and ring use `SetCooldownFromExpirationTime` with the aura's deadline and
+  full duration. A buff that was already running before login can have a negative reconstructed
+  start, so it is not handed to the cooldown's start-time setter. Missing, zero or expired
+  deadlines leave the countdown hidden until an aura update supplies a valid one. Simple keeps
+  its duration-backed timer line.
 - The time ring's color by time left: green above 30 minutes, yellow above 5, red below. Nothing
   fires as the buff runs down, so each color change is timed, and a generation number throws away
   a timer armed for an older state.
