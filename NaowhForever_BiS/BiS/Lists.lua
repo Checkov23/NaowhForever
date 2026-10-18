@@ -17,6 +17,7 @@ local TEXT_NOT_GEAR = ns.L("That is not an item you can equip.")
 local TEXT_ADDED = ns.L("Added %s to your BiS %s.")
 local TEXT_ADDED_AS = ns.L("Added %s to your BiS %s as #%d.")
 local FREE_NAME = "%s %d"
+local SPEC_SHORT = "^(.-)%s+%S+$"
 local NONE = {}
 
 local lookup
@@ -28,7 +29,31 @@ local function ClassLists()
     local store = account.bisLists[class] or { lists = {}, nextID = 1 }
     account.bisLists[class] = store
     account.bisActive = account.bisActive or {}
+    account.bisClassActive = account.bisClassActive or {}
+    account.bisSpecActive = account.bisSpecActive or {}
     return store, account
+end
+
+local function SpecOf(key)
+    for _, spec in ipairs(R.ClassSpecs()) do
+        if spec.key == key then return spec end
+    end
+end
+
+local function SpecOnly(list)
+    return list.specOnly == true and SpecOf(list.spec) ~= nil
+end
+
+local function FindList(store, id)
+    for _, l in ipairs(store.lists) do
+        if l.id == id then return l end
+    end
+end
+
+local function SpecMemory(account, key)
+    local memory = account.bisSpecActive[key] or {}
+    account.bisSpecActive[key] = memory
+    return memory
 end
 
 local function AddList(store, list)
@@ -60,7 +85,25 @@ end
 
 local function Use(list)
     local _, account = ClassLists()
-    account.bisActive[CharKey()] = list.id
+    local key = CharKey()
+    account.bisActive[key] = list.id
+    if SpecOnly(list) then
+        SpecMemory(account, key)[list.spec] = list.id
+    else
+        account.bisClassActive[key] = list.id
+        if list.spec then SpecMemory(account, key)[list.spec] = nil end
+    end
+end
+
+local function ClassList(store, account, key)
+    local id, first = account.bisClassActive[key], nil
+    for _, l in ipairs(store.lists) do
+        if not SpecOnly(l) then
+            if l.id == id then return l end
+            first = first or l
+        end
+    end
+    return first or AddList(store, { name = FreeName(store, ns.L(TEXT_DEFAULT_NAME)) })
 end
 
 local function FreeSlot(slots, itemID)
@@ -101,11 +144,7 @@ local function List()
     local store, account = ClassLists()
     local key = CharKey()
     MoveOwnList(store, account, key)
-    local list
-    for _, l in ipairs(store.lists) do
-        if l.id == account.bisActive[key] then list = l end
-    end
-    list = list or store.lists[1] or AddList(store, { name = ns.L(TEXT_DEFAULT_NAME) })
+    local list = FindList(store, account.bisActive[key]) or ClassList(store, account, key)
     account.bisActive[key] = list.id
     list.extra = list.extra or {}
     if not list.slots then SlotItems(list) end
@@ -113,10 +152,13 @@ local function List()
     return list
 end
 
-local function SwitchSpec(key)
-    local list = List()
+local function ShownSpec(list)
     local first = R.ClassSpecs()[1]
-    local previous = list.spec or (first and first.key)
+    return list.spec or (first and first.key)
+end
+
+local function SwapPicks(list, key)
+    local previous = ShownSpec(list)
     if not key or key == previous then
         list.spec = previous
         return list
@@ -126,6 +168,44 @@ local function SwitchSpec(key)
     local picks = list.bySpec[key] or { slots = {}, extra = {} }
     list.slots, list.extra, list.spec = picks.slots, picks.extra, key
     return list
+end
+
+local function PicksOn(list, key)
+    if key == ShownSpec(list) then return list.slots, list.extra or NONE end
+    local parked = list.bySpec and list.bySpec[key]
+    if parked then return parked.slots or NONE, parked.extra or NONE end
+end
+
+local function Copied(from)
+    local slots, extra = {}, {}
+    local source = FindList((ClassLists()), from.id)
+    local picked, more = nil, nil
+    if source then picked, more = PicksOn(source, from.spec) end
+    if not picked then return slots, extra end
+    for slot in pairs(from.slots) do
+        if picked[slot] then
+            slots[slot] = picked[slot]
+            if more[slot] then extra[slot] = { unpack(more[slot]) } end
+        end
+    end
+    return slots, extra
+end
+
+local function SwitchSpec(key)
+    local list = List()
+    if not key or key == ShownSpec(list) then return SwapPicks(list, key) end
+    local store, account = ClassLists()
+    local char = CharKey()
+    local mine = FindList(store, SpecMemory(account, char)[key])
+    if mine and SpecOnly(mine) and mine.spec == key then
+        account.bisActive[char] = mine.id
+        return List()
+    end
+    if SpecOnly(list) then
+        account.bisActive[char] = ClassList(store, account, char).id
+        list = List()
+    end
+    return SwapPicks(list, key)
 end
 
 local function OpenOnPicks(list)
@@ -206,9 +286,25 @@ function L.CurrentSpec()
     return specs[1]
 end
 
-function L.AddList(name, spec, slots, extra)
+function L.SpecShort(spec)
+    return spec.name:match(SPEC_SHORT) or spec.name
+end
+
+L.SpecOnly = SpecOnly
+
+function L.All()
+    return (ClassLists()).lists
+end
+
+function L.PicksOn(id, key)
+    local list = FindList((ClassLists()), id)
+    if list then return PicksOn(list, key) end
+end
+
+function L.AddList(name, spec, slots, extra, specOnly)
     local store = ClassLists()
-    local list = AddList(store, { name = FreeName(store, name), spec = spec, slots = slots, extra = extra })
+    local list = AddList(store, { name = FreeName(store, name), spec = spec, slots = slots, extra = extra,
+        specOnly = specOnly == true and SpecOf(spec) ~= nil or nil })
     Use(list)
     Changed()
     return list
@@ -245,17 +341,25 @@ function ns.SetBisSpec(key)
 end
 
 function ns.BisListChoices()
-    local id = List().id
+    local id, spec = List().id, L.CurrentSpec()
+    local lists = (ClassLists()).lists
     local values, order = {}, {}
-    for _, l in ipairs((ClassLists()).lists) do
-        values[l.id], order[#order + 1] = l.name, l.id
+    for _, l in ipairs(lists) do
+        if not SpecOnly(l) then values[l.id], order[#order + 1] = l.name, l.id end
     end
-    return values, order, id
+    local shared = #order
+    for _, l in ipairs(lists) do
+        if SpecOnly(l) and spec and l.spec == spec.key then values[l.id], order[#order + 1] = l.name, l.id end
+    end
+    return values, order, id, shared
 end
 
 function ns.SelectBisList(id)
-    for _, l in ipairs((ClassLists()).lists) do
+    local was = L.CurrentSpec()
+    local store, account = ClassLists()
+    for _, l in ipairs(store.lists) do
         if l.id == id then
+            if was and not SpecOnly(l) then SpecMemory(account, CharKey())[was.key] = nil end
             Use(l)
             OpenOnPicks(List())
             return Changed()
@@ -263,12 +367,14 @@ function ns.SelectBisList(id)
     end
 end
 
-function ns.NewBisList(name)
+function ns.NewBisList(name, specOnly, from)
     name = CleanName(name)
     if not name then return false, TEXT_NAME_EMPTY end
     if Taken((ClassLists()), name) then return false, TEXT_NAME_TAKEN end
     local current = L.CurrentSpec()
-    L.AddList(name, current and current.key, {}, {})
+    local slots, extra = {}, {}
+    if from then slots, extra = Copied(from) end
+    L.AddList(name, current and current.key, slots, extra, specOnly)
     return true
 end
 
@@ -284,6 +390,7 @@ end
 
 function ns.DeleteBisList()
     local list = List()
+    local spec = SpecOnly(list) and list.spec
     local lists = (ClassLists()).lists
     for i, l in ipairs(lists) do
         if l == list then
@@ -291,6 +398,7 @@ function ns.DeleteBisList()
             break
         end
     end
+    if spec then SwitchSpec(spec) end
     Changed()
 end
 

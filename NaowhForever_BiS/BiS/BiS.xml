@@ -30,6 +30,7 @@
     <Script file="View\RollBadge.lua"/>
     <Script file="View\Bags.lua"/>
     <Script file="View\QuestsPage.lua"/>
+    <Script file="UI\NewList.lua"/>
     <Script file="UI\Actions.lua"/>
     <Script file="UI\Picker.lua"/>
     <Script file="UI\Window.lua"/>

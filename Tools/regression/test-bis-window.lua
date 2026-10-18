@@ -316,7 +316,7 @@ local Measure = dofile("Tools/regression/measure.lua")(check)
 -------------------------------------------------------------------------------
 local ns, state, S = Fixture()
 local B = ns.BiS
-check("BiS.xml loads its files", #TocFiles("^NaowhForever_BiS/BiS/.*%.lua$") == 36)
+check("BiS.xml loads its files", #TocFiles("^NaowhForever_BiS/BiS/.*%.lua$") == 37)
 
 ns.OpenBisWindow()
 local view = Views(state, B)[1]
@@ -878,6 +878,103 @@ check("and closing the Journal brings it back", window:IsShown())
 state.journalBack()
 S.Set("bis", false)
 check("turning the module off closes it", not window:IsShown())
+
+-- New List: the dialog's own parts, as the stubs make them: the modal, the name box, the
+-- dropdowns (Start From, then Spec's Picks), the toggles (Only for, then one per slot) and buttons.
+do
+    local modal, box, dropdowns, toggles, buttons = nil, nil, {}, {}, {}
+    ns.MakeModal = function()
+        modal = Frame()
+        return modal, Frame()
+    end
+    ns.NewEditBox = function(parent)
+        box = Frame(parent)
+        return box
+    end
+    ns.Button = function(parent, text, _, _, onClick)
+        local button = Frame(parent)
+        buttons[text] = onClick
+        return button
+    end
+    local BuildToggle = ns.UI.BuildToggleControl
+    ns.UI.BuildToggleControl = function(...)
+        local toggle = BuildToggle(...)
+        toggles[#toggles + 1] = toggle
+        return toggle
+    end
+    ns.UI.BuildDropdownControl = function(parent, _, _, names, _, get, set)
+        local dropdown = Frame(parent)
+        dropdown._values, dropdown._get, dropdown._set, dropdown._refreshLabel = names, get, set, NOTHING
+        dropdowns[#dropdowns + 1] = dropdown
+        return dropdown
+    end
+    -- What a dropdown's menu offers: its titles, and each radio's text, data and whether it is enabled.
+    local function Menu(dropdown)
+        local offer = { titles = {}, radios = {} }
+        dropdown._menuFill({
+            CreateTitle = function(_, text) offer.titles[#offer.titles + 1] = text end,
+            CreateRadio = function(_, text, _, pick, data)
+                local radio = { text = text, data = data, pick = pick, enabled = true }
+                function radio:SetEnabled(on) self.enabled = on end
+                offer.radios[#offer.radios + 1] = radio
+                return radio
+            end,
+        })
+        return offer
+    end
+    local L = B.Lists
+    local source = L.List()
+    local spec = L.CurrentSpec()
+    local short = L.SpecShort(spec)
+    B.Actions.New()
+    local from, specPick = dropdowns[1], dropdowns[2]
+    check("New List opens the dialog, starting from Empty with no spec to pick",
+        modal.shown and from._get() == 0 and not specPick:IsShown() and #toggles == 1 + 17)
+    check("Only for names the spec on show, unticked", toggles[1]._get() == false)
+    local offered = Menu(from)
+    local picked
+    for _, radio in ipairs(offered.radios) do
+        if radio.data == source.id then picked = radio end
+    end
+    check("Start From offers Empty, then the class lists", offered.radios[1].data == 0
+        and offered.titles[1] == "Class lists" and picked and picked.text == source.name)
+    picked.pick(source.id)
+    check("a class list asks which spec's picks, the one on show first", specPick:IsShown() and specPick._get() == spec.key)
+    local specs = Menu(specPick)
+    local greyed = 0
+    for _, radio in ipairs(specs.radios) do
+        if not radio.enabled then greyed = greyed + 1 end
+    end
+    check("a spec with nothing picked can't be chosen", #specs.radios == #B.Rankings.ClassSpecs()
+        and specs.radios[1].text:find(short, 1, true) == 1 and greyed == #specs.radios - 1)
+    toggles[2]._set(false)
+    box:SetText("Copy")
+    buttons.Create()
+    local copy = L.List()
+    check("Create makes the list with every ticked slot's picks", copy.name == "Copy" and not modal.shown
+        and copy.slots[1] == nil and copy.slots[2] == source.slots[2] and copy.slots[2] ~= nil and copy.specOnly == nil)
+    B.Actions.New()
+    check("opened again, it starts over", from._get() == 0 and toggles[1]._get() == false and box:GetText() == "")
+    toggles[1]._set(true)
+    box:SetText("Solo")
+    buttons.Create()
+    check("ticked, the list is the spec's own", L.List().name == "Solo" and L.List().specOnly == true)
+    local titles, radios = {}, {}
+    local menuRoot = { CreateDivider = NOTHING, CreateButton = NOTHING,
+        CreateTitle = function(_, text) titles[#titles + 1] = text end,
+        CreateRadio = function(_, text) radios[#radios + 1] = text end }
+    env.MenuUtil = { CreateContextMenu = function(_, build) build(nil, menuRoot) end }
+    B.Actions.ListMenu()
+    check("the menu lists the class's lists, then the spec's own under its heading",
+        #titles == 2 and titles[2] == short .. " only" and radios[#radios] == "Solo" and #radios >= 2)
+    local other = B.Rankings.ClassSpecs()[2]
+    ns.SelectBisList(source.id)
+    ns.SetBisSpec(other.key)
+    ns.AddBisPick(1, B.Rankings.Candidates(1, other)[1])
+    B.Actions.New()
+    picked.pick(source.id)
+    check("with picks on two specs, Spec's Picks starts on the tab's", specPick._get() == other.key)
+end
 
 do
     local f = assert(io.open("NaowhForever_BiS/BiS/Gains.lua", "rb"))

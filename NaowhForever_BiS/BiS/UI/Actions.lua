@@ -7,7 +7,6 @@ local L = B.Lists
 local NAME_MAX = B.C.NAME_MAX
 local ANY_LENGTH = 0
 local TEXT_NOT_SAVED = ns.L("BiS list not saved: %s.")
-local TEXT_NEW = ns.L("Name the new BiS list")
 local TEXT_RENAME = ns.L("Rename this BiS list")
 local TEXT_DELETE = ns.L("Delete the BiS list %s? Every character of your class using it moves to another list.")
 local TEXT_PASTE = ns.L("Paste a Naowh BiS list")
@@ -15,6 +14,7 @@ local TEXT_COPY = ns.L("Copy this to share your list")
 local TEXT_PICK_FIRST = ns.L("Pick your BiS first: the test plays with your list's first one.")
 local TEXT_MENU_TITLE = ns.L("Your class's BiS lists")
 local TEXT_MENU_NEW, TEXT_MENU_RENAME, TEXT_MENU_DELETE = ns.L("New List"), ns.L("Rename This List"), ns.L("Delete This List")
+local TEXT_SPEC_ONLY = ns.L("%s only")
 
 local function NamePrompt(title, text, save)
     ns.PromptText(title, text, NAME_MAX, function(name)
@@ -35,7 +35,7 @@ local A = {}
 B.Actions = A
 
 function A.New()
-    NamePrompt(TEXT_NEW, "", ns.NewBisList)
+    B.OpenNewList()
 end
 
 function A.Rename()
@@ -63,10 +63,12 @@ function A.TestAlert()
 end
 
 function A.ListMenu(owner)
-    local values, order, active = ns.BisListChoices()
+    local values, order, active, shared = ns.BisListChoices()
+    local spec = L.CurrentSpec()
     MenuUtil.CreateContextMenu(owner, function(_, root)
         root:CreateTitle(TEXT_MENU_TITLE)
-        for _, id in ipairs(order) do
+        for i, id in ipairs(order) do
+            if i == shared + 1 then root:CreateTitle(TEXT_SPEC_ONLY:format(L.SpecShort(spec))) end
             root:CreateRadio(values[id], function() return id == active end, function() ns.SelectBisList(id) end)
         end
         root:CreateDivider()

@@ -56,6 +56,7 @@ BiS/
     Bags.lua          Bag Marks: the slot marks on your bags' items, the game's or EllesmereUI's
     QuestsPage.lua    the Quests page: the Journal's quest and item rows, on a Journal view
   UI/
+    NewList.lua       the New List dialog: name, Only for, a list to start from (B.OpenNewList)
     Actions.lua       new, rename, delete, import, export, test: the window and page share them (B.Actions)
     Picker.lua        a slot's picker, in a side panel beside the window
     Window.lua        the window (ns.OpenBisWindow, /nfbis, its key binding)
@@ -90,6 +91,17 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   `bySpec`.
 - Lists are kept per class in the account store, so every character of a class shares them and none
   travels in an exported profile; each character remembers which one it uses.
+- A list made with "Only for <spec>" ticked is `specOnly`: it keeps one spec's picks (no
+  `bySpec`) and is offered only on that spec's tab, under its own heading in the list menu. A spec
+  tab opens the spec-only list that character last used there (`bisSpecActive`), until it picks a
+  class list on that tab; leaving a spec-only list for another spec goes back to the class list it
+  last used (`bisClassActive`). A spec the class no longer has turns its spec-only lists back into
+  class lists, so none is ever hidden on every tab, and a class list is always there to fall back
+  on.
+- New List can start from any of the class's lists. A class list keeps picks per spec, so its spec
+  is picked too: the tab's spec when it has picks there, else the first that has. Each slot the
+  source has picked is copied unless untoggled, its BiS and backups in order, as tables of the new
+  list's own. The new list is made on the tab on show, ticked or not.
 - Older saved lists are moved when read: a character's own list from before lists were shared joins
   its class's (named for the character unless it had a name), a flat item list is put in slots, and
   the unordered next picks of the 0.5.12 test builds go in ranked order.
@@ -99,7 +111,8 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   until the main hand's BiS is a one-hander again.
 - Share strings are parsed as data, never run. Version 1 is a flat item list, placed as an old saved
   list is; 2 has BiS picks only; 3 has next picks unordered, put in the spec's ranked order; 4 has
-  next picks in order.
+  next picks in order. A spec-only list adds `only`, which older versions skip and add as a class
+  list.
 - What drops in a dungeon, and the boss and dungeon an item comes from, are the Dungeon Journal's,
   so the two list the same items under the same bosses. The Journal loads after the BiS List, so
   `Rankings.lua`, `Quests.lua` and `Sources.lua` read it the first time they are asked, never at load.

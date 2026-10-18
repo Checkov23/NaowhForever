@@ -516,7 +516,8 @@ local function CleanBisList(list)
     if type(list) ~= "table" or type(list.slots) ~= "table" then return nil end
     local name = ns.Shared.Decode.Text(list.name, LIST_TEXT_MAX)
     if not name or name == "" then return nil end
-    local out = { name = name, spec = ns.Shared.Decode.Text(list.spec, LIST_TEXT_MAX), slots = {}, extra = {} }
+    local out = { name = name, spec = ns.Shared.Decode.Text(list.spec, LIST_TEXT_MAX), slots = {}, extra = {},
+        specOnly = list.specOnly == true or nil }
     for slot, id in pairs(list.slots) do
         if GEAR_SLOT[slot] and ItemID(id) then out.slots[slot] = id end
     end

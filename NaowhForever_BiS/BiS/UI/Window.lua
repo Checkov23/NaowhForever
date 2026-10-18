@@ -37,7 +37,6 @@ local TEXT_RANKED_FOR = ns.L("Ranked for %s. Each spec keeps its own picks on th
 local TEXT_UPDATED = ns.L("Rankings updated ")
 local TEXT_QUESTS, TEXT_QUESTS_COUNT = ns.L("Quests"), ns.L("Quests (%d)")
 local TEXT_TURNED_ON = ns.L("BiS List turned on. Turn it off in its settings page.")
-local SPEC_SHORT = "^(.-)%s+%S+$"
 local PAGES = {
     { key = "list", label = "Your List", tip = "Your picks for every slot, and where to run next." },
     { key = "quests", label = "Quests", tip = "The quests that reward a pick you do not have yet." },
@@ -60,7 +59,7 @@ end
 local function SpecTabs()
     local items = {}
     for _, spec in ipairs(R.ClassSpecs()) do
-        items[#items + 1] = { key = spec.key, label = spec.name:match(SPEC_SHORT) or spec.name,
+        items[#items + 1] = { key = spec.key, label = L.SpecShort(spec),
             tip = TEXT_RANKED_FOR:format(spec.name) }
     end
     return items

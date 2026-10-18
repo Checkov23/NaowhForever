@@ -87,7 +87,7 @@ local function Decode(text)
     else
         return
     end
-    return name, list.slots, list.extra, spec
+    return name, list.slots, list.extra, spec, data.only == true
 end
 
 local function Count(slots, extra)
@@ -102,18 +102,19 @@ function ns.ExportBisList()
     local list = L.List()
     return PREFIX .. LD:EncodeForPrint(LD:CompressDeflate(LS:Serialize({
         v = VERSION, name = list.name, spec = list.spec, slots = list.slots, extra = list.extra,
+        only = list.specOnly,
     })))
 end
 
 function ns.ImportBisList(text, quiet)
-    local name, slots, extra, spec = Decode(text)
+    local name, slots, extra, spec, only = Decode(text)
     if not name then
         ns.Print(TEXT_NOT_A_LIST)
         return false
     end
     local count = Count(slots, extra)
     local function Apply()
-        local list = L.AddList(name, spec, slots, extra)
+        local list = L.AddList(name, spec, slots, extra, only)
         ns.Print(TEXT_IMPORTED:format(list.name, count))
     end
     if quiet then

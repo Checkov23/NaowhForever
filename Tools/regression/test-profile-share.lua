@@ -383,12 +383,15 @@ Case("BiS lists join yours under a free name, never over them", function()
     local w = World()
     local payload = assert(w.ns.DecodeProfile((w.ns.ExportProfile())))
     payload.parts.bisLists.PALADIN[1].slots[1] = 200
-    payload.parts.bisLists.MAGE = { { name = "Fire", slots = { [5] = 300 } } }
+    payload.parts.bisLists.MAGE = { { name = "Fire", spec = "fire-mage", specOnly = true, slots = { [5] = 300 } },
+        { name = "Frost", specOnly = "yes", slots = { [5] = 300 } } }
     local _, added = w.ns.ImportProfile(payload, { bisLists = true }, "B")
     local paladin = w.db.account.bisLists.PALADIN.lists
-    assert(added.bisLists == 2 and #paladin == 2 and paladin[1].slots[1] == 100, "yours kept")
+    assert(added.bisLists == 3 and #paladin == 2 and paladin[1].slots[1] == 100, "yours kept")
     assert(paladin[2].name == "Prot 2" and paladin[2].id == 2 and w.db.account.bisLists.PALADIN.nextID == 3)
-    assert(w.db.account.bisLists.MAGE.lists[1].name == "Fire")
+    local mage = w.db.account.bisLists.MAGE.lists
+    assert(mage[1].name == "Fire" and mage[1].specOnly == true, "a spec-only list stays one")
+    assert(mage[2].specOnly == nil and paladin[2].specOnly == nil, "anything but true is a class list")
 end)
 
 Case("Library macros join yours; a name you have, or one that is no macro, stays out", function()
