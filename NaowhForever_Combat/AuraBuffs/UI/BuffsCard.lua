@@ -32,6 +32,7 @@ local NEEDS_RAID = ns.L("Needs Raid Buff Reminders")
 local NEEDS_PERSONAL = ns.L("Needs Personal Buff Reminders")
 local NEEDS_WEAPON = ns.L("Needs Weapon Enhancement Reminder")
 local NEEDS_FISHING = ns.L("Needs Fishing Pole Reminder")
+local NEEDS_RANGE = ns.L("Needs Show Buff Range")
 local TEXT_WEAPON = "Weapon Enhancement"
 local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
 local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
@@ -52,6 +53,10 @@ local RaidBuffsOn = A.Needs("raidBuffs")
 local PersonalBuffsOn = A.Needs("personalBuffs")
 local WeaponOn = A.Needs("weaponEnhancements")
 local FishingOn = A.Needs("fishingPoleReminder")
+
+local function RangeOn()
+    return RaidBuffsOn() and S.Get("raidBuffRange") and true or false
+end
 
 local function OpenList()
     ns.OpenAuraBuffsWindow("consumables")
@@ -209,6 +214,8 @@ rows[#rows + 1] = { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggl
     why = NEEDS_RAID, help = "Off: every buff a class in your group can cast." }
 rows[#rows + 1] = { key = "raidBuffRange", label = "Show Buff Range", toggle = true, needs = RaidBuffsOn,
     why = NEEDS_RAID, help = "Shows how many missing buffs are in casting range and dims icons with none confirmed." }
+rows[#rows + 1] = { key = "raidBuffRangeHide", label = "Hide Out of Range", toggle = true, needs = RangeOn,
+    why = NEEDS_RANGE, help = "Hides a raid buff until someone missing it is in casting range." }
 for _, family in ipairs(D.RAID) do rows[#rows + 1] = PickRow(family) end
 rows[#rows + 1] = { key = "hideBlessingsOnPaladin", label = "Hide Blessings on Paladins", toggle = true,
     needs = RaidBuffsOn, why = NEEDS_RAID, hidden = function() return playerClass ~= "PALADIN" end,

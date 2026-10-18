@@ -3264,6 +3264,7 @@ L["Needs Weapon Enhancement Reminder"] = true
 L["Needs Play a Sound"] = true
 L["Needs Play a Sound to Refresh"] = true
 L["Needs Show Refresh Reminder"] = true
+L["Needs Show Buff Range"] = true
 L["Needs Raid Buff Reminders"] = true
 L["Needs Range Check"] = true
 L["Needs Short Buffs"] = true

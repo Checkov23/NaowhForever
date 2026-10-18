@@ -118,6 +118,11 @@ NaowhForever_Combat/AuraBuffs/
   and a visible reminder has a learned spell and another missing group member. It stops on combat,
   disable, Unlock Mode or no remaining reminders; restriction transitions freeze reads. Self-only
   and uncastable buffs need no ticker. Aura and roster events still rebuild the missing lists.
+- Hide Out of Range starts off and needs Show Buff Range. A raid buff with a learned spell and
+  none confirmed in range is left out of the row instead of dimmed, so a party member far off
+  while questing shows nothing. An uncastable buff cannot be confirmed, so it stays dimmed rather
+  than hidden for good. When a tick sees a buff cross between hidden and shown it queues a normal
+  refresh, the only time the ticker rebuilds the row.
 - `ELIXIR_ICON` (13454, Greater Arcane Elixir) stands for "no elixir at all" in the preview.
 - The preview's raid buff (Unlock Mode and the card) is the first picked one the reminders would track for you
   (`A.Buffs.RaidSample`): one you know, or with Only Buffs I Can Cast off any non-talent one. With Raid Buff

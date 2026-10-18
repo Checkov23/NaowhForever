@@ -206,6 +206,7 @@ ns.FEATURES = {
         raidBuffs = false,
         raidBuffRange = false,
         hideBlessingsOnPaladin = false,
+        raidBuffRangeHide = false,
         personalBuffs = true,
         classBuffTracker = false,
         classBuffGlow = false,

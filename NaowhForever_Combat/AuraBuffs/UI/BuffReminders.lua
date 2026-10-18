@@ -21,7 +21,7 @@ local TEXT_HIDE = ns.L("Ctrl-click to hide it until you take it off.")
 local KEYS = {
     consumableEntries = true, enabled = true, consumablesWhere = true, consumablesMinutes = true,
     onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
-    buffIconMode = true, raidBuffRange = true, hideBlessingsOnPaladin = true,
+    buffIconMode = true, raidBuffRange = true, raidBuffRangeHide = true, hideBlessingsOnPaladin = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true, wornReminders = true,
     fishingPoleReminder = true, fishingPoleWhere = true,
     buffsFont = true, buffsFontSize = true, buffsOutline = true, buffsBorderColor = true,
@@ -103,9 +103,12 @@ local function StopRange()
     rangeTicker, rangeList = nil, nil
 end
 
-local function PaintRange(cell, entry)
+local function Hides(entry, inRange)
+    return S.Get("raidBuffRangeHide") and inRange == 0 and entry.rangeSpell ~= nil or false
+end
+
+local function PaintRange(cell, entry, inRange)
     local missing = entry.rangeUnits and #entry.rangeUnits
-    local inRange = missing and R.InRange(entry)
     if missing or cell.rangeTracked then
         Cell.Range(cell, inRange, missing)
         cell.rangeTracked = missing ~= nil and true or nil
@@ -116,8 +119,12 @@ end
 local function OnRangeTick()
     if not R.On() or not S.Get("raidBuffRange") or not frame:IsShown() then return StopRange() end
     if InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then return end
-    for i, entry in ipairs(rangeList) do
-        if entry.rangeUnits then PaintRange(cells[i], entry) end
+    for _, entry in ipairs(rangeList) do
+        if entry.rangeUnits then
+            local inRange = R.InRange(entry)
+            if Hides(entry, inRange) ~= not entry.cell then return Queue() end
+            if entry.cell then PaintRange(entry.cell, entry, inRange) end
+        end
     end
 end
 
@@ -131,23 +138,28 @@ end
 
 local function Show(list)
     local size = S.Get("iconSize")
-    local moving = false
-    for i, entry in ipairs(list) do
-        local cell = GetCell(i)
-        Cell.Place(cell, frame, i, size, entry.icon, entry.count)
-        cell.rangeIn, cell.rangeMissing = nil, nil
-        cell.items, cell.slot = entry.items, entry.slot
-        ItemBar.SetItem(cell, entry.item)
-        ShowTimer(cell, entry.aura)
-        cell:Show()
-        PaintRange(cell, entry)
+    local moving, shown = false, 0
+    for _, entry in ipairs(list) do
+        local inRange = entry.rangeUnits and R.InRange(entry)
+        if not Hides(entry, inRange) then
+            shown = shown + 1
+            local cell = GetCell(shown)
+            Cell.Place(cell, frame, shown, size, entry.icon, entry.count)
+            cell.rangeIn, cell.rangeMissing = nil, nil
+            cell.items, cell.slot = entry.items, entry.slot
+            ItemBar.SetItem(cell, entry.item)
+            ShowTimer(cell, entry.aura)
+            cell:Show()
+            PaintRange(cell, entry, inRange)
+            entry.cell = cell
+        end
         if RangeMoves(entry) then moving = true end
     end
-    for i = #list + 1, #cells do
+    for i = shown + 1, #cells do
         Glow.Set(cells[i], false)
         cells[i]:Hide()
     end
-    Cell.Fit(frame, #list, size)
+    Cell.Fit(frame, shown, size)
     if moving then
         rangeList = list
         rangeTicker = C_Timer.NewTicker(RANGE_INTERVAL, OnRangeTick)

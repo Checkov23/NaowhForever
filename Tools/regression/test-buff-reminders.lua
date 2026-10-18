@@ -807,6 +807,35 @@ do
     Check("disabled reminders have no range checks", t.state.rangeReads, rangeReads)
 end
 
+-- Hide Out of Range drops a raid buff nobody missing it can be reached for, and brings it back in range.
+do
+    local t = Fixture({ settings = { raidBuffs = true, raidBuffRange = true, raidBuffRangeHide = true,
+        personalBuffs = false }, group = "party", units = { player = "MAGE", party1 = "PRIEST" },
+        known = { [1460] = true }, auras = { player = { { 1460 } } }, ranges = { party1 = false } })
+    t.Login()
+    Check("out of range: hidden", t.Shown(), "")
+    Check("hidden buff keeps the range ticker", t.state.tickers[#t.state.tickers].cancelled, nil)
+    local reads = t.state.reads
+    t.Advance(1)
+    Check("still out of range: no rescans", t.state.reads, reads)
+    t.state.ranges.party1 = true
+    t.Advance(1)
+    Check("coming into range shows it", t.Shown(), "spell:10157x1/1")
+    t.state.ranges.party1 = false
+    t.Advance(1)
+    Check("leaving range hides it again", t.Shown(), "")
+    t.Set("raidBuffRangeHide", false)
+    Check("hide off: dimmed instead", t.Shown(), "spell:10157x0/1")
+    t.Set("raidBuffRangeHide", true)
+    t.state.auras.player = {}
+    t.Fire("UNIT_AURA", "player"); t.Advance(0.5)
+    Check("missing on yourself is always in range", t.Shown(), "spell:10157x1/2")
+    local other = Fixture({ settings = { raidBuffs = true, raidBuffRange = true, raidBuffRangeHide = true,
+        raidBuffsOwn = false, personalBuffs = false }, group = "party", units = { player = "WARRIOR", party1 = "MAGE" } })
+    other.Login()
+    Check("uncastable buff is not hidden", other.Shown(), "spell:10157x0/1")
+end
+
 -- Self needs no moving-range ticker; a buff we cannot cast stays dim without a fake range result.
 do
     local solo = Fixture({ settings = { raidBuffs = true, raidBuffRange = true, personalBuffs = false },
