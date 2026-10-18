@@ -61,6 +61,10 @@ local function DisenchantDealsOn()
     return On() and S.Get("disenchantDeals") == true
 end
 
+local function DisenchantDealsTooltipOn()
+    return DisenchantDealsOn() and S.Get("disenchantDealsTooltip") == true
+end
+
 local function ProfessionLine(index)
     if not index then return nil end
     local name, _, rank, maxRank = GetProfessionInfo(index)
@@ -322,5 +326,11 @@ page:Card({
         { key = "disenchantDealsTooltip", label = "Detailed Deal Tooltips", toggle = true,
           needs = DisenchantDealsOn, why = "Needs Disenchant Deals",
           help = "Shows possible materials, expected value, required skill and profit on deal tooltips." },
+        { key = "disenchantDealsTooltipEnchanters", label = "Only On Enchanters", toggle = true,
+          needs = DisenchantDealsTooltipOn, why = "Needs Detailed Deal Tooltips",
+          help = "Only shows detailed deal tooltips on characters that know Enchanting." },
+        { key = "disenchantDealsTooltipAuctionOnly", label = "Only At Auction House", toggle = true,
+          needs = DisenchantDealsTooltipOn, why = "Needs Detailed Deal Tooltips",
+          help = "Only shows detailed deal tooltips while the auction house is open." },
     },
 })

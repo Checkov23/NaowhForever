@@ -25,6 +25,7 @@ local S = ns.UI.ModuleSettings("professions", {
     buyMaterials = F.buyMaterials, buyVendor = F.buyVendor,
     craftROI = F.craftROI, roiGreyBelow = 10, roiGreenFrom = 30,
     disenchant = F.disenchant, disenchantDeals = F.disenchantDeals, disenchantDealsTooltip = false,
+    disenchantDealsTooltipEnchanters = false, disenchantDealsTooltipAuctionOnly = false,
     filterMaterials = false, filterSkillUp = false, filterProfit = false,
     filterNotSelling = false, filterBoE = false, filterBoP = false, filterFavorite = false,
 })

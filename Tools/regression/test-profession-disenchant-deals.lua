@@ -81,6 +81,10 @@ Check("weapon and armor odds remain distinct", Values.Expected(2, 2, 21, prices)
 Check("one possible profitable material is guaranteed", Values.Guaranteed(Values.Outcomes(4, 3, 21), prices, 100))
 Check("multiple outcomes are not called guaranteed when one loses", not Values.Guaranteed(outcomes, prices, 50))
 Check("skill-ups stop at 60", Values.SkillupBand(59) and not Values.SkillupBand(60))
+local tooltipEntry = Deals.TooltipEntry(100)
+Check("an item tooltip can calculate disenchant details without a deal-list job",
+    tooltipEntry and tooltipEntry.gross == 62 and tooltipEntry.scanPrice == 50)
+Check("item tooltip calculations are cached for the current manual scan", Deals.TooltipEntry(100) == tooltipEntry)
 
 Deals.Start()
 local first = Deals.Job()
@@ -176,5 +180,21 @@ Check("the first deal purchase confirmation reflows the shopping list",
     dealsSource:find('confirm:Hide%(%)[\r\n]+%s*confirm:HookScript%("OnShow", QueuePlace%)') ~= nil)
 Check("the deal purchase confirmation names the selected item",
     dealsSource:find("confirm.item:SetText%(ItemLabel%(entry%)%)") ~= nil)
+Check("detailed deal tooltips can be limited to characters that know Enchanting",
+    dealsSource:find('S.Get%("disenchantDealsTooltipEnchanters"%) and not P.Disenchant.Known%(%)') ~= nil)
+Check("detailed deal tooltips can be limited to the open auction house",
+    dealsSource:find('S.Get%("disenchantDealsTooltipAuctionOnly"%) and not AuctionHouseOpen%(%)') ~= nil)
+Check("detailed deal tooltips use the shared item-tooltip processor instead of deal rows",
+    dealsSource:find("TooltipDataProcessor.AddTooltipPostCall", 1, true) ~= nil
+        and dealsSource:find("row.onTooltip = entry, entry.item, nil, nil", 1, true) ~= nil)
+
+local settingsFile = assert(io.open("NaowhForever_Professions/UI/SettingsPage.lua", "rb"))
+local settingsSource = settingsFile:read("*a"); settingsFile:close()
+Check("the Enchanter-only tooltip setting depends on detailed deal tooltips",
+    settingsSource:find('key = "disenchantDealsTooltipEnchanters"') ~= nil
+        and settingsSource:find('needs = DisenchantDealsTooltipOn') ~= nil)
+Check("the auction-only tooltip setting depends on detailed deal tooltips",
+    settingsSource:find('key = "disenchantDealsTooltipAuctionOnly"') ~= nil
+        and settingsSource:find('needs = DisenchantDealsTooltipOn') ~= nil)
 
 print(("test-profession-disenchant-deals: %d checks passed"):format(checks))

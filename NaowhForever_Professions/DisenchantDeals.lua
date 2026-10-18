@@ -19,6 +19,7 @@ local PERCENT = 100
 local PROFESSION_SLOTS = 5
 
 local jobs = {}
+local tooltipCache = {}
 local loadQueue, queued, requested = {}, {}, {}
 local loadHead = 1
 local generation = 0
@@ -27,6 +28,7 @@ local guaranteedOnly = false
 local currentSkillOnly = false
 local active, listener
 local pumpGeneration, sortGeneration
+local tooltipPrices, tooltipScan
 
 local Deals = { MODE_LEVEL = MODE_LEVEL, MODE_PROFIT = MODE_PROFIT }
 P.DisenchantDeals = Deals
@@ -95,22 +97,30 @@ local function Add(job, entry)
     job.dirty = true
 end
 
-local function Evaluate(job, itemID, price)
-    local name, link, quality, baseLevel, _, _, _, _, equip, icon, _, classID = GetItemInfo(itemID)
+local function Entry(itemID, price, prices, whichMode, itemLink)
+    local name, link, quality, baseLevel, _, _, _, _, equip, icon, _, classID = GetItemInfo(itemLink or itemID)
     if not name or not Values.Takes(classID, quality, equip) then return end
     local level = C_Item.GetDetailedItemLevelInfo(link) or baseLevel
     local required = Values.RequiredSkill(level, quality)
-    if job.mode == MODE_LEVEL and not Values.LevelEligible(required, job.skill) then return end
-    local gross, outcomes = Values.Expected(classID, quality, level, job.prices)
-    if not gross then return end
-    local value = Values.AfterCut(gross)
-    local profit = value - price
+    local gross, outcomes = Values.Expected(classID, quality, level, prices)
+    outcomes = outcomes or Values.Outcomes(classID, quality, level)
+    if not outcomes then return end
+    local value = gross and Values.AfterCut(gross)
+    local profit = value and price and value - price
     local entry = {
         item = itemID, name = name, link = link, icon = icon, quality = quality, price = price, scanPrice = price,
-        gross = gross, value = value, profit = profit, roi = profit / price * PERCENT,
-        outcomes = outcomes, required = required, mode = job.mode,
+        gross = gross, value = value, profit = profit, roi = profit and profit / price * PERCENT,
+        outcomes = outcomes, required = required, mode = whichMode, prices = prices,
     }
-    entry.guaranteed = Values.Guaranteed(outcomes, job.prices, price)
+    entry.guaranteed = price and Values.Guaranteed(outcomes, prices, price) or false
+    return entry
+end
+
+local function Evaluate(job, itemID, price)
+    local entry = Entry(itemID, price, job.prices, job.mode)
+    if not (entry and entry.gross) then return end
+    local profit = entry.profit
+    if job.mode == MODE_LEVEL and not Values.LevelEligible(entry.required, job.skill) then return end
     if not job.best or profit > job.best.profit then job.best = entry end
     if job.mode == MODE_PROFIT and profit <= 0 then return end
     Add(job, entry)
@@ -255,6 +265,7 @@ function Deals.SetMode(nextMode)
     if nextMode ~= MODE_LEVEL and nextMode ~= MODE_PROFIT or nextMode == mode then return end
     generation = generation + 1
     active, mode = nil, nextMode
+    wipe(tooltipCache)
     Changed()
 end
 
@@ -410,6 +421,21 @@ end
 function Deals.Prices()
     local job = Deals.Job()
     return job and job.prices
+end
+
+function Deals.TooltipEntry(itemID, itemLink)
+    local prices, scanned = Scan()
+    if not (prices and scanned and itemID) then return end
+    if prices ~= tooltipPrices or scanned ~= tooltipScan then
+        wipe(tooltipCache)
+        tooltipPrices, tooltipScan = prices, scanned
+    end
+    local key = itemLink or itemID
+    local entry = tooltipCache[key]
+    if entry then return entry end
+    entry = Entry(itemID, prices[itemID], prices, mode, itemLink)
+    if entry then tooltipCache[key] = entry end
+    return entry
 end
 
 function Deals.Skill()

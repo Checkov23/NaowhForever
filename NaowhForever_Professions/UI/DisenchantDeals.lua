@@ -102,7 +102,7 @@ local TEXT_CURRENT_SKILL_TIP = ns.L("Only shows profitable items your current En
 local market, events, buy
 local bids = {}
 local page, buyGen = 1, 0
-local hooked = false
+local hooked, tooltipHooked = false, false
 local watched = setmetatable({}, { __mode = "k" })
 local Render, RenderConfirm, Place, SetMode, WatchOpen
 
@@ -138,38 +138,66 @@ local function MaterialLabel(result)
     return ("%s%s  %sx @ %.1f%%"):format(texture, name, quantity, result.chance)
 end
 
-local function AddTooltip(row)
-    local entry = row.entry
-    if not (entry and S.Get("disenchantDealsTooltip")) then return end
-    local prices = Deals.Prices()
-    GameTooltip:AddLine(" ")
-    GameTooltip:AddLine(TEXT_POSSIBLE, T.accent.r, T.accent.g, T.accent.b)
+local function AddTooltip(tooltip, entry)
+    local prices = entry.prices
+    tooltip:AddLine(" ")
+    tooltip:AddLine(TEXT_POSSIBLE, T.accent.r, T.accent.g, T.accent.b)
     for _, result in ipairs(entry.outcomes) do
         local price = prices and prices[result.itemID]
-        GameTooltip:AddDoubleLine(MaterialLabel(result), price and TEXT_EACH:format(Coin(price)) or "?",
+        tooltip:AddDoubleLine(MaterialLabel(result), price and TEXT_EACH:format(Coin(price)) or "?",
             1, 1, 1, 1, 1, 1)
     end
-    GameTooltip:AddLine(" ")
-    GameTooltip:AddDoubleLine(TEXT_EXPECTED_VALUE, Coin(entry.gross), T.accent.r, T.accent.g, T.accent.b, 1, 1, 1)
-    GameTooltip:AddDoubleLine(TEXT_AFTER_CUT, Coin(entry.value), Style.GOLD_RGB.r, Style.GOLD_RGB.g,
-        Style.GOLD_RGB.b, 1, 1, 1)
-    GameTooltip:AddDoubleLine(TEXT_SCAN_PRICE, Coin(entry.scanPrice), Style.GOLD_RGB.r, Style.GOLD_RGB.g,
-        Style.GOLD_RGB.b, 1, 1, 1)
-    local label = entry.profit >= 0 and TEXT_EXPECTED_PROFIT or TEXT_EXPECTED_COST
-    local color = entry.profit >= 0 and Style.PROFIT_RGB or Style.RED_RGB
-    GameTooltip:AddDoubleLine(label, Coin(math.abs(entry.profit)), color.r, color.g, color.b,
-        color.r, color.g, color.b)
-    GameTooltip:AddDoubleLine(TEXT_REQUIRES_ENCHANTING, tostring(entry.required), Style.GOLD_RGB.r,
+    if entry.gross then
+        tooltip:AddLine(" ")
+        tooltip:AddDoubleLine(TEXT_EXPECTED_VALUE, Coin(entry.gross), T.accent.r, T.accent.g, T.accent.b, 1, 1, 1)
+        tooltip:AddDoubleLine(TEXT_AFTER_CUT, Coin(entry.value), Style.GOLD_RGB.r, Style.GOLD_RGB.g,
+            Style.GOLD_RGB.b, 1, 1, 1)
+    end
+    if entry.scanPrice then
+        tooltip:AddDoubleLine(TEXT_SCAN_PRICE, Coin(entry.scanPrice), Style.GOLD_RGB.r, Style.GOLD_RGB.g,
+            Style.GOLD_RGB.b, 1, 1, 1)
+    end
+    if entry.profit then
+        local label = entry.profit >= 0 and TEXT_EXPECTED_PROFIT or TEXT_EXPECTED_COST
+        local color = entry.profit >= 0 and Style.PROFIT_RGB or Style.RED_RGB
+        tooltip:AddDoubleLine(label, Coin(math.abs(entry.profit)), color.r, color.g, color.b,
+            color.r, color.g, color.b)
+    end
+    tooltip:AddDoubleLine(TEXT_REQUIRES_ENCHANTING, tostring(entry.required), Style.GOLD_RGB.r,
         Style.GOLD_RGB.g, Style.GOLD_RGB.b, 1, 1, 1)
     if entry.guaranteed then
-        GameTooltip:AddLine(TEXT_GUARANTEED_SCAN, Style.PROFIT_RGB.r, Style.PROFIT_RGB.g, Style.PROFIT_RGB.b)
+        tooltip:AddLine(TEXT_GUARANTEED_SCAN, Style.PROFIT_RGB.r, Style.PROFIT_RGB.g, Style.PROFIT_RGB.b)
     end
     if entry.mode == Deals.MODE_LEVEL then
         local bands = { guaranteed = TEXT_GUARANTEED_BAND, likely = TEXT_LIKELY_BAND,
             unlikely = TEXT_UNLIKELY_BAND }
-        GameTooltip:AddDoubleLine(TEXT_SKILL_UP, bands[Values.SkillupBand(Deals.Skill())] or TEXT_NONE_BAND,
+        tooltip:AddDoubleLine(TEXT_SKILL_UP, bands[Values.SkillupBand(Deals.Skill())] or TEXT_NONE_BAND,
             Style.GOLD_RGB.r, Style.GOLD_RGB.g, Style.GOLD_RGB.b, 1, 1, 1)
     end
+end
+
+local function TooltipLink(tooltip)
+    if not tooltip.GetItem then return end
+    local link = select(2, tooltip:GetItem())
+    if link and issecretvalue and issecretvalue(link) then return end
+    return link
+end
+
+local function OnItemTooltip(tooltip, data)
+    if not (P.On() and S.Get("disenchantDeals") and S.Get("disenchantDealsTooltip")) then return end
+    if tooltip:IsForbidden() then return end
+    if S.Get("disenchantDealsTooltipEnchanters") and not P.Disenchant.Known() then return end
+    if S.Get("disenchantDealsTooltipAuctionOnly") and not AuctionHouseOpen() then return end
+    local itemID = data and data.id
+    if not itemID or issecretvalue and issecretvalue(itemID) then return end
+    local entry = Deals.TooltipEntry(itemID, TooltipLink(tooltip))
+    if entry then AddTooltip(tooltip, entry) end
+end
+
+local function InstallTooltip()
+    if tooltipHooked or not (P.On() and S.Get("disenchantDeals") and S.Get("disenchantDealsTooltip")) then return end
+    tooltipHooked = true
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, OnItemTooltip)
 end
 
 local function DealText(entry)
@@ -203,7 +231,7 @@ end
 
 local function FillRow(index, entry)
     local row = Popup.Row(market, index, TEXT_BUY, BuyRow, ROW_TOP)
-    row.entry, row.item, row.spell, row.onTooltip = entry, entry.item, nil, AddTooltip
+    row.entry, row.item, row.spell, row.onTooltip = entry, entry.item, nil, nil
     row.icon:SetTexture(entry.icon)
     row.name:SetText(entry.name)
     local color = ITEM_QUALITY_COLORS[entry.quality] or T.fg
@@ -687,6 +715,11 @@ end
 Deals.SetListener(Render)
 S.OnChange(function(key)
     if key == "enabled" or key == "disenchantDeals" then Apply() end
+    if key == "enabled" or key == "disenchantDeals" or key == "disenchantDealsTooltip" then InstallTooltip() end
 end)
-hooksecurefunc(ns, "Apply", Apply)
-Apply()
+local function ApplySettings()
+    Apply()
+    InstallTooltip()
+end
+hooksecurefunc(ns, "Apply", ApplySettings)
+ApplySettings()
