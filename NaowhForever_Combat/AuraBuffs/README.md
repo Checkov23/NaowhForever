@@ -10,7 +10,9 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
   Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
   shows, or hover it to pick another carried item.
   Worn Gear Reminder (off by default) adds an icon while you wear gear with a drawback where it
-  matters (`D.WORN`): Cloak of Hermitic Bliss in Wailing Caverns. Its tooltip is the item's own.
+  matters (`D.WORN`): a fishing pole (Everywhere, or Dungeons & Raids by Fishing Pole Shows In),
+  Cloak of Hermitic Bliss in Wailing Caverns. Its tooltip is the item's own; Ctrl-click hides it
+  until that item comes off.
 - **Campfire:** in two looks on one mover. Round, a camp icon with a time ring and a countdown;
   Simple, a bar in the windows' backdrop with the campfire at its left, the camp's bonuses with
   their amounts, and the time left on the right over a line that runs down green, yellow, then
@@ -206,6 +208,13 @@ NaowhForever_Combat/AuraBuffs/
   is instance ID 43 (`GetInstanceInfo`'s eighth value). Item and effects from Wowhead's Forever
   tooltip, 2026-10-14; not yet checked in the client. It is read on `PLAYER_EQUIPMENT_CHANGED`,
   `ZONE_CHANGED_NEW_AREA` and `PLAYER_ENTERING_WORLD`, registered only while the switch is on.
+- A fishing pole in the main hand reminds anywhere by default (Robin asked for it), or only in
+  dungeons and raids (`fishingPoleWhere`). It is matched by its weapon
+  subclass, `Enum.ItemWeaponSubclass.Fishingpole`, not by item ID or name, so every pole counts in
+  every locale; `GetItemInfoInstant` needs no cached item. Its icon stays up while you fish, so
+  Ctrl-click hides it for that item (`dismissed`, per slot, not saved): a different item there, or
+  `PLAYER_EQUIPMENT_CHANGED` taking it off, shows it again. The click is a `PostClick` on the secure
+  icon, which has no item set for worn gear, so it uses nothing.
 - Hunter's Mark is asked for only with a hostile elite, rare elite or boss targeted, read from the
   target's debuffs; like every reminder it holds what it showed once combat starts.
 - Aspect: any aspect counts, so Cheetah or Pack while travelling does not remind. Another hunter's

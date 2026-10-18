@@ -17,11 +17,13 @@ local HOME_Y = 220
 local CARD = A.PAGE .. ":buffs"
 local TEXT_MOVER = "Buff Reminders"
 local TEXT_WORN = ns.L("You are wearing this.")
+local TEXT_HIDE = ns.L("Ctrl-click to hide it until you take it off.")
 local KEYS = {
     consumableEntries = true, enabled = true, consumablesWhere = true, consumablesMinutes = true,
     onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
     buffIconMode = true, raidBuffRange = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true, wornReminders = true,
+    fishingPoleWhere = true,
     buffsFont = true, buffsFontSize = true, buffsOutline = true,
     buffGlow = true, buffGlowType = true, buffGlowColor = true, buffGlowLines = true, buffGlowThickness = true,
     buffGlowSpeed = true,
@@ -36,6 +38,7 @@ local wakeTimer, wakeDue
 local rangeTicker, rangeList
 local cells = {}
 local events = CreateFrame("Frame")
+local Queue
 
 local function OnCellHide(cell)
     if Menu.OwnedBy(cell) then Menu.Hide() end
@@ -47,6 +50,8 @@ local function OnCellEnter(cell)
     GameTooltip:SetOwner(cell, "ANCHOR_RIGHT")
     GameTooltip:SetInventoryItem("player", cell.slot)
     GameTooltip:AddLine(TEXT_WORN, tip.r, tip.g, tip.b)
+    local muted = ns.THEME.muted
+    GameTooltip:AddLine(TEXT_HIDE, muted.r, muted.g, muted.b)
     GameTooltip:Show()
 end
 
@@ -56,6 +61,13 @@ local function OnCellLeave(cell)
 end
 
 local function OnCellUsed(cell)
+    if cell.slot then
+        if IsControlKeyDown() then
+            R.Dismiss(cell.slot)
+            Queue()
+        end
+        return
+    end
     if cell.itemID then Glow.Press(cell, "buffGlow") end
 end
 
@@ -190,13 +202,13 @@ function Refresh()
     if wakeAt then ArmWake(wakeAt) else StopWake() end
 end
 
-local function Queue()
+function Queue()
     if pending then return end
     pending = true
     C_Timer.After(QUEUE_DELAY, Refresh)
 end
 
-local function OnEvent(_, event, unit, _, spellID)
+local function OnEvent(_, event, unit, arg2, spellID)
     if event == "UNIT_AURA" and (InCombatLockdown() or Secret(unit)
         or not (GROUP_UNIT[unit] or unit == "target" and R.WatchesTarget())) then return end
     if event == "PLAYER_REGEN_DISABLED" then
@@ -206,6 +218,7 @@ local function OnEvent(_, event, unit, _, spellID)
     end
     if event == "PLAYER_REGEN_ENABLED" and held then return Apply() end
     if event == "BAG_UPDATE_DELAYED" or event == "PLAYER_ENTERING_WORLD" then R.ForgetBags() end
+    if event == "PLAYER_EQUIPMENT_CHANGED" and not arg2 then R.Undismiss(unit) end
     if event == "ITEM_DATA_LOAD_RESULT" and not R.Requested(unit) then return end
     if event == "UNIT_SPELLCAST_SUCCEEDED" and (Secret(spellID)
         or not (R.NoteImbueCast(spellID) or R.NoteFoodCast(spellID) or R.NoteUseCast(spellID))) then return end

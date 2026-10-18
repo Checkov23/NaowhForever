@@ -52,7 +52,9 @@ local function Fixture(opts)
         known = opts.known or {},
         shields = opts.shields or {},               -- slot -> true for a shield in that slot
         weapons = opts.weapons or {},               -- slot -> enchant seconds left, false for none
-        worn = opts.worn or {},                     -- slot -> item ID worn there, other than weapons
+        worn = opts.worn or {},                     -- slot -> item ID worn there
+        subclasses = opts.subclasses or {},         -- itemID -> its subclass
+        classes = opts.classes or {},               -- itemID -> its class, when not a weapon
         instanceID = opts.instanceID,               -- GetInstanceInfo's instance ID
         target = opts.target,                       -- nil, or the target's classification
         itemSpells = opts.itemSpells or {},         -- itemID -> use spell, once the item is cached
@@ -109,7 +111,7 @@ local function Fixture(opts)
         raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
-        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false,
+        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false, fishingPoleWhere = "always",
         buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 },
         buffGlowLines = 8, buffGlowThickness = 2, buffGlowSpeed = 5,
     }
@@ -183,7 +185,7 @@ local function Fixture(opts)
             return color
         end }),
         LOCALIZED_CLASS_NAMES_MALE = setmetatable({}, { __index = function(_, class) return class:lower() end }),
-        Enum = { ItemClass = { Weapon = 2 } },
+        Enum = { ItemClass = { Weapon = 2 }, ItemWeaponSubclass = { Fishingpole = 20 } },
         GetTime = function() return state.now end,
         InCombatLockdown = function() return state.combat end,
         IsResting = function() return state.resting end,
@@ -240,8 +242,8 @@ local function Fixture(opts)
                     { hasEnchant = left and true or false, timeLeft = left and left * 1000 or 0 } }
             end,
             GetItemInfoInstant = function(id)
-                local class = state.shields[id - 1000] and 4 or 2
-                return id, nil, nil, nil, nil, class
+                local class = state.classes[id] or state.shields[id - 1000] and 4 or 2
+                return id, nil, nil, nil, nil, class, state.subclasses[id]
             end,
         },
         C_Spell = {
@@ -1462,6 +1464,61 @@ do
     Check("back in Wailing Caverns", t.Shown(), "item:273084")
     t.Set("wornReminders", false)
     Check("switched off", t.Shown(), "")
+end
+
+-- Worn Gear Reminder: any fishing pole in the main hand, anywhere.
+do
+    local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20, [2901] = 14 },
+        settings = { consumableEntries = {} } })
+    t.Login()
+    Check("pole: off by default", t.Shown(), "")
+    t.Set("wornReminders", true)
+    Check("fishing pole worn outside", t.Shown(), "item:6256")
+    t.state.instance, t.state.instanceID = "party", 36
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("and in a dungeon", t.Shown(), "item:6256")
+    t.state.worn[16] = 2901
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
+    t.Advance(0.5)
+    Check("another weapon in its place", t.Shown(), "")
+    t.state.worn[16], t.state.classes[2901], t.state.subclasses[2901] = 2901, 15, 20
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
+    t.Advance(0.5)
+    Check("something not a weapon with a pole's subclass number", t.Shown(), "")
+end
+
+-- The fishing pole: shown only in dungeons and raids when picked, and Ctrl-click hides it until it comes off.
+do
+    local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20 },
+        settings = { consumableEntries = {}, wornReminders = true, fishingPoleWhere = "instance" } })
+    t.Login()
+    Check("pole set to dungeons and raids, out in the world", t.Shown(), "")
+    t.state.instance, t.state.instanceID = "raid", 409
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("and in a raid", t.Shown(), "item:6256")
+    t.Set("fishingPoleWhere", "always")
+    local cell
+    for _, f in ipairs(t.frames) do if rawget(f, "slot") == 16 and f.shown then cell = f end end
+    local ctrl = false
+    t.env.IsControlKeyDown = function() return ctrl end
+    cell.scripts.PostClick(cell)
+    t.Advance(0.5)
+    Check("a plain click keeps it", t.Shown(), "item:6256")
+    ctrl = true
+    cell.scripts.PostClick(cell)
+    t.Advance(0.5)
+    Check("Ctrl-click hides it", t.Shown(), "")
+    t.Fire("ZONE_CHANGED_NEW_AREA")
+    t.Advance(0.5)
+    Check("and it stays hidden while worn", t.Shown(), "")
+    t.state.worn[16] = nil
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, false)
+    t.state.worn[16] = 6256
+    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
+    t.Advance(0.5)
+    Check("taken off and put back on, it shows again", t.Shown(), "item:6256")
 end
 
 -- A class with its own poison reminder does not get the generic one.

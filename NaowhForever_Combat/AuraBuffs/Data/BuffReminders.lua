@@ -49,6 +49,7 @@ for id, name in pairs(D.WEAPON_ICONS) do D.WEAPON_ICONS[id] = ICON_PATH .. name 
 
 D.WORN = {
     { item = 273084, slot = 15, instance = 43 },
+    { weapon = "Fishingpole", slot = 16, where = "fishingPoleWhere" },
 }
 
 D.SCROLLS = {

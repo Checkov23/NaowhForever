@@ -11,7 +11,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     raidBuffs = F.raidBuffs, raidBuffsOwn = true, raidBuffRange = F.raidBuffRange,
     raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
     personalBuffs = F.personalBuffs, personalBuffPicks = {}, weaponEnhancements = F.weaponEnhancements,
-    wornReminders = F.wornReminders,
+    wornReminders = F.wornReminders, fishingPoleWhere = "always",
     classBuffTracker = F.classBuffTracker, classBuffSize = 40,
     classBuffGlow = F.classBuffGlow, classBuffGlowType = "proc",
     classBuffGlowColor = { r = 1, g = 0.82, b = 0.2 },

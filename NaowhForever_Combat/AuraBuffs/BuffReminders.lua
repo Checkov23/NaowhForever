@@ -38,7 +38,7 @@ for _, icon in pairs(D.WEAPON_ICONS) do CLASSIC_WEAPON_ICON[icon] = true end
 
 local buffPool, members, memberCount, classes = {}, {}, 0, {}
 local missingUnits = {}
-local itemBuffs, requested = {}, {}
+local itemBuffs, requested, dismissed = {}, {}, {}
 local carried
 local wellFedName
 local wakeAt
@@ -466,11 +466,29 @@ local function PersonalBuffs(list, buffs)
     end
 end
 
+local function Wearing(worn, id)
+    if worn.item then return id == worn.item end
+    local _, _, _, _, _, class, subclass = C_Item.GetItemInfoInstant(id)
+    return class == Enum.ItemClass.Weapon and subclass == Enum.ItemWeaponSubclass[worn.weapon]
+end
+
+local function WornHere(worn, here)
+    if worn.instance then return worn.instance == here end
+    if worn.where and S.Get(worn.where) == "instance" then
+        local _, kind = IsInInstance()
+        return kind == "party" or kind == "raid"
+    end
+    return true
+end
+
 local function Worn(list)
     local here = select(INSTANCE_ID, GetInstanceInfo())
     for _, worn in ipairs(D.WORN) do
-        if worn.instance == here and GetInventoryItemID("player", worn.slot) == worn.item then
-            list[#list + 1] = { icon = C_Item.GetItemIconByID(worn.item), slot = worn.slot }
+        local slot = worn.slot
+        local id = GetInventoryItemID("player", slot)
+        if dismissed[slot] ~= id then dismissed[slot] = nil end
+        if id and not dismissed[slot] and WornHere(worn, here) and Wearing(worn, id) then
+            list[#list + 1] = { icon = C_Item.GetItemIconByID(id), slot = slot }
         end
     end
 end
@@ -594,6 +612,14 @@ end
 
 function Reminders.Requested(itemID)
     return requested[itemID] == true
+end
+
+function Reminders.Dismiss(slot)
+    dismissed[slot] = GetInventoryItemID("player", slot)
+end
+
+function Reminders.Undismiss(slot)
+    dismissed[slot] = nil
 end
 
 function Reminders.WakeAt()
