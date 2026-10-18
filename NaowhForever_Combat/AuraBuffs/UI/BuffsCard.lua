@@ -35,7 +35,6 @@ local NEEDS_FISHING = ns.L("Needs Fishing Pole Reminder")
 local TEXT_WEAPON = "Weapon Enhancement"
 local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
 local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
-local TEXT_SAMPLE = ns.L("Sample icons: add the consumables to watch in the AuraBuffs window.")
 local TEXT_BLESSINGS = ns.L("Off by default: the Blessings module covers them.")
 
 local PERSONAL, ALL_PERSONAL = {}, {}
@@ -123,21 +122,16 @@ local function PaintPreview(shot, state)
     raidCell:SetShown(raid and true or false)
     Cell.Fit(shot.row, n, size)
     Fit(shot)
-    local note = ""
-    if n == 0 then
-        note = TEXT_NOTHING
-    elseif consumables and #(S.Get("consumableEntries") or {}) == 0 then
-        note = TEXT_SAMPLE
-    end
-    shot.note:SetText(note)
+    shot.note:SetText(n == 0 and TEXT_NOTHING or "")
 end
 
 local function Summary(store)
     local n = #(store.Get("consumableEntries") or {})
-    local parts = { n == 1 and ns.L("1 consumable") or ns.L("%d consumables"):format(n) }
+    local parts = {}
+    if n > 0 then parts[1] = n == 1 and ns.L("1 consumable") or ns.L("%d consumables"):format(n) end
     if store.Get("raidBuffs") then parts[#parts + 1] = ns.L("raid buffs") end
     if store.Get("personalBuffs") and #PERSONAL > 0 then parts[#parts + 1] = ns.L("personal buffs") end
-    return table.concat(parts, ", ")
+    return #parts > 0 and table.concat(parts, ", ") or nil
 end
 
 local function ClassRow(row, family)
