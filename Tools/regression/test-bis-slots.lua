@@ -449,24 +449,6 @@ Case("switching spec swaps the picks but keeps the list's name", function()
     assert(Picks(e, 1) == "103", "fire's picks came back")
 end)
 
-Case("opening a list left on an empty spec shows the spec that has its picks", function()
-    local e = Fixture()
-    assert(e.ns.NewBisList("A"))
-    e.ns.AddBisPick(1, 103)
-    e.ns.SetBisSpec("frost-mage")
-    assert(e.ns.NewBisList("B"))
-    local a = e.ns.BisListChoices()
-    for id, name in pairs(a) do
-        if name == "A" then e.ns.SelectBisList(id) end
-    end
-    assert(Saved(e).name == "A" and Picks(e, 1) == "103", "A opens on fire, with its pick")
-    e.ns.SetBisSpec("frost-mage")
-    for id, name in pairs(e.ns.BisListChoices()) do
-        if name == "B" then e.ns.SelectBisList(id) end
-    end
-    assert(Saved(e).name == "B" and Picks(e, 1) == "", "a list with no picks anywhere stays where it is")
-end)
-
 Case("a moved list whose name is taken gets a free one", function()
     local e = Fixture({ ["Tester-Realm"] = { name = "Raid", slots = {} } })
     e.account.bisLists = { MAGE = { lists = { { id = 1, name = "raid", slots = {}, extra = {} } }, nextID = 2 } }
@@ -510,6 +492,42 @@ Case("picking a class list on a spec's tab stops that tab opening its spec-only 
     e.ns.SetBisSpec("frost-mage")
     e.ns.SetBisSpec("fire-mage")
     assert(Saved(e).name == "My BiS" and Picks(e, 1) == "101", "fire stays on the class list")
+end)
+
+Case("picking a class list keeps the spec tab you are on, even with no picks there", function()
+    local e = Fixture()
+    assert(e.ns.NewBisList("A"))
+    e.ns.AddBisPick(1, 103)
+    e.ns.SetBisSpec("frost-mage")
+    assert(e.ns.NewBisList("B"))
+    e.ns.SelectBisList(Offered(e, "A"))
+    assert(Saved(e).name == "A" and Saved(e).spec == "frost-mage" and Picks(e, 1) == "", "A opens on frost")
+    e.ns.SetBisSpec("fire-mage")
+    assert(Picks(e, 1) == "103", "A's fire pick is still there")
+    e.ns.SelectBisList(Offered(e, "B"))
+    assert(Saved(e).name == "B" and Saved(e).spec == "fire-mage", "B, left on frost, opens on fire")
+end)
+
+Case("leaving a spec-only list for a class list stays on that spec", function()
+    local e = Fixture()
+    e.ns.AddBisPick(1, 101)
+    e.ns.SetBisSpec("frost-mage")
+    assert(e.ns.NewBisList("Frost Only", true))
+    e.ns.SelectBisList(Offered(e, "My BiS"))
+    assert(Saved(e).name == "My BiS" and Saved(e).spec == "frost-mage" and Picks(e, 1) == "", "frost, not fire")
+end)
+
+Case("picking a class list left on another spec keeps that spec's own list", function()
+    local e = Fixture()
+    e.ns.SetBisSpec("fire-mage")
+    assert(e.ns.NewBisList("Raid"))
+    assert(e.ns.NewBisList("Fire AoE", true))
+    e.ns.SetBisSpec("frost-mage")
+    assert(Saved(e).name == "Raid")
+    e.ns.SelectBisList(Offered(e, "My BiS"))
+    assert(Saved(e).name == "My BiS" and Saved(e).spec == "frost-mage", "My BiS, left on fire, opens on frost")
+    e.ns.SetBisSpec("fire-mage")
+    assert(Saved(e).name == "Fire AoE", "fire still opens its own list")
 end)
 
 Case("leaving a spec-only list goes back to the class list used last, not the first", function()

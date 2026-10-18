@@ -208,14 +208,6 @@ local function SwitchSpec(key)
     return SwapPicks(list, key)
 end
 
-local function OpenOnPicks(list)
-    if next(list.slots) or not list.bySpec then return end
-    for _, spec in ipairs(R.ClassSpecs()) do
-        local picks = list.bySpec[spec.key]
-        if picks and next(picks.slots) then return SwitchSpec(spec.key) end
-    end
-end
-
 local function Rebuild()
     lookup = {}
     local list = List()
@@ -359,9 +351,11 @@ function ns.SelectBisList(id)
     local store, account = ClassLists()
     for _, l in ipairs(store.lists) do
         if l.id == id then
-            if was and not SpecOnly(l) then SpecMemory(account, CharKey())[was.key] = nil end
+            if was and not SpecOnly(l) then
+                account.bisActive[CharKey()] = l.id
+                SwapPicks(List(), was.key)
+            end
             Use(l)
-            OpenOnPicks(List())
             return Changed()
         end
     end
