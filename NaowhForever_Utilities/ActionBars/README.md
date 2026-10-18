@@ -107,7 +107,12 @@ Sharing.lua validates the class, slots, action types, byte limits and decode lim
 saving anything. Confirmation creates a uniquely named set and opens the existing preview;
 it never places actions. Applying remains the normal out-of-combat player action.
 Unfilled website slots and keys not assigned by the website build are preserved.
-Keybinds are restricted to known action-button commands and ordinary keyboard/mouse keys. Macro bodies are data only;
+Keybinds are restricted to known action-button commands, with at most two per action (192 total).
+Binding syntax supports punctuation, international characters, named keys, mouse buttons 3-31,
+F1-F24 and general or sided modifiers, including Meta. Modifier order is normalized; legacy
+MINUS/EQUALS names become the native -/= keys. Unknown device-specific names are left to the
+client's SetBinding validation when applied; malformed names, bare modifiers and mouse buttons
+1-2 are rejected. This adds no automatic binding calls or lifecycle work. Macro bodies are data only;
 the preview lets players inspect them before import. No hooks, events or frames are added
 until the player opens the existing window.
 The layout's macro list (`macros`, at most `MAX_MACROS`) is made with the macros on its bars, whether

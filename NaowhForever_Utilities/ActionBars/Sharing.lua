@@ -4,11 +4,15 @@ local ns = _G.NaowhForever
 local A = ns.ActionBars
 local MAX_NAME, MAX_MACRO_NAME, MAX_BODY, MAX_ID = 40, 16, 255, 10000000
 local VERSION, MAX_SUFFIX, MAX_MACROS = 1, 1000, 30
-local MAX_BINDINGS, MAX_KEY = 96, 40
-local FIRST_MOUSE_BUTTON, LAST_MOUSE_BUTTON = 3, 5
-local SPECIAL_KEYS = { MOUSEWHEELUP = true, MOUSEWHEELDOWN = true, SPACE = true, TAB = true,
-    MINUS = true, EQUALS = true }
-local MODIFIERS = { ALT = true, CTRL = true, SHIFT = true }
+local MAX_BINDINGS, MAX_KEY, MAX_KEYS_PER_ACTION = 192, 40, 2
+local MAX_BASE_KEY = 31
+local FIRST_MOUSE_BUTTON, LAST_MOUSE_BUTTON, LAST_FUNCTION_KEY = 3, 31, 24
+local MODIFIER_ORDER = { "LALT", "RALT", "LCTRL", "RCTRL", "LSHIFT", "RSHIFT", "LMETA", "RMETA",
+    "ALT", "CTRL", "SHIFT", "META" }
+local MODIFIERS = {}
+for _, key in ipairs(MODIFIER_ORDER) do MODIFIERS[key] = true end
+local KEY_ALIASES = { MINUS = "-", EQUALS = "=" }
+local IGNORED_KEYS = { UNKNOWN = true, BUTTON1 = true, BUTTON2 = true }
 local PREFIX = "!NFA1!"
 local LIMITS = { maxChars = 100000, maxBytes = 262144, maxDepth = 8, maxValues = 10000 }
 local CLASSES = { [1] = "WARRIOR", [2] = "PALADIN", [3] = "HUNTER", [4] = "ROGUE", [5] = "PRIEST",
@@ -70,25 +74,40 @@ local function ListMacros(input, macros, seen)
 end
 
 local function Key(value)
-    if not Text(value, MAX_KEY) then return false end
-    local rest = value
-    while rest:find("-", 1, true) do
+    if not Text(value, MAX_KEY) or value:find("%s") then return end
+    local rest, modifiers = value:upper(), {}
+    while true do
         local modifier, tail = rest:match("^([A-Z]+)%-(.+)$")
-        if not modifier or not MODIFIERS[modifier] then return false end
+        if not modifier then break end
+        if not MODIFIERS[modifier] or modifiers[modifier] then return end
+        modifiers[modifier] = true
         rest = tail
     end
-    if rest:match("^[A-Z0-9]$") or SPECIAL_KEYS[rest] then return true end
+    rest = KEY_ALIASES[rest] or rest
+    if MODIFIERS[rest] or IGNORED_KEYS[rest] then return end
+    local international = rest:match("^[\194-\244][\128-\191]+$")
+    if not rest:match("^[!-~]$") and not rest:match("^[A-Z][A-Z0-9_]+$") and not international then return end
+    if #rest > MAX_BASE_KEY then return end
     local f = tonumber(rest:match("^F(%d+)$"))
     local mouse = tonumber(rest:match("^BUTTON(%d+)$"))
-    return (f and f >= 1 and f <= A.C.SLOTS_PER_BAR) or (mouse and mouse >= FIRST_MOUSE_BUTTON and mouse <= LAST_MOUSE_BUTTON)
+    if rest:match("^F%d") and (not f or f < 1 or f > LAST_FUNCTION_KEY or rest ~= "F" .. f) then return end
+    if rest:match("^BUTTON") and (not mouse or mouse < FIRST_MOUSE_BUTTON or mouse > LAST_MOUSE_BUTTON
+        or rest ~= "BUTTON" .. mouse) then return end
+    local parts = {}
+    for _, modifier in ipairs(MODIFIER_ORDER) do
+        if modifiers[modifier] then parts[#parts + 1] = modifier end
+    end
+    parts[#parts + 1] = rest
+    return table.concat(parts, "-")
 end
 
 local function Bindings(input)
     if input == nil then return {} end
     if type(input) ~= "table" then return end
-    local bindings, count = {}, 0
+    local bindings, counts, count = {}, {}, 0
     for key, command in pairs(input) do
-        if not Key(key) or type(command) ~= "string" then return end
+        local normalized = Key(key)
+        if not normalized or bindings[normalized] or type(command) ~= "string" then return end
         local prefix, number = command:match("^(.-)(%d+)$")
         local valid = false
         if Integer(tonumber(number), A.C.SLOTS_PER_BAR) then
@@ -97,9 +116,11 @@ local function Bindings(input)
             end
         end
         if not valid then return end
+        counts[command] = (counts[command] or 0) + 1
+        if counts[command] > MAX_KEYS_PER_ACTION then return end
         count = count + 1
         if count > MAX_BINDINGS then return end
-        bindings[key] = command
+        bindings[normalized] = command
     end
     return bindings
 end

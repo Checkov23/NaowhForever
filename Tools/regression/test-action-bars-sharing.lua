@@ -39,6 +39,48 @@ Check("valid name", name == "My bars")
 Check("unfilled keyboard and gamepad slots preserved", set.choices.skip[2] and set.choices.skip[181])
 Check("filled slot imported", not set.choices.skip[1] and set.slots[1].id == 100)
 Check("keybind imported", set.bindings["SHIFT-Q"] == "ACTIONBUTTON1" and set.choices.keys)
+for _, key in ipairs({ "CTRL-[", "CTRL-;", "ALT-\\", "NUMPAD0", "CTRL-NUMPADPLUS", "NUMPADENTER",
+    "ESCAPE", "ENTER", "DELETE", "CTRL-UP", "SHIFT-BUTTON31", "META-F24", "LCTRL-Q", "OEM_102", "\195\137" }) do
+    payload = Valid()
+    payload.bindings = { [key] = "ACTIONBUTTON1", ["ALT-SHIFT-Q"] = "ACTIONBUTTON1" }
+    local imported = select(2, sharing.Decode("!NFA1!test"))
+    Check("extended primary and secondary keys: " .. key, imported and imported.bindings[key] == "ACTIONBUTTON1"
+        and imported.bindings["ALT-SHIFT-Q"] == "ACTIONBUTTON1")
+end
+payload = Valid()
+payload.bindings = { ["shift-ctrl-q"] = "ACTIONBUTTON1", ["CTRL-MINUS"] = "ACTIONBUTTON2" }
+set = select(2, sharing.Decode("!NFA1!test"))
+Check("modifier order and legacy minus normalize", set and set.bindings["CTRL-SHIFT-Q"] == "ACTIONBUTTON1"
+    and set.bindings["CTRL--"] == "ACTIONBUTTON2")
+for _, key in ipairs({ "CTRL-CTRL-Q", "SHIFT", "BUTTON1", "ALT-BUTTON2", "BUTTON32", "BUTTON03", "F0", "F25",
+    "F01", "CTRL-Q Q", "CTRL-|", "CTRL-", "UNKNOWN" }) do
+    payload = Valid(); payload.bindings[key] = "ACTIONBUTTON2"
+    Check("invalid binding syntax: " .. key, sharing.Decode("!NFA1!test") == nil)
+end
+payload = Valid()
+payload.bindings = { Q = "ACTIONBUTTON1", E = "ACTIONBUTTON1", R = "ACTIONBUTTON1" }
+Check("at most two keys per action", sharing.Decode("!NFA1!test") == nil)
+payload.bindings = { ["SHIFT-CTRL-Q"] = "ACTIONBUTTON1", ["CTRL-SHIFT-Q"] = "ACTIONBUTTON2" }
+Check("canonical key collisions rejected", sharing.Decode("!NFA1!test") == nil)
+payload = Valid()
+payload.bindings = {}
+local commands = {}
+for _, bar in ipairs(ns.ActionBars.BARS) do
+    if not commands[bar.button] then
+        commands[bar.button] = true
+        for button = 1, 12 do
+            local ordinal = 0
+            for _ in pairs(payload.bindings) do ordinal = ordinal + 1 end
+            local modifier = ({ "", "ALT-", "CTRL-", "SHIFT-", "ALT-CTRL-", "ALT-SHIFT-", "CTRL-SHIFT-", "ALT-CTRL-SHIFT-" })[math.floor(ordinal / 24) + 1]
+            payload.bindings[modifier .. "F" .. (ordinal % 24 + 1)] = bar.button .. button
+            payload.bindings[modifier .. "F" .. (ordinal % 24 + 2)] = bar.button .. button
+        end
+    end
+end
+set = select(2, sharing.Decode("!NFA1!test"))
+local bound = 0
+for _ in pairs(set and set.bindings or {}) do bound = bound + 1 end
+Check("two keys for all 96 action commands", bound == 192)
 payload = Valid()
 payload.slots[2] = { kind = "macro", name = "Pull", body = "/say pull", icon = 134400, perCharacter = true }
 payload.macros = {
@@ -81,7 +123,7 @@ for _, mutate in ipairs({
     function(p) p.name = "|Hunsafe" end,
     function(p) p.slots = {} end,
     function(p) p.bindings.Q = "RUNSCRIPT" end,
-    function(p) p.bindings["ESCAPE"] = "ACTIONBUTTON1" end,
+    function(p) p.bindings["BUTTON1"] = "ACTIONBUTTON1" end,
     function(p) p.slots[1] = { kind = "macro", name = "bad", body = string.rep("a", 256) } end,
     function(p) p.macros = "Pull" end,
     function(p) p.macros = { { name = "Pull" } } end,
