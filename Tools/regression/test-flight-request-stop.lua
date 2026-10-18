@@ -85,7 +85,7 @@ local function fixture(settings, extra)
         if type(t) == 'string' then t, k, fn = env, t, k end
         local old = t[k]; t[k] = function(...) old(...); fn(...) end
     end
-    for k, v in pairs(extra or {}) do env[k] = v end
+    for k, v in pairs(extra or {}) do env[k], env._G[k] = v, v end
     setmetatable(env, { __index = _G })
     local chunk = assert(loadfile('NaowhForever_QoL/Travel/Flight.lua')); setfenv(chunk, env); chunk()
     function s.fire(event)
@@ -394,6 +394,48 @@ do -- Flight Time on Map: a destination's time joins its tooltip on the flight m
     s.set('flightTimerMapTime', true)
     s.set('flightTimer', false)
     check('the Flight Timer off: no line', hover(2) == nil)
+end
+
+local function settingsPanel()
+    local panel = { shown = false, hooks = {} }
+    function panel:HookScript(k, fn) self.hooks[k] = fn end
+    function panel:IsShown() return self.shown end
+    function panel:Open() self.shown = true; self.hooks.OnShow(self) end
+    function panel:Close() self.shown = false; self.hooks.OnHide(self) end
+    return panel
+end
+local function timer(s) return s.find(function(f) return f.scripts.OnUpdate end) end
+do
+    local panel = settingsPanel()
+    fixture({ flightTimer = false }, { SettingsPanel = panel })
+    check('with the Flight Timer off, the Settings window is not hooked', next(panel.hooks) == nil)
+end
+do
+    local panel = settingsPanel()
+    local s = fixture(nil, { SettingsPanel = panel })
+    check('with the Flight Timer on, the Settings window is hooked', panel.hooks.OnShow and panel.hooks.OnHide)
+    s.board()
+    check('a flight shows the timer', timer(s).shown)
+    panel:Open()
+    check("opening the game's Settings hides the timer", not timer(s).shown)
+    s.set('flightTimerScale', 1.1)
+    check('a setting change does not bring it back over Settings', not timer(s).shown)
+    panel:Close()
+    check('closing Settings mid-flight brings it back', timer(s).shown)
+    panel:Open()
+    s.land()
+    panel:Close()
+    check('closing Settings after landing leaves it hidden', not timer(s).shown)
+end
+do
+    local panel = settingsPanel()
+    local s = fixture({ flightTimer = false }, { SettingsPanel = panel })
+    panel.shown = true
+    s.set('flightTimer', true)
+    s.board()
+    check('turning the timer on with Settings already open keeps it under Settings', not timer(s).shown)
+    panel:Close()
+    check('until Settings closes', timer(s).shown)
 end
 
 print(checks .. ' flight request-stop checks passed')

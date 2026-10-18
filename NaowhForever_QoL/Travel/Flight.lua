@@ -82,6 +82,7 @@ local HIDE_KIND = "notOnFlights"
 local bar, poll, unlocked, Apply, FadeBlizzardStop, StyleText
 local stopFaded = false
 local mapHooked = false
+local settingsHooked, settingsOpen = false, false
 local pending
 local flight
 
@@ -600,6 +601,7 @@ local function Update()
 end
 
 local function Show()
+    if settingsOpen then return end
     Layout()
     Update()
     bar:Show()
@@ -785,12 +787,32 @@ function FadeBlizzardStop()
     MainMenuBarVehicleLeaveButton:EnableMouse(not fade)
 end
 
+local function OnSettingsShow()
+    settingsOpen = true
+    if bar then bar:Hide() end
+end
+
+local function OnSettingsHide()
+    settingsOpen = false
+    if bar and flight and (flight.sample or On()) then Show() end
+end
+
+local function HookSettings()
+    local panel = _G.SettingsPanel
+    if settingsHooked or not panel or not On() then return end
+    settingsHooked = true
+    settingsOpen = panel:IsShown()
+    panel:HookScript("OnShow", OnSettingsShow)
+    panel:HookScript("OnHide", OnSettingsHide)
+end
+
 local SAMPLE = { { name = ns.L("Southshore"), at = 0 }, { name = ns.L("Refuge Pointe"), at = 50 },
     { name = ns.L("Menethil Harbor"), at = 95 }, { name = ns.L("Thelsamar"), at = 150 } }
 
 function Apply()
     MigrateGame()
     HookMap()
+    HookSettings()
     if not bar then Build() end
     bar:SetScale(S.Get("flightTimerScale"))
     Look.Style(bar)
