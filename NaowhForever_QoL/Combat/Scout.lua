@@ -206,7 +206,7 @@ local function AddAbilities(tooltip, list)
             T.muted.r, T.muted.g, T.muted.b)
     end
     if S.Get("scoutHint") then
-        tooltip:AddLine(TEXT_HINT:format(KEY_NAMES[S.Get("scoutKey")]), T.muted.r, T.muted.g, T.muted.b)
+        tooltip:AddLine(TEXT_HINT:format(ns.L(KEY_NAMES[S.Get("scoutKey")])), T.muted.r, T.muted.g, T.muted.b)
     end
 end
 
@@ -348,7 +348,7 @@ local KEY_CHOICE = { KEY_NAMES, { "ctrl", "alt", "shift" } }
 local DETAILS = { { inline = "In the Tooltip", beside = "Beside It" }, { "inline", "beside" } }
 
 local function Summary(store)
-    return TEXT_SUMMARY:format(KEY_NAMES[store.Get("scoutKey")])
+    return TEXT_SUMMARY:format(ns.L(KEY_NAMES[store.Get("scoutKey")]))
 end
 
 ns.Shared.Settings.Page("QoL/Combat", S):Card({
