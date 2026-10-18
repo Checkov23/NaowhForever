@@ -128,7 +128,7 @@ read_globals = {
     "SelectActiveQuest", "SelectAvailableQuest", "SendChatMessage", "SetPortraitTextureFromCreatureDisplayID", "SetBinding", "SetCVar", "SetItemRef", "Spell", "C_Minimap", "GameTooltip_SetTitle",
     "GameTooltip_AddNormalLine",
     "SHARE_QUEST", "ShoppingTooltip1", "ShoppingTooltip2", "SILVER_AMOUNT", "SOUNDKIT",
-    "StaticPopup_FindVisible", "StaticPopup_Hide", "StaticPopup_Show", "StatusTrackingBarInfo",
+    "StaticPopup1", "StaticPopup1Button1", "StaticPopup_FindVisible", "StaticPopup_Hide", "StaticPopup_Show", "StatusTrackingBarInfo",
     "StatusTrackingBarManager", "strlower", "strsplit", "strsub", "strtrim", "strupper",
     "SubZoneTextFrame", "TaxiGetNodeSlot", "TaxiNodeGetType", "TaxiNodeName", "TaxiNodeOnButtonEnter", "TaxiRequestEarlyLanding",
     "TextToSpeech_GetSelectedVoice", "time", "ToggleCalendar", "TomTom",

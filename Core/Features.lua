@@ -25,6 +25,7 @@ ns.FEATURES = {
         gossipAuto = false,
         groupButtons = false,
         freeForAll = false,
+        layerSwap = false,
         combatTimer = false,
         damageMeterSkin = false,
         damageMeterFree = false,

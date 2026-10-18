@@ -19,6 +19,7 @@
     <Script file="Questing\Invites.lua"/>
     <Script file="Questing\GroupButtons.lua"/>
     <Script file="Questing\FreeForAll.lua"/>
+    <Script file="Questing\LayerSwap.lua"/>
     <Script file="Questing\FinderRoles.lua"/>
     <Script file="Loot\LootConfirm.lua"/>
     <Script file="Cursor\CursorClip.lua"/>
