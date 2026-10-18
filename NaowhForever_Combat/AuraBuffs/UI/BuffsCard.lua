@@ -29,6 +29,9 @@ local STATES = {
 local OFF = ns.L("Turn on AuraBuffs")
 local NEEDS_RAID = ns.L("Needs Raid Buff Reminders")
 local NEEDS_PERSONAL = ns.L("Needs Personal Buff Reminders")
+local NEEDS_WEAPON = ns.L("Needs Weapon Enhancement Reminder")
+local TEXT_WEAPON = "Weapon Enhancement"
+local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
 local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
 local TEXT_SAMPLE = ns.L("Sample icons: add the consumables to watch in the AuraBuffs window.")
 local TEXT_BLESSINGS = ns.L("Off by default: the Blessings module covers them.")
@@ -46,6 +49,7 @@ end
 local Enabled = A.Enabled
 local RaidBuffsOn = A.Needs("raidBuffs")
 local PersonalBuffsOn = A.Needs("personalBuffs")
+local WeaponOn = A.Needs("weaponEnhancements")
 
 local function OpenList()
     ns.OpenAuraBuffsWindow("consumables")
@@ -152,6 +156,18 @@ local function PickRow(family)
         end }
 end
 
+local function CarriedRow(category, label, needs, why)
+    return { key = "carriedPicks", field = category, label = label, toggle = true, needs = needs, why = why,
+        help = TEXT_CARRIED,
+        get = function() return R.Carried(category) end,
+        set = function(on)
+            local picks = {}
+            for k, v in pairs(S.Get("carriedPicks")) do picks[k] = v end
+            picks[category] = on
+            S.Set("carriedPicks", picks)
+        end }
+end
+
 local function PersonalRow(family)
     return ClassRow({ key = "personalBuffPicks", field = family.key, label = family.name, toggle = true,
         needs = PersonalBuffsOn, why = NEEDS_PERSONAL, help = family.help,
@@ -170,8 +186,6 @@ local rows = {
     { key = "consumablesMinutes", label = "Warn With Minutes Left", slider = MINUTES_RANGE, unit = " min",
       needs = Enabled, why = OFF,
       help = "A consumable or personal buff with less time than this left counts as missing." },
-    { key = "onlyIfCarried", label = "Only If I Carry One", toggle = true, needs = Enabled, why = OFF,
-      help = "On: any flask, elixir or buff food in your bags reminds you, listed or not; off: even with none." },
     { key = "weaponEnhancements", label = "Weapon Enhancement Reminder", toggle = true, needs = Enabled, why = OFF,
       help = "A reminder when a weapon has no sharpening stone, weightstone or oil on it." },
     { key = "hideResting", label = "Hide While Resting", toggle = true, needs = Enabled, why = OFF,
@@ -180,14 +194,19 @@ local rows = {
       button = EditList,
       help = "Opens the AuraBuffs window, where you add each item by its item ID and buff spell ID.",
       search = "import export" },
-    Group("Raid Buffs"),
-    { key = "raidBuffs", label = "Raid Buff Reminders", toggle = true, needs = Enabled, why = OFF,
-      help = "Missing class buffs in your group, out of combat, with how many are missing them. A camp "
-          .. "buff standing in for one, the Incense Candle for Arcane Intellect for example, is not seen, "
-          .. "so it still counts as missing." },
-    { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggle = true, needs = RaidBuffsOn,
-      why = NEEDS_RAID, help = "Off: every buff a class in your group can cast." },
+    Group("Only If I Carry One"),
 }
+for _, category in ipairs(A.CATEGORY_ORDER) do
+    rows[#rows + 1] = CarriedRow(category, A.CATEGORY_NAMES[category], Enabled, OFF)
+end
+rows[#rows + 1] = CarriedRow("weapon", TEXT_WEAPON, WeaponOn, NEEDS_WEAPON)
+rows[#rows + 1] = Group("Raid Buffs")
+rows[#rows + 1] = { key = "raidBuffs", label = "Raid Buff Reminders", toggle = true, needs = Enabled, why = OFF,
+    help = "Missing class buffs in your group, out of combat, with how many are missing them. A camp "
+        .. "buff standing in for one, the Incense Candle for Arcane Intellect for example, is not seen, "
+        .. "so it still counts as missing." }
+rows[#rows + 1] = { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggle = true, needs = RaidBuffsOn,
+    why = NEEDS_RAID, help = "Off: every buff a class in your group can cast." }
 for _, family in ipairs(D.RAID) do rows[#rows + 1] = PickRow(family) end
 rows[#rows + 1] = Group("Personal Buffs")
 rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", toggle = true, needs = Enabled,

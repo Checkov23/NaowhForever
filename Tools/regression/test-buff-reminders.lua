@@ -103,7 +103,7 @@ local function Fixture(opts)
     local defaults = {
         enabled = true,
         consumablesWhere = "instance", consumablesMinutes = 2,
-        onlyIfCarried = true, hideResting = true,
+        onlyIfCarried = true, carriedPicks = {}, hideResting = true,
         raidBuffs = false, raidBuffsOwn = true, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
@@ -414,6 +414,20 @@ do
     Check("nothing carried", t.Shown(), "")
     t.Set("onlyIfCarried", false)
     Check("not carried, shown anyway", t.Shown(), "item:13931 item:13510 item:13454")
+end
+
+-- Only If I Carry One, per kind: food can remind you with none carried while flasks and elixirs wait for one.
+do
+    local t = Fixture({ instance = "raid", bags = { 2679 } })
+    t.Login()
+    t.Set("carriedPicks", { food = false })
+    Check("food not carried, shown alone", t.Shown(), "item:13931")
+    Check("listening for the food eaten", t.Listening("UNIT_SPELLCAST_SUCCEEDED"), true)
+    t.Set("onlyIfCarried", false)
+    t.Set("carriedPicks", { food = true })
+    Check("old switch off, food kept to carried", t.Shown(), "item:13510 item:13454")
+    t.Set("carriedPicks", {})
+    Check("unset kinds follow the old switch", t.Shown(), "item:13931 item:13510 item:13454")
 end
 
 -- Battle and guardian elixirs remain separate, even while one category is active.
@@ -1237,6 +1251,9 @@ do
     t.Fire("BAG_UPDATE_DELAYED")
     t.Advance(0.5)
     Check("none carried", t.Shown(), "")
+    t.Set("carriedPicks", { weapon = false })
+    Check("none carried, weapon kind off: a rough sharpening stone", t.Shown(), ROUGH)
+    t.Set("carriedPicks", {})
     t.Set("onlyIfCarried", false)
     Check("none carried, switch off: a rough sharpening stone", t.Shown(), "item:13931 item:13510 item:13452 " .. ROUGH)
     t.state.weapons[16] = 1800

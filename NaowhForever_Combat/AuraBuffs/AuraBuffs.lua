@@ -7,7 +7,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     enabled = F.enabled, consumableEntries = {},
     campBuffTextSize = 16, campBuffSide = "right", campShowMissing = true,
     consumablesWhere = "instance", consumablesMinutes = 2,
-    onlyIfCarried = true, hideResting = true,
+    onlyIfCarried = true, carriedPicks = {}, hideResting = true,
     raidBuffs = F.raidBuffs, raidBuffsOwn = true,
     raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
     personalBuffs = F.personalBuffs, personalBuffPicks = {}, weaponEnhancements = F.weaponEnhancements,

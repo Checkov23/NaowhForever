@@ -18,7 +18,7 @@ local TEXT_MOVER = "Buff Reminders"
 local TEXT_WORN = ns.L("You are wearing this.")
 local KEYS = {
     consumableEntries = true, enabled = true, consumablesWhere = true, consumablesMinutes = true,
-    onlyIfCarried = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
+    onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
     buffIconMode = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true, wornReminders = true,
     buffsFont = true, buffsFontSize = true, buffsOutline = true,
@@ -204,7 +204,7 @@ local function Listen()
     if S.Get("personalBuffs") or S.Get("weaponEnhancements") then
         events:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
     end
-    if R.WatchesImbue() or not S.Get("onlyIfCarried") or S.Get("buffIconMode") == "last" then
+    if R.WatchesImbue() or not R.Carried("food") or S.Get("buffIconMode") == "last" then
         events:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
     end
     if S.Get("wornReminders") then

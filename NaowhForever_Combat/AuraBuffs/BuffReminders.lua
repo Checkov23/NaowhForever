@@ -167,7 +167,13 @@ local function Shown(items, last, item)
     return item and ItemIcon(item), item
 end
 
-local function Consumable(list, buffs, group, item, icon, last)
+local function Carried(category)
+    local on = S.Get("carriedPicks")[category]
+    if on == nil then return S.Get("onlyIfCarried") end
+    return on
+end
+
+local function Consumable(list, buffs, group, item, icon, last, onlyCarried)
     local aura = Find(buffs, group.auras) or group.wellFed and WellFed(buffs)
     local left = aura and Left(aura)
     local warn = S.Get("consumablesMinutes") * SECONDS
@@ -175,7 +181,7 @@ local function Consumable(list, buffs, group, item, icon, last)
         if left then Wake(left - warn) end
         return
     end
-    if not item and S.Get("onlyIfCarried") then return end
+    if not item and onlyCarried then return end
     local shown, used = Shown(group.items, last, item)
     list[#list + 1] = { icon = shown or icon, aura = aura, item = used }
 end
@@ -260,8 +266,8 @@ end
 
 local function Consumables(list, buffs)
     local groups = Groups()
-    local onlyCarried = S.Get("onlyIfCarried")
     for _, category in ipairs(CATEGORY_ORDER) do
+        local onlyCarried = Carried(category)
         local group = groups[category]
         local builtIn = not (category == "battle" and groups.guardian) and D.DEFAULT_GROUPS[category]
         if group and builtIn and builtIn.carried then builtIn = nil end
@@ -278,7 +284,7 @@ local function Consumables(list, buffs)
             if category == "food" then
                 icon = ns.AccountSettings().lastFoodIcon or icon or C_Spell.GetSpellTexture(D.WELL_FED[1])
             end
-            Consumable(list, buffs, group, item, icon, LastIcon(category))
+            Consumable(list, buffs, group, item, icon, LastIcon(category), onlyCarried)
             if #list > before then list[#list].items = group.items end
         end
     end
@@ -402,7 +408,7 @@ local function WeaponEnhancement(list)
     local slots = WeaponSlots()
     if #slots == 0 or Enchanted(slots, S.Get("consumablesMinutes") * SECONDS) then return end
     local item = FirstCarried(D.WEAPON_ITEMS)
-    if not item and S.Get("onlyIfCarried") then return end
+    if not item and Carried("weapon") then return end
     local shown, used = Shown(D.WEAPON_ITEMS, LastIcon("weapon"), item)
     list[#list + 1] = { icon = shown or D.WEAPON_ICONS[D.WEAPON_ICON_ITEM], items = D.WEAPON_ITEMS,
         item = used }
@@ -463,6 +469,7 @@ local Reminders = {}
 A.Buffs = Reminders
 
 Reminders.GROUP_UNIT = GROUP_UNIT
+Reminders.Carried = Carried
 Reminders.Left = Left
 Reminders.Picked = Picked
 Reminders.PersonalPicked = PersonalPicked

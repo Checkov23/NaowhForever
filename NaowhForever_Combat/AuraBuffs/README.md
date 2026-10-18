@@ -169,11 +169,14 @@ NaowhForever_Combat/AuraBuffs/
   stat (`raid` on `D.SCROLLS`: Arcane Intellect, Power Word: Fortitude, Divine Spirit), so
   `D.SCROLL_AURAS` counts that buff as the scroll's. Listing a scroll keeps the old rules for that kind: the
   listed entries alone decide, and the built-in scroll group is not used.
+- Only If I Carry One is set per kind (`carriedPicks`: food, flask, scroll, battle, guardian, weapon): Drjay
+  wanted buff food to remind him with none in his bags, without flasks and elixirs showing all the time too. A kind
+  with no pick follows the old single switch (`onlyIfCarried`), so profiles from before keep what they did.
 - Icon (Default or Last Used): Last Used shows the icon of the flask, elixir, scroll or weapon item
   used last (`lastIcons` in the account settings, food's is `lastFoodIcon`), taken from the item whose
   use spell `UNIT_SPELLCAST_SUCCEEDED` reports; a spell no listed or default item uses is ignored, and
   nothing is read in combat. The cast event is listened for only while Last Used is chosen or food
-  needs it (Only If I Carry One off). Icon Size defaults to 48 and goes to 96; a profile that saved a
+  needs it (Only If I Carry One off for food). Icon Size defaults to 48 and goes to 96; a profile that saved a
   size keeps it. The row is sized to its icons and anchored by its centre, so reminders spread left
   and right of the saved spot, and one sits on it.
 - Warn With Minutes Left covers personal buffs too, except a buff no longer than the warning
