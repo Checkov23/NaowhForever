@@ -609,6 +609,40 @@ do
     end
 end
 
+-- Count Filled Slots, Slot Count on the Right and Larger Cheapest Icon: off as before, each changes only its own part.
+do
+    local scrap = { ids = { [3] = true } }
+    scrap.On = function() return true end
+    scrap.IsScrap = function(id) return scrap.ids[id] == true end
+    local t = Fixture({ scrap = scrap, bags = { [0] = Bag(16, { { 3, 2 }, { 1, 3 }, { 4, 2 } }) } })
+    local row = t.buttons.row
+    local first, second = row.cells[1], row.cells[2]
+    local w, h = row.card.w, row.card.h
+    Check("free by default", t.FreeText() .. " " .. row.free.word.text .. " " .. t.ScrapText(), "13/16 free +1")
+    Check("count left, Stack right by default", row.free.point .. " " .. row.stack.point, "TOPLEFT TOPRIGHT")
+    Check("every icon one size by default", first.w == 36 and second.x == 36 + 6, true)
+    t.Set("bagSpaceShowFilled", true)
+    Check("filled: used out of total, the junk sale counting down",
+        t.FreeText() .. " " .. row.free.word.text .. " " .. t.ScrapText(), "3/16 filled -1")
+    t.Set("bagSpaceFreeRight", true)
+    Check("count right, Stack left", row.free.point .. " " .. row.stack.point, "TOPRIGHT TOPLEFT")
+    t.Set("bagSpaceShowFree", false)
+    Check("no count shown: Stack back on the right", row.stack.point, "TOPRIGHT")
+    t.Set("bagSpaceShowFree", true)
+    t.Set("bagSpaceBigCheapest", true)
+    Check("larger: the cheapest a size up, the rest as they were", first.w .. " " .. second.w, "46 36")
+    Check("larger: its near edge where it was", first.x - first.w / 2, -18)
+    Check("larger: the next icon moved over by the difference", second.x, 36 + 6 + 10)
+    Check("larger: the card grows to fit", row.card.w == w + 10 and row.card.h == h + 10, true)
+    t.Set("bagSpaceReverse", true)
+    Check("larger, reversed: the cheapest at the far end", first.x - first.w / 2, 2 * (36 + 6) - 18)
+    Check("larger, reversed: the others keep the anchor", row.cells[3].x, 0)
+    t.Set("bagSpaceGrow", "DOWN")
+    t.Set("bagSpaceReverse", false)
+    Check("larger, down: the next icon below the larger one", row.cells[2].y, -(36 + 3 + 12 + 6) - 10)
+    Check("larger, down: the card as wide as the larger icon", row.card.w >= 46 + 2 * 6, true)
+end
+
 -- Background: the card by default; Soft swaps it for the shared fade with the stronger shadow on
 -- the header and the prices, cells made afterwards too; None shows neither, the icons keep their
 -- edges; and a scan in either makes no garbage.

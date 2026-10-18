@@ -707,6 +707,12 @@ NaowhForever_QoL/
   the gap, the price column and the price font follow it, to a floor, so a small row stays
   compact. At 36 and above nothing changes. Reverse Order only swaps which end the cheapest
   cell takes: the cells fill the same spots, so the card and its anchor do not move.
+- Bag Space's Larger Cheapest Icon draws the cheapest cell about `BIG_SCALE` (1.25) times the Icon
+  Size, the step up Drjay asked for to spot it at a glance. The growth is rounded to an even number,
+  so the centred cell and the card keep whole-pixel edges. Its near edge stays where a plain cell's would be,
+  the cells after it move over by the difference, and the card grows by it across the row. Count
+  Filled Slots shows used out of total, its colour still from the free slots left, and Junk Marker's
+  count as "-N" since selling lowers it. Slot Count on the Right swaps the count and the Stack button.
 - Bag Space's scan reads every bag slot, so its container and item APIs are aliased once and the
   settings a scan reads for every slot are read once at its start. Scan entries are pooled and
   reused; a scan runs after every loot and must not leave tables behind. The row's buttons point

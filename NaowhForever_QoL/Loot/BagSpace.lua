@@ -44,8 +44,10 @@ local PRICE_H = 12
 local PRICE_GAP = 3
 local PRICE_W = 32
 local LOW_SHARE = 0.1
+local BIG_SCALE = 1.25
 local QUEST_RGB = St.CARRIED_RGB
 local FREE_TEXT = ns.L("free")
+local FILLED_TEXT = ns.L("filled")
 local OLD_TIP = (ns.L("Outlevelled: %d or more levels below you")):format(OUTLEVEL)
 local TIP_ICON, TIP_ICON_TINTED = "|A:%s:0:0:0:%d|a ", "|A:%s:0:0:0:%d:%d:%d:%d|a "
 local STACK_TEXT = ns.L("Stack +%d")
@@ -84,10 +86,12 @@ local TEXT = {
     BAG_SPACE = ns.L("Bag Space"),
     BAG = "Bag ",
     BAG_FREE = ns.L("%d/%d free"),
+    BAG_FILLED = ns.L("%d/%d filled"),
     SPECIAL_BAGS = ns.L("Quivers and profession bags are not counted."),
     SCRAP_FREE = ns.L("%d more free after the next vendor sells your marked junk."),
     STACK = "Stack",
     SCRAP = "+",
+    SCRAP_FILLED = "-",
     SUMMARY = ns.L("%d items, %s and below"),
     COMMON = "Common",
 }
@@ -531,11 +535,14 @@ local function StackClicked()
     if not unlocked then StartMerge() end
 end
 
-local function AddBagLine(bag, slots)
+local function AddBagLine(bag, slots, filled)
     local freeSlots, family = GetContainerNumFreeSlots(bag)
     if family ~= PLAIN_BAG then return true end
     local name = C_Container.GetBagName and C_Container.GetBagName(bag) or (TEXT.BAG .. bag)
-    GameTooltip:AddDoubleLine(name, TEXT.BAG_FREE:format(freeSlots or 0, slots), 1, 1, 1, 1, 1, 1)
+    freeSlots = freeSlots or 0
+    local line = filled and TEXT.BAG_FILLED:format(slots - freeSlots, slots)
+        or TEXT.BAG_FREE:format(freeSlots, slots)
+    GameTooltip:AddDoubleLine(name, line, 1, 1, 1, 1, 1, 1)
     return false
 end
 
@@ -543,10 +550,10 @@ local function FreeTooltip(self)
     GameTooltip:SetOwner(self, "ANCHOR_TOP")
     GameTooltip:SetText(TEXT.BAG_SPACE)
     local lastBag = NUM_TOTAL_EQUIPPED_BAG_SLOTS or NUM_BAG_SLOTS
-    local special = false
+    local special, filled = false, S.Get("bagSpaceShowFilled")
     for bag = BACKPACK_CONTAINER, lastBag do
         local slots = GetContainerNumSlots(bag)
-        if slots > 0 and AddBagLine(bag, slots) then special = true end
+        if slots > 0 and AddBagLine(bag, slots, filled) then special = true end
     end
     if special then
         GameTooltip:AddLine(TEXT.SPECIAL_BAGS, T.muted.r, T.muted.g, T.muted.b, true)
@@ -568,7 +575,6 @@ local function NewFreeCounter(parent, live)
     f.text:SetPoint("LEFT", HEAD_ICON + TEXT_GAP, 0)
     f.word = Parts.HudText(ns.Font(f, HEAD_SIZE, nil, T.muted))
     f.word:SetPoint("LEFT", f.text, "RIGHT", TEXT_GAP, 0)
-    f.word:SetText(FREE_TEXT)
     f.scrap = Parts.HudText(ns.Font(f, HEAD_SIZE, nil, T.accentSoft))
     f.scrap:SetPoint("LEFT", f.word, "RIGHT", TEXT_GAP, 0)
     if live then
@@ -584,9 +590,7 @@ local function NewView(view, onClick, onEnter, onStack, live)
     view.backdrop = Parts.HudBackdrop(card, { alpha = CARD_ALPHA })
     view.card = card
     view.free = NewFreeCounter(card, live)
-    view.free:SetPoint("TOPLEFT", PAD, -PAD)
     view.stack = ns.AccentBorder(ns.Button(card, TEXT.STACK, HEAD_H, HEAD_H, onStack))
-    view.stack:SetPoint("TOPRIGHT", -PAD, -PAD)
     view.stack:HookScript("OnEnter", StackTip)
     view.stack:HookScript("OnLeave", GameTooltip_Hide)
     view.stack:Hide()
@@ -621,12 +625,14 @@ local function ShowFree(view, count, slots, scrap)
         f:Hide()
         return 0
     end
+    local filled = S.Get("bagSpaceShowFilled")
     local c = count == 0 and St.RED_RGB or count < slots * LOW_SHARE and St.WARN_RGB or T.fg
     f.text:SetTextColor(c.r, c.g, c.b, 1)
-    f.text:SetText(Parts.Fraction(count, slots))
+    f.text:SetText(Parts.Fraction(filled and slots - count or count, slots))
+    f.word:SetText(filled and FILLED_TEXT or FREE_TEXT)
     local w = view.headIcon + TEXT_GAP + f.text:GetStringWidth() + TEXT_GAP + f.word:GetStringWidth()
     if scrap > 0 then
-        f.scrap:SetText(TEXT.SCRAP .. scrap)
+        f.scrap:SetText((filled and TEXT.SCRAP_FILLED or TEXT.SCRAP) .. scrap)
         w = w + TEXT_GAP + f.scrap:GetStringWidth()
     end
     f.scrap:SetShown(scrap > 0)
@@ -658,9 +664,15 @@ local function Style(view)
     local mode = view.backdrop:SetMode(S.Get("bagSpaceBackground"))
     local font, size, outline = S.Get("bagSpaceFont"), S.Get("bagSpaceFontSize"), S.Get("bagSpaceOutline")
     local iconSize = S.Get("bagSpaceSize")
+    local right = S.Get("bagSpaceShowFree") and S.Get("bagSpaceFreeRight")
     if view.shadow == mode and view.font == font and view.size == size and view.outline == outline
-        and view.iconSize == iconSize then return end
+        and view.iconSize == iconSize and view.freeRight == right then return end
     view.shadow, view.font, view.size, view.outline, view.iconSize = mode, font, size, outline, iconSize
+    view.freeRight = right
+    view.free:ClearAllPoints()
+    view.stack:ClearAllPoints()
+    view.free:SetPoint(right and "TOPRIGHT" or "TOPLEFT", right and -PAD or PAD, -PAD)
+    view.stack:SetPoint(right and "TOPLEFT" or "TOPRIGHT", right and PAD or -PAD, -PAD)
     local scale = size / HEAD_SIZE
     local fit = math.min(1, iconSize / ICON_BASE)
     local price = math.max(PRICE_MIN, Scaled(PRICE_SIZE, scale * fit))
@@ -679,15 +691,18 @@ end
 
 local STEP = { RIGHT = { 1, 0 }, LEFT = { -1, 0 }, UP = { 0, 1 }, DOWN = { 0, -1 } }
 
-local function PlaceCells(view, shown, size, stepX, stepY, prices)
+local function PlaceCells(view, shown, size, stepX, stepY, prices, big, dir)
     local cells, reverse = view.cells, S.Get("bagSpaceReverse")
+    local bigAt = reverse and shown - 1 or 0
     for i = 1, shown do
         local at = reverse and shown - i or i - 1
+        local push = at > bigAt and big or at == bigAt and big / 2 or 0
+        local side = i == 1 and size + big or size
         local b = cells[i] or NewCell(view, i, size)
-        b:SetSize(size, size)
-        Parts.SizeItemMarks(b.marks, size)
+        b:SetSize(side, side)
+        Parts.SizeItemMarks(b.marks, side)
         b:ClearAllPoints()
-        b:SetPoint("CENTER", view, "CENTER", at * stepX, at * stepY)
+        b:SetPoint("CENTER", view, "CENTER", at * stepX + push * dir[1], at * stepY + push * dir[2])
         b.price:SetShown(prices)
         b:Show()
     end
@@ -703,11 +718,17 @@ local function Layout(view, shown, headW)
     local cellH = prices and size + PRICE_GAP + view.priceH or size
     local gap = math.max(GAP_MIN, Scaled(GAP, math.min(1, size / ICON_BASE)))
     local stepX, stepY = (cellW + gap) * dir[1], (cellH + gap) * dir[2]
+    local big = S.Get("bagSpaceBigCheapest") and 2 * Scaled(size, (BIG_SCALE - 1) / 2) or 0
     view:SetSize(size, size)
-    PlaceCells(view, shown, size, stepX, stepY, prices)
-    local spanX, spanY = (shown - 1) * stepX, (shown - 1) * stepY
+    PlaceCells(view, shown, size, stepX, stepY, prices, big, dir)
+    local spanX, spanY = (shown - 1) * stepX + big * dir[1], (shown - 1) * stepY + big * dir[2]
     local left, right = math.min(0, spanX) - cellW / 2, math.max(0, spanX) + cellW / 2
     local top, bottom = math.max(0, spanY) + half, math.min(0, spanY) + half - cellH
+    if dir[2] == 0 then
+        top, bottom = top + big / 2, bottom - big / 2
+    else
+        left, right = math.min(left, -half - big / 2), math.max(right, half + big / 2)
+    end
     local head = headW > 0 and view.headH + HEAD_GAP or 0
     if shown == 0 then
         left, right, top, bottom, head = -half, -half, half, half, view.headH
@@ -1050,6 +1071,10 @@ Settings.Page("QoL/Loot & Items", S):Card({
               .. "slots than the threshold above." },
         { key = "bagSpaceShowFree", label = "Show Free Slots", toggle = true,
           help = "Free bag slots out of your total, above the row. Hover it for each bag." },
+        { key = "bagSpaceShowFilled", label = "Count Filled Slots", toggle = true, needs = "bagSpaceShowFree",
+          help = "Counts the slots you have used instead of the ones still free." },
+        { key = "bagSpaceFreeRight", label = "Slot Count on the Right", toggle = true, needs = "bagSpaceShowFree",
+          help = "Puts the slot count at the top right of the card, and the Stack button at the left." },
         { key = "bagSpaceStack", label = "Offer to Stack", toggle = true,
           help = "A Stack button on the card when part-filled stacks of an item can be combined." },
         { key = "bagSpacePrices", label = "Show Prices", toggle = true,
@@ -1070,6 +1095,8 @@ Settings.Page("QoL/Loot & Items", S):Card({
         { key = "bagSpaceGrow", label = "Direction", choice = DIRECTION },
         { key = "bagSpaceReverse", label = "Reverse Order", toggle = true,
           help = "Puts the cheapest item at the far end of the row instead of next to its anchor." },
+        { key = "bagSpaceBigCheapest", label = "Larger Cheapest Icon", toggle = true,
+          help = "Draws the cheapest item's icon a size up, so it stands out from the rest." },
         Settings.Look("bagSpace", { text = true, size = TEXT_RANGE, background = "card" }),
         Group("Visibility"),
         { key = "bagSpaceHideCombat", label = "Hide in Combat", toggle = true },
