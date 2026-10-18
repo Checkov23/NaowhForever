@@ -206,6 +206,7 @@ local function Purchased(auctionID)
 end
 
 local function PlaceShopping()
+    if P.DisenchantDeals and P.DisenchantDeals.Place then P.DisenchantDeals.Place() end
     if ns.ShoppingListPlace then ns.ShoppingListPlace() end
 end
 
@@ -239,6 +240,7 @@ local function BuildConfirm()
     c.cancel = ns.Button(c, TEXT_CANCEL, BUTTON_W, BUTTON_H, CancelBuy)
     c.cancel:SetPoint("BOTTOMLEFT", c, "BOTTOM", BUTTON_GAP, BUTTON_BOTTOM)
     market.confirm = c
+    c:Hide()
     c:HookScript("OnShow", PlaceShopping)
     c:HookScript("OnHide", PlaceShopping)
 end

@@ -182,6 +182,7 @@ ns.FEATURES = {
         buyMaterials = false,
         buyVendor = false,
         disenchant = false,
+        disenchantDeals = false,
     },
     macros = {
         enabled = true,

@@ -25,6 +25,7 @@ NaowhForever_Professions/
     CooldownRecipes.lua the classic recipes on a cooldown (P.CooldownRecipes)
     ConsumableItems.lua the consumables the Shopping List offers, the stats each is for, each class's stats
                        (P.ConsumableItems)
+    DisenchantValues.lua compact classic-era disenchant outcomes and expected values (P.DisenchantValues)
   Text.lua             money and colour codes as text (P.Text)
   LinkView.lua         another player's profession opened from a trade link, and when it ends (P.Links)
   Recipes.lua          the open profession, reagents, what a recipe makes, bag counts (P.Recipes, ns.ProfWindowAPI)
@@ -44,6 +45,7 @@ NaowhForever_Professions/
   CraftQueue.lua       queued crafts, prerequisites, missing materials and click-driven execution (P.CraftQueue)
   Patterns.lua         favourites at a trainer, and their patterns to buy (P.Patterns, ns.TrainerServiceInfo)
   Disenchant.lua       the bag items Disenchant can take, the ones you keep, the next one (P.Disenchant)
+  DisenchantDeals.lua  resumable auction-scan searches for profitable and low-cost items (P.DisenchantDeals)
   View/
     Style.lua          the module's own look, over Shared/Style.lua (P.Style)
     Widgets.lua        flat checkbox, skill bar, star, count box, Search AH button (P.Widgets)
@@ -73,6 +75,7 @@ NaowhForever_Professions/
     CraftTimer.lua     Total Craft Timer
     GatherTracking.lua the Tracking Reminder
     Disenchant.lua     the Disenchant window and its button on the Enchanting window (ns.ToggleDisenchant)
+    DisenchantDeals.lua Disenchant Deals beside the auction house, with click-confirmed purchases
     SettingsPage.lua   its settings page (Professions/Settings), declared as cards
 ```
 
@@ -354,6 +357,22 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   (`profDisenchantKeep`). Both are account-wide. A copy's GUID is not removed once it is gone; each is
   one short string. Without C_Item.GetItemGUID, right-click keeps every copy.
 - Enchanting's profession ID is 333; the window's Disenchant button shows for your own Enchanting only.
+- Disenchant Deals is a separate opt-in feature. It reads the immutable lowest-buyout map from the
+  last manual Scan Prices; it never starts or repeats an auction scan. Its compact outcome bands are
+  original tables for classic-era Uncommon, Rare and Epic weapons and armor. A deal is omitted when
+  any possible material has no scan price, instead of overstating an incomplete expected value.
+- Profit mode ranks positive expected returns after the 5% auction cut by profit and ROI. It includes
+  every skill level unless For my Enchant Lvl is checked. Guaranteed profit means even the least
+  valuable possible result is worth more than the item. Level Up ranks items the character can disenchant by
+  low cash investment first, keeps only ten visible choices, and shows none at skill 60 or above.
+- Calculations run only after Find Deals, in bounded chunks. Item data loads five at a time; closing
+  the auction house or changing modes pauses at the saved cursor, and the completed results stay
+  cached until Scan Prices changes. Crossing a disenchant skill bracket invalidates only Level Up.
+  The outcome arrays are shared by class, quality and item level instead of allocated per item.
+- Buy searches only the chosen item. Each click buys one current cheapest listing, then rechecks that
+  item, recolours a price increase and reinserts only that row at its new rank. The window registers
+  search, purchase and skill events only while the auction house is open; when disabled it creates no
+  frame, event, hook or timer. Detailed outcome tooltips are another opt-in setting.
 
 ## Checking
 

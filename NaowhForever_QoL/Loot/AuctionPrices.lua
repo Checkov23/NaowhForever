@@ -58,6 +58,11 @@ function ns.AuctionScanTime()
     return house and house.time
 end
 
+function ns.AuctionPriceList()
+    local house = House()
+    return house and house.prices, house and house.time
+end
+
 local function Age(seconds)
     if seconds < SECONDS_PER_HOUR then return math.max(1, math.floor(seconds / SECONDS_PER_MINUTE)) .. MINUTES end
     if seconds < SECONDS_PER_DAY then return math.floor(seconds / SECONDS_PER_HOUR) .. HOURS end

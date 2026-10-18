@@ -34,6 +34,7 @@ local function OnRowEnter(self)
     elseif self.spell then
         GameTooltip:SetSpellByID(self.spell)
     end
+    if self.onTooltip then self.onTooltip(self) end
     GameTooltip:Show()
 end
 
@@ -60,12 +61,12 @@ function Popup.New(title)
     return p
 end
 
-function Popup.Row(p, i, label, onClick)
+function Popup.Row(p, i, label, onClick, top)
     local row = p.rows[i]
     if row then return row end
     row = CreateFrame("Frame", nil, p)
     row:SetSize(Style.POPUP_W - 2 * ROW_X, ROW_H - ROW_SHRINK)
-    row:SetPoint("TOPLEFT", ROW_X, -TOP - (i - 1) * ROW_H)
+    row:SetPoint("TOPLEFT", ROW_X, -(top or TOP) - (i - 1) * ROW_H)
     row:EnableMouse(true)
     row.icon = Widgets.Crop(row:CreateTexture(nil, "ARTWORK"))
     row.icon:SetSize(ROW_H - ICON_SHRINK, ROW_H - ICON_SHRINK)
@@ -86,7 +87,7 @@ function Popup.Row(p, i, label, onClick)
     return row
 end
 
-function Popup.Fit(p, shown, footer)
+function Popup.Fit(p, shown, footer, top)
     for i = shown + 1, #p.rows do p.rows[i]:Hide() end
-    p:SetHeight(TOP + shown * ROW_H + (footer and FOOTER_H or BARE_FOOTER))
+    p:SetHeight((top or TOP) + shown * ROW_H + (footer and FOOTER_H or BARE_FOOTER))
 end

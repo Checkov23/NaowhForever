@@ -13,7 +13,7 @@ local CRAFT_STAGE_H = 100
 local TIP_RANGE, ICON_RANGE, TEXT_RANGE = { 0, 50, 1 }, { 24, 80, 1 }, ns.Shared.Style.HUD_TEXT_RANGE
 local ROI_RANGE = { 0, 100, 1 }
 local ORDER_RECIPES, ORDER_ORDERS, ORDER_CRAFT_TIMER, ORDER_BUYING, ORDER_GATHER = 10, 20, 30, 40, 50
-local ORDER_DISENCHANT = 60
+local ORDER_DISENCHANT, ORDER_DISENCHANT_DEALS = 60, 70
 local SAMPLE_ICON = "Interface\\Icons\\INV_Ingot_02"
 local SAMPLE_NAME, SAMPLE_DONE, SAMPLE_COUNT = ns.L("Smelt Copper"), 4, 10
 local SAMPLE_SHARE, SAMPLE_LEFT = 0.4, 15
@@ -55,6 +55,10 @@ end
 
 local function ShoppingOn()
     return On() and S.Get("shoppingList") == true
+end
+
+local function DisenchantDealsOn()
+    return On() and S.Get("disenchantDeals") == true
 end
 
 local function ProfessionLine(index)
@@ -307,4 +311,16 @@ page:Card({
         .. "character, until you right-click it again. Disenchant All disenchants the rest one by one, one item "
         .. "per click, as the game asks a click for every disenchant. An item the game will not take (skill too low) is skipped until you reload. "
         .. "Closes when combat starts.",
+})
+
+page:Card({
+    id = "disenchantDeals", name = "Disenchant Deals", order = ORDER_DISENCHANT_DEALS,
+    switch = "disenchantDeals",
+    help = "Finds profitable or low-cost disenchant purchases from your last Scan Prices.",
+    search = "auction house enchanting profit level skill expected value guaranteed ROI",
+    rows = {
+        { key = "disenchantDealsTooltip", label = "Detailed Deal Tooltips", toggle = true,
+          needs = DisenchantDealsOn, why = "Needs Disenchant Deals",
+          help = "Shows possible materials, expected value, required skill and profit on deal tooltips." },
+    },
 })

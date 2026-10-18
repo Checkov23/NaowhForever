@@ -348,10 +348,15 @@ end
 function ns.ShoppingListPlace()
     if not panel then return end
     local ah = _G.AuctionHouseFrame
-    local market, confirm
+    local market, confirm, deals, dealConfirm
     if ns.FavoritePatternsFrames then market, confirm = ns.FavoritePatternsFrames() end
+    if P.DisenchantDeals and P.DisenchantDeals.Frames then deals, dealConfirm = P.DisenchantDeals.Frames() end
     panel:ClearAllPoints()
-    if confirm and confirm:IsVisible() then
+    if dealConfirm and dealConfirm:IsVisible() then
+        panel:SetPoint("TOPLEFT", dealConfirm, "BOTTOMLEFT", 0, -PANEL_GAP)
+    elseif deals and deals:IsVisible() then
+        panel:SetPoint("TOPLEFT", deals, "BOTTOMLEFT", 0, -PANEL_GAP)
+    elseif confirm and confirm:IsVisible() then
         panel:SetPoint("TOPLEFT", confirm, "BOTTOMLEFT", 0, -PANEL_GAP)
     elseif market and market:IsVisible() then
         panel:SetPoint("TOPLEFT", market, "BOTTOMLEFT", 0, -PANEL_GAP)
