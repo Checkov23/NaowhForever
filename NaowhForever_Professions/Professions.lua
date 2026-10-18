@@ -37,6 +37,35 @@ local P = {
 }
 ns.Professions = P
 
+local temporary = {}
+
+local function LegacyKey()
+    local name, realm = UnitName("player"), GetRealmName()
+    if not name or name == _G.UNKNOWNOBJECT or not realm then return end
+    return name .. "-" .. realm
+end
+
+function P.CharacterData(store, create)
+    local mine = ns.Shared.CharacterData(store)
+    if mine then return mine, false, false end
+    if not UnitGUID("player") then
+        if not create then return end
+        temporary[store] = temporary[store] or {}
+        return temporary[store]
+    end
+    local all = ns.AccountSettings()[store]
+    local legacyKey = LegacyKey()
+    local legacy = type(all) == "table" and legacyKey and all[legacyKey]
+    if type(legacy) ~= "table" and not create then return end
+    mine = ns.Shared.CharacterData(store, true)
+    if not mine then return end
+    local migrated = type(legacy) == "table"
+    if migrated then
+        for key, value in pairs(CopyTable(legacy)) do mine[key] = value end
+    end
+    return mine, true, migrated
+end
+
 function P.On()
     return S.Get("enabled")
 end

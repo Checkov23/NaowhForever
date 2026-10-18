@@ -149,7 +149,7 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   The list redraws on a Shopping List change only while the window is open: `/nf shopping` can
   change the list before the recipe window was ever built.
 - Your Auctions is opt-in. It reads the owner list only while the auction house is open, keeps the
-  latest active item quantities under the character's name and realm, as the Shopping List does, and
+  latest active item quantities under the character's GUID, as the Shopping List does, and
   builds row markers only when needed. It asks for the owner list on opening the auction house and
   after a post, but not after a cancel: the Auctions tab already asks again then, with the player's
   sort, and its OWNED_AUCTIONS_UPDATED is read like any other.
@@ -159,12 +159,11 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   short of Create, hence the Buy row's 4 overhang.
 - Bind on Equip also counts items that never bind (bindType 0): on the beta much crafted gear does not
   bind and still sells on the auction house.
-- Favourites are kept per character by spell ID, which is also a known recipe's recipeID. A known one
+- Favourites are kept per character GUID by spell ID, which is also a known recipe's recipeID. A known one
   is told to the game too, so Blizzard's own favourites count; an unlearned one lives in the account
-  store under that character's name and realm. Each character starts from the former profile-wide
+  store under that character's GUID. Each character starts from the former profile-wide
   list the first time it loads, and that list stays in the profile for the others. Favourites and the
-  crafting queue are empty and unsaved while the game still names the player Unknown; once it names
-  them, the name and realm key is kept, as the favourite filter asks for it once per recipe.
+  crafting queue are empty and unsaved until the game knows the player's GUID.
 - Prices: a reagent costs its vendor price once a merchant was seen selling it, else the lowest buyout
   at the last scan; the auction house keeps 5% of a sale. Profit is cached per recipe until the next
   full draw, so scrolling and the filter do not price every recipe again. Reagents unchecked in the
@@ -232,7 +231,7 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   Shopping List. Start Queue only selects the next ready entry, and each Craft Next hardware click starts
   one batch because Blizzard does not allow automated profession opening or unattended crafting. The
   window stays open when the profession window closes.
-- Queue rows can be dragged within their section. Their order is kept with that character's queue, while
+- Queue rows can be dragged within their section. Their order is kept with that character's GUID, while
   prerequisite crafts always remain ahead of regular crafts.
   The drop target is the row under the cursor when the drag stops (`GetMouseFoci`): the dragged row keeps
   the mouse, so other rows get no OnEnter during a drag. Reordering while a craft is prepared but not
@@ -245,6 +244,10 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   count on top of the queue's, and X takes the row off, the queued craft included. The next entry is
   selected only when its own profession is open; otherwise the open profession keeps its selection and
   the queue waits on Open First. The `ns.Apply` hook acts only when the queue turns on or off.
+- Character profession state uses `Shared.CharacterData`: Forever surnames let two characters share a
+  first name, so name and realm are not unique. A former name-and-realm table is copied once when each
+  GUID first uses it, then the GUID copies change independently; the legacy table stays for characters
+  that have not logged in since the migration.
 - The Consumables picker offers the Well Fed food, flasks, elixirs and stat scrolls of Naowh's consumables
   list (the one in his profile, from Wowhead Forever), the Buff Reminders' weapon stones and oils, the
   healing and mana potions in `Shared/Game/Consumables.lua` and the Smart Macros' bandages. Plain food and

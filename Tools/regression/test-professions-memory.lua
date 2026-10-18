@@ -298,7 +298,19 @@ local account = {}
 local ns, logoPage, launcher
 ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
     RegisterMinimapFeature = function(feature) launcher = feature end,
-    Shared = { Style = dofile("Tools/regression/shared_style.lua"), Parts = { Logo = function(parent, page) logoPage = page; return Widget(parent) end }, Settings = {
+    Shared = { CharacterData = function(key, create)
+        local all = account[key]
+        if type(all) ~= "table" then
+            if not create then return end
+            all = {}
+            account[key] = all
+        end
+        if type(all["Player-1-SELF"]) ~= "table" then
+            if not create then return end
+            all["Player-1-SELF"] = {}
+        end
+        return all["Player-1-SELF"]
+    end, Style = dofile("Tools/regression/shared_style.lua"), Parts = { Logo = function(parent, page) logoPage = page; return Widget(parent) end }, Settings = {
         Group = function() return {} end, Look = function() return {} end,
         Page = function() return { Window = Noop, Card = Noop } end } },
     THEME = { accent = { r = 0, g = 0.57, b = 0.93 }, muted = { r = 0.6, g = 0.6, b = 0.6 },
@@ -501,7 +513,7 @@ for i = LEARNED_N + 1, #recipes do
     end
 end
 db.craftFavorites = favorites
-account.profShopping = { ["Tester-Realm"] = {
+account.profShopping = { ["Player-1-SELF"] = {
     [recipes[1].spell] = { name = "Recipe 1", icon = 1, count = 2,
         need = { [BROKEN] = 1, [REAGENTS[3]] = 2, [REAGENTS[4]] = 3, [REAGENTS[9]] = 1 } },
 } }
@@ -573,7 +585,7 @@ settings.recipeAvailability = true
 local bagReads = calls.GetContainerItemInfo
 check("availability marks render", pcall(ns.Professions.List.Render))
 check("availability marks scan bags once", calls.GetContainerItemInfo - bagReads <= 80)
-local shopping = account.profShopping["Tester-Realm"]
+local shopping = account.profShopping["Player-1-SELF"]
 local savedCraft = shopping[recipes[1].spell]
 shopping[recipes[1].spell] = false
 check("a legacy false shopping entry is ignored", pcall(ns.Professions.List.Render))

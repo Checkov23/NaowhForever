@@ -15,7 +15,6 @@ local OWNED_SORT = { { sortOrder = Enum.AuctionHouseSortOrder.Price, reverseSort
 local EVENTS = { "AUCTION_HOUSE_SHOW", "AUCTION_HOUSE_CLOSED", "OWNED_AUCTIONS_UPDATED",
     "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" }
 local SETTING_KEYS = { enabled = true, ownedAuctions = true }
-local TEXT_UNKNOWN = "?"
 
 local events
 local open, wanted = false, false
@@ -28,22 +27,9 @@ local function On()
 end
 
 local function Saved(create)
-    local key = (UnitName("player") or TEXT_UNKNOWN) .. "-" .. (GetRealmName() or TEXT_UNKNOWN)
-    local account = ns.AccountSettings()
-    local characters = account.profOwnedAuctions
-    if type(characters) ~= "table" then
-        if not create then return end
-        characters = {}
-        account.profOwnedAuctions = characters
-    end
-    local saved = characters[key]
-    if type(saved) ~= "table" then
-        if not create then return end
-        saved = { counts = {} }
-        characters[key] = saved
-    elseif type(saved.counts) ~= "table" then
-        saved.counts = {}
-    end
+    local saved = P.CharacterData("profOwnedAuctions", create)
+    if not saved then return end
+    if type(saved.counts) ~= "table" then saved.counts = {} end
     return saved
 end
 

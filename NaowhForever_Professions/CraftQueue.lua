@@ -30,7 +30,6 @@ P.CraftQueue = Queue
 
 local running, active
 local runID = 0
-local ownerKey
 local events
 local hooked = false
 local applied
@@ -45,18 +44,8 @@ local function ShoppingOn()
 end
 
 local function Mine()
-    if not ownerKey then
-        local name, realm = UnitName("player"), GetRealmName()
-        if not name or name == _G.UNKNOWNOBJECT or not realm then return { prerequisites = {}, crafts = {} } end
-        ownerKey = name .. "-" .. realm
-    end
-    local account = ns.AccountSettings()
-    if type(account.profCraftQueue) ~= "table" then account.profCraftQueue = {} end
-    local mine = account.profCraftQueue[ownerKey]
-    if type(mine) ~= "table" then
-        mine = { prerequisites = {}, crafts = {} }
-        account.profCraftQueue[ownerKey] = mine
-    end
+    local mine = P.CharacterData("profCraftQueue", true)
+    if not mine then return { prerequisites = {}, crafts = {} } end
     if type(mine.prerequisites) ~= "table" then mine.prerequisites = {} end
     if type(mine.crafts) ~= "table" then mine.crafts = {} end
     return mine

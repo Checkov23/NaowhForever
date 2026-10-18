@@ -78,8 +78,17 @@ widgetMeta.__index = function(_, k) return methods[k] or (k:match("^%u") and Noo
 
 local function NewEnv(withModules)
     local account, levels, timers, profile = {}, {}, {}, {}
+    local function CharacterData(store, create)
+        account[store] = account[store] or {}
+        local mine = account[store]["Player-Grim"]
+        if mine or not create then return mine end
+        mine = {}
+        account[store]["Player-Grim"] = mine
+        return mine, true, false
+    end
     local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Lower = string.lower,
-        Professions = { Settings = { DB = function() return profile end, Get = function() return false end } },
+        Professions = { CharacterData = CharacterData,
+            Settings = { DB = function() return profile end, Get = function() return false end } },
         THEME = { muted = {} },
         HEALING_POTIONS = { 13446, 3928, 929, 118 },
         MANA_POTIONS = { 13444, 6149, 2455 },

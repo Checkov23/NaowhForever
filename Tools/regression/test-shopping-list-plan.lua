@@ -15,8 +15,18 @@ local recipes, cooldownBase, cooldownLeft, dayCooldown = {}, {}, {}, {}
 local ALCHEMY, MINING, TAILORING = 171, 186, 197
 local openProf, myLines = ALCHEMY, { ALCHEMY, MINING }
 local playerName = "Grim"
+local playerGUID = "Player-Grim"
+local function CharacterData(store, create)
+    account[store] = account[store] or {}
+    local mine = account[store][playerGUID]
+    if mine or not create then return mine end
+    mine = {}
+    account[store][playerGUID] = mine
+    return mine, true, false
+end
 local env = {
     UnitName = function() return playerName end,
+    UnitGUID = function() return playerGUID end,
     GetRealmName = function() return "Realm" end,
     wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
     C_Item = { GetItemNameByID = function(id) return "item" .. id end, RequestLoadItemDataByID = function() end },
@@ -31,7 +41,8 @@ local env = {
         GetBaseProfessionInfo = function() return { professionID = openProf } end,
     },
     NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
-        Professions = { Settings = { Get = function(key) return profSettings[key] end } },
+        Professions = { CharacterData = CharacterData,
+            Settings = { Get = function(key) return profSettings[key] end } },
         AccountSettings = function() return account end,
         AuctionPrice = function(item) return prices[item] end,
         Print = function() end,
@@ -81,11 +92,11 @@ end
 local function Empty(t) return next(t) == nil end
 
 Craft(9, { [ORE] = 1 })
-playerName = "Alt"
+playerName, playerGUID = "Alt", "Player-Alt"
 check("another character starts with an empty Shopping List", Empty(SL.List()))
 Craft(8, { [BAR] = 1 })
 check("the second character has an independent Shopping List", SL.List()[8] and not SL.List()[9])
-playerName = "Grim"
+playerName, playerGUID = "Grim", "Player-Grim"
 check("switching back restores the first character's Shopping List", SL.List()[9] and not SL.List()[8])
 SL.Clear()
 

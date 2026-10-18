@@ -10,6 +10,16 @@ local applyHooks = {}
 local frames, registry, timers = {}, {}, {}
 local owned, queries, refreshes = {}, 0, 0
 local player = "Alpha"
+local playerGUID = "Player-Alpha"
+
+local function CharacterData(store, create)
+    account[store] = account[store] or {}
+    local mine = account[store][playerGUID]
+    if mine or not create then return mine end
+    mine = {}
+    account[store][playerGUID] = mine
+    return mine
+end
 
 local frameMethods = {}
 function frameMethods:RegisterEvent(event)
@@ -56,6 +66,7 @@ local ns = {
             return S
         end,
     },
+    Shared = { CharacterData = CharacterData },
     AccountSettings = function() return account end,
     Apply = Noop,
 }
@@ -64,6 +75,7 @@ local env = setmetatable({
     NaowhForever = ns,
     Enum = { AuctionStatus = { Active = 0 }, AuctionHouseSortOrder = { Price = 0 } },
     UnitName = function() return player end,
+    UnitGUID = function() return playerGUID end,
     GetRealmName = function() return "Realm" end,
     CreateFrame = function()
         local frame = setmetatable({ scripts = {} }, { __index = frameMethods })
@@ -116,7 +128,7 @@ Fire("OWNED_AUCTIONS_UPDATED")
 Check("active quantities are combined and inactive auctions ignored",
     P.Auctions.Count(100) == 5 and P.Auctions.Count(200) == 0)
 Check("a complete list marks the cache ready and refreshes the window", P.Auctions.Ready() and refreshes == 1)
-Check("counts are saved under the character's name and realm", account.profOwnedAuctions["Alpha-Realm"].counts[100] == 5)
+Check("counts are saved under the character's GUID", account.profOwnedAuctions["Player-Alpha"].counts[100] == 5)
 
 Fire("AUCTION_CANCELED")
 Check("a cancel sends no query of its own", queries == 1 and #timers == 0)
@@ -147,9 +159,9 @@ S.Set("filterProfit", true)
 Check("Not Selling combines with Profitable", P.Filters.Passes({ recipeID = 3, relativeDifficulty = 1 }, {})
     and not P.Filters.Passes({ recipeID = 2, relativeDifficulty = 1 }, {}))
 
-player = "Beta"
+player, playerGUID = "Beta", "Player-Beta"
 Check("auction counts do not leak to another character", P.Auctions.Count(100) == 0 and not P.Auctions.Ready())
-player = "Alpha"
+player, playerGUID = "Alpha", "Player-Alpha"
 Check("returning to the character restores its cache", P.Auctions.Count(100) == 2 and P.Auctions.Ready())
 
 S.Set("ownedAuctions", false)

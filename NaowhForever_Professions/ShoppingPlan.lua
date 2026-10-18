@@ -8,7 +8,6 @@ local Text = P.Text
 local MAX_DEPTH = 4
 local SKILL_LINE_INDEX = C.SKILL_LINE_INDEX
 local NO_ITEM = 0
-local TEXT_UNKNOWN = "?"
 local TEXT_ITEM = ns.L("item ")
 local TEXT_ADDED = ns.L("Shopping list: %s for %d %s (%s).")
 local TEXT_CRAFT, TEXT_CRAFTS = ns.L("craft"), ns.L("crafts")
@@ -40,11 +39,7 @@ local function ItemName(item)
 end
 
 local function Mine(name)
-    local account = ns.AccountSettings()
-    if type(account[name]) ~= "table" then account[name] = {} end
-    local key = (UnitName("player") or TEXT_UNKNOWN) .. "-" .. (GetRealmName() or TEXT_UNKNOWN)
-    account[name][key] = account[name][key] or {}
-    return account[name][key]
+    return P.CharacterData(name, true) or {}
 end
 
 local function List()

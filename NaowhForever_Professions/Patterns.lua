@@ -10,7 +10,6 @@ local ICON_MIN_ID = 1000
 local SECONDS_PER_DAY = 86400
 local BOUGHT_KEEP = 30 * SECONDS_PER_DAY
 local SKILL_LINE_INDEX = P.C.SKILL_LINE_INDEX
-local TEXT_UNKNOWN = "?"
 
 local NONE = {}
 local mine, patterns, patternPool = {}, {}, {}
@@ -87,11 +86,7 @@ local function Learn(offers)
 end
 
 local function Bought()
-    local account = ns.AccountSettings()
-    if type(account.profBoughtPatterns) ~= "table" then account.profBoughtPatterns = {} end
-    local key = (UnitName("player") or TEXT_UNKNOWN) .. "-" .. (GetRealmName() or TEXT_UNKNOWN)
-    account.profBoughtPatterns[key] = account.profBoughtPatterns[key] or {}
-    return account.profBoughtPatterns[key]
+    return P.CharacterData("profBoughtPatterns", true) or {}
 end
 
 local function Owned(item)

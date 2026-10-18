@@ -26,7 +26,6 @@ local TEXT_READY = ns.L("%s is ready for %s%s|r. %s%s. Open %s for a waypoint.")
 local TEXT_FROM = ns.L(" from ")
 local TEXT_NONE_READY = ns.L("No profession is ready for its next rank yet.")
 
-local charKey
 local gathered = {}
 local queued = false
 local events = CreateFrame("Frame")
@@ -36,11 +35,7 @@ local function On()
 end
 
 local function Announced()
-    local account = ns.AccountSettings()
-    account.profRankAlerted = account.profRankAlerted or {}
-    charKey = charKey or UnitName("player") .. "-" .. GetRealmName()
-    account.profRankAlerted[charKey] = account.profRankAlerted[charKey] or {}
-    return account.profRankAlerted[charKey]
+    return P.CharacterData("profRankAlerted", true) or {}
 end
 
 local function GatheringTrainers(title)
