@@ -122,7 +122,7 @@ def main():
                          "dungeon": sort > 0 and sort not in ZONE_MAP}
 
     OUT.write_text(json.dumps({"cmangos": dungeon_quests.COMMIT, "build": wago.BUILD, "quests": out},
-                              indent=1, sort_keys=True) + "\n", encoding="utf-8")
+                              indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\r\n")
     kinds = Counter("dungeon" if d["dungeon"] else "other" for d in out.values())
     print(f"wrote {OUT.relative_to(paths.ROOT)}: {len(out)} quests ({kinds['dungeon']} dungeon, {kinds['other']} other)")
     for reason, n in skipped.most_common():
