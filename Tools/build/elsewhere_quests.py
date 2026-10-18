@@ -9,8 +9,8 @@ Tools/build/dungeon_quests.py only the Journal's. This adds the rest from what a
   quest with a giver, kept only if Forever's client has it (wago.tools' QuestV2).
 - Where: the start on the quest's own Wowhead Forever page, else the giver's spot from another
   quest it gives. Both are kept in Tools/data/completo_quests.json, the same cache
-  completo_quests.py fills; a quest whose giver has no spot there has its own page fetched, at
-  completo_quests.py's pace. The first page that fails stops the fetching, so a run Wowhead turns
+  completo_quests.py fills; a quest whose giver has no spot there has its own page fetched, one
+  every GAP seconds. The first page that fails stops the fetching, so a run Wowhead turns
   away ends there and the next one goes on. A quest with no spot either way is left out:
   CMaNGOS's spawn positions cannot tell which zone's map a giver near a border is on.
 - Holiday and event quests (seasonal, Darkmoon Faire, the Ahn'Qiraj War) are left out, as are
@@ -40,6 +40,8 @@ OUT = paths.DATA / "completo_elsewhere.json"
 QUESTS = paths.DATA / "completo_quests.json"
 ZONES = paths.DATA / "completo_zones.json"
 DUNGEON = paths.DATA / "completo_dungeon.json"
+# Twice completo_quests.py's gap, for the runs on GitHub's runners.
+GAP = 8
 # The quest sorts (QuestSort) kept: the classes, and the few that are neither holiday, event nor
 # profession.
 KEPT_SORTS = {"Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid",
@@ -102,7 +104,7 @@ def main():
             completo_quests.save(QUESTS, pages)
             if n % 50 == 0:
                 print(f"  {n}/{len(todo)}")
-            time.sleep(completo_quests.GAP)
+            time.sleep(GAP)
         spots = giver_spots()
 
     out = {}

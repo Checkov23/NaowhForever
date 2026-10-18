@@ -2,7 +2,7 @@ name: elsewhere-pages
 
 # On demand: reads Wowhead Forever's page of every class, dungeon and battleground quest whose giver
 # has no spot in our data yet, with Tools/build/elsewhere_quests.py, builds the Quest List's data
-# and opens a pull request with it. Wowhead is read one page at a time at completo_quests.py's pace,
+# and opens a pull request with it. Wowhead is read one page at a time at elsewhere_quests.py's pace,
 # and the first page that fails stops the reading. The pages read are kept in
 # Tools/data/completo_quests.json as they come, so a run cut short still brings what it read, and
 # the next run starts where it stopped.
