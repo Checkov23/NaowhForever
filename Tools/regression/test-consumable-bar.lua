@@ -289,6 +289,8 @@ local function fixture(settings, noMacros, class)
             DropAnchor = function(handle)
                 if handle and handle.label then s.hud.anchoredTo[handle.label] = nil end
             end, FontPath = function(key) return key ~= '' and key or 'font.ttf' end,
+            HasAnchor = function(handle) return s.hud.anchoredTo[handle.label] ~= nil end,
+            SetMoverGrow = function(handle, grow) handle.grow = grow end,
             -- The HUD Editor's mover: where it opens the options, and what a drag does.
             AttachMover = function(_, label, onMoved, page, card)
                 local m = frame('Mover')
@@ -308,6 +310,7 @@ local function fixture(settings, noMacros, class)
             for _, fn in ipairs(listeners) do fn(k) end
         end,
         OnChange = function(fn) listeners[#listeners + 1] = fn end,
+        DB = function() return s.settings end,
     }
     G.NaowhForever = ns
     local env = { _G = G, CreateFrame = frame, GameTooltip = frame('Tooltip'),
@@ -1579,6 +1582,33 @@ do
     s.set('consumableBarAnchor', 'MissingFrame')
     check('and with that frame missing, on the screen it is held by its corner again',
         s.bar.point[1] == 'BOTTOMLEFT' and s.bar.point[2] == s.G.UIParent)
+end
+
+-- Docked to another HUD element, the HUD Editor holds the edge it grows from
+do
+    local s = fixture({ consumableBar = false, consumableBarItems = { 13446, 5512, 14530 },
+        consumableBarSize = 30, consumableBarSpacing = 2, consumableBarGrow = 'LEFT' })
+    local full = 3 * 32 - 2
+    s.hud.anchoredTo['Consumable Bar'] = { target = 'Player Frame', side = 'BOTTOM', x = 10, y = -4 }
+    s.hud.layouts = { raid = { anchors = { ['Consumable Bar'] = { target = 'Player Frame', side = 'TOP', x = 0, y = 4 } } },
+        solo = { anchors = { ['Consumable Bar'] = { target = 'Minimap', side = 'LEFT', x = -4, y = 6 } } } }
+    s.set('consumableBar', true)
+    s.bar = s.G.NaowhForeverConsumableBar
+    check('the HUD Editor is told it grows left', s.bar.mover.grow == 'LEFT')
+    local dock = s.hud.anchoredTo['Consumable Bar']
+    check('a dock that held its middle moves once to hold its right edge, the full bar where it was',
+        dock.x == 10 + full / 2 and dock.y == -4 and s.settings.consumableBarDockHeld == true)
+    check('in saved layouts too', s.hud.layouts.raid.anchors['Consumable Bar'].x == full / 2)
+    check('beside an element, a bar growing left already holds the edge against it',
+        s.hud.layouts.solo.anchors['Consumable Bar'].x == -4 and s.hud.layouts.solo.anchors['Consumable Bar'].y == 6)
+    check('docked, the HUD Editor places it, not the corner hold', s.bar.point[1] == 'CENTER')
+    s.set('consumableBarSize', 32)
+    check('and the dock moves only once', dock.x == 10 + full / 2)
+    s.set('consumableBarGrow', 'DOWN')
+    check('a new direction is passed on', s.bar.mover.grow == 'DOWN')
+    local fresh = fixture({ consumableBar = true, consumableBarItems = { 13446 } })
+    check('with nothing docked, nothing moves, and it is not done again', fresh.settings.consumableBarDockHeld == true
+        and next(fresh.hud.anchoredTo) == nil and fresh.bar.mover.grow == 'RIGHT')
 end
 
 -- Every setting the addon reads has its default in QoL's settings

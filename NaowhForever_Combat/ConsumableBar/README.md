@@ -82,6 +82,10 @@ NaowhForever_Combat/ConsumableBar/
   icon sits in, measured with every item shown as the HUD Editor shows them, so the bar grows and
   shrinks away from it and the first icon stays where it was placed. Undo, Redo and saved layouts
   read only elements placed by their middle, so the bar is placed by it while the HUD Editor is open.
+- Docked to another HUD element, the bar tells the HUD Editor its Growth Direction
+  (`UI.SetMoverGrow`), which then holds the edge it grows from. A dock saved before that held the
+  bar's middle, so it is moved once to the edge of the bar with every item shown, in the saved
+  layouts too (`consumableBarDockHeld`); `HELD` matches the HUD Editor's own held edges.
 - Other Consumables are off in the scan filters by default: the game files quest items, holiday
   items and the like there, and Scan Bags would fill the bar with them.
 - Remove Empty takes off the items you have none of in your bags; Smart Macros stay, since they
