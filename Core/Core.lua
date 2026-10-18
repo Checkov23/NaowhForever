@@ -671,7 +671,8 @@ end
 
 function ns.RefitPixels()
     for owner in pairs(fitters) do
-        if owner:IsVisible() then FitOwner(owner) end
+        local shown = owner:IsVisible()
+        if (issecretvalue and issecretvalue(shown)) or shown then FitOwner(owner) end
     end
 end
 

@@ -14,6 +14,11 @@ local titles = {}
 local listed
 local events
 
+local function ReadableGUID(unit)
+    local guid = UnitGUID(unit)
+    if not issecretvalue(guid) then return guid end
+end
+
 local function Learn(unit)
     if not UnitExists(unit) or UnitIsPlayer(unit) then return end
     local zone = Q.CurrentZone()
@@ -33,7 +38,7 @@ local function FromGossip()
     for _, quest in ipairs(C_GossipInfo.GetAvailableQuests() or NONE) do
         if quest.questID then offered[quest.questID] = true end
     end
-    listed = UnitGUID("npc")
+    listed = ReadableGUID("npc")
     Learn("npc")
 end
 
@@ -54,12 +59,12 @@ local function FromGreeting()
         if id then offered[id] = true else titles[GetAvailableTitle(i) or ""] = true end
     end
     OfferByTitle()
-    listed = UnitGUID("npc")
+    listed = ReadableGUID("npc")
     Learn("npc")
 end
 
 local function FromDetail()
-    local guid = UnitGUID("questnpc")
+    local guid = ReadableGUID("questnpc")
     if not guid or guid == listed then return end
     wipe(offered)
     offered[GetQuestID()] = true

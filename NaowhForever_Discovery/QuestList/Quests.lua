@@ -427,6 +427,7 @@ function Q.Available(id)
 end
 
 function Q.GiverQuests(name, mapID)
+    if issecretvalue(name) then return NONE end
     Prepare()
     Index()
     wipe(named)
