@@ -12,7 +12,6 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     hideBlessingsOnPaladin = F.hideBlessingsOnPaladin,
     raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false, salvation = false },
     personalBuffs = F.personalBuffs, personalBuffPicks = {}, weaponEnhancements = F.weaponEnhancements,
-    wornReminders = F.wornReminders, fishingPoleReminder = F.fishingPoleReminder, fishingPoleWhere = "always",
     classBuffTracker = F.classBuffTracker, classBuffSize = 40,
     classBuffGlow = F.classBuffGlow, classBuffGlowType = "proc",
     classBuffGlowColor = { r = 1, g = 0.82, b = 0.2 },

@@ -115,6 +115,7 @@ NaowhForever_QoL/
     Alts.lua            your characters per realm and faction (ns.AltRealm, ns.AltList, ns.OpenForgetAltMenu)
     LootFeed.lua        the Loot Feed, gold per hour and quick loot (ns.ResetLootFeedSession)
     Restock.lua         the Restock Reminder, Auto Repair and Auto Sell Junk
+    GearReminders.lua   Gear Reminders: an icon while you wear Cloak of Hermitic Bliss in Wailing Caverns or a fishing pole
     ScrapMarker.lua     the Junk Marker (ns.ScrapMarker), read by Bag Space and the Junk List
     ScrapList.lua       the Junk List window (ns.OpenScrapList, /nf junk)
     Mail.lua            Alts and Attach buttons at the mailbox, the expiring mail warning
@@ -1021,6 +1022,25 @@ NaowhForever_QoL/
 - It shows on reaching a rested area, and again `SETTLE_DELAY` after a vendor closes if anything is still short: bags settle a moment after the last purchase or sale. Restocked from the bank, mail or a trade, the list follows while it is up.
 - A purchase returns what it spent because GetMoney() does not drop until the server answers. A vendor that sells in bundles (arrows by 200) only takes whole bundles, so the amount rounds up to one.
 - Auto Repair and Auto Sell Junk work at the vendor whether or not the reminder is on. Reagents are cached at switch-on so the reminder can name ones the client has not seen this session.
+
+### Gear Reminders
+- Worn Gear Reminder and Fishing Pole Reminder were part of AuraBuffs' Buffs & Consumables row until they
+  moved here, with their own icons and mover, so they work with AuraBuffs off. The setting keys are the same
+  (`wornReminders`, `fishingPoleReminder`, `fishingPoleWhere`): a profile's values in the `auraBuffs` table move
+  to the QoL store on `Apply` (which also runs on a profile switch or import) and leave `auraBuffs`. A value
+  already in the QoL store is never replaced, and a false moves as false.
+- Cloak of Hermitic Bliss (273084, a Kresh drop, new in Forever) slows you 25% and speeds swimming 33%, so it
+  gets worn for Wailing Caverns' water and forgotten. Wailing Caverns is instance ID 43 (`GetInstanceInfo`'s
+  eighth value). Item and effects from Wowhead's Forever tooltip, 2026-10-14; not yet checked in the client.
+- A fishing pole in the main hand reminds anywhere by default (Robin asked for it), or only in dungeons and
+  raids (`fishingPoleWhere`). It is matched by its weapon subclass, `Enum.ItemWeaponSubclass.Fishingpole`, not
+  by item ID or name, so every pole counts in every locale; `GetItemInfoInstant` needs no cached item.
+- An icon stays up while you fish, so Ctrl-click hides it for that item (`dismissed`, per slot, not saved): a
+  different item there, or `PLAYER_EQUIPMENT_CHANGED` taking it off, shows it again. The icons are plain
+  frames, not secure buttons, so they also update in combat.
+- It reads on `PLAYER_EQUIPMENT_CHANGED`, `ZONE_CHANGED_NEW_AREA` and `PLAYER_ENTERING_WORLD`, registered only
+  while a switch is on. Unlock Mode shows a sample of each reminder that is on (the cloak, and a Fishing Pole,
+  6256).
 
 ### Waypoint Pin
 - Quest Objectives and Downward Arrows are independent switches, initially off. Objectives come from the tracked quest or guide context and refresh on quest-log changes; unfinished objectives keep the quest pin visible inside its area. The three chevrons use the existing shared arrow art and disappear in off-screen and arrival modes.

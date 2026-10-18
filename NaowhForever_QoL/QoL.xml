@@ -52,6 +52,7 @@
     <Script file="XP\GroupXP.lua"/>
     <Script file="Questing\PlayerHistory.lua"/>
     <Script file="Loot\Restock.lua"/>
+    <Script file="Loot\GearReminders.lua"/>
     <Script file="Loot\FoodBar.lua"/>
     <Script file="Loot\BagSpace.lua"/>
     <Script file="Loot\BagSpaceIgnore.lua"/>

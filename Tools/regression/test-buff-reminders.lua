@@ -113,8 +113,7 @@ local function Fixture(opts)
         raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
-        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, wornReminders = false, fishingPoleReminder = false,
-        fishingPoleWhere = "always",
+        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false,
         buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 },
         buffGlowLines = 8, buffGlowThickness = 2, buffGlowSpeed = 5,
     }
@@ -191,7 +190,7 @@ local function Fixture(opts)
             return color
         end }),
         LOCALIZED_CLASS_NAMES_MALE = setmetatable({}, { __index = function(_, class) return class:lower() end }),
-        Enum = { ItemClass = { Weapon = 2 }, ItemWeaponSubclass = { Fishingpole = 20 } },
+        Enum = { ItemClass = { Weapon = 2 } },
         GetTime = function() return state.now end,
         InCombatLockdown = function() return state.combat end,
         IsResting = function() return state.resting end,
@@ -1562,96 +1561,14 @@ do
     Check("and clicking it uses that oil too", cell.attributes.item1, "item:20749")
 end
 
--- Worn Gear Reminder: Cloak of Hermitic Bliss worn in Wailing Caverns, off by default.
+-- The gear reminders moved to QoL (test-gear-reminders.lua): an old profile's switches add nothing to the row.
 do
-    local t = Fixture({ instance = "party", instanceID = 43, units = { player = "MAGE" }, worn = { [15] = 273084 },
-        settings = { consumableEntries = {} } })
+    local t = Fixture({ instance = "party", instanceID = 43, units = { player = "MAGE" },
+        worn = { [15] = 273084, [16] = 6256 }, subclasses = { [6256] = 20 },
+        settings = { consumableEntries = {}, wornReminders = true, fishingPoleReminder = true } })
     t.Login()
-    Check("worn: off by default", t.Shown(), "")
-    Check("worn: no gear events while off", t.Listening("PLAYER_EQUIPMENT_CHANGED"), false)
-    t.Set("fishingPoleReminder", true)
-    Check("the fishing pole switch alone leaves the cloak out", t.Shown(), "")
-    t.Set("fishingPoleReminder", false)
-    t.Set("wornReminders", true)
-    Check("cloak worn in Wailing Caverns", t.Shown(), "item:273084")
-    t.state.worn[15] = nil
-    t.Fire("PLAYER_EQUIPMENT_CHANGED", 15, false)
-    t.Advance(0.5)
-    Check("cloak taken off", t.Shown(), "")
-    t.state.worn[15] = 273084
-    t.state.instanceID = 36
-    t.Fire("PLAYER_EQUIPMENT_CHANGED", 15, true)
-    t.Advance(0.5)
-    Check("cloak worn in another dungeon", t.Shown(), "")
-    t.state.instance, t.state.instanceID = "none", nil
-    t.Fire("ZONE_CHANGED_NEW_AREA")
-    t.Advance(0.5)
-    Check("cloak worn outside", t.Shown(), "")
-    t.state.instance, t.state.instanceID = "party", 43
-    t.Fire("PLAYER_ENTERING_WORLD")
-    t.Advance(0.5)
-    Check("back in Wailing Caverns", t.Shown(), "item:273084")
-    t.Set("wornReminders", false)
-    Check("switched off", t.Shown(), "")
-end
-
--- Fishing Pole Reminder: any fishing pole in the main hand, anywhere, off by default.
-do
-    local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20, [2901] = 14 },
-        settings = { consumableEntries = {} } })
-    t.Login()
-    Check("pole: off by default", t.Shown(), "")
-    t.Set("wornReminders", true)
-    Check("Worn Gear Reminder alone leaves the pole out", t.Shown(), "")
-    t.Set("wornReminders", false)
-    t.Set("fishingPoleReminder", true)
-    Check("its own switch listens for gear changes", t.Listening("PLAYER_EQUIPMENT_CHANGED"), true)
-    Check("fishing pole worn outside", t.Shown(), "item:6256")
-    t.state.instance, t.state.instanceID = "party", 36
-    t.Fire("PLAYER_ENTERING_WORLD")
-    t.Advance(0.5)
-    Check("and in a dungeon", t.Shown(), "item:6256")
-    t.state.worn[16] = 2901
-    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
-    t.Advance(0.5)
-    Check("another weapon in its place", t.Shown(), "")
-    t.state.worn[16], t.state.classes[2901], t.state.subclasses[2901] = 2901, 15, 20
-    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
-    t.Advance(0.5)
-    Check("something not a weapon with a pole's subclass number", t.Shown(), "")
-end
-
--- The fishing pole: shown only in dungeons and raids when picked, and Ctrl-click hides it until it comes off.
-do
-    local t = Fixture({ units = { player = "MAGE" }, worn = { [16] = 6256 }, subclasses = { [6256] = 20 },
-        settings = { consumableEntries = {}, fishingPoleReminder = true, fishingPoleWhere = "instance" } })
-    t.Login()
-    Check("pole set to dungeons and raids, out in the world", t.Shown(), "")
-    t.state.instance, t.state.instanceID = "raid", 409
-    t.Fire("PLAYER_ENTERING_WORLD")
-    t.Advance(0.5)
-    Check("and in a raid", t.Shown(), "item:6256")
-    t.Set("fishingPoleWhere", "always")
-    local cell
-    for _, f in ipairs(t.frames) do if rawget(f, "slot") == 16 and f.shown then cell = f end end
-    local ctrl = false
-    t.env.IsControlKeyDown = function() return ctrl end
-    cell.scripts.PostClick(cell)
-    t.Advance(0.5)
-    Check("a plain click keeps it", t.Shown(), "item:6256")
-    ctrl = true
-    cell.scripts.PostClick(cell)
-    t.Advance(0.5)
-    Check("Ctrl-click hides it", t.Shown(), "")
-    t.Fire("ZONE_CHANGED_NEW_AREA")
-    t.Advance(0.5)
-    Check("and it stays hidden while worn", t.Shown(), "")
-    t.state.worn[16] = nil
-    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, false)
-    t.state.worn[16] = 6256
-    t.Fire("PLAYER_EQUIPMENT_CHANGED", 16, true)
-    t.Advance(0.5)
-    Check("taken off and put back on, it shows again", t.Shown(), "item:6256")
+    Check("old gear switches: no icons in the buff row", t.Shown(), "")
+    Check("and no gear events", t.Listening("PLAYER_EQUIPMENT_CHANGED"), false)
 end
 
 -- A class with its own poison reminder does not get the generic one.

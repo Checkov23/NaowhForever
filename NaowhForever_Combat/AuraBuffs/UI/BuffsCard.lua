@@ -19,7 +19,6 @@ local PREVIEW = A.BuffPreview
 local RAID_SAMPLE = #PREVIEW
 local WHERE = { { always = "Everywhere", instance = "Dungeons & Raids", raid = "Raids Only" },
     { "always", "instance", "raid" } }
-local POLE_WHERE = { { always = "Everywhere", instance = "Dungeons & Raids" }, { "always", "instance" } }
 local STATES = {
     { key = "raid", label = "In a Raid", tip = "In a raid, where every Show In choice reminds you." },
     { key = "world", label = "Open World", tip = "Out in the world, where only Everywhere reminds you." },
@@ -31,7 +30,6 @@ local OFF = ns.L("Turn on AuraBuffs")
 local NEEDS_RAID = ns.L("Needs Raid Buff Reminders")
 local NEEDS_PERSONAL = ns.L("Needs Personal Buff Reminders")
 local NEEDS_WEAPON = ns.L("Needs Weapon Enhancement Reminder")
-local NEEDS_FISHING = ns.L("Needs Fishing Pole Reminder")
 local NEEDS_RANGE = ns.L("Needs Show Buff Range")
 local TEXT_WEAPON = "Weapon Enhancement"
 local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
@@ -52,7 +50,6 @@ local Enabled = A.Enabled
 local RaidBuffsOn = A.Needs("raidBuffs")
 local PersonalBuffsOn = A.Needs("personalBuffs")
 local WeaponOn = A.Needs("weaponEnhancements")
-local FishingOn = A.Needs("fishingPoleReminder")
 
 local function RangeOn()
     return RaidBuffsOn() and S.Get("raidBuffRange") and true or false
@@ -224,13 +221,6 @@ rows[#rows + 1] = Group("Personal Buffs")
 rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", toggle = true, needs = Enabled,
     why = OFF, help = "Your class buffs when they are missing or about to run out." }
 for _, family in ipairs(ALL_PERSONAL) do rows[#rows + 1] = PersonalRow(family) end
-rows[#rows + 1] = Group("Gear")
-rows[#rows + 1] = { key = "wornReminders", label = "Worn Gear Reminder", toggle = true, needs = Enabled, why = OFF,
-    help = "An icon while you wear Cloak of Hermitic Bliss in Wailing Caverns, so you remember to swap it." }
-rows[#rows + 1] = { key = "fishingPoleReminder", label = "Fishing Pole Reminder", toggle = true, needs = Enabled,
-    why = OFF, help = "An icon while you have a fishing pole equipped, so you remember to swap it." }
-rows[#rows + 1] = { key = "fishingPoleWhere", label = "Fishing Pole Shows In", choice = POLE_WHERE, needs = FishingOn,
-    why = NEEDS_FISHING }
 rows[#rows + 1] = Group("Glow")
 rows[#rows + 1] = { key = "buffGlow", label = "Glow", toggle = true, needs = Enabled, why = OFF,
     help = "A glow around each reminder icon, since each is a buff that is missing or running out." }

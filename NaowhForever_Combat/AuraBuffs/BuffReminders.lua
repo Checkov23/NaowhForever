@@ -14,7 +14,6 @@ local WEAPON_SLOTS = { 16, 17 }
 local CLASS_INDEX = 6
 local REQUIRED_LEVEL = 5
 local ITEM_ICON = 10
-local INSTANCE_ID = 8
 local ELITE = { elite = true, rareelite = true, worldboss = true }
 
 local GROUP_UNIT = { player = true }
@@ -38,7 +37,7 @@ for _, icon in pairs(D.WEAPON_ICONS) do CLASSIC_WEAPON_ICON[icon] = true end
 
 local buffPool, members, memberCount, classes = {}, {}, 0, {}
 local missingUnits = {}
-local itemBuffs, requested, dismissed = {}, {}, {}
+local itemBuffs, requested = {}, {}
 local carried
 local wellFedName
 local wakeAt
@@ -479,33 +478,6 @@ local function PersonalBuffs(list, buffs)
     end
 end
 
-local function Wearing(worn, id)
-    if worn.item then return id == worn.item end
-    local _, _, _, _, _, class, subclass = C_Item.GetItemInfoInstant(id)
-    return class == Enum.ItemClass.Weapon and subclass == Enum.ItemWeaponSubclass[worn.weapon]
-end
-
-local function WornHere(worn, here)
-    if worn.instance then return worn.instance == here end
-    if worn.where and S.Get(worn.where) == "instance" then
-        local _, kind = IsInInstance()
-        return kind == "party" or kind == "raid"
-    end
-    return true
-end
-
-local function Worn(list)
-    local here = select(INSTANCE_ID, GetInstanceInfo())
-    for _, worn in ipairs(D.WORN) do
-        local slot = worn.slot
-        local id = GetInventoryItemID("player", slot)
-        if dismissed[slot] ~= id then dismissed[slot] = nil end
-        if id and not dismissed[slot] and S.Get(worn.setting) and WornHere(worn, here) and Wearing(worn, id) then
-            list[#list + 1] = { icon = C_Item.GetItemIconByID(id), slot = slot }
-        end
-    end
-end
-
 local Reminders = {}
 A.Buffs = Reminders
 
@@ -629,14 +601,6 @@ function Reminders.Requested(itemID)
     return requested[itemID] == true
 end
 
-function Reminders.Dismiss(slot)
-    dismissed[slot] = GetInventoryItemID("player", slot)
-end
-
-function Reminders.Undismiss(slot)
-    dismissed[slot] = nil
-end
-
 function Reminders.WakeAt()
     return wakeAt
 end
@@ -653,6 +617,5 @@ function Reminders.Collect()
     end
     if S.Get("personalBuffs") then PersonalBuffs(list, buffs) end
     if S.Get("raidBuffs") then RaidBuffs(list, buffs) end
-    if S.Get("wornReminders") or S.Get("fishingPoleReminder") then Worn(list) end
     return list
 end
