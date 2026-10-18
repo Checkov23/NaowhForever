@@ -2555,4 +2555,76 @@ do
         "while the item's line has no bar at its side")
 end
 
+-- Reusing an active row after SetStep must not leave the cleared quest lookup empty.
+do
+    local w = World({})
+    local rxp = Rxp(w)
+    local calls = 0
+    local accept = { tag = "accept", questId = 5261, text = "Accept Eagan Peltskinner" }
+    local disabled = { tag = "accept", questId = 5262, text = "Disabled quest", disabled = true }
+    local other = { tag = "target", text = "Talk" }
+    local stale = { tag = "accept", questId = 5263, text = "Old row" }
+    local inactive = { tag = "accept", questId = 5264, text = "Inactive" }
+    local released = { tag = "accept", questId = 5265, text = "Released callback" }
+    local function Bind(element, step)
+        local frame = Object(w.everything)
+        frame.element, frame.step = element, step
+        frame.text, frame.icon = Object(w.everything), Object(w.everything)
+        frame.text:SetText(element.text)
+        element.frame = frame
+        frame.callback = function(row)
+            if not row.element.disabled then rxp.questAccept[row.element.questId] = row.element end
+        end
+        return frame
+    end
+    w.active.elements = { accept, disabled, other, stale, released }
+    local frame = Bind(accept, w.active)
+    Bind(disabled, w.active)
+    Bind(other, w.active)
+    Bind(stale, w.active).element = other
+    Bind(released, w.active).callback = nil
+    local idle = { active = false, elements = { inactive } }
+    Bind(inactive, idle)
+    rxp.RXPFrame.activeSteps = { w.active, idle }
+    rxp.questAccept = {}
+    function rxp.ActiveStepElementEventHandler(row)
+        calls = calls + 1
+        assert(row == row.element.frame and row.step.active, "only the current bound active row is refreshed")
+        assert(row.element.tag == "accept", "other callbacks are not replayed")
+        row.callback(row)
+    end
+    rxp.SetStep = function()
+        for id in pairs(rxp.questAccept) do rxp.questAccept[id] = nil end
+        if w.nativeAccept then
+            rxp.questAccept[5261], rxp.questAccept[5262] = accept, disabled
+        end
+        -- A cached V2 row stays bound, so this transition does not run its callback.
+    end
+    local boot = w.frames[#w.frames]
+    boot.scripts.OnEvent(boot, "ADDON_LOADED", "NaowhForever")
+    boot.scripts.OnEvent(boot, "PLAYER_LOGIN")
+    Check(calls == 0, "auto-accept state is untouched before opting into the window")
+    w.ns.SetRXPWindow(true)
+    Check(rxp.questAccept[5261] == accept, "enabling the window restores a missing accept entry")
+    Check(rxp.questAccept[5262] == nil and calls == 2, "RXP decides disabled quests; stale and inactive rows are ignored")
+    rxp.SetStep(4)
+    Check(rxp.questAccept[5261] == accept and accept.frame == frame,
+        "SetStep restores auto-accept immediately even when V2 keeps the same row")
+    Check(calls == 4, "the step transition refreshes only missing active accept entries")
+    w.nativeAccept = true
+    rxp.SetStep(4)
+    Check(calls == 4 and rxp.questAccept[5261] == accept, "a native refresh leaves no duplicate quest work")
+    w.nativeAccept = false
+    w.ns.SetRXPWindow(false)
+    w.ns.SetRXPWindow(true)
+    Check(calls == 4, "entries RXP already populated are not replayed on enable")
+    w.ns.SetRXPWindow(false)
+    rxp.SetStep(4)
+    Check(next(rxp.questAccept) == nil and calls == 4, "the installed hook does no quest work after disabling")
+    rxp.ActiveStepElementEventHandler = nil
+    w.ns.SetRXPWindow(true)
+    rxp.SetStep(4)
+    Check(#w.reported == 0, "a missing optional RXP handler is harmless")
+end
+
 print("PASS rxp window: " .. cases .. " checks")

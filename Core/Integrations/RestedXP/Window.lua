@@ -75,10 +75,34 @@ local function Wheel(_, delta)
     Refresh()
 end
 
+local function RefreshAccepts()
+    if not active then return end
+    local rxp = _G.RXP
+    if not Has(rxp, "ActiveStepElementEventHandler") or type(rxp.questAccept) ~= "table" then return end
+    local steps = Dig(rxp.RXPFrame, "activeSteps")
+    if not steps then return end
+    for _, step in ipairs(steps) do
+        if step.active then
+            for _, element in ipairs(step.elements or {}) do
+                local frame = element.frame
+                if element.tag == "accept" and element.questId and not rxp.questAccept[element.questId]
+                        and frame and frame.element == element and frame.step == step and Has(frame, "callback") then
+                    Run("WindowAccept", rxp.ActiveStepElementEventHandler, frame)
+                end
+            end
+        end
+    end
+end
+
 local function Rebuilt()
     retake = true
     ns.RXPWindowStale()
     Refresh()
+end
+
+local function StepChanged()
+    RefreshAccepts()
+    Rebuilt()
 end
 
 local function Silence(frame, top)
@@ -920,6 +944,7 @@ local function Apply()
     end
     active = want
     if want then
+        RefreshAccepts()
         Draw()
     else
         Release()
@@ -944,7 +969,7 @@ function ns.RXPWindowStart()
     if not started then
         started = true
         local rxp = _G.RXP
-        Hook(rxp, "SetStep")
+        if Has(rxp, "SetStep") then hooksecurefunc(rxp, "SetStep", StepChanged) end
         local v2 = Dig(rxp, "v2")
         Hook(v2, "UpdateGuideWindow")
         Hook(v2, "UpdateActiveStepsFrame")

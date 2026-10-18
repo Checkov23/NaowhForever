@@ -78,6 +78,12 @@ Core/Integrations/RestedXP/
   see-through with `SetAlpha(0)`, held there by a post-hook on `SetAlpha`, and they and every frame
   in them take no clicks (`EnableMouse(false)`), the alpha and mouse kept to give back when the
   window is turned off. They are not hidden, as RestedXP shows and lays them out itself.
+- While the window is on, enabling it and finishing `SetStep` refresh missing `accept` entries
+  through RestedXP's own active-element handler, synchronously rather than at the next redraw.
+  `SetStep` clears the quest lookup, but V2 can retain an unchanged bound row without calling its
+  handler again. Only current rows bound to active steps are refreshed, and entries already filled
+  are left alone. RestedXP still owns quest flags, disabled quests and the actual auto-accept;
+  the integration never writes its quest lookup or accepts quests itself.
 - A row shows the text RestedXP has in its own row now (`element.frame.text`), so counters such as
   "5/5" follow it; a post-hook on that text asks for a redraw. A click on a row is a click on
   RestedXP's own checkbox, so what it does for a skipped step is RestedXP's.
