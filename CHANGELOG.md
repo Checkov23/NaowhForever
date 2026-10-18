@@ -1,6 +1,21 @@
 # Changelog
 
-## Unreleased
+## 1.1.31
+
+### Added
+- Blessings: Smart Blessings, Respect Blessing Time, Wait for Players, tank and Main Assist
+  blessings, an Auto Buff button, Use in Party, Use When Solo, Hide the Bench and your own status
+  colors.
+- Blessings: a Seal button, switches for the tooltips and the player list, a button border and bar
+  background, a size for the Blessings window, Ctrl-click for Main Tank in the player list, and Auto
+  Buff Greater First.
+- AuraBuffs: a Border Color option on the Buffs & Consumables card, for the reminder icons, their
+  hover menu and the Class Buff Tracker.
+
+### Fixed
+- Map Window: opening the world map with a gamepad no longer stops your controller bindings working
+  in combat.
+- Glimmer: Hide Health Bar and Level now hides a quest giver's level badge too.
 
 ## 1.1.30
 
