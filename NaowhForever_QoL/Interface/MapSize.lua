@@ -82,6 +82,11 @@ end
 local function Apply()
     local map = WorldMapFrame
     if not map then return end
+    if ns.GamepadOwnsPanels() then
+        if grip then grip:Hide() end
+        if handle then handle:Hide() end
+        return
+    end
     local on = On()
     if not (on or applied) then return end
     if on and not applied and map:IsShown() then NoteHome() end
