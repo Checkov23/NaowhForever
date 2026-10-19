@@ -857,6 +857,41 @@ ns.NewBisList("Other")
 ns.OpenBisWindow()
 check("and one picked while it was closed, once it opens again", window.list.text.text == "Other")
 ns.DeleteBisList()
+do
+    local was, mine = window.specs.shown, B.Lists.List()
+    local specs = B.Rankings.ClassSpecs()
+    local other = specs[1].key == was and specs[2].key or specs[1].key
+    window.specs.onPick(other)
+    check("on the Quests page, a spec tab still switches", window.specs.shown == other)
+    window.specs.onPick(was)
+    assert(ns.NewBisList("Quests Tab"))
+    ns.SelectBisList(mine.id)
+    check("as does picking another", window.list.text.text == mine.name
+        and SectionIn(view, "Quests for your BiS") ~= nil)
+    -- With the Dungeon Journal on, the Quests page is its own view; a stand-in counts its redraws.
+    window.pages.onPick("list")
+    local named = 0
+    window.list.text.SetText = function(f, text)
+        named = named + 1
+        f.text = text
+    end
+    ns.SelectBisList(mine.id)
+    check("on the list page, a change paints the side once", named == 1)
+    window.list.text.SetText = nil
+    local available, count, QuestsPage, redraws = B.Quests.Available, B.Quests.Count, B.View.QuestsPage, 0
+    B.Quests.Available = function() return true end
+    B.Quests.Count = function() return 0 end
+    B.View.QuestsPage = function(parent)
+        local stand = Frame(parent)
+        stand.Redraw = function() redraws = redraws + 1 end
+        return stand
+    end
+    window.pages.onPick("quests")
+    ns.SetBisSpec(other)
+    check("and the Quests page redraws for the new picks", redraws == 2 and window.specs.shown == other)
+    ns.SetBisSpec(was)
+    B.Quests.Available, B.Quests.Count, B.View.QuestsPage = available, count, QuestsPage
+end
 local listParent = view:GetParent()
 view.parent = nil
 check("hovering a slot on the Quests page has no list to scroll", pcall(head.scripts.OnEnter, head))
