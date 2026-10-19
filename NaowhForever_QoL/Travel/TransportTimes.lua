@@ -1,20 +1,35 @@
--- TransportTimes.lua: saved server-clock sightings and estimates for each transport stop, per realm.
+-- TransportTimes.lua: saved server-clock sightings and ride timings for each transport stop, per realm.
 local ns = _G.NaowhForever
 
 local ARRIVAL, DEPARTURE = "arrival", "departure"
 local SECONDS_PER_WEEK = 7 * ns.QoLConstants.SECONDS_PER_DAY
 local STALE_CYCLES = 6
 local REFINE_BAND = 0.15
+local RIDE_MISS = 3
+local RIDE_BAND = 0.02
 
 local Times = {}
 ns.TransportTimes = Times
 
-local function Rows()
+local docks = {}
+for name, route in pairs(ns.TransportRoutes) do
+    for index, dock in ipairs(route.docks) do docks[dock.stop] = { name = name, index = index } end
+end
+
+local function Saved(slot)
     local account = ns.AccountSettings()
-    account.transportSightings = account.transportSightings or {}
+    account[slot] = account[slot] or {}
     local realm = GetRealmName()
-    account.transportSightings[realm] = account.transportSightings[realm] or {}
-    return account.transportSightings[realm]
+    account[slot][realm] = account[slot][realm] or {}
+    return account[slot][realm]
+end
+
+local function Rows()
+    return Saved("transportSightings")
+end
+
+local function Rides()
+    return Saved("transportRides")
 end
 
 local function Refine(elapsed, period)
@@ -29,11 +44,58 @@ function Times.Prune(now)
     for key, row in pairs(rows) do
         if row.last < reset or not ns.TransportData[key] then rows[key] = nil end
     end
+    local rides = Rides()
+    for name in pairs(rides) do
+        if not ns.TransportRoutes[name] then rides[name] = nil end
+    end
+end
+
+function Times.RouteAt(key)
+    local dock = docks[key]
+    if dock then return dock.name, dock.index end
+end
+
+function Times.Ride(name, since)
+    local route = ns.TransportRoutes[name]
+    if not route then return false end
+    local rides = Rides()
+    local row = rides[name]
+    if row and since == row.at then return false end
+    if row then
+        local cycles = math.floor((since - row.base) / (row.period or route.period) + 0.5)
+        local measured = cycles >= 1 and (since - row.base) / cycles
+        if cycles >= 0 and math.abs(since - row.base - cycles * (row.period or route.period)) <= RIDE_MISS then
+            if measured and math.abs(measured - route.period) <= RIDE_BAND * route.period then
+                row.period = measured
+            end
+            row.at = since
+            return true
+        end
+    end
+    rides[name] = { base = since, at = since }
+    return true
+end
+
+function Times.Dock(name, index, now)
+    local route = ns.TransportRoutes[name]
+    local row = route and Rides()[name]
+    if not row then return nil, "new" end
+    if now < row.at then return nil, "stale" end
+    local dock = route.docks[index]
+    local period = row.period or route.period
+    local phase = (now - row.at) % period
+    if phase >= dock.arrive and phase < dock.leave then return dock.leave - phase, DEPARTURE end
+    return (dock.arrive - phase) % period, ARRIVAL
 end
 
 function Times.Record(key, kind, now)
     local timing = ns.TransportData[key]
     if not timing or (kind ~= ARRIVAL and kind ~= DEPARTURE) then return false end
+    local name, index = Times.RouteAt(key)
+    if name then
+        local dock = ns.TransportRoutes[name].docks[index]
+        return Times.Ride(name, now - (kind == ARRIVAL and dock.arrive or dock.leave))
+    end
     local rows = Rows()
     local row = rows[key]
     if row and now == row.last then return false end
@@ -47,6 +109,8 @@ function Times.Record(key, kind, now)
 end
 
 function Times.Next(key, now)
+    local name, index = Times.RouteAt(key)
+    if name then return Times.Dock(name, index, now) end
     local timing = ns.TransportData[key]
     local row = timing and Rows()[key]
     if not row then return nil, "new" end
