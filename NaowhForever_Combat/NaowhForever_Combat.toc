@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Combat
 ## Notes: Consumable Bar, Swing Timer, Threat Meter, PvP, AuraBuffs, Gear & Trinkets and Blessings, each with its own switch under Settings > Modules.
 ## Author: Naowh
-## Version: 1.1.33
+## Version: 1.1.34
 ## Dependencies: NaowhForever
 ## OptionalDeps: NaowhForever_Utilities
 ## Group: NaowhForever
