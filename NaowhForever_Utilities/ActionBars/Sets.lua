@@ -26,8 +26,9 @@ local TEXT_WOULD_BE_EMPTY = ns.L("   These slots would be left empty:")
 local TEXT_WERE_EMPTY = ns.L("   These slots were left empty:")
 local TEXT_SLOT_LINE = "      "
 local TEXT_LATER = ns.L("   Spells you learn later go into their slots then.")
-local TEXT_LATER_LIST = ns.L("   These go on your bars when you learn them: %s.")
-local TEXT_AT_LEVEL = ns.L("%s (level %d)")
+local TEXT_LATER_HEAD = ns.L("Placed when learned:")
+local TEXT_AT_LEVEL = ns.L("(level %d)")
+local TEXT_INDENT = "   "
 local TEXT_DELETED = ns.L("Deleted the bar set %s.")
 local TEXT_TAKEN = ns.L("There is already a bar set called %s.")
 local TEXT_SETS = ns.L("Bar sets: ")
@@ -107,9 +108,9 @@ local function PrintLater(result)
     for _, later in ipairs(result.later) do
         local level = result.slots[later.slot].level
         local name = Import.Describe(later.entry)
-        names[#names + 1] = level and level > 0 and TEXT_AT_LEVEL:format(name, level) or name
+        names[#names + 1] = level and level > 0 and (name .. " " .. ns.Color("muted", TEXT_AT_LEVEL:format(level))) or name
     end
-    print(TEXT_LATER_LIST:format(table.concat(names, ", ")))
+    print(TEXT_INDENT .. ns.Color("muted", TEXT_LATER_HEAD) .. " " .. table.concat(names, ", "))
 end
 
 local function ImportSet(name, test)
@@ -121,7 +122,7 @@ local function ImportSet(name, test)
     local result = Import.Run(set, test)
     local pending = not test and Pending.Remember(key, result, website)
     if not test then A.SetLast(key, false) end
-    ns.Print(TEXT_IMPORTED:format(test and TEXT_TESTED_VERB or TEXT_IMPORTED_VERB, key, Summary(result)))
+    ns.Print(TEXT_IMPORTED:format(test and TEXT_TESTED_VERB or TEXT_IMPORTED_VERB, ns.Color("accentSoft", key), Summary(result)))
     PrintFull(result)
     PrintEmpty(result, test, pending and pending.always)
     if pending and pending.always then PrintLater(result) elseif pending then print(TEXT_LATER) end

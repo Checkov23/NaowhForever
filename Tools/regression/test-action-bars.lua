@@ -70,6 +70,7 @@ local function World(known)
             return w.account[key][w.guid]
         end },
         Print = function(m) w.printed[#w.printed + 1] = m end,
+        Color = function(_, text) return text end,
         UI = { ModuleSettings = function() return S end, RefreshPage = function() end, CONTENT_PAD = 12,
             Keep = function(_, key) return Fake(key) end,
             KeepFont = function(_, key) return Fake(key) end,
@@ -729,7 +730,7 @@ Case("a website layout fills in what is not learned yet, with Fill In off, and s
     alt.account.barSets.PRIEST.P.choices.website = true
     alt.run("import P")
     assert(alt.events.registered.LEARNED_SPELL_IN_SKILL_LINE, "waiting for the spell")
-    assert(alt.printed[#alt.printed]:find("when you learn them: ", 1, true), alt.printed[#alt.printed])
+    assert(alt.printed[#alt.printed]:find("Placed when learned:", 1, true), alt.printed[#alt.printed])
     for _, line in ipairs(alt.printed) do assert(not line:find("left empty", 1, true), line) end
     alt.learn(6064)
     alt.events.handler(alt.events, "LEARNED_SPELL_IN_SKILL_LINE", 6064)
