@@ -51,6 +51,7 @@ ns.BADGE_PATRONS = {
         ["Player-4620-005F8B1A"] = { since = "2022-10", tier = "epic", claim = "76bd53f5" },
         ["Player-4620-0062D867"] = { since = "2026-10", tier = "epic", claim = "dc06dc55" },
         ["Player-4620-006B18A4"] = { since = "2024-07", claim = "4f73a7fa" },
+        ["Player-4620-0072D18D"] = { since = "2026-10", tier = "epic", claim = "773ab823" },
         ["Player-4620-008D69F1"] = { since = "2023-11", tier = "epic", claim = "0484d4d0" },
         ["Player-4620-00A4959B"] = { since = "2022-10", tier = "epic", claim = "7814bfb7" },
         ["Player-4620-00AAE8AE"] = { since = "2022-10", tier = "epic", claim = "49365c11" },
