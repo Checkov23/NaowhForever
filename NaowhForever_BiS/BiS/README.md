@@ -53,7 +53,7 @@ BiS/
     Paperdoll.lua     your model in your BiS, turned and zoomed, the slots as the game lays them out
     Toast.lua         Drop Alert's alert on screen, drawn by your settings, live and in its preview (B.Toast)
     RollBadge.lua     your star and rank over the game's roll frame (B.RollBadge)
-    Bags.lua          Bag Marks: the slot marks on your bags' items, the game's or EllesmereUI's
+    Bags.lua          Bag Marks: the slot marks on your bags' items, the game's, EllesmereUI's, or Baganator's
     QuestsPage.lua    the Quests page: the Journal's quest and item rows, on a Journal view
   UI/
     NewList.lua       the New List dialog: name, Only for, a list to start from (B.OpenNewList)
@@ -155,11 +155,15 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   stack under a holder you move in Unlock Mode; nothing is made before the first.
 - Bag Marks: ours is a frame over each bag button, kept in our own table (nothing stored on theirs),
   painted after the bag paints the slot. Off, nothing is hooked or made; turned off after being on,
-  ours hide and EllesmereUI's overlay hook is let go. Your weights and what your gear is worth are
-  read once a frame: a bag paints every slot in one go, EllesmereUI one slot per call. On
-  EllesmereUI's buttons its BoE word puts our star after it, Pawn's arrow our item level before it,
-  and its own item level hides while ours stands in for it. A level shows on gear only, in its
-  quality's colour (gold for common and poor) so it never reads as a stack count.
+  ours hide and EllesmereUI's overlay hook is let go. Baganator gets the same marks through the
+  corner widget its API offers other addons, registered once the first time Bag Marks is on, because
+  that registration cannot be taken back. The frame it places in a corner stays hidden: it would pin
+  that frame to one corner, and our marks cover the icon. While Bag Marks is off the callback hides
+  them and answers nothing. Your weights and what your gear is worth are read once a frame: a bag
+  paints every slot in one go, EllesmereUI and Baganator one slot per call. On EllesmereUI's buttons
+  its BoE word puts our star after it, Pawn's arrow our item level before it, and its own item level
+  hides while ours stands in for it. Baganator's own item level can sit beside ours. A level shows
+  on gear only, in its quality's colour (gold for common and poor) so it never reads as a stack count.
 - An item's card comes up over its icon and name only, so it never covers the list while the mouse
   crosses a row; the zone takes the mouse over it, not its clicks (`SetMouseClickEnabled(false)`
   after `SetScript`, as setting mouse scripts turns clicks back on).
@@ -185,6 +189,6 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   changing the list, the redraw's cost (no garbage), Drop Alert only listening while on and as
   you set it (which picks, alert, chat, sounds, its look, and the settings page's studio and
   rows), Run Next's waypoints, and enchants by spec and item level.
-- `lua Tools/regression/test-bag-marks.lua`: Bag Marks in the game's bags and EllesmereUI's.
+- `lua Tools/regression/test-bag-marks.lua`: Bag Marks in the game's bags, EllesmereUI's, and Baganator's.
 - `lua Tools/regression/test-dungeon-journal.lua`: also the Quests page, the quests that
   reward your picks, by zone, for your side, class and race.

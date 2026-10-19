@@ -294,6 +294,50 @@ do
 end
 
 -------------------------------------------------------------------------------
+--  Automatic upgrades: the spec your talents picked, not one you chose on the page. A piece
+--  that spec wants is an upgrade; one only another spec would take is not.
+-------------------------------------------------------------------------------
+do
+    local ns, state = Fixture("WARRIOR")
+    local SW = ns.StatWeights
+    -- Weigh the stats. Whether a warrior can wear the piece is its own check.
+    ns.ClassCanUse = nil
+    -- No spec on the page. Gloves in the bag against the pair equipped.
+    ITEMS[20] = { "INVTYPE_HAND", { ITEM_MOD_STRENGTH_SHORT = 10 } }
+    ITEMS[21] = { "INVTYPE_HAND", { ITEM_MOD_STAMINA_SHORT = 40 } }
+    local function Gain(id, worn)
+        state.worn = { [10] = worn }
+        local weights = SW.For(SW.ActiveSpec())
+        return SW.BestGain(id, "item:" .. id, weights, SW.Power(weights))
+    end
+    state.spent = { 0, 0, 0 }
+    check("no points yet: Arms, the first", SW.ActiveSpec() == "arms-warrior")
+    check("automatic, no points: Strength over Stamina is an upgrade", Gain(20, 21) ~= nil)
+    check("and Stamina over Strength is not, Arms barely weighs it", Gain(21, 20) == nil)
+    state.spent = { 0, 0, 5 }
+    state.watchers[1].onEvent()
+    check("points in Protection: automatic is Protection", SW.ActiveSpec() == "protection-warrior")
+    check("automatic: Stamina over Strength is an upgrade", Gain(21, 20) ~= nil)
+    check("and Strength over that Stamina is not", Gain(20, 21) == nil)
+    ns.StatWeightSettings.Set("enabled", true)
+    local function Line(id)
+        local tip = { lines = {} }
+        function tip.AddLine(self, text) self.lines[#self.lines + 1] = text end
+        function tip.IsForbidden() return false end
+        function tip.GetItem() return "x", "item:" .. id end
+        state.postCalls[1](tip, { id = id })
+        return tip.lines[1]
+    end
+    state.worn = { [10] = 20 }
+    local line = Line(21)
+    check("the tooltip names that spec and the upgrade", line and line:find("Protection", 1, true)
+        and line:find("upgrade", 1, true))
+    state.worn = { [10] = 21 }
+    check("the tooltip stays quiet on what is not", Line(20) == nil)
+    ITEMS[20], ITEMS[21] = nil, nil
+end
+
+-------------------------------------------------------------------------------
 --  Your changes
 -------------------------------------------------------------------------------
 do

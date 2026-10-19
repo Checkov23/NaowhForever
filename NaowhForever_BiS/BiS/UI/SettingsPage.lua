@@ -126,8 +126,7 @@ page:Card({
           help = "Your list's rank on the items in it.",
           search = "alt shift click alt+shift-click add remove item link" },
         { key = "bisBagMarks", label = "Bag Marks", toggle = true, needs = "bis", why = BIS_OFF,
-          help = "Your BiS List's slot marks on the items in your bags: item level, your BiS's star, Forever's "
-              .. "mark and the green arrow on an upgrade. In the game's bags or EllesmereUI's." },
+          help = "Item level, your BiS, Forever's mark, and an upgrade arrow on bag items." },
     },
 })
 

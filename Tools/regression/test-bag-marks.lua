@@ -1,9 +1,10 @@
 -- Run with Lua 5.1 from the repository root: Bag Marks, the BiS List's slot marks on the items
 -- in your bags, loaded from the Shared files and NaowhForever_BiS/BiS/View/Bags.lua against stubs of the game's
--- bags and EllesmereUI's. Checks that it is off and hooks nothing by default; on, gear shows its
+-- bags, EllesmereUI's, and Baganator's. Checks that it is off and hooks nothing by default; on, gear shows its
 -- item level, your BiS its star, what is new in Forever its mark and an upgrade its arrow, in the game's bags and in
 -- EllesmereUI's (where ours stand in for its item level and make room for its BoE word and
--- Pawn's arrow); a new list paints the stars again; off again, ours hide and EllesmereUI's item
+-- Pawn's arrow) and in Baganator's (the corner frame it places stays hidden, and our marks cover
+-- the icon); a new list paints the stars again; off again, ours hide and EllesmereUI's item
 -- level comes back; and painting a bag makes no garbage.
 local Load = dofile("Tools/regression/load_files.lua")
 local TocFiles = dofile("Tools/regression/toc_files.lua")
@@ -120,6 +121,16 @@ local EUI = {
     IsVisible = function() return true end,
 }
 
+local BAGANATOR = { widgets = {}, refreshes = 0 }
+BAGANATOR.API = {
+    RegisterCornerWidget = function(label, id, onUpdate, onInit, defaultPosition, isFast)
+        assert(not BAGANATOR.widgets[id], "corner widget registered twice")
+        BAGANATOR.widgets[id] = { label = label, onUpdate = onUpdate, onInit = onInit, corner = defaultPosition,
+            isFast = isFast }
+    end,
+    RequestItemButtonsRefresh = function() BAGANATOR.refreshes = BAGANATOR.refreshes + 1 end,
+}
+
 local env = setmetatable({
     NaowhForever = ns,
     CreateFrame = function(_, _, parent)
@@ -147,8 +158,13 @@ local env = setmetatable({
         GetContainerItemID = function(_, slot) return state.bags[slot] end,
         GetContainerItemLink = function(_, slot) return state.bags[slot] and ("link" .. slot) end,
     },
-    C_AddOns = { IsAddOnLoaded = function(name) return name == "EllesmereUIBags" and state.eui == true end },
+    C_AddOns = { IsAddOnLoaded = function(name)
+        if name == "EllesmereUIBags" then return state.eui == true end
+        if name == "Baganator" then return state.baganator == true end
+        return false
+    end },
     EUI_Bags = EUI,
+    Baganator = BAGANATOR,
     ContainerFrameContainer = { ContainerFrames = { bagFrame } },
     ITEM_QUALITY_COLORS = { [4] = { hex = "|cffa335ee", r = 0.64, g = 0.21, b = 0.93 } },
     GameTooltip = Frame(),
@@ -170,18 +186,21 @@ ns.Shared.ForeverNew.items[101] = true
 --  Off by default: nothing hooked, nothing made.
 -------------------------------------------------------------------------------
 state.eui = true
+state.baganator = true
 state.bags = { [1] = 101, [2] = 102, [3] = 500 }
 local before = made
 ns.Apply()
-check("off by default: the game's bags not hooked, EllesmereUI's hook not taken, nothing made",
-    bagFrame.UpdateItems == NOTHING and next(state.overlays) == nil and made == before)
+check("off by default: the game's bags not hooked, EllesmereUI's hook not taken, Baganator's widget not taken, nothing made",
+    bagFrame.UpdateItems == NOTHING and next(state.overlays) == nil and next(BAGANATOR.widgets) == nil
+    and BAGANATOR.refreshes == 0 and made == before)
+state.baganator = false
 
 -------------------------------------------------------------------------------
 --  On: the game's bags
 -------------------------------------------------------------------------------
 S.Set("bisBagMarks", true)
-check("on: the game's bags hooked, EllesmereUI's hook taken", bagFrame.UpdateItems ~= NOTHING
-    and state.overlays.NaowhForever ~= nil)
+check("on: the game's bags hooked, EllesmereUI's hook taken, Baganator still absent", bagFrame.UpdateItems ~= NOTHING
+    and state.overlays.NaowhForever ~= nil and next(BAGANATOR.widgets) == nil)
 bagFrame:UpdateItems()
 -- Ours: the frame the module made over a button (the only frame it makes there).
 local function SetOn(over) return over.children and over.children[1] end
@@ -264,16 +283,67 @@ Measure(check)("a bag of 30 painted", 1, function() bagFrame:UpdateItems() end)
 Measure(check)("an EllesmereUI slot painted", 1, function() paint(eHelm, data) end)
 
 -------------------------------------------------------------------------------
+--  Baganator's bags
+-------------------------------------------------------------------------------
+state.baganator = true
+local refreshes = BAGANATOR.refreshes
+ns.Apply()
+local widget = BAGANATOR.widgets.NaowhForeverBagMarks
+check("loaded: one corner widget, top left, fast, and a refresh", widget
+    and widget.label == "Naowh Forever Marks" and widget.isFast == true
+    and widget.corner.corner == "top_left" and widget.corner.priority == 1
+    and BAGANATOR.refreshes > refreshes)
+ns.Apply()
+check("a second apply does not register it again", BAGANATOR.widgets.NaowhForeverBagMarks == widget)
+local bHelm, bPotion, bEmpty, bChest = Frame(), Frame(), Frame(), Frame()
+local bHelmHold, bPotionHold = widget.onInit(bHelm), widget.onInit(bPotion)
+local bEmptyHold, bChestHold = widget.onInit(bEmpty), widget.onInit(bChest)
+local bHelmSet, bPotionSet = SetOn(bHelm), SetOn(bPotion)
+check("the marks cover its button, and the corner frame is a separate one kept hidden",
+    bHelmSet and bHelmSet.parent == bHelm and bHelmHold ~= bHelmSet and bHelmHold.shown == false
+    and bHelmHold.parent == bHelm)
+local reads = state.powerReads
+state.now = 2
+check("its gear shows the level, the star and Forever's mark, and the corner frame stays hidden",
+    widget.onUpdate(bHelmHold, { itemID = 101, itemLink = "link1" }) == false
+    and bHelmHold.shown == false and bHelmSet.shown == true and bHelmSet.level.text == 30
+    and bHelmSet.rank.text ~= "" and bHelmSet.forever.shown == true and bHelmSet.up.shown == false)
+widget.onUpdate(bPotionHold, { itemID = 500, itemLink = "link3" })
+check("a potion has no level and no arrow", bPotionSet.level.text == "" and bPotionSet.up.shown == false
+    and bPotionSet.rank.text == "")
+widget.onUpdate(bEmptyHold, {})
+check("an empty slot hides its marks", SetOn(bEmpty).shown == false)
+widget.onUpdate(bChestHold, { itemID = 102, itemLink = "link2" })
+check("the upgrade arrow on gear better than what you wear", SetOn(bChest).up.shown == true
+    and SetOn(bChest).level.text == 25)
+check("your gear's worth read once for that burst, not once a slot", state.powerReads == reads + 1)
+local bOther = Frame()
+local bOtherHold = widget.onInit(bOther)
+widget.onUpdate(bOtherHold, { itemID = 102, itemLink = "link2" })
+check("another character's icon, with no bag, still shows the marks", SetOn(bOther).up.shown == true)
+local bDetails = { itemID = 101, itemLink = "link1" }
+Measure(check)("a Baganator slot painted", 1, function() widget.onUpdate(bHelmHold, bDetails) end)
+
+-------------------------------------------------------------------------------
 --  Off again
 -------------------------------------------------------------------------------
 local refreshed = state.refreshed
+refreshes = BAGANATOR.refreshes
 S.Set("bisBagMarks", false)
 check("off: ours hide, EllesmereUI's item level back, its hook let go", helm.shown == false and mark.shown == false
     and eHelm.ItemLevelText.alpha == 1 and state.overlays.NaowhForever == nil and state.refreshed == refreshed)
+check("off: Baganator's marks hide, a refresh is asked, and its widget stays", bHelmSet.shown == false
+    and BAGANATOR.widgets.NaowhForeverBagMarks == widget and BAGANATOR.refreshes > refreshes)
 bagFrame:UpdateItems()
 check("and the game's bag updates paint nothing of ours", helm.shown == false)
+widget.onUpdate(bHelmHold, { itemID = 101, itemLink = "link1" })
+check("and a Baganator update paints nothing of ours", bHelmSet.shown == false and bHelmHold.shown == false)
+local again = BAGANATOR.refreshes
 S.Set("bisBagMarks", true)
-check("on again: EllesmereUI's hook taken again, its bags repainted", state.overlays.NaowhForever ~= nil
-    and state.refreshed > refreshed and helm.shown == true)
+check("on again: EllesmereUI's hook taken again, its bags repainted, Baganator refreshed, still one widget",
+    state.overlays.NaowhForever ~= nil and state.refreshed > refreshed and helm.shown == true
+    and BAGANATOR.widgets.NaowhForeverBagMarks == widget and BAGANATOR.refreshes > again)
+widget.onUpdate(bHelmHold, { itemID = 101, itemLink = "link1" })
+check("on again: Baganator's slot paints", bHelmSet.shown == true and bHelmSet.level.text == 30)
 
 print(("test-bag-marks: %d checks passed"):format(checks))

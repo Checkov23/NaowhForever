@@ -1,4 +1,4 @@
--- Bags.lua: Bag Marks, the slot marks on your bags' items, the game's or EllesmereUI's.
+-- Bags.lua: Bag Marks, the slot marks on your bags' items, the game's, EllesmereUI's, or Baganator's.
 local ns = _G.NaowhForever
 
 local GetContainerItemID = C_Container.GetContainerItemID
@@ -14,6 +14,9 @@ local Items, Parts, Bags = Shared.Items, Shared.Parts, Shared.Bags
 local SW = ns.StatWeights
 
 local OVERLAY = "NaowhForever"
+local WIDGET = "NaowhForeverBagMarks"
+local TEXT_BAGANATOR = ns.L("Naowh Forever Marks")
+local BAGANATOR_CORNER = { corner = "top_left", priority = 1 }
 local PLAIN_QUALITY = 1
 local PLAIN_LEVEL_RGB = { r = 1, g = 0.82, b = 0 }
 local BIND_GAP = 1
@@ -22,6 +25,8 @@ local SETTINGS = { enabled = true, bis = true, bisBagMarks = true }
 
 local sets = {}
 local ellesmere = {}
+local held = {}
+local baganator
 local installed, registered = false, false
 local weights, power, readAt
 
@@ -116,9 +121,34 @@ local function EllesmereSlot(button, data)
     TheirLevel(button, shown and 0 or 1)
 end
 
+local function BaganatorInit(button)
+    Marks(button, button)
+    local anchor = CreateFrame("Frame", nil, button)
+    anchor:Hide()
+    held[anchor] = button
+    return anchor
+end
+
+local function BaganatorSlot(anchor, details)
+    anchor:Hide()
+    local set = sets[held[anchor]]
+    if not set or not On() then
+        if set then set:Hide() end
+        return false
+    end
+    local id = details and details.itemID
+    Paint(set, id, id and details.itemLink)
+    return false
+end
+
+local function RefreshBaganator()
+    if baganator then baganator.RequestItemButtonsRefresh() end
+end
+
 local function Repaint()
     Bags.RepaintGame(GameBag)
     if registered then Bags.RefreshEllesmere() end
+    RefreshBaganator()
 end
 
 local function ListChanged()
@@ -136,6 +166,15 @@ local function Release()
         set:Hide()
         if ellesmere[button] then TheirLevel(button, 1) end
     end
+    RefreshBaganator()
+end
+
+local function RegisterBaganator(on)
+    if baganator or not on then return end
+    local api = Bags.Baganator()
+    if not api then return end
+    baganator = api
+    api.RegisterCornerWidget(TEXT_BAGANATOR, WIDGET, BaganatorSlot, BaganatorInit, BAGANATOR_CORNER, true)
 end
 
 local function Register(on)
@@ -154,6 +193,7 @@ local function Apply()
     if on and not installed then Install() end
     if not installed then return end
     Register(on)
+    RegisterBaganator(on)
     if on then return Repaint() end
     Release()
 end
