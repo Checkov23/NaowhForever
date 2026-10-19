@@ -106,7 +106,16 @@ Import Website Code, and the Profiles page's Import, accept versioned !NFA1! lay
 Sharing.lua validates the class, slots, action types, byte limits and decode limits before
 saving anything. Confirmation creates a uniquely named set and opens the existing preview;
 it never places actions. Applying remains the normal out-of-combat player action.
-Unfilled website slots and keys not assigned by the website build are preserved.
+Keyboard slots the layout leaves empty are cleared, so the bars end as they were built on the
+website. Gamepad slots, and every slot when the layout carries only macros, are left as they are.
+Keys not assigned by the website build keep what they do, but an action the layout binds keeps
+only the layout's keys: its other keys come off first. A button shows its first
+key, so one bound on top of the old key kept showing, and answering to, the old one. A saved set
+still only adds its keys, so importing it never takes away a key the player added.
+A website layout (`choices.website`) also fills in its spells as they are learned whether Fill In
+As You Learn is on or not (`pending.always`): the player built the bars for the levels to come, and
+would not know to switch it on. The preview says so in place of the switch, and the import lists
+those spells with the level each is learned at.
 Keybinds are restricted to known action-button commands, with at most two per action (192 total).
 Binding syntax supports punctuation, international characters, named keys, mouse buttons 3-31,
 F1-F24 and general or sided modifiers, including Meta. Modifier order is normalized; legacy

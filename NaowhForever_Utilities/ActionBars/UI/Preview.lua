@@ -33,6 +33,8 @@ local TEXT_LATER_LEGEND = ns.L("not learned yet")
 local TEXT_SIDE = ns.L("WHAT COMES ACROSS")
 local TEXT_FILL = ns.L("Fill in as you learn them")
 local TEXT_FILL_LINE = ns.L("A trained spell drops into its saved slot.")
+local TEXT_FILL_ALWAYS = ns.L("Fills in as you learn them")
+local TEXT_FILL_ALWAYS_LINE = ns.L("A website layout always does: each spell drops into its slot when learned.")
 local TEXT_KEY_LETTER = "K"
 local TEXT_CANCEL, TEXT_IMPORT = ns.L("Cancel"), ns.L("Import")
 local TEXT_TITLE = "Import"
@@ -242,12 +244,10 @@ local function BuildFill(v, side)
     v.fill:SetPoint("RIGHT")
     ns.Solid(v.fill, "BACKGROUND", T.bg, ROW_FILL):SetAllPoints()
     ns.Border(v.fill, BLACK)
-    local fillName = P.Label(v.fill, NAME_SIZE, T.fg)
-    fillName:SetPoint("TOPLEFT", FILL_INSET_X, -FILL_INSET_Y)
-    fillName:SetText(TEXT_FILL)
-    local fillLine = P.Label(v.fill, SMALL_SIZE, T.muted)
-    fillLine:SetPoint("TOPLEFT", fillName, "BOTTOMLEFT", 0, -STACK_GAP)
-    fillLine:SetText(TEXT_FILL_LINE)
+    v.fillName = P.Label(v.fill, NAME_SIZE, T.fg)
+    v.fillName:SetPoint("TOPLEFT", FILL_INSET_X, -FILL_INSET_Y)
+    v.fillLine = P.Label(v.fill, SMALL_SIZE, T.muted)
+    v.fillLine:SetPoint("TOPLEFT", v.fillName, "BOTTOMLEFT", 0, -STACK_GAP)
     v.fillSwitch = P.Switch(v.fill, FillLater, SetFillLater)
     v.fillSwitch:SetPoint("RIGHT", -FILL_INSET_X, 0)
 end
@@ -316,7 +316,11 @@ local function DrawActions(v)
     v.actions.line:SetText(#lines > 0 and table.concat(lines, " ") or TEXT_ALL_BACK)
 end
 
-local function DrawFill(v)
+local function DrawFill(v, set)
+    local always = set.choices and set.choices.website
+    v.fillName:SetText(always and TEXT_FILL_ALWAYS or TEXT_FILL)
+    v.fillLine:SetText(always and TEXT_FILL_ALWAYS_LINE or TEXT_FILL_LINE)
+    v.fillSwitch:SetShown(not always)
     v.fill:SetShown(#later > 0)
     v.macros.mark:ClearAllPoints()
     if #later == 0 then
@@ -404,7 +408,7 @@ local function Draw(v)
     if not set then W.Show("sets") return end
     DrawBars(v, set)
     DrawActions(v)
-    DrawFill(v)
+    DrawFill(v, set)
     DrawMacroTitle(v, preview.macros)
     DrawKeys(v, set, DrawMacroRows(v, preview.macros))
 end

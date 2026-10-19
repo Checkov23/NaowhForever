@@ -20,7 +20,8 @@ local function Pending()
 end
 
 local function Watch()
-    if S.Get("enabled") and S.Get("fillLater") and Pending() then
+    local pending = Pending()
+    if S.Get("enabled") and pending and (pending.always or S.Get("fillLater")) then
         events:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
         return
     end
@@ -29,10 +30,10 @@ local function Watch()
     if not A.autoWaiting then events:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 end
 
-local function Remember(key, result)
+local function Remember(key, result, always)
     local pending
-    if S.Get("fillLater") and #result.later > 0 then
-        pending = { class = A.Class(), set = key, slots = {} }
+    if (always or S.Get("fillLater")) and #result.later > 0 then
+        pending = { class = A.Class(), set = key, slots = {}, always = always or nil }
         for _, later in ipairs(result.later) do pending.slots[later.slot] = later.entry end
     end
     Store()[A.CharKey()] = pending

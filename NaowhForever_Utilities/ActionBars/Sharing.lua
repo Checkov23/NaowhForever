@@ -144,10 +144,10 @@ local function Decode(text)
     local bindings = Bindings(data.bindings)
     if not bindings then return end
     for _, slot in ipairs(A.Capture.Slots()) do
-        if not slots[slot] then skip[slot] = true end
+        if not slots[slot] and (count == 0 or slot > A.C.KEYBOARD_SLOTS) then skip[slot] = true end
     end
     return data.name, { slots = slots, macros = macros, bindings = bindings,
-        choices = { skip = skip, keys = next(bindings) ~= nil, macros = true, macroOff = {} } }
+        choices = { skip = skip, keys = next(bindings) ~= nil, website = true, macros = true, macroOff = {} } }
 end
 
 local function Ready()

@@ -148,12 +148,18 @@ local function World(known)
         end,
         GetNumBindings = function() return #w.binds end,
         GetBinding = function(i) local b = w.binds[i]; return b[1], "HEADER", b[2], b[3] end,
+        GetBindingKey = function(command)
+            for _, b in ipairs(w.binds) do
+                if b[1] == command then return b[2], b[3] end
+            end
+        end,
         SetBinding = function(key, command)
             if command == "NO_SUCH_ADDON" then return false end
             for _, b in ipairs(w.binds) do
                 if b[2] == key then b[2] = b[3]; b[3] = nil end
                 if b[3] == key then b[3] = nil end
             end
+            if command == nil then return true end
             for _, b in ipairs(w.binds) do
                 if b[1] == command then
                     if b[2] then b[3] = key else b[2] = key end
@@ -427,6 +433,17 @@ Case("a key whose command is not here is not counted", function()
         bindings = { ["1"] = "ACTIONBUTTON1", F = "NO_SUCH_ADDON" } } } }
     w.run("import Old")
     assert(w.printed[#w.printed]:find("1 keybind", 1, true), w.printed[#w.printed])
+end)
+Case("an action a website layout binds keeps only the layout's keys", function()
+    local w = World({})
+    w.binds = { { "ACTIONBUTTON4", "4" }, { "ACTIONBUTTON5", "5", "SHIFT-5" }, { "ACTIONBUTTON6", "6" } }
+    w.account.barSets = { PRIEST = { Web = { saved = 0, slots = {}, choices = { skip = {}, website = true },
+        bindings = { F1 = "ACTIONBUTTON4", F2 = "ACTIONBUTTON5" } } } }
+    w.run("import Web")
+    local keys = {}
+    for _, b in ipairs(w.binds) do keys[b[1]] = (b[2] or "") .. "," .. (b[3] or "") end
+    assert(keys.ACTIONBUTTON4 == "F1," and keys.ACTIONBUTTON5 == "F2,", keys.ACTIONBUTTON4 .. " " .. keys.ACTIONBUTTON5)
+    assert(keys.ACTIONBUTTON6 == "6,", "a key the set leaves free keeps what it does")
 end)
 Case("the set row says what it holds", function()
     local w = World({ 598 })
@@ -705,6 +722,19 @@ Case("a spell learned later goes into its slot when Fill In is on", function()
     assert(Bars(alt) == "1=spell598 2=spell6064 3=Pull", Bars(alt))
     assert(alt.printed[#alt.printed]:find("Heal is on your bars", 1, true), alt.printed[#alt.printed])
     assert(not alt.events.registered.LEARNED_SPELL_IN_SKILL_LINE, "nothing left to wait for")
+    assert(next(alt.account.barSetPending) == nil)
+end)
+Case("a website layout fills in what is not learned yet, with Fill In off, and says so", function()
+    local alt = Alt()
+    alt.account.barSets.PRIEST.P.choices.website = true
+    alt.run("import P")
+    assert(alt.events.registered.LEARNED_SPELL_IN_SKILL_LINE, "waiting for the spell")
+    assert(alt.printed[#alt.printed]:find("when you learn them: ", 1, true), alt.printed[#alt.printed])
+    for _, line in ipairs(alt.printed) do assert(not line:find("left empty", 1, true), line) end
+    alt.learn(6064)
+    alt.events.handler(alt.events, "LEARNED_SPELL_IN_SKILL_LINE", 6064)
+    alt.events.handler(alt.events, "SPELLS_CHANGED")
+    assert(Bars(alt) == "1=spell598 2=spell6064 3=Pull", Bars(alt))
     assert(next(alt.account.barSetPending) == nil)
 end)
 Case("Fill In waits out combat", function()

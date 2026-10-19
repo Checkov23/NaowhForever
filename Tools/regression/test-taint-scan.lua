@@ -67,7 +67,7 @@ local UNGUARDED_ALLOWED = {
         calls = { ["C_Container.UseContainerItem"] = 1 } },
     ["NaowhForever_Utilities/ActionBars/Import.lua"] = {
         why = "Run is reached only through Sets.lua's Ready(), which refuses in combat, or as a test that changes nothing",
-        calls = { CreateMacro = 1, SetBinding = 1, ["C_Spell.PickupSpell"] = 3, PickupMacro = 1,
+        calls = { CreateMacro = 1, SetBinding = 2, ["C_Spell.PickupSpell"] = 3, PickupMacro = 1,
             PickupAction = 2, PlaceAction = 1 } },
     ["NaowhForever_Utilities/ActionBars/Pending.lua"] = {
         why = "FillPending runs from SpellsReady, which waits for PLAYER_REGEN_ENABLED in combat",

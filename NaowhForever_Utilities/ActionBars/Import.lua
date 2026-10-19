@@ -91,8 +91,20 @@ local function ImportMacros(set, test)
     return index, fresh, fates
 end
 
+local function Unbind(...)
+    for i = 1, select("#", ...) do SetBinding((select(i, ...))) end
+end
+
 local function ImportBindings(set, test)
-    local count = 0
+    local count, cleared = 0, {}
+    if not test and set.choices and set.choices.website then
+        for _, command in pairs(set.bindings) do
+            if not cleared[command] then
+                cleared[command] = true
+                Unbind(GetBindingKey(command))
+            end
+        end
+    end
     for key, command in pairs(set.bindings) do
         if test or SetBinding(key, command, C_KeyBindings.GetBindingContextForAction(command)) then
             count = count + 1

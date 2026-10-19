@@ -26,6 +26,8 @@ local TEXT_WOULD_BE_EMPTY = ns.L("   These slots would be left empty:")
 local TEXT_WERE_EMPTY = ns.L("   These slots were left empty:")
 local TEXT_SLOT_LINE = "      "
 local TEXT_LATER = ns.L("   Spells you learn later go into their slots then.")
+local TEXT_LATER_LIST = ns.L("   These go on your bars when you learn them: %s.")
+local TEXT_AT_LEVEL = ns.L("%s (level %d)")
 local TEXT_DELETED = ns.L("Deleted the bar set %s.")
 local TEXT_TAKEN = ns.L("There is already a bar set called %s.")
 local TEXT_SETS = ns.L("Bar sets: ")
@@ -87,11 +89,11 @@ local function PrintFull(result)
     if #full > 0 then print(TEXT_NO_ROOM:format(Plural(#full, TEXT_MACRO, TEXT_MACROS), table.concat(full, ", "))) end
 end
 
-local function PrintEmpty(result, test)
+local function PrintEmpty(result, test, waiting)
     local failed = {}
     for _, slot in ipairs(Capture.Slots()) do
         local row = result.slots[slot]
-        if row.state == "later" or row.state == "gone" then
+        if (row.state == "later" and not waiting) or row.state == "gone" then
             failed[#failed + 1] = TEXT_SLOT:format(slot, Import.Describe(row.entry))
         end
     end
@@ -100,17 +102,29 @@ local function PrintEmpty(result, test)
     for _, line in ipairs(failed) do print(TEXT_SLOT_LINE .. line) end
 end
 
+local function PrintLater(result)
+    local names = {}
+    for _, later in ipairs(result.later) do
+        local level = result.slots[later.slot].level
+        local name = Import.Describe(later.entry)
+        names[#names + 1] = level and level > 0 and TEXT_AT_LEVEL:format(name, level) or name
+    end
+    print(TEXT_LATER_LIST:format(table.concat(names, ", ")))
+end
+
 local function ImportSet(name, test)
     if not Ready(TEXT_IMPORT_IN_COMBAT) then return end
     local key = A.Find(name)
     if not key then ns.Print(TEXT_NO_SET:format(name)) return end
-    local result = Import.Run(A.Sets()[key], test)
-    local pending = not test and Pending.Remember(key, result)
+    local set = A.Sets()[key]
+    local website = set.choices and set.choices.website
+    local result = Import.Run(set, test)
+    local pending = not test and Pending.Remember(key, result, website)
     if not test then A.SetLast(key, false) end
     ns.Print(TEXT_IMPORTED:format(test and TEXT_TESTED_VERB or TEXT_IMPORTED_VERB, key, Summary(result)))
     PrintFull(result)
-    PrintEmpty(result, test)
-    if pending then print(TEXT_LATER) end
+    PrintEmpty(result, test, pending and pending.always)
+    if pending and pending.always then PrintLater(result) elseif pending then print(TEXT_LATER) end
     A.Refresh()
     return result
 end

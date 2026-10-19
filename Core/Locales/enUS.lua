@@ -7033,3 +7033,7 @@ L["Hide Blessings on Paladins"] = true
 L["Hides blessing reminders while your paladin is grouped; use the Blessings tab instead."] = true
 L["Daily Word First"] = true
 L["Opens the Daily Word first until today's is done; closing it opens your game."] = true
+L["   These go on your bars when you learn them: %s."] = true
+L["%s (level %d)"] = true
+L["Fills in as you learn them"] = true
+L["A website layout always does: each spell drops into its slot when learned."] = true
