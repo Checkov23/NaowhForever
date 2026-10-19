@@ -157,6 +157,8 @@ files["Tools/regression/"] = {
     globals = { "strmatch" },
 }
 files["Tools/build/presets.lua"] = { globals = { "strmatch" } }
+-- The development addons: their slash command and SavedVariables.
+files["Tools/dev/"] = { globals = { "SLASH_QUESTPOSITIONS1", "QuestPositionsResults" } }
 
 -- Baseline: warnings that were already in the code when this config was added, silenced
 -- only where they are (file, warning code, name) so any new warning still fails. Remove

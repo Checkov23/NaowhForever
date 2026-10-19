@@ -19,6 +19,7 @@ and ship the result as plain Lua data. The scripts keep that repeatable.
 | `release/` | Release, the daily build watch and the daily badge sync, run by the workflows. |
 | `hooks/` | The checks pre-commit and the workflows run. |
 | `regression/` | Offline Lua tests against stubs. |
+| `dev/` | Development addons loaded into the game by hand, never shipped (`dev/QuestPositions/`, see its README). |
 | `nav/` | The walking maps Journeys plans walks on, baked from the client's terrain (Node; see `nav/README.md`). |
 | `tests/` | Python tests for the tools. |
 | `paths.py` | Where the tools, their data and the addon are. |
@@ -70,6 +71,7 @@ purpose.
 | Tool | What it does | Why |
 | --- | --- | --- |
 | `completo_quests.py` | Builds `NaowhForever_DiscoveryData/Quests.lua`: every quest of every zone, its chain and where its quest giver stands, from Wowhead Forever's zone and quest pages. Cached in `data/completo_zones.json`, `data/completo_quests.json`, `data/completo_requires.json` and `data/completo_items.json`; `--offline` writes from the caches only. | A zone's quests and what to do first. |
+| `elsewhere_quests.py` | Builds `data/completo_elsewhere.json`, which `completo_quests.py` reads: the class, dungeon and battleground quests no zone page lists, from CMaNGOS's quests that Forever's client has, placed from Wowhead's quest pages or, failing those, where the game client puts the giver's spawn (`dev/QuestPositions/`, kept in `data/completo_positions.json`). `--offline` fetches nothing; `--positions` writes the spawns for the dev addon to resolve; `--resolved <file>` reads its answers. | The quests Wowhead files under a class or an instance, on the map too. |
 | `completo_rares.py` | Builds `NaowhForever_DiscoveryData/Rares.lua`: every rare of every zone, where it spawns and its special drops. Cached in `data/completo_rares.json`; `--offline` writes from the caches only. | The rares worth hunting, on the map. |
 
 ## build/: World and town map

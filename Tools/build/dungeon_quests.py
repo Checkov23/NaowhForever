@@ -50,6 +50,7 @@ TABLES = {
     "creature_questrelation": ("id", "quest"),
     "gameobject_questrelation": ("id", "quest"),
     "creature_template": ("Entry", "Name"),
+    "creature": ("id", "map", "position_x", "position_y"),
     "gameobject_template": ("entry", "name"),
 }
 # The quest fields read here, which an update must be understood to change.

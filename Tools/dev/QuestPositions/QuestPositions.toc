@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: QuestPositions (dev)
+## Notes: Resolves quest giver spawns to zone map spots for Tools/build/elsewhere_quests.py.
+## SavedVariables: QuestPositionsResults
+
+Positions.lua
+QuestPositions.lua
