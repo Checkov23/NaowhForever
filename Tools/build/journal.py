@@ -6,7 +6,7 @@ kill order with no number, as Highland Horror). For each boss this finds its NPC
 Forever by name and reads the "drops" list on its page (a chest: its object page's
 "contains"): every item with the number of kills it dropped from. Where Wowhead Forever keeps nothing (it has not loaded
 every classic item yet), Wowhead Classic's page for the same NPC is read. Gear of uncommon
-quality or better is kept when it drops from at least 1 in 100 kills and is not a world drop
+quality or better, and a recipe of common or better, is kept when it drops from at least 1 in 100 kills and is not a world drop
 (the random greens any mob of that level carries). Wowhead counts Classic Era's kills and
 Forever's together, so an item new in Forever looks rarer than it is: it is kept once it
 has dropped twice, with no chance shown. A boss new in Forever has only Forever's kills, so
@@ -100,6 +100,8 @@ DUNGEON_DIFFICULTIES = ("0", "1", "201")
 
 MIN_CHANCE = 1.0   # percent of kills
 MIN_QUALITY = 2    # uncommon
+RECIPE = 9         # Wowhead's item class for recipes
+MIN_RECIPE_QUALITY = 1   # common: many recipes bosses drop are white
 WORLD_DROP = 16384  # Wowhead's flags2 bit for an item any mob can drop
 # Wowhead's drop counts: "1" is Normal, kills from Classic Era and Forever together (it does
 # not split them); "201" is Season of Discovery, never Forever. On a boss Classic has too, an
@@ -126,8 +128,18 @@ OFFLINE = "--offline" in sys.argv
 REFRESH_DROPS = "--refresh-drops" in sys.argv and not OFFLINE
 refreshed = set()
 # What a Wowhead answer is cached under; offline, one not cached yet is not asked.
-WOWHEAD_KEYS = ("npc:", "drops5:", "contains5:", "model:", "item:", "zones", "guide:")
+# A boss's drops and a chest's contents: "6" since recipes are kept too, "5" the gear-only answers before.
+DROPS, CONTAINS = "drops6:", "contains6:"
+OLD_DROPS, OLD_CONTAINS = "drops5:", "contains5:"
+WOWHEAD_KEYS = ("npc:", DROPS, CONTAINS, "model:", "item:", "zones", "guide:")
 offline_missed = []
+
+
+def keeps(item):
+    """Whether the Journal lists the item: gear of uncommon quality or better, or a recipe."""
+    if item.get("class") == RECIPE:
+        return item.get("quality", 0) >= MIN_RECIPE_QUALITY
+    return item.get("quality", 0) >= MIN_QUALITY and item.get("slot") in EQUIPPABLE
 
 
 def cached(key, get, fallback=None):
@@ -291,7 +303,7 @@ def wowhead_drops(kind, thing):
         # The boss is new in Forever: Wowhead's own entry for it says so.
         npc_new = kind == "npc" and re.search(r'"id":%d,[^;]*?"envChange":\{"status":"new"' % thing,
                                               page[:start]) is not None
-        # Only what could be kept is cached: uncommon or better gear that is not a world drop
+        # Only what could be kept is cached: uncommon or better gear, or a recipe, that is not a world drop
         # nor only Season of Discovery's. A chest's own items carry the world-drop flag too
         # (the Secret Safe's): there only Wowhead's common-drop mark counts.
         return {"new": npc_new, "items": [{"id": i["id"], "name": i.get("name"), "count": counted(i)[0], "kills": counted(i)[1],
@@ -300,14 +312,19 @@ def wowhead_drops(kind, thing):
                  "reqlevel": i.get("reqlevel") or 0, "quality": i.get("quality", 0),
                  **({"world": True} if kind == "npc" and i.get("flags2", 0) & WORLD_DROP else {})}
                 for i in listview(page[start:], listed)
-                if i.get("quality", 0) >= MIN_QUALITY and i.get("slot") in EQUIPPABLE
+                if keeps(dict(i, **{"class": i.get("classs")}))
                 and not (i.get("commondrop") or (kind == "npc" and i.get("flags2", 0) & WORLD_DROP and not npc_new))
                 and not sod_only(i)]}
-    key = f"drops5:{thing}" if kind == "npc" else f"contains5:{thing}"
+    key = f"{DROPS}{thing}" if kind == "npc" else f"{CONTAINS}{thing}"
+    old = f"{OLD_DROPS}{thing}" if kind == "npc" else f"{OLD_CONTAINS}{thing}"
     if not OFFLINE and (stale(cache.get(key)) or (REFRESH_DROPS and key not in refreshed)):
         cache.pop(key, None)
     refreshed.add(key)
-    found = cached(key, get)
+    # Offline, a boss not read since recipes were kept has its gear-only answer until a run asks
+    # Wowhead again; that run's answer replaces it.
+    found = cached(key, get, cache.get(old))
+    if key in cache:
+        cache.pop(old, None)
     if not found or isinstance(found, list):   # a page with no drops (or, offline, not read yet)
         return []
     return choose(found["items"], found["new"])
@@ -362,9 +379,11 @@ def item_facts(item_id):
 
 WOWSRC = paths.DATA / "wowsrc_loot.json"
 ITEM_NAMES = paths.DATA / "item_names.json"
+RECIPE_DROPS = paths.DATA / "journal_recipes.json"   # Tools/sources/recipe_drops.py: {dungeon: {boss: [IDs]}}
 WING_SUFFIX = re.compile(r"^(.*) \((\w+)\)$")   # Dire Maul's "Hydrospawn (East)"
 wowsrc_pages = json.loads(WOWSRC.read_text(encoding="utf-8")) if WOWSRC.exists() else {}
 item_names = json.loads(ITEM_NAMES.read_text(encoding="utf-8")) if ITEM_NAMES.exists() else {}
+recipe_drops = json.loads(RECIPE_DROPS.read_text(encoding="utf-8")) if RECIPE_DROPS.exists() else {}
 
 
 def name_key(name):
@@ -442,7 +461,7 @@ def merge_wowsrc(loot, listed):
             kept.append(item)
     for theirs in on_list.values():
         facts = item_facts(theirs["id"])
-        if facts and facts["quality"] >= MIN_QUALITY and facts["slot"] in EQUIPPABLE:
+        if facts and keeps(facts):
             kept.append(dict(facts, chance=theirs["chance"], new=theirs["new"], listed=True))
         elif not facts:
             # Not known here (offline, an item neither cache nor tables have): the list is not
@@ -506,7 +525,7 @@ def boss_entry(name, rare, pinned, extra, items, report, listed=None, kind=None,
     loot = merge_wowsrc(npc_drops(npc) if npc else [], listed)
     have = {i["id"] for i in loot}
     for item in extra.get(name.lower(), []):
-        if item["id"] not in have and item["quality"] >= MIN_QUALITY and item["slot"] in EQUIPPABLE:
+        if item["id"] not in have and keeps(item):
             loot.append(dict(item, chance=None))
             have.add(item["id"])
     if not npc:
@@ -684,11 +703,16 @@ def item_facts_file(items):
 
 
 def extra_loot(dungeon, bis):
-    """Boss name (lower case) -> the items the guide, the BiS sources and the dungeon's own
-    "add" list (by hand: items seen dropping that Wowhead has not tied to the boss yet) place
-    on it."""
+    """Boss name (lower case) -> the items the guide, the BiS sources, the recipes its item XML
+    ties to it (Tools/sources/recipe_drops.py) and the dungeon's own "add" list (by hand: items
+    seen dropping that Wowhead has not tied to the boss yet) place on it."""
     extra = guide_drops(dungeon["guide"]) if dungeon.get("guide") else {}
-    for boss, ids in dungeon.get("add", {}).items():
+    placed = {}
+    for source in (recipe_drops.get(dungeon["name"], {}), dungeon.get("add", {})):
+        for boss, ids in source.items():
+            mine = placed.setdefault(boss, [])
+            mine += [i for i in ids if i not in mine]
+    for boss, ids in placed.items():
         for item_id in ids:
             if not isinstance(item_id, int):
                 sys.exit(f"journal_bosses.json, {dungeon['name']}, {boss}: \"add\" takes item IDs, not {item_id!r}")
@@ -706,7 +730,9 @@ def extra_loot(dungeon, bis):
 def shared_drops(built):
     npcs = {}
     for key, found in cache.items():
-        if key.startswith("drops5:") and isinstance(found, dict):
+        if key.startswith(OLD_DROPS) and DROPS + key[len(OLD_DROPS):] in cache:
+            continue
+        if key.startswith((DROPS, OLD_DROPS)) and isinstance(found, dict):
             for item in found["items"]:
                 if item["new"]:
                     npcs.setdefault(item["id"], set()).add(key)
@@ -770,7 +796,7 @@ def main():
                 # Defias Renegade Ring): listed once.
                 have = {i["id"] for i in trash}
                 for i in extra.get("trash", []):
-                    if i["id"] not in have and i["quality"] >= MIN_QUALITY and i["slot"] in EQUIPPABLE:
+                    if i["id"] not in have and keeps(i):
                         have.add(i["id"])
                         trash.append(dict(i, chance=None))
             trash = {"npc": None, "name": "Trash", "rare": False, "trash": True, "loot": trash}

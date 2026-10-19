@@ -9,19 +9,19 @@ ns.Journal.AddDungeon("BlackrockDepths", {
     wings = {
         { name = "Detention Block", bosses = {
             { npc = 9018, name = "High Interrogator Gerstahn", model = 8761, encounters = { 227 }, loot = { 11624, 11625, 22240, 11626 }, chance = { 22, 19, 18, 17 } },
-            { npc = 9025, name = "Lord Roccor", model = 5781, encounters = { 228 }, loot = { 11632, 11631, 22397, 22234 }, chance = { 23, 23, 22, 22 } },
+            { npc = 9025, name = "Lord Roccor", model = 5781, encounters = { 228 }, loot = { 11632, 11631, 22397, 22234, 11813 }, chance = { 23, 23, 22, 22, 0 } },
             { npc = 9319, name = "Houndmaster Grebmar", model = 9212, encounters = { 229 }, loot = { 11627, 11623, 11629, 11628 }, chance = { 34, 30, 13, 13 } },
         } },
         { name = "Ring of Law", bosses = {
             { npc = 9031, name = "Anub'shiah", model = 3004, loot = { 11675, 11677, 11678, 11731 }, chance = { 33, 31, 19, 12 } },
             { npc = 9029, name = "Eviscerator", model = 523, loot = { 11679, 11685, 11686, 11730 }, chance = { 30, 29, 20, 18 } },
             { npc = 9027, name = "Gorosh the Dervish", model = 8760, loot = { 22257, 22271, 22266, 11726 }, chance = { 23, 21, 17, 16 } },
-            { npc = 9028, name = "Grizzle", model = 7873, loot = { 11703, 11702, 11722, 22270 }, chance = { 30, 30, 20, 16 } },
+            { npc = 9028, name = "Grizzle", model = 7873, loot = { 11703, 11702, 11722, 22270, 11610 }, chance = { 30, 30, 20, 16, 0 } },
             { npc = 9032, name = "Hedrum the Creeper", model = 8271, loot = { 11633, 11634, 11635, 11729 }, chance = { 31, 28, 21, 14 } },
             { npc = 9030, name = "Ok'thor the Breaker", model = 11538, loot = { 11662, 11665, 11824, 11728 }, chance = { 31, 29, 20, 17 } },
         } },
         { name = "Shadowforge City", bosses = {
-            { npc = 9024, name = "Pyromancer Loregrain", model = 8762, encounters = { 231 }, loot = { 11748, 11747, 11749, 11750 }, chance = { 29, 24, 24, 20 } },
+            { npc = 9024, name = "Pyromancer Loregrain", model = 8762, encounters = { 231 }, loot = { 11748, 11747, 11749, 11750, 11207 }, chance = { 29, 24, 24, 20, 0 } },
             { npc = 9017, name = "Lord Incendius", model = 1204, encounters = { 232 }, loot = { 11768, 11764, 11766, 11767, 11765 }, chance = { 41, 14, 14, 14, 14 } },
             { npc = 9041, name = "Warder Stilgiss", model = 9089, encounters = { 233 }, loot = { 11783, 11782, 11784, 22241 }, chance = { 25, 23, 23, 22 } },
             { npc = 9042, name = "Verek", model = 9019, loot = { 11755, 22242 }, chance = { 14, 12 } },
@@ -31,8 +31,8 @@ ns.Journal.AddDungeon("BlackrockDepths", {
             { npc = 8983, name = "Golem Lord Argelmach", model = 8759, encounters = { 237 }, loot = { 11823, 11822, 11669, 11819 }, chance = { 36, 36, 11, 9 } },
             { npc = 9537, name = "Hurley Blackbreath", model = 8658, encounters = { 238 }, loot = { 18044, 18043, 22275, 11735 }, chance = { 26, 24, 23, 9 } },
             { npc = 9502, name = "Phalanx", model = 8177, encounters = { 239 }, loot = { 11744, 11745, 227947, 11743 }, chance = { 31, 30, 29, 3 } },
-            { npc = 9543, name = "Ribbly Screwspigot", model = 8667, encounters = { 240 } },
-            { npc = 9499, name = "Plugger Spazzring", model = 8652, encounters = { 241 }, loot = { 12793, 12791 }, chance = { 30, 10 } },
+            { npc = 9543, name = "Ribbly Screwspigot", model = 8667, encounters = { 240 }, loot = { 11612, 227901 } },
+            { npc = 9499, name = "Plugger Spazzring", model = 8652, encounters = { 241 }, loot = { 12793, 12791, 18653 }, chance = { 30, 10, 0 } },
             { npc = 9156, name = "Ambassador Flamelash", model = 8329, encounters = { 242 }, loot = { 11812, 11814, 11809, 11832, 11808 }, chance = { 38, 37, 11, 10, 1 } },
             { npc = 9938, name = "Magmus", model = 12162, encounters = { 244 }, loot = { 22208, 11935, 22400, 22395 }, chance = { 22, 21, 15, 12 } },
             { npc = 9019, name = "Emperor Dagran Thaurissan", model = 8807, encounters = { 2790 }, loot = { 11930, 11924, 22204, 11928, 11934, 11932, 11931, 22207, 11933, 11815, 11684 }, chance = { 19, 19, 18, 18, 18, 18, 18, 18, 17, 15, 1 } },

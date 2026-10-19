@@ -78,6 +78,7 @@ ns.Journal.Tips = {
     [246016] = "Casts Manamorph and a 10 second Silence, so don't rely on one healer's casts; kill the Arcane Manalings he calls.",
     [246017] = "When he starts casting Malfunction, run out of its 25 yard reach before it turns into a channeled AoE.",
     [246020] = "Don't stand in line with the player Bounding Mana targets; he also casts Arcane Bolt, Mass Polymorph and Evocation, and resets if anyone leaves the room.",
+    [247032] = "Summon only: take the Black Tome from Archmage Arugal's table in Shadowfang Keep, turn it into the Tome of Dalaran at the Ambermill Leyline Focus in Silverpine, then use that at his spot in The Underbelly to summon him.",
     [3983] = "Priests and paladins can dispel his Immolate and Shadow Word: Pain to save the healer's mana.",
     [4543] = "Move out of his Flame Spike pillars, and melee should mind his Fire Nova up close.",
     [6490] = "Call of the Grave deals a big hit 60 sec after it lands; heal that player up before it goes off.",

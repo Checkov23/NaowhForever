@@ -8,7 +8,7 @@ ns.Journal.AddDungeon("ScarletMonasteryLibrary", {
     wings = {
         { bosses = {
             { npc = 3974, name = "Houndmaster Loksey", model = 2040, encounters = { 446 }, loot = { 7756, 3456, 7710, 274292 }, chance = { 56, 25, 14, 0 } },
-            { npc = 6487, name = "Arcanist Doan", model = 5266, encounters = { 447 }, loot = { 7712, 7714, 7713, 7711, 274293, 274294 }, chance = { 47, 47, 47, 46, 0, 0 } },
+            { npc = 6487, name = "Arcanist Doan", model = 5266, encounters = { 447 }, loot = { 7712, 7714, 7713, 7711, 274293, 274294, 252845, 252846, 252847, 252899 }, chance = { 47, 47, 47, 46, 0, 0, 0, 0, 0, 0 } },
             { npc = nil, name = "Trash", trash = true, loot = { 10330, 10329, 10333, 10331, 10328, 1992, 2262, 5756, 5819, 7727, 7728, 7729, 7730, 7736, 7752, 7753, 7754, 7755, 7757, 7758, 7759, 7760, 7761, 7786, 7787, 8225, 8226, 10332 }, chance = { 14, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
         } },
     },

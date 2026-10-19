@@ -108,7 +108,7 @@
                 "Mana Devourer": 246008, "Arcanic Enigma": 246016, "Lyn the Ignored": 247032 },
       "encounterNames": { "Arcanic Enigma": "Mana Elemental" },
       "entranceZone": 36, "entrance": { "map": 1416, "x": 21.7, "y": 68.3, "source": "the game's terrain, build 1.60.1.70124: the instance portal in the new Dalaran building, at sewer depth (map 0, tile 31_31)" },
-      "add": { "Shade of the Archmage": [273052], "Unstable Sentinel": [273046], "Arcanic Enigma": [273045] },
+      "add": { "Shade of the Archmage": [273052, 273103], "Unstable Sentinel": [273046, 273099], "Arcanic Enigma": [273045] },
       "wings": [
       { "bosses": ["Atrexis the Grave Knight", "Arcane Anomaly", "Fel Ancient", "Unstable Sentinel",
                    "Shade of the Archmage"],

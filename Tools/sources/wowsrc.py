@@ -137,7 +137,7 @@ def resolve():
     local = {}
     # The bosses' drops build/journal.py read from Wowhead, names kept.
     for key, found in json.loads(JOURNAL_CACHE.read_text(encoding="utf-8")).items():
-        if key.startswith("drops5:") and isinstance(found, dict):
+        if key.startswith(("drops6:", "drops5:")) and isinstance(found, dict):
             for r in found["items"]:
                 if r.get("name"):
                     local.setdefault(name_key(r["name"]), set()).add(r["id"])

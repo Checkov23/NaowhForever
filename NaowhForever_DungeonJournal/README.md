@@ -159,7 +159,7 @@ flowchart TD
     bosses --> build
     wowhead --> rules
     classic -.-> rules
-    rules["keep gear, 1%+ chance,<br/>no world drops;<br/>new Forever items once seen twice"] --> merge
+    rules["keep gear and recipes, 1%+ chance,<br/>no world drops;<br/>new Forever items once seen twice"] --> merge
     wowsrc --> names --> merge
     merge["merge with wowsrc:<br/>their items added, their chances win,<br/>old items they moved dropped"] --> build
     hand --> build
@@ -200,11 +200,12 @@ The rules, in plain words:
   instance's boss loot (Scarlet Monastery's four wings are one instance), or `"open"` on it in
   `Tools/data/journal_bosses.json` says so; an item the server sends on request does not count. One
   not open says "Not open on Forever yet." at the top of its page (`closed` in its data).
-- A boss nobody has loot for yet says so on its card. Keys, quest items and recipes are left
-  out: the Journal lists gear.
+- A boss nobody has loot for yet says so on its card. Keys and quest items are left out: the
+  Journal lists gear (uncommon or better) and the recipes a boss drops (common or better).
 
 To refresh it all: `python Tools/sources/wowsrc.py` (new pages), `python Tools/sources/wowsrc.py --resolve`
-(new names), then `python Tools/build/journal.py`. Read what the build prints at the end:
+(new names), `python Tools/sources/recipe_drops.py` (the recipes each boss drops, by their item XML), then
+`python Tools/build/journal.py`. Read what the build prints at the end:
 bosses it found no loot for, wowsrc bosses we don't list, names it couldn't map.
 
 The daily CI does the same when wowsrc's pages change (`.github/workflows/daily-watch.yml`,
@@ -351,6 +352,9 @@ the game's own tables, and what they can't settle is listed in the pull request 
 - A recipe's subclass maps to its profession's skill line as `GetProfessionInfo` names it
   (`RECIPE_SKILL`); a book (0) is no profession's and is listed whatever yours are. A cosmetic
   item is armor subclass 5.
+- A recipe is kept from common quality, not uncommon like gear: many recipes bosses drop are
+  white. Its facts say no armor type (`{ 4, 0 }`), as a faction's recipe rewards do, so every
+  class can use it: its own subclass is its profession, and Alchemy's 6 would read as a shield.
 - Asked for a recipe's look, the game answers with the look of the item it makes, so only
   items with a slot count as wearable. The game has no appearance for some wearable items
   (Prison Shank on Forever 1.60.1): then whether you have the item's own look is all it can say.

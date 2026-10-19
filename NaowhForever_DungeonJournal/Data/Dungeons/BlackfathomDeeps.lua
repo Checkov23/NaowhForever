@@ -9,7 +9,7 @@ ns.Journal.AddDungeon("BlackfathomDeeps", {
         { bosses = {
             { npc = 4887, name = "Ghamoo-ra", model = 5027, encounters = { 2916, 2761 }, loot = { 6908, 6907, 273839 }, chance = { 57, 37, 0 } },
             { npc = 4831, name = "Lady Sarevess", model = 4979, encounters = { 2915, 2762 }, loot = { 11121, 888, 3078 }, chance = { 38, 38, 19 } },
-            { npc = 6243, name = "Gelihast", model = 1773, encounters = { 2914, 2763 }, loot = { 6905, 6906, 273840 }, chance = { 47, 45, 0 } },
+            { npc = 6243, name = "Gelihast", model = 1773, encounters = { 2914, 2763 }, loot = { 6905, 6906, 273840, 273141 }, chance = { 47, 45, 0, 0 } },
             { npc = 12902, name = "Lorgus Jett", model = 12822, encounters = { 2913, 2764 }, loot = { 273841, 273842, 273843 } },
             { npc = 12876, name = "Baron Aquanis", model = 110 },
             { npc = 4832, name = "Twilight Lord Kelris", model = 4939, encounters = { 2911, 2766 }, loot = { 1155, 6903, 273846 }, chance = { 49, 34, 0 } },

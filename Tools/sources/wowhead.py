@@ -81,4 +81,6 @@ def kind(item):
     """(item class, subclass): 2 weapon or 4 armor; anything with no armor type is 0."""
     if item["class"] == 2:
         return 2, item["subclass"]
-    return 4, max(item["subclass"], 0)
+    if item["class"] == 4:
+        return 4, max(item["subclass"], 0)
+    return 4, 0

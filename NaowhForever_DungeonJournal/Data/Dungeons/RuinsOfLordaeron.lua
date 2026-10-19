@@ -13,7 +13,7 @@ ns.Journal.AddDungeon("RuinsOfLordaeron", {
             { npc = 256035, name = "Viktor the Vile", model = 139455, encounters = { 3411 }, loot = { 271211, 271212, 271218 }, chance = { 35, 33, 32 } },
             { npc = 250631, name = "The Abandoned", model = 138667, encounters = { 3357 }, loot = { 271207, 271216, 271208 }, chance = { 36, 33, 31 } },
             { npc = 256097, name = "Bjork", model = 144170, encounters = { 3412 }, loot = { 271210, 271209, 271217 }, chance = { 35, 33, 32 } },
-            { npc = 250657, name = "Rath'mael", model = 144175, encounters = { 3354 }, loot = { 271213, 271215, 271214 }, chance = { 37, 33, 30 } },
+            { npc = 250657, name = "Rath'mael", model = 144175, encounters = { 3354 }, loot = { 271213, 271215, 271214, 273085 }, chance = { 37, 33, 30, 0 } },
             { npc = 255699, name = "Lordaeron Captain", model = 139050, rare = true, encounters = { 3408 }, loot = { 6641, 6642 }, chance = { 60, 40 } },
         } },
     },

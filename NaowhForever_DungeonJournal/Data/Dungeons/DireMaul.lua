@@ -8,7 +8,7 @@ ns.Journal.AddDungeon("DireMaul", {
     entrance = { map = 1444, x = 61.9, y = 31.6 },
     wings = {
         { name = "East", bosses = {
-            { npc = 14354, name = "Pusillin", model = 7552, encounters = { 2792 } },
+            { npc = 14354, name = "Pusillin", model = 7552, encounters = { 2792 }, loot = { 18267 } },
             { npc = 11490, name = "Zevrim Thornhoof", model = 11335, encounters = { 343 }, loot = { 18306, 18308, 18313, 18323, 18319 }, chance = { 25, 24, 19, 19, 10 } },
             { npc = 13280, name = "Hydrospawn", model = 5489, encounters = { 344 }, loot = { 18305, 18307, 18322, 18317, 18324 }, chance = { 24, 24, 20, 19, 10 } },
             { npc = 14327, name = "Lethtendris", model = 14378, encounters = { 345 }, loot = { 18302, 18325, 18301, 18311 }, chance = { 29, 29, 28, 9 } },
@@ -19,7 +19,7 @@ ns.Journal.AddDungeon("DireMaul", {
         { name = "West", bosses = {
             { npc = 11489, name = "Tendris Warpwood", model = 14383, encounters = { 350 }, loot = { 18390, 18352, 18353, 18393 }, chance = { 24, 24, 24, 24 } },
             { npc = 11488, name = "Illyanna Ravenoak", model = 11270, encounters = { 347 }, loot = { 18347, 18349, 18383, 18386 }, chance = { 24, 24, 24, 22 } },
-            { npc = 11487, name = "Magister Kalendris", model = 14384, encounters = { 348 }, loot = { 18350, 18351, 18374, 18397, 18371 }, chance = { 25, 23, 20, 19, 9 } },
+            { npc = 11487, name = "Magister Kalendris", model = 14384, encounters = { 348 }, loot = { 18350, 18351, 18374, 18397, 18371, 22309 }, chance = { 25, 23, 20, 19, 9, 0 } },
             { npc = 11496, name = "Immol'thar", model = 14173, encounters = { 349 }, loot = { 18377, 18379, 18381, 18391, 18385, 18384, 18389, 18394, 18372, 18370 }, chance = { 26, 25, 24, 24, 21, 19, 19, 19, 10, 9 } },
             { npc = 11486, name = "Prince Tortheldrin", model = 11256, encounters = { 361 }, loot = { 18395, 18382, 18380, 18378, 18396, 18392, 18376, 18375, 18388, 18373 }, chance = { 24, 24, 23, 21, 20, 19, 18, 17, 10, 9 } },
             { npc = 11467, name = "Tsu'zee", model = 11250, rare = true, encounters = { 2794 }, loot = { 18345, 18387, 18346 }, chance = { 33, 30, 29 } },

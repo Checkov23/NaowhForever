@@ -9,12 +9,12 @@ ns.Journal.AddDungeon("UpperBlackrockSpire", {
     wings = {
         { bosses = {
             { npc = 9816, name = "Pyroguard Emberseer", model = 143803, encounters = { 3062 }, loot = { 12926, 12905, 16672, 12929, 12927 }, chance = { 27, 26, 18, 13, 12 } },
-            { npc = 10264, name = "Solakar Flamewreath", model = 9581, loot = { 12589, 16695, 12603, 12609, 12606 }, chance = { 19, 18, 18, 18, 17 } },
-            { npc = 10899, name = "Goraluk Anvilcrack", model = 10222, loot = { 13498, 18048, 18047, 13502 }, chance = { 28, 23, 17, 8 } },
+            { npc = 10264, name = "Solakar Flamewreath", model = 9581, loot = { 12589, 16695, 12603, 12609, 12606, 18657 }, chance = { 19, 18, 18, 18, 17, 0 } },
+            { npc = 10899, name = "Goraluk Anvilcrack", model = 10222, loot = { 13498, 18048, 18047, 13502, 12834, 12837, 228312 }, chance = { 28, 23, 17, 8, 0, 0, 0 } },
             { npc = 10339, name = "Gyth", model = 9806, loot = { 12960, 16669, 12953, 12952, 22225 }, chance = { 20, 19, 19, 18, 16 } },
             { npc = 10429, name = "Warchief Rend Blackhand", model = 9778, encounters = { 3063 }, loot = { 12935, 18102, 16733, 12587, 18103, 12936, 18104, 22247, 12940, 12939, 12583, 12590, 12588 }, chance = { 22, 21, 20, 19, 19, 19, 18, 16, 12, 11, 9, 2, 1 } },
             { npc = 10430, name = "The Beast", model = 10193, encounters = { 3068 }, loot = { 12964, 12967, 12965, 12966, 12968, 12963, 16729, 22311, 12969, 12709 }, chance = { 27, 25, 20, 20, 20, 20, 18, 18, 14, 14 } },
-            { npc = 10363, name = "General Drakkisath", model = 10115, encounters = { 3069 }, loot = { 13141, 22253, 22267, 13098, 13142, 12602, 22269, 16700, 16730, 16706, 16674, 16688, 16690, 16721, 22268, 16726, 16666, 12592 }, chance = { 28, 26, 24, 23, 22, 22, 21, 12, 12, 12, 11, 11, 11, 10, 8, 7, 6, 2 } },
+            { npc = 10363, name = "General Drakkisath", model = 10115, encounters = { 3069 }, loot = { 13141, 22253, 22267, 13098, 13142, 12602, 22269, 16700, 16730, 16706, 16674, 16688, 16690, 16721, 22268, 16726, 16666, 12592, 15730 }, chance = { 28, 26, 24, 23, 22, 22, 21, 12, 12, 12, 11, 11, 11, 10, 8, 7, 6, 2, 0 } },
             { npc = 10509, name = "Jed Runewatcher", model = 9686, rare = true, loot = { 12605, 12604, 12930 }, chance = { 33, 33, 30 } },
             { npc = 16042, name = "Lord Valthalak", model = 14308, optional = true, encounters = { 3070 }, loot = { 22335, 22337, 22343, 22339, 22336, 22340, 22302, 22342 }, chance = { 26, 26, 25, 24, 23, 23, 22, 22 } },
             { npc = nil, name = "Trash", trash = true, loot = { 16683, 16680, 16696, 16703, 16673, 16735, 16713, 13260 }, chance = { 3, 3, 3, 3, 3, 3, 3, 0 } },

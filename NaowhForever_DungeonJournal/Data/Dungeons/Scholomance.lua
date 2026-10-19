@@ -20,7 +20,7 @@ ns.Journal.AddDungeon("Scholomance", {
             { npc = 10507, name = "The Ravenian", model = 10433, encounters = { 2812 }, loot = { 16716, 14622, 14620, 14623, 14621, 14624 }, chance = { 5, 4, 4, 4, 4, 1 } },
             { npc = 10504, name = "Lord Alexei Barov", model = 11072, encounters = { 2807 }, loot = { 14624, 16722 }, chance = { 7, 4 } },
             { npc = 10502, name = "Lady Illucia Barov", model = 11835, encounters = { 2806 }, loot = { 14620, 14621, 14622, 14623, 14624 }, chance = { 4, 4, 4, 4, 1 } },
-            { npc = 1853, name = "Darkmaster Gandling", model = 11070, encounters = { 2801 }, loot = { 13951, 22433, 13944, 13953, 13398, 13964, 16686, 13938, 16677, 16731, 16693, 16698, 16720, 16707, 16727, 16667, 13937, 13950 }, chance = { 14, 14, 13, 13, 13, 13, 13, 13, 12, 12, 12, 11, 11, 11, 7, 6, 2, 1 } },
+            { npc = 1853, name = "Darkmaster Gandling", model = 11070, encounters = { 2801 }, loot = { 13951, 22433, 13944, 13953, 13398, 13964, 16686, 13938, 16677, 16731, 16693, 16698, 16720, 16707, 16727, 16667, 13937, 13950, 14514 }, chance = { 14, 14, 13, 13, 13, 13, 13, 13, 12, 12, 12, 11, 11, 11, 7, 6, 2, 1, 0 } },
             { npc = 14695, name = "Lord Blackwood", model = 14699, optional = true, loot = { 23132, 23139, 23156 }, chance = { 30, 29, 26 } },
             { npc = 16118, name = "Kormok", model = 16020, optional = true, encounters = { 3055 }, loot = { 22333, 22303, 22331, 22332, 22326 }, chance = { 32, 15, 15, 14, 11 } },
             { npc = 14516, name = "Death Knight Darkreaver", model = 14591, optional = true, loot = { 18760, 18758, 18761, 18759 }, chance = { 24, 24, 24, 22 } },

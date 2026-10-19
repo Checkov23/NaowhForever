@@ -61,6 +61,28 @@ class Drops(unittest.TestCase):
         self.assertEqual(kept[0]["chance"], None, "a new boss's drop: kept, its chance unknown")
 
 
+class Kept(unittest.TestCase):
+    """keeps: the gear and the recipes the Journal lists."""
+
+    def test_uncommon_gear_is_kept(self):
+        self.assertTrue(journal.keeps(drop(1, 1, 1, quality=2)))
+        self.assertFalse(journal.keeps(drop(1, 1, 1, quality=1)), "white gear is left out")
+
+    def test_a_recipe_is_kept_from_common(self):
+        blueprint = {"id": 273099, "slot": 0, "class": journal.RECIPE, "quality": 1}
+        self.assertTrue(journal.keeps(blueprint), "Blueprint: Spinning Wheel, Unstable Sentinel's")
+        self.assertFalse(journal.keeps(dict(blueprint, quality=0)), "a poor one is left out")
+
+    def test_a_recipe_has_no_armor_type(self):
+        self.assertEqual(journal.kind({"class": journal.RECIPE, "subclass": 6}), (4, 0),
+                         "Alchemy's subclass 6 is not a shield: every class can use the recipe")
+        self.assertEqual(journal.kind({"class": 4, "subclass": 6}), (4, 6), "a shield stays one")
+
+    def test_other_slotless_items_are_left_out(self):
+        self.assertFalse(journal.keeps({"id": 251961, "slot": 0, "class": 12, "quality": 1}), "a quest item")
+        self.assertFalse(journal.keeps({"id": 5, "slot": 0, "class": 13, "quality": 2}), "a key")
+
+
 class WowsrcMerge(unittest.TestCase):
     """merge_wowsrc: wowsrc's Forever list over Wowhead's loot."""
 
@@ -233,8 +255,8 @@ class SharedDrops(unittest.TestCase):
     def setUp(self):
         self.cache = journal.cache
         helm = drop(252455, 2, 5377, new=True)
-        journal.cache = {f"drops5:{npc}": {"new": False, "items": [helm]} for npc in (4829, 4842, 4543)}
-        journal.cache["drops5:3983"] = {"new": False, "items": [drop(274290, 22, 13863, new=True)]}
+        journal.cache = {f"drops6:{npc}": {"new": False, "items": [helm]} for npc in (4829, 4842, 4543)}
+        journal.cache["drops6:3983"] = {"new": False, "items": [drop(274290, 22, 13863, new=True)]}
 
     def tearDown(self):
         journal.cache = self.cache
@@ -330,7 +352,7 @@ class RefreshDrops(unittest.TestCase):
             return "template: 'item', id: 'drops', _totalCount: 100, data: " + json.dumps([row])
 
         journal.fetch = fetch
-        journal.cache = {"drops5:7800": {"new": False, "items": [drop(9461, 18, 100)]}}
+        journal.cache = {"drops6:7800": {"new": False, "items": [drop(9461, 18, 100)]}}
         journal.REFRESH_DROPS, journal.OFFLINE, journal.refreshed = True, False, set()
 
     def tearDown(self):
@@ -348,6 +370,31 @@ class RefreshDrops(unittest.TestCase):
         kept = journal.wowhead_drops("npc", 7800)
         self.assertEqual(self.pages, [])
         self.assertAlmostEqual(kept[0]["chance"], 18)
+
+    def test_offline_a_gear_only_answer_stands_in(self):
+        journal.REFRESH_DROPS, journal.OFFLINE = False, True
+        journal.cache = {"drops5:7800": {"new": False, "items": [drop(9461, 18, 100)]}}
+        kept = journal.wowhead_drops("npc", 7800)
+        self.assertEqual(self.pages, [], "offline: Wowhead is never asked")
+        self.assertEqual([i["id"] for i in kept], [9461], "the boss keeps its gear until it is read again")
+
+    def test_a_new_answer_replaces_the_gear_only_one(self):
+        journal.REFRESH_DROPS = False
+        journal.cache = {"drops5:7800": {"new": False, "items": [drop(9461, 18, 100)]}}
+        kept = journal.wowhead_drops("npc", 7800)
+        self.assertEqual(len(self.pages), 1)
+        self.assertAlmostEqual(kept[0]["chance"], 33)
+        self.assertEqual(list(journal.cache), ["drops6:7800"], "the old answer is let go")
+
+    def test_a_recipe_on_the_page_is_cached(self):
+        journal.REFRESH_DROPS = False
+        journal.cache = {}
+        recipe = {"id": 273099, "name": "Blueprint: Spinning Wheel", "quality": 1, "slot": 0, "classs": 9,
+                  "subclass": 2, "level": 30, "count": 40, "outof": 100}
+        journal.fetch = lambda url: ("template: 'item', id: 'drops', _totalCount: 100, data: "
+                                     + json.dumps([recipe]))
+        kept = journal.wowhead_drops("npc", 246017)
+        self.assertEqual([i["id"] for i in kept], [273099])
 
 
 if __name__ == "__main__":

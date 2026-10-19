@@ -2116,7 +2116,7 @@ do
     local NOT_PLACED = {
         BlackrockDepths = { [9024] = "Pyromancer Loregrain", [9499] = "Plugger Spazzring",
             [9537] = "Hurley Blackbreath", [9543] = "Ribbly Screwspigot" },
-        Dalaran = { [246008] = "Mana Devourer", [246931] = "Mana Wraith", [247032] = "Lyn the Ignored" },
+        Dalaran = { [246008] = "Mana Devourer", [246931] = "Mana Wraith" },
         LowerBlackrockSpire = { [10584] = "Urok Doomhowl" },
         RazorfenKraul = { [6168] = "Roogug" },
         Scholomance = { [10432] = "Vectus", [10433] = "Marduk Blackpool", [10508] = "Ras Frostwhisper",
@@ -2303,7 +2303,7 @@ do
         for i = 2, #tray do
             if tray[i].pointX == tray[i - 1].pointX then apart = false end
         end
-        check("each in its own place along the top", #tray == 8 and apart)
+        check("each in its own place along the top", #tray == 7 and apart)
         local atrexis = PinFor("Atrexis the Grave Knight")
         atrexis.scripts.OnClick(atrexis, "RightButton")
         check("a right-click takes a pin off its floor", state.account.journalMapPins.Dalaran[247126] == false

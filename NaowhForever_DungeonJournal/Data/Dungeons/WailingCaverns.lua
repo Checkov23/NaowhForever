@@ -12,7 +12,7 @@ ns.Journal.AddDungeon("WailingCaverns", {
             { npc = 3653, name = "Kresh", model = 5126, encounters = { 587 }, loot = { 6447, 13245, 273084 }, chance = { 70, 13, 0 } },
             { npc = 3670, name = "Lord Pythas", model = 4214, encounters = { 588 }, loot = { 6473, 6472, 273089 }, chance = { 55, 30, 0 } },
             { npc = 3674, name = "Skum", model = 4203, encounters = { 589 }, loot = { 6448, 6449, 273137 }, chance = { 47, 46, 0 } },
-            { npc = 3673, name = "Lord Serpentis", model = 4215, encounters = { 590 }, loot = { 6459, 10411, 5970, 6469 }, chance = { 23, 21, 20, 17 } },
+            { npc = 3673, name = "Lord Serpentis", model = 4215, encounters = { 590 }, loot = { 6459, 10411, 5970, 6469, 273087 }, chance = { 23, 21, 20, 17, 0 } },
             { npc = 5775, name = "Verdan the Everliving", model = 4256, encounters = { 591 }, loot = { 6630, 6631, 6629 }, chance = { 39, 38, 19 } },
             { npc = 3654, name = "Mutanus the Devourer", model = 4088, encounters = { 592 }, loot = { 6463, 6461, 6627 }, chance = { 30, 29, 23 } },
             { npc = 5912, name = "Deviate Faerie Dragon", model = 1267, rare = true, loot = { 6632, 5243 }, chance = { 45, 42 } },

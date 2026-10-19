@@ -2494,7 +2494,16 @@
   }
  },
  "245999": {
-  "abilities": [],
+  "abilities": [
+   [
+    15230,
+    "Arcane Bolt"
+   ],
+   [
+    1241501,
+    "Focal Blast"
+   ]
+  ],
   "npc": {
    "classification": 1,
    "maxlevel": null,
@@ -2504,7 +2513,16 @@
   }
  },
  "246003": {
-  "abilities": [],
+  "abilities": [
+   [
+    22994,
+    "Entangle"
+   ],
+   [
+    1240706,
+    "Fel Timbers"
+   ]
+  ],
   "npc": {
    "classification": 1,
    "maxlevel": null,
@@ -2514,7 +2532,16 @@
   }
  },
  "246008": {
-  "abilities": [],
+  "abilities": [
+   [
+    1240738,
+    "Drain Vitality"
+   ],
+   [
+    1240750,
+    "Debilitate"
+   ]
+  ],
   "npc": {
    "classification": 1,
    "maxlevel": null,
@@ -2524,7 +2551,20 @@
   }
  },
  "246016": {
-  "abilities": [],
+  "abilities": [
+   [
+    1240869,
+    "Manamorph"
+   ],
+   [
+    1224125,
+    "Silence"
+   ],
+   [
+    1304455,
+    "Summon Manaling"
+   ]
+  ],
   "npc": {
    "classification": 1,
    "maxlevel": null,
@@ -2534,7 +2574,16 @@
   }
  },
  "246017": {
-  "abilities": [],
+  "abilities": [
+   [
+    8374,
+    "Arcing Smash"
+   ],
+   [
+    1241329,
+    "Malfunction"
+   ]
+  ],
   "npc": {
    "classification": 1,
    "maxlevel": null,
@@ -2544,7 +2593,28 @@
   }
  },
  "246020": {
-  "abilities": [],
+  "abilities": [
+   [
+    15230,
+    "Arcane Bolt"
+   ],
+   [
+    1241515,
+    "Bounding Mana"
+   ],
+   [
+    28450,
+    "Arcane Explosion"
+   ],
+   [
+    1303598,
+    "Mass Polymorph"
+   ],
+   [
+    1303599,
+    "Evocation"
+   ]
+  ],
   "npc": {
    "classification": 1,
    "maxlevel": null,
@@ -2564,7 +2634,20 @@
   }
  },
  "247032": {
-  "abilities": [],
+  "abilities": [
+   [
+    1303266,
+    "Raise Dead"
+   ],
+   [
+    17228,
+    "Shadow Bolt Volley"
+   ],
+   [
+    1304473,
+    "Curse of Thorns"
+   ]
+  ],
   "npc": {
    "classification": 2,
    "maxlevel": null,
@@ -2574,7 +2657,28 @@
   }
  },
  "247126": {
-  "abilities": [],
+  "abilities": [
+   [
+    6713,
+    "Disarm"
+   ],
+   [
+    1303266,
+    "Raise Dead"
+   ],
+   [
+    3391,
+    "Thrash"
+   ],
+   [
+    12057,
+    "Strike"
+   ],
+   [
+    1303264,
+    "Unholy Frenzy"
+   ]
+  ],
   "npc": {
    "classification": 1,
    "maxlevel": null,
