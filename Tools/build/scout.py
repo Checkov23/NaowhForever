@@ -3,7 +3,10 @@ hunter can tame, for the creatures of every open-world zone and Dungeon Journal 
 
 The creatures come from the zone pages of Wowhead Forever (Tools/data/scout.json, "zones"): the ones
 some faction can attack, other than critters, and the bosses the Journal names by NPC ID (an
-instance Wowhead has no zone page for has only those). Their stats come from the CMaNGOS classic database
+instance Wowhead has no zone page for has only those), with the tameable beasts players have found that
+the zone pages leave out or the database calls untameable (Tools/data/scout_beasts.json). A zone's page is
+read once and kept; --refresh-zones reads every zone's page again, for the creatures Wowhead has added
+since. Their stats come from the CMaNGOS classic database
 (github.com/cmangos/classic-db, GPL-3.0), downloaded each run (or --dump FILE):
   - what a creature casts: the spells its EventAI scripts cast (action 11), leaving out the events
     that are not a fight (it spawns, is out of combat, evades, reaches home, a quest or an emote), and
@@ -12,7 +15,9 @@ instance Wowhead has no zone page for has only those). Their stats come from the
   - tameable: CreatureTypeFlags bit 1.
 A creature the database lacks (Forever's new ones) or whose spells are in the server's code (most
 instance bosses: ScriptName) takes what Wowhead's creature page says it casts, read by --fetch-gaps
-into the cache, one page at a time.
+into the cache, one page at a time. The beasts of scout_beasts.json have their page read too, and a
+beast is tameable when either the database or its page says so (Forever made some classic beasts
+tameable).
 
 The spells are cleaned with the game's own SpellName table: a spell the client has no name for,
 spells the scripts or Wowhead put on creatures that never cast them (NOISE), a creature's spell to
@@ -25,7 +30,7 @@ Writes NaowhForever_QoL/Combat/ScoutData.lua: abilities, tameable beasts and sta
 glimmer_nodes.pack does (CBOR deflated in Base64, decoded by the client when Scout first needs
 them), and the armor by level as a plain list.
 
-Usage: python Tools/build/scout.py [--dump FILE] [--fetch-gaps]
+Usage: python Tools/build/scout.py [--dump FILE] [--fetch-gaps] [--refresh-zones]
 """
 import argparse
 import collections
@@ -50,6 +55,10 @@ from quest_chains import ZONE_MAP  # noqa: E402
 OUT = ROOT / "NaowhForever_QoL" / "Combat" / "ScoutData.lua"
 CACHE = paths.DATA / "scout.json"
 DUNGEONS = paths.DATA / "journal_bosses.json"
+BEASTS = paths.DATA / "scout_beasts.json"
+# Open-world zones ZONE_MAP has no uiMapID for: Mount Hyjal, Riverglades, Shen'dralas (AreaTable IDs,
+# which are Wowhead's zone IDs).
+MORE_ZONES = {616, 16591, 16651}
 DUMP_URL = "https://raw.githubusercontent.com/cmangos/classic-db/master/Full_DB/ClassicDB_1_12_1_z2815.sql.gz"
 DUMP = Path(tempfile.gettempdir()) / "cmangos_classic_db.sql.gz"
 CLASSIC = "-2"
@@ -80,7 +89,7 @@ def load():
 
 
 def save(cache):
-    CACHE.write_text(json.dumps(cache, indent=1, sort_keys=True), encoding="utf-8")
+    CACHE.write_text(json.dumps(cache, indent=1, sort_keys=True), encoding="utf-8", newline="\r\n")
 
 
 def instances():
@@ -96,7 +105,12 @@ def instance_npcs():
 
 
 def zones():
-    return sorted(set(ZONE_MAP) | instances())
+    return sorted(set(ZONE_MAP) | MORE_ZONES | instances())
+
+
+def beasts():
+    """{ npcID: name } of the beasts read from Wowhead whatever the zone pages and the database say."""
+    return {int(npc): name for npc, name in json.loads(BEASTS.read_text(encoding="utf-8")).items()}
 
 
 def attackable(row):
@@ -125,11 +139,11 @@ def fetch_npc(npc):
     return {"abilities": abilities, "tameable": TAMEABLE.search(page) is not None}
 
 
-def patient(npc, cache):
-    """fetch_npc, waiting out Wowhead's block (saving first) when it refuses even wowhead.fetch's retries."""
+def patient(read, key, cache):
+    """read(key), waiting out Wowhead's block (saving first) when it refuses even wowhead.fetch's retries."""
     for attempt in range(COOL_OFFS + 1):
         try:
-            return fetch_npc(npc)
+            return read(key)
         except urllib.error.HTTPError as error:
             if error.code not in BLOCKED or attempt == COOL_OFFS:
                 raise
@@ -223,12 +237,12 @@ def armor():
     return [int(round(float(rows_[level]["CreatureArmor"]))) for level in range(1, MAX_LEVEL + 1)]
 
 
-def creatures(cache):
+def creatures(cache, refresh=False):
     names, first = {}, set()
     for area in zones():
         key = str(area)
-        if key not in cache["zones"]:
-            cache["zones"][key] = fetch_zone(area)
+        if refresh or key not in cache["zones"]:
+            cache["zones"][key] = patient(fetch_zone, area, cache)
             save(cache)
         for row in cache["zones"][key]:
             names[row["id"]] = row["name"]
@@ -251,20 +265,26 @@ def main():
     parser.add_argument("--dump", type=Path, default=DUMP, help="the CMaNGOS classic-db dump (downloaded if missing)")
     parser.add_argument("--fetch-gaps", action="store_true",
                         help="read Wowhead's page of each creature the database leaves without spells")
+    parser.add_argument("--refresh-zones", action="store_true",
+                        help="read every zone's page again instead of keeping the cached one")
     args = parser.parse_args()
     cache = load()
-    names, first = creatures(cache)
+    names, first = creatures(cache, args.refresh_zones)
+    found = beasts()
+    for npc, name in found.items():
+        names.setdefault(npc, name)
     stats, casts, scripted = database(dump_text(args.dump))
     spell_names = {int(r["ID"]): r["Name_lang"] for r in wago.table("SpellName")}
 
-    gaps = sorted((npc for npc in names if not casts.get(npc) and (npc not in stats or npc in scripted)),
-                  key=lambda npc: (npc not in first, npc))
+    gaps = sorted((npc for npc in names
+                   if npc in found or not casts.get(npc) and (npc not in stats or npc in scripted)),
+                  key=lambda npc: (npc not in found, npc not in first, npc))
     todo = [npc for npc in gaps if str(npc) not in cache["npcs"]]
     print(f"{len(names)} creatures; {len(gaps)} with no spells in the database ({len(todo)} not read from "
           f"Wowhead yet)", file=sys.stderr)
     if args.fetch_gaps:
         for i, npc in enumerate(todo, 1):
-            cache["npcs"][str(npc)] = patient(npc, cache)
+            cache["npcs"][str(npc)] = patient(fetch_npc, npc, cache)
             if i % SAVE_EVERY == 0:
                 save(cache)
                 print(f"  {i}/{len(todo)}", file=sys.stderr)
@@ -280,7 +300,7 @@ def main():
         if listed:
             abilities[npc] = listed
             common.update(listed)
-        if stats.get(npc, {}).get("tameable") or (npc not in stats and page and page["tameable"]):
+        if stats.get(npc, {}).get("tameable") or (page and page["tameable"]):
             tameable.add(npc)
         if npc in stats and stat_row(stats[npc]):
             creature_stats[npc] = stat_row(stats[npc])
