@@ -40,6 +40,7 @@ NaowhForever_QoL/
     GlobalCopy.lua      /copy, and tooltip IDs with their copy shortcut (the card is Shared/UI/CopyCard.lua)
     HideClutter.lua     UI Clutter
     UnitNames.lua       Names Over Heads: guild names, guild titles and player titles with player names
+    HDR.lua             HDR: the game's HDR and Peak Brightness
     ChatZones.lua       Chat Zones
     TownMailboxes.lua   mailboxes by map (ns.TownMailboxes), generated
     TownSpiritHealers.lua  spirit healers by map (ns.TownSpiritHealers), generated
@@ -80,6 +81,7 @@ NaowhForever_QoL/
     PetTracker.lua      the Pet Tracker
     ScoutData.lua       Scout's creature abilities and tameable beasts (packed) and armor by level, generated
     Scout.lua           Scout: abilities, armor and pet family on a creature's tooltip
+    SpellQueue.lua      Spell Queue: the game's Spell Queue Window
   Questing/
     BuffThanks.lua      Buff Thank You Message and its line editor
     Invites.lua         the people you keep an invite button for and their editor (ns.InvitePerson,
@@ -134,9 +136,6 @@ NaowhForever_QoL/
     Quiz.lua            the Quiz (ns.ToggleQuiz, ns.QuizOffer, ns.QuizDismiss)
     DailyWordData.lua   the Daily Word's answers and accepted words, generated
     DailyWord.lua       the Daily Word (/nf word, ns.DailyWordPlay, ns.DailyWordOffer, ns.DailyWordDismiss)
-  System/
-    SlashCommands.lua   Custom Slash Commands and their editor (ns.SlashCommandList, ns.RefreshSlashCommands)
-    Performance.lua     QoL > System > Performance: recommended game settings and their backups
   Media/
     crosshair_ring.tga  the Crosshair's ring
     MouseRing/          the Mouse Ring's rings, glows and trail
@@ -847,10 +846,8 @@ NaowhForever_QoL/
 - A spell whose description is empty is asked of the client once (Spell:ContinueOnSpellLoad); some
   creature spells have none, so asking again would never end.
 
-### Performance
-- The game keeps its settings per computer, so the values the recommended ones replaced live in the account store (`cvarBackups`), not the profile.
-- `SAME_WITHIN` compares numeric CVars loosely, as the game writes some back with float noise.
-- HDR and Peak Brightness set the game's own `HDRFactor` and `HDRPeakBrightness`, which have no place in the game's options. Peak Brightness also turns on `useHDRPeakBrightness`, without which the game ignores it. They are the player's own values, not recommended ones, so they are not backed up, and they show only where the client has `HDRFactor`. HDR Settings (`hdr`, off by default) is the opt-in: until it is on, the page leaves both alone.
+### HDR
+- HDR and Peak Brightness set the game's own `HDRFactor` and `HDRPeakBrightness`, which have no place in the game's options. Peak Brightness also turns on `useHDRPeakBrightness`, without which the game ignores it. The card shows only where the client has `HDRFactor`. HDR Settings (`hdr`, off by default) is the opt-in: until it is on, the card leaves both alone.
 
 ### Stealth Reminder
 - The form IDs are `GetShapeshiftFormID` values, the same ones the Threat Meter reads.
@@ -992,16 +989,6 @@ NaowhForever_QoL/
 - `MAP_CONTINENT` is the `Enum.UIMapType` of a continent: on it or anything larger the pins are drawn smaller.
 - The map calls `CheckMouseButtonPassthrough` on every acquired pin, and its SetPassThroughButtons is protected: from our refresh it is blocked in combat. These pins want their clicks, so the method is left empty, and a redraw asked for in combat waits for combat to end. A resize only changes sizes, so it is safe in combat.
 - The world map may load after this file, so switching on waits for Blizzard_WorldMap. The pin mixin is a global so the XML template can name it, made the first time it is switched on.
-
-### Custom Slash Commands
-- The default commands are copied into the profile on first use, so `DEFAULTS` is never written into.
-- Whenever chat text is parsed, the game moves SlashCmdList's entries into `hash_SlashCmdList` and a table behind SlashCmdList's metatable, so a command is looked for in all three.
-- A command's handler is called directly. Sending it through the chat box ran the game's chat code from the addon, and the player's next chat message was blocked.
-- /cast, /use, /target and the other secure commands run only from the chat box or a macro, so a custom command refuses them. The game blocks ReloadUI from addon code, so /reload is refused too.
-- The chat box caches handlers in `hash_SlashCmdList` the first time any slash command is typed, so a refresh drops our own cached entries there; the taint scan allows that one write.
-- A window command shows or hides the frame from addon code, so its OnShow / OnHide run tainted;
-  while `ns.GamepadOwnsPanels()` their gamepad handling is forbidden, so the command refuses.
-- Only the windows this client has are offered: `FRAMES` names each one's load-on-demand addon where it is not loaded up front.
 
 ### Town Map
 - The service NPCs (`Shared/Game/Towns.lua`, which the Training Planner and Professions read too) come from Classic Era data: `[uiMapID] = { { x, y, category, name, title, class token (class trainers), factions ("A", "H" or "AH"), optional NPC ID } }`, x and y in map percent. NPCs Forever added sit last in each map's list. Forever redrew Stormwind, Mulgore, Redridge and the Eastern Plaguelands, so Classic positions there went through world coordinates.

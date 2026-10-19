@@ -38,7 +38,6 @@ ns.FEATURES = {
         badgeBanner = false,
         tooltipDisplay = true,
         spellEfficiency = false,
-        slashCommands = false,
         lootFeed = true,
         hideLootWindow = false,
         fastLoot = true,

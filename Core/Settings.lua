@@ -65,7 +65,6 @@ local S = UI.ModuleSettings("qol", {
     spellEfficiencyPerManaSecond = false, spellEfficiencyStyle = "long", spellEfficiencyDecimals = 2,
     spellEfficiencyColor = { r = 0x4d / 255, g = 0xb5 / 255, b = 0xf5 / 255 }, spellEfficiencyBonus = true, spellEfficiencyTalents = true,
     spellEfficiencyShow = "all",
-    slashCommands = F.slashCommands,
     lootFeed = F.lootFeed, lootFeedMoney = true, lootFeedXP = false, lootFeedQuality = 1,
     lootFeedQuest = true, lootFeedRep = false,
     lootFeedCount = 6, lootFeedFade = 5, lootFeedStyle = "dark", lootFeedGlow = false,

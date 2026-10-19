@@ -29,9 +29,9 @@
     <Script file="Interface\SpellEfficiency.lua"/>
     <Script file="Interface\SpellEfficiencyReport.lua"/>
     <Script file="Interface\GlobalCopy.lua"/>
-    <Script file="System\SlashCommands.lua"/>
     <Script file="Interface\HideClutter.lua"/>
     <Script file="Interface\UnitNames.lua"/>
+    <Script file="Interface\HDR.lua"/>
     <Script file="Cursor\Crosshair.lua"/>
     <Script file="Cursor\MouseRing.lua"/>
     <Script file="Combat\PetTracker.lua"/>
@@ -43,7 +43,7 @@
     <Script file="Combat\DamageMeterSkin.lua"/>
     <Script file="Combat\ScoutData.lua"/>
     <Script file="Combat\Scout.lua"/>
-    <Script file="System\Performance.lua"/>
+    <Script file="Combat\SpellQueue.lua"/>
     <Script file="Loot\LootFeed.lua"/>
     <Script file="Loot\AuctionPrices.lua"/>
     <Script file="XP\XPTicker.lua"/>

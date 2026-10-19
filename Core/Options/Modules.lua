@@ -38,7 +38,6 @@ local MODULES = {
           { name = "Loot & Items", reuse = true },
           { name = "Glimmer", reuse = true },
           { name = "Travel", reuse = true },
-          { name = "System", reuse = true },
           { name = "Cursor & Crosshair", reuse = true },
           { name = "Damage Meter", reuse = true },
       } },

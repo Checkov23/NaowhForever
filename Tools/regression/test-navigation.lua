@@ -439,11 +439,11 @@ for _, child in ipairs(strip.children) do
         Check(child.points.LEFT and child.points.LEFT[4] == 0, "QoL categories share one row")
     end
 end
-Check(tabs == 11, "every QoL category has a tab, Glimmer's too")
+Check(tabs == 10, "every QoL category has a tab, Glimmer's too")
 local qolTabs = {}
 for _, tab in ipairs(ns.Options.MODULES[1].tabs) do qolTabs[#qolTabs + 1] = tab.name end
-Check(table.concat(qolTabs, "|", #qolTabs - 2) == "System|Cursor & Crosshair|Damage Meter",
-    "Cursor & Crosshair and Damage Meter are the last QoL tabs, after System")
+Check(table.concat(qolTabs, "|", #qolTabs - 2) == "Travel|Cursor & Crosshair|Damage Meter",
+    "Cursor & Crosshair and Damage Meter are the last QoL tabs, after Travel")
 local grouped = {}
 for _, mod in ipairs(ns.Options.MODULES) do
     if mod.group then
