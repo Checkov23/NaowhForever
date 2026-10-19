@@ -320,7 +320,10 @@ local function BuildTitle()
     title:SetText(TEXT_TITLE)
     word.number = ns.Font(word, NUMBER_SIZE, nil, T.muted)
     word.number:SetPoint("LEFT", title, "RIGHT", NUMBER_GAP, 0)
-    local close = ns.Button(word, TEXT_CLOSE, CLOSE_SIZE, CLOSE_SIZE, function() word:Hide() end)
+    local close = ns.Button(word, TEXT_CLOSE, CLOSE_SIZE, CLOSE_SIZE, function()
+        word:Hide()
+        if openedFor == "flight" and ns.FlightWordClosed then ns.FlightWordClosed() end
+    end)
     close:SetPoint("TOPRIGHT", -CLOSE_INSET, -CLOSE_INSET)
     word.clock = ns.Font(word, CLOCK_SIZE, nil, T.muted)
     word.clock:SetPoint("TOP", 0, -CLOCK_TOP)
@@ -449,9 +452,11 @@ function ns.DailyWordPlay(reason)
 end
 
 function ns.DailyWordOffer(reason)
-    if not On() or InCombatLockdown() then return end
+    if not On() or InCombatLockdown() or (word and word:IsShown()) then return false end
     today = Today()
-    if not Done(Saved()) then Open(reason, false) end
+    if Done(Saved()) then return false end
+    Open(reason, false)
+    return true
 end
 
 function ns.DailyWordDismiss(reason)

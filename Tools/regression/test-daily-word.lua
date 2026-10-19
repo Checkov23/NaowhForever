@@ -207,13 +207,13 @@ do
     check("opened by hand, no Don't Show on Flights eye", not s.hide.shown)
     w:Hide()
     check("closing stops the clock and the combat watch", s.tick == nil and not s.watching())
-    s.ns.DailyWordOffer("flight")
-    check("a flight does not reopen a word already played", not w.shown)
+    local opened = s.ns.DailyWordOffer("flight")
+    check("a flight does not reopen a word already played", not w.shown and opened == false)
 
     s.now = s.now + DAY
-    s.ns.DailyWordOffer("flight")
+    opened = s.ns.DailyWordOffer("flight")
     check("the next day's word opens for a flight, without taking the keyboard", w.shown and not w.input.focus
-        and w.number.text == "#2")
+        and w.number.text == "#2" and opened == true)
     check("a flight opening it shows the Don't Show on Flights eye", s.hide.shown)
     for _ = 1, 6 do s.guess("crane") end
     check("six misses end the game with the word", w.message.text == "The word was SPIRE")
@@ -254,6 +254,29 @@ do
     s.settings.dailyWord = false
     s.ns.QoLSettings.Set("dailyWord", false)
     check("switching it off closes it", not w.shown)
+end
+
+do
+    local s = fixture({ dailyWord = true })
+    local handed = 0
+    s.ns.FlightWordClosed = function() handed = handed + 1 end
+    s.ns.DailyWordOffer("flight")
+    local w = s.window()
+    local close
+    for _, b in ipairs(s.frames) do if not close and b.label == "X" and b.parent == w then close = b end end
+    close._onClick()
+    check("closing a word a flight opened hands over to the flight's game", not w.shown and handed == 1)
+    s.ns.DailyWordPlay(nil)
+    close._onClick()
+    check("closing one opened by hand does not", handed == 1)
+    s.ns.DailyWordPlay(nil)
+    check("a word already open by hand is not offered again", s.ns.DailyWordOffer("flight") == false and w.shown)
+    w:Hide()
+    s.ns.DailyWordOffer("flight")
+    s.ns.DailyWordDismiss("flight")
+    check("nor does landing", not w.shown and handed == 1)
+    s.combat = true
+    check("in combat the offer says no", s.ns.DailyWordOffer("flight") == false)
 end
 
 print(("test-daily-word: %d checks passed"):format(checks))

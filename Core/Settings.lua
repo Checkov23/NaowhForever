@@ -286,7 +286,7 @@ local S = UI.ModuleSettings("qol", {
     flightPoint = F.flightPoint, flightPointFont = "",
     flightPointFontSize = 12, flightPointOutline = "OUTLINE", flightPointBackground = "none",
     flightPointCustom = false, flightPointColor = { r = ns.THEME.accent.r, g = ns.THEME.accent.g, b = ns.THEME.accent.b },
-    flightGame = "aim", quizCamp = F.quizCamp,
+    flightGame = "aim", flightWordFirst = false, quizCamp = F.quizCamp,
     quizPos = { point = "TOP", relPoint = "TOP", x = 0, y = -127 },
     flightTimerFont = "", flightTimerOutline = "NONE", flightTimerTexture = "",
     aimTrainer = F.aimTrainer, aimMode = "hexakill", aimPulse = true, aimSound = true,

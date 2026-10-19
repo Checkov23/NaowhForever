@@ -600,6 +600,9 @@ NaowhForever_QoL/
 - Flight Games (`flightGame`) is the one choice of what opens by itself when a flight starts: the
   buttons only, the Quiz, the Aim Trainer or the Daily Word (Off hides the game buttons). It was
   migrated once from the old `quizFlight` and `aimAutoFlight`.
+- Daily Word First (`flightWordFirst`) opens the Daily Word ahead of the Quiz or Aim Trainer while
+  today's word is not done. Only its close button hands over to the chosen game (`ns.FlightWordClosed`):
+  a game button or landing also hides it, and that must not open a second game.
 - The Flight Timer has one icon button per game (the Quiz, each Aim Trainer mode and the Daily
   Word), so a game opens in one click. A game whose feature is off keeps its button, greyed out,
   with a tooltip saying where to turn it on, as the old Games menu did for the Aim Trainer.

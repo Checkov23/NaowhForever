@@ -7031,3 +7031,5 @@ L["That is not a valid website bar layout for your class."] = true
 L["There are too many saved bar sets with that name."] = true
 L["Hide Blessings on Paladins"] = true
 L["Hides blessing reminders while your paladin is grouped; use the Blessings tab instead."] = true
+L["Daily Word First"] = true
+L["Opens the Daily Word first until today's is done; closing it opens your game."] = true

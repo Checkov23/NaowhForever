@@ -559,6 +559,7 @@ end
 
 local function Play(game)
     if InCombatLockdown() then return end
+    if flight then flight.wordFirst = nil end
     if game.id ~= "quiz" and ns.QuizDismiss then ns.QuizDismiss() end
     if not game.aim and ns.AimDismiss then ns.AimDismiss() end
     if not game.word and ns.DailyWordDismiss then ns.DailyWordDismiss() end
@@ -643,8 +644,11 @@ local function Game()
     return FLIGHT_GAMES[game] and game or "aim"
 end
 
-local function OfferGame()
-    local game = Game()
+local function WordFirst(game)
+    return S.Get("flightWordFirst") and OPENS_BY_ITSELF[game] and game ~= "word"
+end
+
+local function OfferChosen(game)
     if game == "quiz" then
         if ns.QuizOffer then ns.QuizOffer("flight") end
     elseif game == "aim" then
@@ -652,6 +656,15 @@ local function OfferGame()
     elseif game == "word" then
         if ns.DailyWordOffer then ns.DailyWordOffer("flight") end
     end
+end
+
+local function OfferGame()
+    local game = Game()
+    if WordFirst(game) and ns.DailyWordOffer and ns.DailyWordOffer("flight") then
+        flight.wordFirst = true
+        return
+    end
+    OfferChosen(game)
 end
 
 local function StopOffering()
@@ -672,6 +685,13 @@ end
 
 function ns.FlightGameOffered(reason)
     return reason == "flight" and OPENS_BY_ITSELF[Game()] == true
+end
+
+function ns.FlightWordClosed()
+    if not (flight and flight.wordFirst) then return end
+    flight.wordFirst = nil
+    local game = Game()
+    if WordFirst(game) then OfferChosen(game) end
 end
 
 local function Board(route)
@@ -945,5 +965,8 @@ Settings.Page("QoL/Travel", S):Card({
         { key = "flightGame", label = "On Flights", choice = GAMES,
           get = Game, set = function(v) S.Set("flightGame", v) end,
           help = "What opens when a flight starts; Off hides the game buttons." },
+        { key = "flightWordFirst", label = "Daily Word First", toggle = true,
+          needs = function() return S.Get("dailyWord") and (Game() == "quiz" or Game() == "aim") end,
+          help = "Opens the Daily Word first until today's is done; closing it opens your game." },
     },
 })

@@ -62,7 +62,7 @@ local function fixture(settings, extra)
         Print = function(msg) s.printed = msg end,
         QuizOffer = function(reason) s.offers[#s.offers + 1] = 'quiz:' .. reason end,
         AimOffer = function(reason) s.offers[#s.offers + 1] = 'aim:' .. reason end,
-        DailyWordOffer = function(reason) s.offers[#s.offers + 1] = 'word:' .. reason end,
+        DailyWordOffer = function(reason) s.offers[#s.offers + 1] = 'word:' .. reason; return s.wordWaiting end,
         QuizPlay = function(reason) s.played = 'quiz:' .. reason end,
         AimPlay = function(m, reason) s.played = 'aim:' .. m .. ':' .. reason end,
         DailyWordPlay = function(reason) s.played = 'word:' .. reason end,
@@ -278,6 +278,47 @@ do
     check('Quiz: a flight offers only the Quiz', #s.offers == 1 and s.offers[1] == 'quiz:flight')
 end
 do
+    local s = fixture({ flightGame = 'quiz', flightWordFirst = true })
+    s.wordWaiting = true
+    s.board()
+    check('Daily Word First: a flight opens the waiting word, not the Quiz', #s.offers == 1 and s.offers[1] == 'word:flight')
+    s.ns.FlightWordClosed()
+    check('closing the word opens the Quiz', #s.offers == 2 and s.offers[2] == 'quiz:flight')
+    s.ns.FlightWordClosed()
+    check('the handover happens once a flight', #s.offers == 2)
+    s.land()
+    s.ns.FlightWordClosed()
+    check('closing it after landing opens nothing', #s.offers == 2)
+end
+do
+    local s = fixture({ flightGame = 'quiz', flightWordFirst = true })
+    s.wordWaiting = true
+    s.board()
+    s.button('word')._onClick()
+    s.ns.FlightWordClosed()
+    check('after a game button, closing the word opens nothing more', #s.offers == 1)
+end
+do
+    local s = fixture({ flightGame = 'aim', flightWordFirst = true })
+    s.board()
+    check("today's word done: the Aim Trainer opens straight away", #s.offers == 2
+        and s.offers[1] == 'word:flight' and s.offers[2] == 'aim:flight')
+end
+do
+    local s = fixture({ flightGame = 'none', flightWordFirst = true })
+    s.wordWaiting = true
+    s.board()
+    s.ns.FlightWordClosed()
+    check('Daily Word First with Buttons only opens nothing', #s.offers == 0)
+end
+do
+    local s = fixture({ flightGame = 'word', flightWordFirst = true })
+    s.wordWaiting = true
+    s.board()
+    s.ns.FlightWordClosed()
+    check('Daily Word First with the Daily Word chosen offers it once', #s.offers == 1 and s.offers[1] == 'word:flight')
+end
+do
     local s = fixture({ flightGame = 'none' })
     s.board()
     check('Nothing: a flight offers no game', #s.offers == 0)
@@ -328,6 +369,7 @@ do
     end
     local qol, quiz = read('Core/Settings.lua'), read('NaowhForever_QoL/Travel/Quiz.lua')
     check('Flight Games defaults to the Aim Trainer', qol:find('flightGame = "aim"', 1, true) ~= nil)
+    check('Daily Word First defaults off', qol:find('flightWordFirst = false', 1, true) ~= nil)
     check('the old flight toggles are gone', not qol:find('quizFlight', 1, true) and not qol:find('aimAutoFlight', 1, true)
         and not quiz:find('quizFlight', 1, true))
     check('the quiz card puts its position back to the default', quiz:find('label = "Quiz Position", buttonText = "Reset"', 1, true)
