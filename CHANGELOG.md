@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased
+## 1.1.33
+
+### Added
+- Flight Games: Daily Word First opens the Daily Word on a flight until today's is done, then your
+  chosen game (QoL > Travel).
+- Discovery > Quest List: hundreds more class, dungeon and battleground quests show on the world map
+  at their quest givers.
 
 ## 1.1.32
 
