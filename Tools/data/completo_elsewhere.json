@@ -2,6 +2,124 @@
  "build": "1.60.1.70450",
  "cmangos": "ec4f596146be6467ea93c57397858e329e2db852",
  "quests": {
+  "1470": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Venya Marthand",
+   "level": 3,
+   "map": 1420,
+   "name": "Piercing the Veil",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 0,
+   "side": 2,
+   "x": 31.0,
+   "y": 66.4
+  },
+  "1471": {
+   "after": [
+    1473
+   ],
+   "dungeon": false,
+   "giver": "Carendin Halgar",
+   "level": 10,
+   "map": 1458,
+   "name": "The Binding",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 85.0,
+   "y": 26.0
+  },
+  "1472": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Carendin Halgar",
+   "level": 20,
+   "map": 1458,
+   "name": "Devourer of Souls",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 85.0,
+   "y": 26.0
+  },
+  "1473": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Carendin Halgar",
+   "level": 10,
+   "map": 1458,
+   "name": "Creature of the Void",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 85.0,
+   "y": 26.0
+  },
+  "1474": {
+   "after": [
+    1476
+   ],
+   "dungeon": false,
+   "giver": "Carendin Halgar",
+   "level": 20,
+   "map": 1458,
+   "name": "The Binding",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 85.0,
+   "y": 26.0
+  },
+  "1476": {
+   "after": [
+    1472
+   ],
+   "dungeon": false,
+   "giver": "Godrick Farsan",
+   "level": 20,
+   "map": 1458,
+   "name": "Hearts of the Pure",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 84.8,
+   "y": 14.8
+  },
+  "1478": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ageron Kargal",
+   "level": 10,
+   "map": 1420,
+   "name": "Halgar's Summons",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 61.6,
+   "y": 52.7
+  },
+  "1485": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ruzan",
+   "level": 4,
+   "map": 1411,
+   "name": "Vile Familiars",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 0,
+   "side": 2,
+   "x": 42.6,
+   "y": 69.0
+  },
   "1489": {
    "after": [
     880
@@ -34,6 +152,52 @@
    "x": 78.2,
    "y": 28.4
   },
+  "1499": {
+   "after": [
+    1485
+   ],
+   "dungeon": false,
+   "giver": "Ruzan",
+   "level": 4,
+   "map": 1411,
+   "name": "Vile Familiars",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 0,
+   "side": 2,
+   "x": 42.6,
+   "y": 69.0
+  },
+  "1501": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gan'rul Bloodeye",
+   "level": 11,
+   "map": 1454,
+   "name": "Creature of the Void",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 48.2,
+   "y": 45.3
+  },
+  "1504": {
+   "after": [
+    1501
+   ],
+   "dungeon": false,
+   "giver": "Gan'rul Bloodeye",
+   "level": 11,
+   "map": 1454,
+   "name": "The Binding",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 48.2,
+   "y": 45.3
+  },
   "1505": {
    "after": [],
    "dungeon": false,
@@ -47,6 +211,66 @@
    "side": 2,
    "x": 48.2,
    "y": 63.6
+  },
+  "1506": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ophek",
+   "level": 10,
+   "map": 1411,
+   "name": "Gan'rul's Summons",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 54.4,
+   "y": 41.3
+  },
+  "1507": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gan'rul Bloodeye",
+   "level": 20,
+   "map": 1454,
+   "name": "Devourer of Souls",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 48.2,
+   "y": 45.3
+  },
+  "1508": {
+   "after": [
+    1507
+   ],
+   "dungeon": false,
+   "giver": "Cazul",
+   "level": 20,
+   "map": 1454,
+   "name": "Blind Cazul",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 47.1,
+   "y": 46.4
+  },
+  "1509": {
+   "after": [
+    1508
+   ],
+   "dungeon": false,
+   "giver": "Zankaja",
+   "level": 20,
+   "map": 1454,
+   "name": "News of Dogran",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 37.0,
+   "y": 59.5
   },
   "1510": {
    "after": [
@@ -64,6 +288,22 @@
    "x": 51.8,
    "y": 30.2
   },
+  "1513": {
+   "after": [
+    1512
+   ],
+   "dungeon": false,
+   "giver": "Gan'rul Bloodeye",
+   "level": 20,
+   "map": 1454,
+   "name": "The Binding",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 48.2,
+   "y": 45.3
+  },
   "1515": {
    "after": [
     1511
@@ -80,6 +320,98 @@
    "x": 44.6,
    "y": 59.2
   },
+  "1516": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Canaga Earthcaller",
+   "level": 4,
+   "map": 1411,
+   "name": "Call of Earth",
+   "reqclass": 64,
+   "reqlevel": 4,
+   "reqrace": 0,
+   "side": 2,
+   "x": 42.4,
+   "y": 69.2
+  },
+  "1517": {
+   "after": [
+    1516
+   ],
+   "dungeon": false,
+   "giver": "Canaga Earthcaller",
+   "level": 4,
+   "map": 1411,
+   "name": "Call of Earth",
+   "reqclass": 64,
+   "reqlevel": 4,
+   "reqrace": 0,
+   "side": 2,
+   "x": 42.4,
+   "y": 69.2
+  },
+  "1519": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Seer Ravenfeather",
+   "level": 4,
+   "map": 1412,
+   "name": "Call of Earth",
+   "reqclass": 64,
+   "reqlevel": 4,
+   "reqrace": 32,
+   "side": 2,
+   "x": 44.4,
+   "y": 76.8
+  },
+  "1520": {
+   "after": [
+    1519
+   ],
+   "dungeon": false,
+   "giver": "Seer Ravenfeather",
+   "level": 4,
+   "map": 1412,
+   "name": "Call of Earth",
+   "reqclass": 64,
+   "reqlevel": 4,
+   "reqrace": 0,
+   "side": 2,
+   "x": 44.4,
+   "y": 76.8
+  },
+  "1525": {
+   "after": [
+    1524
+   ],
+   "dungeon": false,
+   "giver": "Telf Joolam",
+   "level": 12,
+   "map": 1411,
+   "name": "Call of Fire",
+   "reqclass": 64,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 38.5,
+   "y": 59.0
+  },
+  "1526": {
+   "after": [
+    1525
+   ],
+   "dungeon": false,
+   "giver": "Telf Joolam",
+   "level": 13,
+   "map": 1411,
+   "name": "Call of Fire",
+   "reqclass": 64,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 38.5,
+   "y": 59.0
+  },
   "1530": {
    "after": [],
    "dungeon": false,
@@ -93,6 +425,240 @@
    "side": 2,
    "x": 65.8,
    "y": 43.8
+  },
+  "1598": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Drusilla La Salle",
+   "level": 4,
+   "map": 1429,
+   "name": "The Stolen Tome",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 0,
+   "side": 1,
+   "x": 49.9,
+   "y": 42.6
+  },
+  "1599": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Alamar Grimm",
+   "level": 4,
+   "map": 1426,
+   "name": "Beginnings",
+   "reqclass": 256,
+   "reqlevel": 1,
+   "reqrace": 0,
+   "side": 1,
+   "x": 28.6,
+   "y": 66.1
+  },
+  "1639": {
+   "after": [
+    1638
+   ],
+   "dungeon": false,
+   "giver": "Harry Burlguard",
+   "level": 10,
+   "map": 1453,
+   "name": "Bartleby the Drunk",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 77.1,
+   "y": 53.3
+  },
+  "1640": {
+   "after": [
+    1639
+   ],
+   "dungeon": false,
+   "giver": "Bartleby",
+   "level": 10,
+   "map": 1453,
+   "name": "Beat Bartleby",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 76.8,
+   "y": 52.5
+  },
+  "1643": {
+   "after": [
+    1642
+   ],
+   "dungeon": false,
+   "giver": "Duthorian Rall",
+   "level": 12,
+   "map": 1453,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 50.5,
+   "y": 47.5
+  },
+  "1644": {
+   "after": [
+    1643
+   ],
+   "dungeon": false,
+   "giver": "Stephanie Turner",
+   "level": 13,
+   "map": 1453,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 63.8,
+   "y": 72.2
+  },
+  "1647": {
+   "after": [
+    1646
+   ],
+   "dungeon": false,
+   "giver": "Tiza Battleforge",
+   "level": 12,
+   "map": 1455,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 27.6,
+   "y": 12.2
+  },
+  "1648": {
+   "after": [
+    1647
+   ],
+   "dungeon": false,
+   "giver": "John Turner",
+   "level": 13,
+   "map": 1455,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 23.3,
+   "y": 61.9
+  },
+  "1650": {
+   "after": [
+    1649
+   ],
+   "dungeon": false,
+   "giver": "Duthorian Rall",
+   "level": 23,
+   "map": 1453,
+   "name": "The Tome of Valor",
+   "reqclass": 2,
+   "reqlevel": 20,
+   "reqrace": 5,
+   "side": 1,
+   "x": 50.5,
+   "y": 47.5
+  },
+  "1651": {
+   "after": [
+    1650
+   ],
+   "dungeon": false,
+   "giver": "Daphne Stilwell",
+   "level": 25,
+   "map": 1436,
+   "name": "The Tome of Valor",
+   "reqclass": 2,
+   "reqlevel": 20,
+   "reqrace": 5,
+   "side": 1,
+   "x": 41.7,
+   "y": 89.2
+  },
+  "1652": {
+   "after": [
+    1651
+   ],
+   "dungeon": false,
+   "giver": "Daphne Stilwell",
+   "level": 25,
+   "map": 1436,
+   "name": "The Tome of Valor",
+   "reqclass": 2,
+   "reqlevel": 20,
+   "reqrace": 5,
+   "side": 1,
+   "x": 41.7,
+   "y": 89.2
+  },
+  "1653": {
+   "after": [
+    1652
+   ],
+   "dungeon": false,
+   "giver": "Duthorian Rall",
+   "level": 21,
+   "map": 1453,
+   "name": "The Test of Righteousness",
+   "reqclass": 2,
+   "reqlevel": 20,
+   "reqrace": 5,
+   "side": 1,
+   "x": 50.5,
+   "y": 47.5
+  },
+  "1661": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Duthorian Rall",
+   "level": 40,
+   "map": 1453,
+   "name": "The Tome of Nobility",
+   "reqclass": 2,
+   "reqlevel": 40,
+   "reqrace": 5,
+   "side": 1,
+   "x": 50.5,
+   "y": 47.5
+  },
+  "1665": {
+   "after": [
+    1640
+   ],
+   "dungeon": false,
+   "giver": "Bartleby",
+   "level": 10,
+   "map": 1453,
+   "name": "Bartleby's Mug",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 76.8,
+   "y": 52.5
+  },
+  "1666": {
+   "after": [
+    1665
+   ],
+   "dungeon": false,
+   "giver": "Harry Burlguard",
+   "level": 10,
+   "map": 1453,
+   "name": "Marshal Haggard",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 77.1,
+   "y": 53.3
   },
   "1667": {
    "after": [
@@ -109,6 +675,286 @@
    "side": 1,
    "x": 84.6,
    "y": 69.4
+  },
+  "1678": {
+   "after": [
+    1679
+   ],
+   "dungeon": false,
+   "giver": "Muren Stormpike",
+   "level": 11,
+   "map": 1455,
+   "name": "Vejrek",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 70.8,
+   "y": 90.3
+  },
+  "1679": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Granis Swiftaxe",
+   "level": 10,
+   "map": 1426,
+   "name": "Muren Stormpike",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 47.4,
+   "y": 52.6
+  },
+  "1680": {
+   "after": [
+    1678
+   ],
+   "dungeon": false,
+   "giver": "Muren Stormpike",
+   "level": 11,
+   "map": 1455,
+   "name": "Tormus Deepforge",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 70.8,
+   "y": 90.3
+  },
+  "1681": {
+   "after": [
+    1680
+   ],
+   "dungeon": false,
+   "giver": "Tormus Deepforge",
+   "level": 11,
+   "map": 1455,
+   "name": "Ironband's Compound",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 48.6,
+   "y": 42.5
+  },
+  "1682": {
+   "after": [
+    1681
+   ],
+   "dungeon": false,
+   "giver": "Tormus Deepforge",
+   "level": 10,
+   "map": 1455,
+   "name": "Grey Iron Weapons",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 48.6,
+   "y": 42.5
+  },
+  "1683": {
+   "after": [
+    1684
+   ],
+   "dungeon": false,
+   "giver": "Elanaria",
+   "level": 10,
+   "map": 1457,
+   "name": "Vorlus Vilehoof",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 57.3,
+   "y": 34.6
+  },
+  "1685": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Remen Marcot",
+   "level": 10,
+   "map": 1429,
+   "name": "Gakin's Summons",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 44.5,
+   "y": 66.3
+  },
+  "1686": {
+   "after": [
+    1683
+   ],
+   "dungeon": false,
+   "giver": "Elanaria",
+   "level": 10,
+   "map": 1457,
+   "name": "The Shade of Elura",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 57.3,
+   "y": 34.6
+  },
+  "1688": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gakin the Darkbinder",
+   "level": 10,
+   "map": 1453,
+   "name": "Surena Caledon",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.2,
+   "y": 85.2
+  },
+  "1689": {
+   "after": [
+    1688
+   ],
+   "dungeon": false,
+   "giver": "Gakin the Darkbinder",
+   "level": 10,
+   "map": 1453,
+   "name": "The Binding",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.2,
+   "y": 85.2
+  },
+  "1692": {
+   "after": [
+    1686
+   ],
+   "dungeon": false,
+   "giver": "Elanaria",
+   "level": 10,
+   "map": 1457,
+   "name": "Smith Mathiel",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 57.3,
+   "y": 34.6
+  },
+  "1693": {
+   "after": [
+    1692
+   ],
+   "dungeon": false,
+   "giver": "Mathiel",
+   "level": 10,
+   "map": 1457,
+   "name": "Weapons of Elunite",
+   "reqclass": 1,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 59.5,
+   "y": 45.4
+  },
+  "1699": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Yorus Barleybrew",
+   "level": 22,
+   "map": 1433,
+   "name": "The Rethban Gauntlet",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 21.5,
+   "y": 44.7
+  },
+  "1700": {
+   "after": [
+    1701
+   ],
+   "dungeon": false,
+   "giver": "Furen Longbeard",
+   "level": 28,
+   "map": 1453,
+   "name": "Grimand Elmore",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 1,
+   "side": 1,
+   "x": 64.6,
+   "y": 37.2
+  },
+  "1701": {
+   "after": [
+    1702
+   ],
+   "dungeon": false,
+   "giver": "Furen Longbeard",
+   "level": 28,
+   "map": 1453,
+   "name": "Fire Hardened Mail",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 64.6,
+   "y": 37.2
+  },
+  "1702": {
+   "after": [
+    1699
+   ],
+   "dungeon": false,
+   "giver": "Yorus Barleybrew",
+   "level": 22,
+   "map": 1433,
+   "name": "The Shieldsmith",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 21.5,
+   "y": 44.7
+  },
+  "1703": {
+   "after": [
+    1701
+   ],
+   "dungeon": false,
+   "giver": "Furen Longbeard",
+   "level": 28,
+   "map": 1453,
+   "name": "Mathiel",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 8,
+   "side": 1,
+   "x": 64.6,
+   "y": 37.2
+  },
+  "1704": {
+   "after": [
+    1701
+   ],
+   "dungeon": false,
+   "giver": "Furen Longbeard",
+   "level": 28,
+   "map": 1453,
+   "name": "Klockmort Spannerspan",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 68,
+   "side": 1,
+   "x": 64.6,
+   "y": 37.2
   },
   "1705": {
    "after": [],
@@ -170,6 +1016,36 @@
    "x": 68.2,
    "y": 46.2
   },
+  "1710": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Mathiel",
+   "level": 30,
+   "map": 1457,
+   "name": "Sunscorched Shells",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 59.5,
+   "y": 45.4
+  },
+  "1711": {
+   "after": [
+    1710
+   ],
+   "dungeon": false,
+   "giver": "Mathiel",
+   "level": 30,
+   "map": 1457,
+   "name": "Mathiel's Armor",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 59.5,
+   "y": 45.4
+  },
   "1712": {
    "after": [
     1791
@@ -202,6 +1078,272 @@
    "x": 80.4,
    "y": 66.8
   },
+  "1715": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Lago Blackwrench",
+   "level": 10,
+   "map": 1455,
+   "name": "The Slaughtered Lamb",
+   "reqclass": 256,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 47.6,
+   "y": 9.3
+  },
+  "1716": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gakin the Darkbinder",
+   "level": 20,
+   "map": 1453,
+   "name": "Devourer of Souls",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.2,
+   "y": 85.2
+  },
+  "1717": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Lago Blackwrench",
+   "level": 20,
+   "map": 1455,
+   "name": "Gakin's Summons",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 47.6,
+   "y": 9.3
+  },
+  "1719": {
+   "after": [
+    1718
+   ],
+   "dungeon": false,
+   "giver": "Klannoc Macleod",
+   "level": 30,
+   "map": 1413,
+   "name": "The Affray",
+   "reqclass": 1,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 68.6,
+   "y": 49.2
+  },
+  "1739": {
+   "after": [
+    1738
+   ],
+   "dungeon": false,
+   "giver": "Gakin the Darkbinder",
+   "level": 20,
+   "map": 1453,
+   "name": "The Binding",
+   "reqclass": 256,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.2,
+   "y": 85.2
+  },
+  "1778": {
+   "after": [
+    1648
+   ],
+   "dungeon": false,
+   "giver": "John Turner",
+   "level": 13,
+   "map": 1455,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 23.3,
+   "y": 61.9
+  },
+  "1779": {
+   "after": [
+    1778
+   ],
+   "dungeon": false,
+   "giver": "Tiza Battleforge",
+   "level": 13,
+   "map": 1455,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 27.6,
+   "y": 12.2
+  },
+  "1780": {
+   "after": [
+    1644
+   ],
+   "dungeon": false,
+   "giver": "Stephanie Turner",
+   "level": 13,
+   "map": 1453,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 63.8,
+   "y": 72.2
+  },
+  "1781": {
+   "after": [
+    1780
+   ],
+   "dungeon": false,
+   "giver": "Duthorian Rall",
+   "level": 13,
+   "map": 1453,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 50.5,
+   "y": 47.5
+  },
+  "1782": {
+   "after": [
+    1701
+   ],
+   "dungeon": false,
+   "giver": "Furen Longbeard",
+   "level": 28,
+   "map": 1453,
+   "name": "Furen's Armor",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 64.6,
+   "y": 37.2
+  },
+  "1783": {
+   "after": [
+    1779
+   ],
+   "dungeon": false,
+   "giver": "Muiredon Battleforge",
+   "level": 13,
+   "map": 1455,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 23.5,
+   "y": 8.3
+  },
+  "1784": {
+   "after": [
+    1783
+   ],
+   "dungeon": false,
+   "giver": "Narm Faulk",
+   "level": 13,
+   "map": 1426,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 78.3,
+   "y": 58.1
+  },
+  "1785": {
+   "after": [
+    1784
+   ],
+   "dungeon": false,
+   "giver": "Muiredon Battleforge",
+   "level": 13,
+   "map": 1455,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 23.5,
+   "y": 8.3
+  },
+  "1786": {
+   "after": [
+    1781
+   ],
+   "dungeon": false,
+   "giver": "Gazin Tenorm",
+   "level": 13,
+   "map": 1453,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 49.5,
+   "y": 45.0
+  },
+  "1787": {
+   "after": [
+    1786
+   ],
+   "dungeon": false,
+   "giver": "Henze Faulk",
+   "level": 13,
+   "map": 1429,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 72.6,
+   "y": 51.4
+  },
+  "1788": {
+   "after": [
+    1787
+   ],
+   "dungeon": false,
+   "giver": "Gazin Tenorm",
+   "level": 13,
+   "map": 1453,
+   "name": "The Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 49.5,
+   "y": 45.0
+  },
+  "1791": {
+   "after": [
+    1719
+   ],
+   "dungeon": false,
+   "giver": "Klannoc Macleod",
+   "level": 30,
+   "map": 1413,
+   "name": "The Windwatcher",
+   "reqclass": 1,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 68.6,
+   "y": 49.2
+  },
   "1792": {
    "after": [
     1713
@@ -217,6 +1359,100 @@
    "side": 3,
    "x": 80.4,
    "y": 66.8
+  },
+  "1798": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gakin the Darkbinder",
+   "level": 30,
+   "map": 1453,
+   "name": "Seeking Strahad",
+   "reqclass": 256,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.2,
+   "y": 85.2
+  },
+  "1802": {
+   "after": [
+    1758
+   ],
+   "dungeon": false,
+   "giver": "Krom Stoutarm",
+   "level": 30,
+   "map": 1455,
+   "name": "Tome of the Cabal",
+   "reqclass": 256,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 1,
+   "x": 74.2,
+   "y": 9.4
+  },
+  "1803": {
+   "after": [
+    1801
+   ],
+   "dungeon": false,
+   "giver": "Jorah Annison",
+   "level": 30,
+   "map": 1458,
+   "name": "Tome of the Cabal",
+   "reqclass": 256,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 2,
+   "x": 75.9,
+   "y": 37.9
+  },
+  "1804": {
+   "after": [
+    1802
+   ],
+   "dungeon": false,
+   "giver": "Krom Stoutarm",
+   "level": 30,
+   "map": 1455,
+   "name": "Tome of the Cabal",
+   "reqclass": 256,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 1,
+   "x": 74.2,
+   "y": 9.4
+  },
+  "1805": {
+   "after": [
+    1803
+   ],
+   "dungeon": false,
+   "giver": "Jorah Annison",
+   "level": 30,
+   "map": 1458,
+   "name": "Tome of the Cabal",
+   "reqclass": 256,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 2,
+   "x": 75.9,
+   "y": 37.9
+  },
+  "1806": {
+   "after": [
+    1654
+   ],
+   "dungeon": false,
+   "giver": "Jordan Stilwell",
+   "level": 22,
+   "map": 1426,
+   "name": "The Test of Righteousness",
+   "reqclass": 2,
+   "reqlevel": 20,
+   "reqrace": 5,
+   "side": 1,
+   "x": 52.5,
+   "y": 36.9
   },
   "1819": {
    "after": [
@@ -282,6 +1518,302 @@
    "x": 61.8,
    "y": 52.4
   },
+  "1823": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Sorek",
+   "level": 20,
+   "map": 1454,
+   "name": "Speak with Ruga",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 80.4,
+   "y": 32.4
+  },
+  "1842": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ula'elek",
+   "level": 30,
+   "map": 1411,
+   "name": "Satyr Hooves",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 56.3,
+   "y": 74.3
+  },
+  "1843": {
+   "after": [
+    1842
+   ],
+   "dungeon": false,
+   "giver": "Ula'elek",
+   "level": 30,
+   "map": 1411,
+   "name": "Brutal Gauntlets",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 56.3,
+   "y": 74.3
+  },
+  "1844": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Orm Stonehoof",
+   "level": 30,
+   "map": 1456,
+   "name": "Chimaeric Horn",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 39.0,
+   "y": 56.0
+  },
+  "1845": {
+   "after": [
+    1844
+   ],
+   "dungeon": false,
+   "giver": "Orm Stonehoof",
+   "level": 30,
+   "map": 1456,
+   "name": "Brutal Helm",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 39.0,
+   "y": 56.0
+  },
+  "1846": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Velora Nitely",
+   "level": 30,
+   "map": 1458,
+   "name": "Dragonmaw Shinbones",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 62.1,
+   "y": 39.1
+  },
+  "1847": {
+   "after": [
+    1846
+   ],
+   "dungeon": false,
+   "giver": "Velora Nitely",
+   "level": 30,
+   "map": 1458,
+   "name": "Brutal Legguards",
+   "reqclass": 1,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 62.1,
+   "y": 39.1
+  },
+  "1858": {
+   "after": [
+    1963
+   ],
+   "dungeon": false,
+   "giver": "Therzok",
+   "level": 13,
+   "map": 1454,
+   "name": "The Shattered Hand",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 42.7,
+   "y": 53.6
+  },
+  "1859": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Kaplak",
+   "level": 10,
+   "map": 1411,
+   "name": "Therzok",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 2,
+   "side": 2,
+   "x": 52.0,
+   "y": 43.7
+  },
+  "1860": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Zaldimar Wefhellt",
+   "level": 10,
+   "map": 1429,
+   "name": "Speak with Jennea",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 65,
+   "side": 1,
+   "x": 43.2,
+   "y": 66.2
+  },
+  "1861": {
+   "after": [
+    1860
+   ],
+   "dungeon": false,
+   "giver": "Jennea Cannon",
+   "level": 10,
+   "map": 1453,
+   "name": "Mirror Lake",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 65,
+   "side": 1,
+   "x": 49.5,
+   "y": 85.8
+  },
+  "1879": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Magis Sparkmantle",
+   "level": 10,
+   "map": 1426,
+   "name": "Speak with Bink",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 65,
+   "side": 1,
+   "x": 47.5,
+   "y": 52.1
+  },
+  "1880": {
+   "after": [
+    1879
+   ],
+   "dungeon": false,
+   "giver": "Bink",
+   "level": 10,
+   "map": 1455,
+   "name": "Mage-tastic Gizmonitor",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 65,
+   "side": 1,
+   "x": 27.2,
+   "y": 8.3
+  },
+  "1881": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Cain Firesong",
+   "level": 10,
+   "map": 1420,
+   "name": "Speak with Anastasia",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 144,
+   "side": 2,
+   "x": 62.0,
+   "y": 52.5
+  },
+  "1882": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Anastasia Hartwell",
+   "level": 10,
+   "map": 1458,
+   "name": "The Balnir Farmstead",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 144,
+   "side": 2,
+   "x": 85.1,
+   "y": 10.0
+  },
+  "1883": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Uthel'nay",
+   "level": 10,
+   "map": 1454,
+   "name": "Speak with Un'thuwa",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 144,
+   "side": 2,
+   "x": 39.2,
+   "y": 86.3
+  },
+  "1884": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Un'Thuwa",
+   "level": 10,
+   "map": 1411,
+   "name": "Ju-Ju Heaps",
+   "reqclass": 128,
+   "reqlevel": 10,
+   "reqrace": 144,
+   "side": 2,
+   "x": 56.3,
+   "y": 75.1
+  },
+  "1885": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Marion Call",
+   "level": 10,
+   "map": 1420,
+   "name": "Mennet Carkad",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 61.8,
+   "y": 52.0
+  },
+  "1886": {
+   "after": [
+    1885
+   ],
+   "dungeon": false,
+   "giver": "Mennet Carkad",
+   "level": 13,
+   "map": 1458,
+   "name": "The Deathstalkers",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 83.5,
+   "y": 69.1
+  },
+  "1898": {
+   "after": [
+    1886
+   ],
+   "dungeon": false,
+   "giver": "Mennet Carkad",
+   "level": 13,
+   "map": 1458,
+   "name": "The Deathstalkers",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 83.5,
+   "y": 69.1
+  },
   "1899": {
    "after": [
     1898
@@ -298,6 +1830,36 @@
    "x": 54.8,
    "y": 75.6
   },
+  "1920": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Jennea Cannon",
+   "level": 16,
+   "map": 1453,
+   "name": "Investigate the Blue Recluse",
+   "reqclass": 128,
+   "reqlevel": 15,
+   "reqrace": 65,
+   "side": 1,
+   "x": 49.5,
+   "y": 85.8
+  },
+  "1921": {
+   "after": [
+    1920
+   ],
+   "dungeon": false,
+   "giver": "Jennea Cannon",
+   "level": 15,
+   "map": 1453,
+   "name": "Gathering Materials",
+   "reqclass": 128,
+   "reqlevel": 15,
+   "reqrace": 65,
+   "side": 1,
+   "x": 49.5,
+   "y": 85.8
+  },
   "1938": {
    "after": [],
    "dungeon": false,
@@ -311,6 +1873,20 @@
    "side": 1,
    "x": 48.8,
    "y": 87.6
+  },
+  "1939": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Jennea Cannon",
+   "level": 26,
+   "map": 1453,
+   "name": "High Sorcerer Andromath",
+   "reqclass": 128,
+   "reqlevel": 26,
+   "reqrace": 65,
+   "side": 1,
+   "x": 49.5,
+   "y": 85.8
   },
   "1940": {
    "after": [
@@ -327,6 +1903,330 @@
    "side": 1,
    "x": 48.8,
    "y": 87.6
+  },
+  "1941": {
+   "after": [
+    1921
+   ],
+   "dungeon": false,
+   "giver": "Wynne Larson",
+   "level": 15,
+   "map": 1453,
+   "name": "Manaweave Robe",
+   "reqclass": 128,
+   "reqlevel": 15,
+   "reqrace": 65,
+   "side": 1,
+   "x": 51.9,
+   "y": 83.5
+  },
+  "1942": {
+   "after": [
+    1940
+   ],
+   "dungeon": false,
+   "giver": "Wynne Larson",
+   "level": 26,
+   "map": 1453,
+   "name": "Astral Knot Garment",
+   "reqclass": 128,
+   "reqlevel": 26,
+   "reqrace": 65,
+   "side": 1,
+   "x": 51.9,
+   "y": 83.5
+  },
+  "1943": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Anastasia Hartwell",
+   "level": 26,
+   "map": 1458,
+   "name": "Speak with Deino",
+   "reqclass": 128,
+   "reqlevel": 26,
+   "reqrace": 144,
+   "side": 2,
+   "x": 85.1,
+   "y": 10.0
+  },
+  "1944": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Deino",
+   "level": 26,
+   "map": 1454,
+   "name": "Waters of Xavian",
+   "reqclass": 128,
+   "reqlevel": 26,
+   "reqrace": 144,
+   "side": 2,
+   "x": 38.5,
+   "y": 86.1
+  },
+  "1945": {
+   "after": [
+    1944
+   ],
+   "dungeon": false,
+   "giver": "Deino",
+   "level": 26,
+   "map": 1454,
+   "name": "Laughing Sisters",
+   "reqclass": 128,
+   "reqlevel": 26,
+   "reqrace": 144,
+   "side": 2,
+   "x": 38.5,
+   "y": 86.1
+  },
+  "1948": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "Items of Power",
+   "reqclass": 128,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "1949": {
+   "after": [
+    1947
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 38,
+   "map": 1445,
+   "name": "Hidden Secrets",
+   "reqclass": 128,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "1950": {
+   "after": [
+    1949
+   ],
+   "dungeon": false,
+   "giver": "Magus Tirth",
+   "level": 30,
+   "map": 1441,
+   "name": "Get the Scoop",
+   "reqclass": 128,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 78.3,
+   "y": 75.7
+  },
+  "1952": {
+   "after": [
+    1951
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "Mage's Wand",
+   "reqclass": 128,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "1954": {
+   "after": [
+    1953
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "The Infernal Orb",
+   "reqclass": 128,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "1955": {
+   "after": [
+    1954
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "The Exorcism",
+   "reqclass": 128,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "1957": {
+   "after": [
+    1956
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "Mana Surges",
+   "reqclass": 128,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "1958": {
+   "after": [
+    1957
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "Celestial Power",
+   "reqclass": 128,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "1959": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Uthel'nay",
+   "level": 15,
+   "map": 1454,
+   "name": "Report to Anastasia",
+   "reqclass": 128,
+   "reqlevel": 15,
+   "reqrace": 144,
+   "side": 2,
+   "x": 39.2,
+   "y": 86.3
+  },
+  "1960": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Anastasia Hartwell",
+   "level": 16,
+   "map": 1458,
+   "name": "Investigate the Alchemist Shop",
+   "reqclass": 128,
+   "reqlevel": 15,
+   "reqrace": 144,
+   "side": 2,
+   "x": 85.1,
+   "y": 10.0
+  },
+  "1961": {
+   "after": [
+    1960
+   ],
+   "dungeon": false,
+   "giver": "Anastasia Hartwell",
+   "level": 15,
+   "map": 1458,
+   "name": "Gathering Materials",
+   "reqclass": 128,
+   "reqlevel": 15,
+   "reqrace": 144,
+   "side": 2,
+   "x": 85.1,
+   "y": 10.0
+  },
+  "1962": {
+   "after": [
+    1961
+   ],
+   "dungeon": false,
+   "giver": "Josef Gregorian",
+   "level": 15,
+   "map": 1458,
+   "name": "Spellfire Robes",
+   "reqclass": 128,
+   "reqlevel": 15,
+   "reqrace": 144,
+   "side": 2,
+   "x": 70.8,
+   "y": 30.7
+  },
+  "1963": {
+   "after": [
+    1859
+   ],
+   "dungeon": false,
+   "giver": "Therzok",
+   "level": 13,
+   "map": 1454,
+   "name": "The Shattered Hand",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 42.7,
+   "y": 53.6
+  },
+  "1978": {
+   "after": [
+    1899
+   ],
+   "dungeon": false,
+   "giver": "Mennet Carkad",
+   "level": 13,
+   "map": 1458,
+   "name": "The Deathstalkers",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 83.5,
+   "y": 69.1
+  },
+  "1998": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Mennet Carkad",
+   "level": 16,
+   "map": 1458,
+   "name": "Fenwick Thatros",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 16,
+   "side": 2,
+   "x": 83.5,
+   "y": 69.1
+  },
+  "1999": {
+   "after": [
+    1998
+   ],
+   "dungeon": false,
+   "giver": "Mennet Carkad",
+   "level": 20,
+   "map": 1458,
+   "name": "Tools of the Trade",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 16,
+   "side": 2,
+   "x": 83.5,
+   "y": 69.1
   },
   "2199": {
    "after": [
@@ -360,6 +2260,20 @@
    "x": 36,
    "y": 4
   },
+  "2205": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Keryn Sylvius",
+   "level": 10,
+   "map": 1429,
+   "name": "Seek out SI: 7",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 43.9,
+   "y": 65.9
+  },
   "2206": {
    "after": [],
    "dungeon": false,
@@ -373,6 +2287,136 @@
    "side": 1,
    "x": 78.3,
    "y": 70.7
+  },
+  "2218": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Hogral Bakkan",
+   "level": 10,
+   "map": 1426,
+   "name": "Road to Salvation",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 47.6,
+   "y": 52.6
+  },
+  "2238": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Hulfdan Blackbeard",
+   "level": 10,
+   "map": 1455,
+   "name": "Simple Subterfugin'",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 52.0,
+   "y": 14.8
+  },
+  "2239": {
+   "after": [
+    2238
+   ],
+   "dungeon": false,
+   "giver": "Onin MacHammar",
+   "level": 10,
+   "map": 1426,
+   "name": "Onin's Report",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 25.2,
+   "y": 44.5
+  },
+  "2241": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Jannok Breezesong",
+   "level": 10,
+   "map": 1438,
+   "name": "The Apple Falls",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 56.4,
+   "y": 60.1
+  },
+  "2242": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Syurna",
+   "level": 10,
+   "map": 1457,
+   "name": "Destiny Calls",
+   "reqclass": 8,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 1,
+   "x": 37.0,
+   "y": 21.9
+  },
+  "2259": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Jannok Breezesong",
+   "level": 16,
+   "map": 1438,
+   "name": "Erion Shadewhisper",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 1,
+   "x": 56.4,
+   "y": 60.1
+  },
+  "2260": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Erion Shadewhisper",
+   "level": 16,
+   "map": 1457,
+   "name": "Erion's Behest",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 1,
+   "x": 34.5,
+   "y": 25.9
+  },
+  "2281": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Renzik \"The Shiv\"",
+   "level": 16,
+   "map": 1453,
+   "name": "Redridge Rendezvous",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 1,
+   "x": 78.3,
+   "y": 71.1
+  },
+  "2282": {
+   "after": [
+    2281
+   ],
+   "dungeon": false,
+   "giver": "Lucius",
+   "level": 20,
+   "map": 1433,
+   "name": "Alther's Mill",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 1,
+   "x": 23.0,
+   "y": 52.0
   },
   "2283": {
    "after": [],
@@ -403,6 +2447,48 @@
    "side": 2,
    "x": 59.4,
    "y": 36.8
+  },
+  "2298": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Hulfdan Blackbeard",
+   "level": 16,
+   "map": 1455,
+   "name": "Kingly Shakedown",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 1,
+   "x": 52.0,
+   "y": 14.8
+  },
+  "2299": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Hogral Bakkan",
+   "level": 16,
+   "map": 1426,
+   "name": "To Hulfdan!",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 1,
+   "x": 47.6,
+   "y": 52.6
+  },
+  "2300": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Keryn Sylvius",
+   "level": 16,
+   "map": 1429,
+   "name": "SI:7",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 1,
+   "x": 43.9,
+   "y": 65.9
   },
   "2338": {
    "after": [
@@ -468,6 +2554,20 @@
    "x": 59.4,
    "y": 36.8
   },
+  "2358": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Arantir",
+   "level": 22,
+   "map": 1433,
+   "name": "Horns of Nez'ra",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 3,
+   "x": 23.0,
+   "y": 52.3
+  },
   "2360": {
    "after": [],
    "dungeon": false,
@@ -498,6 +2598,51 @@
    "x": 36,
    "y": 4
   },
+  "2378": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Mennet Carkad",
+   "level": 16,
+   "map": 1458,
+   "name": "Find the Shattered Hand",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 2,
+   "x": 83.5,
+   "y": 69.1
+  },
+  "2379": {
+   "after": [
+    2378,
+    2380
+   ],
+   "dungeon": false,
+   "giver": "Shenthul",
+   "level": 16,
+   "map": 1454,
+   "name": "Zando'zan",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 2,
+   "x": 43.0,
+   "y": 53.7
+  },
+  "2380": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Kaplak",
+   "level": 16,
+   "map": 1411,
+   "name": "To Orgrimmar!",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 2,
+   "x": 52.0,
+   "y": 43.7
+  },
   "2381": {
    "after": [
     2382
@@ -514,6 +2659,22 @@
    "x": 63,
    "y": 36.4
   },
+  "2382": {
+   "after": [
+    2379
+   ],
+   "dungeon": false,
+   "giver": "Zando'zan",
+   "level": 16,
+   "map": 1454,
+   "name": "Wrenix of Ratchet",
+   "reqclass": 8,
+   "reqlevel": 16,
+   "reqrace": 0,
+   "side": 2,
+   "x": 42.7,
+   "y": 53.0
+  },
   "2383": {
    "after": [
     788
@@ -529,6 +2690,52 @@
    "side": 2,
    "x": 42,
    "y": 68.4
+  },
+  "2458": {
+   "after": [
+    2460
+   ],
+   "dungeon": false,
+   "giver": "Shenthul",
+   "level": 20,
+   "map": 1454,
+   "name": "Deep Cover",
+   "reqclass": 8,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 43.0,
+   "y": 53.7
+  },
+  "2460": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Shenthul",
+   "level": 20,
+   "map": 1454,
+   "name": "The Shattered Salute",
+   "reqclass": 8,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 43.0,
+   "y": 53.7
+  },
+  "2479": {
+   "after": [
+    2478
+   ],
+   "dungeon": false,
+   "giver": "Shenthul",
+   "level": 26,
+   "map": 1454,
+   "name": "Hinott's Assistance",
+   "reqclass": 8,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 43.0,
+   "y": 53.7
   },
   "26": {
    "after": [],
@@ -560,6 +2767,70 @@
    "x": 78.3,
    "y": 70.7
   },
+  "2608": {
+   "after": [
+    2607
+   ],
+   "dungeon": false,
+   "giver": "Doc Mixilpixil",
+   "level": 20,
+   "map": 1453,
+   "name": "The Touch of Zanzil",
+   "reqclass": 8,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 80.0,
+   "y": 69.9
+  },
+  "2609": {
+   "after": [
+    2608
+   ],
+   "dungeon": false,
+   "giver": "Doc Mixilpixil",
+   "level": 20,
+   "map": 1453,
+   "name": "The Touch of Zanzil",
+   "reqclass": 8,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 80.0,
+   "y": 69.9
+  },
+  "272": {
+   "after": [
+    29
+   ],
+   "dungeon": false,
+   "giver": "Tajarri",
+   "level": 16,
+   "map": 1450,
+   "name": "Trial of the Sea Lion",
+   "reqclass": 1024,
+   "reqlevel": 16,
+   "reqrace": 8,
+   "side": 1,
+   "x": 36.5,
+   "y": 40.1
+  },
+  "28": {
+   "after": [
+    26
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 16,
+   "map": 1450,
+   "name": "Trial of the Lake",
+   "reqclass": 1024,
+   "reqlevel": 16,
+   "reqrace": 32,
+   "side": 2,
+   "x": 56.2,
+   "y": 30.6
+  },
   "2864": {
    "after": [],
    "dungeon": true,
@@ -573,6 +2844,50 @@
    "side": 3,
    "x": 27,
    "y": 77.2
+  },
+  "29": {
+   "after": [
+    27
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 16,
+   "map": 1450,
+   "name": "Trial of the Lake",
+   "reqclass": 1024,
+   "reqlevel": 16,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.2,
+   "y": 30.6
+  },
+  "2923": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Brother Sarno",
+   "level": 26,
+   "map": 1453,
+   "name": "Tinkmaster Overspark",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 51.0,
+   "y": 48.4
+  },
+  "2925": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Mathiel",
+   "level": 30,
+   "map": 1457,
+   "name": "Klockmort's Essentials",
+   "reqclass": 0,
+   "reqlevel": 24,
+   "reqrace": 0,
+   "side": 1,
+   "x": 59.5,
+   "y": 45.4
   },
   "2927": {
    "after": [],
@@ -602,6 +2917,134 @@
    "x": 59.4,
    "y": 67.2
   },
+  "2983": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Swart",
+   "level": 10,
+   "map": 1411,
+   "name": "Call of Fire",
+   "reqclass": 64,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 54.4,
+   "y": 42.6
+  },
+  "2984": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Narm Skychaser",
+   "level": 10,
+   "map": 1412,
+   "name": "Call of Fire",
+   "reqclass": 64,
+   "reqlevel": 10,
+   "reqrace": 0,
+   "side": 2,
+   "x": 47.4,
+   "y": 62.5
+  },
+  "2985": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Swart",
+   "level": 20,
+   "map": 1411,
+   "name": "Call of Water",
+   "reqclass": 64,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 54.4,
+   "y": 42.6
+  },
+  "2986": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Narm Skychaser",
+   "level": 20,
+   "map": 1412,
+   "name": "Call of Water",
+   "reqclass": 64,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 47.4,
+   "y": 62.5
+  },
+  "2996": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gan'rul Bloodeye",
+   "level": 30,
+   "map": 1454,
+   "name": "Seeking Strahad",
+   "reqclass": 256,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 2,
+   "x": 48.2,
+   "y": 45.3
+  },
+  "2997": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Azar Stronghammer",
+   "level": 12,
+   "map": 1426,
+   "name": "Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 47.6,
+   "y": 52.1
+  },
+  "2998": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Brother Wilhelm",
+   "level": 12,
+   "map": 1429,
+   "name": "Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 41.1,
+   "y": 66.0
+  },
+  "2999": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Brandur Ironhammer",
+   "level": 12,
+   "map": 1455,
+   "name": "Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 4,
+   "side": 1,
+   "x": 23.1,
+   "y": 6.1
+  },
+  "30": {
+   "after": [
+    28
+   ],
+   "dungeon": false,
+   "giver": "Tajarri",
+   "level": 16,
+   "map": 1450,
+   "name": "Trial of the Sea Lion",
+   "reqclass": 1024,
+   "reqlevel": 16,
+   "reqrace": 32,
+   "side": 2,
+   "x": 36.5,
+   "y": 40.1
+  },
   "3000": {
    "after": [],
    "dungeon": false,
@@ -615,6 +3058,20 @@
    "side": 1,
    "x": 48.5,
    "y": 50.0
+  },
+  "3001": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Carendin Halgar",
+   "level": 30,
+   "map": 1458,
+   "name": "Seeking Strahad",
+   "reqclass": 256,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 2,
+   "x": 85.0,
+   "y": 26.0
   },
   "3065": {
    "after": [
@@ -919,6 +3376,22 @@
    "side": 2,
    "x": 30.8,
    "y": 66.2
+  },
+  "31": {
+   "after": [
+    30
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 16,
+   "map": 1450,
+   "name": "Aquatic Form",
+   "reqclass": 1024,
+   "reqlevel": 16,
+   "reqrace": 32,
+   "side": 2,
+   "x": 56.2,
+   "y": 30.6
   },
   "3100": {
    "after": [
@@ -1254,6 +3727,20 @@
    "x": 74.4,
    "y": 43.4
   },
+  "3631": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Zevrost",
+   "level": 40,
+   "map": 1454,
+   "name": "Summon Felsteed",
+   "reqclass": 256,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 2,
+   "x": 48.5,
+   "y": 45.4
+  },
   "3661": {
    "after": [],
    "dungeon": true,
@@ -1267,6 +3754,64 @@
    "side": 1,
    "x": 55.4,
    "y": 92
+  },
+  "3681": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Brandur Ironhammer",
+   "level": 12,
+   "map": 1455,
+   "name": "Tome of Divinity",
+   "reqclass": 2,
+   "reqlevel": 12,
+   "reqrace": 1,
+   "side": 1,
+   "x": 23.1,
+   "y": 6.1
+  },
+  "3801": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Franclorn Forgewright",
+   "level": 52,
+   "map": 1428,
+   "name": "Dark Iron Legacy",
+   "reqclass": 0,
+   "reqlevel": 48,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.0,
+   "y": 28.9
+  },
+  "3802": {
+   "after": [
+    3801
+   ],
+   "dungeon": true,
+   "giver": "Franclorn Forgewright",
+   "level": 52,
+   "map": 1428,
+   "name": "Dark Iron Legacy",
+   "reqclass": 0,
+   "reqlevel": 48,
+   "reqrace": 0,
+   "side": 3,
+   "x": 29.0,
+   "y": 28.9
+  },
+  "384": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ragnar Thunderbrew",
+   "level": 7,
+   "map": 1426,
+   "name": "Beer Basted Boar Ribs",
+   "reqclass": 0,
+   "reqlevel": 5,
+   "reqrace": 0,
+   "side": 1,
+   "x": 46.8,
+   "y": 52.4
   },
   "4002": {
    "after": [
@@ -1284,6 +3829,22 @@
    "x": 32,
    "y": 37.8
   },
+  "4121": {
+   "after": [
+    4122
+   ],
+   "dungeon": true,
+   "giver": "Grark Lorkrub",
+   "level": 58,
+   "map": 1428,
+   "name": "Precarious Predicament",
+   "reqclass": 0,
+   "reqlevel": 52,
+   "reqrace": 0,
+   "side": 2,
+   "x": 40.2,
+   "y": 34.2
+  },
   "4133": {
    "after": [],
    "dungeon": true,
@@ -1298,6 +3859,90 @@
    "x": 50,
    "y": 68.4
   },
+  "4324": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Yorba Screwspigot",
+   "level": 53,
+   "map": 1446,
+   "name": "Yuka Screwspigot",
+   "reqclass": 0,
+   "reqlevel": 48,
+   "reqrace": 0,
+   "side": 3,
+   "x": 67.0,
+   "y": 24.0
+  },
+  "4485": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Arthur the Faithful",
+   "level": 40,
+   "map": 1453,
+   "name": "The Tome of Nobility",
+   "reqclass": 2,
+   "reqlevel": 40,
+   "reqrace": 5,
+   "side": 1,
+   "x": 49.6,
+   "y": 49.8
+  },
+  "4486": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Brandur Ironhammer",
+   "level": 40,
+   "map": 1455,
+   "name": "The Tome of Nobility",
+   "reqclass": 2,
+   "reqlevel": 40,
+   "reqrace": 5,
+   "side": 1,
+   "x": 23.1,
+   "y": 6.1
+  },
+  "4487": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Briarthorn",
+   "level": 40,
+   "map": 1455,
+   "name": "Summon Felsteed",
+   "reqclass": 256,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 1,
+   "x": 50.4,
+   "y": 5.7
+  },
+  "4488": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Demisette Cloyce",
+   "level": 40,
+   "map": 1453,
+   "name": "Summon Felsteed",
+   "reqclass": 256,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.2,
+   "y": 85.0
+  },
+  "4489": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Kaal Soulreaper",
+   "level": 40,
+   "map": 1458,
+   "name": "Summon Felsteed",
+   "reqclass": 256,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 2,
+   "x": 86.2,
+   "y": 15.9
+  },
   "4734": {
    "after": [],
    "dungeon": true,
@@ -1311,6 +3956,78 @@
    "side": 3,
    "x": 65.2,
    "y": 23.8
+  },
+  "4736": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Briarthorn",
+   "level": 31,
+   "map": 1455,
+   "name": "In Search of Menara Voidrender",
+   "reqclass": 256,
+   "reqlevel": 31,
+   "reqrace": 0,
+   "side": 2,
+   "x": 50.4,
+   "y": 5.7
+  },
+  "4737": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Zevrost",
+   "level": 31,
+   "map": 1454,
+   "name": "In Search of Menara Voidrender",
+   "reqclass": 256,
+   "reqlevel": 31,
+   "reqrace": 0,
+   "side": 1,
+   "x": 48.5,
+   "y": 45.4
+  },
+  "4738": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Demisette Cloyce",
+   "level": 31,
+   "map": 1453,
+   "name": "In Search of Menara Voidrender",
+   "reqclass": 256,
+   "reqlevel": 31,
+   "reqrace": 0,
+   "side": 1,
+   "x": 39.2,
+   "y": 85.0
+  },
+  "4739": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Kaal Soulreaper",
+   "level": 31,
+   "map": 1458,
+   "name": "In Search of Menara Voidrender",
+   "reqclass": 256,
+   "reqlevel": 31,
+   "reqrace": 0,
+   "side": 2,
+   "x": 86.2,
+   "y": 15.9
+  },
+  "4765": {
+   "after": [
+    4764
+   ],
+   "dungeon": true,
+   "giver": "Mayara Brightwing",
+   "level": 60,
+   "map": 1428,
+   "name": "Delivery to Ridgewell",
+   "reqclass": 0,
+   "reqlevel": 57,
+   "reqrace": 0,
+   "side": 1,
+   "x": 84.8,
+   "y": 69.1
   },
   "4766": {
    "after": [],
@@ -1340,6 +4057,22 @@
    "x": 50,
    "y": 68.4
   },
+  "4782": {
+   "after": [
+    4781
+   ],
+   "dungeon": false,
+   "giver": "Xizk Goodstitch",
+   "level": 34,
+   "map": 1434,
+   "name": "Components for the Enchanted Gold Bloodrobe",
+   "reqclass": 256,
+   "reqlevel": 31,
+   "reqrace": 0,
+   "side": 3,
+   "x": 28.7,
+   "y": 76.9
+  },
   "4907": {
    "after": [
     4810
@@ -1355,6 +4088,110 @@
    "side": 3,
    "x": 61.6,
    "y": 38.6
+  },
+  "4961": {
+   "after": [
+    1799
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "Cleansing of the Orb of Orahil",
+   "reqclass": 256,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "4965": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Briarthorn",
+   "level": 35,
+   "map": 1455,
+   "name": "Knowledge of the Orb of Orahil",
+   "reqclass": 256,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 1,
+   "x": 50.4,
+   "y": 5.7
+  },
+  "4967": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Zevrost",
+   "level": 35,
+   "map": 1454,
+   "name": "Knowledge of the Orb of Orahil",
+   "reqclass": 256,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 1,
+   "x": 48.5,
+   "y": 45.4
+  },
+  "4968": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Demisette Cloyce",
+   "level": 35,
+   "map": 1453,
+   "name": "Knowledge of the Orb of Orahil",
+   "reqclass": 256,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 2,
+   "x": 39.2,
+   "y": 85.0
+  },
+  "4969": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Kaal Soulreaper",
+   "level": 35,
+   "map": 1458,
+   "name": "Knowledge of the Orb of Orahil",
+   "reqclass": 256,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 2,
+   "x": 86.2,
+   "y": 15.9
+  },
+  "4976": {
+   "after": [
+    4961
+   ],
+   "dungeon": false,
+   "giver": "Tabetha",
+   "level": 40,
+   "map": 1445,
+   "name": "Returning the Cleansed Orb",
+   "reqclass": 256,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 3,
+   "x": 46.1,
+   "y": 57.1
+  },
+  "5061": {
+   "after": [
+    272
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 16,
+   "map": 1450,
+   "name": "Aquatic Form",
+   "reqclass": 1024,
+   "reqlevel": 16,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.2,
+   "y": 30.6
   },
   "5081": {
    "after": [
@@ -1418,6 +4255,50 @@
    "x": 55.6,
    "y": 56.8
   },
+  "5622": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Shanda",
+   "level": 4,
+   "map": 1438,
+   "name": "In Favor of Elune",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 8,
+   "side": 1,
+   "x": 59.2,
+   "y": 40.4
+  },
+  "5623": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Priestess Anetta",
+   "level": 4,
+   "map": 1429,
+   "name": "In Favor of the Light",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 1,
+   "side": 1,
+   "x": 49.8,
+   "y": 39.5
+  },
+  "5624": {
+   "after": [
+    5623
+   ],
+   "dungeon": false,
+   "giver": "Priestess Josetta",
+   "level": 4,
+   "map": 1429,
+   "name": "Garments of the Light",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 1,
+   "side": 1,
+   "x": 43.3,
+   "y": 65.7
+  },
   "5625": {
    "after": [
     5626
@@ -1433,6 +4314,55 @@
    "side": 1,
    "x": 47.2,
    "y": 52.2
+  },
+  "5626": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Branstock Khalder",
+   "level": 4,
+   "map": 1426,
+   "name": "In Favor of the Light",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 4,
+   "side": 1,
+   "x": 28.6,
+   "y": 66.4
+  },
+  "5627": {
+   "after": [
+    5628,
+    5629,
+    5630,
+    5631,
+    5632,
+    5633
+   ],
+   "dungeon": false,
+   "giver": "Priestess Alathea",
+   "level": 10,
+   "map": 1457,
+   "name": "Stars of Elune",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 39.5,
+   "y": 81.2
+  },
+  "5628": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Priestess Josetta",
+   "level": 10,
+   "map": 1429,
+   "name": "Returning Home",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 43.3,
+   "y": 65.7
   },
   "5629": {
    "after": [],
@@ -1461,6 +4391,48 @@
    "side": 1,
    "x": 47.2,
    "y": 52.2
+  },
+  "5631": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Brother Joshua",
+   "level": 10,
+   "map": 1453,
+   "name": "Returning Home",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 49.5,
+   "y": 45.2
+  },
+  "5632": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Nara Meideros",
+   "level": 10,
+   "map": 1453,
+   "name": "Returning Home",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 35.7,
+   "y": 63.2
+  },
+  "5633": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Braenna Flintcrag",
+   "level": 10,
+   "map": 1455,
+   "name": "Returning Home",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 24.4,
+   "y": 9.2
   },
   "5634": {
    "after": [],
@@ -1504,6 +4476,104 @@
    "x": 55.6,
    "y": 56.8
   },
+  "5637": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Priestess Josetta",
+   "level": 10,
+   "map": 1429,
+   "name": "Desperate Prayer",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 5,
+   "side": 1,
+   "x": 43.3,
+   "y": 65.7
+  },
+  "5638": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Nara Meideros",
+   "level": 10,
+   "map": 1453,
+   "name": "Desperate Prayer",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 5,
+   "side": 1,
+   "x": 35.7,
+   "y": 63.2
+  },
+  "5639": {
+   "after": [],
+   "dungeon": false,
+   "giver": "High Priest Rohan",
+   "level": 10,
+   "map": 1455,
+   "name": "Desperate Prayer",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 5,
+   "side": 1,
+   "x": 24.7,
+   "y": 8.2
+  },
+  "5641": {
+   "after": [],
+   "dungeon": false,
+   "giver": "High Priestess Laurena",
+   "level": 20,
+   "map": 1453,
+   "name": "A Lack of Fear",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 4,
+   "side": 1,
+   "x": 49.5,
+   "y": 44.6
+  },
+  "5643": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Father Lankester",
+   "level": 20,
+   "map": 1458,
+   "name": "Shadowguard",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 128,
+   "side": 2,
+   "x": 49.1,
+   "y": 14.6
+  },
+  "5644": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Zayus",
+   "level": 20,
+   "map": 1454,
+   "name": "Devouring Plague",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 16,
+   "side": 2,
+   "x": 35.7,
+   "y": 86.9
+  },
+  "5645": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Toldren Deepiron",
+   "level": 20,
+   "map": 1455,
+   "name": "A Lack of Fear",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 4,
+   "side": 1,
+   "x": 25.2,
+   "y": 10.8
+  },
   "5647": {
    "after": [],
    "dungeon": false,
@@ -1517,6 +4587,192 @@
    "side": 1,
    "x": 40.2,
    "y": 88.4
+  },
+  "5648": {
+   "after": [
+    5649
+   ],
+   "dungeon": false,
+   "giver": "Tai'jin",
+   "level": 4,
+   "map": 1411,
+   "name": "Garments of Spirituality",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 128,
+   "side": 2,
+   "x": 54.3,
+   "y": 42.9
+  },
+  "5649": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ken'jai",
+   "level": 4,
+   "map": 1411,
+   "name": "In Favor of Spirituality",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42.4,
+   "y": 68.8
+  },
+  "5650": {
+   "after": [
+    5651
+   ],
+   "dungeon": false,
+   "giver": "Dark Cleric Beryl",
+   "level": 4,
+   "map": 1420,
+   "name": "Garments of Darkness",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 16,
+   "side": 2,
+   "x": 61.6,
+   "y": 52.2
+  },
+  "5651": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Dark Cleric Duesten",
+   "level": 4,
+   "map": 1420,
+   "name": "In Favor of Darkness",
+   "reqclass": 16,
+   "reqlevel": 5,
+   "reqrace": 16,
+   "side": 2,
+   "x": 31.1,
+   "y": 66.0
+  },
+  "5652": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ur'kyo",
+   "level": 10,
+   "map": 1454,
+   "name": "Hex of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 128,
+   "side": 2,
+   "x": 35.6,
+   "y": 87.8
+  },
+  "5654": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Var'jun",
+   "level": 10,
+   "map": 1412,
+   "name": "Hex of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 128,
+   "side": 2,
+   "x": 46.2,
+   "y": 62.3
+  },
+  "5655": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Tai'jin",
+   "level": 10,
+   "map": 1411,
+   "name": "Hex of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 128,
+   "side": 2,
+   "x": 54.3,
+   "y": 42.9
+  },
+  "5656": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Father Lankester",
+   "level": 10,
+   "map": 1458,
+   "name": "Hex of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 128,
+   "side": 2,
+   "x": 49.1,
+   "y": 14.6
+  },
+  "5657": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ken'jai",
+   "level": 10,
+   "map": 1411,
+   "name": "Hex of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 128,
+   "side": 2,
+   "x": 42.4,
+   "y": 68.8
+  },
+  "5658": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Father Lankester",
+   "level": 10,
+   "map": 1458,
+   "name": "Touch of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 49.1,
+   "y": 14.6
+  },
+  "5660": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Tai'jin",
+   "level": 10,
+   "map": 1411,
+   "name": "Touch of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 54.3,
+   "y": 42.9
+  },
+  "5662": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ur'kyo",
+   "level": 10,
+   "map": 1454,
+   "name": "Touch of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 35.6,
+   "y": 87.8
+  },
+  "5663": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Dark Cleric Beryl",
+   "level": 10,
+   "map": 1420,
+   "name": "Touch of Weakness",
+   "reqclass": 16,
+   "reqlevel": 10,
+   "reqrace": 16,
+   "side": 2,
+   "x": 61.6,
+   "y": 52.2
   },
   "5672": {
    "after": [],
@@ -1532,6 +4788,104 @@
    "x": 55.6,
    "y": 56.8
   },
+  "5673": {
+   "after": [],
+   "dungeon": false,
+   "giver": "High Priestess Laurena",
+   "level": 20,
+   "map": 1453,
+   "name": "Elune's Grace",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 8,
+   "side": 1,
+   "x": 49.5,
+   "y": 44.6
+  },
+  "5674": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Astarii Starseeker",
+   "level": 20,
+   "map": 1457,
+   "name": "Elune's Grace",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 8,
+   "side": 1,
+   "x": 38.3,
+   "y": 81.0
+  },
+  "5675": {
+   "after": [],
+   "dungeon": false,
+   "giver": "High Priest Rohan",
+   "level": 20,
+   "map": 1455,
+   "name": "Elune's Grace",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 8,
+   "side": 1,
+   "x": 24.7,
+   "y": 8.2
+  },
+  "5676": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Brother Joshua",
+   "level": 20,
+   "map": 1453,
+   "name": "Arcane Feedback",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 1,
+   "side": 1,
+   "x": 49.5,
+   "y": 45.2
+  },
+  "5677": {
+   "after": [],
+   "dungeon": false,
+   "giver": "High Priest Rohan",
+   "level": 20,
+   "map": 1455,
+   "name": "Arcane Feedback",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 1,
+   "side": 1,
+   "x": 24.7,
+   "y": 8.2
+  },
+  "5679": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Father Lankester",
+   "level": 20,
+   "map": 1458,
+   "name": "Devouring Plague",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 16,
+   "side": 2,
+   "x": 49.1,
+   "y": 14.6
+  },
+  "5680": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Zayus",
+   "level": 20,
+   "map": 1454,
+   "name": "Shadowguard",
+   "reqclass": 16,
+   "reqlevel": 20,
+   "reqrace": 128,
+   "side": 2,
+   "x": 35.7,
+   "y": 86.9
+  },
   "5921": {
    "after": [],
    "dungeon": false,
@@ -1545,6 +4899,34 @@
    "side": 1,
    "x": 35.2,
    "y": 8
+  },
+  "5924": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Theridran",
+   "level": 10,
+   "map": 1453,
+   "name": "Heeding the Call",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 36.1,
+   "y": 64.4
+  },
+  "5925": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Kal",
+   "level": 10,
+   "map": 1438,
+   "name": "Heeding the Call",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.0,
+   "y": 61.6
   },
   "5926": {
    "after": [],
@@ -1573,6 +4955,84 @@
    "side": 2,
    "x": 54.2,
    "y": 68.4
+  },
+  "5928": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gennia Runetotem",
+   "level": 10,
+   "map": 1412,
+   "name": "Heeding the Call",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 47.5,
+   "y": 63.0
+  },
+  "5929": {
+   "after": [
+    5921
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 10,
+   "map": 1450,
+   "name": "Great Bear Spirit",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.2,
+   "y": 30.6
+  },
+  "5930": {
+   "after": [
+    5922
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 10,
+   "map": 1450,
+   "name": "Great Bear Spirit",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 56.2,
+   "y": 30.6
+  },
+  "5931": {
+   "after": [
+    5929
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 10,
+   "map": 1450,
+   "name": "Back to Darnassus",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.2,
+   "y": 30.6
+  },
+  "5932": {
+   "after": [
+    5930
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 10,
+   "map": 1450,
+   "name": "Back to Thunder Bluff",
+   "reqclass": 1024,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 56.2,
+   "y": 30.6
   },
   "6001": {
    "after": [
@@ -1603,6 +5063,284 @@
    "side": 2,
    "x": 46.1,
    "y": 62.9
+  },
+  "6062": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Thotar",
+   "level": 10,
+   "map": 1411,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 51.9,
+   "y": 43.5
+  },
+  "6063": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Dazalar",
+   "level": 10,
+   "map": 1438,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.7,
+   "y": 59.5
+  },
+  "6064": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Grif Wildheart",
+   "level": 10,
+   "map": 1426,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 4,
+   "side": 1,
+   "x": 45.8,
+   "y": 53.0
+  },
+  "6065": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Kary Thunderhorn",
+   "level": 10,
+   "map": 1456,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 58.5,
+   "y": 88.3
+  },
+  "6066": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Lanka Farshot",
+   "level": 10,
+   "map": 1412,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 44.0,
+   "y": 76.3
+  },
+  "6067": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Thotar",
+   "level": 10,
+   "map": 1411,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 32,
+   "side": 2,
+   "x": 51.9,
+   "y": 43.5
+  },
+  "6068": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Jen'shan",
+   "level": 10,
+   "map": 1411,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 42.8,
+   "y": 69.3
+  },
+  "6069": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Sian'dur",
+   "level": 10,
+   "map": 1454,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 68.0,
+   "y": 17.8
+  },
+  "6070": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Sian'dur",
+   "level": 10,
+   "map": 1454,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 68.0,
+   "y": 17.8
+  },
+  "6072": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Ayanna Everstride",
+   "level": 10,
+   "map": 1438,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 58.7,
+   "y": 40.5
+  },
+  "6074": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Thorgas Grimson",
+   "level": 10,
+   "map": 1426,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 4,
+   "side": 1,
+   "x": 29.2,
+   "y": 67.5
+  },
+  "6075": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Regnus Thundergranite",
+   "level": 10,
+   "map": 1455,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 4,
+   "side": 1,
+   "x": 69.9,
+   "y": 82.9
+  },
+  "6076": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Einris Brightspear",
+   "level": 10,
+   "map": 1453,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 4,
+   "side": 1,
+   "x": 67.3,
+   "y": 36.3
+  },
+  "6081": {
+   "after": [
+    6082
+   ],
+   "dungeon": false,
+   "giver": "Thotar",
+   "level": 10,
+   "map": 1411,
+   "name": "Training the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 51.9,
+   "y": 43.5
+  },
+  "6082": {
+   "after": [
+    6083
+   ],
+   "dungeon": false,
+   "giver": "Thotar",
+   "level": 10,
+   "map": 1411,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 51.9,
+   "y": 43.5
+  },
+  "6083": {
+   "after": [
+    6062
+   ],
+   "dungeon": false,
+   "giver": "Thotar",
+   "level": 10,
+   "map": 1411,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 130,
+   "side": 2,
+   "x": 51.9,
+   "y": 43.5
+  },
+  "6084": {
+   "after": [
+    6064
+   ],
+   "dungeon": false,
+   "giver": "Grif Wildheart",
+   "level": 10,
+   "map": 1426,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 4,
+   "side": 1,
+   "x": 45.8,
+   "y": 53.0
+  },
+  "6085": {
+   "after": [
+    6084
+   ],
+   "dungeon": false,
+   "giver": "Grif Wildheart",
+   "level": 10,
+   "map": 1426,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 4,
+   "side": 1,
+   "x": 45.8,
+   "y": 53.0
+  },
+  "6086": {
+   "after": [
+    6085
+   ],
+   "dungeon": false,
+   "giver": "Grif Wildheart",
+   "level": 10,
+   "map": 1426,
+   "name": "Training the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 4,
+   "side": 1,
+   "x": 45.8,
+   "y": 53.0
   },
   "6087": {
    "after": [
@@ -1652,6 +5390,54 @@
    "x": 46.1,
    "y": 62.9
   },
+  "6101": {
+   "after": [
+    6063
+   ],
+   "dungeon": false,
+   "giver": "Dazalar",
+   "level": 10,
+   "map": 1438,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.7,
+   "y": 59.5
+  },
+  "6102": {
+   "after": [
+    6101
+   ],
+   "dungeon": false,
+   "giver": "Dazalar",
+   "level": 10,
+   "map": 1438,
+   "name": "Taming the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.7,
+   "y": 59.5
+  },
+  "6103": {
+   "after": [
+    6102
+   ],
+   "dungeon": false,
+   "giver": "Dazalar",
+   "level": 10,
+   "map": 1438,
+   "name": "Training the Beast",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.7,
+   "y": 59.5
+  },
   "6121": {
    "after": [],
    "dungeon": false,
@@ -1665,6 +5451,54 @@
    "side": 1,
    "x": 35.2,
    "y": 8
+  },
+  "6122": {
+   "after": [
+    6121
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 14,
+   "map": 1450,
+   "name": "The Principal Source",
+   "reqclass": 1024,
+   "reqlevel": 14,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.2,
+   "y": 30.6
+  },
+  "6125": {
+   "after": [
+    6124
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 14,
+   "map": 1450,
+   "name": "Power over Poison",
+   "reqclass": 1024,
+   "reqlevel": 14,
+   "reqrace": 8,
+   "side": 1,
+   "x": 56.2,
+   "y": 30.6
+  },
+  "6127": {
+   "after": [
+    6126
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 14,
+   "map": 1450,
+   "name": "The Principal Source",
+   "reqclass": 1024,
+   "reqlevel": 14,
+   "reqrace": 32,
+   "side": 2,
+   "x": 56.2,
+   "y": 30.6
   },
   "6128": {
    "after": [
@@ -1697,6 +5531,22 @@
    "side": 2,
    "x": 52.2,
    "y": 31.8
+  },
+  "6130": {
+   "after": [
+    6129
+   ],
+   "dungeon": false,
+   "giver": "Dendrite Starblaze",
+   "level": 14,
+   "map": 1450,
+   "name": "Power over Poison",
+   "reqclass": 1024,
+   "reqlevel": 14,
+   "reqrace": 32,
+   "side": 2,
+   "x": 56.2,
+   "y": 30.6
   },
   "63": {
    "after": [
@@ -1744,6 +5594,324 @@
    "x": 50.8,
    "y": 77.8
   },
+  "6722": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Einris Brightspear",
+   "level": 10,
+   "map": 1453,
+   "name": "The Hunter's Path",
+   "reqclass": 4,
+   "reqlevel": 10,
+   "reqrace": 8,
+   "side": 1,
+   "x": 67.3,
+   "y": 36.3
+  },
+  "7081": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Sergeant Durgen Stormpike",
+   "level": 60,
+   "map": 1416,
+   "name": "Alterac Valley Graveyards",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 1,
+   "x": 36.8,
+   "y": 77.2
+  },
+  "7082": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Corporal Teeka Bloodsnarl",
+   "level": 60,
+   "map": 1416,
+   "name": "The Graveyards of Alterac",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 2,
+   "x": 65.5,
+   "y": 55.1
+  },
+  "7101": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Corporal Teeka Bloodsnarl",
+   "level": 60,
+   "map": 1416,
+   "name": "Towers and Bunkers",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 2,
+   "x": 65.5,
+   "y": 55.1
+  },
+  "7102": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Sergeant Durgen Stormpike",
+   "level": 60,
+   "map": 1416,
+   "name": "Towers and Bunkers",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 1,
+   "x": 36.8,
+   "y": 77.2
+  },
+  "7122": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Sergeant Durgen Stormpike",
+   "level": 60,
+   "map": 1416,
+   "name": "Capture a Mine",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 1,
+   "x": 36.8,
+   "y": 77.2
+  },
+  "7124": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Corporal Teeka Bloodsnarl",
+   "level": 60,
+   "map": 1416,
+   "name": "Capture a Mine",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 2,
+   "x": 65.5,
+   "y": 55.1
+  },
+  "7141": {
+   "after": [
+    7221
+   ],
+   "dungeon": true,
+   "giver": "Prospector Stonehewer",
+   "level": 60,
+   "map": 1416,
+   "name": "The Battle of Alterac",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 1,
+   "x": 40.6,
+   "y": 79.6
+  },
+  "7142": {
+   "after": [
+    7222
+   ],
+   "dungeon": true,
+   "giver": "Voggah Deathgrip",
+   "level": 60,
+   "map": 1416,
+   "name": "The Battle for Alterac",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 63.8,
+   "y": 60.5
+  },
+  "7161": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warmaster Laggrond",
+   "level": 60,
+   "map": 1416,
+   "name": "Proving Grounds",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 690,
+   "side": 3,
+   "x": 62.3,
+   "y": 58.9
+  },
+  "7162": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Lieutenant Haggerdin",
+   "level": 60,
+   "map": 1416,
+   "name": "Proving Grounds",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 39.5,
+   "y": 81.2
+  },
+  "7163": {
+   "after": [
+    7161
+   ],
+   "dungeon": true,
+   "giver": "Warmaster Laggrond",
+   "level": 60,
+   "map": 1416,
+   "name": "Rise and Be Recognized",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 62.3,
+   "y": 58.9
+  },
+  "7164": {
+   "after": [
+    7163
+   ],
+   "dungeon": true,
+   "giver": "Warmaster Laggrond",
+   "level": 60,
+   "map": 1416,
+   "name": "Honored Amongst the Clan",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 62.3,
+   "y": 58.9
+  },
+  "7165": {
+   "after": [
+    7164
+   ],
+   "dungeon": true,
+   "giver": "Warmaster Laggrond",
+   "level": 60,
+   "map": 1416,
+   "name": "Earned Reverence",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 690,
+   "side": 3,
+   "x": 62.3,
+   "y": 58.9
+  },
+  "7166": {
+   "after": [
+    7165
+   ],
+   "dungeon": true,
+   "giver": "Warmaster Laggrond",
+   "level": 60,
+   "map": 1416,
+   "name": "Legendary Heroes",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 62.3,
+   "y": 58.9
+  },
+  "7167": {
+   "after": [
+    7166
+   ],
+   "dungeon": true,
+   "giver": "Warmaster Laggrond",
+   "level": 60,
+   "map": 1416,
+   "name": "The Eye of Command",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 62.3,
+   "y": 58.9
+  },
+  "7168": {
+   "after": [
+    7162
+   ],
+   "dungeon": true,
+   "giver": "Lieutenant Haggerdin",
+   "level": 60,
+   "map": 1416,
+   "name": "Rise and Be Recognized",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 39.5,
+   "y": 81.2
+  },
+  "7169": {
+   "after": [
+    7168
+   ],
+   "dungeon": true,
+   "giver": "Lieutenant Haggerdin",
+   "level": 60,
+   "map": 1416,
+   "name": "Honored Amongst the Guard",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 39.5,
+   "y": 81.2
+  },
+  "7170": {
+   "after": [
+    7169
+   ],
+   "dungeon": true,
+   "giver": "Lieutenant Haggerdin",
+   "level": 60,
+   "map": 1416,
+   "name": "Earned Reverence",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 39.5,
+   "y": 81.2
+  },
+  "7171": {
+   "after": [
+    7170
+   ],
+   "dungeon": true,
+   "giver": "Lieutenant Haggerdin",
+   "level": 60,
+   "map": 1416,
+   "name": "Legendary Heroes",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 39.5,
+   "y": 81.2
+  },
+  "7172": {
+   "after": [
+    7171
+   ],
+   "dungeon": true,
+   "giver": "Lieutenant Haggerdin",
+   "level": 60,
+   "map": 1416,
+   "name": "The Eye of Command",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 39.5,
+   "y": 81.2
+  },
   "721": {
    "after": [
     720
@@ -1760,6 +5928,34 @@
    "x": 53.4,
    "y": 43.2
   },
+  "7241": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Frostwolf Ambassador Rokhstrom",
+   "level": 60,
+   "map": 1454,
+   "name": "In Defense of Frostwolf",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 2,
+   "x": 49.6,
+   "y": 71.2
+  },
+  "7261": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Lieutenant Rotimer",
+   "level": 60,
+   "map": 1455,
+   "name": "The Sovereign Imperative",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 1,
+   "x": 32.2,
+   "y": 63.3
+  },
   "7492": {
    "after": [],
    "dungeon": true,
@@ -1773,6 +5969,271 @@
    "side": 2,
    "x": 46.6,
    "y": 64.6
+  },
+  "7563": {
+   "after": [
+    7562
+   ],
+   "dungeon": false,
+   "giver": "Mor'zul Bloodbringer",
+   "level": 58,
+   "map": 1428,
+   "name": "Rage of Blood",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.7,
+   "y": 31.6
+  },
+  "7564": {
+   "after": [
+    7563
+   ],
+   "dungeon": false,
+   "giver": "Mor'zul Bloodbringer",
+   "level": 58,
+   "map": 1428,
+   "name": "Wildeyes",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.7,
+   "y": 31.6
+  },
+  "7581": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Daio the Decrepit",
+   "level": 60,
+   "map": 1419,
+   "name": "The Prison's Bindings",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 34.1,
+   "y": 50.1
+  },
+  "7582": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Daio the Decrepit",
+   "level": 60,
+   "map": 1419,
+   "name": "The Prison's Casing",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 34.1,
+   "y": 50.1
+  },
+  "7583": {
+   "after": [
+    7581,
+    7582
+   ],
+   "dungeon": false,
+   "giver": "Daio the Decrepit",
+   "level": 60,
+   "map": 1419,
+   "name": "Suppression",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 34.1,
+   "y": 50.1
+  },
+  "7601": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Niby the Almighty",
+   "level": 50,
+   "map": 1448,
+   "name": "What Niby Commands",
+   "reqclass": 256,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 41.6,
+   "y": 45.1
+  },
+  "7602": {
+   "after": [
+    7601
+   ],
+   "dungeon": false,
+   "giver": "Impsy",
+   "level": 55,
+   "map": 1448,
+   "name": "Flawless Fel Essence",
+   "reqclass": 256,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 41.5,
+   "y": 45.0
+  },
+  "7603": {
+   "after": [
+    7602
+   ],
+   "dungeon": false,
+   "giver": "Impsy",
+   "level": 55,
+   "map": 1448,
+   "name": "Kroshius' Infernal Core",
+   "reqclass": 256,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 41.5,
+   "y": 45.0
+  },
+  "7621": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Eris Havenfire",
+   "level": 60,
+   "map": 1423,
+   "name": "A Warning",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 17.2,
+   "y": 12.8
+  },
+  "7622": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Eris Havenfire",
+   "level": 60,
+   "map": 1423,
+   "name": "The Balance of Light and Shadow",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 17.2,
+   "y": 12.8
+  },
+  "7623": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Gorzeeki Wildeyes",
+   "level": 58,
+   "map": 1428,
+   "name": "Lord Banehollow",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.4,
+   "y": 31.6
+  },
+  "7626": {
+   "after": [
+    7564
+   ],
+   "dungeon": false,
+   "giver": "Mor'zul Bloodbringer",
+   "level": 60,
+   "map": 1428,
+   "name": "Bell of Dethmoora",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.7,
+   "y": 31.6
+  },
+  "7627": {
+   "after": [
+    7564
+   ],
+   "dungeon": false,
+   "giver": "Mor'zul Bloodbringer",
+   "level": 60,
+   "map": 1428,
+   "name": "Wheel of the Black March",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.7,
+   "y": 31.6
+  },
+  "7628": {
+   "after": [
+    7564
+   ],
+   "dungeon": false,
+   "giver": "Mor'zul Bloodbringer",
+   "level": 60,
+   "map": 1428,
+   "name": "Doomsday Candle",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.7,
+   "y": 31.6
+  },
+  "7629": {
+   "after": [
+    7564,
+    7625
+   ],
+   "dungeon": false,
+   "giver": "Gorzeeki Wildeyes",
+   "level": 60,
+   "map": 1428,
+   "name": "Imp Delivery",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.4,
+   "y": 31.6
+  },
+  "7630": {
+   "after": [
+    7626,
+    7627,
+    7628
+   ],
+   "dungeon": false,
+   "giver": "Gorzeeki Wildeyes",
+   "level": 60,
+   "map": 1428,
+   "name": "Arcanite",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.4,
+   "y": 31.6
+  },
+  "7631": {
+   "after": [
+    7629,
+    7630
+   ],
+   "dungeon": false,
+   "giver": "Mor'zul Bloodbringer",
+   "level": 60,
+   "map": 1428,
+   "name": "Dreadsteed of Xoroth",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 12.7,
+   "y": 31.6
   },
   "7637": {
    "after": [
@@ -1789,6 +6250,36 @@
    "side": 1,
    "x": 48.5,
    "y": 50.0
+  },
+  "7638": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Duthorian Rall",
+   "level": 60,
+   "map": 1453,
+   "name": "Lord Grayson Shadowbreaker",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 50.5,
+   "y": 47.5
+  },
+  "7639": {
+   "after": [
+    7637
+   ],
+   "dungeon": false,
+   "giver": "High Priest Rohan",
+   "level": 60,
+   "map": 1455,
+   "name": "To Show Due Judgment",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 24.7,
+   "y": 8.2
   },
   "7640": {
    "after": [
@@ -1854,6 +6345,20 @@
    "x": 48.5,
    "y": 50.0
   },
+  "7645": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Merideth Carlson",
+   "level": 60,
+   "map": 1424,
+   "name": "Manna-Enriched Horse Feed",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 5,
+   "side": 1,
+   "x": 52.2,
+   "y": 55.5
+  },
   "7646": {
    "after": [
     7644
@@ -1902,6 +6407,1042 @@
    "x": 59.6,
    "y": 33.9
   },
+  "7786": {
+   "after": [
+    7785
+   ],
+   "dungeon": false,
+   "giver": "Highlord Demitrian",
+   "level": 60,
+   "map": 1451,
+   "name": "Thunderaan the Windseeker",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 21.7,
+   "y": 8.6
+  },
+  "8041": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "Strength of Mount Mugamba",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8042": {
+   "after": [
+    8041
+   ],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "Strength of Mount Mugamba",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8043": {
+   "after": [
+    8042
+   ],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "Strength of Mount Mugamba",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8044": {
+   "after": [
+    8043
+   ],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "The Rage of Mount Mugamba",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8045": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "The Heathen's Brand",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8046": {
+   "after": [
+    8045
+   ],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "The Heathen's Brand",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8047": {
+   "after": [
+    8046
+   ],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "The Heathen's Brand",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8048": {
+   "after": [
+    8047
+   ],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "The Hero's Brand",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8049": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The Eye of Zuldazar",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8050": {
+   "after": [
+    8049
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The Eye of Zuldazar",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8051": {
+   "after": [
+    8050
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The Eye of Zuldazar",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8052": {
+   "after": [
+    8051
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The All-Seeing Eye of Zuldazar",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8053": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 61,
+   "map": 1434,
+   "name": "Paragons of Power: The Freethinker's Armguards",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8054": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 61,
+   "map": 1434,
+   "name": "Paragons of Power: The Freethinker's Belt",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8055": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 61,
+   "map": 1434,
+   "name": "Paragons of Power: The Freethinker's Breastplate",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8056": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Augur's Bracers",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8057": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Haruspex's Bracers",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8058": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Vindicator's Armguards",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8059": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Demoniac's Wraps",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8060": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Illusionist's Wraps",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8061": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Confessor's Wraps",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8062": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Predator's Bracers",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8063": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Madcap's Bracers",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8064": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Haruspex's Belt",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8065": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Haruspex's Tunic",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8066": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Predator's Belt",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8067": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Predator's Mantle",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8068": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Illusionist's Mantle",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8069": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Illusionist's Robes",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8070": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Confessor's Bindings",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8071": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Confessor's Mantle",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8072": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Madcap's Mantle",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8073": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Madcap's Tunic",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8074": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Augur's Belt",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8075": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Augur's Hauberk",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8076": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Demoniac's Mantle",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8077": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Demoniac's Robes",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8078": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Vindicator's Belt",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8079": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Jin'rokh the Breaker",
+   "level": 60,
+   "map": 1434,
+   "name": "Paragons of Power: The Vindicator's Breastplate",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 14.4
+  },
+  "8101": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The Pebble of Kajaro",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8102": {
+   "after": [
+    8101
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The Pebble of Kajaro",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8103": {
+   "after": [
+    8102
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The Pebble of Kajaro",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8104": {
+   "after": [
+    8103
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "The Jewel of Kajaro",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8105": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Field Marshal Oslight",
+   "level": 55,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 1,
+   "x": 45.8,
+   "y": 45.5
+  },
+  "8106": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Kezan's Taint",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8107": {
+   "after": [
+    8106
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Kezan's Taint",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8108": {
+   "after": [
+    8107
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Kezan's Taint",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8109": {
+   "after": [
+    8108
+   ],
+   "dungeon": true,
+   "giver": "Al'tabim the All-Seeing",
+   "level": 60,
+   "map": 1434,
+   "name": "Kezan's Unstoppable Taint",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.1
+  },
+  "8110": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Enchanted South Seas Kelp",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8111": {
+   "after": [
+    8110
+   ],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Enchanted South Seas Kelp",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8112": {
+   "after": [
+    8111
+   ],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Enchanted South Seas Kelp",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8113": {
+   "after": [
+    8112
+   ],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Pristine Enchanted South Seas Kelp",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8114": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Field Marshal Oslight",
+   "level": 60,
+   "map": 1417,
+   "name": "Control Four Bases",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 45.8,
+   "y": 45.5
+  },
+  "8115": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Field Marshal Oslight",
+   "level": 60,
+   "map": 1417,
+   "name": "Control Five Bases",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 45.8,
+   "y": 45.5
+  },
+  "8116": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Vision of Voodress",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8117": {
+   "after": [
+    8116
+   ],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Vision of Voodress",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8118": {
+   "after": [
+    8117
+   ],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "Vision of Voodress",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8119": {
+   "after": [
+    8118
+   ],
+   "dungeon": true,
+   "giver": "Maywiki of Zuldazar",
+   "level": 60,
+   "map": 1434,
+   "name": "The Unmarred Vision of Voodress",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 15.3,
+   "y": 16.0
+  },
+  "8120": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Deathmaster Dwire",
+   "level": 55,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.2,
+   "y": 29.7
+  },
+  "8121": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Deathmaster Dwire",
+   "level": 60,
+   "map": 1417,
+   "name": "Take Four Bases",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.2,
+   "y": 29.7
+  },
+  "8122": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Deathmaster Dwire",
+   "level": 60,
+   "map": 1417,
+   "name": "Take Five Bases",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.2,
+   "y": 29.7
+  },
+  "8141": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Zandalarian Shadow Talisman",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8142": {
+   "after": [
+    8141
+   ],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Zandalarian Shadow Talisman",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8143": {
+   "after": [
+    8142
+   ],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Zandalarian Shadow Talisman",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8144": {
+   "after": [
+    8143
+   ],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "Zandalarian Shadow Mastery Talisman",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8145": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "The Maelstrom's Tendril",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8146": {
+   "after": [
+    8145
+   ],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "The Maelstrom's Tendril",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8147": {
+   "after": [
+    8146
+   ],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "The Maelstrom's Tendril",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
+  "8148": {
+   "after": [
+    8147
+   ],
+   "dungeon": true,
+   "giver": "Falthir the Sightless",
+   "level": 60,
+   "map": 1434,
+   "name": "The Maelstrom's Wrath",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.1,
+   "y": 13.7
+  },
   "8151": {
    "after": [],
    "dungeon": false,
@@ -1915,6 +7456,106 @@
    "side": 3,
    "x": 70.6,
    "y": 83.8
+  },
+  "8153": {
+   "after": [
+    8151
+   ],
+   "dungeon": false,
+   "giver": "Ogtinc",
+   "level": 52,
+   "map": 1447,
+   "name": "Courser Antlers",
+   "reqclass": 4,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 42.4,
+   "y": 42.6
+  },
+  "8166": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Field Marshal Oslight",
+   "level": 45,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 1,
+   "x": 45.8,
+   "y": 45.5
+  },
+  "8167": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Field Marshal Oslight",
+   "level": 35,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 1,
+   "x": 45.8,
+   "y": 45.5
+  },
+  "8168": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Field Marshal Oslight",
+   "level": 25,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 1,
+   "x": 45.8,
+   "y": 45.5
+  },
+  "8169": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Deathmaster Dwire",
+   "level": 45,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 40,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.2,
+   "y": 29.7
+  },
+  "8170": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Deathmaster Dwire",
+   "level": 35,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 30,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.2,
+   "y": 29.7
+  },
+  "8171": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Deathmaster Dwire",
+   "level": 25,
+   "map": 1417,
+   "name": "The Battle for Arathi Basin!",
+   "reqclass": 0,
+   "reqlevel": 20,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.2,
+   "y": 29.7
   },
   "8181": {
    "after": [
@@ -1931,6 +7572,68 @@
    "side": 3,
    "x": 66.8,
    "y": 24
+  },
+  "8201": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Exzhal",
+   "level": 60,
+   "map": 1434,
+   "name": "A Collection of Heads",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 15.3,
+   "y": 15.5
+  },
+  "8231": {
+   "after": [
+    8153
+   ],
+   "dungeon": false,
+   "giver": "Ogtinc",
+   "level": 52,
+   "map": 1447,
+   "name": "Wavethrashing",
+   "reqclass": 4,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 42.4,
+   "y": 42.6
+  },
+  "8232": {
+   "after": [
+    8231
+   ],
+   "dungeon": false,
+   "giver": "Ogtinc",
+   "level": 52,
+   "map": 1447,
+   "name": "The Green Drake",
+   "reqclass": 4,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 42.4,
+   "y": 42.6
+  },
+  "8234": {
+   "after": [
+    8233
+   ],
+   "dungeon": false,
+   "giver": "Lord Jorach Ravenholdt",
+   "level": 52,
+   "map": 1416,
+   "name": "Sealed Azure Bag",
+   "reqclass": 8,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 86.0,
+   "y": 78.9
   },
   "8235": {
    "after": [
@@ -1963,6 +7666,34 @@
    "side": 3,
    "x": 29.2,
    "y": 40.2
+  },
+  "8240": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Vinchaxa",
+   "level": 60,
+   "map": 1434,
+   "name": "A Bijou for Zanza",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 14.5,
+   "y": 15.8
+  },
+  "8249": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Fahrad",
+   "level": 60,
+   "map": 1416,
+   "name": "Junkboxes Needed",
+   "reqclass": 8,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 84.5,
+   "y": 80.3
   },
   "8251": {
    "after": [
@@ -2011,6 +7742,170 @@
    "side": 3,
    "x": 29.2,
    "y": 40.2
+  },
+  "8255": {
+   "after": [
+    8254
+   ],
+   "dungeon": false,
+   "giver": "Ogtinc",
+   "level": 52,
+   "map": 1447,
+   "name": "Of Coursers We Know",
+   "reqclass": 16,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 42.4,
+   "y": 42.6
+  },
+  "8256": {
+   "after": [
+    8255
+   ],
+   "dungeon": false,
+   "giver": "Ogtinc",
+   "level": 52,
+   "map": 1447,
+   "name": "The Ichor of Undeath",
+   "reqclass": 16,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 42.4,
+   "y": 42.6
+  },
+  "8257": {
+   "after": [
+    8256
+   ],
+   "dungeon": false,
+   "giver": "Ogtinc",
+   "level": 52,
+   "map": 1447,
+   "name": "Blood of Morphaz",
+   "reqclass": 16,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 42.4,
+   "y": 42.6
+  },
+  "8260": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Samuel Hawke",
+   "level": 34,
+   "map": 1417,
+   "name": "Arathor Basic Care Package",
+   "reqclass": 0,
+   "reqlevel": 25,
+   "reqrace": 0,
+   "side": 1,
+   "x": 46.0,
+   "y": 45.2
+  },
+  "8261": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Samuel Hawke",
+   "level": 44,
+   "map": 1417,
+   "name": "Arathor Standard Care Package",
+   "reqclass": 0,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 1,
+   "x": 46.0,
+   "y": 45.2
+  },
+  "8262": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Samuel Hawke",
+   "level": 60,
+   "map": 1417,
+   "name": "Arathor Advanced Care Package",
+   "reqclass": 0,
+   "reqlevel": 45,
+   "reqrace": 0,
+   "side": 1,
+   "x": 46.0,
+   "y": 45.2
+  },
+  "8263": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Rutherford Twing",
+   "level": 34,
+   "map": 1417,
+   "name": "Defiler's Basic Care Package",
+   "reqclass": 0,
+   "reqlevel": 25,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.4,
+   "y": 29.7
+  },
+  "8264": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Rutherford Twing",
+   "level": 44,
+   "map": 1417,
+   "name": "Defiler's Standard Care Package",
+   "reqclass": 0,
+   "reqlevel": 35,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.4,
+   "y": 29.7
+  },
+  "8265": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Rutherford Twing",
+   "level": 60,
+   "map": 1417,
+   "name": "Defiler's Advanced Care Package",
+   "reqclass": 0,
+   "reqlevel": 45,
+   "reqrace": 0,
+   "side": 2,
+   "x": 73.4,
+   "y": 29.7
+  },
+  "8271": {
+   "after": [
+    7141
+   ],
+   "dungeon": true,
+   "giver": "Prospector Stonehewer",
+   "level": 60,
+   "map": 1416,
+   "name": "Hero of the Stormpike",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 40.6,
+   "y": 79.6
+  },
+  "8272": {
+   "after": [
+    7142
+   ],
+   "dungeon": true,
+   "giver": "Voggah Deathgrip",
+   "level": 60,
+   "map": 1416,
+   "name": "Hero of the Frostwolf",
+   "reqclass": 0,
+   "reqlevel": 51,
+   "reqrace": 0,
+   "side": 3,
+   "x": 63.8,
+   "y": 60.5
   },
   "8288": {
    "after": [
@@ -2342,6 +8237,53 @@
    "x": 42.8,
    "y": 84
   },
+  "8420": {
+   "after": [],
+   "dungeon": false,
+   "giver": "Impsy",
+   "level": 52,
+   "map": 1448,
+   "name": "Hot and Itchy",
+   "reqclass": 256,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 41.5,
+   "y": 45.0
+  },
+  "8421": {
+   "after": [
+    8419,
+    8420
+   ],
+   "dungeon": false,
+   "giver": "Impsy",
+   "level": 52,
+   "map": 1448,
+   "name": "The Wrong Stuff",
+   "reqclass": 256,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 41.5,
+   "y": 45.0
+  },
+  "8422": {
+   "after": [
+    8421
+   ],
+   "dungeon": false,
+   "giver": "Impsy",
+   "level": 52,
+   "map": 1448,
+   "name": "Trolls of a Feather",
+   "reqclass": 256,
+   "reqlevel": 50,
+   "reqrace": 0,
+   "side": 3,
+   "x": 41.5,
+   "y": 45.0
+  },
   "8423": {
    "after": [],
    "dungeon": false,
@@ -2544,6 +8486,446 @@
    "x": 27.8,
    "y": 34.4
   },
+  "8481": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Gorn One Eye",
+   "level": 60,
+   "map": 1450,
+   "name": "The Root of All Evil",
+   "reqclass": 0,
+   "reqlevel": 45,
+   "reqrace": 0,
+   "side": 3,
+   "x": 31.4,
+   "y": 94.9
+  },
+  "8484": {
+   "after": [
+    8481
+   ],
+   "dungeon": true,
+   "giver": "Gorn One Eye",
+   "level": 60,
+   "map": 1450,
+   "name": "The Brokering of Peace",
+   "reqclass": 0,
+   "reqlevel": 45,
+   "reqrace": 0,
+   "side": 1,
+   "x": 31.4,
+   "y": 94.9
+  },
+  "8485": {
+   "after": [
+    8481
+   ],
+   "dungeon": true,
+   "giver": "Gorn One Eye",
+   "level": 60,
+   "map": 1450,
+   "name": "The Brokering of Peace",
+   "reqclass": 0,
+   "reqlevel": 45,
+   "reqrace": 0,
+   "side": 2,
+   "x": 31.4,
+   "y": 94.9
+  },
+  "8556": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Signet of Unyielding Strength",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8557": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Drape of Unyielding Strength",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8558": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Sickle of Unyielding Strength",
+   "reqclass": 1,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8689": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Shroud of Infinite Wisdom",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8690": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Cloak of the Gathering Storm",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8691": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Drape of Vaulted Secrets",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8692": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Cloak of Unending Life",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8693": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Cloak of Veiled Shadows",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8694": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Shroud of Unspoken Names",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8695": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Cape of Eternal Justice",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8696": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Keyl Swiftclaw",
+   "level": 60,
+   "map": 1451,
+   "name": "Cloak of the Unseen Path",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.8,
+   "y": 39.5
+  },
+  "8697": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Ring of Infinite Wisdom",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8698": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Ring of the Gathering Storm",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8699": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Band of Vaulted Secrets",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8700": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Band of Unending Life",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8701": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Band of Veiled Shadows",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8702": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Ring of Unspoken Names",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8703": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Ring of Eternal Justice",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8704": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Windcaller Yessendra",
+   "level": 60,
+   "map": 1451,
+   "name": "Signet of the Unseen Path",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 52.0,
+   "y": 38.2
+  },
+  "8705": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Gavel of Infinite Wisdom",
+   "reqclass": 16,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8706": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Hammer of the Gathering Storm",
+   "reqclass": 64,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 2,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8707": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Blade of Vaulted Secrets",
+   "reqclass": 128,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8708": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Mace of Unending Life",
+   "reqclass": 1024,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8709": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Dagger of Veiled Shadows",
+   "reqclass": 8,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8710": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Kris of Unspoken Names",
+   "reqclass": 256,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8711": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Blade of Eternal Justice",
+   "reqclass": 2,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 1,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8712": {
+   "after": [],
+   "dungeon": true,
+   "giver": "Warden Haro",
+   "level": 60,
+   "map": 1451,
+   "name": "Scythe of the Unseen Path",
+   "reqclass": 4,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 51.1,
+   "y": 39.0
+  },
+  "8948": {
+   "after": [
+    8947
+   ],
+   "dungeon": true,
+   "giver": "Anthion Harmon",
+   "level": 60,
+   "map": 1423,
+   "name": "Anthion's Old Friend",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 26.1,
+   "y": 11.3
+  },
   "8960": {
    "after": [
     8951,
@@ -2567,6 +8949,318 @@
    "x": 43.4,
    "y": 52.2
   },
+  "8961": {
+   "after": [
+    8960,
+    9032
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "Three Kings of Flame",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8962": {
+   "after": [
+    8961
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8963": {
+   "after": [
+    8961
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8964": {
+   "after": [
+    8961
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8965": {
+   "after": [
+    8961
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8966": {
+   "after": [
+    8962
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Left Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8967": {
+   "after": [
+    8963
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Left Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8968": {
+   "after": [
+    8964
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Left Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8969": {
+   "after": [
+    8965
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Left Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8985": {
+   "after": [
+    8964,
+    8970
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "More Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8986": {
+   "after": [
+    8965,
+    8970
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "More Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8987": {
+   "after": [
+    8962,
+    8970
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "More Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8988": {
+   "after": [
+    8963,
+    8970
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "More Components of Importance",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8989": {
+   "after": [
+    8986
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Right Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8990": {
+   "after": [
+    8985
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Right Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8991": {
+   "after": [
+    8987
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Right Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8992": {
+   "after": [
+    8988
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "The Right Piece of Lord Valthalak's Amulet",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8994": {
+   "after": [
+    8989,
+    8990,
+    8991,
+    8992
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "Final Preparations",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
+  "8995": {
+   "after": [
+    8994
+   ],
+   "dungeon": true,
+   "giver": "Bodley",
+   "level": 60,
+   "map": 1428,
+   "name": "Mea Culpa, Lord Valthalak",
+   "reqclass": 0,
+   "reqlevel": 58,
+   "reqrace": 0,
+   "side": 3,
+   "x": 32.3,
+   "y": 25.8
+  },
   "9032": {
    "after": [
     8957,
@@ -2589,6 +9283,24 @@
    "side": 2,
    "x": 34.8,
    "y": 38
+  },
+  "9033": {
+   "after": [
+    9121,
+    9122,
+    9123
+   ],
+   "dungeon": true,
+   "giver": "Commander Eligor Dawnbringer",
+   "level": 60,
+   "map": 1423,
+   "name": "Echoes of War",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.7,
+   "y": 48.6
   },
   "9051": {
    "after": [
@@ -2681,6 +9393,230 @@
    "side": 3,
    "x": 71.8,
    "y": 48.4
+  },
+  "9232": {
+   "after": [
+    9033
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "The Only Song I Know...",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9234": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Icebane Gauntlets",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9235": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Icebane Bracers",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9236": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Icebane Breastplate",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9237": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Glacial Cloak",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9238": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Glacial Wrists",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9239": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Glacial Gloves",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9240": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Glacial Vest",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9241": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Polar Bracers",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9242": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Polar Gloves",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9243": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Polar Tunic",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9244": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Icy Scale Bracers",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9245": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Icy Scale Gauntlets",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
+  },
+  "9246": {
+   "after": [
+    9233
+   ],
+   "dungeon": true,
+   "giver": "Craftsman Wilhelm",
+   "level": 60,
+   "map": 1423,
+   "name": "Icy Scale Breastplate",
+   "reqclass": 0,
+   "reqlevel": 60,
+   "reqrace": 0,
+   "side": 3,
+   "x": 71.2,
+   "y": 49.9
   },
   "9251": {
    "after": [
