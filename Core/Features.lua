@@ -1,7 +1,7 @@
 -- Features.lua: every feature's on/off switch and its default, by settings store.
 local ns = _G.NaowhForever
 
-ns.FEATURE_BADGES = 0
+ns.FEATURE_BADGES = 1
 ns.BADGES_LIVE = 1
 
 local function Missing(_, key)
