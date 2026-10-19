@@ -71,7 +71,8 @@ jobs:
             echo
             echo "Changed: Scout: shows the abilities of more creatures, Forever's new ones and dungeon bosses among them."
             echo
-            echo "---"
+            echo "## Source"
+            echo
             echo "Opened by .github/workflows/scout-gaps.yml: $SERVER/$REPO/actions/runs/$RUN_ID."
             echo "Checks do not run on a pull request a workflow opens: close and reopen it to run them."
           } > "$RUNNER_TEMP/pr.md"

@@ -71,7 +71,8 @@ jobs:
             echo
             echo "Added: Discovery > Quest List: more class, dungeon and battleground quests show on the world map at their quest givers."
             echo
-            echo "---"
+            echo "## Source"
+            echo
             echo "Opened by .github/workflows/elsewhere-pages.yml: $SERVER/$REPO/actions/runs/$RUN_ID."
             echo "Checks do not run on a pull request a workflow opens: close and reopen it to run them."
           } > "$RUNNER_TEMP/pr.md"
