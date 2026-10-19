@@ -25,12 +25,15 @@ local MARK_SIZE, MARK_IN, MARK_LEVEL = 10, 2, 5
 local RING_IN = 2
 local KEPT_ALPHA = 0.35
 local HIGHLIGHT_ALPHA = 0.15
+local WAIT_TIMEOUT = 8
+local DISENCHANT_MACRO = "/stopspelltarget\n/cast %s"
 local OPEN_W, OPEN_H, OPEN_RIGHT, OPEN_DROP = 90, 22, 36, 7
 local EVENTS = { "BAG_UPDATE_DELAYED", "ITEM_LOCK_CHANGED", "PLAYER_REGEN_ENABLED", "PLAYER_REGEN_DISABLED" }
 
 local TEXT_TITLE = ns.L("Disenchant")
 local TEXT_SUBTITLE = ns.L("Right-click keeps one, Shift keeps every copy.")
 local TEXT_ALL, TEXT_ALL_COUNT = ns.L("Disenchant All"), ns.L("Disenchant All (%d)")
+local TEXT_WORKING = ns.L("Disenchanting...")
 local TEXT_OPEN = ns.L("Disenchant")
 local TEXT_SUMMARY = ns.L("%d to disenchant, %d kept")
 local TEXT_EMPTY = ns.L("Nothing in your bags to disenchant.")
@@ -43,14 +46,15 @@ local TEXT_KEEP_ALL_HINT = ns.L("Shift-right-click: keep every copy")
 local TEXT_KEPT_COPY = ns.L("Kept: this one only. Right-click: disenchant it again")
 local TEXT_KEPT_ALL = ns.L("Kept: every copy. Right-click: disenchant them again")
 local TEXT_REFUSED = ns.L("The game would not disenchant this (skill too low?). Skipped until you reload.")
-local TEXT_REFUSED_CHAT = ns.L("%s could not be disenchanted, skipped until you reload.")
+local TEXT_REFUSED_CHAT = ns.L("%s could not be disenchanted, skipped until you reload. Right-click or press Escape to cancel the item cursor.")
 local TEXT_COMBAT = ns.L("The Disenchant window cannot open in combat.")
 local TEXT_UNKNOWN = ns.L("You do not know Disenchant.")
 local TEXT_OFF = ns.L("Turn on the Disenchant Window in the Professions settings first.")
 
 local window, scroll, grid, summary, all, empty, events
 local slots = {}
-local armed
+local armed, waiting, clicking, failedThisClick
+local waitGen = 0
 
 local function On()
     return S.Get("enabled") and S.Get("disenchant")
@@ -59,7 +63,7 @@ end
 local function PaintSlot(b, r)
     b.record = r
     b.icon.texture:SetTexture(r.icon)
-    local kept, refused = D.Kept(r), D.Failed(r.itemID)
+    local kept, refused = D.Kept(r), D.Failed(r)
     b.icon.texture:SetDesaturated(kept or refused or r.locked)
     b.icon:SetAlpha((kept or refused) and KEPT_ALPHA or 1)
     b.mark:SetShown(kept)
@@ -76,7 +80,7 @@ local function OnSlotEnter(self)
     if not r then return end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetBagItem(r.bag, r.slot)
-    if D.Failed(r.itemID) then
+    if D.Failed(r) then
         local red = St.RED_RGB
         GameTooltip:AddLine(TEXT_REFUSED, red.r, red.g, red.b, true)
     elseif D.KeptAll(r) then
@@ -134,10 +138,11 @@ end
 
 local function Arm()
     if InCombatLockdown() then return end
-    armed = D.Next()
+    armed = not waiting and D.Next() or nil
     all:SetAttribute("target-bag", armed and armed.bag or nil)
     all:SetAttribute("target-slot", armed and armed.slot or nil)
-    all:SetAttribute("type", armed and "spell" or nil)
+    all:SetAttribute("type", armed and "macro" or nil)
+    all:SetAttribute("macrotext", armed and DISENCHANT_MACRO:format(C_Spell.GetSpellName(D.SPELL)) or nil)
     all:SetAlpha(armed and 1 or KEPT_ALPHA)
 end
 
@@ -155,7 +160,8 @@ function Redraw()
     empty:SetShown(n == 0)
     local ready, kept = D.Counts()
     summary:SetText(TEXT_SUMMARY:format(ready, kept))
-    ns.SetButtonText(all, ready > 0 and TEXT_ALL_COUNT:format(ready) or TEXT_ALL)
+    local label = waiting and TEXT_WORKING or ready > 0 and TEXT_ALL_COUNT:format(ready) or TEXT_ALL
+    ns.SetButtonText(all, label)
 end
 
 local function OnAllEnter(self)
@@ -165,21 +171,55 @@ local function OnAllEnter(self)
     GameTooltip:Show()
 end
 
+local function OnAllPreClick(_, _, down)
+    if down then return end
+    clicking, failedThisClick = true, false
+end
+
 local function OnAllPostClick(self, _, down)
-    if down or not SpellIsTargeting() then return end
-    SpellStopTargeting()
-    if armed then
-        D.MarkFailed(armed.itemID)
+    if down then return end
+    clicking = false
+    if not armed then return end
+    if failedThisClick then
+        failedThisClick = false
+        waiting = false
+        Redraw()
+        return
+    end
+    waiting = not SpellIsTargeting()
+    if not waiting then
+        D.MarkFailed(armed)
         ns.Print(TEXT_REFUSED_CHAT:format(armed.link or TEXT_ALL))
+    else
+        waitGen = waitGen + 1
+        local gen = waitGen
+        C_Timer.After(WAIT_TIMEOUT, function()
+            if waiting and gen == waitGen then
+                waiting = false
+                Redraw()
+            end
+        end)
     end
     Redraw()
     if GameTooltip:IsOwned(self) then OnAllEnter(self) end
 end
 
-local function OnEvent(_, event)
+local function OnEvent(_, event, unit, _, spellID)
     if event == "PLAYER_REGEN_DISABLED" then
         window:Hide()
         return
+    end
+    if event == "BAG_UPDATE_DELAYED" then
+        waiting = false
+        waitGen = waitGen + 1
+    elseif event == "UNIT_SPELLCAST_FAILED" or event == "UNIT_SPELLCAST_INTERRUPTED" then
+        if unit ~= "player" or spellID ~= D.SPELL then return end
+        if clicking and armed then
+            failedThisClick = true
+            return
+        end
+        waiting = false
+        waitGen = waitGen + 1
     end
     Redraw()
 end
@@ -189,9 +229,9 @@ local function BuildAll()
     all:SetPoint("BOTTOMRIGHT", -INSET, FOOTER + PAD)
     all:RegisterForClicks("LeftButtonUp", "LeftButtonDown")
     all:SetAttribute("useOnKeyDown", false)
-    all:SetAttribute("spell", D.SPELL)
     all:HookScript("OnEnter", OnAllEnter)
     all:HookScript("OnLeave", GameTooltip_Hide)
+    all:SetScript("PreClick", OnAllPreClick)
     all:SetScript("PostClick", OnAllPostClick)
 end
 
@@ -218,16 +258,24 @@ end
 
 local function OnShow()
     for _, event in ipairs(EVENTS) do events:RegisterEvent(event) end
+    events:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", "player")
+    events:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
     Redraw()
 end
 
 local function OnHide()
+    waiting, clicking, failedThisClick = false, false, false
+    waitGen = waitGen + 1
     events:UnregisterAllEvents()
 end
 
 local function OnKeyDown(keys, key)
     if InCombatLockdown() then return end
     local escape = key == "ESCAPE"
+    if escape and SpellIsTargeting() then
+        keys:SetPropagateKeyboardInput(true)
+        return
+    end
     keys:SetPropagateKeyboardInput(not escape)
     if escape then window:Hide() end
 end

@@ -14,6 +14,7 @@ local ENCHANTING = 333
 local WEAPON, ARMOR = 2, 4
 local UNCOMMON, EPIC = 2, 4
 local NEVER = { INVTYPE_BODY = true, INVTYPE_TABARD = true }
+local SLOT_KEY_SCALE = 1000
 local LAST_BAG = NUM_TOTAL_EQUIPPED_BAG_SLOTS or NUM_BAG_SLOTS
 local KEEP_KEY, COPY_KEY = "profDisenchantKeep", "profDisenchantKeepCopy"
 
@@ -52,6 +53,7 @@ local function Note(bag, slot, info)
     r.quality = info.quality or GetItemQualityByID(info.itemID)
     r.locked = info.isLocked == true
     r.guid = CopyGUID(bag, slot)
+    r.failureKey = r.guid or bag * SLOT_KEY_SCALE + slot
 end
 
 function D.Known()
@@ -92,16 +94,16 @@ function D.ToggleKeep(r, every)
     end
 end
 
-function D.Failed(itemID)
-    return failed[itemID] == true
+function D.Failed(r)
+    return r and failed[r.failureKey] == true or false
 end
 
-function D.MarkFailed(itemID)
-    failed[itemID] = true
+function D.MarkFailed(r)
+    if r then failed[r.failureKey] = true end
 end
 
 function D.Ready(r)
-    return not (D.Kept(r) or failed[r.itemID])
+    return not (r.locked or D.Kept(r) or D.Failed(r))
 end
 
 function D.Next()
@@ -116,7 +118,7 @@ function D.Counts()
         local r = records[i]
         if D.Kept(r) then
             kept = kept + 1
-        elseif not failed[r.itemID] then
+        elseif D.Ready(r) then
             ready = ready + 1
         end
     end
