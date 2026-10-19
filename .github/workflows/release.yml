@@ -242,18 +242,3 @@ jobs:
             exit 0
           fi
           gh api repos/naowh-gaming/naowh.gg/dispatches -f event_type=addon-release -f "client_payload[tag]=$TAG"
-
-      # The site's homepage shows the newest version and downloads its ZIP; this tells it now instead of
-      # within ten minutes (naowh.gg docs/DEPLOY.md). Every release, Daily Word ones too, never a beta.
-      # Without the secret, or if it fails, the site catches up by itself.
-      - name: Refresh the website's downloads
-        if: env.TAG != '' && !contains(env.TAG, '-beta.')
-        continue-on-error: true
-        env:
-          HOOK: ${{ secrets.NAOWH_RELEASE_HOOK }}
-        run: |
-          if [ -z "$HOOK" ]; then
-            echo "NAOWH_RELEASE_HOOK is not set: the site picks the release up within ten minutes."
-            exit 0
-          fi
-          curl -fsS -X POST -H "Authorization: Bearer $HOOK" https://naowh.gg/webhooks/release
