@@ -211,6 +211,9 @@ Modals and windows
   builds (previews, lazy journal reads) never run off-screen. A profile import can change any tab, so
   every cached tab is invalidated, not only the one on show.
 - Window scale is set from a dropdown, not a slider: the control sits inside the frame it resizes.
+- Every module with a command and every window added with `ns.RegisterMinimapFeature` gets its broker
+  launcher at login, so it can go on the Top Bar with its minimap icon off. A launcher is only a
+  table; the minimap icon is a frame, so a feature's is registered only once its switch is on.
 - Sidebar rows are 28 high (`NAV_ROW`) so every module fits the default 852-high window
   (test-navigation.lua).
 - The options window and a module's window size through `Parts.Resizable`; letting go of the grip
