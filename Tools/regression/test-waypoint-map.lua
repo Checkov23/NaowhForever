@@ -3,7 +3,8 @@
 -- map's own waypoint pin inside our call and taints it, and the game blocks that pin's Share
 -- (CopyToClipboard). ns.PlaceWaypoint, routes and ns.ClearWaypoint wait for the map to close,
 -- the latest change winning and a newer one of the game's dropping it; ns.WaypointLink gives no
--- link while it is open. Only Core/Waypoint.lua may set or clear the waypoint.
+-- link while it is open. A map pin's second click (ns.ToggleWaypoint) removes its own waypoint,
+-- a waiting one at once. Only Core/Waypoint.lua may set or clear the waypoint.
 local checks = 0
 local function Check(ok, label) assert(ok, label); checks = checks + 1 end
 
@@ -219,5 +220,39 @@ for _, path in ipairs(TocFiles("%.lua$")) do
     end
 end
 Check(scanned > 50, "the addon's files were scanned")
+
+-- A map pin's second click takes its own waypoint away again.
+mapOpen = false
+ns.ClearWaypoint()
+local DM = { "The Deadmines", 1454, 43.2, 72.4, " (entrance)" }
+sets = calls.set
+local clears = calls.clear
+Check(ns.ToggleWaypoint(unpack(DM)) and calls.set == sets + 1, "a pin's click places its waypoint")
+Check(ns.ToggleWaypoint(unpack(DM)) and current == nil and calls.clear == clears + 1,
+    "a second click with the map closed removes it at once")
+Check(printed[#printed]:find("Removed the waypoint for The Deadmines", 1, true) ~= nil
+    and printed[#printed]:find("when you close the map", 1, true) == nil, "and says so")
+mapOpen = true
+ns.ToggleWaypoint(unpack(DM))
+Check(#pins == 1 and calls.set == sets + 1, "with the map open: a preview")
+ns.ToggleWaypoint(unpack(DM))
+Check(#pins == 0, "a second click before the map closes takes the preview away")
+CloseMap()
+Check(calls.set == sets + 1 and current == nil, "and nothing is placed as it closes")
+ns.ToggleWaypoint(unpack(DM))
+mapOpen = true
+clears = calls.clear
+ns.ToggleWaypoint(unpack(DM))
+Check(calls.clear == clears and current ~= nil, "a placed waypoint is not removed while the map is open")
+Check(printed[#printed]:find("removed when you close the map", 1, true) ~= nil, "the chat line says when")
+CloseMap()
+Check(current == nil and ns.placedWaypoint == nil, "removed as the map closes")
+ns.ToggleWaypoint(unpack(DM))
+ns.ToggleWaypoint("Wailing Caverns", 1413, 46.0, 36.0, " (entrance)")
+Check(current.uiMapID == 1413, "a click on another pin moves the waypoint there")
+ns.ClearWaypoint()
+env.C_Map.SetUserWaypoint(env.UiMapPoint.CreateFromCoordinates(1454, 0.432, 0.724))
+ns.ToggleWaypoint(unpack(DM))
+Check(current ~= nil and ns.placedWaypoint.title == "The Deadmines", "one set by hand on the spot is not ours: the click places ours")
 
 print(("test-waypoint-map: %d checks passed"):format(checks))

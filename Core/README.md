@@ -391,6 +391,12 @@ Waypoints
 - The game redraws the world map's waypoint pin inside every change to its waypoint, so while that
   map is open a change waits for it to close: made from addon code it would taint the pin and the
   game would block its Share.
+- `ns.ToggleWaypoint` is a map pin's click: a second click on the pin whose waypoint is up removes
+  it (TomTom's arrow too). A spot still waiting for the map to close is just dropped, so its preview
+  goes at once; a placed waypoint waits for the map to close like any other change. A waypoint on
+  that spot set by hand, or placed by something else, is not the pin's, so the click places the pin's.
+  With Journeys on, the waypoint is the journey's next step, not the pin, so a click on the pin a
+  journey ends at cancels the journey and clears its waypoint.
 - Only the last TomTom waypoint is kept, so clicking pin after pin does not pile up arrows. Routes
   always use the game's waypoint, since TomTom's never reports arriving.
 - `ns.PlaceWaypoint`'s last argument, for a dungeon's entrance, clears the waypoint as you go from

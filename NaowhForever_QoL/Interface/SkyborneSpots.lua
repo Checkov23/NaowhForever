@@ -32,7 +32,7 @@ local KINDS = {
 
 local TEXT_SAVED = ns.L("%s saved on your map: %s %.1f, %.1f.")
 local TEXT_UNKNOWN_MAP = "?"
-local TEXT_CLICK = ns.L("Click for a waypoint.")
+local TEXT_CLICK = ns.L("Click for a waypoint (again to remove it).")
 local TEXT_FORGET = ns.L("Right-click to forget this spot.")
 local SECTION_ORDER = 60
 local TEXT_SECTION = "Skyborne"
@@ -222,6 +222,7 @@ local function MakePinMixin()
     function Pin:CheckMouseButtonPassthrough() end
 
     function Pin:OnAcquired(entry, x, y)
+        ns.Shared.PinClicks(self)
         self.entry = entry
         local size = PinSize(self:GetMap())
         self:SetSize(size, size)
@@ -250,7 +251,7 @@ local function MakePinMixin()
             Forget(entry)
         elseif button == "LeftButton" then
             local spot = entry.spot
-            ns.PlaceWaypoint(KINDS[entry.kind].name, spot[1], spot[2], spot[3])
+            ns.ToggleWaypoint(KINDS[entry.kind].name, spot[1], spot[2], spot[3])
         end
     end
 end

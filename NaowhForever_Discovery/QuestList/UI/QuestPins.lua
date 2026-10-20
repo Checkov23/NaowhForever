@@ -18,7 +18,7 @@ local TEXT_DROPS = ns.L("Drops %s, which begins:")
 local TEXT_LEVEL = ns.L("Level %d")
 local TEXT_REPEATABLE = ns.L("Repeatable, ")
 local TEXT_DUNGEON = ns.L("Dungeon, ")
-local TEXT_WAYPOINT = ns.L("Click for a waypoint.")
+local TEXT_WAYPOINT = ns.L("Click for a waypoint (again to remove it).")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events
@@ -72,6 +72,7 @@ end
 function NaowhForeverQuestGiverPinMixin:CheckMouseButtonPassthrough() end
 
 function NaowhForeverQuestGiverPinMixin:OnAcquired(giver)
+    ns.Shared.PinClicks(self)
     self.quests = self.quests or {}
     wipe(self.quests)
     for i, id in ipairs(giver.quests) do self.quests[i] = id end
@@ -106,7 +107,7 @@ function NaowhForeverQuestGiverPinMixin:OnClick(button)
     if button ~= "LeftButton" then return end
     local first = self.quests[1]
     local map, x, y = Q.Spot(first)
-    if map then ns.PlaceWaypoint(Q.Giver(first) or Q.Name(first), map, x, y) end
+    if map then ns.ToggleWaypoint(Q.Giver(first) or Q.Name(first), map, x, y) end
 end
 
 function provider:RemoveAllData()

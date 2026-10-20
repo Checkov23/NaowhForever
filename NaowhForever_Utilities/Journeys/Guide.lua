@@ -379,6 +379,12 @@ function Guide.Current()
     return journey
 end
 
+function Guide.Destination()
+    if not journey then return end
+    local stop = journey.stops[#journey.stops]
+    return stop[2], stop[3], stop[4]
+end
+
 function Guide.Points()
     if not journey or not journey.plan then return nil end
     local legs = journey.plan.legs
@@ -427,6 +433,7 @@ end
 ns.JourneyTo = Guide.Start
 ns.JourneyCancel = Guide.Cancel
 ns.JourneyStep = Guide.Step
+ns.JourneyDestination = Guide.Destination
 
 local function Apply()
     World.Apply()

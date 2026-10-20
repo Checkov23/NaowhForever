@@ -267,6 +267,10 @@ local function fixture(settings, noBis)
             state.waypoints[#state.waypoints + 1] = { title = title, map = map, x = x, y = y, note = note }
             return true
         end,
+        ToggleWaypoint = function(title, map, x, y, note)
+            state.waypoints[#state.waypoints + 1] = { title = title, map = map, x = x, y = y, note = note, toggled = true }
+            return true
+        end,
         IsBisItem = not noBis and function(id) return state.bis[id] end or nil,
         TurnOnModule = function(addon) state.turnedOn = addon end,
         -- Every item goes in slot 1 or 2, like a ring.

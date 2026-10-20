@@ -79,6 +79,7 @@ local function Session(settings, opts)
     SHARED.Ago = function() return "today" end
     SHARED.ScalePin = function() end
     function ns.PlaceWaypoint(title, map, x, y) log.waypoint = { title, map, x, y } end
+    ns.ToggleWaypoint = ns.PlaceWaypoint
     function ns.Apply() end
     function ns.AccountSettings() return account end
     function ns.Font() return Widget(log) end

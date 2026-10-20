@@ -183,4 +183,50 @@ ns.PlaceWaypoint("The Deadmines", 1436, 43.2, 72.4, " (entrance)", nil, true)
 ns.PlaceWaypointRoute("Training run", STOPS)
 Check(not Listening("PLAYER_ENTERING_WORLD"), "so does a route")
 
+-- With TomTom's arrow, a map pin's second click removes that arrow.
+local removed = 0
+env.TomTom = {
+    AddWaypoint = function(_, map, x, y, opts)
+        tomtom[#tomtom + 1] = { map = map, x = x, y = y, title = opts.title }
+        return #tomtom
+    end,
+    RemoveWaypoint = function() removed = removed + 1 end,
+}
+pinOn = false
+ns.ToggleWaypoint("Kaja", 1454, 50.0, 50.0)
+local arrows, gone = #tomtom, removed
+Check(tomtom[arrows].title == "Kaja", "a pin's click: TomTom's arrow")
+ns.ToggleWaypoint("Kaja", 1454, 50.0, 50.0)
+Check(removed == gone + 1 and #tomtom == arrows, "a second click removes it, nothing new")
+ns.ToggleWaypoint("Kaja", 1454, 50.0, 50.0)
+Check(#tomtom == arrows + 1 and removed == gone + 1, "a third places it again")
+
+-- With Journeys on, the waypoint is the journey's step, not the pin: a second click on the pin
+-- the journey ends at cancels the journey and clears its waypoint.
+env.TomTom = nil
+pinOn = true
+local journey, started = nil, 0
+ns.JourneyTo = function(_, stops)
+    journey, started = stops, started + 1
+    ns.ShowJourneyStep("Flight Master: Doras", 1454, 49.6, 59.2)
+    return true
+end
+ns.JourneyCancel = function() journey = nil end
+ns.JourneyDestination = function()
+    if not journey then return end
+    local stop = journey[#journey]
+    return stop[2], stop[3], stop[4]
+end
+local WC = { "Wailing Caverns", 1413, 46.0, 36.0, " (entrance)" }
+ns.ToggleWaypoint(unpack(WC))
+Check(started == 1 and journey ~= nil and current.uiMapID == 1454, "a pin's click starts a journey, its step on the waypoint")
+ns.ToggleWaypoint(unpack(WC))
+Check(started == 1 and journey == nil and current == nil and ns.placedWaypoint == nil,
+    "a second click cancels the journey and clears its waypoint")
+Check(printed[#printed]:find("Removed the waypoint for Wailing Caverns", 1, true) ~= nil, "and says so")
+ns.ToggleWaypoint(unpack(WC))
+ns.ToggleWaypoint("The Deadmines", 1436, 43.2, 72.4, " (entrance)")
+Check(started == 3 and journey[1][1] == "The Deadmines" and current ~= nil,
+    "a click on another pin starts a journey there instead")
+
 print(("test-waypoint-place: %d checks passed"):format(checks))

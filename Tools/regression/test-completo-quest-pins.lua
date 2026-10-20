@@ -1,6 +1,6 @@
 -- Run with Lua 5.1 from the repository root: Completo's quest giver pins on the world map are
 -- Pin Size on the small map and the full screen map alike, and keep one size on screen as the
--- map zooms.
+-- map zooms. While Ctrl is held they take no clicks, so a Ctrl+Click reaches the map's waypoint.
 local function Read(path)
     local f = assert(io.open(path, "rb"))
     local s = f:read("*a"):gsub("\r\n", "\n"); f:close()
@@ -31,7 +31,8 @@ local map = {
         return function() i = i + 1; return pins[i] end
     end,
 }
-local boot
+local boot, lastFrame
+local ctrl = false
 local env = setmetatable({
     _G = { NaowhForever = ns },
     CreateFromMixins = function() return { GetMap = function() return map end } end,
@@ -42,9 +43,11 @@ local env = setmetatable({
         function f:UnregisterAllEvents() self.events = {} end
         function f:SetScript(name, fn) self[name] = fn end
         if not boot then boot = f end
+        lastFrame = f
         return f
     end,
     hooksecurefunc = function() end,
+    IsControlKeyDown = function() return ctrl end,
     WorldMapFrame = map,
     wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
 }, { __index = _G })
@@ -65,6 +68,7 @@ local function NewPin()
     function pin:SetPosition() end
     function pin:SetScale(s) self.scale = s end
     function pin:ApplyCurrentPosition() end
+    function pin:EnableMouse(on) self.clicks = on end
     return pin
 end
 
@@ -78,6 +82,20 @@ big:OnAcquired({ x = 50, y = 50, quests = { 1 } })
 Check(big.size == 20, "the same Pin Size on the full screen map")
 Check(math.abs(big.scale - pin.scale * 1.5) < 1e-9, "drawn half as big again there")
 maximized = false
+
+Check(pin.clicks == true, "a placed pin takes clicks")
+local watch = lastFrame
+ctrl = true
+watch.OnEvent(watch, "MODIFIER_STATE_CHANGED", "LSHIFT", 1)
+Check(pin.clicks == true, "another modifier changes nothing")
+watch.OnEvent(watch, "MODIFIER_STATE_CHANGED", "LCTRL", 1)
+Check(pin.clicks == false and big.clicks == false, "no clicks while Ctrl is held")
+local held = NewPin()
+held:OnAcquired({ x = 50, y = 50, quests = { 1 } })
+Check(held.clicks == false, "a pin placed while Ctrl is held takes no clicks either")
+ctrl = false
+watch.OnEvent(watch, "MODIFIER_STATE_CHANGED", "RCTRL", 0)
+Check(pin.clicks == true and held.clicks == true, "clicks again once Ctrl is let go")
 
 Check(Pin.ApplyCurrentScale ~= nil, "scaled by the shared map pin scale, with its own factor")
 local onScreen
