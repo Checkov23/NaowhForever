@@ -238,11 +238,7 @@ do
         raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
         personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true, consumablesMinutes = 2, onlyIfCarried = true, carriedPicks = {}, hideResting = true,
         iconSize = 36, buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
-        raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = true },
-        consumableEntries = {
-            { category = "food", itemID = 13931, auras = { 1249520 } },
-            { category = "flask", itemID = 13510, auras = { 17626 } },
-        } }
+        raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = true } }
     local bags = { [13931] = 2, [13510] = 1 }
     local ns = { AccountSettings = function() return {} end, L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"), AuraBuffSettings = Settings(values), THEME = THEME, Apply = function() end,
         OnePixel = function() return 1 end,

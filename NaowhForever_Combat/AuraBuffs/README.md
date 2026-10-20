@@ -1,12 +1,11 @@
 # AuraBuffs
 
 Buff and consumable reminders, the Campfire and Low Health. Its settings page is
-AuraBuffs/Settings; the consumables to watch are listed in the AuraBuffs window (`/nfbuffs`, its
-minimap and Top Bar button). Its on/off switches and their defaults come from
-`ns.FEATURES.auraBuffs`.
+AuraBuffs/Settings (`/nfbuffs`, its minimap and Top Bar button). Its on/off switches and their
+defaults come from `ns.FEATURES.auraBuffs`.
 
-- **Buffs & Consumables:** a row of icons for missing food, flask and elixir buffs from the
-  consumables you watch, class buffs missing in your group, and your own class buff (armor, Inner
+- **Buffs & Consumables:** a row of icons for missing food, flask, elixir and scroll buffs,
+  class buffs missing in your group, and your own class buff (armor, Inner
   Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
   shows or cast the buff, or hover it to pick another carried item. Middle-click one to hide it until you
   reload. The worn gear and fishing pole reminders moved to QoL > Loot & Items > Gear Reminders
@@ -37,9 +36,7 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
 NaowhForever_Combat/AuraBuffs/
   AuraBuffs.xml                every file, in load order, included by Combat.xml
   AuraBuffs.lua                the settings (ns.AuraBuffSettings), the module table (ns.AuraBuffs, A),
-                               consumable entries kept in the profile, ns.ParseConsumableEntry,
-                               the consumables list string (ns.ConsumableListString,
-                               ns.ParseConsumableList), ns.CampBuffMode, A.Migrate
+                               ns.CampBuffMode, A.Migrate
   Constants.lua                the numbers several of its files share (A.C)
   Data/
     BuffReminders.lua          the spells and items behind the buff reminders (ns.BuffReminderData)
@@ -57,7 +54,6 @@ NaowhForever_Combat/AuraBuffs/
     CampAlert.lua              the Camp Nearby alert's look and fades (A.CampAlert)
     LowHealthLook.lua          the Low Health icon and warning (A.LowHealthLook)
   UI/
-    SettingsPage.lua           the page's banner (Open AuraBuffs) and its Window card
     GlowRows.lua               the glow type, color and pixel look rows a card adds (A.GlowRows)
     CampBag.lua                the Sleeping Bag beside the Round campfire, a secure button (A.CampBag)
     Campfire.lua               the Campfire reminder and the Camp Nearby alert on screen
@@ -67,9 +63,6 @@ NaowhForever_Combat/AuraBuffs/
     BuffMenu.lua               the carried items a buff reminder offers, as secure buttons
     BuffReminders.lua          the buff reminder row on screen
     BuffsCard.lua              the Buffs & Consumables card
-    WindowPages.lua            the window's page: consumables, with list import and export, and
-                               items dragged onto a section
-    Window.lua                 the AuraBuffs window
   Media/CampfireHD.tga         the campfire icon's art (View/CampIcon.lua)
   README.md                    this file
 ```
@@ -91,31 +84,14 @@ NaowhForever_Combat/AuraBuffs/
   ends, or they would read every buff as missing. `InCombatLockdown()` is still false while
   `PLAYER_REGEN_DISABLED` is handled, so that event is checked too.
 - A `UNIT_AURA` unit arrives secret while auras are restricted; `PLAYER_REGEN_ENABLED` catches up.
-- Consumable entries are profile data, never code: an item ID, then buff spell IDs only when the
-  buff is not the item's own, checked as plain numbers. They travel in a profile string's
-  Consumables part (`utilityReminders.consumables` in the profile); presentation settings stay in
-  the module's store.
-- An entry with no buff IDs: food counts any Well Fed (every cooked food's buff is named Well Fed,
-  whatever it raises, so it is matched by the name of `D.WELL_FED[1]`), other items their use spell
-  (`C_Item.GetItemSpell`), which needs the item cached. An uncached item is asked for once, and only
-  its own `ITEM_DATA_LOAD_RESULT` refreshes: an ID with no use spell would otherwise load, refresh
-  and ask again forever.
-- An added item's icon, in the row, its menu and the window, is the cached item's own
-  (`GetItemInfo`, `R.ItemIcon`); uncached, it is the one the game has for the ID, the item is asked
-  for once like a use spell, and its `ITEM_DATA_LOAD_RESULT` draws the row again.
-- The window's rows show each item's icon and name. A name needs the item cached, and an item added
-  by ID usually is not, so the row read "Item <id>" until something else loaded it. An uncached
-  row asks for its item once (`ContinueOnItemLoad`, never for an ID the game does not have) and
-  draws the page again when it lands. The icon is cropped by `ICON_CROP` of `ICON_SIDE`, as the
-  reminders crop theirs, and dropped `ICON_DROP` to the letters of the Naowh font.
-- An item dragged onto a section's rows, or clicked onto them, is added there with its own buff:
-  the cursor is cleared, and one already in that section, one with no use effect (once cached) or a
-  full list is said in chat instead. The rows are plain frames, not secure ones, so a drop in combat
-  is no different from typing an ID in combat.
-- The consumables list string is one line, since the paste box is one line:
-  `NFCONSUMABLES1:food=13931,2680;battle=13454/17539`. Import also takes a profile string and keeps
-  only its consumables, through the same checks as the profile import; it adds what is not listed
-  yet, up to `MAX_ENTRIES` (500, the same limit the profile import enforces).
+- The reminders watch the built-in consumables only (`D.DEFAULT_GROUPS`): Naowh had the hand-made list
+  and its window removed. A list an older profile still holds (`utilityReminders.consumables`, the
+  profile string's old Consumables part) is left in place and not read.
+- Food counts any Well Fed: every cooked food's buff is named Well Fed, whatever it raises, so it is
+  matched by the name of `D.WELL_FED[1]`.
+- A carried item's icon, in the row and its menu, is the cached item's own (`GetItemInfo`,
+  `R.ItemIcon`); uncached, it is the one the game has for the ID, the item is asked for once, and its
+  `ITEM_DATA_LOAD_RESULT` draws the row again.
 - Consumables (with the weapon enhancement reminder), raid buffs and personal buffs each have World,
   Dungeons and Raids switches, read from `IsInInstance()`: a party instance is a dungeon, a raid
   instance a raid, and anything else (the world, battlegrounds, arenas) the world, as the old Show In
@@ -188,9 +164,9 @@ NaowhForever_Combat/AuraBuffs/
   four seconds the Campfire and Low Health glows always had; the default type, red color, eight lines and
   thickness 2 are what they drew before. `Glow.Set` restarts a glow only when its settings or the icon's
   width changed.
-- With Only If I Carry One off, food, flasks and elixirs with no entries still get a reminder: any Well Fed, flask or elixir of the
-  classic lists in `D.DEFAULT_GROUPS` (no battle/guardian split on Forever, so one elixir reminder, skipped when
-  guardian entries exist). Food's icon is the carried item's, else the last buff
+- With Only If I Carry One off, food, flasks and elixirs still get a reminder: any Well Fed, flask or elixir of the
+  classic lists in `D.DEFAULT_GROUPS` (no battle/guardian split on Forever, so one elixir reminder, Battle
+  Elixir). Food's icon is the carried item's, else the last buff
   food eaten (`lastFoodIcon` in the account settings, taken on `UNIT_SPELLCAST_SUCCEEDED` from the bag item
   with that use spell, else the spell's own texture), else Well Fed's. Weapon Enhancement Reminder (off by default) asks for a stone or
   oil (`D.WEAPON_ITEMS`) on each equipped weapon, an off hand only when it is a weapon, and defers to a class's
@@ -201,27 +177,23 @@ NaowhForever_Combat/AuraBuffs/
   A weapon item saved as Last Used before that (the client's item icon) is turned into its classic icon the
   first time it is shown, or forgotten when no stone or oil has it. `ItemIcon` returns the classic icon for these
   items, and Last Used finds the carried item by it, so the row, the item a click uses and the menu agree.
-- With Only If I Carry One on (the default), Robin asked for reminders only while you have the item, but a profile
-  with nothing listed should still remind you about the flask or buff food in your bags. So a kind shows when a
-  listed item is carried, else when an item of the same `D.DEFAULT_GROUPS` list is (buff food is any bag item whose
-  use spell is in `D.FOOD_SPELLS`), with that list's auras also counting as up. The listed item wins; else the
-  highest required level you can use, the rest following in the hover menu. The bags are read once after
-  `BAG_UPDATE_DELAYED` or `PLAYER_ENTERING_WORLD`, not on every refresh. This replaced "an empty profile never
-  invents reminders from bag items", so the row is on whenever the module is. Weapon Enhancement Reminder
-  already worked this way on `D.WEAPON_ITEMS`.
-- A scroll you have not listed reminds only while you carry one, with Only If I Carry One on or off (`carried` on their
+- With Only If I Carry One on (the default), Robin asked for reminders only while you have the item. So a kind
+  shows when an item of its `D.DEFAULT_GROUPS` list is carried (buff food is any bag item whose use spell is in
+  `D.FOOD_SPELLS`), with that list's auras counting as up. The item offered is the highest required level you can
+  use, the rest following in the hover menu. The bags are read once after `BAG_UPDATE_DELAYED` or
+  `PLAYER_ENTERING_WORLD`, not on every refresh. Weapon Enhancement Reminder works this way on `D.WEAPON_ITEMS`.
+- A scroll reminds only while you carry one, with Only If I Carry One on or off (`carried` on their
   `D.DEFAULT_GROUPS` entry): Robin expected a carried scroll to remind like food, but a reminder for scrolls you
   do not have would nag everyone. Each stat is its own buff, so `ScrollGroup` offers the first carried
   scroll whose stat is missing, not any scroll. A scroll does not stack with the class buff of its
   stat (`raid` on `D.SCROLLS`: Arcane Intellect, Power Word: Fortitude, Divine Spirit), so
-  `D.SCROLL_AURAS` counts that buff as the scroll's. Listing a scroll keeps the old rules for that kind: the
-  listed entries alone decide, and the built-in scroll group is not used.
-- Only If I Carry One is set per kind (`carriedPicks`: food, flask, scroll, battle, guardian, weapon): Drjay
+  `D.SCROLL_AURAS` counts that buff as the scroll's.
+- Only If I Carry One is set per kind (`carriedPicks`: food, flask, scroll, battle, weapon): Drjay
   wanted buff food to remind him with none in his bags, without flasks and elixirs showing all the time too. A kind
   with no pick follows the old single switch (`onlyIfCarried`), so profiles from before keep what they did.
 - Icon (Default or Last Used): Last Used shows the icon of the flask, elixir, scroll or weapon item
   used last (`lastIcons` in the account settings, food's is `lastFoodIcon`), taken from the item whose
-  use spell `UNIT_SPELLCAST_SUCCEEDED` reports; a spell no listed or default item uses is ignored, and
+  use spell `UNIT_SPELLCAST_SUCCEEDED` reports; a spell no built-in item uses is ignored, and
   nothing is read in combat. The cast event is listened for only while Last Used is chosen or food
   needs it (Only If I Carry One off for food). Icon Size defaults to 48 and goes to 96; a profile that saved a
   size keeps it. The row is sized to its icons and anchored by its centre, so reminders spread left
@@ -360,5 +332,5 @@ NaowhForever_Combat/AuraBuffs/
 - `lua Tools/regression/test-campfire-simple.lua`: both Campfire looks, the reader, Camp Nearby,
   the Sleeping Bag beside Round and the cards' previews.
 - `lua Tools/regression/test-icon-look.lua`: Low Health's text.
-- `lua Tools/regression/test-robin-final.lua`: consumable entries and the Round campfire.
+- `lua Tools/regression/test-robin-final.lua`: the Round campfire.
 - `lua Tools/regression/test-combat-perf.lua`: the buff reminders' cost in a raid.

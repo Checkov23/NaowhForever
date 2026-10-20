@@ -53,14 +53,6 @@ local function RangeOn()
     return RaidBuffsOn() and S.Get("raidBuffRange") and true or false
 end
 
-local function OpenList()
-    ns.OpenAuraBuffsWindow("consumables")
-end
-
-local function EditList()
-    if ns.OpenFromOptions then ns.OpenFromOptions(OpenList) else OpenList() end
-end
-
 local function ShownIn(kind, state)
     return R.ShowsHere(kind, state == "raid" and "raid" or "none")
 end
@@ -126,9 +118,7 @@ local function PaintPreview(shot, state)
 end
 
 local function Summary(store)
-    local n = #(store.Get("consumableEntries") or {})
     local parts = {}
-    if n > 0 then parts[1] = n == 1 and ns.L("1 consumable") or ns.L("%d consumables"):format(n) end
     if store.Get("raidBuffs") then parts[#parts + 1] = ns.L("raid buffs") end
     if store.Get("personalBuffs") and #PERSONAL > 0 then parts[#parts + 1] = ns.L("personal buffs") end
     return #parts > 0 and table.concat(parts, ", ") or nil
@@ -192,10 +182,6 @@ local rows = {
       help = "A reminder when a weapon has no sharpening stone, weightstone or oil on it." },
     { key = "hideResting", label = "Hide While Resting", toggle = true, needs = Enabled, why = OFF,
       help = "No consumable or personal buff reminders in cities and inns." },
-    { label = "Consumables to Watch", buttonText = "Edit List", needs = Enabled, why = OFF,
-      button = EditList,
-      help = "Opens the AuraBuffs window, where you add each item by its item ID and buff spell ID.",
-      search = "import export" },
     Group("Only If I Carry One"),
 }
 for _, category in ipairs(A.CATEGORY_ORDER) do

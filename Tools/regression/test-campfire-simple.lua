@@ -23,7 +23,7 @@ local CAMP_FILES = { "Core/Features.lua", "NaowhForever_Combat/AuraBuffs/AuraBuf
     "NaowhForever_Combat/AuraBuffs/Constants.lua", "NaowhForever_Combat/AuraBuffs/Data/Campfire.lua", "NaowhForever_Combat/AuraBuffs/CampReader.lua",
     "NaowhForever_Combat/AuraBuffs/View/Style.lua", "NaowhForever_Combat/AuraBuffs/View/Glow.lua", "NaowhForever_Combat/AuraBuffs/View/CampIcon.lua",
     "NaowhForever_Combat/AuraBuffs/View/CampBar.lua", "NaowhForever_Combat/AuraBuffs/View/CampAlert.lua",
-    "NaowhForever_Combat/AuraBuffs/UI/SettingsPage.lua", "NaowhForever_Combat/AuraBuffs/UI/GlowRows.lua",
+    "NaowhForever_Combat/AuraBuffs/UI/GlowRows.lua",
     "NaowhForever_Combat/AuraBuffs/UI/CampBag.lua", "NaowhForever_Combat/AuraBuffs/UI/Campfire.lua",
     "NaowhForever_Combat/AuraBuffs/UI/CampfireCards.lua" }
 local TocFiles = dofile("Tools/regression/toc_files.lua")

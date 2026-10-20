@@ -208,24 +208,6 @@ do
     local s = fixture('camp')
     s.load('Core/Features.lua'); s.load('NaowhForever_Combat/AuraBuffs/AuraBuffs.lua')
     s.load('NaowhForever_Combat/AuraBuffs/Constants.lua')
-    local parse = s.ns.ParseConsumableEntry
-    check('explicit item and buff IDs parse', parse('food', '123, 456, 789').auras[2] == 789)
-    local alone = parse('food', '123')
-    check('item alone parses without buff IDs', alone.itemID == 123 and alone.auras == nil)
-    check('invalid category rejected', not parse('other', '123 456'))
-    local list = s.ns.ConsumableListString({ { category = 'battle', itemID = 13454, auras = { 17539 } },
-        { category = 'food', itemID = 13931 }, { category = 'food', itemID = 2680 } })
-    check('list string groups by category, buff IDs kept', list == 'NFCONSUMABLES1:food=13931,2680;battle=13454/17539')
-    local back = s.ns.ParseConsumableList(list)
-    check('list string reads back', #back == 3 and back[3].auras[1] == 17539 and back[1].auras == nil)
-    check('damaged list rejected', not s.ns.ParseConsumableList('NFCONSUMABLES1:food=13931,x')
-        and not s.ns.ParseConsumableList('NFCONSUMABLES1:food13931'))
-    s.ns.DecodeProfile = function() return { parts = { consumables = { { category = 'flask', itemID = 13510 } } } } end
-    check('profile string gives its consumables', s.ns.ParseConsumableList('NFPROFILE1:x')[1].itemID == 13510)
-    ---@diagnostic disable-next-line: duplicate-set-field
-    s.ns.DecodeProfile = function() return nil end
-    check('anything else holds no list', not s.ns.ParseConsumableList('hello'))
-    check('invalid IDs rejected', not parse('food', '123, x') and not parse('food', '0, 1'))
     s.S.Set('campShowUnder', false)
     for _, file in ipairs({ 'Data/Campfire.lua', 'CampReader.lua', 'View/Style.lua', 'View/Glow.lua', 'View/CampIcon.lua',
         'View/CampBar.lua', 'View/CampAlert.lua', 'UI/CampBag.lua', 'UI/Campfire.lua', 'UI/CampfireCards.lua' }) do
@@ -252,16 +234,7 @@ do
     check('restricted aura access skipped', true)
 end
 do
-    local s = fixture('profile')
     local active = {}
-    s.ns.DB = function() return active end
-    s.load('Core/Features.lua'); s.load('NaowhForever_Combat/AuraBuffs/AuraBuffs.lua')
-    s.load('NaowhForever_Combat/AuraBuffs/Constants.lua')
-    local entry = { category = "food", itemID = 123, auras = { 456 } }
-    s.S.Set("consumableEntries", { entry })
-    check('editor writes profile-backed definitions', active.utilityReminders.consumables[1] == entry)
-    active = {}
-    check('profile change clears previous definitions', #s.S.Get("consumableEntries") == 0)
     local m = fixture('profile')
     m.ns.DB = function() return active end
     m.load('Core/Features.lua')

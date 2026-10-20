@@ -48,8 +48,6 @@ local ALLOWED = {
       reason = "Go opens the Journal only for row.dungeon, set only when ns.OpenJournalWindow exists" },
     { addon = "NaowhForever_BiS", field = "OpenJournalWindow", file = "NaowhForever_BiS/BiS/Sources.lua",
       reason = "the dungeon and faction kinds come only from the Journal's drops and factions" },
-    { addon = "NaowhForever_Combat", field = "[BUILD[shown]]", file = "NaowhForever_Combat/AuraBuffs/UI/Window.lua",
-      reason = "both page builders BUILD names are defined in UI/WindowPages.lua, the same addon" },
     { addon = "NaowhForever_Combat", field = "OpenMacroWindow", file = "NaowhForever_Combat/PvP/UI/AurasPage.lua",
       reason = "the Open Forge button is disabled unless ForgeReady sees the Macros module on (ns.ModuleOn)" },
 }

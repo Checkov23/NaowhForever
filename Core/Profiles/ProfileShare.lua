@@ -10,7 +10,7 @@ local LIMITS = { maxChars = 1000000, maxBytes = 4194304, maxDepth = 32, maxValue
 local TEXT_MAX = 64
 local LIST_TEXT_MAX = 40
 local MACRO_NAME_MAX, MACRO_BODY_MAX, MACRO_NOTE_MAX = 16, 255, 200
-local MAX_CONSUMABLES, MAX_AURAS, MAX_CLASS_MACROS = 500, 100, 100
+local MAX_CLASS_MACROS = 100
 local MAX_ID = 2147483647
 local ITEM_ID_LIMIT = 2147483648
 local MAX_PICKS = 50
@@ -21,8 +21,7 @@ local MACROS_ADDON = "NaowhForever_Macros"
 local IMPORTED_PROFILE = ns.L("Imported Profile")
 local IMPORTED_BUILD, IMPORTED_SPEC = ns.L("Imported Build"), ns.L("Imported")
 local SR_KEY, MACROS_KEY = "tankReminder", "macros"
-local OLD_CONSUMABLES_KEYS = { "smartReminders", "reminders" }
-local CONSUMABLE_CATEGORIES = { food = true, flask = true, scroll = true, battle = true, guardian = true }
+local OLD_PARTS = { "smartReminders", "reminders", "consumables" }
 local LOOK = { "themePreset", "themeColors", "uiFont", "windowScale", "skin" }
 local LOOK_TYPES = { themePreset = "string", themeColors = "table", uiFont = "string", windowScale = "number",
     skin = "string" }
@@ -49,10 +48,8 @@ local PARTS = {
 local LEGACY_PARTS = {
     { key = "library", label = "Macro Library", help = "Added next to your Library, never over it",
       share = ns.L("The macros you saved to the Macros Library.") },
-    { key = "consumables", label = "Consumables", help = "The consumables your reminders watch",
-      share = "The consumables your reminders watch." },
 }
-local API_PARTS = { settings = true, macros = true, library = true, consumables = true, builds = true,
+local API_PARTS = { settings = true, macros = true, library = true, builds = true,
     bisLists = true, questRewards = true, look = true }
 local BAR_KINDS_NEED_ID = { spell = true, item = true }
 local BAR_FLAGS = { "keys", "macros", "website", "petOff" }
@@ -114,20 +111,6 @@ local function ArrayOf(list, max, Valid)
     return true
 end
 
-local function ValidAuras(auras)
-    if auras == nil then return true end
-    return type(auras) == "table" and auras[1] ~= nil and ArrayOf(auras, MAX_AURAS, PositiveID)
-end
-
-local function ValidConsumable(entry)
-    return type(entry) == "table" and CONSUMABLE_CATEGORIES[entry.category] == true
-        and PositiveID(entry.itemID) and ValidAuras(entry.auras)
-end
-
-local function ValidConsumables(list)
-    return ArrayOf(list, MAX_CONSUMABLES, ValidConsumable)
-end
-
 local function Sized(text, min, max)
     return type(text) == "string" and #text >= min and #text <= max
 end
@@ -177,19 +160,6 @@ local function CleanQuestRewards(picks)
         end
     end
     return next(out) and out or nil
-end
-
-local function CleanConsumables(list)
-    local out = {}
-    for i, entry in ipairs(list) do
-        local auras
-        if entry.auras then
-            auras = {}
-            for j, id in ipairs(entry.auras) do auras[j] = id end
-        end
-        out[i] = { category = entry.category, itemID = entry.itemID, auras = auras }
-    end
-    return out
 end
 
 local function CleanClassMacros(classMacros)
@@ -379,12 +349,8 @@ function ns.ExportProfile(wanted, profileName)
     return PREFIX .. LD:EncodeForPrint(LD:CompressDeflate(LS:Serialize(Swap(payload, 0, ZERO))))
 end
 
-local function OldConsumables(parts)
-    for _, key in ipairs(OLD_CONSUMABLES_KEYS) do
-        local utility = Utility(parts[key])
-        parts[key] = nil
-        if parts.consumables == nil and utility then parts.consumables = utility.consumables end
-    end
+local function DropOldParts(parts)
+    for _, key in ipairs(OLD_PARTS) do parts[key] = nil end
 end
 
 local function ValidModuleState(state)
@@ -409,8 +375,7 @@ local function CleanParts(payload)
         qol.questRewards = nil
     end
     parts.questRewards = ValidQuestRewards(parts.questRewards) and CleanQuestRewards(parts.questRewards) or nil
-    OldConsumables(parts)
-    parts.consumables = ValidConsumables(parts.consumables) and CleanConsumables(parts.consumables) or nil
+    DropOldParts(parts)
     local macros = parts.macros
     if type(macros) == "table" and macros.classMacros ~= nil then
         macros.classMacros = ValidClassMacros(macros.classMacros) and CleanClassMacros(macros.classMacros) or nil
@@ -894,9 +859,6 @@ function ns.ImportProfile(payload, wanted, name, overwrite)
     local root
     name, root = ImportTarget(payload, name, overwrite)
     if wanted.settings and type(parts.settings) == "table" then ImportSettings(root, parts.settings, wanted) end
-    if wanted.consumables and ValidConsumables(parts.consumables) then
-        OwnUtility(root).consumables = CleanConsumables(parts.consumables)
-    end
     if wanted.macros and type(parts.macros) == "table" then ImportMacros(root, parts.macros) end
     if wanted.questRewards and ValidQuestRewards(parts.questRewards) then
         ImportQuestRewards(root, parts.questRewards)

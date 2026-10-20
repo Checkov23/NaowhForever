@@ -34,13 +34,6 @@ end
 
 local function Fixture(opts)
     local settings = opts.settings or {}
-    if settings.consumableEntries == nil then
-        settings.consumableEntries = {
-            { category = "food", itemID = 13931, auras = { 1249520 } },
-            { category = "flask", itemID = 13510, auras = { 17626 } },
-            { category = "battle", itemID = 13454, auras = { 17539 } },
-        }
-    end
     local state = {
         now = 1000, secret = false, combat = false, resting = false,
         instance = opts.instance or "none",
@@ -496,7 +489,7 @@ do
     t.Login()
     Check("nothing carried", t.Shown(), "")
     t.Set("onlyIfCarried", false)
-    Check("not carried, shown anyway", t.Shown(), "item:13931 item:13510 item:13454")
+    Check("not carried, shown anyway", t.Shown(), "spell:1248406 item:13510 item:13452")
 end
 
 -- Only If I Carry One, per kind: food can remind you with none carried while flasks and elixirs wait for one.
@@ -504,29 +497,18 @@ do
     local t = Fixture({ instance = "raid", bags = { 2679 } })
     t.Login()
     t.Set("carriedPicks", { food = false })
-    Check("food not carried, shown alone", t.Shown(), "item:13931")
+    Check("food not carried, shown alone", t.Shown(), "spell:1248406")
     Check("listening for the food eaten", t.Listening("UNIT_SPELLCAST_SUCCEEDED"), true)
     t.Set("onlyIfCarried", false)
     t.Set("carriedPicks", { food = true })
-    Check("old switch off, food kept to carried", t.Shown(), "item:13510 item:13454")
+    Check("old switch off, food kept to carried", t.Shown(), "item:13510 item:13452")
     t.Set("carriedPicks", {})
-    Check("unset kinds follow the old switch", t.Shown(), "item:13931 item:13510 item:13454")
+    Check("unset kinds follow the old switch", t.Shown(), "spell:1248406 item:13510 item:13452")
 end
 
--- Battle and guardian elixirs remain separate, even while one category is active.
+-- A carried item shows its own icon once cached, and its load draws the row and the menu again.
 do
-    local t = Fixture({ instance = "raid", settings = { consumableEntries = {
-        { category = "battle", itemID = 13454, auras = { 17539 } },
-        { category = "guardian", itemID = 13452, auras = { 17538 } },
-    } }, bags = { 13452, 13454 }, auras = { player = { { 17539, 3000, 3600 } } } })
-    t.Login()
-    Check("guardian missing, battle up", t.Shown(), "item:13452")
-end
-
--- An added item shows its own icon once cached, and its load draws the row and the menu again.
-do
-    local t = Fixture({ instance = "raid", bags = { 13454 },
-        settings = { consumableEntries = { { category = "battle", itemID = 13454, auras = { 17539 } } } } })
+    local t = Fixture({ instance = "raid", bags = { 13454 } })
     t.Login()
     Check("uncached: the icon the game has for its ID", t.Shown(), "item:13454")
     Check("and the item asked for", t.state.requested[13454], true)
@@ -540,41 +522,6 @@ do
     local popup
     for _, f in ipairs(t.frames) do if rawget(f, "owner") == cell then popup = f end end
     Check("the menu shows the same icon", popup.buttons[1].icon.texture, "own:13454")
-end
-
--- Item IDs alone: food counts any Well Fed, other items their use spell once the item is cached.
-do
-    local t = Fixture({ instance = "raid", bags = { 13931, 13510, 13454 }, itemSpells = { [13510] = 17626 },
-        settings = { consumableEntries = {
-            { category = "food", itemID = 13931 },
-            { category = "flask", itemID = 13510 },
-            { category = "battle", itemID = 13454 },
-        } }, auras = { player = { { 1243969, 600, 900 }, { 17626, 7000, 7200 } } } })
-    t.Login()
-    Check("XP boost alone is not Well Fed; uncached elixir shows", t.Shown(), "item:13931 item:13454")
-    Check("uncached elixir requested", t.state.requested[13454], true)
-    t.state.auras.player = { { 1248406, 600, 900 }, { 17626, 7000, 7200 }, { 17539, 3000, 3600 } }
-    t.state.itemSpells[13454] = 17539
-    local before = t.Pending()
-    t.Fire("ITEM_DATA_LOAD_RESULT", 2589)
-    Check("another item loading queues nothing", t.Pending(), before)
-    t.Fire("ITEM_DATA_LOAD_RESULT", 13454)
-    t.Advance(0.5)
-    Check("Well Fed, flask and loaded elixir up", t.Shown(), "")
-end
-
--- An item with no use spell is asked for once, so its load result cannot refresh forever.
-do
-    local t = Fixture({ instance = "raid", bags = { 6948 }, settings = { consumableEntries = {
-        { category = "flask", itemID = 6948 } } } })
-    t.Login()
-    t.state.requested[6948] = nil
-    t.Fire("ITEM_DATA_LOAD_RESULT", 6948)
-    t.Advance(0.5)
-    Check("no use spell: not asked again after it loads", t.state.requested[6948], nil)
-    t.Fire("ITEM_DATA_LOAD_RESULT", 6948)
-    t.Advance(0.5)
-    Check("no use spell: a second load result asks nothing more", t.state.requested[6948], nil)
 end
 
 -- Warn With Minutes Left: a buff under the time shows with its timer; one over it is
@@ -643,9 +590,9 @@ do
     Check("after combat", t.Shown(), "")
 end
 
--- Only If I Carry One with nothing listed: a flask, elixir, scroll or buff food in your bags reminds you.
+-- Only If I Carry One: a flask, elixir, scroll or buff food in your bags reminds you.
 do
-    local t = Fixture({ settings = { consumableEntries = {}, personalBuffs = false }, instance = "raid",
+    local t = Fixture({ settings = { personalBuffs = false }, instance = "raid",
         bags = { 13510 } })
     t.Login()
     Check("empty profile, flask carried", t.Shown(), "item:13510")
@@ -656,13 +603,11 @@ do
     t.state.auras.player = { { 17626, 7000, 7200 }, { 1249520, 1800, 3600 }, { 11334, 3000, 3600 } }
     t.Fire("UNIT_AURA", "player"); t.Advance(0.5)
     Check("any flask, Well Fed and elixir counts, the scroll still missing", t.Shown(), "item:10306")
-    t.Set("consumableEntries", { { category = "scroll", itemID = 10306, auras = { 12176 } } })
-    Check("manual scroll added", t.Shown(), "item:10306")
 end
 
--- Nothing listed and nothing carried: no reminder.
+-- Nothing carried: no reminder.
 do
-    local t = Fixture({ settings = { consumableEntries = {}, personalBuffs = false }, instance = "raid",
+    local t = Fixture({ settings = { personalBuffs = false }, instance = "raid",
         bags = { 2679 } })
     t.Login()
     Check("empty profile, nothing carried", t.Shown(), "")
@@ -671,7 +616,7 @@ end
 -- A carried scroll reminds one stat at a time, the class buff it does not stack with counts as
 -- its buff, and a scroll you do not carry never reminds, with Only If I Carry One on or off.
 do
-    local t = Fixture({ settings = { consumableEntries = {}, personalBuffs = false }, instance = "raid",
+    local t = Fixture({ settings = { personalBuffs = false }, instance = "raid",
         bags = { 1712 } })
     t.Login()
     Check("a carried Scroll of Spirit II reminds", t.Shown(), "item:1712")
@@ -693,39 +638,17 @@ end
 
 -- Of one stat's scrolls the highest level is offered, even when another stat's scroll is the best in the bags.
 do
-    local t = Fixture({ settings = { consumableEntries = {}, personalBuffs = false }, instance = "raid",
+    local t = Fixture({ settings = { personalBuffs = false }, instance = "raid",
         bags = { 10307, 1181, 1712 }, levels = { [10307] = 55, [1181] = 1, [1712] = 15 },
         auras = { player = { { 12178, 1700, 1800 } } } })
     t.Login()
     Check("Stamina IV up, Spirit II offered over Spirit I", t.Shown(), "item:1712")
 end
 
--- A listed scroll keeps its own rules: a carried scroll of another stat does not stand in for it.
-do
-    local t = Fixture({ instance = "raid", bags = { 1711 }, auras = { player = { { 12174, 1700, 1800 } } },
-        settings = { personalBuffs = false, consumableEntries = { { category = "scroll", itemID = 10309, auras = { 12174 } } } } })
-    t.Login()
-    Check("listed Agility scroll up, a Stamina scroll carried: no scroll reminder", t.Shown(), "")
-end
-
--- A listed item is preferred; with none of it carried, a carried built-in one stands in.
-do
-    local t = Fixture({ instance = "raid", bags = { 13510, 13511 }, settings = { consumableEntries = {
-        { category = "flask", itemID = 13511, auras = { 17627 } } } } })
-    t.Login()
-    Check("listed flask preferred", t.Shown(), "item:13511")
-    t.state.bags = { 13510 }
-    t.Fire("BAG_UPDATE_DELAYED"); t.Advance(0.5)
-    Check("listed one gone, built-in carried", t.Shown(), "item:13510")
-    t.state.auras.player = { { 17627, 7000, 7200 } }
-    t.Fire("UNIT_AURA", "player"); t.Advance(0.5)
-    Check("the listed buff still counts", t.Shown(), "")
-end
-
 -- The built-in item offered is the highest level one you can use, with every carried one in its menu.
 do
     local t = Fixture({ instance = "raid", bags = { 9187, 13452, 9264 }, levels = { [9187] = 38, [13452] = 46, [9264] = 40 },
-        settings = { consumableEntries = {}, personalBuffs = false } })
+        settings = { personalBuffs = false } })
     t.Login()
     Check("highest level elixir", t.Shown(), "item:13452")
     local cell
@@ -739,17 +662,9 @@ do
     Check("Last Used icon kept", t.Shown(), "item:9187")
 end
 
--- Guardian listed but not carried: no stand-in elixir, as the elixir kinds stay apart.
-do
-    local t = Fixture({ instance = "raid", bags = { 13454 }, settings = { consumableEntries = {
-        { category = "guardian", itemID = 13445, auras = { 11348 } } }, personalBuffs = false } })
-    t.Login()
-    Check("guardian listed, built-in elixir not used", t.Shown(), "")
-end
-
 -- Off is unchanged: a reminder per kind, carried or not.
 do
-    local t = Fixture({ instance = "raid", settings = { consumableEntries = {}, onlyIfCarried = false,
+    local t = Fixture({ instance = "raid", settings = { onlyIfCarried = false,
         personalBuffs = false } })
     t.Login()
     Check("off, nothing carried", t.Shown(), "spell:1248406 item:13510 item:13452")
@@ -757,7 +672,7 @@ end
 
 -- Bags are read once per bag change, not on every refresh; combat and secret auras still freeze the row.
 do
-    local t = Fixture({ settings = { consumableEntries = {}, personalBuffs = false }, instance = "raid",
+    local t = Fixture({ settings = { personalBuffs = false }, instance = "raid",
         bags = { 13510, 13931 } })
     t.Login()
     local reads = t.state.slotReads
@@ -1095,24 +1010,20 @@ do
     Check("mage: arcane intellect", Unlocked(m), SAMPLES .. " spell:10157x3")
 end
 
--- Hover menus offer only carried configured alternatives as secure item buttons.
+-- Hover menus offer only the carried items of a kind as secure item buttons.
 do
-    local t = Fixture({ instance = "raid", bags = { 111, 222, 999 }, settings = { consumableEntries = {
-        { category = "food", itemID = 111, auras = { 11 } },
-        { category = "food", itemID = 222, auras = { 22 } },
-        { category = "food", itemID = 333, auras = { 33 } },
-    } } })
+    local t = Fixture({ instance = "raid", bags = { 13510, 13511, 999 } })
     t.Login()
     local cell
     for _, f in ipairs(t.frames) do if rawget(f, "items") then cell = f end end
     cell.scripts.OnEnter(cell)
     local popup
     for _, f in ipairs(t.frames) do if rawget(f, "owner") == cell then popup = f end end
-    Check("only carried configured choices", #popup.buttons, 2)
+    Check("only carried choices", #popup.buttons, 2)
     Check("menu buttons are secure", popup.buttons[1].template, "SecureActionButtonTemplate")
-    Check("menu button uses its item", popup.buttons[2].attributes.item1, "item:222")
+    Check("menu button uses its item", popup.buttons[2].attributes.item1, "item:13511")
     Check("menu button action type", popup.buttons[2].attributes.type1, "item")
-    t.state.bags = { 999, 111 }
+    t.state.bags = { 999, 13510 }
     t.Fire("BAG_UPDATE_DELAYED")
     t.Advance(0.5)
     Check("refresh keeps the menu open", popup.shown, true)
@@ -1126,7 +1037,7 @@ do
     Check("menu icons keep the black edge by default", popup.buttons[1].edge.r, 0)
     Check("row icon is a secure button", cell.template, "SecureActionButtonTemplate")
     Check("row icon uses the item it shows", (cell.attributes.type1 or "") .. " " .. (cell.attributes.item1 or ""),
-        "item item:111")
+        "item item:13510")
     Check("row icons take the hover and pressed look", cell.pressLook, true)
     cell.scripts.PostClick(cell, "LeftButton", false)
     Check("a left click on a row icon runs nothing after the item", next(t.state.presses), nil)
@@ -1151,50 +1062,46 @@ do
     t.state.combat = true
     cell.scripts.OnEnter(cell)
     Check("no menu in combat", popup.shown, false)
-    t.state.bags = { 222 }
+    t.state.bags = { 13511 }
     t.Fire("BAG_UPDATE_DELAYED")
     t.Advance(0.5)
     t.Set("iconSize", 50)
-    Check("in combat the row's item stays", cell.attributes.item1, "item:111")
+    Check("in combat the row's item stays", cell.attributes.item1, "item:13510")
     Check("in combat the row's size stays", cell.width, 36)
     t.state.combat = false
     t.Fire("PLAYER_REGEN_ENABLED")
     t.Advance(0.5)
-    Check("after combat the row takes the carried item", cell.attributes.item1, "item:222")
+    Check("after combat the row takes the carried item", cell.attributes.item1, "item:13511")
     Check("after combat the row takes its new size", cell.width, 50)
 end
 
 -- The row and menu icon edges follow the theme's Borders & Lines colour; Last Used uses the item it shows.
 do
     local line = { r = 0.2, g = 0.4, b = 0.6 }
-    local t = Fixture({ instance = "raid", bags = { 111, 222 }, themeLine = line,
-        settings = { buffIconMode = "last", consumableEntries = {
-            { category = "food", itemID = 111, auras = { 11 } },
-            { category = "food", itemID = 222, auras = { 22 } },
-        } } })
-    t.ns.AccountSettings().lastFoodIcon = "item:222"
+    local t = Fixture({ instance = "raid", bags = { 13510, 13511 }, themeLine = line,
+        settings = { buffIconMode = "last" } })
+    t.ns.AccountSettings().lastIcons = { flask = "item:13511" }
     t.Login()
     local cell
     for _, f in ipairs(t.frames) do if rawget(f, "items") then cell = f end end
-    Check("Last Used shows the last food", cell.icon.texture, "item:222")
-    Check("and clicking it eats that one", cell.attributes.item1, "item:222")
+    Check("Last Used shows the last flask", cell.icon.texture, "item:13511")
+    Check("and clicking it drinks that one", cell.attributes.item1, "item:13511")
     Check("row icon edge follows Borders & Lines", cell.edge, line)
     cell.scripts.OnEnter(cell)
     local popup
     for _, f in ipairs(t.frames) do if rawget(f, "owner") == cell then popup = f end end
     Check("menu icon edge follows Borders & Lines", popup.buttons[1].edge, line)
-    t.state.bags = { 111 }
+    t.state.bags = { 13510 }
     t.Fire("BAG_UPDATE_DELAYED")
     t.Advance(0.5)
-    Check("with the last food gone the row shows the carried one", cell.icon.texture, "item:111")
-    Check("and clicking it eats the one it shows", cell.attributes.item1, "item:111")
+    Check("with the last flask gone the row shows the carried one", cell.icon.texture, "item:13510")
+    Check("and clicking it drinks the one it shows", cell.attributes.item1, "item:13510")
 end
 
 -- A picked Border Color replaces the theme's on the row and menu icons, and clearing it brings the theme back.
 do
     local line = { r = 0.2, g = 0.4, b = 0.6 }
-    local t = Fixture({ instance = "raid", bags = { 111 }, themeLine = line,
-        settings = { consumableEntries = { { category = "food", itemID = 111, auras = { 11 } } } } })
+    local t = Fixture({ instance = "raid", bags = { 13510 }, themeLine = line })
     t.Login()
     local cell
     for _, f in ipairs(t.frames) do if rawget(f, "items") then cell = f end end
@@ -1214,12 +1121,8 @@ end
 
 -- A full menu spreads out from the middle, each line centred under the hovered icon.
 do
-    local entries, bags = {}, {}
-    for i = 1, 9 do
-        entries[i] = { category = "food", itemID = 100 + i, auras = { 10 + i } }
-        bags[i] = 100 + i
-    end
-    local t = Fixture({ instance = "raid", bags = bags, settings = { consumableEntries = entries } })
+    local bags = { 13452, 9187, 13453, 9206, 13454, 9155, 9264, 21546, 6373 }
+    local t = Fixture({ instance = "raid", bags = bags })
     t.Login()
     local cell
     for _, f in ipairs(t.frames) do if rawget(f, "items") then cell = f end end
@@ -1236,12 +1139,7 @@ end
 -- At a UI scale where a pixel is not a whole unit, the menu's icons are a whole number of pixels,
 -- a whole number of pixels from the hovered icon, so they draw as crisply as the row's do.
 do
-    local entries, bags = {}, {}
-    for i = 1, 2 do
-        entries[i] = { category = "food", itemID = 100 + i, auras = { 10 + i } }
-        bags[i] = 100 + i
-    end
-    local t = Fixture({ instance = "raid", bags = bags, pixel = 0.75, settings = { consumableEntries = entries, iconSize = 37 } })
+    local t = Fixture({ instance = "raid", bags = { 13452, 9187 }, pixel = 0.75, settings = { iconSize = 37 } })
     t.Login()
     local cell
     for _, f in ipairs(t.frames) do if rawget(f, "items") then cell = f end end
@@ -1393,7 +1291,7 @@ end
 
 -- A class with no personal buff: the card still lists other classes'.
 do
-    local t = Fixture({ page = true, settings = { consumableEntries = {} }, units = { player = "PALADIN" },
+    local t = Fixture({ page = true, units = { player = "PALADIN" },
         known = { [19740] = true } })
     t.Login()
     Check("paladin default: listens, a carried flask can remind", t.Listening("UNIT_AURA"), true)
@@ -1532,28 +1430,11 @@ do
         "spell:1248406 item:13510 item:13454 item:10306 personal:spell:16362")
 end
 
--- Only If I Carry One off: flasks and elixirs show with none listed or carried, food only when listed.
+-- Only If I Carry One off: food shows with none carried, with the Well Fed icon until a food is eaten.
 do
-    local t = Fixture({ instance = "raid", settings = { consumableEntries = {
-        { category = "food", itemID = 13931, auras = { 1249520 } } }, onlyIfCarried = false } })
+    local t = Fixture({ instance = "raid", bags = { 13931 }, settings = { onlyIfCarried = false } })
     t.Login()
-    Check("kinds not listed", t.Shown(), "item:13931 item:13510 item:13452")
-    t.state.auras.player = { { 1249520, 1800, 3600 }, { 17626, 7000, 7200 }, { 11334, 3000, 3600 } }
-    t.Fire("UNIT_AURA", "player")
-    t.Advance(0.5)
-    Check("any flask and elixir counts", t.Shown(), "")
-    t.Set("consumableEntries", { { category = "guardian", itemID = 13445, auras = { 11348 } } })
-    t.state.auras.player = {}
-    t.Fire("UNIT_AURA", "player")
-    t.Advance(0.5)
-    Check("guardian listed, no generic elixir", t.Shown(), "spell:1248406 item:13510 item:13445")
-end
-
--- Only If I Carry One off: food shows with nothing listed, with the Well Fed icon until a food is eaten.
-do
-    local t = Fixture({ instance = "raid", bags = { 13931 }, settings = { consumableEntries = {}, onlyIfCarried = false } })
-    t.Login()
-    Check("nothing listed", t.Shown(), "spell:1248406 item:13510 item:13452")
+    Check("none carried", t.Shown(), "spell:1248406 item:13510 item:13452")
     t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast1", 5)
     t.Advance(0.5)
     Check("other spell ignored", t.Shown(), "spell:1248406 item:13510 item:13452")
@@ -1572,13 +1453,13 @@ do
     Check("only carried, nothing carried", t.Shown(), "")
 end
 
--- With nothing listed, nothing shows until Only If I Carry One goes off.
+-- With nothing carried, nothing shows until Only If I Carry One goes off.
 do
     local t = Fixture({ instance = "raid", units = { player = "MAGE" }, settings = { personalBuffs = false } })
     t.Login()
-    Check("nothing listed, nothing shown", t.Shown(), "")
+    Check("nothing carried, nothing shown", t.Shown(), "")
     t.Set("onlyIfCarried", false)
-    Check("switch off, kinds shown", t.Shown(), "item:13931 item:13510 item:13454")
+    Check("switch off, kinds shown", t.Shown(), "spell:1248406 item:13510 item:13452")
     t.Set("onlyIfCarried", true)
     Check("switch back on, nothing shown", t.Shown(), "")
 end
@@ -1586,8 +1467,7 @@ end
 -- Weapon Enhancement Reminder: stone or oil missing on a weapon, off by default.
 do
     local t = Fixture({ instance = "raid", units = { player = "MAGE" }, bags = { 20750 },
-        weapons = { [16] = false, [17] = false }, shields = { [17] = true },
-        settings = { consumableEntries = { { category = "food", itemID = 13931 } } } })
+        weapons = { [16] = false, [17] = false }, shields = { [17] = true } })
     t.Login()
     Check("off by default", t.Shown(), "")
     t.Set("weaponEnhancements", true)
@@ -1606,22 +1486,22 @@ do
     Check("none carried, weapon kind off: a rough sharpening stone", t.Shown(), ROUGH)
     t.Set("carriedPicks", {})
     t.Set("onlyIfCarried", false)
-    Check("none carried, switch off: a rough sharpening stone", t.Shown(), "item:13931 item:13510 item:13452 " .. ROUGH)
+    Check("none carried, switch off: a rough sharpening stone", t.Shown(), "spell:1248406 item:13510 item:13452 " .. ROUGH)
     t.state.weapons[16] = 1800
     t.Fire("UNIT_INVENTORY_CHANGED", "player")
     t.Advance(0.5)
-    Check("main hand enchanted, shield ignored", t.Shown(), "item:13931 item:13510 item:13452")
+    Check("main hand enchanted, shield ignored", t.Shown(), "spell:1248406 item:13510 item:13452")
     t.state.shields[17] = nil
     t.Fire("UNIT_INVENTORY_CHANGED", "player")
     t.Advance(0.5)
-    Check("off hand weapon bare", t.Shown(), "item:13931 item:13510 item:13452 " .. ROUGH)
+    Check("off hand weapon bare", t.Shown(), "spell:1248406 item:13510 item:13452 " .. ROUGH)
 end
 
 -- Icon: Last Used shows the flask, elixir or weapon item used last, and only listens while it is chosen.
 do
     local t = Fixture({ instance = "raid", units = { player = "MAGE" }, weapons = { [16] = false },
         itemSpells = { [13511] = 17627, [20749] = 28898 },
-        settings = { consumableEntries = {}, onlyIfCarried = false, weaponEnhancements = true, personalBuffs = false } })
+        settings = { onlyIfCarried = false, weaponEnhancements = true, personalBuffs = false } })
     t.Login()
     Check("default icons", t.Shown(), "spell:1248406 item:13510 item:13452 " .. ROUGH)
     Check("off-mode listens for the food icon", t.Listening("UNIT_SPELLCAST_SUCCEEDED"), true)
@@ -1656,7 +1536,7 @@ end
 do
     local WIZARD, BRILLIANT = ICONS .. "inv_potion_104", ICONS .. "inv_potion_105"
     local t = Fixture({ instance = "raid", units = { player = "MAGE" }, bags = { 20750, 20749 }, weapons = { [16] = false },
-        settings = { consumableEntries = {}, weaponEnhancements = true, personalBuffs = false, buffIconMode = "last" } })
+        settings = { weaponEnhancements = true, personalBuffs = false, buffIconMode = "last" } })
     local account = t.ns.AccountSettings()
     account.lastIcons = { weapon = BRILLIANT }
     t.Login()
@@ -1686,7 +1566,7 @@ end
 do
     local t = Fixture({ instance = "party", instanceID = 43, units = { player = "MAGE" },
         worn = { [15] = 273084, [16] = 6256 }, subclasses = { [6256] = 20 },
-        settings = { consumableEntries = {}, wornReminders = true, fishingPoleReminder = true } })
+        settings = { wornReminders = true, fishingPoleReminder = true } })
     t.Login()
     Check("old gear switches: no icons in the buff row", t.Shown(), "")
     Check("and no gear events", t.Listening("PLAYER_EQUIPMENT_CHANGED"), false)
@@ -1707,171 +1587,6 @@ do
         settings = { weaponEnhancements = true, personalBuffsDungeon = false } })
     t.Login()
     Check("poisons off in dungeons, weapon reminder shown", t.Shown(), ICONS .. "inv_potion_104")
-end
-
--- The AuraBuffs window's consumables page, on the real Widgets: each row shows its item's icon and
--- name, an uncached item is asked for once and the page drawn again when it lands, and an item
--- dragged or clicked onto a section is added there.
-do
-    local function New(kind, parent)
-        local o = { kind = kind, parent = parent, scripts = {}, events = {}, shown = true, w = 0, h = 0 }
-        return setmetatable(o, { __index = function(_, k)
-            if not k:match("^%u") then return nil end
-            return function(self, ...)
-                local args = { ... }
-                if k == "SetScript" or k == "HookScript" then self.scripts[args[1]] = args[2]
-                elseif k == "RegisterEvent" then self.events[args[1]] = true
-                elseif k == "EnableMouse" then self.mouse = args[1]
-                elseif k == "Show" then self.shown = true
-                elseif k == "Hide" then self.shown = false
-                elseif k == "IsShown" then return self.shown
-                elseif k == "SetSize" then self.w, self.h = args[1], args[2]
-                elseif k == "SetWidth" then self.w = args[1]
-                elseif k == "GetWidth" then return self.w
-                elseif k == "GetHeight" then return self.h
-                elseif k == "GetText" then return self.text or ""
-                elseif k == "SetText" then self.text = args[1]
-                elseif k == "GetFrameLevel" then return 1
-                elseif k == "GetStringWidth" then return 20
-                elseif k == "GetStringHeight" then return 12
-                elseif k == "GetEffectiveScale" then return 1
-                elseif k == "GetObjectType" then return self.kind
-                elseif k == "CreateTexture" then return New("Texture", self)
-                elseif k == "CreateFontString" then return New("FontString", self)
-                end
-            end
-        end })
-    end
-    local names = { [13454] = "Greater Arcane Elixir", [2589] = "Linen Cloth" }
-    local spells = { [13454] = 17539, [13452] = 17538 }
-    local cursor, printed, loads, refreshes = nil, {}, {}, 0
-    local frames = {}
-    local env = setmetatable({
-        NaowhForeverDB = { account = {}, profiles = {}, charActive = {} },
-        CreateColor = function(r, g, b, a) return { r = r, g = g, b = b, a = a } end,
-        PixelUtil = { GetPixelToUIUnitFactor = function() return 1 end },
-        UnitName = function() return "Tester" end, GetRealmName = function() return "Realm" end,
-        GetCursorInfo = function() if cursor then return cursor[1], cursor[2], cursor[3] end end,
-        ClearCursor = function() cursor = nil end,
-        C_Item = {
-            GetItemNameByID = function(id) return names[id] end,
-            GetItemInfo = function(id) if names[id] then return names[id], nil, nil, nil, nil, nil, nil, nil, nil, 2000 + id end end,
-            RequestLoadItemDataByID = function() end,
-            GetItemIconByID = function(id) return id < 100000 and 1000 + id or nil end,
-            GetItemSpell = function(id) if spells[id] then return "use", spells[id] end end,
-        },
-        Item = { CreateFromItemID = function(_, id)
-            return { IsItemEmpty = function() return id >= 100000 end,
-                ContinueOnItemLoad = function(_, fn) loads[#loads + 1] = { id = id, fn = fn } end }
-        end },
-    }, { __index = _G })
-    env._G = env
-    env.UIParent = New("Frame")
-    env.CreateFrame = function(kind, _, parent)
-        local f = New(kind, parent)
-        frames[#frames + 1] = f
-        return f
-    end
-    env.hooksecurefunc = function(tbl, key, fn)
-        local orig = tbl[key]
-        tbl[key] = function(...) orig(...); fn(...) end
-    end
-    for _, path in ipairs({ "Core/Core.lua", "Shared/Shared.lua", "Shared/Style.lua", "Core/Options/Widgets.lua",
-        "Core/Features.lua", "NaowhForever_Combat/AuraBuffs/AuraBuffs.lua", "NaowhForever_Combat/AuraBuffs/Constants.lua",
-        "Shared/Game/Consumables.lua", "NaowhForever_Combat/AuraBuffs/Data/BuffReminders.lua",
-        "NaowhForever_Combat/AuraBuffs/BuffReminders.lua", "NaowhForever_Combat/AuraBuffs/UI/WindowPages.lua" }) do
-        local chunk = assert(loadstring(Read(path), path))
-        setfenv(chunk, env)
-        chunk("NaowhForever", env.NaowhForever)
-    end
-    for _, f in ipairs(frames) do
-        if f.events.ADDON_LOADED and f.scripts.OnEvent then f.scripts.OnEvent(f, "ADDON_LOADED", "NaowhForever") end
-    end
-    local ns = env.NaowhForever
-    local S = ns.AuraBuffs.Settings
-    function ns.UI:RefreshPage() refreshes = refreshes + 1 end
-    function ns.Print(msg) printed[#printed + 1] = msg end
-    local prompted
-    function ns.PromptText(title) prompted = title end
-    S.Set("consumableEntries", { { category = "battle", itemID = 13454 }, { category = "battle", itemID = 13452 },
-        { category = "guardian", itemID = 123456 } })
-
-    local page = New("Frame")
-    page:SetWidth(600)
-    local function Draw()
-        ns.UI.BeginReusableRows(page)
-        ns.BuildAuraBuffConsumables(page, 0)
-    end
-    -- The left regions of the rows on the page now, by their label.
-    local function Regions()
-        local out = {}
-        for _, rows in pairs(page._rowCache) do
-            for _, row in ipairs(rows) do
-                local rgn = row.shown and rawget(row, "_leftRegion")
-                if rgn then out[rgn._label.text] = rgn end
-            end
-        end
-        return out
-    end
-    local function Labelled(text)
-        for label, rgn in pairs(Regions()) do
-            if label:find(text, 1, true) then return label, rgn end
-        end
-    end
-    local function Entries()
-        local out = {}
-        for _, entry in ipairs(S.Get("consumableEntries")) do out[#out + 1] = entry.category .. ":" .. entry.itemID end
-        return table.concat(out, " ")
-    end
-
-    Draw()
-    local cached = Labelled("Greater Arcane Elixir")
-    Check("a cached item: its own icon, then its name", cached, "|T15454:0:0:0:-1:64:64:5:59:5:59|t Greater Arcane Elixir")
-    Check("an uncached item: its icon and its ID", (Labelled("Item 13452")), "|T14452:0:0:0:-1:64:64:5:59:5:59|t Item 13452")
-    Check("an ID the game does not have: the unknown icon", (Labelled("Item 123456")),
-        "|T134400:0:0:0:-1:64:64:5:59:5:59|t Item 123456")
-    Check("only the real uncached item is asked for", #loads == 1 and loads[1].id, 13452)
-    Draw()
-    Check("and only once, however often the page is drawn", #loads, 1)
-    names[13452] = "Greater Agility Elixir"
-    loads[1].fn()
-    Check("its load draws the page again", refreshes, 1)
-    Draw()
-    Check("now with its own icon and name", (Labelled("Greater Agility Elixir")),
-        "|T15452:0:0:0:-1:64:64:5:59:5:59|t Greater Agility Elixir")
-
-    local _, add = Labelled("Add Flask")
-    Check("an Add row takes drops", add.mouse == true and add.scripts.OnReceiveDrag ~= nil, true)
-    names[13510], spells[13510] = "Flask of the Titans", 17626
-    cursor = { "item", 13510, "[Flask of the Titans]" }
-    add.scripts.OnReceiveDrag(add)
-    Check("a dragged item is added to that section", Entries(), "battle:13454 battle:13452 guardian:123456 flask:13510")
-    Check("the cursor is cleared", cursor, nil)
-    Check("adding says nothing", #printed, 0)
-    Draw()
-    _, add = Labelled("Add Flask")
-    cursor = { "item", 13510, "[Flask of the Titans]" }
-    add._control.scripts.OnClick(add._control)
-    Check("clicking Add with it again does not list it twice", Entries(), "battle:13454 battle:13452 guardian:123456 flask:13510")
-    Check("and says it is already there", printed[1], "[Flask of the Titans] is already in Flask.")
-    Check("the cursor is cleared for that too", cursor, nil)
-    cursor = { "item", 2589, "[Linen Cloth]" }
-    add.scripts.OnMouseUp(add)
-    Check("an item with no use effect is not added", Entries(), "battle:13454 battle:13452 guardian:123456 flask:13510")
-    Check("and says why", printed[2], "[Linen Cloth] has no buff of its own: add it by ID with its buff spell IDs.")
-    cursor = { "spell", 133 }
-    add.scripts.OnReceiveDrag(add)
-    Check("a spell is left alone", cursor ~= nil and #printed == 2 and Entries(), "battle:13454 battle:13452 guardian:123456 flask:13510")
-    cursor = nil
-    add._control.scripts.OnClick(add._control)
-    Check("Add with nothing held still asks for an ID", prompted, "Item ID, then buff spell ID(s) if not the item's own")
-    Check("and a drop never asked", #printed, 2)
-    local _, row = Labelled("Greater Arcane Elixir")
-    names[13461], spells[13461] = "Elixir of the Sages", 17535
-    cursor = { "item", 13461, "[Elixir of the Sages]" }
-    row.scripts.OnReceiveDrag(row)
-    Check("a drop on an item's row adds to that item's section",
-        Entries(), "battle:13454 battle:13452 guardian:123456 flask:13510 battle:13461")
 end
 
 if failures > 0 then

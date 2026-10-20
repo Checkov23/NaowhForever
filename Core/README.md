@@ -311,11 +311,11 @@ Profile strings
   read, in the Import box and through `NaowhForever_API:ImportProfile`, with a message saying so.
 - The Share picker offers Settings, Macros, Talent Builds, BiS Lists, Action Bars, Saved Quest Items
   and Look.
-  Macro Library and Consumables are no longer exported, but a string from an older build that carries
-  them still lists them on Import, and `NaowhForever_API:ImportProfile` still takes them. The
-  Consumables part is only `utilityReminders.consumables` from the reminders' store, and its import
-  replaces only that list. The store keeps its saved key, `tankReminder`: renaming saved data would
-  need a migration.
+  Macro Library is no longer exported, but a string from an older build that carries it still lists
+  it on Import, and `NaowhForever_API:ImportProfile` still takes it. The old Consumables part is
+  dropped on decode and never imported: the reminders watch only the built-in consumables, and a
+  list a profile already holds is left in place. The store keeps its saved key, `tankReminder`:
+  renaming saved data would need a migration.
 - Saved Quest Items is `qol.questRewards`, the Alt-click reward picks, as a part of its own and
   left out of the Settings part (`ns.PROFILE_OWN`), so unticking it keeps them out of the string.
   Like every part it starts ticked. Import replaces the new profile's picks with the string's. A
@@ -328,10 +328,9 @@ Profile strings
   kept as the negative item ID and passes the check. Classes with no picks are left
   out of the string. An older build's import rejects the per-class shape, so a string from this
   build brings it no picks.
-- A string from an older build has its consumables inside a `smartReminders` or `reminders` part;
-  the decode takes only those from either, and a `consumables` part wins over both. Older builds
-  ignore the `consumables` key, so a string from this build brings them no consumables.
-- Class macros travel only in the Macros part, never with the consumables.
+- A string from an older build may carry a `smartReminders`, `reminders` or `consumables` part; the
+  decode drops all three, so nothing of them lands.
+- Class macros travel only in the Macros part.
 - Action Bars is `account.barSets`, every class's saved sets, whole: slots, macros, keybinds and the
   builder's choices. Import adds them beside yours, as BiS lists are, never over them or onto the
   bars: a taken name gets a number, and a set you already have (same saved time and saver) is skipped,
@@ -347,11 +346,10 @@ Profile strings
   so it still names the set it chose.
 - `NaowhForever_API` leaves Action Bars out of both import and export: an installer's string brings no
   one's bar sets or keybinds.
-- Consumables and class macros come from another player, so each list is checked whole: IDs are
-  whole numbers from 1 to 2^31 - 1, categories and class tokens are known shapes, names, bodies
-  and notes fit the game's limits, lists have no holes, and there are at most 500 consumables and
-  100 class macros a class. One bad entry leaves that whole part out, and only the fields the addon
-  reads are copied in.
+- Class macros come from another player, so each list is checked whole: icons are whole numbers
+  from 1 to 2^31 - 1, class tokens are capital letters, names, bodies and notes fit the game's
+  limits, lists have no holes, and there are at most 100 class macros a class. One bad entry leaves
+  that whole part out, and only the fields the addon reads are copied in.
 - What one player answered about EllesmereUI's windows, and their invite buttons' friends (`ns.PROFILE_OWN`),
   are never shared.
 - A module's on/off is its switch in the profile (`enabled`, or the QoL key the module reads) and, for

@@ -14,7 +14,6 @@
     <Script file="View\CampBar.lua"/>
     <Script file="View\CampAlert.lua"/>
     <Script file="View\LowHealthLook.lua"/>
-    <Script file="UI\SettingsPage.lua"/>
     <Script file="UI\GlowRows.lua"/>
     <Script file="UI\CampBag.lua"/>
     <Script file="UI\Campfire.lua"/>
@@ -24,6 +23,4 @@
     <Script file="UI\BuffMenu.lua"/>
     <Script file="UI\BuffReminders.lua"/>
     <Script file="UI\BuffsCard.lua"/>
-    <Script file="UI\WindowPages.lua"/>
-    <Script file="UI\Window.lua"/>
 </Ui>

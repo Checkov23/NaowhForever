@@ -17,7 +17,7 @@ local HOME_Y = 220
 local CARD = A.PAGE .. ":buffs"
 local TEXT_MOVER = "Buff Reminders"
 local KEYS = {
-    consumableEntries = true, enabled = true, consumablesMinutes = true,
+    enabled = true, consumablesMinutes = true,
     consumablesWorld = true, consumablesDungeon = true, consumablesRaid = true,
     raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
     personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,

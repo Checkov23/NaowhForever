@@ -269,10 +269,10 @@ Case("a Profiles page string replaces the named profile with every part but the 
     local API = WithApi(e, Lands(e, sv))
     assert(API:ImportProfile("NFPROFILE1:x", "Naowh") == true)
     local wanted = e.args.wanted
-    for _, part in ipairs({ "settings", "macros", "library", "consumables", "builds", "bisLists", "questRewards", "look" }) do
+    for _, part in ipairs({ "settings", "macros", "library", "builds", "bisLists", "questRewards", "look" }) do
         assert(wanted[part] == true, part)
     end
-    assert(not wanted.acting and not wanted.reminders)
+    assert(not wanted.acting and not wanted.reminders and not wanted.consumables)
 end)
 
 Case("an old Reminder Pack string is refused, says why, and leaves the account alone", function()

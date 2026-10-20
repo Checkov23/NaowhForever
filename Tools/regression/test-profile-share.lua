@@ -173,24 +173,22 @@ local function OldString(parts)
         parts = parts })))
 end
 
-Case("an older string's reminders part brings only its consumables, under either old key", function()
+Case("an older string's reminders and consumables parts are dropped, under either old key", function()
     local w = World()
     for _, key in ipairs({ "smartReminders", "reminders" }) do
         local parts = assert(w.ns.DecodeProfile(OldString({ [key] = { leadTime = 9, presets = { { name = "X" } },
             utilityReminders = { other = 2, consumables = { { category = "flask", itemID = 13510, auras = { 17628 } } },
                 classMacros = { MAGE = { { name = "Blink", body = "/cast Blink" } } } } } }))).parts
-        assert(parts.consumables[1].itemID == 13510 and parts.consumables[1].auras[1] == 17628, key)
+        assert(parts.consumables == nil, "the old part's consumables are not lifted out: " .. key)
         assert(parts.smartReminders == nil and parts.reminders == nil and parts.macros == nil, key)
         w.ns.ImportProfile({ name = "Old", parts = parts }, ALL, "From " .. key)
         local sr = w.db.profiles["From " .. key].tankReminder
-        assert(sr.utilityReminders.consumables[1].itemID == 13510, key)
-        assert(sr.leadTime == nil and sr.presets == nil and sr.utilityReminders.other == nil, key)
-        assert(sr.utilityReminders.classMacros == nil, "class macros travel only as Macros")
+        assert(sr.leadTime == nil and sr.presets == nil and sr.utilityReminders == nil,
+            "nothing of the reminders' store lands: " .. key)
     end
     local parts = assert(w.ns.DecodeProfile(OldString({ consumables = { { category = "food", itemID = 1 } },
         smartReminders = { utilityReminders = { consumables = { { category = "food", itemID = 2 } } } } }))).parts
-    assert(parts.consumables[1].itemID == 1 and #parts.consumables == 1 and parts.smartReminders == nil,
-        "the new part wins over an old one")
+    assert(parts.consumables == nil and parts.smartReminders == nil, "a consumables part is dropped too")
     parts = assert(w.ns.DecodeProfile(OldString({ smartReminders = { leadTime = 9 } }))).parts
     assert(parts.consumables == nil and parts.smartReminders == nil, "an old part with no consumables brings nothing")
 end)
@@ -225,7 +223,7 @@ Case("the parts a string holds, for the import's ticks", function()
         .. "actionBars:1 bar sets,questRewards:2 quest rewards,look", table.concat(keys, ","))
     keys = {}
     for _, part in ipairs(w.ns.ProfileStringParts(Payload(w))) do keys[#keys + 1] = part.key end
-    assert(table.concat(keys, ",") == "settings,macros,builds,bisLists,actionBars,questRewards,look,library,consumables",
+    assert(table.concat(keys, ",") == "settings,macros,builds,bisLists,actionBars,questRewards,look,library",
         "a string from an older build still offers what it carries: " .. table.concat(keys, ","))
     for _, part in ipairs(w.ns.Profiles.PARTS) do
         assert(part.key ~= "library" and part.key ~= "consumables", "the picker no longer offers " .. part.key)
@@ -275,10 +273,10 @@ Case("import: a new profile with every part, switched to, the old one untouched"
     local p = w.db.profiles["Default 2"]
     assert(p.qol.fastLoot == true and p.topBar.mouseoverAlpha == 0.4 and p.macros.foodBar == true)
     assert(p.tankReminder.utilityReminders.classMacros.PALADIN[1].name == "BoP")
-    assert(p.tankReminder.utilityReminders.consumables[1].itemID == 13931)
+    assert(p.tankReminder.utilityReminders.consumables == nil, "a string's consumables are not imported")
     assert(p.qol.questRewards[100] == 111 and p.qol.questRewards[200] == 222)
     assert(p.tankReminder.leadTime == nil and p.tankReminder.presets == nil and p.tankReminder.utilityReminders.other == nil,
-        "only the consumables and class macros of the store")
+        "only the class macros of the store")
     assert(w.db.account.themePreset == "slate", "the look comes in")
     assert(added.bisLists == 0 and added.library == 0 and added.builds == 0 and added.actionBars == 0,
         "what you have is not added twice")
@@ -311,7 +309,7 @@ Case("what you answered about EllesmereUI's windows stays home, both ways", func
         and p.inspectPanelAsked == nil and p.inspectPanelTookOver == nil, "an older string's are not taken in")
 end)
 
-Case("Macros without Consumables still brings the class macros, and the other way round", function()
+Case("Macros brings the class macros, and a Consumables tick brings nothing", function()
     local w = World()
     local payload = Payload(w)
     w.ns.ImportProfile(payload, { macros = true }, "Macros Only")
@@ -319,10 +317,10 @@ Case("Macros without Consumables still brings the class macros, and the other wa
     assert(sr.utilityReminders.classMacros.PALADIN[1].body == "/cast BoP" and sr.utilityReminders.consumables == nil)
     w.ns.ImportProfile(payload, { consumables = true }, "Consumables Only")
     sr = w.db.profiles["Consumables Only"].tankReminder
-    assert(sr.utilityReminders.consumables[1].itemID == 13931 and sr.utilityReminders.classMacros == nil)
+    assert(sr.utilityReminders == nil, "a string's consumables are not imported")
 end)
 
-Case("Consumables replace only the list, never the rest of the reminders' store", function()
+Case("a Consumables tick leaves the reminders' store as it was", function()
     local w = World()
     local payload = Payload(w)
     local root = w.ns.ProfileRoot("Kept")
@@ -333,9 +331,10 @@ Case("Consumables replace only the list, never the rest of the reminders' store"
     w.ns.ProfileExists = function(name) return name == "Kept" end
     w.ns.ImportProfile(payload, { consumables = true }, "Kept", true)
     local sr = w.db.profiles.Kept.tankReminder
-    assert(sr.utilityReminders.consumables[1].itemID == 13931 and #sr.utilityReminders.consumables == 1)
-    assert(sr.leadTime == nil and sr.utilityReminders.classMacros == nil, "an overwrite still starts empty")
-    w.db.profiles.Fresh = { tankReminder = { leadTime = 9, utilityReminders = { classMacros = macros, other = 3 } } }
+    assert(sr.leadTime == nil and sr.utilityReminders == nil, "an overwrite still starts empty, and gets no consumables")
+    local saved = { { category = "flask", itemID = 1 } }
+    w.db.profiles.Fresh = { tankReminder = { leadTime = 9,
+        utilityReminders = { classMacros = macros, other = 3, consumables = saved } } }
     local fresh = w.db.profiles.Fresh
     w.ns.ProfileRoot = function() return fresh end
     ---@diagnostic disable-next-line: duplicate-set-field
@@ -343,7 +342,8 @@ Case("Consumables replace only the list, never the rest of the reminders' store"
     w.ns.ImportProfile(payload, { consumables = true }, "Fresh")
     assert(fresh.tankReminder.leadTime == 9 and fresh.tankReminder.utilityReminders.other == 3)
     assert(fresh.tankReminder.utilityReminders.classMacros == macros)
-    assert(fresh.tankReminder.utilityReminders.consumables[1].itemID == 13931)
+    assert(fresh.tankReminder.utilityReminders.consumables == saved and #saved == 1 and saved[1].itemID == 1,
+        "a list already saved is left in place, not replaced by the string's")
 end)
 
 Case("import: Keep My Positions keeps where your frames sit, and only that", function()
@@ -545,7 +545,7 @@ Case("a value of the wrong type, or for no module, is not taken in", function()
     local p = w.db.profiles.Checked
     assert(p.qol.fastLoot == nil and p.qol.bisSlots[1] == 6948 and p.bogus == nil)
     assert(p.tankReminder.importedPack == nil and p.importedPack == nil, "a string cannot claim a pack")
-    assert(p.tankReminder.leadTime == nil and p.tankReminder.utilityReminders.consumables[1].importedPack == nil)
+    assert(p.tankReminder.leadTime == nil and p.tankReminder.utilityReminders.consumables == nil)
 end)
 
 Case("a string from before Death Release, Combat Logging and Summon Emote were removed still imports", function()
