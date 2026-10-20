@@ -10,7 +10,7 @@ end
 local checks = 0
 local function Check(ok, label) assert(ok, label); checks = checks + 1 end
 
-local settings = { enabled = true, mapPins = true, mapPinSize = 20 }
+local settings = { enabled = true, mapPins = true, mapPinSize = 20, mapDungeon = true }
 local S = { Get = function(key) return settings[key] end, Set = function() end }
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, CompletoSettings = S, Apply = function() end, ThemeTint = function() end,
     Completo = { Settings = S, Style = {}, C = { PERCENT = 100 },
@@ -133,5 +133,16 @@ m = Mark({ grey = true, repeatable = false, dungeon = true })
 Check(m.atlas == "TrivialQuests", "a grey dungeon quest stays grey")
 m = Mark({ grey = false, repeatable = false, dungeon = false })
 Check(m.atlas == "QuestNormal" and not m.desaturated and m.color[1] == 1, "any other giver keeps the yellow !")
+
+settings.mapDungeonColor = { r = 0.8, g = 0.2, b = 0.6 }
+m = Mark({ grey = false, repeatable = false, dungeon = true })
+Check(m.desaturated and m.color[1] == 0.8 and m.color[2] == 0.2 and m.color[3] == 0.6,
+    "a dungeon quest's giver takes the color picked")
+settings.mapDungeon = false
+m = Mark({ grey = false, repeatable = false, dungeon = true })
+Check(m.atlas == "QuestNormal" and not m.desaturated and m.color[1] == 1 and m.color[3] == 1,
+    "with Color Dungeon Quests off, a dungeon quest's giver keeps the yellow !")
+m = Mark({ grey = false, repeatable = true, dungeon = true })
+Check(m.atlas == "QuestDaily", "and a repeatable dungeon quest's giver gets the blue ! as any other")
 
 print(("test-completo-quest-pins: %d checks passed"):format(checks))

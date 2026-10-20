@@ -71,6 +71,9 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   classes and prerequisites, wowsrc.com's levels for Forever's new ones), and the ones the Journal
   lacks from `Tools/build/elsewhere_quests.py`. They get pins and rows like any other, but a zone's
   progress leaves them out, as it does the repeatable ones.
+- `D.Battleground[questID] = true`: the battleground quests among `D.Dungeon` (Alterac Valley, Warsong
+  Gulch, Arathi Basin), by the area CMaNGOS files each under (`BATTLEGROUNDS` in
+  `Tools/build/elsewhere_quests.py`).
 - `D.Elsewhere[questID] = true`: class, reputation and epic quests, which Wowhead files under their
   category, from `Tools/build/elsewhere_quests.py`: CMaNGOS's quests that Forever's client has
   (wago.tools' QuestV2), at the spot Wowhead gives their giver for another quest. A giver with no
@@ -143,6 +146,11 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   or raid quest gets a green ! (`DUNGEON_RGB`), as the tracker's dungeon quests stand out from the
   zone's: no green quest atlas is known in the client, so it is the yellow ! tinted. Chains Only
   leaves dungeon and raid quests on the map: most are no chain, and the run is the reason to go.
+  Color Dungeon Quests (on by default) can turn the tint off, and Dungeon Quest Color picks it
+  (`mapDungeonColor`, `DUNGEON_RGB` until you pick one).
+- A battleground quest is in `D.Dungeon` as an instance quest (out of a zone's progress, kept with
+  Chains Only), but its giver gets the plain ! and its tooltip line no "Dungeon": it is no dungeon or
+  raid.
 - The game keeps no record of the rares you killed, so Completo counts them itself, per character
   by GUID (`completoRareKills`, `completoRareDrops`), from when it is on: a rare you targeted dying
   while it was yours (not tapped by someone else), or a corpse you loot. Each creature counts once,

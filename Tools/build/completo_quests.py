@@ -9,7 +9,8 @@ Tools/build/quest_chains.py does, and where its quest giver stands.
 The dungeon and raid quests, which Wowhead files under the dungeon and so no zone lists, come
 from completo_dungeon.json (Tools/build/dungeon_quests.py): each goes in the zone its quest giver
 stands in, marked in D.Dungeon. The class quests and the instance quests the Journal lacks come
-from completo_elsewhere.json (Tools/build/elsewhere_quests.py), marked in D.Elsewhere or D.Dungeon.
+from completo_elsewhere.json (Tools/build/elsewhere_quests.py), marked in D.Elsewhere or D.Dungeon,
+and the battleground ones among those in D.Battleground too.
 
 Answers are cached, so a run that dies on Wowhead's rate limit resumes where it stopped:
 completo_zones.json (each zone's quest rows) and completo_quests.json (each quest's
@@ -486,6 +487,13 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None):
         "D.Dungeon = {",
     ]
     for qid in sorted(q for q, d in spots.items() if d["dungeon"]):
+        lines.append(f"    [{qid}] = true,")
+    lines += [
+        "}",
+        "",
+        "D.Battleground = {",
+    ]
+    for qid in sorted(q for q, d in spots.items() if d.get("battleground")):
         lines.append(f"    [{qid}] = true,")
     lines += [
         "}",

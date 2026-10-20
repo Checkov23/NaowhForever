@@ -4,6 +4,7 @@ local ns = _G.NaowhForever
 local Completo = ns.Completo
 local S = Completo.Settings
 local Q = Completo.Quests
+local Style = Completo.Style
 local Settings = ns.Shared.Settings
 
 local PAGE = "Discovery/Quest List"
@@ -11,6 +12,7 @@ local PIN_SIZE = ns.Shared.Style.PIN_SIZE_RANGE
 local ORDER_QUESTS = 10
 local TEXT_OFF = ns.L("Turn on Discovery")
 local TEXT_PINS_OFF = ns.L("Turn on Quest Givers")
+local TEXT_DUNGEON_OFF = ns.L("Turn on Color Dungeon Quests")
 local TEXT_PROGRESS = ns.L("%d of %d zone quests done")
 local TEXT_ZONE = ns.L("%s: %d of %d.")
 local TEXT_EVERY_QUEST = ns.L("Every quest of every zone, and where you are in each chain.")
@@ -19,6 +21,16 @@ local page = Settings.Page(PAGE, S)
 
 local function On() return S.Get("enabled") == true end
 local function PinsOn() return On() and S.Get("mapPins") == true end
+local function DungeonOn() return PinsOn() and S.Get("mapDungeon") == true end
+
+local function DungeonColor()
+    local c = S.Get("mapDungeonColor") or Style.DUNGEON_RGB
+    return c.r, c.g, c.b, 1
+end
+
+local function SetDungeonColor(r, g, b)
+    S.Set("mapDungeonColor", { r = r, g = g, b = b })
+end
 
 local function Headline()
     Q.Refresh()
@@ -64,6 +76,11 @@ table.insert(ns.Shared.MapPins, {
         { key = "mapChainsOnly", label = "Chains Only", toggle = true, store = S, always = true, needs = PinsOn,
           why = TEXT_PINS_OFF,
           help = "Only quest chains: the first quest of each one, and the next step of those you are on." },
+        { key = "mapDungeon", label = "Color Dungeon Quests", toggle = true, store = S, always = true, needs = PinsOn,
+          why = TEXT_PINS_OFF, help = "A ! in its own color for quest givers with a dungeon or raid quest." },
+        { key = "mapDungeonColor", label = "Dungeon Quest Color", colour = true, store = S, always = true,
+          needs = DungeonOn, why = TEXT_DUNGEON_OFF, get = DungeonColor, set = SetDungeonColor,
+          help = "The color of the ! for dungeon and raid quests." },
         { key = "mapPinSize", label = "Quest Pin Size", slider = PIN_SIZE, store = S, always = true, needs = PinsOn,
           why = TEXT_PINS_OFF, help = "How big the quest pins are on the map." },
     },
