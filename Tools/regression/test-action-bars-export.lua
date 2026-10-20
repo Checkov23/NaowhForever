@@ -61,7 +61,8 @@ sets.Raid = {
     },
     macros = { PULL, SHOUT },
     bindings = { ["SHIFT-Q"] = "ACTIONBUTTON3", ["CTRL-1"] = "BONUSACTIONBUTTON1", X = "TOGGLEAUTORUN",
-        ["shift-ctrl-e"] = "ACTIONBUTTON2", ["ALT-1"] = "ACTIONBUTTON1", ["ALT-2"] = "ACTIONBUTTON1" },
+        ["shift-ctrl-e"] = "ACTIONBUTTON2", ["ALT-1"] = "ACTIONBUTTON1", ["ALT-2"] = "ACTIONBUTTON1",
+        ["ALT-Q"] = "SHAPESHIFTBUTTON1" },
 }
 
 local code, report = Sharing.Export("Raid")
@@ -83,7 +84,7 @@ Check("and nothing else", count == 5 and report.actions == 5)
 Check("the left-out actions are named", #report.left == 4 and report.left[1] == "Blood Fury" and report.left[2] == "Mount"
     and report.left[3] == "Pull" and report.left[4] == "Rend")
 local summary = Sharing.ExportSummary(report)
-Check("the popup says what went in", summary:find("In the code: 5 actions, 5 keybinds and 2 macros.", 1, true))
+Check("the popup says what went in", summary:find("In the code: 5 actions, 6 keybinds and 2 macros.", 1, true))
 Check("and names a few of what was left out", summary:find("Left out, as the website cannot show them: 4 actions: "
     .. "Blood Fury, Mount, Pull, Rend.", 1, true))
 local macros = {}
@@ -93,9 +94,10 @@ Check("the macro list comes along once each", #set.macros == 2 and macros.Shout.
 local b = set.bindings
 Check("allowed keys come along, normalized", b["SHIFT-Q"] == "ACTIONBUTTON3" and b["CTRL-1"] == "BONUSACTIONBUTTON1"
     and b["CTRL-SHIFT-E"] == "ACTIONBUTTON2" and b.X == nil)
+Check("stance and form keys come along", b["ALT-Q"] == "SHAPESHIFTBUTTON1")
 local onOne = 0
 for _, command in pairs(b) do if command == "ACTIONBUTTON1" then onOne = onOne + 1 end end
-Check("at most two keys per action", onOne == 2 and report.keys == 5)
+Check("at most two keys per action", onOne == 2 and report.keys == 6)
 
 local again = select(2, Sharing.Decode(Sharing.Export("Raid")))
 local same = true
@@ -157,7 +159,7 @@ local full = Macros(ACCOUNT_MACROS, CHARACTER_MACROS)
 local placed = {}
 for i, m in ipairs(full) do placed[i] = m end
 local KEYS_PER_ACTION, FUNCTION_KEYS, SLOTS_PER_BAR = 2, 24, 12
-local MODIFIERS = { "", "ALT-", "CTRL-", "SHIFT-", "ALT-CTRL-", "ALT-SHIFT-", "CTRL-SHIFT-", "ALT-CTRL-SHIFT-", "META-" }
+local MODIFIERS = { "", "ALT-", "CTRL-", "SHIFT-", "ALT-CTRL-", "ALT-SHIFT-", "CTRL-SHIFT-", "ALT-CTRL-SHIFT-", "META-", "ALT-META-" }
 local bindings, bound, commands = {}, 0, {}
 local function Bind(command)
     for _ = 1, KEYS_PER_ACTION do
@@ -172,6 +174,7 @@ for _, bar in ipairs(ns.ActionBars.BARS) do
     end
 end
 for button = 1, ns.ActionBars.PET_BAR.buttons do Bind(ns.ActionBars.PET_BAR.button .. button) end
+for button = 1, ns.ActionBars.STANCE_BAR.buttons do Bind(ns.ActionBars.STANCE_BAR.button .. button) end
 sets.Full = { saved = 1, slots = placed, macros = full, bindings = bindings }
 code, report = Sharing.Export("Full")
 set = select(2, Sharing.Decode(code))

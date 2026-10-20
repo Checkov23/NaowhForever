@@ -440,7 +440,9 @@ Case("a bar set keeps only what an import can use", function()
                     ENTER = "OPENCHAT", ["CTRL-F12"] = "MULTIACTIONBAR7BUTTON12", F1 = "MULTIACTIONBAR8BUTTON1",
                     F2 = "ACTIONBUTTON13", F3 = "ACTIONBUTTON0", F4 = "ACTIONBUTTON", F5 = "ACTIONBUTTON1X",
                     ["1"] = "ACTIONBUTTON3", ["2"] = "ACTIONBUTTON3", ["3"] = "ACTIONBUTTON3", [5] = "ACTIONBUTTON4",
-                    F6 = "BONUSACTIONBUTTON10", F7 = "BONUSACTIONBUTTON11" },
+                    F6 = "BONUSACTIONBUTTON10", F7 = "BONUSACTIONBUTTON11",
+                    F8 = "SHAPESHIFTBUTTON1", F9 = "SHAPESHIFTBUTTON10", F10 = "SHAPESHIFTBUTTON11",
+                    F11 = "SHAPESHIFTBUTTON0" },
                 choices = { skip = { [7] = true, x = true }, macroOff = { k = "yes" }, keys = "no", website = true,
                     petOff = true } },
             NoSlots = { macros = {} },
@@ -453,6 +455,8 @@ Case("a bar set keeps only what an import can use", function()
     assert(good.slots[1].id == 635 and good.slots[5].kind == "flyout")
     assert(good.slots[1].top == true and good.slots[6].top == nil, "Highest kept on a spell only")
     assert(good.bindings.F6 == "BONUSACTIONBUTTON10" and good.bindings.F7 == nil, "the pet bar's 10 buttons")
+    assert(good.bindings.F8 == "SHAPESHIFTBUTTON1" and good.bindings.F9 == "SHAPESHIFTBUTTON10"
+        and good.bindings.F10 == nil and good.bindings.F11 == nil, "the stance bar's 10 buttons")
     assert(good.choices.petOff == true, "the pet bar left out stays out")
     assert(good.slots[2] == nil and good.slots[3] == nil and good.slots[4] == nil and good.slots[-1] == nil)
     assert(#good.macros == 1 and good.macros[1].name == "B")

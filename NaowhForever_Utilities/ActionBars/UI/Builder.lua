@@ -15,7 +15,7 @@ local OUT_ALPHA, ICON_CROP = St.OUT_ALPHA, St.ICON_CROP
 local BUTTON_H, LINE_GAP = St.BUTTON_H, St.LINE_GAP
 local SLOTS_PER_BAR = A.C.SLOTS_PER_BAR
 local SMALL_SIZE, NOTE_SIZE = St.SMALL_SIZE, St.NOTE_SIZE
-local PET_BAR, PET_CLASSES = A.PET_BAR, A.PET_CLASSES
+local PET_BAR, PET_CLASSES, STANCE_BAR = A.PET_BAR, A.PET_CLASSES, A.STANCE_BAR
 local DOT = St.PLACE_DOT
 local MAIN_PAGE, LEFT_PAGE, TOP_PAGE, RIGHT_PAGE, MAIN_VIEW = P.MAIN_PAGE, P.LEFT_PAGE, P.TOP_PAGE, P.RIGHT_PAGE, P.MAIN_VIEW
 local SUMMARY_BAR, IDENT_H, LEFT_W = 60, 54, 300
@@ -120,6 +120,7 @@ local picker = { values = {}, order = {} }
 
 for _, bar in ipairs(A.BARS) do barButtons[bar.button] = true end
 barButtons[PET_BAR.button] = true
+barButtons[STANCE_BAR.button] = true
 
 local function Copy(t)
     local out = {}

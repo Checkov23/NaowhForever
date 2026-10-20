@@ -722,6 +722,10 @@ check("the Bear chip shows the Bear page with the main bar's keys", Tile("bottom
 editBox:SetText("Druid")
 state.buttons["Save Set"].onClick()
 check("a druid's row counts its forms", SetRow("Druid").extras.text == "+ 4 forms")
+state.binds = { { "ACTIONBUTTON1", "1" }, { "SHAPESHIFTBUTTON1", "F1" } }
+ns.OpenActionBarsBuilder()
+check("a druid's form keys count as keys on the bars",
+    Panel("Keybinds").line.text == "All 2 come along: 2 on your bars, 0 for other commands.")
 
 state.class, state.className = "HUNTER", "Hunter"
 state.bars = { [1] = { kind = "spell", id = 585 } }

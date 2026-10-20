@@ -55,7 +55,7 @@ local BAR_KINDS_NEED_ID = { spell = true, item = true }
 local BAR_FLAGS = { "keys", "macros", "website", "petOff" }
 local BAR_BUTTONS = { ACTIONBUTTON = 12, MULTIACTIONBAR1BUTTON = 12, MULTIACTIONBAR2BUTTON = 12,
     MULTIACTIONBAR3BUTTON = 12, MULTIACTIONBAR4BUTTON = 12, MULTIACTIONBAR5BUTTON = 12,
-    MULTIACTIONBAR6BUTTON = 12, MULTIACTIONBAR7BUTTON = 12, BONUSACTIONBUTTON = 10 }
+    MULTIACTIONBAR6BUTTON = 12, MULTIACTIONBAR7BUTTON = 12, BONUSACTIONBUTTON = 10, SHAPESHIFTBUTTON = 10 }
 local BAR_KEYS_PER_ACTION = 2
 local LIST_NOUN = { bisLists = ns.L("lists"), library = ns.L("macros"), builds = ns.L("builds") }
 local TEXT_NO_LIBRARIES = ns.L("The serializer libraries are missing from this build.")

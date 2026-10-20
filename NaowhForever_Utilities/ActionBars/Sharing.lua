@@ -24,6 +24,7 @@ local CLASSES = { [1] = "WARRIOR", [2] = "PALADIN", [3] = "HUNTER", [4] = "ROGUE
 local BUTTONS = {}
 for _, bar in ipairs(A.BARS) do BUTTONS[bar.button] = A.C.SLOTS_PER_BAR end
 BUTTONS[A.PET_BAR.button] = A.PET_BAR.buttons
+BUTTONS[A.STANCE_BAR.button] = A.STANCE_BAR.buttons
 local MAX_BINDINGS = 0
 for _, count in pairs(BUTTONS) do MAX_BINDINGS = MAX_BINDINGS + count * MAX_KEYS_PER_ACTION end
 local TEXT_INVALID = ns.L("That is not a valid website bar layout for your class.")

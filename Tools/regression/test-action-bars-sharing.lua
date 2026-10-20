@@ -104,13 +104,33 @@ set = select(2, sharing.Decode("!NFA1!test"))
 bound = 0
 for _ in pairs(set and set.bindings or {}) do bound = bound + 1 end
 Check("and two for each of the pet bar's 10 buttons", bound == 212)
+local stance = ns.ActionBars.STANCE_BAR
+for button = 1, stance.buttons do
+    local ordinal = 0
+    for _ in pairs(payload.bindings) do ordinal = ordinal + 1 end
+    local modifier = ({ "", "ALT-", "CTRL-", "SHIFT-", "ALT-CTRL-", "ALT-SHIFT-", "CTRL-SHIFT-", "ALT-CTRL-SHIFT-", "META-", "ALT-META-" })[math.floor(ordinal / 24) + 1]
+    payload.bindings[modifier .. "F" .. (ordinal % 24 + 1)] = stance.button .. button
+    payload.bindings[modifier .. "F" .. (ordinal % 24 + 2)] = stance.button .. button
+end
+set = select(2, sharing.Decode("!NFA1!test"))
+bound = 0
+for _ in pairs(set and set.bindings or {}) do bound = bound + 1 end
+Check("and two for each of the stance bar's 10 buttons", bound == 232)
+payload.bindings["CTRL-META-F1"] = "ACTIONBUTTON1"
+Check("a 233rd key rejects the whole layout", sharing.Decode("!NFA1!test") == nil)
 payload = Valid()
 payload.bindings = { ["CTRL-1"] = "BONUSACTIONBUTTON1", ["CTRL-0"] = "BONUSACTIONBUTTON10" }
 set = select(2, sharing.Decode("!NFA1!test"))
 Check("pet bar keys imported", set and set.bindings["CTRL-1"] == "BONUSACTIONBUTTON1"
     and set.bindings["CTRL-0"] == "BONUSACTIONBUTTON10" and set.choices.keys)
+payload = Valid()
+payload.bindings = { ["ALT-1"] = "SHAPESHIFTBUTTON1", ["ALT-0"] = "SHAPESHIFTBUTTON10" }
+set = select(2, sharing.Decode("!NFA1!test"))
+Check("stance bar keys imported", set and set.bindings["ALT-1"] == "SHAPESHIFTBUTTON1"
+    and set.bindings["ALT-0"] == "SHAPESHIFTBUTTON10" and set.choices.keys)
 for _, command in ipairs({ "BONUSACTIONBUTTON11", "BONUSACTIONBUTTON0", "BONUSACTIONBUTTON", "PETACTIONBUTTON1",
-    "ACTIONBUTTON01", "ACTIONBUTTON13", "MULTIACTIONBAR8BUTTON1", "SHAPESHIFTBUTTON1", "bonusactionbutton1" }) do
+    "ACTIONBUTTON01", "ACTIONBUTTON13", "MULTIACTIONBAR8BUTTON1", "SHAPESHIFTBUTTON11", "SHAPESHIFTBUTTON01",
+    "SHAPESHIFTBUTTON0", "bonusactionbutton1" }) do
     payload = Valid(); payload.bindings.Z = command
     Check("unknown command rejects the whole layout: " .. command, sharing.Decode("!NFA1!test") == nil)
 end
