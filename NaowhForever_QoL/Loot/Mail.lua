@@ -17,6 +17,7 @@ local GEAR = { [Enum.ItemClass.Weapon] = true, [Enum.ItemClass.Armor] = true }
 
 local TEXT_GOLD = ns.L("Gold on this realm: ")
 local TEXT_NO_ALTS = ns.L("Log in on your other characters once and they appear here.")
+local TEXT_NO_SURNAME = ns.L("A name without its last name gets it the next time you log in on that character.")
 local TEXT_ALT = "%s  |cff808080%d|r  %s"
 local TEXT_FULL = ns.L("%s: %d %s didn't fit, all %d attachment slots are full. Send this one and attach again.")
 local TEXT_STACK, TEXT_STACKS = ns.L("stack"), ns.L("stacks")
@@ -72,13 +73,16 @@ local function OpenAltsMenu(owner)
             root:CreateTitle(TEXT_NO_ALTS, WHITE_FONT_COLOR)
             return
         end
+        local firstOnly = false
         for _, alt in ipairs(list) do
             local text = TEXT_ALT:format(ns.ClassColoredName(alt.name, alt.class), alt.level, Coins(alt.money))
             root:CreateButton(text, function()
                 SendMailNameEditBox:SetText(alt.name)
                 SendMailSubjectEditBox:SetFocus()
             end)
+            if not alt.full then firstOnly = true end
         end
+        if firstOnly then root:CreateTitle(TEXT_NO_SURNAME, GRAY_FONT_COLOR) end
     end)
 end
 

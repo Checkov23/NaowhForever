@@ -416,6 +416,12 @@ NaowhForever_QoL/
 - Alts are kept per realm and faction, because characters there can mail each other. Forever has
   been seen to return "Name-Realm" for the player, and the mail box wants the bare name, so the
   name is cut at the dash.
+- An alt is kept by its whole name, surname included (`GetUnitName("player", true)`): `UnitName`
+  gives only the first name on Forever, and the To box needs the whole name. A
+  character saved under its first name before is moved to its whole name the next time it logs in, only
+  when the class matches: with surnames two characters can share a first name. A record saved by its
+  whole name is marked `full`; until every listed alt is, the Alts menu says so under the list, since
+  another character's surname cannot be read.
 - Forget a character exists because deleted or transferred characters otherwise stay in the
   counts and the Alts list for good.
 - The Forever bank is the character bank tabs; a tab not bought has no slots.

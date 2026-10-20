@@ -3069,6 +3069,7 @@ L["Lock all"] = true
 L["Lock in place"] = true
 L["Lock Window"] = true
 L["Log in on your other characters once and they appear here."] = true
+L["A name without its last name gets it the next time you log in on that character."] = true
 L["Long"] = true
 L["Long writes the numbers out; Short shows them as HPM and HPS."] = true
 L["Every module enabled for the full Naowh Forever experience. Great if you're a power user with addons and want all the bells and whistles."] = true
