@@ -370,6 +370,10 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   ([CC BY-SA 4.0](https://warcraft.wiki.gg/wiki/Warcraft_Wiki:Copyrights)), represented
   in original compact rows for Uncommon, Rare and Epic weapons and armor. A deal is omitted when any
   possible material has no scan price, instead of overstating an incomplete expected value.
+- Auctionable equipment marked `ITEM_FLAG_NO_DISENCHANT` (`ItemSparse.Flags_0` bit `0x8000`) in
+  Forever build 1.60.1.70450 is omitted from the Disenchant window and both deal modes, and receives
+  no detailed disenchant tooltip. This covers the crafted/event wands, Twilight Cultist set pieces
+  and Spring Circlet that otherwise resemble eligible Uncommon equipment.
 - Profit mode ranks positive expected returns after the 5% auction cut by profit and ROI. It includes
   every skill level unless For my Enchant Lvl is checked. Guaranteed profit means even the least
   valuable possible result is worth more than the item. Level Up ranks items the character can disenchant by
@@ -386,6 +390,8 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   item, recolours a price increase and reinserts only that row at its new rank. The window registers
   search, purchase and skill events only while the auction house is open; when disabled it creates no
   frame, event, hook or timer. Detailed outcome tooltips are another opt-in setting.
+  Their Enchanting requirement line is green when the character meets it, and red when the
+  character has no Enchanting profession or has less than the required skill.
 
 ## Checking
 
