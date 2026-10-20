@@ -3,7 +3,6 @@ local ns = _G.NaowhForever
 
 local A = ns.ActionBars
 local S = A.Settings
-local Sets = ns.ActionBarSets
 local Settings = ns.Shared.Settings
 
 local ORDER_IMPORTING, ORDER_NEW_SPELLS = 10, 20
@@ -46,17 +45,10 @@ if A.OLD_COPY then return end
 
 local page = Settings.Page("Action Bars/Settings", S)
 
-page:Window({
-    text = "Open Action Bars",
-    open = function() ns.OpenActionBarsWindow() end,
-    headline = Sets.Headline,
-    detail = Sets.Detail,
-})
-
 page:Card({
     id = "importing", name = "Importing", order = ORDER_IMPORTING,
-    help = "What a saved set brings back when you import it. Sets are saved and imported from the Action "
-        .. "Bars window, out of combat.",
+    help = "What a saved set brings back when you import it. Sets are saved and imported from the Bar Sets "
+        .. "tab, out of combat.",
     search = "/nf bars nf bars /nfbars nfbars save restore import test delete list /nf ab nf ab",
     summary = ImportingSummary,
     rows = {

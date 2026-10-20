@@ -1,4 +1,4 @@
--- SetsPage.lua: the window's home: Save Current Bars, Import Website Code and Export to Website as cards, then your class's saved sets, a row each with a small strip of its bars, Import and More (ns.BuildActionBarsPage).
+-- SetsPage.lua: the Bar Sets tab's home: Save Current Bars, Import Website Code and Export to Website as cards, an Undo after an import, then your class's saved sets, a row each with a small strip of its bars, Import and More, and the backups taken before each import (ns.BuildActionBarsPage).
 local ns = _G.NaowhForever
 local T = ns.THEME
 local UI = ns.UI
@@ -13,10 +13,13 @@ local ACTIONS = 3
 local ROW_H, ROW_GAP, ROW_BUTTON_W, BUTTON_GAP = 74, 8, 84, 8
 local NAME_W, STRIP_GAP, EXTRAS_GAP = 250, 10, 3
 local HEAD_GAP, HEAD_H, LINE_GAP = 22, 22, 3
+local BANNER_H, BANNER_ALPHA, SECTION_GAP = 44, 0.16, 18
+local BACKUP_H, BACKUP_GAP, BACKUP_BUTTON_W, BACKUP_BUTTON_H = 34, 4, 96, 22
 local DOT = St.PLACE_DOT
 local NO_FORMS = {}
 local NEW_NAME_MAX = 40
 local SAVED_DATE = "%d %b %Y"
+local BACKUP_DATE = "%d %b %H:%M"
 local TEXT_ACTION, TEXT_ACTIONS = ns.L("%d action"), ns.L("%d actions")
 local TEXT_MACRO, TEXT_MACROS = ns.L("%d macro"), ns.L("%d macros")
 local TEXT_KEYBIND, TEXT_KEYBINDS = ns.L("%d keybind"), ns.L("%d keybinds")
@@ -43,6 +46,13 @@ local TEXT_BY = ns.L(" by ")
 local TEXT_IMPORT, TEXT_MORE = ns.L("Import"), ns.L("More")
 local TEXT_EDIT, TEXT_RENAME, TEXT_DELETE = ns.L("Edit and Save Again"), ns.L("Rename"), ns.L("Delete")
 local TEXT_NEW_NAME = ns.L("New name for ")
+local TEXT_IMPORTED = ns.L("%s is on your bars. Your bars from before it are kept as a backup.")
+local TEXT_UNDO = ns.L("Undo Import")
+local TEXT_BACKUPS = ns.L("Backups")
+local TEXT_RESTORE, TEXT_SAVE_AS = ns.L("Put Back"), ns.L("Save as Set")
+local TEXT_RESTORE_ASK = ns.L("Put back your bars, keybinds and macros from %s?")
+local TEXT_BACKUP_NAME = ns.L("Name for the set made from this backup")
+local TEXT_REPLACE = ns.L("Replace %s with these bars?")
 local CONTENTS_JOIN = ", "
 
 local function OpenBuilder() ns.OpenActionBarsBuilder() end
@@ -130,6 +140,34 @@ local function PaintAction(card, action)
     if action.primary then P.Primary(card.button) end
 end
 
+local function NewBanner(parent)
+    local banner = CreateFrame("Frame", nil, parent)
+    banner:SetHeight(BANNER_H)
+    ns.Solid(banner, "BACKGROUND", St.GREEN_RGB, BANNER_ALPHA):SetAllPoints()
+    ns.Border(banner, St.GREEN_RGB)
+    banner.text = P.Label(banner, St.NOTE_SIZE, T.fg)
+    banner.text:SetPoint("LEFT", GLASS_PAD, 0)
+    banner.undo = ns.Button(banner, TEXT_UNDO, CARD_BUTTON_W, BUTTON_H, function() A.Undo() end)
+    banner.undo:SetPoint("RIGHT", -GLASS_PAD, 0)
+    return banner
+end
+
+local function NewBackupRow(parent)
+    local row = CreateFrame("Frame", nil, parent)
+    row:SetHeight(BACKUP_H)
+    ns.Solid(row, "BACKGROUND", T.bg, St.ROW_FILL):SetAllPoints()
+    ns.Border(row, St.BORDER_RGB)
+    row.when = P.Mono(row, St.MONO_SIZE, St.INK_RGB)
+    row.when:SetPoint("LEFT", GLASS_PAD, 0)
+    row.why = P.Label(row, St.NOTE_SIZE, T.fg)
+    row.why:SetPoint("LEFT", row.when, "RIGHT", GLASS_PAD, 0)
+    row.save = ns.Button(row, TEXT_SAVE_AS, BACKUP_BUTTON_W, BACKUP_BUTTON_H)
+    row.save:SetPoint("RIGHT", -GLASS_PAD / 2, 0)
+    row.restore = ns.Button(row, TEXT_RESTORE, BACKUP_BUTTON_W, BACKUP_BUTTON_H)
+    row.restore:SetPoint("RIGHT", row.save, "LEFT", -BUTTON_GAP, 0)
+    return row
+end
+
 local function NewSetRow(parent)
     local row = P.Glass(CreateFrame("Frame", nil, parent))
     row:SetHeight(ROW_H)
@@ -162,11 +200,57 @@ local function PaintSetRow(row, key, set)
     row.extras:SetText(A.SetExtras(set))
 end
 
-local function Heading(parent, y)
-    local head = UI.Keep(parent, "barsHeading", function(p) return P.Mono(p, St.MONO_SIZE, St.GOLD_RGB) end)
+local function Heading(parent, y, key, text)
+    local head = UI.Keep(parent, key, function(p) return P.Mono(p, St.MONO_SIZE, St.GOLD_RGB) end)
     head:SetPoint("TOPLEFT", 0, y)
-    head:SetText(ns.Upper(TEXT_HEADER))
+    head:SetText(ns.Upper(text))
     return y - HEAD_H
+end
+
+local function DrawBanner(parent, y)
+    if not (A.lastImport and A.Sets()[A.lastImport.key]) then return y end
+    local banner = UI.Keep(parent, "barsBanner", NewBanner)
+    banner:SetPoint("TOPLEFT", 0, y)
+    banner:SetPoint("TOPRIGHT", 0, y)
+    banner.text:SetText(TEXT_IMPORTED:format(A.lastImport.key))
+    return y - BANNER_H - CARD_GAP
+end
+
+local function SaveBackup(index, name)
+    local existing = A.Find(name)
+    if existing then
+        ns.Confirm(TEXT_REPLACE:format(existing), function() A.SaveBackup(index, name) end)
+    else
+        A.SaveBackup(index, name)
+    end
+end
+
+local function DrawBackups(parent, y)
+    local list = A.Backups.List()
+    if #list == 0 then return y end
+    y = Heading(parent, y - SECTION_GAP, "barsBackupsHeading", TEXT_BACKUPS)
+    for i, backup in ipairs(list) do
+        local row = UI.Keep(parent, "barsBackup", NewBackupRow)
+        row:SetPoint("TOPLEFT", 0, y)
+        row:SetPoint("TOPRIGHT", 0, y)
+        local when = date(ns.L(BACKUP_DATE), backup.saved)
+        row.when:SetText(when)
+        row.why:SetText(backup.why or "")
+        row.restore._onClick = function()
+            ns.Confirm(TEXT_RESTORE_ASK:format(when), function() A.RestoreBackup(i) end)
+        end
+        row.save._onClick = function()
+            ns.PromptText(TEXT_BACKUP_NAME, backup.why or "", NEW_NAME_MAX, function(name) SaveBackup(i, name) end)
+        end
+        y = y - BACKUP_H - BACKUP_GAP
+    end
+    return y
+end
+
+function ns.ActionBarsSearchTerms(add)
+    for _, action in ipairs(ACTION_CARDS) do add(action.title, action.line:format(UnitClass("player"))) end
+    add(TEXT_UNDO)
+    add(TEXT_BACKUPS)
 end
 
 function ns.BuildActionBarsPage(parent, y)
@@ -178,11 +262,12 @@ function ns.BuildActionBarsPage(parent, y)
         card:SetWidth(cardW)
         PaintAction(card, action)
     end
-    y = Heading(parent, y - CARD_H - HEAD_GAP)
+    y = DrawBanner(parent, y - CARD_H - CARD_GAP)
+    y = Heading(parent, y - HEAD_GAP + CARD_GAP, "barsHeading", TEXT_HEADER)
     local names = A.SortedNames()
     if #names == 0 then
         local _, h = UI.Widgets:Note(parent, TEXT_EMPTY, y)
-        return y - h
+        return DrawBackups(parent, y - h)
     end
     local sets = A.Sets()
     for _, key in ipairs(names) do
@@ -192,5 +277,5 @@ function ns.BuildActionBarsPage(parent, y)
         PaintSetRow(row, key, sets[key])
         y = y - ROW_H - ROW_GAP
     end
-    return y
+    return DrawBackups(parent, y)
 end

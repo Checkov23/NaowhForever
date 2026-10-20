@@ -35,9 +35,7 @@ ns.ActionBars.Style = setmetatable({
     STACK_GAP = 3,
     FILL_W = 10,
 
-    WIDTH = 980,
-    HEIGHT = 680,
-    CARD = 6,
+    VIEW_TOP = 46,
     SIDE_W = 320,
     INNER = 14,
     GLASS_PAD = 12,

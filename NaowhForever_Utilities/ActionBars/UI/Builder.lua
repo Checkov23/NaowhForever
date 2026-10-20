@@ -1,4 +1,4 @@
--- Builder.lua: the Action Bars window's set builder: your bars on the scene's strip with each bar and slot in or out, keybinds and macros, then a name (ns.ActionBars.Builder).
+-- Builder.lua: the Bar Sets tab's set builder: your bars on the scene's strip with each bar and slot in or out, keybinds and macros, then a name (ns.ActionBars.Builder).
 local ns = _G.NaowhForever
 local T = ns.THEME
 
@@ -8,8 +8,7 @@ local P = A.Parts
 local Sets = ns.ActionBarSets
 local Capture = A.Capture
 
-local WIDTH, HEIGHT, CARD, GAP = St.WIDTH, St.HEIGHT, St.CARD, St.CARD_GAP
-local HEADER, FOOTER, GLASS_PAD = St.WINDOW_HEADER, St.WINDOW_FOOTER, St.GLASS_PAD
+local VIEW_TOP, GAP, GLASS_PAD = St.VIEW_TOP, St.CARD_GAP, St.GLASS_PAD
 local OUT_ALPHA, ICON_CROP = St.OUT_ALPHA, St.ICON_CROP
 local BUTTON_H, LINE_GAP = St.BUTTON_H, St.LINE_GAP
 local SLOTS_PER_BAR = A.C.SLOTS_PER_BAR
@@ -22,7 +21,6 @@ local OFF_MACRO_ALPHA = 0.45
 local MACRO_ROW_H, MACRO_GAP, MACRO_INSET, MACRO_ICON = 30, 4, 8, 22
 local NAME_COLUMN, TEXT_GAP, TAG_GAP = 140, 8, 4
 local NAME_H, NAME_MAX, NAME_W, SUMMARY_GAP, SAVE_W = 26, 40, 260, 18, 120
-local HALF_W = (WIDTH - CARD * 2 - GAP) / 2
 
 local TEXT_TITLE, TEXT_EDIT = ns.L("New Bar Set"), ns.L("Edit ")
 local TEXT_SUBTITLE = ns.L("Pick what goes in, then import it on any %s.")
@@ -350,23 +348,25 @@ local function SetViewPage(page) viewPage = page; W.Redraw() end
 
 local function BuildScene(v, top)
     v.scene = P.NewScene(v.frame)
-    v.scene:SetPoint("TOPLEFT", CARD, -top)
-    v.scene:SetPoint("TOPRIGHT", -CARD, -top)
+    v.scene:SetPoint("TOPLEFT", 0, -top)
+    v.scene:SetPoint("TOPRIGHT", 0, -top)
     P.ScenePicker(v.scene, picker.values, picker.order, ViewPage, SetViewPage)
 end
 
 local function BuildKeep(v, bottom)
     v.keys = P.GlassPanel(v.frame, TEXT_KEYBINDS)
     v.keys:SetPoint("TOPLEFT", v.scene, "BOTTOMLEFT", 0, -GAP)
-    v.keys:SetSize(HALF_W, HEAD_H)
+    v.keys:SetPoint("TOPRIGHT", v.scene, "BOTTOM", -GAP / 2, -GAP)
+    v.keys:SetHeight(HEAD_H)
     v.keysSwitch = P.PanelSwitch(v.keys, KeysOn, SetKeys)
     v.macros = P.GlassPanel(v.frame, TEXT_MACROS)
+    v.macros:SetPoint("TOPLEFT", v.scene, "BOTTOM", GAP / 2, -GAP)
     v.macros:SetPoint("TOPRIGHT", v.scene, "BOTTOMRIGHT", 0, -GAP)
-    v.macros:SetSize(HALF_W, HEAD_H)
+    v.macros:SetHeight(HEAD_H)
     v.macrosSwitch = P.PanelSwitch(v.macros, MacrosOn, SetMacros)
     local list = P.Glass(CreateFrame("Frame", nil, v.frame))
     list:SetPoint("TOPLEFT", v.keys, "BOTTOMLEFT", 0, -GAP)
-    list:SetPoint("BOTTOMRIGHT", -CARD, bottom)
+    list:SetPoint("BOTTOMRIGHT", 0, bottom)
     local inner = CreateFrame("Frame", nil, list)
     P.Place(inner, GLASS_PAD, GLASS_PAD, GLASS_PAD, GLASS_PAD)
     v.macroScroll, v.macroContent = P.List(inner, 0)
@@ -374,10 +374,11 @@ end
 
 local function UnFocus(box) box:ClearFocus() end
 
-local function BuildName(v, top)
+local function BuildName(v)
     local bar = P.Glass(CreateFrame("Frame", nil, v.frame))
-    bar:SetPoint("TOPLEFT", CARD, -top)
-    bar:SetPoint("BOTTOMRIGHT", -CARD, FOOTER + CARD)
+    bar:SetPoint("BOTTOMLEFT")
+    bar:SetPoint("BOTTOMRIGHT")
+    bar:SetHeight(NAME_BAR)
     local label = P.Label(bar, SMALL_SIZE, T.muted)
     label:SetPoint("TOPLEFT", GLASS_PAD, -GLASS_PAD + LINE_GAP)
     label:SetText(TEXT_SET_NAME)
@@ -450,12 +451,11 @@ end
 function Builder.Build(window)
     W = window
     local v = { cards = {} }
-    local nameTop = HEIGHT - FOOTER - CARD - NAME_BAR
     v.frame = CreateFrame("Frame", nil, W.frame)
     v.frame:SetAllPoints()
-    BuildScene(v, HEADER + CARD)
-    BuildKeep(v, FOOTER + CARD + NAME_BAR + GAP)
-    BuildName(v, nameTop)
+    BuildScene(v, VIEW_TOP)
+    BuildKeep(v, NAME_BAR + GAP)
+    BuildName(v)
     v.title = TEXT_TITLE
     function v.Open()
         Order()

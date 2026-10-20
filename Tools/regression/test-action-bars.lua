@@ -973,4 +973,67 @@ Case("changing Fill In Later during the fight does not drop the wait for the end
     n.events.handler(n.events, "PLAYER_REGEN_ENABLED")
     assert(Bars(n) == "1=spell598 3=Pull", Bars(n))
 end)
+Case("an import backs up the bars first, and undo puts them back with their keys", function()
+    local w = World({ 2055, 598 })
+    w.bars = { [1] = Spell(2055), [2] = Macro("Pull") }
+    w.macros = { { name = "Pull", icon = 1, body = "/say pull" } }
+    w.binds = { { "ACTIONBUTTON1", "1" }, { "ACTIONBUTTON2", "2" } }
+    w.run("save Before")
+    w.bars = { [3] = Spell(598) }
+    w.binds = { { "ACTIONBUTTON3", "3" } }
+    w.run("save Raid")
+    w.bars = { [1] = Spell(2055), [2] = Macro("Pull") }
+    w.binds = { { "ACTIONBUTTON1", "1" }, { "ACTIONBUTTON2", "2" } }
+    local lastBefore = w.ns.ActionBars.Last()
+    w.run("import Raid")
+    assert(Bars(w) == "3=spell598", Bars(w))
+    local list = w.ns.ActionBars.Backups.List()
+    assert(#list == 1 and list[1].why == "Before importing Raid", "one backup, named for the import")
+    assert(list[1].set.macros[1].name == "Pull" and #list[1].set.macros == 1, "with the macros on its bars")
+    w.macros = {}
+    w.run("undo")
+    assert(Bars(w) == "1=spell2055 2=Pull", Bars(w))
+    assert(#w.macros == 1, "a macro on the backed-up bars is made again")
+    local keys = {}
+    for _, b in ipairs(w.binds) do if b[2] then keys[#keys + 1] = b[2] .. "=" .. b[1] end end
+    table.sort(keys)
+    assert(table.concat(keys, " ") == "1=ACTIONBUTTON1 2=ACTIONBUTTON2", table.concat(keys, " "))
+    assert(w.ns.ActionBars.Last() == lastBefore, "the set it had before is its last again")
+    w.run("undo")
+    assert(w.printed[#w.printed] == "There is no import to undo.", w.printed[#w.printed])
+end)
+Case("undo puts back the exact ranks the bars had, with Highest Rank on", function()
+    local w = World({ 2054, 2055, 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Raid")
+    w.bars = { [1] = Spell(2054), [2] = Spell(2055) }
+    w.opts.highestRank = true
+    w.run("import Raid")
+    assert(w.ns.ActionBars.Backups.List()[1].set.slots[2].top == true, "the backup marks the top rank it saw")
+    w.learn(6064)
+    w.run("undo")
+    assert(Bars(w) == "1=spell2054 2=spell2055", "a Rank 1 kept and a rank learned since passed over: " .. Bars(w))
+end)
+Case("only the last ten backups are kept, newest first", function()
+    local w = World({ 598 })
+    w.bars = { [1] = Spell(598) }
+    w.run("save Raid")
+    for _ = 1, 12 do w.run("import Raid") end
+    local list = w.ns.ActionBars.Backups.List()
+    assert(#list == 10, #list)
+    w.combat = true
+    assert(w.ns.ActionBars.RestoreBackup(1) == nil, "never in combat")
+end)
+Case("an import can leave the keys or the macros out", function()
+    local w = World({ 598 })
+    w.bars = { [1] = Macro("Pull") }
+    w.macros = { { name = "Pull", icon = 1, body = "/say pull" } }
+    w.binds = { { "ACTIONBUTTON1", "1" } }
+    w.run("save Raid")
+    w.macros, w.bars, w.binds = {}, {}, {}
+    w.ns.ActionBarSets.Import("Raid", false, { actions = true, macros = false, keys = false })
+    assert(#w.macros == 0 and #w.binds == 0, "no macro made, no key bound")
+    w.ns.ActionBarSets.Import("Raid", false, { actions = false, macros = true, keys = true })
+    assert(#w.macros == 1 and Bars(w) == "" and w.binds[1][2] == "1", "macros and keys, bars left alone")
+end)
 print(count .. " action bar set regressions passed")

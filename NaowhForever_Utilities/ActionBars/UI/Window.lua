@@ -1,5 +1,6 @@
--- Window.lua: the Action Bars window (/nfbars, /nf bars), its three views (the saved sets, the builder and the import preview) and its link back to the saved sets or Settings.
+-- Window.lua: the Action Bars page's Bar Sets tab (/nfbars, /nf bars), its three views (the saved sets, the builder and the import preview) and its link back to the saved sets.
 local ns = _G.NaowhForever
+local T = ns.THEME
 local UI = ns.UI
 
 local A = ns.ActionBars
@@ -8,48 +9,39 @@ local St = A.Style
 local Builder = A.Builder
 local Preview = A.Preview
 local Sets = ns.ActionBarSets
+local P = A.Parts
 local Parts = ns.Shared.Parts
 
-local WIDTH, HEIGHT, CARD = St.WIDTH, St.HEIGHT, St.CARD
-local HEADER, FOOTER, PAD = St.WINDOW_HEADER, St.WINDOW_FOOTER, St.WINDOW_PAD
-local INSET, SCROLLBAR = St.CONTENT_INSET, St.SCROLLBAR
-local PAGE = "Action Bars/Settings"
-local TOP_Y = -6
+local VIEW_TOP, SCROLLBAR, PAD = St.VIEW_TOP, St.SCROLLBAR, St.WINDOW_PAD
+local PAGE = "Action Bars/Bar Sets"
 local SCROLL_RIGHT = 4
-local LINK_GAP = 12
+local SUBTITLE_GAP = 4
 
-local TEXT_TITLE = "Action Bars"
-local TEXT_SUBTITLE = ns.L("Save your bars, macros and keybinds, then import them on any character.")
 local TEXT_BACK = ns.L("Saved Sets")
-local TEXT_SETTINGS = ns.L("Settings")
 
 local W = {}
-local window, views, view
+local window, views
+local view = "sets"
 local queued
 
 local function Paint()
-    window.backdrop:Paint(1)
-    window.note.text:SetText(Sets.Headline())
-    window.note:SetWidth(math.max(1, math.ceil(window.note.text:GetStringWidth())))
+    local v = views[view]
+    window.title:SetText(v.title)
+    window.subtitle:SetText(v.subtitle)
+    window.back:SetShown(view ~= "sets")
 end
 
 local function Redraw()
     queued = false
-    if not (window and window:IsShown()) then return end
+    if not (window and window:IsVisible()) then return end
     views[view].Draw()
     Paint()
 end
 
 local function RedrawSoon()
-    if queued or not (window and window:IsShown()) then return end
+    if queued or not (window and window:IsVisible()) then return end
     queued = true
     C_Timer.After(0, Redraw)
-end
-
-local function PaintBack()
-    local settings = window.onBack ~= nil
-    window.backLink:SetShown(settings or view ~= "sets")
-    Parts.SetLink(window.backLink, settings and TEXT_SETTINGS or TEXT_BACK)
 end
 
 local function ShowView(v, on)
@@ -65,15 +57,14 @@ local function Show(name)
     for key, v in pairs(views) do ShowView(v, key == name) end
     local v = views[name]
     if v.Open then v.Open() end
-    window.title:SetText(v.title)
-    window.subtitle:SetText(v.subtitle)
-    PaintBack()
     Redraw()
 end
 
 local function DrawSets(v)
+    v.title, v.subtitle = Sets.Headline(), Sets.Detail()
+    v.content:SetWidth(v.scroll:GetWidth())
     UI.BeginReusableRows(v.content)
-    local y = ns.BuildActionBarsPage(v.content, TOP_Y)
+    local y = ns.BuildActionBarsPage(v.content, 0)
     v.content:SetHeight(math.abs(y) + PAD)
 end
 
@@ -81,20 +72,20 @@ local function BuildSets()
     local v = { cards = {} }
     v.frame = CreateFrame("Frame", nil, window)
     v.frame:SetAllPoints()
-    local left, top = CARD + INSET, HEADER + CARD + PAD
     v.scroll = UI.SlimScroll(v.frame)
-    v.scroll:SetPoint("TOPLEFT", left, -top)
-    v.scroll:SetPoint("BOTTOMRIGHT", -(CARD + SCROLLBAR + SCROLL_RIGHT), FOOTER + CARD + PAD)
+    v.scroll:SetPoint("TOPLEFT", 0, -VIEW_TOP)
+    v.scroll:SetPoint("BOTTOMRIGHT", -(SCROLLBAR + SCROLL_RIGHT), 0)
+    v.scroll:SetScript("OnSizeChanged", RedrawSoon)
     v.content = CreateFrame("Frame", nil, v.scroll)
-    v.content:SetSize(WIDTH - left - CARD - SCROLLBAR - INSET, 1)
+    v.content:SetSize(1, 1)
     v.scroll:SetScrollChild(v.content)
-    v.title, v.subtitle = TEXT_TITLE, TEXT_SUBTITLE
     function v.Draw() DrawSets(v) end
     return v
 end
 
-local function BackClicked()
-    if window.onBack then window:Hide() else Show("sets") end
+local function OnShow()
+    ShowView(views[view], true)
+    Redraw()
 end
 
 local function OnHide()
@@ -103,37 +94,56 @@ local function OnHide()
     end
 end
 
-local function Build()
-    window = Parts.Window(WIDTH, HEIGHT, "actionBarsWindow")
+local function Build(parent)
+    window = CreateFrame("Frame", nil, parent)
     W.frame = window
-    local close = Parts.TitleBar(window, TEXT_TITLE, "", PAGE)
-    Parts.FooterBrand(window, PAGE)
-    window.note = Parts.FooterNote(window, "")
-    window.backLink:ClearAllPoints()
-    window.backLink:SetPoint("RIGHT", close, "LEFT", -LINK_GAP, 0)
-    Parts.FlipLink(window.backLink)
-    window.backLink:SetScript("OnClick", BackClicked)
+    window.title = P.Label(window, St.PANEL_TITLE_SIZE, T.fg)
+    window.title:SetPoint("TOPLEFT")
+    window.subtitle = P.Label(window, St.NOTE_SIZE, T.muted)
+    window.subtitle:SetPoint("TOPLEFT", window.title, "BOTTOMLEFT", 0, -SUBTITLE_GAP)
+    window.back = Parts.Link(window, function() Show("sets") end, true)
+    window.back:SetPoint("TOPRIGHT")
+    Parts.FlipLink(window.back)
+    Parts.SetLink(window.back, TEXT_BACK)
     if not Builder.HasDraft() then Builder.NewDraft() end
     window:SetScript("OnEvent", RedrawSoon)
-    window:HookScript("OnHide", OnHide)
+    window:SetScript("OnShow", OnShow)
+    window:SetScript("OnHide", OnHide)
     views = { sets = BuildSets(), build = Builder.Build(W), import = Preview.Build(W) }
+    window:Hide()
+    Show(view)
+end
+
+local function Host(page)
+    local scroll = page:GetParent():GetParent()
+    window:SetParent(page)
+    window:ClearAllPoints()
+    window:SetPoint("TOPLEFT", page, "TOPLEFT", 0, page.barsY)
+    window:SetPoint("RIGHT", page, "RIGHT")
+    window:SetPoint("BOTTOM", scroll, "BOTTOM", 0, PAD)
+    window:Show()
+end
+
+function ns.BuildActionBarsTab(page, y)
+    if not window then Build(page) end
+    page.barsY = y
+    if not page.barsHooked then
+        page.barsHooked = true
+        page:HookScript("OnShow", Host)
+    end
+    Host(page)
+    return y
 end
 
 local function Open(name)
-    if not window then Build() end
-    window:SetScale(ns.UIScale())
-    window:Show()
-    Show(name)
+    if window then Show(name) else view = name end
+    ns.OpenOptionsWindow(PAGE)
 end
 
 W.Show, W.Redraw = Show, Redraw
 
 function ns.OpenActionBarsWindow()
     Open("sets")
-end
-
-function ns.ToggleActionBarsWindow()
-    if window and window:IsShown() then window:Hide() else Open("sets") end
 end
 
 function ns.OpenActionBarsBuilder(key)

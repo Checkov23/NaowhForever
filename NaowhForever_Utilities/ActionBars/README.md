@@ -2,14 +2,16 @@
 
 Every action bar slot, macro and keybind saved under a name and imported later, out of combat.
 Sets belong to a class and are shared by every character of that class on the account. The
-window (`/nfbars`, `/nf bars`, Open Action Bars on its settings page) shows your class's saved
-sets, the set builder (pick the bars, slots, keybinds and macros that go in) and the import
+Action Bars page's Bar Sets tab (`/nfbars`, `/nf bars`) shows your class's saved sets, the set
+builder (pick the bars, slots, keybinds and macros that go in) and the import
 preview (your bars as an import would leave them), laid out like the Forever website's Action Bars.
 Export to Website gives your bars, or a saved set, as a code the website's Import a code loads.
 `/nf bars save|import|test|delete <name>`
 and `/nf bars list` do the same from chat. `/nf ab <name>` imports a set and `/nf ab` lists them.
 Import on New Character imports a chosen set once, the first time a new character of that class
 logs in (level 1, no experience yet).
+Every import first backs up the bars, keybinds and the macros on the bars; the home offers Undo after
+an import, and lists the last ten backups. `/nf bars undo` undoes the last import.
 
 ## Layout
 
@@ -25,23 +27,27 @@ NaowhForever_Utilities/ActionBars/
                                 rank of each spell known (A.Capture)
   Import.lua                    one pass over the bars putting a set back, or testing it (A.Import)
   Pending.lua                   spells an import could not place, put in their slots when learned (A.Pending)
-  Sets.lua                      save, import, rename, delete, /nf bars, and the public API (ns.ActionBarSets)
+  Backups.lua                   this character's bars before each import, the last ten, and putting one back (A.Backups)
+  Sets.lua                      save, import, undo, rename, delete, /nf bars, and the public API (ns.ActionBarSets)
   View/
-    Style.lua                   the window's colors and sizes, on top of Shared/Style.lua (A.Style)
+    Style.lua                   the Bar Sets tab's colors and sizes, on top of Shared/Style.lua (A.Style)
     Parts.lua                   labels, chips, tick boxes, slot tiles, glass panels, the bar strip at any size (the
                                 scene's, and a set row's small one), the scene with its pet row, form chips and bar
-                                picker, the window's panes (A.Parts)
+                                picker, the tab's panes (A.Parts)
   UI/
-    SetsPage.lua                the home: Save Current Bars, Import Website Code and Export to Website cards, then a
-                                row per saved set with a small strip of its bars, Import and More (ns.BuildActionBarsPage)
+    SetsPage.lua                the home: Save Current Bars, Import Website Code and Export to Website cards, Undo, a
+                                row per saved set with a small strip of its bars, Import and More, and the backups
+                                (ns.BuildActionBarsPage)
     Builder.lua                 the set builder: your bars on the scene, keybinds and macros, a name (A.Builder)
-    Preview.lua                 the import preview: the same scene, then what comes across (A.Preview)
-    Window.lua                  the window, its three views and its back link (ns.OpenActionBarsWindow)
+    Preview.lua                 the import preview: what changes counted, the same scene now or after the import with each
+                                change marked, then what comes across, what fills in later and the keys that change (A.Preview)
+    Window.lua                  the Bar Sets tab, its views and its back link (ns.BuildActionBarsTab,
+                                ns.OpenActionBarsWindow)
     SettingsPage.lua            its settings page (Action Bars/Settings), declared as cards
   README.md                     this file
 ```
 
-Each layer uses only the ones above it. The window hands the builder and the preview its own
+Each layer uses only the ones above it. The tab hands the builder and the preview its own
 table (the frame, `Show` and `Redraw`) when it builds them.
 
 ## Why
@@ -96,8 +102,8 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   a copy in a slot the set keeps empty is taken off.
 - Picking up, placing, binding and making macros are protected: they run only from `Ready()`,
   which refuses in combat, or after combat ends.
-- The window's redraws are gathered into one on the next frame (`C_Timer.After(0, ...)`).
-- The builder's switches read the draft when they are made, so a draft exists before the window
+- The tab's redraws are gathered into one on the next frame (`C_Timer.After(0, ...)`).
+- The builder's switches read the draft when they are made, so a draft exists before the tab
   is built.
 - `/nf ab` is its own command, not the module alias `/nfab`: an alias shares `/nfbars`'s handler, which
   cannot tell the two apart and would read the set name as a `/nf bars` subcommand.
@@ -111,11 +117,12 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   since the pet's bar is the game's own. Saving keeps its keys with the rest; clicking the builder's PET BAR
   label leaves them out (`choices.petOff`). Hunters and Warlocks see its row of keys above the strip, in the
   builder and the preview.
-- The builder and the preview draw the website's strip: Action Bar 3 (6 by 2) on the left, Action Bar 2 over
-  Action Bar 1 in the middle, Action Bar 4 (6 by 2) on the right, 24 buttons of 38 (`TILE`) across, the site's
-  size; 918 wide, it fills the 968 the window leaves inside its edges. The window is 680 tall (`HEIGHT`), on
-  screen at 1080p. The scene is as tall as what it holds: 190, or 249 with the pet bar's row
-  (`P.SCENE_H`, `P.PET_SCENE_H`), and the panels under it hang from its bottom.
+- The builder and the preview draw the website's strip: Action Bar 3 (6 by 2) on the left, Action Bar 2
+  over Action Bar 1 in the middle, Action Bar 4 (6 by 2) on the right, 24 buttons of 38 (`TILE`) across,
+  the site's size; 918 wide, it fits the narrowest the options window gets. The views take the tab's
+  width and height, so the builder's two heads and the preview's three panels share whatever width the
+  tab has. The scene is as tall as what it holds: 190, or 249 with the pet bar's row (`P.SCENE_H`,
+  `P.PET_SCENE_H`), and the panels under it hang from its bottom.
 - The bar picker sits under Action Bar 3, beside the form chips, as the site's switcher does, so it never
   pushes the strip down.
 - One strip drawing (`P.PlaceStrip`) lays out the scene's buttons and a saved set's small strip on the home,
@@ -144,11 +151,24 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   code, Get code) under its title, so the two never repeat.
 - A wrapping line is held by its top corners (`TOPLEFT`, `TOPRIGHT`), never a `RIGHT` point: a side point
   also fixes its middle, which cut the home cards' lines short.
-- The window's back link sits by the close button. Opened from Settings, it reads Settings and closing
-  goes back there, as the options window asks; otherwise it goes back to the saved sets.
+- The views are one frame built into the Bar Sets tab, as the Macros page hosts Naowh's Forge: `/nfbars`,
+  a saved set's Import and a website code's preview open the options window on the tab. The builder and the
+  preview link back to the saved sets from the tab's top right.
 - Stop Auto Push Spells to Bars (the New Spells card) is the game's `AutoPushSpellToActionBar` setting itself,
   read and written as it is, with no saved key: the game keeps it, so it stays as the player left it on the
   old QoL > System page, and it works whether Action Bars is on or not.
+- A backup keeps the bars, every keybind and only the macros on the bars: an import never deletes a macro,
+  so only one a backed-up slot needs can be missing. Putting one back is exact: each spell goes back at the
+  rank it had, whatever Highest Rank or a slot's Highest says, keys the backup did not have are unbound,
+  the fill-in list is dropped and the character's last set is what it was. Putting a
+  backup back is itself backed up first, so it can be undone too. Backups are per character (by GUID).
+  Save as Set asks before it replaces a set of the same name, as the builder does.
+- The preview compares each slot with the bars as they are: added (green edge) where the button is empty
+  now, swapped (accent edge) where something else is there, cleared (red edge and cross) where the set
+  keeps it empty or its spell is not learned yet, and dimmed where nothing changes. A spell on the bars at
+  another rank counts as the same. Your Bars Now shows the bars as they are with what the import clears or
+  swaps edged. Its Bring Across boxes (actions, macros, keybinds) apply to this import only, starting from
+  the Settings tab's Import Macros and Import Keybinds; Fill In As You Learn there is the setting itself.
 
 ## Checking
 
@@ -157,9 +177,10 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   commands against a small fake of the bars, spellbook, macros and cursor.
 - `lua Tools/regression/test-action-bars-new-spells.lua`: the New Spells card's toggle against a fake of the
   game's setting.
-- `lua Tools/regression/test-action-bars-window.lua`: the window's three views built from the
-  real files: the home's cards and set rows, the paste and export popups, the strip for each class
-  (a Rogue's Stealth chips, a Druid's forms, a Hunter's pet row, a Mage with neither), a bar left out by
+- `lua Tools/regression/test-action-bars-window.lua`: the Bar Sets tab's views built from the real files
+  into a stand-in for the options page: Undo, the backups, the preview's changes and its per-import
+  switches, the home's cards and set rows, the paste and export popups, the strip for each class (a
+  Rogue's Stealth chips, a Druid's forms, a Hunter's pet row, a Mage with neither), a bar left out by
   its label, a slot skipped, the bar picker, the summary, saving, and the preview's strip and Import.
 - `lua Tools/regression/test-action-bars-export.lua`: Export to Website read back through the addon's own
   import gives the same slots, macros and keybinds, with no Highest flag gained or lost, and leaves out what
@@ -189,7 +210,7 @@ MINUS/EQUALS names become the native -/= keys. Unknown device-specific names are
 client's SetBinding validation when applied; malformed names, bare modifiers and mouse buttons
 1-2 are rejected. This adds no automatic binding calls or lifecycle work. Macro bodies are data only;
 the preview lets players inspect them before import. No hooks, events or frames are added
-until the player opens the existing window.
+until the player opens the Bar Sets tab.
 The layout's macro list (`macros`, at most `MAX_MACROS`) is made with the macros on its bars, whether
 placed or not, each once by name and text. A macro is a character macro unless the layout marks it
 account-wide (`perCharacter = false`), and keeps the icon it was given, except a `#showtooltip` macro

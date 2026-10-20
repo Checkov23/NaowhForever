@@ -6,6 +6,7 @@
     <Script file="Capture.lua"/>
     <Script file="Import.lua"/>
     <Script file="Pending.lua"/>
+    <Script file="Backups.lua"/>
     <Script file="Sets.lua"/>
     <Script file="Sharing.lua"/>
     <Script file="View\Style.lua"/>

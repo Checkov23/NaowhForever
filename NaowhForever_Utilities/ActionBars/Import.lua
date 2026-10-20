@@ -69,8 +69,13 @@ local function Unbind(...)
     for i = 1, select("#", ...) do SetBinding((select(i, ...))) end
 end
 
-local function ImportBindings(set, test)
+local function ImportBindings(set, test, exact)
     local count, cleared = 0, {}
+    if not test and exact then
+        for key in pairs(Capture.CaptureBindings()) do
+            if not set.bindings[key] then SetBinding(key) end
+        end
+    end
     if not test and set.choices and set.choices.website then
         for _, command in pairs(set.bindings) do
             if not cleared[command] then
@@ -88,8 +93,8 @@ local function ImportBindings(set, test)
     return count
 end
 
-local function PickUpSpell(entry, ranks)
-    if entry.top or S.Get("highestRank") then
+local function PickUpSpell(entry, ranks, exact)
+    if not exact and (entry.top or S.Get("highestRank")) then
         local top = Capture.Highest(entry, ranks)
         if top then C_Spell.PickupSpell(top) end
     end
@@ -100,10 +105,10 @@ local function PickUpSpell(entry, ranks)
     if known then C_Spell.PickupSpell(known) end
 end
 
-local function PickUp(entry, ranks, index, test)
+local function PickUp(entry, ranks, index, test, exact)
     ClearCursor()
     if entry.kind == "spell" then
-        PickUpSpell(entry, ranks)
+        PickUpSpell(entry, ranks, exact)
     elseif entry.kind == "macro" then
         local found = Lookup(index, entry)
         if test then return found ~= nil end
@@ -127,37 +132,42 @@ local function Missed(result, slot, entry, test)
     return row
 end
 
-local function Restore(result, slot, entry, test, ranks, index, fresh)
+local function Restore(result, slot, entry, test, ranks, index, fresh, exact)
     result.actions = result.actions + 1
-    if not PickUp(entry, ranks, index, test) then return Missed(result, slot, entry, test) end
+    if not PickUp(entry, ranks, index, test, exact) then return Missed(result, slot, entry, test) end
     result.placed = result.placed + 1
     local new = entry.kind == "macro" and fresh[MacroKey(entry.name, entry.body)]
     if not test then PlaceAction(slot) end
     return { entry = entry, state = new and "new" or "ok" }
 end
 
-local function Run(set, test)
+local function Options()
+    return { actions = true, macros = S.Get("importMacros"), keys = S.Get("importBindings") }
+end
+
+local function Run(set, test, opts)
+    opts = opts or Options()
     local skip = set.choices and set.choices.skip or {}
     local result = { slots = {}, actions = 0, placed = 0, later = {}, macros = {} }
     local index, fresh = Capture.MacroIndex(), {}
-    if S.Get("importMacros") then index, fresh, result.macros = ImportMacros(set, test) end
+    if opts.macros then index, fresh, result.macros = ImportMacros(set, test) end
     local ranks = Capture.Ranks()
     for _, slot in ipairs(Capture.Slots()) do
         local entry = set.slots[slot]
         local row
-        if skip[slot] or (entry and not RESTORABLE[entry.kind]) then
+        if not opts.actions or skip[slot] or (entry and not RESTORABLE[entry.kind]) then
             row = { entry = entry, state = "skip" }
         elseif not entry then
             row = { state = "clear" }
             if not test and GetActionInfo(slot) then PickupAction(slot) end
         else
-            row = Restore(result, slot, entry, test, ranks, index, fresh)
+            row = Restore(result, slot, entry, test, ranks, index, fresh, opts.exact)
         end
         ClearCursor()
         result.slots[slot] = row
     end
-    if set.bindings and S.Get("importBindings") then result.bound = ImportBindings(set, test) end
+    if set.bindings and opts.keys then result.bound = ImportBindings(set, test, opts.exact) end
     return result
 end
 
-A.Import = { Describe = Describe, HighestRanks = Capture.Ranks, PickUp = PickUp, Run = Run }
+A.Import = { Describe = Describe, HighestRanks = Capture.Ranks, PickUp = PickUp, Run = Run, Options = Options }

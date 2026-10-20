@@ -91,4 +91,9 @@ local function SpellsReady(event)
     end
 end
 
-A.Pending = { events = events, Watch = Watch, Remember = Remember, SpellsReady = SpellsReady }
+local function Forget()
+    Store()[A.CharKey()] = nil
+    Watch()
+end
+
+A.Pending = { events = events, Watch = Watch, Remember = Remember, Forget = Forget, SpellsReady = SpellsReady }
