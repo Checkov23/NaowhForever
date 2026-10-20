@@ -854,6 +854,14 @@ end
 Click(Text("MODULES").parent.hit); Flush()
 Click(Text("MINIMAP ICONS").parent.hit); Flush()
 Check(GroupInspectRows() >= 3, "Group Inspect: in the sidebar, under Settings > Modules and in Minimap Icons once opened")
+local function FoldBox(title)
+    local head = Text(title).parent
+    for _, f in ipairs(frames) do
+        if f.edge and f:IsShown() and f.points.TOPLEFT and f.points.TOPLEFT[1] == head then return f, head end
+    end
+end
+local box, head = FoldBox("MINIMAP ICONS")
+Check(box and head._sep.visible and box:GetHeight() > head:GetHeight(), "an open fold draws its rows in a box, under a rule")
 local function TextCount(text)
     local n = 0
     for _, f in ipairs(frames) do
@@ -863,6 +871,8 @@ local function TextCount(text)
 end
 ns.OpenOptionsWindow("Settings"); Flush()
 Click(Text("MODULES").parent.hit); Flush()
+box, head = FoldBox("MODULES")
+Check(box and not head._sep.visible and box:GetHeight() == head:GetHeight(), "a shut fold is its header alone, boxed")
 Check(TextCount("Top Bar") == 0, "the Top Bar is part of QoL, so Settings > Modules has no row for it")
 ns.OpenOptionsWindow("Group Inspect/Settings"); Flush()
 Check(Text("Group Inspect / Settings") ~= nil, "Group Inspect has a settings page of its own")

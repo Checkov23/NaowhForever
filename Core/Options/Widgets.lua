@@ -932,6 +932,7 @@ function W:SectionHeader(parent, text, yOffset, inset, fold)
     lbl:SetText(ns.L(text))
     f._label = lbl
     local sep = ns.Solid(f, "ARTWORK", T.line, 1)
+    f._sep = sep
     sep:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 0, 0)
     sep:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, 0)
     ns.Hairline(sep, "h")
@@ -951,7 +952,30 @@ local function OnFoldClick(hit)
     UI:RefreshPage(true)
 end
 
-function W:FoldHeader(parent, text, yOffset, forceOpen)
+local function NewFoldBox(parent)
+    local box = ns.Shared.Kinds.card.New(parent)
+    box.edge:SetColor(T.line.r, T.line.g, T.line.b, 1)
+    return box
+end
+
+local function BoxFold(parent, f, text, yOffset, open)
+    local SS = ns.Shared.Settings.Style
+    f:SetHeight(SS.HEAD_H)
+    f.arrow:ClearAllPoints()
+    f.arrow:SetPoint("LEFT", f, "LEFT", SS.PAD, 0)
+    f._label:ClearAllPoints()
+    f._label:SetPoint("LEFT", f.arrow, "RIGHT", SS.CONTROL_GAP, 0)
+    f._sep:SetShown(open)
+    local box = UI.Keep(parent, "foldBox:" .. text, NewFoldBox)
+    box:SetFrameLevel(parent:GetFrameLevel())
+    box:SetPoint("TOPLEFT", f)
+    box:SetPoint("TOPRIGHT", f)
+    box._top = yOffset
+    parent._nsuiBox = box
+    return SS.HEAD_H
+end
+
+function W:FoldHeader(parent, text, yOffset, forceOpen, boxed)
     local f, h = W:SectionHeader(parent, text, yOffset, FOLD.inset, true)
     if not f.hit then
         f.arrow = f:CreateTexture(nil, "ARTWORK")
@@ -974,6 +998,7 @@ function W:FoldHeader(parent, text, yOffset, forceOpen)
         ns.Shared.Parts.PaintForeverBar(f.bar, open, true)
     end
     parent._nsuiCollapsed = not open or nil
+    if boxed and not f.bar then h = BoxFold(parent, f, text, yOffset, open) end
     return f, h
 end
 
@@ -1014,8 +1039,13 @@ function W:GroupHeader(parent, text, yOffset)
     return f, h
 end
 
-function W:EndFold(parent)
+function W:EndFold(parent, yOffset)
     parent._nsuiCollapsed = nil
+    local box = parent._nsuiBox
+    if not box then return nil, 0 end
+    parent._nsuiBox = nil
+    box:SetHeight(box._top - yOffset)
+    return box, ns.Shared.Style.CARD_GAP
 end
 
 function W:Button(parent, text, yOffset, onClick)

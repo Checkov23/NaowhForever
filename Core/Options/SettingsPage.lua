@@ -95,8 +95,10 @@ local function SearchHit(title, rows)
 end
 
 local function FoldedRows(W, parent, y, title, rows)
-    local _, h = W:FoldHeader(parent, title, y, SearchHit(title, rows)); y = y - h
-    return Rows(W, parent, y, rows)
+    local _, h = W:FoldHeader(parent, title, y, SearchHit(title, rows), true); y = y - h
+    y = Rows(W, parent, y, rows)
+    _, h = W:EndFold(parent, y)
+    return y - h
 end
 
 local function ModulesSection(W, parent, y)
@@ -680,7 +682,9 @@ function Terms:SwitchFold(_, text, _, cfg)
     return nil, 0
 end
 
-function Terms:EndFold() end
+function Terms:EndFold()
+    return nil, 0
+end
 
 function Terms:Take(row)
     if row.text == "" or row.type == "label" then return end
