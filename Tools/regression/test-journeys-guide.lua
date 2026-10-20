@@ -47,7 +47,9 @@ local function RunTimers()
     for _, fn in ipairs(run) do fn() end
 end
 
+local rxpPin = false
 local ns = {
+    RestedXPPin = function() return rxpPin end,
     JourneyQuestSpots = {
         [104] = { { IRONFORGE, 50, 50 }, { { DARNASSUS, 50, 50 }, { IRONFORGE, 50, 50 } } },
         [105] = { { DARNASSUS, 50, 50 }, { { IRONFORGE, 50, 50 } } },
@@ -378,6 +380,13 @@ env.C_Map.SetUserWaypoint({ map = DARNASSUS, x = 0.5, y = 0.5 })
 RunTimers()
 Check(not Jy.Guide.Current(), "with Journeys to Map Pins off, a pin is left alone")
 Jy.Settings.Set("mapPins", true)
+env.C_Map.ClearUserWaypoint()
+RunTimers()
+rxpPin = true
+env.C_Map.SetUserWaypoint({ map = DARNASSUS, x = 0.5, y = 0.5 })
+RunTimers()
+Check(not Jy.Guide.Current(), "a pin RestedXP's guide puts down is not a journey")
+rxpPin = false
 env.C_Map.ClearUserWaypoint()
 
 -- Removing the pin yourself ends its journey; the game clearing it as you arrive does not.

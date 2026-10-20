@@ -129,6 +129,24 @@ local function Apply()
     Sync(first)
 end
 
+function ns.RestedXPPin()
+    local rxp = _G.RXP
+    local steps = rxp and rxp.RXPFrame and rxp.RXPFrame.activeSteps
+    if type(steps) ~= "table" then return false end
+    for _, step in ipairs(steps) do
+        local list = type(step) == "table" and step.elements
+        if type(list) == "table" then
+            for _, element in ipairs(list) do
+                if element.waypointSet == true and type(element.zone) == "number" then
+                    local pos = C_Map.GetUserWaypointPositionForMap(element.zone)
+                    if pos and pos.x == element.zx and pos.y == element.zy then return true end
+                end
+            end
+        end
+    end
+    return false
+end
+
 function OnSetting(key)
     if key == "enabled" or key == "waypoints" or key == "waypointRestedXP" then Apply() end
 end

@@ -24,7 +24,7 @@ end
 
 local function Start()
     local point = C_Map.GetUserWaypoint()
-    if not point or Ours(point) or Guide.Current() then return end
+    if not point or Ours(point) or Guide.Current() or ns.RestedXPPin() then return end
     Guide.Start(TEXT_PIN, { { TEXT_PIN, point.uiMapID, point.position.x * PERCENT, point.position.y * PERCENT } })
 end
 

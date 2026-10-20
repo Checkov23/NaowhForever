@@ -125,4 +125,15 @@ Check(current and not tracking and next(frames[1].events) == nil, "module off re
 rxp.UpdateGotoSteps()
 Check(current and not tracking, "installed hooks remain inert while off")
 Check(alphaWrites == 0, "guide arrow is never touched")
+local pinAt
+env.C_Map = { GetUserWaypointPositionForMap = function(map) return pinAt and pinAt.map == map and pinAt or nil end }
+Check(ns.RestedXPPin() == false, "no guide window steps: no RestedXP pin")
+local pinned = { zone = 1429, zx = 0.4, zy = 0.6, waypointSet = true }
+rxp.RXPFrame = { activeSteps = { {}, { elements = { { tag = "goto" }, pinned } } } }
+pinAt = { map = 1429, x = 0.4, y = 0.6 }
+Check(ns.RestedXPPin() == true, "the pin a guide step placed is RestedXP's")
+pinAt = { map = 1429, x = 0.5, y = 0.6 }
+Check(ns.RestedXPPin() == false, "a pin elsewhere on the same map is not")
+pinAt, pinned.waypointSet = { map = 1429, x = 0.4, y = 0.6 }, false
+Check(ns.RestedXPPin() == false, "a step that let its pin go no longer owns it")
 print(("test-guide-waypoint: %d checks passed"):format(checks))

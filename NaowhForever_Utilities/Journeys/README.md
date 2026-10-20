@@ -42,6 +42,9 @@ NaowhForever_Utilities/Journeys/
   cleared in the same frame as `NAVIGATION_DESTINATION_REACHED` means arrived (or off the continents,
   where the journey holds). Any other clear is you removing the pin, and ends the journey; so does a
   waypoint set anywhere else, as clearing it from the navigator does.
+- A waypoint a RestedXP `.ingamewaypoint` step puts down itself (`ns.RestedXPPin`) is the guide's to
+  place and clear, not yours, so Journeys to Map Pins leaves it alone. A journey to it outlived the
+  step, as RestedXP only clears its waypoint where it put it; Follow RestedXP routes the guide's arrow.
 - Reaching the game's own destination only clears its super-tracking, not the pin itself, so the last
   stop of a journey with no quest to hand back to clears the waypoint on arrival; otherwise it would
   sit on the map pointing at where you already are.
