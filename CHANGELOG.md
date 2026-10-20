@@ -1,6 +1,63 @@
 # Changelog
 
-## Unreleased
+## 1.1.36
+
+### Added
+- Quest List: more quests across the world and Forever's new zones.
+- Buff Reminders: show each kind of reminder in the world, in dungeons, in raids, or any mix.
+- Buff Reminders: middle-click a reminder to hide it until you reload.
+- Buff Reminders: every icon does something on a click: poisons, stones and oils go on the weapon
+  that needs one (right-click for the other hand), and buffs are cast.
+- Top Bar: Shopping List (and the other feature windows) can be added as a button, with or without
+  its minimap icon.
+- Profiles: a profile string can carry your saved Action Bars sets for every class (the Action Bars
+  part on the Share card); importing adds them next to yours, keeping only their action bar
+  keybinds.
+- Campfire: with the Round look, the Cozy Sleeping Bag shows beside the campfire while you carry it
+  near one; click it to use the bag. It shows its cooldown and your Well-Rested stacks and time
+  left.
+- Map pins: quest givers with a dungeon or raid quest get a green ! on the world map, and stay on it
+  with Chains Only.
+- World map: click a dungeon or raid entrance, rare, quest giver, gathered node or Skyborne pin
+  again to remove the waypoint it placed.
+- German: the Blessings window, the gear reminders and the other new parts up to 1.1.34 now show in
+  German on German clients.
+
+### Changed
+- Quality of Life: the System tab is removed. Spell Queue Window is now on the Combat tab and HDR on
+  the Interface tab; Performance and Custom Slash Commands are gone.
+- Journeys: guidance for more quests, with reviewed dungeon entrances and faction-specific turn-ins.
+- Scout: abilities and stats for more dungeon creatures and encounter adds.
+- Consumable Bar: a weapon enhancement goes straight on the weapon it tracks, right-click for the
+  other hand.
+- Quality of Life: Gamble is removed.
+- Scout: its settings are now on QoL > Interface, after Tooltips.
+
+### Fixed
+- Scout: more of Forever's beasts show as Tameable on the pet family line for hunters.
+- Journeys: completed quests without a known turn-in no longer revisit their objectives or item
+  vendors.
+- Buff Reminders: the item menu's icons are small again, icons light up under the mouse and look
+  pressed when clicked, and a click no longer speeds up the glow.
+- Action Bars: Stop Auto Push Spells to Bars is back, on the Action Bars settings page (New Spells).
+- Saved Quest Rewards: each class keeps its own picks, so an alt no longer takes another class's
+  reward. Rewards saved before this update show as Not confirmed and are not handed in for you until
+  you Alt-click them again on that class.
+- Bag marks: with Baganator, the item level and upgrade arrow no longer stay on a bag slot after its
+  item moves, and they still show after you close and reopen your bags.
+- Dungeon Quest Tracker: Forever's follow-up quests (Earthen Echo, Heartwoven, Prehistoric Prism)
+  show as part of the quest they follow.
+- Dungeon Quest Tracker: the waypoints for Changing Tastes and A Green Sample go to their quest
+  givers, not the dungeon entrance.
+- Dungeon Quest Tracker: Starving Arcane is listed for the Alliance only.
+- Map pins: a quest giver with only repeatable quests keeps the blue ! once its quests no longer
+  give experience.
+- World map: Ctrl+Click removes a waypoint that sits on a Naowh map pin (dungeon and raid entrances,
+  rares and the rest), instead of placing a new one.
+- Professions: Disenchant Deals and the Disenchant window no longer list items that can't be
+  disenchanted, and unmet Enchanting requirements are now red in detailed tooltips.
+- German: the raid buff range settings and the deal tooltip visibility settings no longer stay
+  English.
 
 ## 1.1.35
 

@@ -9,7 +9,7 @@ local TEXT_LATEST = ns.L("Latest, ")
 local TEXT_NEXT_RELEASE = "Next Release"
 
 local NOTES = {
-    { title = "Unreleased", lines = {
+    { title = "1.1.36", lines = {
         "Buff Reminders: choose where each kind of reminder shows (world, dungeons, raids), "
             .. "middle-click one to hide it until you reload, and click an icon to use it: poisons, "
             .. "stones and oils go on the weapon that needs one (right-click for the other hand) and "
