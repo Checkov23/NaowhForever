@@ -1218,6 +1218,9 @@ NaowhForever_QoL/
 - `SoftTargetInteract` 3 keeps the soft target on, and `SoftTargetInteractOnlyInRange` 0 lets it pick
   objects beyond reach, so they can light up dim before you get there. The range is capped at 15
   yards on the page because the client drops the soft target near there whatever is asked.
+- `SoftTargetInteract` is the game's Enable Interact Key checkbox (3 checked, 1 gamepad only), so
+  Glimmer sets it only when it is turned on, not on every login. A player who unchecks it keeps it
+  off, and the Glimmer card says nothing will light up.
 - `SoftTargetIconGameObject` 1 is needed too: with it at 0 the game picks the object as the soft
   target but never makes its nameplate, so nothing lights up. A setting Glimmer adds later is saved
   into the old values the first time it is written, so turning Glimmer off puts it back as well.

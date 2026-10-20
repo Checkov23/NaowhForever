@@ -13,6 +13,7 @@ local Group = Settings.Group
 
 local OFF = ns.L("Turn on Glimmer")
 local TEXT_RESTART = ns.L("Restart the game to take the sparkle off. A reload is not enough.")
+local TEXT_INTERACT = ns.L("Enable Interact Key is off in the game's Controls settings, so nothing lights up.")
 local TEXT_RESTORE_ASK = ns.L("Put back the game settings Glimmer changed and turn Glimmer off?")
 local TEXT_NOTHING = ns.L("Nothing to put back.")
 local STAGE_H = 150
@@ -117,7 +118,8 @@ local function Detail()
     return text .. " " .. ns.L("Quest items keep their sparkle.")
 end
 
-local function SparkleNote()
+local function Note()
+    if G.On() and not CVars.InteractOn() then return TEXT_INTERACT end
     if CVars.sparkleShown and not (G.On() and S.Get("questSparkle")) then return TEXT_RESTART end
 end
 
@@ -173,7 +175,7 @@ page:Card({
         { key = "questSparkle", label = "Quest Item Sparkle", toggle = true, needs = Enabled, why = OFF,
           help = "The game's own sparkle on every quest item, kept on through graphics presets." },
     },
-    note = SparkleNote,
+    note = Note,
 })
 
 page:Card({

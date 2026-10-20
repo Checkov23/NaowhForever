@@ -6512,6 +6512,7 @@ L["Mining"] = true
 L["Herbalism"] = true
 L["Turn on Glimmer"] = true
 L["Restart the game to take the sparkle off. A reload is not enough."] = true
+L["Enable Interact Key is off in the game's Controls settings, so nothing lights up."] = true
 L["Put back the game settings Glimmer changed and turn Glimmer off?"] = true
 L["Nothing to put back."] = true
 L["Glimmer is off"] = true
