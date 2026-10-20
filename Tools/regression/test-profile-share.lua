@@ -522,6 +522,39 @@ Case("saved quest items are checked whole: IDs, types and size", function()
     assert(qol == nil or qol.questRewards == nil, "import checks again")
 end)
 
+Case("saved quest items keep each class's picks", function()
+    local w = World()
+    local function Picks(picks)
+        return assert(w.ns.DecodeProfile(OldString({ questRewards = picks }))).parts.questRewards
+    end
+    local picks = Picks({ DRUID = { [100] = 111 }, PALADIN = { [100] = 222, [200] = 333 }, [300] = 444 })
+    assert(picks.DRUID[100] == 111 and picks.PALADIN[200] == 333 and picks[300] == 444)
+    assert(Picks({ druid = { [100] = 111 } }) == nil and Picks({ DRUID = { [100] = "x" } }) == nil)
+    assert(Picks({ DRUID = { bad = 111 } }) == nil and Picks({ DRUID = 5 }) == nil)
+    assert(Picks({ DRUID = {} }) == nil, "an empty class is no part")
+    assert(Picks({ DRUID = { [100] = -111 } }).DRUID[100] == -111, "a pick not confirmed is a negative ID")
+    assert(Picks({ [100] = -111 }) == nil and Picks({ DRUID = { [100] = -1.5 } }) == nil)
+    local big = { DRUID = {}, PALADIN = {} }
+    for i = 1, 1000 do big.DRUID[i], big.PALADIN[i] = 1000 + i, 2000 + i end
+    assert(Picks(big).PALADIN[1000] == 3000)
+    big.PALADIN[1001] = 5
+    assert(Picks(big) == nil, "the cap counts every class")
+
+    w.db.profiles.Default.qol.questRewards = { DRUID = { [100] = 111, [300] = -333 }, PALADIN = {}, [200] = 222 }
+    local parts = assert(w.ns.DecodeProfile(assert(w.ns.ExportProfile({ questRewards = true })))).parts
+    assert(parts.questRewards.DRUID[100] == 111 and parts.questRewards.DRUID[300] == -333
+        and parts.questRewards[200] == 222 and parts.questRewards.PALADIN == nil)
+    local list = w.ns.ProfileStringParts({ parts = parts })
+    assert(list[1].key == "questRewards" and list[1].detail == "3 quest rewards")
+    w.db.profiles.Default.qol.questRewards = { DRUID = {} }
+    local none = assert(w.ns.DecodeProfile(assert(w.ns.ExportProfile({ settings = true, questRewards = true })))).parts
+    assert(none.questRewards == nil, "no picks in any class, no part")
+    w.ns.ImportProfile({ name = "C", parts = parts }, ALL, "Classes")
+    local got = w.db.profiles.Classes.qol.questRewards
+    assert(got.DRUID[100] == 111 and got.DRUID[300] == -333 and got[200] == 222,
+        "classless picks wait for the first class to log in, and one not confirmed stays so")
+end)
+
 Case("a string from before Saved Quest Items had a part still brings its picks", function()
     local w = World()
     local parts = assert(w.ns.DecodeProfile(OldString({ settings = { qol = { fastLoot = true,

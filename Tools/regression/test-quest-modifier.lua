@@ -43,6 +43,7 @@ local env = setmetatable({
     InCombatLockdown = function() return combat end,
     IsInGroup = function() return true end,
     UnitIsPlayer = function() return false end,
+    UnitClass = function() return "Druid", "DRUID" end,
     GetQuestID = function() return 1 end,
     QuestGetAutoAccept = function() return false end,
     AcceptQuest = Log("AcceptQuest"),

@@ -141,16 +141,32 @@ end
 local function ValidQuestRewards(picks)
     if type(picks) ~= "table" then return false end
     local count = 0
-    for questID, itemID in pairs(picks) do
-        count = count + 1
-        if count > MAX_QUEST_REWARDS or not PositiveID(questID) or not PositiveID(itemID) then return false end
+    for key, value in pairs(picks) do
+        if type(key) == "string" and key:match("^%u+$") and type(value) == "table" then
+            for questID, itemID in pairs(value) do
+                count = count + 1
+                local item = type(itemID) == "number" and math.abs(itemID)
+                if count > MAX_QUEST_REWARDS or not PositiveID(questID) or not PositiveID(item) then return false end
+            end
+        else
+            count = count + 1
+            if count > MAX_QUEST_REWARDS or not PositiveID(key) or not PositiveID(value) then return false end
+        end
     end
     return true
 end
 
 local function CleanQuestRewards(picks)
     local out = {}
-    for questID, itemID in pairs(picks) do out[questID] = itemID end
+    for key, value in pairs(picks) do
+        if type(value) == "table" then
+            local class = {}
+            for questID, itemID in pairs(value) do class[questID] = itemID end
+            out[key] = next(class) and class or nil
+        else
+            out[key] = value
+        end
+    end
     return next(out) and out or nil
 end
 
@@ -263,8 +279,9 @@ end
 
 local function CollectQuestRewards(root, budget)
     local picks = type(root.qol) == "table" and root.qol.questRewards
-    if type(picks) ~= "table" or not next(picks) then return nil end
-    return Plain(picks, 1, budget)
+    if type(picks) ~= "table" then return nil end
+    picks = CleanQuestRewards(picks)
+    return picks and Plain(picks, 1, budget)
 end
 
 local function CollectBisLists(account, budget)
@@ -420,6 +437,12 @@ local function ListCount(data)
     return n
 end
 
+local function QuestRewardCount(data)
+    local n = 0
+    for _, value in pairs(data) do n = n + (type(value) == "table" and Count(value) or 1) end
+    return n
+end
+
 local function PartDetail(key, data)
     if key == "settings" then
         local n = Count(data)
@@ -427,7 +450,7 @@ local function PartDetail(key, data)
         return TEXT_MODULES:format(n)
     end
     if key == "macros" then return TEXT_CLASS_MACROS:format(ClassMacroCount(data)) end
-    if key == "questRewards" then return TEXT_QUEST_REWARDS:format(Count(data)) end
+    if key == "questRewards" then return TEXT_QUEST_REWARDS:format(QuestRewardCount(data)) end
     if LIST_NOUN[key] then return ("%d %s"):format(ListCount(data), LIST_NOUN[key]) end
 end
 

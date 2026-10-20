@@ -3,6 +3,7 @@ local ns = _G.NaowhForever
 
 local S = ns.QoLSettings
 
+local CLASS = select(2, UnitClass("player"))
 local CHOICE_ITEM_ID = 6
 local SKIP_HELD = { ALT = IsAltKeyDown, CTRL = IsControlKeyDown, SHIFT = IsShiftKeyDown }
 local AUTO_EVENTS = { "QUEST_DETAIL", "QUEST_ACCEPT_CONFIRM", "QUEST_PROGRESS", "QUEST_COMPLETE",
@@ -17,7 +18,7 @@ local GOSSIP_ICON_PATHS = { "VendorGossipIcon", "TrainerGossipIcon", "BankerGoss
 local GOSSIP_ICON_DIR = "Interface\\GossipFrame\\"
 
 local TEXT_CLEARED = ns.L("Cleared the saved reward for %s.")
-local TEXT_SAVED = ns.L("%s is your reward for %s in this profile.")
+local TEXT_SAVED = ns.L("%s is this class's reward for %s.")
 local TEXT_ITEM = ns.L("item ")
 local TEXT_BY_HAND = ns.L("All by hand")
 
@@ -39,8 +40,17 @@ end
 
 local function Picks()
     local db = S.DB()
-    db.questRewards = db.questRewards or {}
-    return db.questRewards
+    local all = db.questRewards or {}
+    db.questRewards = all
+    local picks = all[CLASS] or {}
+    all[CLASS] = picks
+    for questID, itemID in pairs(all) do
+        if type(questID) == "number" then
+            if not picks[questID] and type(itemID) == "number" then picks[questID] = -itemID end
+            all[questID] = nil
+        end
+    end
+    return picks
 end
 
 local function Titles()
@@ -56,7 +66,7 @@ end
 
 local function PickedChoice()
     local picked = On("questRewardPicks") and Picks()[GetQuestID()]
-    if not picked then return end
+    if not picked or picked < 0 then return end
     for i = 1, GetNumQuestChoices() do
         if ChoiceItemID(i) == picked then return i end
     end
@@ -107,7 +117,9 @@ function QuestRewards.List(out)
 end
 
 function QuestRewards.ItemID(questID)
-    return Picks()[questID]
+    local itemID = Picks()[questID]
+    if itemID and itemID < 0 then return -itemID, true end
+    return itemID
 end
 
 function QuestRewards.Title(questID)
@@ -287,6 +299,7 @@ hooksecurefunc(S, "Set", function(key)
     if key == "enabled" or key:find("^quest") or key:find("^gossip") then Apply() end
 end)
 hooksecurefunc(ns, "Apply", Apply)
+hooksecurefunc(ns, "Apply", Changed)
 
 local boot = CreateFrame("Frame")
 boot:RegisterEvent("PLAYER_LOGIN")
@@ -310,7 +323,7 @@ page:Card({
               .. "or the first quest on offer. Works with the two options above." },
         { key = "questRewardPicks", label = "Saved Quest Rewards", toggle = true,
           help = "Alt-click a reward you can choose, in the quest log or at the quest giver, to save "
-              .. "it for that quest in this profile; Alt-click it again to clear it. It is selected "
+              .. "it for that quest on this class; Alt-click it again to clear it. It is selected "
               .. "when you hand the quest in, and Hand In Quests takes it for you." },
         { key = "questShare", label = "Share Quests With Group", toggle = true,
           help = "While you are in a group, shares each quest you accept from an NPC with the "

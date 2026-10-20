@@ -317,6 +317,12 @@ Profile strings
   string from before the part existed carries them inside Settings; the decode lifts them out into
   the part, and a `questRewards` part wins over them. The part is checked whole (quest and item
   IDs whole numbers from 1 to 2^31 - 1, at most 2000 picks), and one bad pick leaves it all out.
+- The picks are kept per class (`questRewards[CLASS]`, a class token of capital letters). A string
+  from an older build carries one classless map; it is imported as it is, and the first class to
+  use that profile takes it, as with picks saved before the change. A pick it has not confirmed is
+  kept as the negative item ID and passes the check. Classes with no picks are left
+  out of the string. An older build's import rejects the per-class shape, so a string from this
+  build brings it no picks.
 - A string from an older build has its consumables inside a `smartReminders` or `reminders` part;
   the decode takes only those from either, and a `consumables` part wins over both. Older builds
   ignore the `consumables` key, so a string from this build brings them no consumables.
