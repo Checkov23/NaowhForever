@@ -6,7 +6,8 @@ local S = A.Settings
 local Sets = ns.ActionBarSets
 local Settings = ns.Shared.Settings
 
-local ORDER_IMPORTING = 10
+local ORDER_IMPORTING, ORDER_NEW_SPELLS = 10, 20
+local AUTO_PUSH, PUSH_OFF, PUSH_ON = "AutoPushSpellToActionBar", "0", "1"
 local BARS_OFF = ns.L("Turn on Action Bars")
 local TEXT_HIGHEST, TEXT_SAVED = ns.L("Highest ranks"), ns.L("Saved ranks")
 local TEXT_MACROS, TEXT_KEYBINDS = ns.L("macros"), ns.L("keybinds")
@@ -14,6 +15,14 @@ local TEXT_NONE = ns.L("None")
 local TEXT_FILLS, TEXT_SAVES = ns.L("fills in later"), ns.L("saves on logout")
 
 local On = A.On
+
+local function PushStopped()
+    return C_CVar.GetCVar(AUTO_PUSH) == PUSH_OFF
+end
+
+local function StopPush(on)
+    C_CVar.SetCVar(AUTO_PUSH, on and PUSH_OFF or PUSH_ON)
+end
 
 local function AutoImportChoices()
     local values, order = { [""] = TEXT_NONE }, { "" }
@@ -68,5 +77,15 @@ page:Card({
         { key = "saveOnLogout", label = "Save on Logout", toggle = true, needs = On, why = BARS_OFF,
           help = "When you log out, the set this character saved last is saved again with your bars, "
               .. "macros and keybinds as they are." },
+    },
+})
+
+page:Card({
+    id = "newSpells", name = "New Spells", order = ORDER_NEW_SPELLS,
+    help = "What the game does with a spell you have just learned.",
+    search = "auto push spells action bar spellbook learned",
+    rows = {
+        { label = "Stop Auto Push Spells to Bars", toggle = true, get = PushStopped, set = StopPush,
+          help = "Keeps newly learned spells in your spellbook instead of on your bars." },
     },
 })

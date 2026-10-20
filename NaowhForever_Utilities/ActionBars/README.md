@@ -91,12 +91,17 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   The choice is kept per class (`autoImportSets`, class token to set name), follows a rename and is
   cleared when its set is deleted. `UnitXP` must be 0 too, so an existing level 1 alt is left alone.
 - `/nf bars restore` still imports, as it did before `import` was its name.
+- Stop Auto Push Spells to Bars (the New Spells card) is the game's `AutoPushSpellToActionBar` setting itself,
+  read and written as it is, with no saved key: the game keeps it, so it stays as the player left it on the
+  old QoL > System page, and it works whether Action Bars is on or not.
 
 ## Checking
 
 - `luacheck NaowhForever_Utilities/ActionBars` from the repo root.
 - `lua Tools/regression/test-action-bars.lua`: saving, importing, testing, Fill In and the
   commands against a small fake of the bars, spellbook, macros and cursor.
+- `lua Tools/regression/test-action-bars-new-spells.lua`: the New Spells card's toggle against a fake of the
+  game's setting.
 - `lua Tools/regression/test-action-bars-window.lua`: the window's three views built from the
   real files, the builder's clicks becoming the saved set's choices, and the preview's Import.
 
