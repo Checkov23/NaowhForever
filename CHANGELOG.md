@@ -1,6 +1,29 @@
 # Changelog
 
-## Unreleased
+## 1.1.37
+
+### Added
+- German: per-class quest rewards, New Spells and the other new parts up to 1.1.36 now show in
+  German on German clients.
+- Action Bars: bar sets keep your pet bar's keybinds, and website codes can bind them too (Hunters
+  and Warlocks).
+- Action Bars: Export to Website, on the home and in a set's More menu, gives a code you paste on
+  naowh.gg/forever Action Bars with Paste a code.
+
+### Changed
+- Action Bars: a slot set to Highest places the best rank you know, any other slot keeps its exact
+  rank, so a Rank 1 spell kept for downranking stays Rank 1.
+- Action Bars: the whole window now looks like the website's Action Bars. New Bar Set and the import
+  preview show your bars on the site's strip (Bar 3, Bar 2 over Bar 1, Bar 4, the pet bar's keys and
+  form chips): click a bar's name to leave it out or a button to skip a slot. Home, its set rows and
+  popups match the site.
+
+### Fixed
+- Action Bars: Polymorph: Pig is no longer swapped for Polymorph's top rank, and website codes find
+  spell ranks on non-English clients.
+- Action Bars: the import preview says "1 macro", not "1 macros".
+- BiS List: the Character Panel, Inspect Panel and Slot Marks stay off with the Gamepad interface
+  style, so the gamepad's bindings keep working in combat.
 
 ## 1.1.36
 
