@@ -124,6 +124,14 @@ local function RangeMoves(entry)
     return false
 end
 
+local function SetAction(cell, entry)
+    if entry.item and entry.slot then ItemBar.SetWeapon(cell, entry.item, entry.slot) else ItemBar.SetItem(cell, entry.item) end
+    cell.slot = entry.slot
+    cell:SetAttribute("spell1", entry.spell)
+    cell:SetAttribute("unit1", entry.unit)
+    if entry.spell then cell:SetAttribute("type1", "spell") elseif not entry.item then cell:SetAttribute("type1", nil) end
+end
+
 local function Show(list)
     local size = S.Get("iconSize")
     local moving, shown = false, 0
@@ -135,7 +143,7 @@ local function Show(list)
             Cell.Place(cell, frame, shown, size, entry.icon, entry.count)
             cell.rangeIn, cell.rangeMissing = nil, nil
             cell.items, cell.key = entry.items, entry.key
-            ItemBar.SetItem(cell, entry.item)
+            SetAction(cell, entry)
             ShowTimer(cell, entry.aura)
             cell:Show()
             PaintRange(cell, entry, inRange)

@@ -644,6 +644,10 @@ do
     s.enchant.main = nil
     s.fire('UNIT_INVENTORY_CHANGED', 'player')
     check('it shows once the enchant is gone', stone.shown)
+    check('a click puts the stone on the hand it tracks, a right-click on the other',
+        stone.attrs.type1 == 'macro' and stone.attrs.item1 == nil
+        and stone.attrs.macrotext1 == '/use item:12404\n/use 16'
+        and stone.attrs.type2 == 'macro' and stone.attrs.macrotext2 == '/use item:12404\n/use 17')
     s.set('consumableBarItemFlags', { [13446] = { used = true }, [20007] = { used = true },
         [12404] = { used = true, track = 'offhand' } })
     s.enchant.main = 1800 * 1000

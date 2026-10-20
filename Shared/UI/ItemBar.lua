@@ -15,6 +15,8 @@ local TEXT_RANGE = { 6, 32, 1 }
 local COUNT_RANGE = { 8, 32, 1 }
 local OFFSET_RANGE = { -50, 50, 1 }
 local ITEM_LINK = "item:"
+local MAIN_HAND, OFF_HAND = 16, 17
+local WEAPON_MACRO = "/use item:%d\n/use %d"
 local LABEL_COUNT, LABEL_KEYS = "Show Count", "Show Keybinds"
 
 local OUTSIDE = {
@@ -103,10 +105,24 @@ function ItemBar.SecureButton(parent, name)
 end
 
 function ItemBar.SetItem(button, itemID)
-    if itemID == button.itemID then return end
-    button.itemID = itemID
+    if itemID == button.itemID and not button.weaponSlot then return end
+    button.itemID, button.weaponSlot = itemID, nil
     button:SetAttribute("type1", itemID and "item" or nil)
     button:SetAttribute("item1", itemID and (ITEM_LINK .. itemID) or nil)
+    button:SetAttribute("type2", nil)
+    button:SetAttribute("macrotext1", nil)
+    button:SetAttribute("macrotext2", nil)
+end
+
+function ItemBar.SetWeapon(button, itemID, slot)
+    slot = slot or MAIN_HAND
+    if itemID == button.itemID and slot == button.weaponSlot then return end
+    button.itemID, button.weaponSlot = itemID, slot
+    button:SetAttribute("item1", nil)
+    button:SetAttribute("type1", "macro")
+    button:SetAttribute("type2", "macro")
+    button:SetAttribute("macrotext1", WEAPON_MACRO:format(itemID, slot))
+    button:SetAttribute("macrotext2", WEAPON_MACRO:format(itemID, slot == MAIN_HAND and OFF_HAND or MAIN_HAND))
 end
 
 function ItemBar.Shape(button, width, height)

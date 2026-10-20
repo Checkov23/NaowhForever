@@ -8,8 +8,8 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
 - **Buffs & Consumables:** a row of icons for missing food, flask and elixir buffs from the
   consumables you watch, class buffs missing in your group, and your own class buff (armor, Inner
   Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
-  shows, or hover it to pick another carried item. Middle-click one to hide it until you reload. The worn
-  gear and fishing pole reminders moved to QoL > Loot & Items > Gear Reminders
+  shows or cast the buff, or hover it to pick another carried item. Middle-click one to hide it until you
+  reload. The worn gear and fishing pole reminders moved to QoL > Loot & Items > Gear Reminders
   (`NaowhForever_QoL/Loot/GearReminders.lua`).
 - **Campfire:** in two looks on one mover. Round, a camp icon with a time ring and a countdown;
   Simple, a bar in the windows' backdrop with the campfire at its left, the camp's bonuses with
@@ -70,6 +70,14 @@ NaowhForever_Combat/AuraBuffs/
 
 ## Why
 
+- Every icon in the row does something on a click. A consumable uses its item. A poison, stone or oil
+  goes on the weapon that lacks one (`ItemBar.SetWeapon`: the item, then `/use` on that slot, since
+  using it alone only asks which item to put it on); a right-click puts it on the other hand, and the
+  hover menu's items go on the same weapon. A rogue's Poisons reminder uses the best poison carried
+  (`D.POISON_ITEMS`, the strongest first) and offers the rest in the menu; with none carried it does
+  nothing. A personal buff casts its spell (Hunter's Mark on the target), and a raid buff you know is
+  cast on the first group member missing it, read when the row last refreshed, out of combat. A raid
+  buff only another class can cast does nothing.
 - In combat the client refuses addons the player's auras outright (`GetAuraDataByIndex` errors,
   `GetPlayerAuraBySpellID` returns nil with the buff up), and it withdraws them at boss pulls
   before `InCombatLockdown()` turns true. Every read is gated on

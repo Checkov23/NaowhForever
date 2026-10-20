@@ -457,6 +457,10 @@ What a comment in the code used to say, in short. The house rules behind it are 
 
 ### Item bars (`UI/ItemBar.lua`, `UI/Anchor.lua`, `Game/ActionKeys.lua`)
 
+- A weapon item (a poison, stone or oil) used on its own only asks which item to put it on, so
+  `ItemBar.SetWeapon` makes the button a macro that uses it and then that weapon slot: the left click
+  on the slot given (the main hand by default), the right click on the other hand. `ItemBar.SetItem`
+  turns a button back into a plain item.
 - `ActionKeys.Text` writes a mouse button as its modifiers' letters and M with its number (SM5), as
   action bar addons show it: the game's short text still spells out "s-Mouse Button 5". Every other key
   keeps the game's short text.

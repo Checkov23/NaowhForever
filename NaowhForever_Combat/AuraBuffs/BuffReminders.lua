@@ -342,17 +342,18 @@ local function IsTank(unit)
 end
 
 local function Missing(family, units)
-    local missing = 0
+    local missing, first = 0, nil
     if units then wipe(units) end
     for m = 1, memberCount do
         local member = members[m]
         if not (family.skip and family.skip[member.class]) and not (family.skipTanks and IsTank(member.unit))
             and not Find(member.buffs, family.spells) then
             missing = missing + 1
+            first = first or member.unit
             if units then units[missing] = member.unit end
         end
     end
-    return missing
+    return missing, first
 end
 
 local function RaidBuffs(list, playerBuffs)
@@ -368,10 +369,11 @@ local function RaidBuffs(list, playerBuffs)
                 units = missingUnits[family.key]
                 if not units then units = {}; missingUnits[family.key] = units end
             end
-            local missing = Missing(family, units)
+            local missing, first = Missing(family, units)
             if missing > 0 then
                 list[#list + 1] = { icon = C_Spell.GetSpellTexture(family.spells[1]), key = family,
-                    count = memberCount > 1 and missing, rangeUnits = units, rangeSpell = units and spell }
+                    spell = spell or nil, unit = spell and first or nil, count = memberCount > 1 and missing,
+                    rangeUnits = units, rangeSpell = units and spell }
             end
         end
     end
@@ -397,13 +399,12 @@ local function SlotEnchanted(weaponSlot, warn)
     return false
 end
 
-local function Enchanted(slots, warn)
+local function MissingSlot(slots, warn)
     for _, slot in ipairs(slots) do
         if GetInventoryItemID("player", slot) and not SlotEnchanted(slot == 16 and 0 or 1, warn) then
-            return false
+            return slot
         end
     end
-    return true
 end
 
 local function WeaponSlots()
@@ -431,12 +432,13 @@ end
 local function WeaponEnhancement(list)
     if OwnWeaponBuff() then return end
     local slots = WeaponSlots()
-    if #slots == 0 or Enchanted(slots, S.Get("consumablesMinutes") * SECONDS) then return end
+    local slot = #slots > 0 and MissingSlot(slots, S.Get("consumablesMinutes") * SECONDS)
+    if not slot then return end
     local item = FirstCarried(D.WEAPON_ITEMS)
     if not item and Carried("weapon") then return end
     local shown, used = Shown(D.WEAPON_ITEMS, LastIcon("weapon"), item)
     list[#list + 1] = { icon = shown or D.WEAPON_ICONS[D.WEAPON_ICON_ITEM], items = D.WEAPON_ITEMS,
-        item = used, key = "weapon" }
+        item = used, slot = slot, key = "weapon" }
 end
 
 local function TargetHas(spells)
@@ -458,7 +460,7 @@ local function EliteTarget()
 end
 
 local function Has(family, buffs, warn)
-    if family.weapons then return Enchanted(family.weapons, warn) end
+    if family.weapons then return MissingSlot(family.weapons, warn) == nil end
     if family.target then return not EliteTarget() or TargetHas(family.spells) end
     local aura = Find(buffs, family.spells, family.own)
     local duration = aura and not Secret(aura.duration) and aura.duration or nil
@@ -476,7 +478,16 @@ local function PersonalBuffs(list, buffs)
                 spell = lastImbue
             end
             local has, aura = Has(family, buffs, warn)
-            if not has then list[#list + 1] = { icon = C_Spell.GetSpellTexture(spell), aura = aura, key = family } end
+            if not has then
+                local entry = { icon = C_Spell.GetSpellTexture(spell), aura = aura, key = family }
+                if family.items then
+                    entry.items, entry.item = family.items, FirstCarried(family.items)
+                    entry.slot = MissingSlot(family.weapons, warn)
+                else
+                    entry.spell, entry.unit = spell, family.target and "target" or nil
+                end
+                list[#list + 1] = entry
+            end
         end
     end
 end

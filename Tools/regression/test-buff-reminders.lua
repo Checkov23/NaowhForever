@@ -154,9 +154,15 @@ local function Fixture(opts)
         UI = { AttachMover = function() return NewFrame() end, ModuleSettings = function() return S end },
         Shared = { Style = dofile("Tools/regression/shared_style.lua"),
             ItemBar = { SetItem = function(button, itemID)
-                button.itemID = itemID
+                button.itemID, button.weaponSlot = itemID, nil
                 button:SetAttribute("type1", itemID and "item" or nil)
                 button:SetAttribute("item1", itemID and ("item:" .. itemID) or nil)
+                button:SetAttribute("macrotext1", nil)
+            end, SetWeapon = function(button, itemID, slot)
+                button.itemID, button.weaponSlot = itemID, slot
+                button:SetAttribute("type1", "macro")
+                button:SetAttribute("item1", nil)
+                button:SetAttribute("macrotext1", "/use item:" .. itemID .. "\n/use " .. slot)
             end },
             Parts = { HUD_OUTLINES = { { NONE = "None", [""] = "Shadow", OUTLINE = "Outline" }, { "NONE", "", "OUTLINE" } },
             Press = function(button) rawset(button, "pressLook", true) end,
@@ -1257,7 +1263,8 @@ do
     Check("mage: ice armor missing", t.Shown(), "spell:7302")
     for _, f in ipairs(t.frames) do
         if rawget(f, "items") == nil and rawget(f, "count") and f.shown then
-            Check("a spell reminder uses no item", f.attributes.type1, nil)
+            Check("a spell reminder casts its spell, with no item", (f.attributes.type1 or "") .. " "
+                .. tostring(f.attributes.spell1) .. " " .. tostring(f.attributes.item1), "spell 7302 nil")
         end
     end
     t.state.auras.player = { { 168, 1700, 1800 } }
@@ -1313,6 +1320,34 @@ do
     t.state.weapons[17] = 115
     t.Advance(185)
     Check("woken at two minutes left", t.Shown(), "spell:2842")
+end
+
+-- Every reminder does something on a click: a poison or stone goes on the weapon that lacks one, a buff is cast.
+do
+    local function Clicks(t)
+        for _, f in ipairs(t.frames) do
+            if rawget(f, "count") and f.shown and rawget(f, "attributes") then
+                local a = f.attributes
+                return (a.type1 or "") .. " " .. tostring(a.macrotext1 or a.spell1 or a.item1) .. " " .. tostring(a.unit1)
+            end
+        end
+    end
+    local t = Fixture({ units = { player = "ROGUE" }, known = { [2842] = true }, bags = { 6947, 8928 },
+        weapons = { [16] = 600, [17] = false } })
+    t.Login()
+    Check("a poison goes on the unpoisoned hand, the best one carried first", Clicks(t),
+        "macro /use item:8928\n/use 17 nil")
+    t = Fixture({ units = { player = "ROGUE" }, known = { [2842] = true }, weapons = { [16] = false } })
+    t.Login()
+    Check("no poison carried: nothing to use", Clicks(t), " nil nil")
+    t = Fixture({ units = { player = "MAGE" }, known = { [168] = true } })
+    t.Login()
+    Check("a personal buff is cast", Clicks(t), "spell 168 nil")
+    t = Fixture({ settings = { raidBuffs = true }, units = { player = "MAGE", party1 = "PRIEST" }, group = "party",
+        known = { [10157] = true },
+        auras = { player = { { 10157, 3000, 3600 } } } })
+    t.Login()
+    Check("a raid buff is cast on the first one missing it", Clicks(t), "spell 10157 party1")
 end
 
 -- An enchant the game reports with no time left counts as up and arms no wake timer.
@@ -1628,7 +1663,7 @@ do
     local cell
     for _, f in ipairs(t.frames) do if rawget(f, "items") and f.shown then cell = f end end
     Check("Last Used oil shown with its classic icon", t.Shown(), BRILLIANT)
-    Check("and clicking it uses that oil", cell.attributes.item1, "item:20749")
+    Check("and clicking it uses that oil", (cell.attributes.macrotext1 or ""):match("^/use (item:%d+)"), "item:20749")
     cell.scripts.OnEnter(cell)
     local popup
     for _, f in ipairs(t.frames) do if rawget(f, "owner") == cell then popup = f end end
@@ -1638,13 +1673,13 @@ do
     t.Fire("BAG_UPDATE_DELAYED")
     t.Advance(0.5)
     Check("Last Used oil gone: the carried one's classic icon", t.Shown(), WIZARD)
-    Check("and clicking it uses the carried one", cell.attributes.item1, "item:20750")
+    Check("and clicking it uses the carried one", (cell.attributes.macrotext1 or ""):match("^/use (item:%d+)"), "item:20750")
     t.state.bags = { 20750, 20749 }
     t.Set("buffIconMode", "default")
     account.lastIcons.weapon = "item:20749"
     t.Set("buffIconMode", "last")
     Check("an oil saved by an older version picks that oil", t.Shown(), BRILLIANT)
-    Check("and clicking it uses that oil too", cell.attributes.item1, "item:20749")
+    Check("and clicking it uses that oil too", (cell.attributes.macrotext1 or ""):match("^/use (item:%d+)"), "item:20749")
 end
 
 -- The gear reminders moved to QoL (test-gear-reminders.lua): an old profile's switches add nothing to the row.
