@@ -187,14 +187,18 @@ local function World(known)
         UnitName = function() return w.name or "Preview" end,
         UnitLevel = function() return w.level end,
         UnitXP = function() return w.xp or 0 end,
+        IsInInstance = function() return w.instance ~= nil, w.instance or "none" end,
+        UnitIsDeadOrGhost = function() return w.ghost == true end,
         GetRealmName = function() return "Realm" end,
         CreateFrame = function()
             local f = { registered = {} }
             f.RegisterEvent = function(self, event) self.registered[event] = true end
             f.UnregisterEvent = function(self, event) self.registered[event] = nil end
+            f.UnregisterAllEvents = function(self) self.registered = {} end
+            -- Sets.lua's frame first, then AutoLoad.lua's.
             f.SetScript = function(self, _, fn)
                 self.handler = fn
-                w.events = self
+                if w.events then w.autoEvents = self else w.events = self end
             end
             return f
         end,
@@ -972,5 +976,223 @@ Case("changing Fill In Later during the fight does not drop the wait for the end
     n.combat = false
     n.events.handler(n.events, "PLAYER_REGEN_ENABLED")
     assert(Bars(n) == "1=spell598 3=Pull", Bars(n))
+end)
+Case("an import backs up the bars first, and undo puts them back with their keys", function()
+    local w = World({ 2055, 598 })
+    w.bars = { [1] = Spell(2055), [2] = Macro("Pull") }
+    w.macros = { { name = "Pull", icon = 1, body = "/say pull" } }
+    w.binds = { { "ACTIONBUTTON1", "1" }, { "ACTIONBUTTON2", "2" } }
+    w.run("save Before")
+    w.bars = { [3] = Spell(598) }
+    w.binds = { { "ACTIONBUTTON3", "3" } }
+    w.run("save Raid")
+    w.bars = { [1] = Spell(2055), [2] = Macro("Pull") }
+    w.binds = { { "ACTIONBUTTON1", "1" }, { "ACTIONBUTTON2", "2" } }
+    local lastBefore = w.ns.ActionBars.Last()
+    w.run("import Raid")
+    assert(Bars(w) == "3=spell598", Bars(w))
+    local list = w.ns.ActionBars.Backups.List()
+    assert(#list == 1 and list[1].why == "Before importing Raid", "one backup, named for the import")
+    assert(list[1].set.macros[1].name == "Pull" and #list[1].set.macros == 1, "with the macros on its bars")
+    w.macros = {}
+    w.run("undo")
+    assert(Bars(w) == "1=spell2055 2=Pull", Bars(w))
+    assert(#w.macros == 1, "a macro on the backed-up bars is made again")
+    local keys = {}
+    for _, b in ipairs(w.binds) do if b[2] then keys[#keys + 1] = b[2] .. "=" .. b[1] end end
+    table.sort(keys)
+    assert(table.concat(keys, " ") == "1=ACTIONBUTTON1 2=ACTIONBUTTON2", table.concat(keys, " "))
+    assert(w.ns.ActionBars.Last() == lastBefore, "the set it had before is its last again")
+    w.run("undo")
+    assert(w.printed[#w.printed] == "There is no import to undo.", w.printed[#w.printed])
+end)
+Case("undo puts back the exact ranks the bars had, with Highest Rank on", function()
+    local w = World({ 2054, 2055, 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Raid")
+    w.bars = { [1] = Spell(2054), [2] = Spell(2055) }
+    w.opts.highestRank = true
+    w.run("import Raid")
+    assert(w.ns.ActionBars.Backups.List()[1].set.slots[2].top == true, "the backup marks the top rank it saw")
+    w.learn(6064)
+    w.run("undo")
+    assert(Bars(w) == "1=spell2054 2=spell2055", "a Rank 1 kept and a rank learned since passed over: " .. Bars(w))
+end)
+Case("only the last ten backups are kept, newest first", function()
+    local w = World({ 598 })
+    w.bars = { [1] = Spell(598) }
+    w.run("save Raid")
+    for _ = 1, 12 do w.run("import Raid") end
+    local list = w.ns.ActionBars.Backups.List()
+    assert(#list == 10, #list)
+    w.combat = true
+    assert(w.ns.ActionBars.RestoreBackup(1) == nil, "never in combat")
+end)
+Case("an import can leave the keys or the macros out", function()
+    local w = World({ 598 })
+    w.bars = { [1] = Macro("Pull") }
+    w.macros = { { name = "Pull", icon = 1, body = "/say pull" } }
+    w.binds = { { "ACTIONBUTTON1", "1" } }
+    w.run("save Raid")
+    w.macros, w.bars, w.binds = {}, {}, {}
+    w.ns.ActionBarSets.Import("Raid", false, { actions = true, macros = false, keys = false })
+    assert(#w.macros == 0 and #w.binds == 0, "no macro made, no key bound")
+    w.ns.ActionBarSets.Import("Raid", false, { actions = false, macros = true, keys = true })
+    assert(#w.macros == 1 and Bars(w) == "" and w.binds[1][2] == "1", "macros and keys, bars left alone")
+end)
+Case("the bar check upgrades a spell below the best rank, or leaves it once asked", function()
+    local w = World({ 2054, 2055 })
+    w.bars = { [1] = Spell(2054), [2] = Spell(2054) }
+    local list = w.ns.ActionBars.Check.Upgrades()
+    assert(#list == 2 and list[1].best == 2055, "both slots listed")
+    w.ns.ActionBars.Check.Upgrade({ list[1] })
+    assert(Bars(w) == "1=spell2055 2=spell2054", Bars(w))
+    w.ns.ActionBars.Check.Keep(w.ns.ActionBars.Check.Upgrades())
+    assert(#w.ns.ActionBars.Check.Upgrades() == 0, "kept for downranking")
+end)
+
+local function Zone(w, kind)
+    w.instance = kind
+    w.autoEvents.handler(w.autoEvents, "PLAYER_ENTERING_WORLD")
+end
+
+-- The event carries the new level; UnitLevel can still give the old one.
+local function LevelUp(w, level)
+    w.autoEvents.handler(w.autoEvents, "PLAYER_LEVEL_UP", level)
+end
+
+Case("a dungeon set loads on entering and the bars from before come back on leaving", function()
+    local w = World({ 2055, 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Dungeon")
+    w.bars = { [1] = Spell(2055) }
+    w.events.handler(w.events, "PLAYER_LOGIN")
+    assert(w.autoEvents == nil, "no rule, no frame")
+    w.ns.ActionBars.AutoLoad.SetRule("dungeon", "Dungeon")
+    assert(w.autoEvents.registered.PLAYER_ENTERING_WORLD, "a rule watches the zone")
+    Zone(w, "party")
+    assert(Bars(w) == "3=spell598", Bars(w))
+    Zone(w, "party")
+    assert(Bars(w) == "3=spell598", "a reload inside changes nothing")
+    Zone(w, nil)
+    assert(Bars(w) == "1=spell2055", Bars(w))
+end)
+Case("in combat the swap waits for the end of the fight", function()
+    local w = World({ 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save BG")
+    w.bars = {}
+    w.ns.ActionBars.AutoLoad.SetRule("battleground", "BG")
+    w.combat = true
+    Zone(w, "pvp")
+    assert(Bars(w) == "" and w.autoEvents.registered.PLAYER_REGEN_ENABLED, "waiting")
+    w.combat = false
+    w.autoEvents.handler(w.autoEvents, "PLAYER_REGEN_ENABLED")
+    assert(Bars(w) == "3=spell598" and not w.autoEvents.registered.PLAYER_REGEN_ENABLED, Bars(w))
+end)
+Case("Put Back on Leaving off keeps the instance's set", function()
+    local w = World({ 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Raid")
+    w.bars = {}
+    w.ns.ActionBars.AutoLoad.SetRule("dungeon", "Raid")
+    w.ns.ActionBars.AutoLoad.SetRule("back", false)
+    Zone(w, "raid")
+    Zone(w, nil)
+    assert(Bars(w) == "3=spell598", Bars(w))
+end)
+Case("a level set loads once, at that level, and follows a rename", function()
+    local w = World({ 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Forty")
+    w.bars = {}
+    w.ns.ActionBars.AutoLoad.SetRule("levelSet", "Forty")
+    w.ns.ActionBars.AutoLoad.SetRule("level", 40)
+    w.ns.ActionBars.Rename("Forty", "AoE")
+    assert(w.ns.ActionBars.AutoLoad.Rule("levelSet") == "AoE", "renamed")
+    w.level = 38
+    LevelUp(w, 39)
+    assert(Bars(w) == "", "not yet")
+    w.level = 39
+    LevelUp(w, 40)
+    assert(Bars(w) == "3=spell598", "the event's level, not UnitLevel's: " .. Bars(w))
+    w.bars = {}
+    w.level = 40
+    LevelUp(w, 41)
+    assert(Bars(w) == "", "only once")
+end)
+Case("a level set never loads on entering the world, only on the level-up that reaches it", function()
+    local w = World({ 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Forty")
+    w.bars = {}
+    w.level = 45
+    w.ns.ActionBars.AutoLoad.SetRule("levelSet", "Forty")
+    w.ns.ActionBars.AutoLoad.SetRule("level", 40)
+    Zone(w, nil)
+    assert(Bars(w) == "", "a character past the level is left alone: " .. Bars(w))
+    LevelUp(w, 46)
+    assert(Bars(w) == "" and #w.ns.ActionBars.Backups.List() == 0, "nor on a later level-up: " .. Bars(w))
+    w.combat = true
+    w.level = 39
+    LevelUp(w, 40)
+    assert(Bars(w) == "", "waits out the fight")
+    w.combat = false
+    w.autoEvents.handler(w.autoEvents, "PLAYER_REGEN_ENABLED")
+    assert(Bars(w) == "3=spell598", "the level-up is kept for after it: " .. Bars(w))
+end)
+Case("a level set with the slider untouched loads at the level it shows", function()
+    local w = World({ 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Two")
+    w.bars = {}
+    w.ns.ActionBars.AutoLoad.SetRule("levelSet", "Two")
+    assert(w.ns.ActionBars.AutoLoad.Level() == 2, tostring(w.ns.ActionBars.AutoLoad.Level()))
+    LevelUp(w, 2)
+    assert(Bars(w) == "3=spell598", Bars(w))
+end)
+Case("releasing after a wipe stays inside: no swap out and back in", function()
+    local w = World({ 2055, 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Dungeon")
+    w.bars = { [1] = Spell(2055) }
+    w.ns.ActionBars.AutoLoad.SetRule("dungeon", "Dungeon")
+    Zone(w, "party")
+    local backups = #w.ns.ActionBars.Backups.List()
+    w.ghost = true
+    Zone(w, nil)
+    assert(Bars(w) == "3=spell598", "still the dungeon's set at the graveyard: " .. Bars(w))
+    Zone(w, "party")
+    w.ghost = false
+    assert(Bars(w) == "3=spell598" and #w.ns.ActionBars.Backups.List() == backups, "no new backups")
+    Zone(w, nil)
+    assert(Bars(w) == "1=spell2055", "leaving alive puts the bars back: " .. Bars(w))
+end)
+Case("switching the rules off inside forgets the instance", function()
+    local w = World({ 2055, 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Dungeon")
+    w.bars = { [1] = Spell(2055) }
+    w.ns.ActionBars.AutoLoad.SetRule("dungeon", "Dungeon")
+    Zone(w, "party")
+    w.ns.ActionBars.AutoLoad.SetRule("dungeon", nil)
+    assert(next(w.account.barSetAutoLoad[w.guid]) == nil, "nothing kept")
+    w.instance = nil
+    w.ns.ActionBars.AutoLoad.SetRule("dungeon", "Dungeon")
+    Zone(w, nil)
+    assert(Bars(w) == "3=spell598", "no stale backup put back: " .. Bars(w))
+end)
+Case("leaving puts back the backup taken on entering, even with a newer one from the same second", function()
+    local w = World({ 2055, 598 })
+    w.bars = { [3] = Spell(598) }
+    w.run("save Dungeon")
+    w.bars = { [1] = Spell(2055) }
+    w.ns.ActionBars.AutoLoad.SetRule("dungeon", "Dungeon")
+    Zone(w, "party")
+    w.run("import Dungeon")
+    local list = w.ns.ActionBars.Backups.List()
+    list[1].saved = list[2].saved
+    Zone(w, nil)
+    assert(Bars(w) == "1=spell2055", "the bars from before the dungeon: " .. Bars(w))
 end)
 print(count .. " action bar set regressions passed")

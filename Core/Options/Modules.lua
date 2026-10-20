@@ -143,10 +143,11 @@ local MODULES = {
       } },
     { name = "Action Bars", group = "UTILITIES", navIcon = "grid", settings = "ActionBarSettings",
       addon = "NaowhForever_ActionBars", host = "NaowhForever_Utilities",
-      open = "ToggleActionBarsWindow",
+      open = "OpenActionBarsWindow", menu = "ActionBarsMenu",
       command = "bars", short = "Bars", icon = "Interface\\Icons\\INV_Misc_Gear_01",
       subtitle = "Your action bars saved by name and put back whenever you want them.",
       tabs = {
+          { name = "Bar Sets", build = "BuildActionBarsTab", terms = "ActionBarsSearchTerms", reuse = true },
           { name = "Settings", reuse = true },
       } },
     { name = "AuraBuffs", group = "COMBAT", navIcon = "aura", settings = "AuraBuffSettings",

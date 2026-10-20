@@ -6,6 +6,7 @@ local S = A.Settings
 local Capture = A.Capture
 local Import = A.Import
 local Pending = A.Pending
+local Backups = A.Backups
 
 local Plural = A.Plural
 
@@ -38,8 +39,13 @@ local TEXT_HEADLINE_NONE = ns.L("No bar sets saved for your %s yet")
 local TEXT_HEADLINE_ONE = ns.L("%d bar set saved for your %s")
 local TEXT_HEADLINE = ns.L("%d bar sets saved for your %s")
 local TEXT_DETAIL_OFF = ns.L("Turn on Action Bars to save and import your bars.")
-local TEXT_DETAIL_LAST = ns.L("This character last used %s. Import any set from the window, out of combat.")
-local TEXT_DETAIL = ns.L("Save your bars from the window, or with /nf bars save and a name.")
+local TEXT_DETAIL_LAST = ns.L("This character last used %s. Import any set here, out of combat.")
+local TEXT_DETAIL = ns.L("Save your bars here, or with /nf bars save and a name.")
+local TEXT_BEFORE_IMPORT = ns.L("Before importing %s")
+local TEXT_RESTORE_IN_COMBAT = ns.L("Backups can be put back out of combat.")
+local TEXT_RESTORED = ns.L("Put back your bars from %s: %s.")
+local TEXT_NOTHING_TO_UNDO = ns.L("There is no import to undo.")
+local BACKUP_DATE = "%d %b %H:%M"
 
 local AUTO_IMPORT_LEVEL, AUTO_IMPORT_XP = 1, 0
 local AUTO_STORE = "barSetAuto"
@@ -56,11 +62,17 @@ local function Ready(inCombat)
     return true
 end
 
-local function Save(name, choices)
+local function KeepLook(old, set, look)
+    look = look or old
+    if look then set.icon, set.tags = look.icon, look.tags end
+    return set
+end
+
+local function Save(name, choices, look)
     if not Ready(TEXT_SAVE_IN_COMBAT) then return end
     local key = A.Find(name) or name
     local sets = A.Sets()
-    sets[key] = Capture.Snapshot(choices or (sets[key] and sets[key].choices))
+    sets[key] = KeepLook(sets[key], Capture.Snapshot(choices or (sets[key] and sets[key].choices)), look)
     A.SetLast(key, true)
     logoutCopy = nil
     ns.Print(TEXT_SAVED:format(key))
@@ -113,15 +125,19 @@ local function PrintLater(result)
     print(TEXT_INDENT .. ns.Color("muted", TEXT_LATER_HEAD) .. " " .. table.concat(names, ", "))
 end
 
-local function ImportSet(name, test)
+local function ImportSet(name, test, opts)
     if not Ready(TEXT_IMPORT_IN_COMBAT) then return end
     local key = A.Find(name)
     if not key then ns.Print(TEXT_NO_SET:format(name)) return end
     local set = A.Sets()[key]
     local website = set.choices and set.choices.website
-    local result = Import.Run(set, test)
+    if not test then Backups.Take(TEXT_BEFORE_IMPORT:format(key)) end
+    local result = Import.Run(set, test, opts)
     local pending = not test and Pending.Remember(key, result, website)
-    if not test then A.SetLast(key, false) end
+    if not test then
+        A.SetLast(key, false)
+        A.lastImport = { key = key }
+    end
     ns.Print(TEXT_IMPORTED:format(test and TEXT_TESTED_VERB or TEXT_IMPORTED_VERB, ns.Color("accentSoft", key), Summary(result)))
     PrintFull(result)
     PrintEmpty(result, test, pending and pending.always)
@@ -161,6 +177,7 @@ local function Rename(key, new)
     end
     if logoutCopy and logoutCopy.key == key then logoutCopy.key = new end
     if A.AutoImportName() == key then A.SetAutoImport(new) end
+    A.RenameRules(key, new)
     A.Refresh()
 end
 
@@ -228,7 +245,8 @@ end
 local function SaveOnLogout()
     local key = LogoutKey()
     if key and logoutCopy and logoutCopy.key == key then
-        A.Sets()[key] = Capture.Snapshot(A.Sets()[key].choices, logoutCopy.slots)
+        local old = A.Sets()[key]
+        A.Sets()[key] = KeepLook(old, Capture.Snapshot(old.choices, logoutCopy.slots))
     end
 end
 
@@ -257,6 +275,7 @@ local function OnEvent(_, event)
     if event == "PLAYER_LOGIN" then
         Pending.Watch()
         WatchLogout()
+        A.AutoLoad.Watch()
         if AutoImportDue() then
             A.autoWaiting = true
             Pending.events:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -276,13 +295,44 @@ local function OnEvent(_, event)
     end
 end
 
+local function RestoreBackup(index)
+    if not Ready(TEXT_RESTORE_IN_COMBAT) then return end
+    local backup = Backups.List()[index]
+    if not backup then return end
+    local result = Backups.Restore(index)
+    A.lastImport = nil
+    ns.Print(TEXT_RESTORED:format(date(ns.L(BACKUP_DATE), backup.saved), Summary(result)))
+    A.Refresh()
+    return result
+end
+
+local function SaveBackup(index, name)
+    local backup = Backups.List()[index]
+    if not backup or name == "" then return end
+    local key = A.Find(name) or name
+    local set = {}
+    for k, v in pairs(backup.set) do set[k] = v end
+    set.saved, set.by, set.choices = time(), UnitName("player"), nil
+    A.Sets()[key] = set
+    ns.Print(TEXT_SAVED:format(key))
+    A.Refresh()
+end
+
+local function Undo()
+    if not A.lastImport then ns.Print(TEXT_NOTHING_TO_UNDO) return end
+    return RestoreBackup(1)
+end
+
 A.Rename, A.Delete, A.ConfirmDelete = Rename, Delete, ConfirmDelete
+A.ImportSet, A.RestoreBackup, A.Undo, A.SaveBackup = ImportSet, RestoreBackup, Undo, SaveBackup
 
 function ns.ActionBarsCommand(text)
     local cmd, name = strtrim(text or ""):match("^(%S*)%s*(.-)$")
     cmd = cmd:lower()
     if cmd == "list" then
         List()
+    elseif cmd == "undo" then
+        Undo()
     elseif name == "" or not COMMANDS[cmd] then
         ns.OpenActionBarsWindow()
     elseif cmd == "save" then
@@ -306,8 +356,8 @@ ns.ActionBarSets = {
     Get = function(key) return A.Sets()[key] end,
     SlotList = Capture.Slots, Capture = Capture.Capture, CaptureMacros = Capture.CaptureMacros,
     CaptureBindings = Capture.CaptureBindings, MacroKey = Capture.MacroKey, Describe = Import.Describe,
-    Save = Save, Import = ImportSet,
-    Preview = function(key) return Import.Run(A.Sets()[key], true) end,
+    Save = Save, Import = ImportSet, Undo = Undo, RestoreBackup = RestoreBackup,
+    Preview = function(key, opts) return Import.Run(A.Sets()[key], true, opts) end,
 }
 
 Pending.events:RegisterEvent("PLAYER_LOGIN")

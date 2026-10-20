@@ -1,4 +1,4 @@
--- Bars.lua: the action bars as the game numbers them: each one's page of slots and the binding its buttons answer to, the pet bar's keys, and the pages a class's forms swap in (ns.ActionBars.BARS).
+-- Bars.lua: the action bars as the game numbers them: each one's page of slots and the binding its buttons answer to, the pet and stance bars' keys, and the pages a class's forms swap in (ns.ActionBars.BARS).
 local ns = _G.NaowhForever
 
 ns.ActionBars.BARS = {
@@ -20,6 +20,8 @@ ns.ActionBars.BARS = {
 }
 
 ns.ActionBars.PET_BAR = { name = "Pet Bar", button = "BONUSACTIONBUTTON", buttons = 10 }
+
+ns.ActionBars.STANCE_BAR = { name = "Stance Bar", button = "SHAPESHIFTBUTTON", buttons = 10 }
 
 ns.ActionBars.PET_CLASSES = { HUNTER = true, WARLOCK = true }
 

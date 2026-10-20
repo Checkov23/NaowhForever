@@ -11,7 +11,8 @@ local page = {
 }
 local ns = {
     L = function(text) return text end,
-    ActionBars = { Settings = {}, On = function() return true end, SortedNames = function() return {} end },
+    ActionBars = { Settings = {}, C = { FIRST_LOAD_LEVEL = 2 }, On = function() return true end,
+        SortedNames = function() return {} end },
     ActionBarSets = {},
     Shared = { Settings = { Page = function() return page end } },
 }

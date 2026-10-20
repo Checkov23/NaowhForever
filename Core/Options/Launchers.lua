@@ -14,6 +14,7 @@ local TEXT_CLICK = ns.L("Click to open settings.")
 local TEXT_DRAG = ns.L("Drag to move the minimap button.")
 local TEXT_MODULE_CLICK = ns.L("Click to open or close it on its own.")
 local TEXT_SETTINGS_CLICK = ns.L("Click to open or close its settings.")
+local TEXT_MENU_CLICK = ns.L("Right-click for a quick menu.")
 
 local launcherEvents = CreateFrame("Frame")
 local function TipTitle(tooltip, text)
@@ -51,10 +52,14 @@ local function ModuleLauncher(account, mod)
         type = "launcher",
         label = ns.L(mod.name),
         icon = mod.icon,
-        OnClick = function() OpenModule(mod) end,
+        OnClick = function(frame, button)
+            if button == "RightButton" and mod.menu and ns[mod.menu] then return ns[mod.menu](frame) end
+            OpenModule(mod)
+        end,
         OnTooltipShow = function(tooltip)
             TipTitle(tooltip, ns.L(mod.name))
             TipLine(tooltip, ns.L(mod.open and TEXT_MODULE_CLICK or TEXT_SETTINGS_CLICK))
+            if mod.menu then TipLine(tooltip, TEXT_MENU_CLICK) end
         end,
     })
     LibStub("LibDBIcon-1.0"):Register(LAUNCHER_NAME .. mod.short, obj, db)

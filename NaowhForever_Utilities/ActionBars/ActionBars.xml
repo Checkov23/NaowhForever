@@ -6,13 +6,17 @@
     <Script file="Capture.lua"/>
     <Script file="Import.lua"/>
     <Script file="Pending.lua"/>
+    <Script file="Backups.lua"/>
     <Script file="Sets.lua"/>
+    <Script file="AutoLoad.lua"/>
     <Script file="Sharing.lua"/>
+    <Script file="Check.lua"/>
     <Script file="View\Style.lua"/>
     <Script file="View\Parts.lua"/>
     <Script file="UI\SetsPage.lua"/>
     <Script file="UI\Builder.lua"/>
     <Script file="UI\Preview.lua"/>
+    <Script file="UI\Keys.lua"/>
     <Script file="UI\Window.lua"/>
     <Script file="UI\SettingsPage.lua"/>
 </Ui>
