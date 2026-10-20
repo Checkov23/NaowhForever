@@ -157,12 +157,16 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   painted after the bag paints the slot. Off, nothing is hooked or made; turned off after being on,
   ours hide and EllesmereUI's overlay hook is let go. Baganator gets the same marks through the
   corner widget its API offers other addons, registered once the first time Bag Marks is on, because
-  that registration cannot be taken back. The frame it places in a corner stays hidden: it would pin
-  that frame to one corner, and our marks cover the icon. While Bag Marks is off the callback hides
-  them and answers nothing. Your weights and what your gear is worth are read once a frame: a bag
-  paints every slot in one go, EllesmereUI and Baganator one slot per call. On EllesmereUI's buttons
-  its BoE word puts our star after it, Pawn's arrow our item level before it, and its own item level
-  hides while ours stands in for it. Baganator's own item level can sit beside ours. A level shows
+  that registration cannot be taken back. Our marks sit on the frame it places in a corner, sized to
+  the whole button, and that frame stays shown while the slot has an item: Baganator hides it and
+  skips the callback when the slot is empty, and our marks go with it. Closing the bags hides them
+  without changing that frame's shown state, so they come back when the bags reopen, which repaints
+  only the slots that changed. The callback answers false, so Baganator's own item level can sit beside ours.
+  While Bag Marks is off the callback hides them and answers nothing. Your weights and what your
+  gear is worth are read once a frame: a
+  bag paints every slot in one go, EllesmereUI and Baganator one slot per call. On EllesmereUI's
+  buttons its BoE word puts our star after it, Pawn's arrow our item level before it, and its own
+  item level hides while ours stands in for it. A level shows
   on gear only, in its quality's colour (gold for common and poor) so it never reads as a stack count.
 - An item's card comes up over its icon and name only, so it never covers the list while the mouse
   crosses a row; the zone takes the mouse over it, not its clicks (`SetMouseClickEnabled(false)`

@@ -3,8 +3,9 @@
 -- bags, EllesmereUI's, and Baganator's. Checks that it is off and hooks nothing by default; on, gear shows its
 -- item level, your BiS its star, what is new in Forever its mark and an upgrade its arrow, in the game's bags and in
 -- EllesmereUI's (where ours stand in for its item level and make room for its BoE word and
--- Pawn's arrow) and in Baganator's (the corner frame it places stays hidden, and our marks cover
--- the icon); a new list paints the stars again; off again, ours hide and EllesmereUI's item
+-- Pawn's arrow) and in Baganator's (our marks sit on the corner frame it places, shown while the
+-- slot has an item, so they hide and come back with it and with its bag window, with no repaint);
+-- a new list paints the stars again; off again, ours hide and EllesmereUI's item
 -- level comes back; and painting a bag makes no garbage.
 local Load = dofile("Tools/regression/load_files.lua")
 local TocFiles = dofile("Tools/regression/toc_files.lua")
@@ -20,6 +21,11 @@ local function check(label, value) assert(value, label); checks = checks + 1 end
 local NOTHING = function() end
 local Frame
 local made = 0
+local function IsVisible(f)
+    if rawget(f, "shown") == false then return false end
+    local parent = rawget(f, "parent")
+    return parent == nil or IsVisible(parent)
+end
 local METHODS = {
     GetParent = function(f) return rawget(f, "parent") end,
     SetText = function(f, text) f.text = text end,
@@ -29,10 +35,12 @@ local METHODS = {
     Hide = function(f) f.shown = false end,
     SetShown = function(f, shown) f.shown = shown and true or false end,
     IsShown = function(f) return rawget(f, "shown") ~= false end,
+    IsVisible = IsVisible,
     SetAlpha = function(f, alpha) f.alpha = alpha end,
     GetFrameLevel = function() return 1 end,
     GetHeight = function() return 37 end,
     SetPoint = function(f, point, relative) f.points[point] = relative end,
+    SetAllPoints = function(f, relative) f.points.ALL = relative end,
     ClearAllPoints = function(f) for k in pairs(f.points) do f.points[k] = nil end end,
     CreateTexture = function(f) return Frame(f) end,
     CreateFontString = function(f) return Frame(f) end,
@@ -295,32 +303,45 @@ check("loaded: one corner widget, top left, fast, and a refresh", widget
     and BAGANATOR.refreshes > refreshes)
 ns.Apply()
 check("a second apply does not register it again", BAGANATOR.widgets.NaowhForeverBagMarks == widget)
-local bHelm, bPotion, bEmpty, bChest = Frame(), Frame(), Frame(), Frame()
+local bWindow = Frame()
+local bHelm, bPotion, bEmpty, bChest = Frame(bWindow), Frame(bWindow), Frame(bWindow), Frame(bWindow)
 local bHelmHold, bPotionHold = widget.onInit(bHelm), widget.onInit(bPotion)
 local bEmptyHold, bChestHold = widget.onInit(bEmpty), widget.onInit(bChest)
-local bHelmSet, bPotionSet = SetOn(bHelm), SetOn(bPotion)
-check("the marks cover its button, and the corner frame is a separate one kept hidden",
-    bHelmSet and bHelmSet.parent == bHelm and bHelmHold ~= bHelmSet and bHelmHold.shown == false
-    and bHelmHold.parent == bHelm)
+local bHelmSet, bPotionSet = SetOn(bHelmHold), SetOn(bPotionHold)
+check("the marks sit on the corner frame, hidden until painted, and cover the whole button",
+    bHelmSet and bHelmSet.parent == bHelmHold and bHelmSet.points.ALL == bHelm and bHelmHold.shown == false
+    and bHelmHold.parent == bHelm and SetOn(bHelm) == bHelmHold)
 local reads = state.powerReads
 state.now = 2
-check("its gear shows the level, the star and Forever's mark, and the corner frame stays hidden",
+check("its gear shows the level, the star and Forever's mark, and the corner frame stays shown",
     widget.onUpdate(bHelmHold, { itemID = 101, itemLink = "link1" }) == false
-    and bHelmHold.shown == false and bHelmSet.shown == true and bHelmSet.level.text == 30
+    and bHelmHold.shown == true and bHelmSet.shown == true and bHelmSet.level.text == 30
     and bHelmSet.rank.text ~= "" and bHelmSet.forever.shown == true and bHelmSet.up.shown == false)
 widget.onUpdate(bPotionHold, { itemID = 500, itemLink = "link3" })
 check("a potion has no level and no arrow", bPotionSet.level.text == "" and bPotionSet.up.shown == false
     and bPotionSet.rank.text == "")
 widget.onUpdate(bEmptyHold, {})
-check("an empty slot hides its marks", SetOn(bEmpty).shown == false)
+check("an empty slot hides its marks", not SetOn(bEmptyHold):IsVisible() and bEmptyHold.shown == false)
 widget.onUpdate(bChestHold, { itemID = 102, itemLink = "link2" })
-check("the upgrade arrow on gear better than what you wear", SetOn(bChest).up.shown == true
-    and SetOn(bChest).level.text == 25)
+local bChestSet = SetOn(bChestHold)
+check("the upgrade arrow on gear better than what you wear", bChestSet.up.shown == true
+    and bChestSet.level.text == 25 and bChestHold.shown == true and bChestSet:IsVisible())
+bChestHold:Hide()
+check("Baganator hiding the corner frame, without a paint, clears the level and the arrow",
+    not bChestSet:IsVisible())
+widget.onUpdate(bChestHold, { itemID = 102, itemLink = "link2" })
+check("a later paint shows the level and the arrow again", bChestSet:IsVisible()
+    and bChestSet.up.shown == true and bChestSet.level.text == 25 and bChestHold.shown == true)
+bWindow:Hide()
+check("closing the bags hides the marks with them", not bChestSet:IsVisible() and not bHelmSet:IsVisible())
+bWindow:Show()
+check("reopening them, with no repaint of the slot, shows the marks again", bChestSet:IsVisible()
+    and bHelmSet:IsVisible() and bChestSet.up.shown == true and bHelmSet.level.text == 30)
 check("your gear's worth read once for that burst, not once a slot", state.powerReads == reads + 1)
 local bOther = Frame()
 local bOtherHold = widget.onInit(bOther)
 widget.onUpdate(bOtherHold, { itemID = 102, itemLink = "link2" })
-check("another character's icon, with no bag, still shows the marks", SetOn(bOther).up.shown == true)
+check("another character's icon, with no bag, still shows the marks", SetOn(bOtherHold).up.shown == true)
 local bDetails = { itemID = 101, itemLink = "link1" }
 Measure(check)("a Baganator slot painted", 1, function() widget.onUpdate(bHelmHold, bDetails) end)
 
