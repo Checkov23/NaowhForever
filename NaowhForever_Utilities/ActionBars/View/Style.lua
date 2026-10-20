@@ -52,7 +52,7 @@ ns.ActionBars.Style = setmetatable({
     HEADING_H = 26,
 
     TILE = 38,
-    MINI_TILE = 15,
+    MINI_TILE = 12,
     MINI_GAP = 1,
     MINI_INSET = 2,
     PET_TILE = 28,

@@ -9,6 +9,7 @@
     <Script file="Backups.lua"/>
     <Script file="Sets.lua"/>
     <Script file="Sharing.lua"/>
+    <Script file="Check.lua"/>
     <Script file="View\Style.lua"/>
     <Script file="View\Parts.lua"/>
     <Script file="UI\SetsPage.lua"/>

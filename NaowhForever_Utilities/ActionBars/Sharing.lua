@@ -364,5 +364,5 @@ local function ShowExport(key)
 end
 
 A.Sharing = { Decode = Decode, Import = Import, Prompt = Prompt, Export = Export, ShowExport = ShowExport,
-    ExportSummary = ExportSummary }
+    ExportSummary = ExportSummary, Catalog = function() return Catalog(CLASS_IDS[A.Class()]) end }
 ns.ImportActionBarString = Import

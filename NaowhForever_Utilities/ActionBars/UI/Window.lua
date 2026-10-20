@@ -18,6 +18,7 @@ local SCROLL_RIGHT = 4
 local SUBTITLE_GAP = 4
 
 local TEXT_BACK = ns.L("Saved Sets")
+local TEXT_SETS = ns.L("Bar Sets")
 
 local W = {}
 local window, views
@@ -29,6 +30,7 @@ local function Paint()
     window.title:SetText(v.title)
     window.subtitle:SetText(v.subtitle)
     window.back:SetShown(view ~= "sets")
+    if v.header then v.header:Paint(window.title) end
 end
 
 local function Redraw()
@@ -61,7 +63,7 @@ local function Show(name)
 end
 
 local function DrawSets(v)
-    v.title, v.subtitle = Sets.Headline(), Sets.Detail()
+    v.title, v.subtitle = TEXT_SETS, Sets.Detail()
     v.content:SetWidth(v.scroll:GetWidth())
     UI.BeginReusableRows(v.content)
     local y = ns.BuildActionBarsPage(v.content, 0)
@@ -79,7 +81,9 @@ local function BuildSets()
     v.content = CreateFrame("Frame", nil, v.scroll)
     v.content:SetSize(1, 1)
     v.scroll:SetScrollChild(v.content)
+    v.header = A.BuildSetsHeader(v.frame)
     function v.Draw() DrawSets(v) end
+    v.events = { "ACTIONBAR_SLOT_CHANGED", "SPELLS_CHANGED" }
     return v
 end
 

@@ -279,6 +279,7 @@ local env = setmetatable({
     end,
     UnitName = function() return "Alt" end,
     UnitGUID = function() return "Player-1" end,
+    RAID_CLASS_COLORS = { PRIEST = { r = 1, g = 1, b = 1 } },
     UnitLevel = function() return 20 end,
     GetRealmName = function() return "Realm" end,
     CreateFrame = function(_, _, parent)
@@ -353,12 +354,13 @@ local function Chip(text)
     end
 end
 local function Summary()
-    for _, fs in ipairs(state.fonts) do
-        local text = rawget(fs, "text")
-        if type(text) == "string" and text:find(" macro", 1, true) and text:find(DOT, 1, true) and Visible(fs) then
-            return text
+    local out = {}
+    for _, frame in ipairs(state.frames) do
+        if rawget(frame, "number") and rawget(frame, "unit") and Visible(frame) then
+            out[#out + 1] = frame.number.text .. " " .. frame.unit.text
         end
     end
+    return table.concat(out, DOT)
 end
 local function Steps()
     local on = {}
@@ -370,13 +372,6 @@ end
 local function BackLink()
     for _, frame in ipairs(state.frames) do
         if rawget(frame, "underline") and Visible(frame) then return frame end
-    end
-end
-local function Card(title)
-    for _, frame in ipairs(state.frames) do
-        if rawget(frame, "button") and rawget(frame, "title") and frame.title.text == title and Visible(frame) then
-            return frame
-        end
     end
 end
 local function SetRow(name)
@@ -422,21 +417,29 @@ local function Under(frame, parent)
     end
     return false
 end
-check("the tab is built into the options window's page, no window of its own",
-    Under(Card("Save Current Bars"), page) and Visible(Card("Save Current Bars")))
+local save = state.buttons["+ Save Current Bars"]
+check("the tab is built into the options window's page, no window of its own", Under(save, page) and Visible(save))
 local previewImport = state.buttons.Import
 local editBox = state.editBox
-local save = Card("Save Current Bars")
-check("home shows Save Current Bars as the primary card", save and save.button.primary and save.button.label == "Save")
-check("and Import Website Code and Export to Website beside it, each button a verb", Card("Import Website Code")
-    and not rawget(Card("Import Website Code").button, "primary") and Card("Import Website Code").button.label == "Paste code"
-    and Card("Export to Website").button.label == "Get code")
+check("home has Save Current Bars as the primary button over it", save.primary)
+check("and Paste Code and Get Code beside it", state.buttons["Paste Code"] and state.buttons["Get Code"]
+    and not rawget(state.buttons["Paste Code"], "primary"))
+local function Pill()
+    for _, frame in ipairs(state.frames) do
+        if rawget(frame, "edge") and rawget(frame, "text") and type(frame.text.text) == "string"
+            and frame.text.text:find(" SET", 1, true) and Visible(frame) then return frame.text.text end
+    end
+end
+check("the title is Bar Sets, with the class and how many sets beside it", Pill() == "PRIEST" .. DOT .. "0 SETS")
+local newCard
+for _, frame in ipairs(state.frames) do if rawget(frame, "plus") and Visible(frame) then newCard = frame end end
+check("a card offers to save the bars as a new set", newCard and newCard.text.text == "Save your bars as a new set")
 
-Click(Card("Import Website Code").button)
+Click(state.buttons["Paste Code"])
 check("Import Website Code opens the paste popup", state.keptFonts.title.text == "Paste a code from naowh.gg"
     and state.rowButtons.Import.primary and state.rowButtons.Cancel)
 
-Click(save.button)
+Click(save)
 check("the builder draws the strip: Bar 3 | Bar 2 over Bar 1 | Bar 4", Label("left") == "ACTION BAR 3"
     and Label("top") == "ACTION BAR 2" and Label("right") == "ACTION BAR 4"
     and Label("bottom") == "ACTION BAR 1" .. DOT .. "MAIN")
@@ -455,6 +458,31 @@ check("a click on a button skips just that slot: dimmed, with its mark", Tile("b
 check("the builder has a name box", editBox and editBox.scripts.OnEnterPressed)
 editBox:SetText("Raid")
 check("Save Set is the primary button", state.buttons["Save Set"].primary)
+local function FontShown(text)
+    for _, fs in ipairs(state.fonts) do
+        if rawget(fs, "text") == text and Visible(fs) then return fs end
+    end
+end
+check("the summary bar says what is left out", FontShown("1 slot left out") ~= nil)
+local function ListTab(key)
+    for _, frame in ipairs(state.frames) do
+        if rawget(frame, "buttons") and Visible(frame) then
+            for _, button in ipairs(frame.buttons) do if button.key == key then return button end end
+        end
+    end
+end
+Click(ListTab("keys"))
+local bound = {}
+for _, frame in ipairs(state.frames) do
+    if rawget(frame, "keyText") and Visible(frame) then bound[#bound + 1] = frame.keyText.text .. " " .. frame.what.text end
+end
+table.sort(bound)
+check("the Keybinds tab lists each key with what it presses", bound[1] == "1 Smite" and bound[2] == "2 Heal")
+Click(ListTab("macros"))
+Click(FontShown("Select None"):GetParent())
+check("Select None leaves out every macro but the ones on the bars", Summary():find("1 macro$") ~= nil)
+Click(FontShown("Select All"):GetParent())
+check("and Select All puts them back", Summary():find("2 macros$") ~= nil)
 state.buttons["Save Set"].onClick()
 local set = state.account.barSets.PRIEST.Raid
 check("Save Set saves under the typed name", set)
@@ -477,7 +505,7 @@ check("and what went in and was left out", state.keptFonts.summary.text:find("In
 state.editBox.scripts.OnTextChanged(state.editBox, true)
 check("the code box cannot be typed over", state.editBox.text:find("^!NFA1!"))
 ns.TrainingData = { [5] = { { 1, 585, 10 }, { 16, 2054, 100 } } }
-Click(Card("Export to Website").button)
+Click(state.buttons["Get Code"])
 local exported = select(2, ns.ActionBars.Sharing.Decode(state.editBox.text))
 check("Export to Website exports the bars as they are", exported and exported.slots[1].id == 585
     and exported.slots[2].id == 2054 and exported.slots[3].name == "Pull")
@@ -565,12 +593,56 @@ end
 local banner = Shown("undo")
 check("home offers Undo for the import just made", banner
     and banner.text.text == "Raid is on your bars. Your bars from before it are kept as a backup.")
+check("and marks the set as on your bars", SetRow("Raid").on.shown ~= false
+    and SetRow("Raid").on.text.text == "ON YOUR BARS")
 check("the backup taken first is listed", #AllShown("restore") == 1 and Shown("restore").why.text == "Before importing Raid")
 Click(banner.undo)
 RunTimers()
 check("Undo puts the alt's own bars back", state.bars[2].kind == "item" and state.bars[7].id == 585 and state.bars[1] == nil)
 check("and the banner goes", not Shown("undo"))
 check("putting a backup back is itself backed up", #AllShown("restore") == 2)
+
+state.bars = {}
+RunTimers()
+ns.UI.RefreshPage()
+RunTimers()
+local spells = Shown("icons")
+check("a spell this priest knows and has on no bar is offered to drag", spells
+    and spells.title.text == "1 spell you know is on no bar" and spells.icons[1].spell == 585)
+Click(spells.first)
+RunTimers()
+check("Hide These stops listing it", not Shown("icons"))
+
+ns.PromptText = function(_, _, _, accept) accept("Dungeon") end
+ns.OpenActionBarsBuilder("Raid")
+Click(state.buttons["+ Tag"])
+local tagChip
+for _, frame in ipairs(AllShown("index")) do if not rawget(frame, "scene") then tagChip = frame end end
+check("+ Tag adds a tag to the set being built", tagChip and tagChip.text.text == "DUNGEON  x")
+state.bars = { [1] = { kind = "spell", id = 585 } }
+local iconButton
+for _, frame in ipairs(AllShown("texture")) do
+    if not rawget(frame, "spell") and frame.scripts.OnClick then iconButton = frame end
+end
+Click(iconButton)
+local picked
+for _, frame in ipairs(AllShown("texture")) do if frame.texture == 135924 and frame ~= iconButton then picked = frame end end
+Click(picked)
+state.binds = { { "ACTIONBUTTON1", "1" } }
+state.buttons["Save Set"].onClick()
+RunTimers()
+check("an icon picked from the bars is saved with the set", state.account.barSets.PRIEST.Raid.icon == 135924)
+check("the tag is saved with the set and shown on its card", state.account.barSets.PRIEST.Raid.tags[1] == "Dungeon"
+    and SetRow("Raid").tags[1].text.text == "DUNGEON")
+local filters = AllShown("edge")
+local dungeonFilter
+for _, chip in ipairs(filters) do
+    if rawget(chip, "text") and chip.text.text == "Dungeon" and rawget(chip, "onClick") then dungeonFilter = chip end
+end
+check("a tag gets a filter over the saved sets", dungeonFilter ~= nil)
+Click(dungeonFilter)
+RunTimers()
+check("which shows only the sets with that tag", SetRow("Raid") ~= nil)
 
 -------------------------------------------------------------------------------
 --  Each class's strip
@@ -684,6 +756,6 @@ check("a mage has no chips and no pet bar, and empty bars show empty buttons", C
 local back = BackLink()
 check("the builder links back to the saved sets", back and back.text.text == "Saved Sets")
 Click(back)
-check("which it opens", Card("Save Current Bars") and not BackLink())
+check("which it opens", Visible(save) and not BackLink())
 
 print(checks .. " action bar window checks passed")

@@ -62,11 +62,17 @@ local function Ready(inCombat)
     return true
 end
 
-local function Save(name, choices)
+local function KeepLook(old, set, look)
+    look = look or old
+    if look then set.icon, set.tags = look.icon, look.tags end
+    return set
+end
+
+local function Save(name, choices, look)
     if not Ready(TEXT_SAVE_IN_COMBAT) then return end
     local key = A.Find(name) or name
     local sets = A.Sets()
-    sets[key] = Capture.Snapshot(choices or (sets[key] and sets[key].choices))
+    sets[key] = KeepLook(sets[key], Capture.Snapshot(choices or (sets[key] and sets[key].choices)), look)
     A.SetLast(key, true)
     logoutCopy = nil
     ns.Print(TEXT_SAVED:format(key))
@@ -238,7 +244,8 @@ end
 local function SaveOnLogout()
     local key = LogoutKey()
     if key and logoutCopy and logoutCopy.key == key then
-        A.Sets()[key] = Capture.Snapshot(A.Sets()[key].choices, logoutCopy.slots)
+        local old = A.Sets()[key]
+        A.Sets()[key] = KeepLook(old, Capture.Snapshot(old.choices, logoutCopy.slots))
     end
 end
 
