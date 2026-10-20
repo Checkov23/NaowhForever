@@ -514,6 +514,10 @@ What a comment in the code used to say, in short. The house rules behind it are 
   but Esc.
 - A window's size grip keeps its size account-wide under its `sizeKey`, as the options window's
   is; its place is kept account-wide under `positionKey`.
+- The title bar's subtitle is one line, cut short `BAR_GAP` before the close button: the header
+  has room for one line, and a long one ran under the close button and out of the window. A window
+  that puts its own buttons left of the close button anchors the subtitle's right edge to the
+  left-most of them, as the Shopping List does.
 - A switch's hairlines are made once, when made: its parts are laid out again on a change.
 - A module's settings card holds itself in its button's click, made once: `ns.Button` calls its
   click with no arguments.
