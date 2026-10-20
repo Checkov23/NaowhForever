@@ -5,7 +5,7 @@ local A = ns.AuraBuffs
 local S = A.Settings
 local D = ns.BuffReminderData
 local R, Cell, Menu, Glow = A.Buffs, A.BuffCell, A.BuffMenu, A.Glow
-local ItemBar = ns.Shared.ItemBar
+local ItemBar, Parts = ns.Shared.ItemBar, ns.Shared.Parts
 local Left, Secret, GROUP_UNIT = R.Left, R.Secret, R.GROUP_UNIT
 
 local QUEUE_DELAY = 0.3
@@ -49,17 +49,13 @@ local function OnCellLeave()
     Menu.Leave()
 end
 
-local function OnCellUsed(cell)
-    if cell.itemID then Glow.Press(cell, "buffGlow") end
-end
-
 local function GetCell(i)
     local cell = cells[i]
     if cell then return cell end
     cell = Cell.New(frame, "SecureActionButtonTemplate")
     cell:EnableMouse(true)
     cell:RegisterForClicks("AnyUp", "AnyDown")
-    cell:SetScript("PostClick", OnCellUsed)
+    Parts.Press(cell)
     cell:SetScript("OnEnter", OnCellEnter)
     cell:SetScript("OnLeave", OnCellLeave)
     cell:SetScript("OnHide", OnCellHide)

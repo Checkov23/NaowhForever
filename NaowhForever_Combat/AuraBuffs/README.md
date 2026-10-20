@@ -222,20 +222,22 @@ NaowhForever_Combat/AuraBuffs/
   so the icon is Monkey below level 10. Mounted or not makes no difference, as for every reminder.
 - The buff menu holds secure buttons, so it can only be hidden outside combat. It uses
   `IsMouseOver` on the frame: the old `MouseIsOver` global is gone from the game.
-- The buff menu's icons are the row's Icon Size, centred under the icon you hover and spreading both
-  ways, each line of them centred too. With no room under the icon it opens above it; the screen
-  clamp keeps it in at the sides. The icon size and every gap, in the row and the menu, are rounded
-  to whole pixels (`Cell.Snap`): at a UI scale where a unit is not a whole pixel, a menu icon a
-  fraction of a pixel off the row was resampled and looked rougher than the icon above it.
+- The buff menu's icons are `MENU_CELL` (32), whatever the row's Icon Size: Naowh found them too big
+  at the row's size. They sit centred under the icon you hover and spread both ways, each line of
+  them centred too. With no room under the icon it opens above it; the screen clamp keeps it in at
+  the sides. The icon size and every gap, in the row and the menu, are rounded to whole pixels
+  (`Cell.Snap`): at a UI scale where a unit is not a whole pixel, an icon a fraction of a pixel off
+  was resampled and looked rougher.
 - The row's icons are secure item buttons (`type1 = "item"`), each using the carried item it shows
   (under Last Used, the carried one with that icon; when no carried item has it, the row shows and
   uses the first carried item instead); a class or raid buff icon uses nothing. Secure buttons make the row
   protected, so in combat nothing touches it: a refresh waits, and a setting change or Unlock Mode
   is applied once combat ends (`PLAYER_REGEN_ENABLED`), registered only while the row is on or
   showing.
-- A press glows the icon (`Glow.Press`): a short Pixel Glow in the Glow color, lines and thickness,
-  under its own LibCustomGlow key so a reminder's own glow keeps running. It is not the game's button
-  highlight or pushed look (`Parts.Press`). The menu waits for the glow before it closes.
+- The row's and the menu's icons take the flat hover and pressed look (`Parts.Press`), as the
+  Consumable Bar's do. A press used to start a second, faster Pixel Glow over the reminder's own, so
+  the glow seemed to speed up; the pressed look replaced it. The menu closes when the click is let
+  go: the buttons take both the down and the up, and the item may be used on either.
 - The row's and the menu's icon edges take the theme's Borders & Lines color (`ns.ThemeTint`), and
   stay black with the default theme.
 - Camp Benefits (1229741, probed 2026-09-19), Campfire Nearby (1283391, the area aura in range of

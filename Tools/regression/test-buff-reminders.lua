@@ -156,6 +156,7 @@ local function Fixture(opts)
                 button:SetAttribute("item1", itemID and ("item:" .. itemID) or nil)
             end },
             Parts = { HUD_OUTLINES = { { NONE = "None", [""] = "Shadow", OUTLINE = "Outline" }, { "NONE", "", "OUTLINE" } },
+            Press = function(button) rawset(button, "pressLook", true) end,
             HudFont = function(fs, font, size, outline) fs.font, fs.size, fs.outline = font, size, outline end } },
     }
 
@@ -1028,31 +1029,29 @@ do
     t.Advance(0.5)
     Check("refresh keeps the menu open", popup.shown, true)
     Check("refresh drops items no longer carried", popup.buttons[2].shown, false)
-    popup.buttons[1].scripts.PostClick(popup.buttons[1])
-    Check("using an item makes it glow", t.state.presses[popup.buttons[1]], "press")
-    Check("the menu stays while it glows", popup.shown, true)
-    t.Advance(0.5)
-    Check("then the glow ends", t.state.presses[popup.buttons[1]], nil)
-    Check("using an item closes the menu", popup.shown, false)
+    Check("menu icons take the hover and pressed look", popup.buttons[1].pressLook, true)
+    popup.buttons[1].scripts.PostClick(popup.buttons[1], "LeftButton", true)
+    Check("pressing an item starts no glow", next(t.state.presses), nil)
+    Check("the menu stays while the item is held", popup.shown, true)
+    popup.buttons[1].scripts.PostClick(popup.buttons[1], "LeftButton", false)
+    Check("letting go closes the menu", popup.shown, false)
     Check("menu icons keep the black edge by default", popup.buttons[1].edge.r, 0)
     Check("row icon is a secure button", cell.template, "SecureActionButtonTemplate")
     Check("row icon uses the item it shows", (cell.attributes.type1 or "") .. " " .. (cell.attributes.item1 or ""),
         "item item:111")
-    cell.scripts.PostClick(cell)
-    Check("clicking a row icon makes it glow", t.state.presses[cell], "press")
-    t.Advance(0.5)
-    Check("and the glow ends", t.state.presses[cell], nil)
+    Check("row icons take the hover and pressed look", cell.pressLook, true)
+    Check("clicking a row icon runs nothing after the item", cell.scripts.PostClick, nil)
     cell.scripts.OnEnter(cell)
     Check("open menu hangs under its cell", popup.anchor, cell)
     Check("menu sits centred under its cell", popup.point .. ">" .. popup.relativePoint, "TOP>BOTTOM")
-    Check("menu icons are the row's size", popup.buttons[1].width .. "x" .. popup.buttons[1].height, "36x36")
+    Check("menu icons are their own small size", popup.buttons[1].width .. "x" .. popup.buttons[1].height, "32x32")
     Check("one item sits in the middle", popup.buttons[1].point .. " " .. popup.buttons[1].x, "TOP 0")
-    Check("menu fits one icon", popup.width .. "x" .. popup.height, "44x44")
+    Check("menu fits one icon", popup.width .. "x" .. popup.height, "40x40")
     t.Set("iconSize", 96)
     cell.scripts.OnEnter(cell)
-    Check("menu icons grow with Icon Size", popup.buttons[1].width, 96)
-    Check("menu grows with them", popup.width .. "x" .. popup.height, "104x104")
-    cell.bottom = 50
+    Check("menu icons stay small with a big Icon Size", popup.buttons[1].width, 32)
+    Check("and the menu with them", popup.width .. "x" .. popup.height, "40x40")
+    cell.bottom = 30
     cell.scripts.OnEnter(cell)
     Check("no room under the cell: menu opens above it", popup.point .. ">" .. popup.relativePoint, "BOTTOM>TOP")
     cell.bottom = nil
@@ -1141,12 +1140,12 @@ do
     local xs = {}
     for i = 1, 9 do xs[i] = popup.buttons[i].x .. "," .. popup.buttons[i].y end
     Check("full line centred, the ninth alone under it", table.concat(xs, " "),
-        "-140,-4 -100,-4 -60,-4 -20,-4 20,-4 60,-4 100,-4 140,-4 0,-44")
-    Check("menu fits eight across, two lines", popup.width .. "x" .. popup.height, "324x84")
+        "-126,-4 -90,-4 -54,-4 -18,-4 18,-4 54,-4 90,-4 126,-4 0,-40")
+    Check("menu fits eight across, two lines", popup.width .. "x" .. popup.height, "292x76")
 end
 
--- At a UI scale where a pixel is not a whole unit, the menu's icons are the row's whole-pixel size,
--- a whole number of pixels from the hovered icon, so they draw exactly as the row's do.
+-- At a UI scale where a pixel is not a whole unit, the menu's icons are a whole number of pixels,
+-- a whole number of pixels from the hovered icon, so they draw as crisply as the row's do.
 do
     local entries, bags = {}, {}
     for i = 1, 2 do
@@ -1162,7 +1161,7 @@ do
     for _, f in ipairs(t.frames) do if rawget(f, "owner") == cell then popup = f end end
     local function Whole(v) return math.abs(v / 0.75 - math.floor(v / 0.75 + 0.5)) < 1e-9 end
     Check("the row icon is whole pixels", cell.width == 36.75 and Whole(cell.width), true)
-    Check("the menu icons are the same size", popup.buttons[1].width .. "x" .. popup.buttons[2].height, "36.75x36.75")
+    Check("the menu icons are whole pixels", popup.buttons[1].width .. "x" .. popup.buttons[2].height, "32.25x32.25")
     local a, b = popup.buttons[1], popup.buttons[2]
     Check("each a whole number of pixels from the middle", Whole(a.x) and Whole(b.x) and Whole(a.y), true)
     Check("and from the icon", Whole(popup.y), true)

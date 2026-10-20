@@ -2,12 +2,11 @@
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
-local S = A.Settings
+local Parts = ns.Shared.Parts
 local St = A.Style
 local R, Cell = A.Buffs, A.BuffCell
-local Glow = A.Glow
 
-local COLS, PAD, GAP = St.MENU_COLS, St.MENU_PAD, St.MENU_GAP
+local COLS, SIZE, PAD, GAP = St.MENU_COLS, St.MENU_CELL, St.MENU_PAD, St.MENU_GAP
 local ICON_GAP, CROP = St.BUFF_GAP, St.BUFF_CROP
 local LEAVE_DELAY = 0.15
 
@@ -44,12 +43,8 @@ local function OnItemLeave()
     Menu.Leave()
 end
 
-local function OnItemUsed(self)
-    Glow.Press(self, "buffGlow")
-    local owner = popup.owner
-    C_Timer.After(Glow.PRESS_TIME, function()
-        if popup.owner == owner then Menu.Hide() end
-    end)
+local function OnItemUsed(_, _, down)
+    if not down then Menu.Hide() end
 end
 
 local function Build()
@@ -73,6 +68,7 @@ local function Button(count)
     button.icon:SetAllPoints()
     button.icon:SetTexCoord(CROP, 1 - CROP, CROP, 1 - CROP)
     Cell.Edge(button)
+    Parts.Press(button)
     button:SetScript("PostClick", OnItemUsed)
     button:SetScript("OnEnter", OnItemEnter)
     button:SetScript("OnLeave", OnItemLeave)
@@ -132,7 +128,7 @@ function Menu.Open(cell)
     if not popup then Build() end
     popup.owner = cell
     local count = Fill(cell.items)
-    Anchor(cell, Lay(count, S.Get("iconSize")))
+    Anchor(cell, Lay(count, SIZE))
     popup:SetShown(count > 0)
 end
 

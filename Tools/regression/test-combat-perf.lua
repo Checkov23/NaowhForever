@@ -249,7 +249,8 @@ do
         ThemeTint = function(_, literal) return literal end,
         Font = function(parent) return New("FontString", nil, parent) end,
         UI = { AttachMover = function() return New("Mover") end },
-        Shared = { Parts = { HudFont = function(fs, _, size, outline) fs:SetFont("font", size, outline) end },
+        Shared = { Parts = { HudFont = function(fs, _, size, outline) fs:SetFont("font", size, outline) end,
+            Press = function() end },
             ItemBar = { SetItem = function(button, itemID) button.itemID = itemID end } } }
     local lastAfter
     local timer = { Cancel = function() end }

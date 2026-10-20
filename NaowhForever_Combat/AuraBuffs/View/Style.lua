@@ -12,6 +12,7 @@ ns.AuraBuffs.Style = setmetatable({
     BUFF_COUNT_INSET = 2,
     BUFF_RANGE_DIM = 0.35,
     MENU_COLS = 8,
+    MENU_CELL = 32,
     MENU_PAD = 4,
     MENU_GAP = 2,
     LOW_CROP = 0.07,
