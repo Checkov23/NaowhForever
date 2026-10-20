@@ -9,6 +9,45 @@ local TEXT_LATEST = ns.L("Latest, ")
 local TEXT_NEXT_RELEASE = "Next Release"
 
 local NOTES = {
+    { title = "Unreleased", lines = {
+        "Buff Reminders: choose where each kind of reminder shows (world, dungeons, raids), "
+            .. "middle-click one to hide it until you reload, and click an icon to use it: poisons, "
+            .. "stones and oils go on the weapon that needs one (right-click for the other hand) and "
+            .. "buffs are cast.",
+        "Consumable Bar: a weapon enhancement goes straight on the weapon it tracks, right-click "
+            .. "for the other hand.",
+        "Top Bar: Shopping List and the other feature windows can be added as buttons, with or "
+            .. "without their minimap icons.",
+        "Profiles (Share card): a profile string can carry your saved Action Bars sets for every "
+            .. "class. Importing adds them next to yours, keeping only their action bar keybinds.",
+        "Campfire: with the Round look, the Cozy Sleeping Bag shows beside the campfire while you "
+            .. "carry it; click it to use the bag. It shows its cooldown and your Well-Rested stacks "
+            .. "and time left.",
+        "World map: click a dungeon or raid entrance, rare, quest giver, gathered node or Skyborne "
+            .. "pin again, or Ctrl+Click it, to remove the waypoint it placed. Quest givers with a "
+            .. "dungeon or raid quest get a green !.",
+        "Quest List and Journeys: more quests across the world and Forever's new zones, with "
+            .. "guidance, reviewed dungeon entrances and faction-specific turn-ins.",
+        "Dungeon Quest Tracker: Forever's follow-up quests show as part of the quest they follow, "
+            .. "and more waypoints go to the quest giver instead of the dungeon entrance.",
+        "Scout (QoL, Interface): abilities and stats for more dungeon creatures and adds, and more "
+            .. "of Forever's beasts show as Tameable. Its settings are now on the Interface tab, "
+            .. "after Tooltips.",
+        "Saved Quest Rewards: each class keeps its own picks. Rewards saved before this update "
+            .. "show as Not confirmed and are not handed in for you until you Alt-click them again "
+            .. "on that class.",
+        "Action Bars: Stop Auto Push Spells to Bars is back, on the Action Bars settings page "
+            .. "(New Spells).",
+        "Quality of Life: the System tab and Gamble are removed. Spell Queue Window is now on the "
+            .. "Combat tab and HDR on the Interface tab; Performance and Custom Slash Commands are "
+            .. "gone.",
+        "German: the Blessings window, the gear reminders and the other new parts up to 1.1.34 "
+            .. "now show in German.",
+        "Fixed: Baganator bag marks no longer stick to a slot after its item moves, Disenchant "
+            .. "Deals and the Disenchant window skip items that can't be disenchanted, the Buff "
+            .. "Reminders item menu's icons are small again, and Journeys no longer sends you back "
+            .. "to the objectives of a quest you finished.",
+    } },
     { title = "0.5.20-beta", lines = {
         "Action Bars (Utilities): save your bars, keybinds and macros as a set and Import it "
             .. "on an alt. A set builder leaves out the slots you pick, Import shows a preview "
