@@ -305,7 +305,8 @@ Profile strings
   profile string sends 0 as a marker and puts it back on import.
 - Reminder Packs (`NSRPACK2:`) are gone. An old pack string is refused before anything in it is
   read, in the Import box and through `NaowhForever_API:ImportProfile`, with a message saying so.
-- The Share picker offers Settings, Macros, Talent Builds, BiS Lists, Saved Quest Items and Look.
+- The Share picker offers Settings, Macros, Talent Builds, BiS Lists, Action Bars, Saved Quest Items
+  and Look.
   Macro Library and Consumables are no longer exported, but a string from an older build that carries
   them still lists them on Import, and `NaowhForever_API:ImportProfile` still takes them. The
   Consumables part is only `utilityReminders.consumables` from the reminders' store, and its import
@@ -327,6 +328,20 @@ Profile strings
   the decode takes only those from either, and a `consumables` part wins over both. Older builds
   ignore the `consumables` key, so a string from this build brings them no consumables.
 - Class macros travel only in the Macros part, never with the consumables.
+- Action Bars is `account.barSets`, every class's saved sets, whole: slots, macros, keybinds and the
+  builder's choices. Import adds them beside yours, as BiS lists are, never over them or onto the
+  bars: a taken name gets a number, and a set you already have (same saved time and saver) is skipped,
+  so importing a string twice adds nothing. Each set is cleaned on import to what Action Bars can read;
+  a slot or macro it cannot use is dropped and the rest kept. The Action Bars module need not be on.
+- An imported set keeps only keybinds to action bar buttons, at most 2 keys each, the website code's
+  rule (`Sharing.lua`): a set saves every bound key, so another player's set would otherwise rebind
+  movement, chat and the camera. `BAR_BUTTONS` copies the button names from the Action Bars module's
+  `Data/Bars.lua`, which may not be loaded. Your own saved sets keep all their keys.
+- When a set lands under a new name, or is one you already have under another, the imported
+  settings' Import on New Character choice (`actionBars.autoImportSets`) for that class follows it,
+  so it still names the set it chose.
+- `NaowhForever_API` leaves Action Bars out of both import and export: an installer's string brings no
+  one's bar sets or keybinds.
 - Consumables and class macros come from another player, so each list is checked whole: IDs are
   whole numbers from 1 to 2^31 - 1, categories and class tokens are known shapes, names, bodies
   and notes fit the game's limits, lists have no holes, and there are at most 500 consumables and
@@ -361,7 +376,7 @@ Profile strings
   the string as that profile, replacing it, and moves every character to it. It prints its own
   failures because the installer ignores return values.
 - WagoUI Packs drives the same global table: `ExportProfile(key)` (any profile by name, the same
-  string the Profiles page makes with every part ticked), `ImportProfile(str, key)`,
+  string the Profiles page makes with every part but Action Bars ticked), `ImportProfile(str, key)`,
   `DecodeProfileString(str)` (the string's parts, for comparing), `SetProfile(key)` (this
   character only), `GetProfileKeys()`, `GetProfileAssignments()`, `GetCurrentProfileKey()`,
   `OpenConfig()` and `CloseConfig()`. Profile key = profile name. None of them reload the UI
