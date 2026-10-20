@@ -16,6 +16,7 @@
     <Script file="View\LowHealthLook.lua"/>
     <Script file="UI\SettingsPage.lua"/>
     <Script file="UI\GlowRows.lua"/>
+    <Script file="UI\CampBag.lua"/>
     <Script file="UI\Campfire.lua"/>
     <Script file="UI\CampfireCards.lua"/>
     <Script file="UI\LowHealth.lua"/>

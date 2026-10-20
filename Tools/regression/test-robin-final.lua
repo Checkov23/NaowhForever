@@ -57,7 +57,7 @@ local function fixture(kind)
         Border = function() return frame() end, Solid = function() return frame() end,
         PixelInset = function(region) return region end,
         ThemeTint = function(_, literal) return literal end,
-        Shared = { Style = { TIME_OK_RGB = {}, TIME_LOW_RGB = {}, TIME_OUT_RGB = {} },
+        Shared = { Style = { TIME_OK_RGB = {}, TIME_LOW_RGB = {}, TIME_OUT_RGB = {} }, Items = { SLEEPING_BAG = 211527 },
             Parts = { Smooth = function(t) return t end, HudText = function(t) return t end,
                 Pill = function() return frame() end, SetPill = function() return 0 end, ColorPill = function() end,
                 Press = function(button) button.pressed = true end,
@@ -102,6 +102,7 @@ local function fixture(kind)
         C_Item = {
             GetItemInfoInstant = function(id) return id, nil, nil, id == 303 and 'INVTYPE_HEAD' or 'INVTYPE_TRINKET' end,
             GetItemIconByID = function(id) return id end,
+            GetItemCount = function() return 0 end,
             EquipItemByName = function(id, slot)
                 assert(not state.combat); state.equips[#state.equips + 1] = { id, slot }
             end,
@@ -227,7 +228,7 @@ do
     check('invalid IDs rejected', not parse('food', '123, x') and not parse('food', '0, 1'))
     s.S.Set('campShowUnder', false)
     for _, file in ipairs({ 'Data/Campfire.lua', 'CampReader.lua', 'View/Style.lua', 'View/Glow.lua', 'View/CampIcon.lua',
-        'View/CampBar.lua', 'View/CampAlert.lua', 'UI/Campfire.lua', 'UI/CampfireCards.lua' }) do
+        'View/CampBar.lua', 'View/CampAlert.lua', 'UI/CampBag.lua', 'UI/Campfire.lua', 'UI/CampfireCards.lua' }) do
         s.load('NaowhForever_Combat/AuraBuffs/' .. file)
     end
     s.fire('PLAYER_LOGIN')

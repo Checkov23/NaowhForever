@@ -60,16 +60,15 @@ local function ModuleLauncher(account, mod)
     LibStub("LibDBIcon-1.0"):Register(LAUNCHER_NAME .. mod.short, obj, db)
 end
 
-local features, made = {}, {}
+local features, launchers, made = {}, {}, {}
 ns.MinimapFeatures = features
 
 function ns.RegisterMinimapFeature(feature)
     features[#features + 1] = feature
 end
 
-local function FeatureLauncher(feature, db)
-    local name = LAUNCHER_NAME .. feature.id
-    local obj = LibStub("LibDataBroker-1.1"):NewDataObject(name, {
+local function FeatureLauncher(feature)
+    launchers[feature.id] = LibStub("LibDataBroker-1.1"):NewDataObject(LAUNCHER_NAME .. feature.id, {
         type = "launcher",
         label = ns.L(feature.name),
         icon = feature.icon,
@@ -79,7 +78,10 @@ local function FeatureLauncher(feature, db)
             TipLine(tooltip, ns.L(feature.tooltip))
         end,
     })
-    LibStub("LibDBIcon-1.0"):Register(name, obj, db)
+end
+
+local function FeatureIcon(feature, db)
+    LibStub("LibDBIcon-1.0"):Register(LAUNCHER_NAME .. feature.id, launchers[feature.id], db)
     made[feature.id] = true
 end
 
@@ -96,7 +98,7 @@ function ns.SetMinimapFeature(feature, on)
     db.hide = not on
     local icon = LibStub("LibDBIcon-1.0")
     if on then
-        if not made[feature.id] then FeatureLauncher(feature, db) end
+        if not made[feature.id] then FeatureIcon(feature, db) end
         icon:Show(LAUNCHER_NAME .. feature.id)
     elseif made[feature.id] then
         icon:Hide(LAUNCHER_NAME .. feature.id)
@@ -113,7 +115,8 @@ local function OnLogin(self)
         if mod.command and Loaded(mod) then ModuleLauncher(account, mod) end
     end
     for _, feature in ipairs(features) do
-        if ns.MinimapFeatureOn(feature) then FeatureLauncher(feature, account.featureButtons[feature.id]) end
+        FeatureLauncher(feature)
+        if ns.MinimapFeatureOn(feature) then FeatureIcon(feature, account.featureButtons[feature.id]) end
     end
 end
 

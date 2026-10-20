@@ -58,6 +58,7 @@ local function Fixture(opts)
     local level, levels = opts.level or 20, opts.levels or {}
     local seen = { placed = {}, printed = {}, requested = {} }
     local J = Data()
+    for _, quest in ipairs(opts.extra or {}) do table.insert(J.QuestData[1].quests, quest) end
     local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         Journal = J,
         Print = function(text) seen.printed[#seen.printed + 1] = text end,
@@ -328,6 +329,47 @@ Case("a quest in a Series knows its step", function()
     assert(#steps == 3 and own == 3)
 end)
 
+-- Forever's own quests have no Series on Wowhead; the guide's note names the quest before.
+local FOLLOW_UPS = {
+    { 800, "Elder", 24, "H", "pre", "Somewhere, loot a relic" },
+    { 801, "Echo", 24, "H", "pre", "Follow-up from Elder" },
+    { 802, "Echo Again", 24, "H", "pre", "Follow-up from Echo" },
+    { 810, "Elder", 24, "A", "pre", "Somewhere, loot a relic" },
+    { 811, "Prism", 24, "A", "pre", "Follow-up from Elder" },
+    { 820, "Brotherhood", 20, "B", "pre", "Follow-up from Red Silk Bandanas" },
+}
+
+Case("a follow-up note chains the quest after the one it names", function()
+    local Q, q = Fixture({ extra = FOLLOW_UPS })
+    local steps, own = Q.Chain(q[801])
+    assert(#steps == 3 and steps[1] == 800 and steps[2] == 801 and steps[3] == 802 and own == 2)
+    steps, own = Q.Chain(q[800])
+    assert(#steps == 3 and own == 1)
+    steps, own = Q.Chain(q[802])
+    assert(#steps == 3 and own == 3)
+end)
+
+Case("a follow-up waits on the quest before it", function()
+    local Q, q = Fixture({ extra = FOLLOW_UPS })
+    assert(Q.Kind(q[801]) == "prereq" and Q.Kind(q[802]) == "prereq")
+    Q, q = Fixture({ extra = FOLLOW_UPS, done = { 800 } })
+    assert(Q.Kind(q[801]) == "pickup" and Q.Kind(q[802]) == "prereq")
+    Q, q = Fixture({ extra = FOLLOW_UPS, on = { 800 } })
+    assert(Q.Kind(q[801]) == "prereqLog")
+end)
+
+Case("a follow-up picks its own side's quest of that name", function()
+    local Q, q = Fixture({ extra = FOLLOW_UPS })
+    local steps = Q.Chain(q[811])
+    assert(#steps == 2 and steps[1] == 810 and steps[2] == 811)
+end)
+
+Case("a follow-up carries on after the named quest's own prerequisites", function()
+    local Q, q = Fixture({ extra = FOLLOW_UPS })
+    local steps, own = Q.Chain(q[820])
+    assert(#steps == 8 and steps[1] == 65 and steps[7] == 214 and steps[8] == 820 and own == 8)
+end)
+
 Case("a quest with neither prerequisites nor a Series has no chain", function()
     local Q, q = Fixture()
     assert(Q.Chain(q[600]) == nil)
@@ -534,6 +576,10 @@ Case("every quest in a generated chain is in its own chain", function()
         end
     end
     assert(chained > 0)
+    local echo = J.Quests.ByID(98823)
+    local steps, own = J.Quests.Chain(echo)
+    assert(steps and steps[own - 1] == 95664, "Earthen Echo is not after Elder Knowledge")
+    assert(J.Quests.Chain(J.Quests.ByID(95664)), "Elder Knowledge has no chain")
 end)
 
 print(("test-journal-quests: %d cases passed"):format(count))

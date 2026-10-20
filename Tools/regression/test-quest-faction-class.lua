@@ -70,7 +70,7 @@ local function Tracker(who)
     local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Journal = {} }
     local env = Env(ns, who)
     for _, path in ipairs({ "NaowhForever_DungeonJournal/Constants.lua", "NaowhForever_DungeonJournal/Data/Quests.lua",
-        "NaowhForever_DungeonJournal/Quests.lua" }) do
+        "NaowhForever_DungeonJournal/Data/QuestChains.lua", "NaowhForever_DungeonJournal/Quests.lua" }) do
         Run(path, env)
     end
     local J = ns.Journal

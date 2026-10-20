@@ -19,6 +19,7 @@ local LOOK = { consumableBarFont = true, consumableBarFontSize = true, consumabl
     consumableBarKeyX = true, consumableBarKeyY = true, consumableBarBackground = true,
     consumableBarBgAlpha = true, consumableBarShowCount = true }
 local BAR_NAME = "NaowhForeverConsumableBar"
+local MAIN_HAND, OFF_HAND = 16, 17
 local RULE_COMBAT_HIDE = "[combat] hide; show"
 local RULE_COMBAT_SHOW = "[combat] show; hide"
 local SPOT = { TOPLEFT = { -1, 1 }, TOPRIGHT = { 1, 1 }, BOTTOMLEFT = { -1, -1 }, BOTTOMRIGHT = { 1, -1 } }
@@ -77,7 +78,12 @@ local function Point(button, entry)
         button:SetAttribute("macro1", info.name)
         button.itemID = CB.Resolve(entry)
     else
-        ItemBar.SetItem(button, CB.Resolve(entry))
+        local id = CB.Resolve(entry)
+        if id and CB.Category(id) == "weapon" then
+            ItemBar.SetWeapon(button, id, CB.Flags(entry).track == "offhand" and OFF_HAND or MAIN_HAND)
+        else
+            ItemBar.SetItem(button, id)
+        end
     end
 end
 

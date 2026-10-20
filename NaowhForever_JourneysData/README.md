@@ -22,3 +22,7 @@ NaowhForever_JourneysData/
 - Every tile, the crossings and the walks are CBOR, deflated, in Base64: the client decodes all three
   natively (`C_EncodingUtil`), and the addon's files must stay ASCII.
 - The tile files are split under 3.5 MB each: the checks refuse files over 5 MB.
+- Quest spots contain a turn-in or false, objective camps, and optionally outdoor dungeon entrances
+  in slot 3. Entrances are incomplete-quest guidance only, separate from exact objective locations.
+- Optional slot 4 contains alternative turn-ins as `{ uiMapID, x, y, side }`, where side is `A`,
+  `H` or `AH`. Slot 3 remains present when empty so the slot meanings never shift.

@@ -108,8 +108,10 @@ local function Fixture(opts)
 
     local defaults = {
         enabled = true,
-        consumablesWhere = "instance", consumablesMinutes = 2,
+        consumablesWorld = false, consumablesDungeon = true, consumablesRaid = true, consumablesMinutes = 2,
         onlyIfCarried = true, carriedPicks = {}, hideResting = true,
+        raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
+        personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
         raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
@@ -124,6 +126,7 @@ local function Fixture(opts)
     end
     function S.Set(k, v) settings[k] = v end
     function S.Raw(k) return settings[k] end
+    function S.DB() return settings end
     function S.Default(k) return defaults[k] end
 
     local account = {}
@@ -151,11 +154,18 @@ local function Fixture(opts)
         UI = { AttachMover = function() return NewFrame() end, ModuleSettings = function() return S end },
         Shared = { Style = dofile("Tools/regression/shared_style.lua"),
             ItemBar = { SetItem = function(button, itemID)
-                button.itemID = itemID
+                button.itemID, button.weaponSlot = itemID, nil
                 button:SetAttribute("type1", itemID and "item" or nil)
                 button:SetAttribute("item1", itemID and ("item:" .. itemID) or nil)
+                button:SetAttribute("macrotext1", nil)
+            end, SetWeapon = function(button, itemID, slot)
+                button.itemID, button.weaponSlot = itemID, slot
+                button:SetAttribute("type1", "macro")
+                button:SetAttribute("item1", nil)
+                button:SetAttribute("macrotext1", "/use item:" .. itemID .. "\n/use " .. slot)
             end },
             Parts = { HUD_OUTLINES = { { NONE = "None", [""] = "Shadow", OUTLINE = "Outline" }, { "NONE", "", "OUTLINE" } },
+            Press = function(button) rawset(button, "pressLook", true) end,
             HudFont = function(fs, font, size, outline) fs.font, fs.size, fs.outline = font, size, outline end } },
     }
 
@@ -416,26 +426,68 @@ do
     Check("Glow off stops them", Glowing(), "")
 end
 
--- Show In: Dungeons & Raids keeps them out of the open world; Everywhere does not.
+-- Where to show: consumables stay out of the world by default; each place is its own switch.
 do
     local t = Fixture({ bags = { 13931, 13510 } })
     t.Login()
-    Check("open world, dungeons only", t.Shown(), "")
-    t.Set("consumablesWhere", "always")
-    Check("everywhere", t.Shown(), "item:13931 item:13510")
-    t.Set("consumablesWhere", "raid")
+    Check("open world, off by default", t.Shown(), "")
+    t.Set("consumablesWorld", true)
+    Check("shown in the world", t.Shown(), "item:13931 item:13510")
+    t.state.instance = "pvp"
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("a battleground counts as the world", t.Shown(), "item:13931 item:13510")
+    t.Set("consumablesDungeon", false)
     t.state.instance = "party"
     t.Fire("PLAYER_ENTERING_WORLD")
     t.Advance(0.5)
-    Check("raids only, in a dungeon", t.Shown(), "")
+    Check("dungeons off, in a dungeon", t.Shown(), "")
     t.state.instance = "raid"
     t.Fire("PLAYER_ENTERING_WORLD")
     t.Advance(0.5)
-    Check("raids only, in a raid", t.Shown(), "item:13931 item:13510")
+    Check("raids on, in a raid", t.Shown(), "item:13931 item:13510")
+    t.Set("consumablesRaid", false)
+    Check("raids off, in a raid", t.Shown(), "")
+    t.Set("consumablesRaid", true)
     t.state.resting = true
     t.Fire("PLAYER_UPDATE_RESTING")
     t.Advance(0.5)
     Check("hidden while resting", t.Shown(), "")
+end
+
+-- The old Show In choice becomes the three switches once, and is gone after.
+do
+    for _, case in ipairs({
+        { "always", true, true, true }, { "instance", false, true, true }, { "raid", false, false, true },
+    }) do
+        local t = Fixture({ settings = { consumablesWhere = case[1] } })
+        t.Login()
+        Check(case[1] .. " moved", tostring(t.Get("consumablesWorld")) .. tostring(t.Get("consumablesDungeon"))
+            .. tostring(t.Get("consumablesRaid")), tostring(case[2]) .. tostring(case[3]) .. tostring(case[4]))
+        Check(case[1] .. " old key gone", t.Get("consumablesWhere"), nil)
+        t.Set("consumablesWorld", not case[2])
+        t.ns.Apply()
+        Check(case[1] .. " a later change kept", t.Get("consumablesWorld"), not case[2])
+    end
+end
+
+-- Raid and personal buff reminders each have their own places to show.
+do
+    local t = Fixture({ settings = { raidBuffs = true },
+        group = "party", units = { player = "MAGE", party1 = "WARRIOR", party2 = "PRIEST" },
+        known = { [1460] = true, [7302] = true },
+        auras = { player = {}, party1 = {}, party2 = {} } })
+    t.Login()
+    Check("both shown in the world", t.Shown(), "spell:7302 spell:10157x2")
+    t.Set("raidBuffsWorld", false)
+    Check("raid buffs off in the world", t.Shown(), "spell:7302")
+    t.Set("personalBuffsWorld", false)
+    Check("personal buffs off in the world", t.Shown(), "")
+    t.Set("personalBuffsDungeon", false)
+    t.state.instance = "party"
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("in a dungeon, raid buffs only", t.Shown(), "spell:10157x2")
 end
 
 -- Only If I Carry One: nothing carried shows nothing; off, a generic icon per kind.
@@ -744,6 +796,43 @@ do
     Check("everyone buffed", t.Shown(), "")
 end
 
+-- Middle-click hides that reminder until reload, on the click's up only, and holds in combat like the row.
+do
+    local t = Fixture({ instance = "raid", bags = { 13931, 13510 }, settings = { raidBuffs = true },
+        group = "party", units = { player = "MAGE", party1 = "WARRIOR", party2 = "PRIEST" },
+        known = { [1460] = true }, auras = { player = {}, party1 = {}, party2 = {} } })
+    local function Cell(texture)
+        for _, f in ipairs(t.frames) do
+            if rawget(f, "icon") and f.shown and f.icon.texture == texture and rawget(f, "scripts").PostClick then
+                return f
+            end
+        end
+    end
+    local function Middle(cell, down) cell.scripts.PostClick(cell, "MiddleButton", down); t.Advance(0.5) end
+    t.Login()
+    Check("food, flask and a raid buff", t.Shown(), "item:13931 item:13510 spell:10157x2")
+    local food = Cell("item:13931")
+    food.scripts.PostClick(food, "LeftButton", true)
+    Check("a left click starts no glow", t.state.presses[food], nil)
+    t.Advance(0.5)
+    Middle(food, true)
+    Check("a middle press alone hides nothing", t.Shown(), "item:13931 item:13510 spell:10157x2")
+    Middle(food, false)
+    Check("letting go hides that reminder", t.Shown(), "item:13510 spell:10157x2")
+    Check("and glows nothing", next(t.state.presses), nil)
+    t.Fire("BAG_UPDATE_DELAYED"); t.Advance(0.5)
+    Check("it stays hidden on a refresh", t.Shown(), "item:13510 spell:10157x2")
+    Middle(Cell("spell:10157"), false)
+    Check("a raid buff hides the same way", t.Shown(), "item:13510")
+    local flask = Cell("item:13510")
+    t.state.combat = true
+    Middle(flask, false)
+    Check("in combat the row holds", t.Shown(), "item:13510")
+    t.state.combat = false
+    t.Fire("PLAYER_REGEN_ENABLED"); t.Advance(0.5)
+    Check("and drops it once combat ends", t.Shown(), "")
+end
+
 -- Range follows the learned rank, treats unavailable results as out, and never rescans auras on a tick.
 do
     local t = Fixture({ settings = { raidBuffs = true, personalBuffs = false }, group = "party",
@@ -1028,31 +1117,30 @@ do
     t.Advance(0.5)
     Check("refresh keeps the menu open", popup.shown, true)
     Check("refresh drops items no longer carried", popup.buttons[2].shown, false)
-    popup.buttons[1].scripts.PostClick(popup.buttons[1])
-    Check("using an item makes it glow", t.state.presses[popup.buttons[1]], "press")
-    Check("the menu stays while it glows", popup.shown, true)
-    t.Advance(0.5)
-    Check("then the glow ends", t.state.presses[popup.buttons[1]], nil)
-    Check("using an item closes the menu", popup.shown, false)
+    Check("menu icons take the hover and pressed look", popup.buttons[1].pressLook, true)
+    popup.buttons[1].scripts.PostClick(popup.buttons[1], "LeftButton", true)
+    Check("pressing an item starts no glow", next(t.state.presses), nil)
+    Check("the menu stays while the item is held", popup.shown, true)
+    popup.buttons[1].scripts.PostClick(popup.buttons[1], "LeftButton", false)
+    Check("letting go closes the menu", popup.shown, false)
     Check("menu icons keep the black edge by default", popup.buttons[1].edge.r, 0)
     Check("row icon is a secure button", cell.template, "SecureActionButtonTemplate")
     Check("row icon uses the item it shows", (cell.attributes.type1 or "") .. " " .. (cell.attributes.item1 or ""),
         "item item:111")
-    cell.scripts.PostClick(cell)
-    Check("clicking a row icon makes it glow", t.state.presses[cell], "press")
-    t.Advance(0.5)
-    Check("and the glow ends", t.state.presses[cell], nil)
+    Check("row icons take the hover and pressed look", cell.pressLook, true)
+    cell.scripts.PostClick(cell, "LeftButton", false)
+    Check("a left click on a row icon runs nothing after the item", next(t.state.presses), nil)
     cell.scripts.OnEnter(cell)
     Check("open menu hangs under its cell", popup.anchor, cell)
     Check("menu sits centred under its cell", popup.point .. ">" .. popup.relativePoint, "TOP>BOTTOM")
-    Check("menu icons are the row's size", popup.buttons[1].width .. "x" .. popup.buttons[1].height, "36x36")
+    Check("menu icons are their own small size", popup.buttons[1].width .. "x" .. popup.buttons[1].height, "32x32")
     Check("one item sits in the middle", popup.buttons[1].point .. " " .. popup.buttons[1].x, "TOP 0")
-    Check("menu fits one icon", popup.width .. "x" .. popup.height, "44x44")
+    Check("menu fits one icon", popup.width .. "x" .. popup.height, "40x40")
     t.Set("iconSize", 96)
     cell.scripts.OnEnter(cell)
-    Check("menu icons grow with Icon Size", popup.buttons[1].width, 96)
-    Check("menu grows with them", popup.width .. "x" .. popup.height, "104x104")
-    cell.bottom = 50
+    Check("menu icons stay small with a big Icon Size", popup.buttons[1].width, 32)
+    Check("and the menu with them", popup.width .. "x" .. popup.height, "40x40")
+    cell.bottom = 30
     cell.scripts.OnEnter(cell)
     Check("no room under the cell: menu opens above it", popup.point .. ">" .. popup.relativePoint, "BOTTOM>TOP")
     cell.bottom = nil
@@ -1141,12 +1229,12 @@ do
     local xs = {}
     for i = 1, 9 do xs[i] = popup.buttons[i].x .. "," .. popup.buttons[i].y end
     Check("full line centred, the ninth alone under it", table.concat(xs, " "),
-        "-140,-4 -100,-4 -60,-4 -20,-4 20,-4 60,-4 100,-4 140,-4 0,-44")
-    Check("menu fits eight across, two lines", popup.width .. "x" .. popup.height, "324x84")
+        "-126,-4 -90,-4 -54,-4 -18,-4 18,-4 54,-4 90,-4 126,-4 0,-40")
+    Check("menu fits eight across, two lines", popup.width .. "x" .. popup.height, "292x76")
 end
 
--- At a UI scale where a pixel is not a whole unit, the menu's icons are the row's whole-pixel size,
--- a whole number of pixels from the hovered icon, so they draw exactly as the row's do.
+-- At a UI scale where a pixel is not a whole unit, the menu's icons are a whole number of pixels,
+-- a whole number of pixels from the hovered icon, so they draw as crisply as the row's do.
 do
     local entries, bags = {}, {}
     for i = 1, 2 do
@@ -1162,7 +1250,7 @@ do
     for _, f in ipairs(t.frames) do if rawget(f, "owner") == cell then popup = f end end
     local function Whole(v) return math.abs(v / 0.75 - math.floor(v / 0.75 + 0.5)) < 1e-9 end
     Check("the row icon is whole pixels", cell.width == 36.75 and Whole(cell.width), true)
-    Check("the menu icons are the same size", popup.buttons[1].width .. "x" .. popup.buttons[2].height, "36.75x36.75")
+    Check("the menu icons are whole pixels", popup.buttons[1].width .. "x" .. popup.buttons[2].height, "32.25x32.25")
     local a, b = popup.buttons[1], popup.buttons[2]
     Check("each a whole number of pixels from the middle", Whole(a.x) and Whole(b.x) and Whole(a.y), true)
     Check("and from the icon", Whole(popup.y), true)
@@ -1175,7 +1263,8 @@ do
     Check("mage: ice armor missing", t.Shown(), "spell:7302")
     for _, f in ipairs(t.frames) do
         if rawget(f, "items") == nil and rawget(f, "count") and f.shown then
-            Check("a spell reminder uses no item", f.attributes.type1, nil)
+            Check("a spell reminder casts its spell, with no item", (f.attributes.type1 or "") .. " "
+                .. tostring(f.attributes.spell1) .. " " .. tostring(f.attributes.item1), "spell 7302 nil")
         end
     end
     t.state.auras.player = { { 168, 1700, 1800 } }
@@ -1231,6 +1320,34 @@ do
     t.state.weapons[17] = 115
     t.Advance(185)
     Check("woken at two minutes left", t.Shown(), "spell:2842")
+end
+
+-- Every reminder does something on a click: a poison or stone goes on the weapon that lacks one, a buff is cast.
+do
+    local function Clicks(t)
+        for _, f in ipairs(t.frames) do
+            if rawget(f, "count") and f.shown and rawget(f, "attributes") then
+                local a = f.attributes
+                return (a.type1 or "") .. " " .. tostring(a.macrotext1 or a.spell1 or a.item1) .. " " .. tostring(a.unit1)
+            end
+        end
+    end
+    local t = Fixture({ units = { player = "ROGUE" }, known = { [2842] = true }, bags = { 6947, 8928 },
+        weapons = { [16] = 600, [17] = false } })
+    t.Login()
+    Check("a poison goes on the unpoisoned hand, the best one carried first", Clicks(t),
+        "macro /use item:8928\n/use 17 nil")
+    t = Fixture({ units = { player = "ROGUE" }, known = { [2842] = true }, weapons = { [16] = false } })
+    t.Login()
+    Check("no poison carried: nothing to use", Clicks(t), " nil nil")
+    t = Fixture({ units = { player = "MAGE" }, known = { [168] = true } })
+    t.Login()
+    Check("a personal buff is cast", Clicks(t), "spell 168 nil")
+    t = Fixture({ settings = { raidBuffs = true }, units = { player = "MAGE", party1 = "PRIEST" }, group = "party",
+        known = { [10157] = true },
+        auras = { player = { { 10157, 3000, 3600 } } } })
+    t.Login()
+    Check("a raid buff is cast on the first one missing it", Clicks(t), "spell 10157 party1")
 end
 
 -- An enchant the game reports with no time left counts as up and arms no wake timer.
@@ -1409,6 +1526,10 @@ do
     end
     Check("preview in the world", Preview("world"), "personal:spell:16362")
     Check("preview resting", Preview("resting"), "")
+    t.Set("personalBuffsWorld", false)
+    Check("preview in the world, personal buffs kept out", Preview("world"), "")
+    Check("preview in a raid", Preview("raid"),
+        "spell:1248406 item:13510 item:13454 item:10306 personal:spell:16362")
 end
 
 -- Only If I Carry One off: flasks and elixirs show with none listed or carried, food only when listed.
@@ -1542,7 +1663,7 @@ do
     local cell
     for _, f in ipairs(t.frames) do if rawget(f, "items") and f.shown then cell = f end end
     Check("Last Used oil shown with its classic icon", t.Shown(), BRILLIANT)
-    Check("and clicking it uses that oil", cell.attributes.item1, "item:20749")
+    Check("and clicking it uses that oil", (cell.attributes.macrotext1 or ""):match("^/use (item:%d+)"), "item:20749")
     cell.scripts.OnEnter(cell)
     local popup
     for _, f in ipairs(t.frames) do if rawget(f, "owner") == cell then popup = f end end
@@ -1552,13 +1673,13 @@ do
     t.Fire("BAG_UPDATE_DELAYED")
     t.Advance(0.5)
     Check("Last Used oil gone: the carried one's classic icon", t.Shown(), WIZARD)
-    Check("and clicking it uses the carried one", cell.attributes.item1, "item:20750")
+    Check("and clicking it uses the carried one", (cell.attributes.macrotext1 or ""):match("^/use (item:%d+)"), "item:20750")
     t.state.bags = { 20750, 20749 }
     t.Set("buffIconMode", "default")
     account.lastIcons.weapon = "item:20749"
     t.Set("buffIconMode", "last")
     Check("an oil saved by an older version picks that oil", t.Shown(), BRILLIANT)
-    Check("and clicking it uses that oil too", cell.attributes.item1, "item:20749")
+    Check("and clicking it uses that oil too", (cell.attributes.macrotext1 or ""):match("^/use (item:%d+)"), "item:20749")
 end
 
 -- The gear reminders moved to QoL (test-gear-reminders.lua): an old profile's switches add nothing to the row.
@@ -1577,6 +1698,15 @@ do
         bags = { 20750 }, weapons = { [16] = false }, settings = { weaponEnhancements = true } })
     t.Login()
     Check("rogue keeps poisons only", t.Shown(), "spell:2842")
+end
+
+-- Where poisons do not show, the generic weapon reminder does.
+do
+    local t = Fixture({ instance = "party", units = { player = "ROGUE" }, known = { [2842] = true },
+        bags = { 20750 }, weapons = { [16] = false },
+        settings = { weaponEnhancements = true, personalBuffsDungeon = false } })
+    t.Login()
+    Check("poisons off in dungeons, weapon reminder shown", t.Shown(), ICONS .. "inv_potion_104")
 end
 
 -- The AuraBuffs window's consumables page, on the real Widgets: each row shows its item's icon and

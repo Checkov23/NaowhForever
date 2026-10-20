@@ -21,6 +21,8 @@ end
 
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,}
 _G.NaowhForever = ns
+-- The bag's item ID is Shared's, read from the real file so the chain and the Campfire share one.
+ns.Shared = { Items = { SLEEPING_BAG = tonumber(Read("Shared/Game/Items.lua"):match("local SLEEPING_BAG = (%d+)")) } }
 assert(loadstring(Read("NaowhForever_Discovery/Data/SleepingBag.lua")))()
 local data = ns.SleepingBag
 

@@ -39,6 +39,8 @@ local PARTS = {
       share = ns.L("The talent builds you saved in the Training Planner.") },
     { key = "bisLists", label = "BiS Lists", help = "Added next to your own lists, never over them",
       share = ns.L("Your BiS lists, for every class.") },
+    { key = "actionBars", label = "Action Bars", help = "Added next to your saved bar sets, never over them",
+      share = ns.L("Your saved action bar sets, for every class.") },
     { key = "questRewards", label = "Saved Quest Items", help = "The rewards you saved for quests, in this profile",
       share = ns.L("The quest rewards you saved with Alt-click.") },
     { key = "look", label = "Look", help = "Skin, theme colors, font and window scale, for every profile",
@@ -52,6 +54,12 @@ local LEGACY_PARTS = {
 }
 local API_PARTS = { settings = true, macros = true, library = true, consumables = true, builds = true,
     bisLists = true, questRewards = true, look = true }
+local BAR_KINDS_NEED_ID = { spell = true, item = true }
+local BAR_FLAGS = { "keys", "macros", "website" }
+local BAR_BUTTONS = { ACTIONBUTTON = true, MULTIACTIONBAR1BUTTON = true, MULTIACTIONBAR2BUTTON = true,
+    MULTIACTIONBAR3BUTTON = true, MULTIACTIONBAR4BUTTON = true, MULTIACTIONBAR5BUTTON = true,
+    MULTIACTIONBAR6BUTTON = true, MULTIACTIONBAR7BUTTON = true }
+local BAR_BUTTON_SLOTS, BAR_KEYS_PER_ACTION = 12, 2
 local LIST_NOUN = { bisLists = ns.L("lists"), library = ns.L("macros"), builds = ns.L("builds") }
 local TEXT_NO_LIBRARIES = ns.L("The serializer libraries are missing from this build.")
 local TEXT_TOO_BIG_PROFILE = ns.L("This profile is too big to share.")
@@ -65,6 +73,7 @@ local TEXT_NEWER = ns.L("This string is from a newer Naowh Forever: update first
 local TEXT_MODULES = ns.L("%d modules")
 local TEXT_CLASS_MACROS = ns.L("%d class macros")
 local TEXT_QUEST_REWARDS = ns.L("%d quest rewards")
+local TEXT_BAR_SETS = ns.L("%d bar sets")
 local TEXT_NOTHING_TO_READ = ns.L("Nothing to read.")
 local TEXT_IMPORT_FAILED = ns.L("Naowh Forever import failed: ")
 local TEXT_SPEC_SWITCH_OFF = ns.L("Per-spec profile switching is off while every character shares '%s'; your spec "
@@ -141,16 +150,32 @@ end
 local function ValidQuestRewards(picks)
     if type(picks) ~= "table" then return false end
     local count = 0
-    for questID, itemID in pairs(picks) do
-        count = count + 1
-        if count > MAX_QUEST_REWARDS or not PositiveID(questID) or not PositiveID(itemID) then return false end
+    for key, value in pairs(picks) do
+        if type(key) == "string" and key:match("^%u+$") and type(value) == "table" then
+            for questID, itemID in pairs(value) do
+                count = count + 1
+                local item = type(itemID) == "number" and math.abs(itemID)
+                if count > MAX_QUEST_REWARDS or not PositiveID(questID) or not PositiveID(item) then return false end
+            end
+        else
+            count = count + 1
+            if count > MAX_QUEST_REWARDS or not PositiveID(key) or not PositiveID(value) then return false end
+        end
     end
     return true
 end
 
 local function CleanQuestRewards(picks)
     local out = {}
-    for questID, itemID in pairs(picks) do out[questID] = itemID end
+    for key, value in pairs(picks) do
+        if type(value) == "table" then
+            local class = {}
+            for questID, itemID in pairs(value) do class[questID] = itemID end
+            out[key] = next(class) and class or nil
+        else
+            out[key] = value
+        end
+    end
     return next(out) and out or nil
 end
 
@@ -263,8 +288,9 @@ end
 
 local function CollectQuestRewards(root, budget)
     local picks = type(root.qol) == "table" and root.qol.questRewards
-    if type(picks) ~= "table" or not next(picks) then return nil end
-    return Plain(picks, 1, budget)
+    if type(picks) ~= "table" then return nil end
+    picks = CleanQuestRewards(picks)
+    return picks and Plain(picks, 1, budget)
 end
 
 local function CollectBisLists(account, budget)
@@ -276,6 +302,15 @@ local function CollectBisLists(account, budget)
         end
     end
     return next(lists) and lists or nil
+end
+
+local function CollectBarSets(account, budget)
+    if type(account.barSets) ~= "table" then return nil end
+    local sets = {}
+    for class, store in pairs(account.barSets) do
+        if type(store) == "table" and next(store) then sets[class] = Plain(store, 1, budget) end
+    end
+    return next(sets) and sets or nil
 end
 
 local function CollectBuilds(account, budget)
@@ -318,6 +353,7 @@ local function Collect(root)
     end
     parts.macros = CollectMacros(root, utility, budget)
     parts.bisLists = CollectBisLists(account, budget)
+    parts.actionBars = CollectBarSets(account, budget)
     parts.builds = CollectBuilds(account, budget)
     parts.questRewards = CollectQuestRewards(root, budget)
     parts.look = CollectLook(account, budget)
@@ -420,14 +456,27 @@ local function ListCount(data)
     return n
 end
 
+local function QuestRewardCount(data)
+    local n = 0
+    for _, value in pairs(data) do n = n + (type(value) == "table" and Count(value) or 1) end
+    return n
+end
+
 local function PartDetail(key, data)
     if key == "settings" then
         local n = Count(data)
         if data[MODULE_STATE_KEY] then n = n - 1 end
         return TEXT_MODULES:format(n)
     end
+    if key == "actionBars" then
+        local n = 0
+        for _, sets in pairs(data) do
+            if type(sets) == "table" then n = n + Count(sets) end
+        end
+        return TEXT_BAR_SETS:format(n)
+    end
     if key == "macros" then return TEXT_CLASS_MACROS:format(ClassMacroCount(data)) end
-    if key == "questRewards" then return TEXT_QUEST_REWARDS:format(Count(data)) end
+    if key == "questRewards" then return TEXT_QUEST_REWARDS:format(QuestRewardCount(data)) end
     if LIST_NOUN[key] then return ("%d %s"):format(ListCount(data), LIST_NOUN[key]) end
 end
 
@@ -573,6 +622,118 @@ local function AddBisLists(incoming)
         if type(class) == "string" and type(lists) == "table" then
             local store = ClassStore(account, class)
             for _, raw in ipairs(lists) do added = added + AddBisList(store, raw) end
+        end
+    end
+    return added
+end
+
+local function BarName(text, max)
+    return Sized(text, 1, max or TEXT_MAX) and not text:find("[|%c]")
+end
+
+local function BarBody(text)
+    return Sized(text, 1, MACRO_BODY_MAX) and not text:find("[%z\1-\8\11-\31]")
+end
+
+local function CleanBarAction(entry, kind)
+    if type(entry) ~= "table" then return nil end
+    local out = { kind = kind }
+    if PositiveID(entry.id) or BarName(entry.id) then out.id = entry.id end
+    if BarName(entry.name) then out.name = entry.name end
+    if BarBody(entry.body) then out.body = entry.body end
+    if PositiveID(entry.icon) or BarBody(entry.icon) then out.icon = entry.icon end
+    if type(entry.perCharacter) == "boolean" then out.perCharacter = entry.perCharacter end
+    if BAR_KINDS_NEED_ID[kind] and type(out.id) ~= "number" then return nil end
+    if (kind == nil or kind == "macro") and not (out.name and out.body) then return nil end
+    return out
+end
+
+local function BarButton(command)
+    if type(command) ~= "string" then return false end
+    local prefix, n = command:match("^(.-)(%d+)$")
+    n = tonumber(n)
+    return BAR_BUTTONS[prefix] and n >= 1 and n <= BAR_BUTTON_SLOTS
+end
+
+local function CleanBarChoices(raw)
+    local choices = { skip = {}, macroOff = {} }
+    for slot, on in pairs(type(raw.skip) == "table" and raw.skip or {}) do
+        if PositiveID(slot) and on == true then choices.skip[slot] = true end
+    end
+    for key, on in pairs(type(raw.macroOff) == "table" and raw.macroOff or {}) do
+        if Sized(key, 1, TEXT_MAX + MACRO_BODY_MAX) and on == true then choices.macroOff[key] = true end
+    end
+    for _, flag in ipairs(BAR_FLAGS) do
+        if type(raw[flag]) == "boolean" then choices[flag] = raw[flag] end
+    end
+    return choices
+end
+
+local function CleanBarSet(raw)
+    if type(raw) ~= "table" or type(raw.slots) ~= "table" then return nil end
+    local set = { saved = PositiveID(raw.saved) and raw.saved or nil, by = BarName(raw.by) and raw.by or nil,
+        slots = {}, macros = {} }
+    for slot, entry in pairs(raw.slots) do
+        local kind = type(entry) == "table" and entry.kind
+        if PositiveID(slot) and BarName(kind) and kind:match("^%l+$") then set.slots[slot] = CleanBarAction(entry, kind) end
+    end
+    for _, m in ipairs(type(raw.macros) == "table" and raw.macros or {}) do
+        set.macros[#set.macros + 1] = CleanBarAction(m)
+    end
+    if type(raw.bindings) == "table" then
+        set.bindings = {}
+        local keys = {}
+        for key, command in pairs(raw.bindings) do
+            local n = BarName(key) and BarButton(command) and (keys[command] or 0) + 1
+            if n and n <= BAR_KEYS_PER_ACTION then set.bindings[key], keys[command] = command, n end
+        end
+    end
+    if type(raw.choices) == "table" then set.choices = CleanBarChoices(raw.choices) end
+    return set
+end
+
+local function BarSetTaken(sets, name)
+    local lower = name:lower()
+    for key in pairs(sets) do
+        if key:lower() == lower then return true end
+    end
+    return false
+end
+
+local function FindBarSet(sets, set)
+    if not set.saved then return nil end
+    for key, mine in pairs(sets) do
+        if type(mine) == "table" and mine.saved == set.saved and mine.by == set.by then return key end
+    end
+    return nil
+end
+
+local function AddBarSets(incoming, root)
+    local account = ns.AccountSettings()
+    account.barSets = type(account.barSets) == "table" and account.barSets or {}
+    local chosen = type(root.actionBars) == "table" and root.actionBars.autoImportSets
+    chosen = type(chosen) == "table" and chosen or {}
+    local added = 0
+    for class, sets in pairs(incoming) do
+        if type(class) == "string" and class:match("^%u+$") and type(sets) == "table" then
+            local mine = type(account.barSets[class]) == "table" and account.barSets[class] or {}
+            local auto = chosen[class]
+            for name, raw in pairs(sets) do
+                local set = BarName(name) and CleanBarSet(raw)
+                local key = set and FindBarSet(mine, set)
+                if set and not key then
+                    local n = 1
+                    key = name
+                    while BarSetTaken(mine, key) do
+                        n = n + 1
+                        key = ("%s %d"):format(name, n)
+                    end
+                    mine[key] = set
+                    added = added + 1
+                end
+                if key and auto == name then chosen[class] = key end
+            end
+            if next(mine) then account.barSets[class] = mine end
         end
     end
     return added
@@ -739,8 +900,9 @@ function ns.ImportProfile(payload, wanted, name, overwrite)
     if wanted.questRewards and ValidQuestRewards(parts.questRewards) then
         ImportQuestRewards(root, parts.questRewards)
     end
-    local added = { bisLists = 0, library = 0, builds = 0 }
+    local added = { bisLists = 0, library = 0, builds = 0, actionBars = 0 }
     if wanted.bisLists and type(parts.bisLists) == "table" then added.bisLists = AddBisLists(parts.bisLists) end
+    if wanted.actionBars and type(parts.actionBars) == "table" then added.actionBars = AddBarSets(parts.actionBars, root) end
     if wanted.library and ns.ModuleOn(MACROS_ADDON) and type(parts.library) == "table" then
         added.library = AddLibrary(parts.library)
     end
@@ -779,7 +941,7 @@ end
 
 function API:ExportProfile(profileKey)
     if type(profileKey) ~= "string" or not self:GetProfileKeys()[profileKey] then return nil end
-    return (ns.ExportProfile(nil, profileKey))
+    return (ns.ExportProfile(API_PARTS, profileKey))
 end
 
 function API:DecodeProfileString(str)

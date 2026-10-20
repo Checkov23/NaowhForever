@@ -367,6 +367,10 @@ the game's own tables, and what they can't settle is listed in the pull request 
 - The next prerequisite is the one after the last step done: a later step done means the ones
   before it are, even a lead-in the game never flags as completed. Wowhead's Series often starts
   partway, so a chain puts the prerequisites first; each path is worked out once.
+- Forever's own quests (Excavation Site: Wetlands' Earthen Echo) have no Series on Wowhead, so
+  `quest_chains.py` finds no chain for them. Their guide note says "Follow-up from <quest>"
+  instead: on load the quest rules chain that quest after the one it names in the same dungeon
+  (its own side's first) and make it wait on it, unless the generated data already has a chain.
 - Forever has no route (`C_QuestLog.GetNextWaypoint`) for many vanilla quests: without one a
   waypoint falls back to the turn-in NPC, then the quest giver. A quest that starts inside its
   dungeon (from a drop) has its waypoint at the dungeon's entrance.

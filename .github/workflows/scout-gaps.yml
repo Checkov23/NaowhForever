@@ -2,7 +2,8 @@ name: scout-gaps
 
 # On demand: reads Wowhead Forever's page of every creature Scout's data has no spells for from the
 # CMaNGOS database (Forever's new creatures, bosses whose spells are in the server's code), with
-# Tools/build/scout.py --fetch-gaps, and opens a pull request with what it read. Wowhead is read
+# Tools/build/scout.py --fetch-gaps, after reading every zone's page again (--refresh-zones) for the
+# creatures Wowhead has added, and opens a pull request with what it read. Wowhead is read
 # one page at a time at scout.py's pace, waiting out a block as it does on our machines. The pages
 # read are kept in Tools/data/scout.json as they come, so a run cut short still brings what it
 # read, and the next run starts where it stopped.
@@ -37,7 +38,7 @@ jobs:
       # Stopped short of the job's own limit, so the pages read so far are kept and built from.
       - name: Read the gaps from Wowhead
         run: |
-          timeout 320m python Tools/build/scout.py --fetch-gaps \
+          timeout 320m python Tools/build/scout.py --fetch-gaps --refresh-zones \
             || echo "::warning::Cut short (exit $?), building from the pages read so far."
 
       - name: Build Scout's data

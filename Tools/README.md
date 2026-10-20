@@ -33,6 +33,243 @@ The caches in `data/` (`*_cache.json`, `*.json`) keep every answer a build used.
 entry to fetch it again. Be gentle with the sites: the scripts wait between requests on
 purpose.
 
+## Scout and quest data without Wowhead requests
+
+`build/data_bundle.py` imports an approved JSON export into the existing caches. It never
+makes HTTP requests. This supplies an alternate input route; it does not unlock Wowhead or
+provide fresh data by itself. Ask the data owner for an export in the format below, or adapt
+their supplied export to it. Do not substitute Classic coordinates for Forever coordinates.
+
+From the repo root:
+
+```sh
+python Tools/build/data_bundle.py --report missing-data.json
+python Tools/build/data_bundle.py --export-file cache-snapshot.json
+python Tools/build/data_bundle.py --import-file approved-data.json
+python Tools/build/data_bundle.py --import-file approved-data.json --apply --report missing-data.json
+python Tools/build/completo_quests.py --offline
+python Tools/build/journeys_quests.py --offline
+python Tools/build/scout.py --offline --dump /path/to/classic.sql.gz
+```
+
+The import previews by default. It validates the entire bundle before writing and merges
+by record ID. Existing records win; use `--replace` with `--apply` when intentionally
+refreshing them. A zone is one record: replacing a zone replaces its whole NPC or quest
+list. Omitted records and sections stay intact. Individual writes use temporary files and
+rename; a later write failure rolls earlier writes back. This is not a transaction across
+a power failure, so retain the source export and review the Git diff before committing.
+
+`--offline` on Scout skips Wowhead only. It still needs the Classic database dump and the
+SpellName and ExpectedStat tables from wago.tools. It cannot run entirely without network
+access unless those other inputs are supplied separately. If a live zone request fails,
+Scout uses remaining cached zones; if an NPC request fails, it saves successful records and
+builds from the cache rather than waiting through repeated 15-minute cooldowns. The shared
+fetcher's bounded retries still apply to live requests.
+
+The report lists missing IDs for the current zone lists, cached quests and Journal bosses.
+It separates uncollected quest-map pages from successfully collected pages with no points.
+Missing Scout NPC pages do not mean missing abilities: the Classic database may supply them.
+It cannot discover unknown content, verify freshness, or prove completeness. Item-started
+quest and dungeon/elsewhere auxiliary caches retain their existing inputs.
+
+A bundle is versioned, Forever-specific JSON with a source description:
+
+```json
+{
+  "version": 1,
+  "edition": "forever",
+  "source": "Owner-provided export, build and date",
+  "data": {
+    "scout": {
+      "npcs": {"2850": {"abilities": [[3009, "Claw"]], "tameable": true}},
+      "zones": {"1": [{"id": 448, "name": "Hogger"}]}
+    },
+    "quest_zones": {
+      "44": {"name": "Redridge Mountains", "quests": [
+        {"id": 65, "name": "The Defias Brotherhood", "level": 18, "reqlevel": 14, "side": 1}
+      ]}
+    },
+    "quests": {"65": {"chain": null, "start": null}},
+    "prerequisites": {"65": {"quests": [132]}},
+    "quest_spots": {"65": []}
+  }
+}
+```
+
+These are format examples, not a verified quest/NPC relationship or an authoritative export.
+Every section is optional; include only supplied data. Sections use the corresponding cache
+shape: `scout.json`, `completo_zones.json`, `completo_quests.json`, `completo_requires.json`
+and `journeys_quest_spots.json`. `cache-snapshot.json` is a local format reference, not a
+new upstream export. It converts the legacy missing-coordinate sentinel `[""]` to `null`
+in the snapshot only.
+
+A quest's `chain` is `null` or `{"chain": [[10], [110]], "names": {"10": "First", "110": "Next"}}`.
+Its `start` is `null` or `{"zone": 44, "coord": [20, 40], "npc": "Giver", "npcId": 123}`.
+Prerequisites are `null` when known absent, otherwise `{"quests": [123]}`. Quest spots are
+a list of `{"point": "end", "zone": 44, "id": 123, "name": "Giver", "coords": [[20, 40]]}`;
+the other point kinds are `requirement`, `sourcerequirement`, `entrance` and `end_choice`. Zones here are AreaTable
+IDs, not uiMapIDs. Positions are percentages on the source map expected by the existing
+builder: Journey objective/turn-in points use Forever maps, while quest-start coordinates
+retain the existing builder's Classic-to-Forever conversion on redrawn maps. Confirm the
+coordinate convention with the provider before importing. Empty lists and nulls mean known
+absence; omit an ID when it has not been collected.
+
+### Permitted entity exports
+
+`build/quest_entities.py` converts a permitted, named-field entity JSON export into a bundle
+of missing quest-map and prerequisite records. It makes no requests and writes candidates
+outside `Tools/data`; the bundle importer applies them after review:
+
+```sh
+python Tools/build/quest_entities.py --input entities.json --bundle quest-candidates.json --report quest-coverage.json
+python Tools/build/data_bundle.py --import-file quest-candidates.json --replace --apply
+python Tools/build/completo_quests.py --offline
+python Tools/build/journeys_quests.py --offline
+```
+
+The input has `version: 1`, `edition: "forever"`, `coordinate_space: "forever"`, `source`
+and `build` descriptions, and an `entities` object with `quests`, `npcs`, `objects` and
+`items`. Each entity collection is keyed by numeric ID strings and holds named fields.
+An array may instead be an object with numeric position strings, preserving sparse groups.
+Obtain the export and reuse permission from its owner; no provider code is required here.
+
+Quest fields used are `finishedBy` (NPC IDs in group 1, object IDs in group 2), `objectives`
+(NPC/object/item tuples in groups 1/2/3, each tuple's first value its entity ID),
+`preQuestGroup` (all required) and `preQuestSingle` (any one required). NPCs and objects
+use `name` and `spawns: {"44": [[20, 40]]}`. Items use `npcDrops` and `objectDrops` ID lists.
+Areas are AreaTable IDs. Spawns are already Forever map percentages; conditional spawn
+tuples with a third, nonzero phase value are withheld. Unsupported map IDs and instance
+sentinels never become exact objective coordinates. Alternative turn-ins are accepted only
+when every actor has locations and all locations fit one camp, at most four map percentage
+points apart; the chosen point is an actual recorded spawn. Separated and conditional
+alternatives, including seasonal moves, remain withheld.
+
+More than three drop sources are withheld unless the item is explicitly a quest item
+(class 12) and sources are located in the quest's explicit, supported outdoor zone. These
+filtered points carry `quest_item: <itemID>` and bypass the broad world-drop guard; ordinary
+commodities retain the guard. `triggerEnd`'s coordinate map (slot 2), and `extraObjectives`'
+coordinate maps (slot 1) and explicit monster/object references (slot 5), can supply objective
+points. Reputation or other unprojected objective types never become invented coordinates.
+
+For a quest explicitly categorized in a dungeon, `journal_bosses.json` supplies its reviewed
+outdoor entrance. This is a separate `entrance` point, not a turn-in or interior objective.
+The generated row has optional slot 3 containing entrance positions; Journeys uses it only
+while the quest is incomplete and no exact destination was found. Entrance guidance works
+without the Dungeon Journal addon loaded. The report distinguishes this evidence.
+
+Reviewed alternative turn-ins use `end_choice` with `coordinate_space: "forever"` and an
+explicit `side` of `A`, `H` or `AH`. Generated slot 4 holds `{ uiMapID, x, y, side }` choices;
+slot 3 is present even when empty. Journeys chooses the nearest candidate for the player's
+faction when the quest is complete or has no objective camps. Ordinary objective camps
+take priority while the quest is unfinished. This format is only for valid alternatives;
+seasonal moves, class-specific variants and unresolved conditional NPC states must be
+withheld or resolved before import. A pickup coordinate is never promoted to a turn-in.
+
+By default only known quest IDs with empty or absent map records receive candidates.
+`--fill-unroutable` also proposes replacements for populated records that produce neither
+an exact destination nor entrance guidance. Apply that bundle with `--replace`; the report
+lists every replaced ID. Existing usable records stay intact, and a replacement must itself
+produce usable output. Prerequisites are supplied only where the cache has no record;
+disagreements with existing records are reported for review. Negative prerequisite IDs
+have special active-quest semantics and are withheld. Missing fields never establish that
+a quest has no prerequisites. Text, breadcrumbs and quest titles are not used to infer them.
+
+Explicit prerequisite records carry both `quests` (the flat dependency IDs for the chain
+graph) and `groups` (all elements required, with a nested list meaning any one). For
+example, `{"quests": [10, 11, 12], "groups": [10, [11, 12]]}` requires 10 and either 11 or
+12. These groups bypass the old same-name heuristic; unrelated existing chain requirements
+are preserved. Imported map points carry `coordinate_space: "forever"` so the legacy
+mixed-map heuristic cannot move them again.
+
+To import the complete source catalog, add `--full-catalog`:
+
+```sh
+python Tools/build/quest_entities.py --input entities.json --full-catalog --bundle catalog-bundle.json --report catalog-coverage.json
+python Tools/build/data_bundle.py --import-file catalog-bundle.json --replace --apply
+python Tools/build/completo_quests.py --offline
+python Tools/build/journeys_quests.py --offline
+```
+
+`data/quest_entity_catalog.json` retains every source quest, including its original named
+fields. The Quest List builder supplements its reviewed zone/dungeon/class records from
+this catalog without replacing existing quest names, levels or race/class restrictions.
+It first uses a supported source zone category, then a single supported starter zone.
+Records without a supported zone stay searchable in Unsorted Quests, a list group with map
+ID 0; no waypoint is assigned to that group. A single unphased, unambiguous starter can
+supply a quest-giver position. Repeatable flags are retained. Existing source page caches
+stay separate; a missing fetched page does not mean missing catalog metadata.
+
+The generated quest list continues to exclude explicitly unused/unimplemented titles;
+these records remain in the import cache for inventory accounting. The Journey builder
+also considers the full catalog when generating destinations. Entries without usable
+location evidence remain cataloged without a generated destination. Static catalog
+membership does not establish in-game availability, and the source's profession,
+reputation, exclusivity and other special conditions are retained in `source_fields` for
+later validation rather than fully implemented as new availability rules here.
+
+The current mapping additions for Mount Hyjal, Riverglades, Darkspear Islands and
+Shen'dralas were checked against build 1.60.1.70450's UiMapAssignment and UiMap tables.
+A supported map with no source quests, such as Mount Hyjal in this snapshot, is not evidence
+that the zone has no quests. Self-referential prerequisite records are withheld and named
+in the conversion report. Reviewed auxiliary quest prerequisites remain authoritative.
+
+The coverage report distinguishes absent page caches from `quest_metadata_missing` and
+counts `entity_catalog_records`. Keep import receipts and permission records outside the repository.
+
+### Scout's scripted Classic baseline
+
+`data/scout_script_spells.json` lists reviewed combat casts for twelve Molten Core script
+names, from the pinned CMaNGOS source linked in the file. Only spell IDs are recorded;
+no server code is embedded. The database's exact `ScriptName` joins them to creatures.
+Boss spells and add spells remain separate. Commented-out spells, submerge/emerge visuals
+and summon visuals are excluded. Ordinary database spell lists keep their current priority.
+A cached creature page, including a known-empty ability list, takes priority over this
+fallback. A future source update can therefore replace a Classic assumption.
+
+This is Classic encounter evidence, not an in-game verification of Forever bosses. Every
+spell still passes the Forever client's SpellName check and the existing cleanup. The
+baseline adds no new creature stats, immunity claims or tameability flags.
+
+```sh
+python Tools/build/scout.py --offline --report scout-missing.json
+```
+
+The report identifies creatures supplied by that fallback, uncollected ability records,
+cached records without usable spells and script spells the client lacks. It records the
+client-table build and baseline source so future collection can target the remaining gaps.
+
+`data/scout_ability_supplement.json` adds a lower-priority Classic ability baseline for
+338 creatures whose lists were empty. Existing usable abilities and explicit cached
+pages, including empty pages, remain authoritative. Pet-family overlaps, quest effects
+and internal helper spells were withheld. These numeric spell records add no stats,
+tameability or quest guidance and are not verified Forever encounter behavior. Client
+spell validation and rank cleanup also apply to this fallback. The generated report's
+`supplemental_ability_creatures` identifies the records actually used.
+
+### Scout's instance coverage
+
+The generator includes each resolved boss, rare and optional NPC in the Journal's
+cached name lookups, in addition to its explicit NPC IDs and cached zone rosters.
+This prevents a missing zone listing from dropping an already identified boss.
+
+`data/abilities_cache.json`, the Journal's existing NPC-page cache, fills ability
+lists that remain empty after Scout's current sources. Explicit Scout pages,
+including empty pages, and previously usable lists retain their priority.
+`data/scout_instance_records.json` supplies reviewed extra instance identities and
+numeric cast records. It includes Forever beta casts linked in the published
+Dalaran guide and additional Classic combat records from a second database.
+The source URLs and Classic scope are recorded in that file. Internal targeting
+helpers, spell casts by substituted sources and unsupported client spell IDs are
+excluded. The original database still supplies stats for newly included Classic
+NPCs; ability records do not supply armor, immunity or tameability claims.
+
+The build report separates `journal_ability_creatures` from
+`reviewed_instance_ability_creatures` and lists selected instance NPCs still
+without abilities or stats. These counts are not a complete Forever spawn census:
+new-instance trash rosters are incomplete, and some creatures have no spells.
+Speculative raid spell associations based on names or neighbouring client rows
+are not included. Classic baseline values remain unverified for Forever.
+
 ## build/: Dungeon Journal
 
 | Tool | What it does | Why |
@@ -93,7 +330,7 @@ purpose.
 
 | Tool | What it does | Why |
 | --- | --- | --- |
-| `scout.py` | Builds `NaowhForever_QoL/Combat/ScoutData.lua`: each attackable creature's abilities, armor, immunities, resistances and tameable beasts, for every open-world zone's and Dungeon Journal instance's creatures (Wowhead Forever's zone pages, cached in `data/scout.json`), from the CMaNGOS classic database (downloaded each run, or `--dump FILE`), the game's SpellName and ExpectedStat (wago.tools); `--fetch-gaps` reads Wowhead's creature pages for the creatures the database has no spells for, slowly, into the same cache. | Scout's tooltips: the game lists no creature's spells or stats. |
+| `scout.py` | Builds `NaowhForever_QoL/Interface/ScoutData.lua`: each attackable creature's abilities, armor, immunities, resistances and tameable beasts, for every open-world zone's and Dungeon Journal instance's creatures (Wowhead Forever's zone pages, cached in `data/scout.json` until `--refresh-zones`), and the tameable beasts those pages leave out or the database calls untameable (`data/scout_beasts.json`, whose pages are always read), from the CMaNGOS classic database (downloaded each run, or `--dump FILE`), the game's SpellName and ExpectedStat (wago.tools); `--fetch-gaps` reads Wowhead's creature pages for the creatures the database has no spells for, slowly, into the same cache. | Scout's tooltips: the game lists no creature's spells or stats. |
 | `daily_word.py` | Builds `NaowhForever_QoL/Travel/DailyWordData.lua`: the Daily Word's answers, shuffled once with a fixed seed, and every word it accepts, from 12dicts and ENABLE (both public domain, downloaded each run). Rebuilding changes past days' words if the sources or its choices change. | One word a day for everyone without a server. |
 | `forever_new.py` | Builds `Shared/Data/Forever.lua`: the items, quests and NPCs Wowhead marks as new in Forever, the ones our data mentions. Cached in `data/forever_new.json` (`--refresh` asks again). | The addon's Forever mark. |
 | `spell_efficiency.py` | Builds `NaowhForever_QoL/Interface/SpellEfficiencyData.lua`: every class spell rank that costs mana and heals or deals damage, its amounts (base, per level, bonus coefficient, ticks), level and school, from the game's spell tables (wago.tools). Also each spell's talent mods (percent talents by rank, Illumination, Elemental Focus), read through the talent nodes in `NaowhForever_Training/Data/TrainingBuilds.lua`. Spells whose amount is elsewhere (weapon, proc, script) are left out; area triggers (Blizzard, Consecration) and Holy Shock are read from the spell their description names. Run it again when `wago.BUILD` moves on. | QoL's Mana Efficiency, without reading tooltip text. |

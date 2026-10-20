@@ -44,6 +44,9 @@ Each layer uses only the ones above it. The bar hands its buttons the function t
 
 - The clock's font is EllesmereUI's ("Gotham Narrow Ultra"), found through SharedMedia; without
   it the clock falls back to the Addon Font.
+- Our own windows (Shopping List, Junk List, Aim Trainer and the rest) are offered by their broker
+  launchers, which the core makes at login whether or not their minimap icon is on, so a saved one
+  is on the bar after a reload.
 - Our own launchers have glyphs of their own (`GLYPH`); any other launcher's icon is desaturated
   and tinted to match. On Forever the icons keep their full color and nothing tints them; the
   game's highlight shows the hover.

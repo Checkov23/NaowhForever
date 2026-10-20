@@ -1,4 +1,4 @@
--- Shared.lua: the namespace every module shares (ns.Shared), the Map & Pins sections and pin scale, what a character keeps by its GUID, and how long ago a time was.
+-- Shared.lua: the namespace every module shares (ns.Shared), the Map & Pins sections, pin scale and clicks, what a character keeps by its GUID, and how long ago a time was.
 local ns = _G.NaowhForever
 
 local MINUTE, HOUR, DAY = 60, 3600, 86400
@@ -12,9 +12,13 @@ local TEXT_DAYS = ns.L("%d days ago")
 local PIN_SCALE = 1.5
 local FULL_SCREEN_PIN_SCALE = 1.5
 local LAST_PIN_ORDER = 50
+local CTRL_KEYS = { LCTRL = true, RCTRL = true }
 
 local Shared = { Parts = {}, Kinds = {}, Items = {}, View = {}, MapPins = {} }
 ns.Shared = Shared
+
+local clickPins = {}
+local ctrlWatch
 
 local function Child(parent, key, create)
     local child = parent[key]
@@ -44,6 +48,25 @@ function Shared.ScalePin(pin, factor)
     end
     pin:SetScale(scale)
     pin:ApplyCurrentPosition()
+end
+
+local function AllowClicks(pin)
+    pin:EnableMouse(clickPins[pin] and not IsControlKeyDown())
+end
+
+local function CtrlChanged(_, _, key)
+    if not CTRL_KEYS[key] then return end
+    for pin in pairs(clickPins) do AllowClicks(pin) end
+end
+
+function Shared.PinClicks(pin, on)
+    if not ctrlWatch then
+        ctrlWatch = CreateFrame("Frame")
+        ctrlWatch:SetScript("OnEvent", CtrlChanged)
+        ctrlWatch:RegisterEvent("MODIFIER_STATE_CHANGED")
+    end
+    clickPins[pin] = on ~= false
+    AllowClicks(pin)
 end
 
 function Shared.MapPinSections()

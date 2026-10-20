@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.1.35
+
+### Changed
+- Daily Word #5 is out (QoL > Travel, or /nf word).
+
 ## 1.1.34
 
 ### Added

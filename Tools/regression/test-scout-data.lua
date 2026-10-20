@@ -1,10 +1,10 @@
--- Run with Lua 5.1 from the repository root: Scout's generated data (NaowhForever_QoL/Combat/ScoutData.lua),
+-- Run with Lua 5.1 from the repository root: Scout's generated data (NaowhForever_QoL/Interface/ScoutData.lua),
 -- unpacked the way the client does (Tools/regression/encoding_util.lua stands in for C_EncodingUtil). The
 -- abilities, the tameable beasts and each creature's stats come back as plain lists of numbers, a few known
 -- creatures have the abilities and stats the game's database gives them and none of the spells the scripts wrongly
 -- put on creatures, and the armor by level is the game's ExpectedStat: one value for each of the 63 levels, level
--- 63 at classic's raid boss 3731. The creatures whose abilities the database lacks (raid bosses, whose spells are
--- in the server's code, and Forever's new creatures) have stats but no abilities until Wowhead's pages fill them in.
+-- 63 at classic's raid boss 3731. Missing instance abilities also use cached Journal pages and reviewed numeric
+-- records; missing creature stats remain unknown rather than being inferred from those ability lists.
 local checks = 0
 local function check(label, value) assert(value, label); checks = checks + 1 end
 
@@ -20,7 +20,7 @@ local ns = {}
 local env = setmetatable({ NaowhForever = ns, C_EncodingUtil = dofile("Tools/regression/encoding_util.lua")() },
     { __index = _G })
 env._G = env
-local chunk = assert(loadfile("NaowhForever_QoL/Combat/ScoutData.lua"))
+local chunk = assert(loadfile("NaowhForever_QoL/Interface/ScoutData.lua"))
 setfenv(chunk, env)
 chunk()
 
@@ -57,6 +57,17 @@ check("Hogger has Pierce Armor and Head Butt", Has(abilities[HOGGER], PIERCE_ARM
 check("a shaman creature has a shaman's spells", Has(abilities[RAZORMANE_MYSTIC], 547) and Has(abilities[RAZORMANE_MYSTIC], 324))
 check("a paladin boss has Holy Light and Hammer of Justice", Has(abilities[SPRINGVALE], 1026)
     and Has(abilities[SPRINGVALE], 5588))
+check("Dalaran's final boss has the reported orb and mana-reset spells", Has(abilities[246020], 1241515)
+    and Has(abilities[246020], 1303598) and Has(abilities[246020], 1303599))
+check("Classic reflection and hatcher casts survive the offline build", Has(abilities[8923], 9941)
+    and Has(abilities[10683], 15572) and Has(abilities[10683], 15580)
+    and not Has(abilities[10683], 15746))
+check("encounter adds retain their passive damage abilities", Has(abilities[16427], 28458)
+    and Has(abilities[16429], 28460) and Has(abilities[16290], 28156))
+check("the arena healer retains its support spells", Has(abilities[16055], 17138)
+    and Has(abilities[16055], 20697) and Has(abilities[16055], 23895))
+check("the diseased maggot's plague is not assigned to the rotting variant", Has(abilities[16056], 30079)
+    and not Has(abilities[16057], 30079))
 check("Dazed and the campfire buffs guards carry are left out wherever they appeared", (function()
     for _, spells in pairs(abilities) do
         if Has(spells, DAZED) or Has(spells, CAMP_BENEFITS) or Has(spells, BOOSTED_REST) then return false end
@@ -91,6 +102,8 @@ for i = 1, #numbers, 2 do
         if type(value) ~= "number" or value < 0 then shaped = false end
     end
 end
+check("previously skipped bosses and guards have their database stats", stats[9019] and stats[9502]
+    and stats[12129] and Has(abilities[12129], 18958))
 check("every creature's stats are nine numbers: armor, immunities, six resistances", shaped)
 check(("most creatures have stats (%d)"):format(withStats), withStats >= MIN_STATS)
 check("Hogger's own armor is 538", stats[HOGGER][ARMOR] == 538)

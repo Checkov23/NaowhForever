@@ -7,6 +7,20 @@ local WEAPON, ARMOR = 2, 4
 local UNCOMMON, RARE, EPIC = 2, 3, 4
 local AUCTION_RETURN = 0.95
 local NEVER = { INVTYPE_BODY = true, INVTYPE_TABARD = true }
+local NO_DISENCHANT = {
+    [11287] = true,
+    [11288] = true,
+    [11289] = true,
+    [20406] = true,
+    [20407] = true,
+    [20408] = true,
+    [44803] = true,
+    [217287] = true,
+    [249144] = true,
+    [249232] = true,
+    [249234] = true,
+    [249237] = true,
+}
 local outcomeCache = {}
 
 local uncommon = {
@@ -61,6 +75,15 @@ end
 
 function Values.Takes(classID, quality, equip)
     return Values.Equipment(classID, equip) and type(quality) == "number"
+        and quality >= UNCOMMON and quality <= EPIC
+end
+
+function Values.ItemEligible(itemID, classID, equip)
+    return not NO_DISENCHANT[itemID] and Values.Equipment(classID, equip)
+end
+
+function Values.ItemTakes(itemID, classID, quality, equip)
+    return Values.ItemEligible(itemID, classID, equip) and type(quality) == "number"
         and quality >= UNCOMMON and quality <= EPIC
 end
 

@@ -260,6 +260,7 @@ end
 function NaowhForeverZoneLinkPinMixin:CheckMouseButtonPassthrough() end
 
 function NaowhForeverZoneLinkPinMixin:OnAcquired(link)
+    ns.Shared.PinClicks(self)
     self.link = link
     local size = S.Get("townPinSize")
     local length = size

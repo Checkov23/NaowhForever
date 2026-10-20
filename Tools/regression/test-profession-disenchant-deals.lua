@@ -11,6 +11,7 @@ local prices = {
     [100] = 50,
     [101] = 60,
     [102] = 100,
+    [11287] = 1,
     [10939] = 50,
     [10940] = 10,
     [10978] = 200,
@@ -30,6 +31,7 @@ local function Drain(limit)
 end
 
 local function Item(itemID)
+    if itemID == 11287 then return "Lesser Magic Wand", 2, 15, "INVTYPE_RANGEDRIGHT", 2 end
     if itemID == 102 then return "Rare Armor", 3, 21, "INVTYPE_CHEST", 4 end
     if itemID == 101 then return "Cheap Weapon", 2, 21, "INVTYPE_WEAPON", 2 end
     if itemID == 100 or itemID >= 1000 and itemID <= 1090 then
@@ -81,11 +83,26 @@ Check("weapon and armor odds remain distinct", Values.Expected(2, 2, 21, prices)
 Check("one possible profitable material is guaranteed", Values.Guaranteed(Values.Outcomes(4, 3, 21), prices, 100))
 Check("multiple outcomes are not called guaranteed when one loses", not Values.Guaranteed(outcomes, prices, 50))
 Check("skill-ups stop at 60", Values.SkillupBand(59) and not Values.SkillupBand(60))
+Check("Forever's no-disenchant equipment overrides otherwise valid weapon rules",
+    Values.Takes(2, 2, "INVTYPE_RANGEDRIGHT") and not Values.ItemTakes(11287, 2, 2, "INVTYPE_RANGEDRIGHT"))
+Check("the current Enchanting skill reports met and unmet requirements",
+    Deals.MeetsSkill(30) and not Deals.MeetsSkill(31))
+skill = 0
+env.GetProfessions = function() return nil, 2 end
+env.GetProfessionInfo = function(index)
+    if index == 2 then return "Enchanting", nil, 25, 75, nil, nil, 333, 5 end
+end
+Check("the Enchanting skill falls back to the second profession slot",
+    Deals.MeetsSkill(30) and not Deals.MeetsSkill(31))
+skill = 30
+env.GetProfessions, env.GetProfessionInfo = function() end, function() end
 local tooltipEntry = Deals.TooltipEntry(100)
 Check("an item tooltip can calculate disenchant details without a deal-list job",
     tooltipEntry and tooltipEntry.gross == 62 and tooltipEntry.scanPrice == 50)
 Check("item tooltip calculations are cached for the current manual scan", Deals.TooltipEntry(100) == tooltipEntry)
+Check("no-disenchant equipment receives no detailed disenchant tooltip", Deals.TooltipEntry(11287) == nil)
 
+cached[11287] = false
 Deals.Start()
 local first = Deals.Job()
 Check("the search begins in bounded work", first and not first.done and #timers > 0)
@@ -99,6 +116,8 @@ Drain()
 local profit = Deals.Job()
 Check("resume finishes the same cached job", profit == first and profit.done)
 Check("profit mode ranks the highest expected gain first", profit.visible[1].item == 102)
+Check("profit mode omits no-disenchant equipment", profit.byItem[11287] == nil)
+Check("no-disenchant equipment starts no item-data request", requested[11287] == nil)
 Check("cached item data starts no load requests", next(requested) == nil)
 
 Deals.SetGuaranteedOnly(true)
@@ -125,6 +144,7 @@ Drain()
 local level = Deals.Job()
 Check("level mode keeps only ten visible choices", level.done and #level.visible == 10)
 Check("level mode prioritizes a profitable low investment", level.visible[1].price == 50)
+Check("level mode omits no-disenchant equipment", level.byItem[11287] == nil)
 Check("level ROI remains mathematically consistent", Near(level.visible[1].roi,
     level.visible[1].profit / level.visible[1].price * 100))
 
@@ -187,6 +207,9 @@ Check("detailed deal tooltips can be limited to the open auction house",
 Check("detailed deal tooltips use the shared item-tooltip processor instead of deal rows",
     dealsSource:find("TooltipDataProcessor.AddTooltipPostCall", 1, true) ~= nil
         and dealsSource:find("row.onTooltip = entry, entry.item, nil, nil", 1, true) ~= nil)
+Check("the Enchanting requirement uses green when met and red when unmet",
+    dealsSource:find("Deals.MeetsSkill(entry.required) and Style.PROFIT_RGB or Style.RED_RGB", 1, true) ~= nil
+        and dealsSource:find("requirementColor.r, requirementColor.g, requirementColor.b)", 1, true) ~= nil)
 
 local settingsFile = assert(io.open("NaowhForever_Professions/UI/SettingsPage.lua", "rb"))
 local settingsSource = settingsFile:read("*a"); settingsFile:close()

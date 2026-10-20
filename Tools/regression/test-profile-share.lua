@@ -25,6 +25,7 @@ local DEFAULTS = {
     qol = { enabled = true, fastLoot = false, bisSlots = {} },
     macros = { enabled = true, classMacros = {}, foodBar = false },
     topBar = { enabled = true, mouseoverAlpha = 0 },
+    actionBars = { enabled = false, autoImportSets = {} },
 }
 
 -- A fresh account: one profile, Default, with something in every part.
@@ -46,7 +47,12 @@ local function World()
         account = {
             themePreset = "slate", uiFont = "Naowh", windowScale = 1.1,
             bisLists = { PALADIN = { lists = { { id = 1, name = "Prot", slots = { [1] = 100 } } }, nextID = 2 } },
-            barSets = { PALADIN = { Raid = {} } },
+            barSets = { PALADIN = { Raid = { saved = 100, by = "Glyadin",
+                slots = { [1] = { kind = "spell", id = 635, name = "Holy Light" },
+                    [2] = { kind = "macro", name = "BoP", body = "/cast BoP", icon = 134400, perCharacter = true } },
+                macros = { { name = "BoP", body = "/cast BoP", icon = 134400, perCharacter = true } },
+                bindings = { ["SHIFT-1"] = "ACTIONBUTTON1" },
+                choices = { skip = { [3] = true }, macroOff = {}, keys = true, macros = true } } } },
             libraryMacros = { PALADIN = { { name = "Seal", body = "/cast Seal", icon = 135 },
                 { name = "Packed", body = "/cast Pack", pack = true } } },
             trainingBuilds = { [2] = { { name = "Ret", spec = "Retribution", points = { 11, 12 }, saved = true,
@@ -98,7 +104,7 @@ local function World()
 end
 
 local ALL = { settings = true, macros = true, library = true, consumables = true, builds = true,
-    bisLists = true, questRewards = true, look = true }
+    bisLists = true, actionBars = true, questRewards = true, look = true }
 
 -- What a string from before Macro Library and Consumables left the picker carries on top of today's export.
 local function Payload(w)
@@ -128,7 +134,8 @@ Case("export: one string with every part, personal data left home", function()
     assert(parts.builds[2][1].name == "Ret" and parts.builds[2][1].points[2] == 12)
     assert(parts.builds[2][1].saved == nil)
     assert(parts.look.themePreset == "slate" and parts.look.windowScale == 1.1)
-    assert(parts.barSets == nil and parts.look.barSets == nil, "no personal data")
+    assert(parts.actionBars.PALADIN.Raid.slots[1].id == 635 and parts.actionBars.PALADIN.Raid.bindings["SHIFT-1"])
+    assert(parts.barSets == nil and parts.look.barSets == nil, "bar sets travel only as their own part")
 end)
 
 Case("export: only the ticked parts go in", function()
@@ -215,10 +222,10 @@ Case("the parts a string holds, for the import's ticks", function()
     local keys = {}
     for _, part in ipairs(list) do keys[#keys + 1] = part.key .. (part.detail and (":" .. part.detail) or "") end
     assert(table.concat(keys, ",") == "settings:2 modules,macros:1 class macros,builds:1 builds,bisLists:1 lists,"
-        .. "questRewards:2 quest rewards,look", table.concat(keys, ","))
+        .. "actionBars:1 bar sets,questRewards:2 quest rewards,look", table.concat(keys, ","))
     keys = {}
     for _, part in ipairs(w.ns.ProfileStringParts(Payload(w))) do keys[#keys + 1] = part.key end
-    assert(table.concat(keys, ",") == "settings,macros,builds,bisLists,questRewards,look,library,consumables",
+    assert(table.concat(keys, ",") == "settings,macros,builds,bisLists,actionBars,questRewards,look,library,consumables",
         "a string from an older build still offers what it carries: " .. table.concat(keys, ","))
     for _, part in ipairs(w.ns.Profiles.PARTS) do
         assert(part.key ~= "library" and part.key ~= "consumables", "the picker no longer offers " .. part.key)
@@ -273,7 +280,8 @@ Case("import: a new profile with every part, switched to, the old one untouched"
     assert(p.tankReminder.leadTime == nil and p.tankReminder.presets == nil and p.tankReminder.utilityReminders.other == nil,
         "only the consumables and class macros of the store")
     assert(w.db.account.themePreset == "slate", "the look comes in")
-    assert(added.bisLists == 0 and added.library == 0 and added.builds == 0, "what you have is not added twice")
+    assert(added.bisLists == 0 and added.library == 0 and added.builds == 0 and added.actionBars == 0,
+        "what you have is not added twice")
     assert(#w.db.account.libraryMacros.PALADIN == 2 and #w.db.account.trainingBuilds[2] == 1)
     assert(w.db.profiles.Default.qol.fastLoot == before)
 end)
@@ -392,6 +400,87 @@ Case("BiS lists join yours under a free name, never over them", function()
     local mage = w.db.account.bisLists.MAGE.lists
     assert(mage[1].name == "Fire" and mage[1].specOnly == true, "a spec-only list stays one")
     assert(mage[2].specOnly == nil and paladin[2].specOnly == nil, "anything but true is a class list")
+end)
+
+Case("bar sets join yours under a free name, never over them", function()
+    local w = World()
+    local payload = assert(w.ns.DecodeProfile((w.ns.ExportProfile({ actionBars = true }))))
+    local raid = payload.parts.actionBars.PALADIN.Raid
+    assert(raid.choices.skip[3] == true and raid.macros[1].body == "/cast BoP")
+    raid.saved = 200
+    raid.slots[1].id = 19750
+    payload.parts.actionBars.MAGE = { Leveling = { saved = 300, slots = { [5] = { kind = "item", id = 5512 } } } }
+    payload.parts.settings = { actionBars = { autoImportSets = { PALADIN = "Raid", MAGE = "Leveling" } } }
+    local _, added = w.ns.ImportProfile(payload, { actionBars = true, settings = true }, "B")
+    local paladin = w.db.account.barSets.PALADIN
+    assert(added.actionBars == 2, tostring(added.actionBars))
+    assert(paladin.Raid.saved == 100 and paladin.Raid.slots[1].id == 635, "yours kept")
+    assert(paladin["Raid 2"].slots[1].id == 19750 and paladin["Raid 2"].bindings["SHIFT-1"] == "ACTIONBUTTON1")
+    assert(paladin["Raid 2"].choices.keys == true and paladin["Raid 2"].choices.macroOff, "its choices come along")
+    assert(w.db.account.barSets.MAGE.Leveling.slots[5].id == 5512, "every class's sets")
+    local chosen = w.db.profiles.B.actionBars.autoImportSets
+    assert(chosen.PALADIN == "Raid 2" and chosen.MAGE == "Leveling", "the auto import choice follows the rename")
+    payload.parts.settings = { actionBars = { autoImportSets = { PALADIN = "Raid" } } }
+    _, added = w.ns.ImportProfile(payload, { actionBars = true, settings = true }, "C")
+    assert(added.actionBars == 0 and paladin["Raid 3"] == nil, "a set you already took is not added again")
+    assert(w.db.account.barSets.MAGE["Leveling 2"] == nil)
+    assert(w.db.profiles.C.actionBars.autoImportSets.PALADIN == "Raid 2", "and points at the one you took")
+end)
+
+Case("a bar set keeps only what an import can use", function()
+    local w = World()
+    w.db.account.barSets = nil
+    w.ns.ImportProfile({ name = "X", parts = { actionBars = {
+        PALADIN = {
+            Good = { slots = { [1] = { kind = "spell", id = 635 }, [2] = { kind = "spell" },
+                [3] = { kind = "Bad", id = 1 }, [4] = { kind = "macro", name = "x" }, [-1] = { kind = "item", id = 1 },
+                [5] = { kind = "flyout", id = 9 } },
+                macros = { { name = "A|cff", body = "/x" }, { name = "B", body = "/b" } },
+                bindings = { ["CTRL-1"] = "ACTIONBUTTON1", ["X|r"] = "ACTIONBUTTON2", W = "MOVEFORWARD",
+                    ENTER = "OPENCHAT", ["CTRL-F12"] = "MULTIACTIONBAR7BUTTON12", F1 = "MULTIACTIONBAR8BUTTON1",
+                    F2 = "ACTIONBUTTON13", F3 = "ACTIONBUTTON0", F4 = "ACTIONBUTTON", F5 = "ACTIONBUTTON1X",
+                    ["1"] = "ACTIONBUTTON3", ["2"] = "ACTIONBUTTON3", ["3"] = "ACTIONBUTTON3", [5] = "ACTIONBUTTON4" },
+                choices = { skip = { [7] = true, x = true }, macroOff = { k = "yes" }, keys = "no", website = true } },
+            NoSlots = { macros = {} },
+            ["Bad|cname"] = { slots = {} },
+        },
+        lowercase = { Set = { slots = {} } },
+    } } }, { actionBars = true }, "Junk")
+    local sets = w.db.account.barSets.PALADIN
+    local good = sets.Good
+    assert(good.slots[1].id == 635 and good.slots[5].kind == "flyout")
+    assert(good.slots[2] == nil and good.slots[3] == nil and good.slots[4] == nil and good.slots[-1] == nil)
+    assert(#good.macros == 1 and good.macros[1].name == "B")
+    assert(good.bindings["CTRL-1"] and good.bindings["X|r"] == nil)
+    assert(good.bindings["CTRL-F12"] == "MULTIACTIONBAR7BUTTON12", "every bar's buttons")
+    assert(good.bindings.W == nil and good.bindings.ENTER == nil, "movement and chat keys stay yours")
+    for _, key in ipairs({ "F1", "F2", "F3", "F4", "F5" }) do
+        assert(good.bindings[key] == nil, "no button past the bars: " .. key)
+    end
+    local three = 0
+    for _, command in pairs(good.bindings) do
+        if command == "ACTIONBUTTON3" then three = three + 1 end
+    end
+    assert(three == 2 and good.bindings[5] == nil, "at most 2 keys a button")
+    assert(good.choices.skip[7] and good.choices.skip.x == nil and next(good.choices.macroOff) == nil)
+    assert(good.choices.keys == nil and good.choices.website == true)
+    assert(sets.NoSlots == nil and sets["Bad|cname"] == nil and w.db.account.barSets.lowercase == nil)
+end)
+
+Case("the installer API leaves bar sets out, both ways", function()
+    local w = World()
+    local ns = w.ns
+    ns.ListProfiles = function() return { "Default" } end
+    ns.ProfileTable = function(name) return w.db.profiles[name] end
+    ns.SetAccountProfile = function() return true end
+    local API = getfenv(ns.ExportProfile)._G.NaowhForever_API
+    local parts = assert(ns.DecodeProfile(assert(API:ExportProfile("Default")))).parts
+    assert(parts.actionBars == nil and parts.settings and parts.bisLists and parts.look, "every other part goes")
+    local text = assert(ns.ExportProfile())
+    w.db.account.barSets.PALADIN.Raid = nil
+    assert(API:ImportProfile(text, "Naowh"))
+    assert(w.switched == "Naowh" and w.db.profiles.Naowh.qol.fastLoot == true, "the rest lands")
+    assert(w.db.account.barSets.PALADIN.Raid == nil, "a string with bar sets adds none through the API")
 end)
 
 Case("Library macros join yours; a name you have, or one that is no macro, stays out", function()
@@ -522,6 +611,39 @@ Case("saved quest items are checked whole: IDs, types and size", function()
     assert(qol == nil or qol.questRewards == nil, "import checks again")
 end)
 
+Case("saved quest items keep each class's picks", function()
+    local w = World()
+    local function Picks(picks)
+        return assert(w.ns.DecodeProfile(OldString({ questRewards = picks }))).parts.questRewards
+    end
+    local picks = Picks({ DRUID = { [100] = 111 }, PALADIN = { [100] = 222, [200] = 333 }, [300] = 444 })
+    assert(picks.DRUID[100] == 111 and picks.PALADIN[200] == 333 and picks[300] == 444)
+    assert(Picks({ druid = { [100] = 111 } }) == nil and Picks({ DRUID = { [100] = "x" } }) == nil)
+    assert(Picks({ DRUID = { bad = 111 } }) == nil and Picks({ DRUID = 5 }) == nil)
+    assert(Picks({ DRUID = {} }) == nil, "an empty class is no part")
+    assert(Picks({ DRUID = { [100] = -111 } }).DRUID[100] == -111, "a pick not confirmed is a negative ID")
+    assert(Picks({ [100] = -111 }) == nil and Picks({ DRUID = { [100] = -1.5 } }) == nil)
+    local big = { DRUID = {}, PALADIN = {} }
+    for i = 1, 1000 do big.DRUID[i], big.PALADIN[i] = 1000 + i, 2000 + i end
+    assert(Picks(big).PALADIN[1000] == 3000)
+    big.PALADIN[1001] = 5
+    assert(Picks(big) == nil, "the cap counts every class")
+
+    w.db.profiles.Default.qol.questRewards = { DRUID = { [100] = 111, [300] = -333 }, PALADIN = {}, [200] = 222 }
+    local parts = assert(w.ns.DecodeProfile(assert(w.ns.ExportProfile({ questRewards = true })))).parts
+    assert(parts.questRewards.DRUID[100] == 111 and parts.questRewards.DRUID[300] == -333
+        and parts.questRewards[200] == 222 and parts.questRewards.PALADIN == nil)
+    local list = w.ns.ProfileStringParts({ parts = parts })
+    assert(list[1].key == "questRewards" and list[1].detail == "3 quest rewards")
+    w.db.profiles.Default.qol.questRewards = { DRUID = {} }
+    local none = assert(w.ns.DecodeProfile(assert(w.ns.ExportProfile({ settings = true, questRewards = true })))).parts
+    assert(none.questRewards == nil, "no picks in any class, no part")
+    w.ns.ImportProfile({ name = "C", parts = parts }, ALL, "Classes")
+    local got = w.db.profiles.Classes.qol.questRewards
+    assert(got.DRUID[100] == 111 and got.DRUID[300] == -333 and got[200] == 222,
+        "classless picks wait for the first class to log in, and one not confirmed stays so")
+end)
+
 Case("a string from before Saved Quest Items had a part still brings its picks", function()
     local w = World()
     local parts = assert(w.ns.DecodeProfile(OldString({ settings = { qol = { fastLoot = true,
@@ -646,11 +768,11 @@ Case("the dialogs: export shows the string, import ticks parts and lands what is
     assert(import.shown == false, "nothing to import yet")
     paste.text = text
     paste.scripts.OnTextChanged(paste, true)
-    assert(import.shown and import.label == "Import" and #toggles == 7, #toggles)
+    assert(import.shown and import.label == "Import" and #toggles == 8, #toggles)
     for _, t in ipairs(toggles) do assert(t._get() == true, "every part ticked to start") end
-    toggles[6]._set(false)   -- Look
+    toggles[7]._set(false)   -- Look
     paste.scripts.OnTextChanged(paste, true)
-    assert(toggles[6]._get() == false, "an untick survives a repaint")
+    assert(toggles[7]._get() == false, "an untick survives a repaint")
     w.db.account.themePreset = "midnight"
     import.click()
     assert(w.switched == "Default 2" and w.db.profiles["Default 2"].qol.fastLoot == true)
@@ -686,7 +808,7 @@ Case("the dialogs: export shows the string, import ticks parts and lands what is
     ns.ShowProfileImport()
     paste.text = ns.ExportProfile()
     paste.scripts.OnTextChanged(paste, true)
-    assert(#toggles == 8 and toggles[7]._get() == true and toggles[8]._get() == false,
+    assert(#toggles == 9 and toggles[8]._get() == true and toggles[9]._get() == false,
         "Keep My Positions starts ticked; Also Import is a row of its own, left unticked")
     assert(fonts.preview.text:find("act for you: Auto Sell Junk;", 1, true), fonts.preview.text)
     import.click()
@@ -695,7 +817,7 @@ Case("the dialogs: export shows the string, import ticks parts and lands what is
     ns.ShowProfileImport()
     paste.text = ns.ExportProfile()
     paste.scripts.OnTextChanged(paste, true)
-    toggles[8]._set(true)
+    toggles[9]._set(true)
     import.click()
     assert(w.db.profiles[w.switched].qol.sellJunk == true, "ticked, it comes along")
 end)
@@ -855,34 +977,35 @@ Case("the page: the profile in use, the others with Use, a switch per part, a pa
     w.active = "Default"
 
     local tiles = view.drawn.part
-    assert(#tiles == 6 and tiles[1].key == "settings" and tiles[1].switch.on == true)
+    assert(#tiles == 7 and tiles[1].key == "settings" and tiles[1].switch.on == true)
     assert(tiles[1].detail.text == "2 modules", tostring(tiles[1].detail.text))
-    assert(tiles[5].key == "questRewards" and tiles[5].name.text == "Saved Quest Items" and tiles[5].ready == true)
-    assert(tiles[5].detail.text == "2 quest rewards", tiles[5].detail.text)
+    assert(tiles[6].key == "questRewards" and tiles[6].name.text == "Saved Quest Items" and tiles[6].ready == true)
+    assert(tiles[6].detail.text == "2 quest rewards", tiles[6].detail.text)
+    assert(tiles[5].key == "actionBars" and tiles[5].detail.text == "1 bar sets", tiles[5].detail.text)
     assert(tiles[3].key == "builds" and tiles[3].ready == false and tiles[3].detail.text == "Nothing saved yet")
     assert(tiles[3].switch.on == false and tiles[3].switch.mouse == false and tiles[3].name.a < 1)
     assert(tiles[1].tip:find("frames sit", 1, true))
     assert(tiles[1].left == 16 and tiles[2].left > tiles[1].left and tiles[2].top == tiles[1].top, "two columns")
     assert(tiles[3].top > tiles[1].top and tiles[1].width == tiles[2].width, "rows of the same size")
     local send = view.drawn.send[1]
-    assert(send.count.text == "5 of 5 parts of Default go in the string.", send.count.text)
+    assert(send.count.text == "6 of 6 parts of Default go in the string.", send.count.text)
     assert(heads[2].name.text == "Share" and heads[2].link.shown == true)
 
-    tiles[5].scripts.OnClick(tiles[5])   -- Saved Quest Items
+    tiles[6].scripts.OnClick(tiles[6])   -- Saved Quest Items
     send = view.drawn.send[1]
-    assert(send.count.text == "4 of 5 parts of Default go in the string.", send.count.text)
-    assert(view.drawn.part[5].switch.on == false)
-    tiles[5].switch._set(true)
-    assert(view.drawn.send[1].count.text == "5 of 5 parts of Default go in the string.")
-    tiles[5].switch._set(false)
+    assert(send.count.text == "5 of 6 parts of Default go in the string.", send.count.text)
+    assert(view.drawn.part[6].switch.on == false)
+    tiles[6].switch._set(true)
+    assert(view.drawn.send[1].count.text == "6 of 6 parts of Default go in the string.")
+    tiles[6].switch._set(false)
     tiles[3].scripts.OnClick(tiles[3])   -- builds: nothing to share, so nothing happens
-    assert(view.drawn.send[1].count.text == "4 of 5 parts of Default go in the string.")
+    assert(view.drawn.send[1].count.text == "5 of 6 parts of Default go in the string.")
     buttons["Export"][1].click()
     assert(exported.questRewards == nil and exported.settings == true and exported.look == true)
 
     local pick = view.drawn.head[2].link
     pick.click(pick)
-    assert(view.drawn.send[1].count.text == "5 of 5 parts of Default go in the string.")
+    assert(view.drawn.send[1].count.text == "6 of 6 parts of Default go in the string.")
     pick.click(pick)
     assert(view.drawn.send[1].count.text == "Pick a part to share.")
     assert(view.drawn.send[1].send.mouse == false, "nothing to share, the button rests")
@@ -899,7 +1022,7 @@ Case("the page: the profile in use, the others with Use, a switch per part, a pa
     w.db.profiles.Default.tankReminder.importedPack = { name = "Naowh's Pack" }
     ns.BuildProfileSettings(parent, -10)
     tiles = view.drawn.part
-    assert(#tiles == 6 and tiles[5].key == "questRewards" and tiles[5].switch.mouse == true,
+    assert(#tiles == 7 and tiles[6].key == "questRewards" and tiles[6].switch.mouse == true,
         "a profile from a pack shares like any other")
 
     ---@diagnostic disable-next-line: duplicate-set-field

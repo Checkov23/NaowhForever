@@ -1,4 +1,4 @@
--- CampIcon.lua: the campfire art, and the Round look: the camp icon with its time ring and words.
+-- CampIcon.lua: the campfire art, and the Round look: the camp icon with its time ring and words, and the Sleeping Bag beside it.
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
@@ -16,6 +16,9 @@ local TRACK_OUT, DRAIN_OUT, RING_OUT = St.CAMP_TRACK_OUT, St.CAMP_DRAIN_OUT, St.
 local TIME_STEPS = St.CAMP_TIME_STEPS
 local LABEL_DROP = TRACK_OUT + LABEL_GAP
 local SIT_HOT = St.CAMP_SIT_HOT
+local BAG_SCALE, BAG_GAP, BAG_TEXT_SIZE, BAG_CROP = St.CAMP_BAG_SCALE, St.CAMP_BAG_GAP, St.CAMP_BAG_TEXT_SIZE,
+    St.CAMP_BAG_CROP
+local BAG_COUNT_SIZE, BAG_COUNT_INSET = St.CAMP_BAG_COUNT_SIZE, St.CAMP_BAG_COUNT_INSET
 local ROUND_ART = { "tex", "plate", "ring" }
 local ROUND_EXTRAS = { "timer", "drain", "track", "label", "buffs" }
 local JUSTIFY = { right = "LEFT", left = "RIGHT" }
@@ -23,6 +26,7 @@ local JUSTIFY = { right = "LEFT", left = "RIGHT" }
 local TEXT_REFRESH = ns.L("Refresh Camp")
 local TEXT_CLICK_SIT = ns.L("Click to sit")
 local TEXT_RESTING = ns.L("Resting")
+local TEXT_SLEEPING_BAG = ns.L("Sleeping Bag")
 
 local Look = { LABEL_DROP = LABEL_DROP }
 A.CampIcon = Look
@@ -37,8 +41,9 @@ local function Ring(icon)
     icon.ring:AddMaskTexture(icon.ringMask)
 end
 
-function Look.Art(icon, bare)
-    icon.tex = Parts.Smooth(icon:CreateTexture(nil, "ARTWORK"), ART)
+function Look.Art(icon, bare, art)
+    icon.tex = Parts.Smooth(icon:CreateTexture(nil, "ARTWORK"), not art and ART or nil)
+    if art then icon.tex:SetTexture(art) end
     icon.tex:SetAllPoints()
     if bare then
         icon.tex:SetTexCoord(ART_CROP[1], ART_CROP[2], ART_CROP[3], ART_CROP[4])
@@ -155,6 +160,65 @@ function Look.Sitting(icon)
     icon.label:SetText(TEXT_RESTING)
     icon.label:Show()
     icon.buffs:Hide()
+end
+
+function Look.NewBag(bag, art)
+    Look.Art(bag, nil, art)
+    bag.tex:SetTexCoord(BAG_CROP, 1 - BAG_CROP, BAG_CROP, 1 - BAG_CROP)
+    bag.label = Parts.HudText(ns.Font(bag, BAG_TEXT_SIZE, nil, T.accentSoft))
+    bag.label:SetPoint("TOP", bag, "BOTTOM", 0, -LABEL_DROP)
+    bag.label:SetText(TEXT_SLEEPING_BAG)
+    bag.cooldown = CreateFrame("Cooldown", nil, bag, "CooldownFrameTemplate")
+    bag.cooldown:SetAllPoints()
+    bag.cooldown:SetSwipeTexture(MASK)
+    bag.cooldown:SetDrawBling(false)
+    bag.cooldown:SetDrawEdge(false)
+    bag.cooldown:Hide()
+    NewTimers(bag)
+    bag.count = Parts.HudText(ns.Font(bag.timer, BAG_COUNT_SIZE, "OUTLINE"))
+    bag.count:SetPoint("BOTTOMRIGHT", bag, "BOTTOMRIGHT", BAG_COUNT_INSET, -BAG_COUNT_INSET)
+    bag.count:Hide()
+    Look.Timed(bag, false)
+end
+
+function Look.BagCooldown(bag, start, duration)
+    local on = start ~= nil
+    bag.tex:SetDesaturated(on)
+    if on then bag.cooldown:SetCooldown(start, duration) end
+    bag.cooldown:SetShown(on)
+end
+
+function Look.BagRested(bag, expiry, duration, stacks)
+    local on = expiry ~= nil
+    Look.Timed(bag, on)
+    bag.count:SetShown(on and stacks > 0)
+    bag.cooldown:SetHideCountdownNumbers(on)
+    if not on then
+        bag.restedEnd = nil
+        return
+    end
+    bag.count:SetText(stacks)
+    if bag.restedEnd == expiry then return end
+    bag.restedEnd = expiry
+    bag.timer:SetCooldownFromExpirationTime(expiry, duration)
+    bag.drain:SetCooldownFromExpirationTime(expiry, duration)
+    bag.drain:SetSwipeColor(T.accent.r, T.accent.g, T.accent.b, 1)
+end
+
+function Look.BagLayout(bag)
+    local size = S.Get("campIconSize") * BAG_SCALE
+    bag:SetSize(size, size)
+    Parts.HudFont(bag.label, S.Get("campFont"), BAG_TEXT_SIZE, S.Get("campOutline"))
+end
+
+function Look.BagSpot(icon, bag)
+    local x, y = icon:GetCenter()
+    if not x then return end
+    local reach = (icon:GetWidth() + bag:GetWidth()) / 2 + TRACK_OUT * 2 + BAG_GAP
+    if S.Get("campBuffSide") == "right" and ns.CampBuffMode() == "always" and icon:IsShown() and icon.buffs:IsShown() then
+        reach = -reach
+    end
+    return x + reach, y - icon:GetHeight() / 2
 end
 
 function Look.Missing(icon, sit)

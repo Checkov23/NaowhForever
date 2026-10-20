@@ -1,0 +1,87 @@
+{
+ "source": "https://github.com/cmangos/mangos-classic/tree/547c55eb9cd6b7795d2951f844d679d3d7f18957/src/game/AI/ScriptDevAI/scripts",
+ "scope": "Reviewed Classic scripted casts, not verified Forever encounter behavior. Excludes summon visuals, emergence/submerge helpers and commented-out spells. Rookery Hatcher includes combat Strike/Sunder Armor only, excluding egg-event helpers.",
+ "scripts": {
+  "boss_baron_geddon": [
+   19659,
+   19695,
+   20475,
+   20478
+  ],
+  "boss_garr": [
+   19492,
+   19496,
+   19516,
+   23487
+  ],
+  "boss_gehennas": [
+   19716,
+   19717,
+   19728,
+   19729
+  ],
+  "boss_golemagg": [
+   13879,
+   18943,
+   19798,
+   20228,
+   20556
+  ],
+  "boss_lucifron": [
+   19460,
+   19702,
+   19703
+  ],
+  "boss_magmadar": [
+   19408,
+   19411,
+   19449,
+   19451,
+   20474
+  ],
+  "boss_ragnaros": [
+   20563,
+   20565,
+   20566,
+   21108,
+   21154,
+   21387,
+   21908
+  ],
+  "boss_shazzrah": [
+   19712,
+   19713,
+   19714,
+   19715,
+   23138
+  ],
+  "boss_sulfuron": [
+   19778,
+   19779,
+   19780,
+   19781
+  ],
+  "mob_core_rager": [
+   12787,
+   17683,
+   19820
+  ],
+  "mob_firesworn": [
+   8876,
+   15733,
+   19497,
+   19515,
+   20483
+  ],
+  "mob_flamewaker_priest": [
+   19775,
+   19776,
+   19777,
+   20294
+  ],
+  "npc_rookery_hatcher": [
+   15572,
+   15580
+  ]
+ }
+}

@@ -10,8 +10,6 @@
     <Script file="Loot\Durability.lua"/>
     <Script file="Questing\TalentPoints.lua"/>
     <Script file="Questing\BuffThanks.lua"/>
-    <Script file="Gambling\GambleHelp.lua"/>
-    <Script file="Gambling\Gamble.lua"/>
     <Script file="Combat\CombatAlert.lua"/>
     <Script file="Questing\QuestAutomation.lua"/>
     <Script file="Questing\RewardList.lua"/>
@@ -29,9 +27,9 @@
     <Script file="Interface\SpellEfficiency.lua"/>
     <Script file="Interface\SpellEfficiencyReport.lua"/>
     <Script file="Interface\GlobalCopy.lua"/>
-    <Script file="System\SlashCommands.lua"/>
     <Script file="Interface\HideClutter.lua"/>
     <Script file="Interface\UnitNames.lua"/>
+    <Script file="Interface\HDR.lua"/>
     <Script file="Cursor\Crosshair.lua"/>
     <Script file="Cursor\MouseRing.lua"/>
     <Script file="Combat\PetTracker.lua"/>
@@ -41,9 +39,9 @@
     <Script file="Combat\DamageMeterLayout.lua"/>
     <Script file="Combat\DamageMeterPreview.lua"/>
     <Script file="Combat\DamageMeterSkin.lua"/>
-    <Script file="Combat\ScoutData.lua"/>
-    <Script file="Combat\Scout.lua"/>
-    <Script file="System\Performance.lua"/>
+    <Script file="Interface\ScoutData.lua"/>
+    <Script file="Interface\Scout.lua"/>
+    <Script file="Combat\SpellQueue.lua"/>
     <Script file="Loot\LootFeed.lua"/>
     <Script file="Loot\AuctionPrices.lua"/>
     <Script file="XP\XPTicker.lua"/>

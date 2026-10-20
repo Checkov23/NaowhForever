@@ -26,8 +26,8 @@ local TEXT_KIND_LEVEL = ns.L("%s, level %s")
 local TEXT_NOT_KILLED = ns.L("Not killed yet")
 local TEXT_PATROLS = ns.L("Patrols: the small stars are its way")
 local TEXT_SPAWNS = ns.L("Spawns at %d more spots, shown smaller")
-local TEXT_HINT = ns.L("Click for a waypoint, right-click to keep its spots shown.")
-local TEXT_HINT_FOCUSED = ns.L("Click for a waypoint, right-click to let go.")
+local TEXT_HINT = ns.L("Click for a waypoint (again to remove it), right-click to keep its spots shown.")
+local TEXT_HINT_FOCUSED = ns.L("Click for a waypoint (again to remove it), right-click to let go.")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added
@@ -128,6 +128,7 @@ function NaowhForeverRarePinMixin:OnAcquired(data)
     self.killed = R.Killed(data.npc)
     self:UseFrameLevelType(FRAME_LEVEL, data.kind and MORE_LEVEL or STAR_LEVEL)
     self:EnableMouse(not data.kind)
+    ns.Shared.PinClicks(self, not data.kind)
     local icon = self.Icon
     if not icon:SetAtlas(STAR_ATLAS) then icon:SetTexture(SKULL_FILE) end
     icon:SetDesaturated(self.killed)
@@ -149,7 +150,7 @@ end
 
 function NaowhForeverRarePinMixin:OnClick(button)
     if button == "LeftButton" then
-        ns.PlaceWaypoint(R.Name(self.npc), R.Map(self.npc), self.spotX, self.spotY)
+        ns.ToggleWaypoint(R.Name(self.npc), R.Map(self.npc), self.spotX, self.spotY)
     elseif button == "RightButton" then
         focused = focused ~= self.npc and self.npc or nil
         if focused then return self:OnMouseEnter() end

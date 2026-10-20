@@ -51,11 +51,12 @@ local function InZones(quest, continent)
     return bestMap, bestX, bestY
 end
 
-local function Nearest(camps)
+local function Nearest(camps, faction)
     local here = World.Player()
     local best, bestMap, bestX, bestY
     for _, camp in ipairs(camps) do
-        local there = here and World.FromMap(camp[1], camp[2], camp[3])
+        local allowed = not faction or camp[4] and camp[4]:find(faction, 1, true)
+        local there = allowed and here and World.FromMap(camp[1], camp[2], camp[3])
         local far = there and (there.c ~= here.c and math.huge or (there.x - here.x) ^ 2 + (there.y - here.y) ^ 2)
         if far and (not best or far < best) then best, bestMap, bestX, bestY = far, camp[1], camp[2], camp[3] end
     end
@@ -67,10 +68,18 @@ local function FromData(quest)
     local spots = ns.JourneyQuestSpots and ns.JourneyQuestSpots[quest]
     if not spots then return nil end
     local turnIn, camps = spots[1], spots[2]
-    if turnIn and (C_QuestLog.IsComplete(quest) or #camps == 0) then
+    local complete = C_QuestLog.IsComplete(quest)
+    if turnIn and (complete or #camps == 0) then
         return turnIn[1], turnIn[2] / PERCENT, turnIn[3] / PERCENT
     end
-    return Nearest(camps)
+    if spots[4] and (complete or #camps == 0) then
+        local map, x, y = Nearest(spots[4], World.Faction())
+        if map then return map, x, y end
+    end
+    if complete then return nil end
+    local map, x, y = Nearest(camps)
+    if map then return map, x, y end
+    if spots[3] then return Nearest(spots[3]) end
 end
 
 local function Entrance(quest)

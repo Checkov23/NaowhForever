@@ -48,6 +48,8 @@ NaowhForever_Combat/ConsumableBar/
   an item hidden after use again, so it is there when it is needed. A driver is registered only
   when its rule changes, since registering one evaluates it and visibility is checked on every
   global cooldown.
+- A weapon enhancement goes straight on a weapon (`ItemBar.SetWeapon`): a click on the hand its
+  Tracks choice names (the main hand unless it tracks the off hand), a right-click on the other.
 - Hide After Use reads auras and weapon enchants out of combat only, and never a secret value: a
   value handed back secret keeps what was shown. Food's use spell is the eating; what it leaves is
   Well Fed, read from Shared's lists (`ns.FOOD_SPELLS`, `ns.WELL_FED`), so it works with Aura Buffs

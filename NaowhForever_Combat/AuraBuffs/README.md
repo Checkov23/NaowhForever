@@ -8,8 +8,9 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
 - **Buffs & Consumables:** a row of icons for missing food, flask and elixir buffs from the
   consumables you watch, class buffs missing in your group, and your own class buff (armor, Inner
   Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
-  shows, or hover it to pick another carried item. The worn gear and fishing pole reminders moved
-  to QoL > Loot & Items > Gear Reminders (`NaowhForever_QoL/Loot/GearReminders.lua`).
+  shows or cast the buff, or hover it to pick another carried item. Middle-click one to hide it until you
+  reload. The worn gear and fishing pole reminders moved to QoL > Loot & Items > Gear Reminders
+  (`NaowhForever_QoL/Loot/GearReminders.lua`).
 - **Campfire:** in two looks on one mover. Round, a camp icon with a time ring and a countdown;
   Simple, a bar in the windows' backdrop with the campfire at its left, the camp's bonuses with
   their amounts, and the time left on the right over a line that runs down green, yellow, then
@@ -17,7 +18,13 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
   With no Camp Benefits it glows (LibCustomGlow) and its fire is grey. With a campfire in range the
   fire lights up, the words say Click to sit, and a click on the fire or its words performs the
   /sit emote (Round: the icon and the label under it; Simple: the whole bar); it glows brighter
-  under the mouse. Camp Nearby's fire does the same.
+  under the mouse. Camp Nearby's fire does the same. With Round, while you carry the Cozy Sleeping
+  Bag and a campfire is in range (or you sit at one), a smaller round Sleeping Bag icon sits at the
+  fire's lower right (lower left while the buffs show on the right); a click uses the bag. It stays
+  while the fire itself is hidden (Show Only Under, Show When Missing off). While the
+  bag is on cooldown its icon is grey with a countdown. While its Well-Rested buff is on you, the
+  bag wears the fire's ring, in the accent blue, running down with the buff's time left, the time
+  in its middle and the stacks in its corner.
 - **Camp Nearby:** the same bar drawn bare (no backdrop, edge or line), larger by its own scale,
   sized to what it says and stacked in the Alerts group (`ns.AlertStack`), with the camp's time
   left inline after a dot while it still runs.
@@ -32,7 +39,7 @@ NaowhForever_Combat/AuraBuffs/
   AuraBuffs.lua                the settings (ns.AuraBuffSettings), the module table (ns.AuraBuffs, A),
                                consumable entries kept in the profile, ns.ParseConsumableEntry,
                                the consumables list string (ns.ConsumableListString,
-                               ns.ParseConsumableList), ns.CampBuffMode
+                               ns.ParseConsumableList), ns.CampBuffMode, A.Migrate
   Constants.lua                the numbers several of its files share (A.C)
   Data/
     BuffReminders.lua          the spells and items behind the buff reminders (ns.BuffReminderData)
@@ -52,6 +59,7 @@ NaowhForever_Combat/AuraBuffs/
   UI/
     SettingsPage.lua           the page's banner (Open AuraBuffs) and its Window card
     GlowRows.lua               the glow type, color and pixel look rows a card adds (A.GlowRows)
+    CampBag.lua                the Sleeping Bag beside the Round campfire, a secure button (A.CampBag)
     Campfire.lua               the Campfire reminder and the Camp Nearby alert on screen
     CampfireCards.lua          the Campfire and Camp Nearby cards, with their editable previews
     LowHealth.lua              the Low Health icon on screen
@@ -69,6 +77,14 @@ NaowhForever_Combat/AuraBuffs/
 
 ## Why
 
+- Every icon in the row does something on a click. A consumable uses its item. A poison, stone or oil
+  goes on the weapon that lacks one (`ItemBar.SetWeapon`: the item, then `/use` on that slot, since
+  using it alone only asks which item to put it on); a right-click puts it on the other hand, and the
+  hover menu's items go on the same weapon. A rogue's Poisons reminder uses the best poison carried
+  (`D.POISON_ITEMS`, the strongest first) and offers the rest in the menu; with none carried it does
+  nothing. A personal buff casts its spell (Hunter's Mark on the target), and a raid buff you know is
+  cast on the first group member missing it, read when the row last refreshed, out of combat. A raid
+  buff only another class can cast does nothing.
 - In combat the client refuses addons the player's auras outright (`GetAuraDataByIndex` errors,
   `GetPlayerAuraBySpellID` returns nil with the buff up), and it withdraws them at boss pulls
   before `InCombatLockdown()` turns true. Every read is gated on
@@ -101,6 +117,15 @@ NaowhForever_Combat/AuraBuffs/
   `NFCONSUMABLES1:food=13931,2680;battle=13454/17539`. Import also takes a profile string and keeps
   only its consumables, through the same checks as the profile import; it adds what is not listed
   yet, up to `MAX_ENTRIES` (500, the same limit the profile import enforces).
+- Consumables (with the weapon enhancement reminder), raid buffs and personal buffs each have World,
+  Dungeons and Raids switches, read from `IsInInstance()`: a party instance is a dungeon, a raid
+  instance a raid, and anything else (the world, battlegrounds, arenas) the world, as the old Show In
+  choice treated it. `PLAYER_ENTERING_WORLD` fires through every instance's loading screen, so it
+  is enough to follow the place. There is no In Combat switch: the row does not refresh in combat,
+  and its buttons are secure, so it cannot be hidden then.
+- `A.Migrate` turns the old Show In choice (`consumablesWhere`) into the three consumables switches
+  on every Apply and clears it, so an old profile string is moved too: Everywhere is all three,
+  Dungeons & Raids the last two, Raids Only raids alone. Hide While Resting still applies on top.
 - Group auras change in bursts, so a buff refresh waits `QUEUE_DELAY` and covers the lot. Nothing
   fires as a buff runs down, so the earliest one to cross the warning time is timed.
 - Show Buff Range starts off. When enabled, raid buff reminders show confirmed recipients in
@@ -222,20 +247,27 @@ NaowhForever_Combat/AuraBuffs/
   so the icon is Monkey below level 10. Mounted or not makes no difference, as for every reminder.
 - The buff menu holds secure buttons, so it can only be hidden outside combat. It uses
   `IsMouseOver` on the frame: the old `MouseIsOver` global is gone from the game.
-- The buff menu's icons are the row's Icon Size, centred under the icon you hover and spreading both
-  ways, each line of them centred too. With no room under the icon it opens above it; the screen
-  clamp keeps it in at the sides. The icon size and every gap, in the row and the menu, are rounded
-  to whole pixels (`Cell.Snap`): at a UI scale where a unit is not a whole pixel, a menu icon a
-  fraction of a pixel off the row was resampled and looked rougher than the icon above it.
+- The buff menu's icons are `MENU_CELL` (32), whatever the row's Icon Size: Naowh found them too big
+  at the row's size. They sit centred under the icon you hover and spread both ways, each line of
+  them centred too. With no room under the icon it opens above it; the screen clamp keeps it in at
+  the sides. The icon size and every gap, in the row and the menu, are rounded to whole pixels
+  (`Cell.Snap`): at a UI scale where a unit is not a whole pixel, an icon a fraction of a pixel off
+  was resampled and looked rougher.
 - The row's icons are secure item buttons (`type1 = "item"`), each using the carried item it shows
   (under Last Used, the carried one with that icon; when no carried item has it, the row shows and
   uses the first carried item instead); a class or raid buff icon uses nothing. Secure buttons make the row
   protected, so in combat nothing touches it: a refresh waits, and a setting change or Unlock Mode
   is applied once combat ends (`PLAYER_REGEN_ENABLED`), registered only while the row is on or
   showing.
-- A press glows the icon (`Glow.Press`): a short Pixel Glow in the Glow color, lines and thickness,
-  under its own LibCustomGlow key so a reminder's own glow keeps running. It is not the game's button
-  highlight or pushed look (`Parts.Press`). The menu waits for the glow before it closes.
+- The row's and the menu's icons take the flat hover and pressed look (`Parts.Press`), as the
+  Consumable Bar's do. A press used to start a second, faster Pixel Glow over the reminder's own, so
+  the glow seemed to speed up; the pressed look replaced it. The menu closes when the click is let
+  go: the buttons take both the down and the up, and the item may be used on either.
+- Middle-click hides a reminder for the session: its key (the consumable kind, `weapon`, or the personal
+  or raid buff family's own table) goes in a table that is never saved, and `Collect` leaves it out.
+  A reload or relog brings it back. The secure buttons set only `type1`, so a middle click uses nothing;
+  `PostClick` sees both its down and its up and acts on the up. In combat the row holds, so the icon goes
+  once combat ends. There is no switch: it costs nothing until clicked.
 - The row's and the menu's icon edges take the theme's Borders & Lines color (`ns.ThemeTint`), and
   stay black with the default theme.
 - Camp Benefits (1229741, probed 2026-09-19), Campfire Nearby (1283391, the area aura in range of
@@ -265,6 +297,29 @@ NaowhForever_Combat/AuraBuffs/
   for one emote. The click only takes the fire's own square, so Camp Nearby still lets every other
   click through, and only while a campfire is in range, the only time /sit can refresh the camp.
   A lit fire with no Camp Benefits is the hint: grey says no camp, lit says a fire is here to sit at.
+- The Sleeping Bag icon is part of the Campfire, with no switch of its own: Jason's call. Its ID is
+  `ns.Shared.Items.SLEEPING_BAG`, the one Discovery's chain uses, since either addon can load
+  without the other. It shows only out of combat, with Round, in the open world, while the bag
+  is carried (`C_Item.GetItemCount`, read again on `BAG_UPDATE_DELAYED`) and Campfire Nearby or
+  Welcoming Campfire is on you.
+- The Sleeping Bag button is secure (`type1 = "item"`) so a click uses the bag. It is parented to
+  UIParent and placed at screen coordinates worked out from the fire's centre, never anchored to
+  the fire: a secure child or anchor would make the fire a protected frame, and the fire is shown,
+  hidden and moved in places that can run in combat. So in combat the button is left as it was; a
+  change that should hide it waits for `PLAYER_REGEN_ENABLED`, registered only then. Its size and
+  font are applied on the next refresh out of combat after a setting change.
+- `CAMP_BAG_SCALE` makes the bag about half the fire, as in Jason's mockup; `CAMP_BAG_FALLBACK_ICON`
+  is the question mark, shown until the client has the bag's icon.
+- Well-Rested (429959, read in game 2026-10-20) is the bag's stacking buff: three stacks, two
+  hours. The bag's use spell, Unroll Bag (429961), only places the bag. While Well-Rested shows,
+  the cooldown keeps its grey and swipe but hides its numbers, so the middle is the buff's time.
+- The bag's cooldown is `C_Container.GetItemCooldown`, read on each refresh and on
+  `BAG_UPDATE_COOLDOWN`; one of `GCD` (1.5 s) or less is the global cooldown, not the bag's. One
+  timer per cooldown end shows it ready again, since no event fires when a cooldown runs out.
+  `BAG_UPDATE_COOLDOWN` fires on every global cooldown, so the two bag events update only the
+  bag, not the whole Campfire, and are registered only while Round is picked.
+- The bag's icon is set with a plain `SetTexture`, never through `Parts.Smooth`: a game icon file
+  (134400) loaded with the TRILINEAR filter crashed the Forever client on its disk thread.
 - The Round icon's plate follows the theme's Panels color (`ns.ThemeTint`), and a black circle one
   pixel wider behind it is its 1px round border. The black disk extends past the time ring on both
   sides, edging it.
@@ -303,8 +358,8 @@ NaowhForever_Combat/AuraBuffs/
 ## Checking
 
 - `lua Tools/regression/test-buff-reminders.lua`: which reminders show, the item menu, the card.
-- `lua Tools/regression/test-campfire-simple.lua`: both Campfire looks, the reader, Camp Nearby and
-  the cards' previews.
+- `lua Tools/regression/test-campfire-simple.lua`: both Campfire looks, the reader, Camp Nearby,
+  the Sleeping Bag beside Round and the cards' previews.
 - `lua Tools/regression/test-icon-look.lua`: Low Health's text.
 - `lua Tools/regression/test-robin-final.lua`: consumable entries and the Round campfire.
 - `lua Tools/regression/test-combat-perf.lua`: the buff reminders' cost in a raid.

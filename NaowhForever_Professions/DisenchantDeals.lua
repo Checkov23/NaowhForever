@@ -16,7 +16,6 @@ local LOAD_BATCH = 5
 local LOAD_DELAY = 0.05
 local MAX_LEVEL_RESULTS = 10
 local PERCENT = 100
-local PROFESSION_SLOTS = 5
 
 local jobs = {}
 local tooltipCache = {}
@@ -37,18 +36,18 @@ local function Changed()
     if listener then listener() end
 end
 
+local function SlotSkill(index)
+    if not index then return end
+    local _, _, rank, _, _, _, line, modifier = GetProfessionInfo(index)
+    if line == P.Disenchant.ENCHANTING then return (rank or 0) + (modifier or 0) end
+end
+
 local function EnchantingSkill()
     local info = C_TradeSkillUI.GetProfessionInfoBySkillLineID(P.Disenchant.ENCHANTING)
     local skill = info and tonumber(info.skillLevel)
     if skill and skill > 0 then return skill end
-    local professions = { GetProfessions() }
-    for slot = 1, PROFESSION_SLOTS do
-        local index = professions[slot]
-        if index then
-            local _, _, rank, _, _, _, line, modifier = GetProfessionInfo(index)
-            if line == P.Disenchant.ENCHANTING then return (rank or 0) + (modifier or 0) end
-        end
-    end
+    local first, second = GetProfessions()
+    return SlotSkill(first) or SlotSkill(second)
 end
 
 local function Scan()
@@ -99,7 +98,7 @@ end
 
 local function Entry(itemID, price, prices, whichMode, itemLink)
     local name, link, quality, baseLevel, _, _, _, _, equip, icon, _, classID = GetItemInfo(itemLink or itemID)
-    if not name or not Values.Takes(classID, quality, equip) then return end
+    if not name or not Values.ItemTakes(itemID, classID, quality, equip) then return end
     local level = C_Item.GetDetailedItemLevelInfo(link) or baseLevel
     local required = Values.RequiredSkill(level, quality)
     local gross, outcomes = Values.Expected(classID, quality, level, prices)
@@ -175,7 +174,7 @@ end
 
 local function Candidate(job, itemID, price)
     local _, _, _, equip, _, classID = GetItemInfoInstant(itemID)
-    if not Values.Equipment(classID, equip) then return end
+    if not Values.ItemEligible(itemID, classID, equip) then return end
     if not IsItemDataCached(itemID) then return Request(job, itemID, price) end
     Evaluate(job, itemID, price)
 end
@@ -440,4 +439,9 @@ end
 
 function Deals.Skill()
     return EnchantingSkill()
+end
+
+function Deals.MeetsSkill(required)
+    local skill = EnchantingSkill()
+    return required and skill and skill >= required or false
 end

@@ -218,23 +218,6 @@ return {
 ["quizCamp"] = false,
 ["restock"] = true,
 ["restockReagents"] = false,
-["slashList"] = {
-{
-["enabled"] = true,
-["frame"] = "CooldownViewerSettings",
-["name"] = "cdm",
-},
-{
-["enabled"] = true,
-["frame"] = "EditModeManagerFrame",
-["name"] = "em",
-},
-{
-["enabled"] = true,
-["frame"] = "QuickKeybindFrame",
-["name"] = "kb",
-},
-},
 ["playerHistory"] = false,
 ["scrapMarkerScope"] = "char",
 ["townStable"] = true,

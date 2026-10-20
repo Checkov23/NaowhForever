@@ -7,6 +7,7 @@ local Style = setmetatable({
     GOLD_RGB = { r = 1, g = 0.82, b = 0 },
     LOG_RGB = { r = 1, g = 0.82, b = 0 },
     REPEAT_RGB = { r = 0.35, g = 0.7, b = 1 },
+    DUNGEON_RGB = { r = 0.3, g = 1, b = 0.3 },
     GREY_RGB = { r = 0.62, g = 0.62, b = 0.62 },
     HINT_RGB = { r = 0.3, g = 0.71, b = 0.96 },
     BLACK_RGB = { r = 0, g = 0, b = 0 },

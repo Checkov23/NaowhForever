@@ -40,7 +40,10 @@ NaowhForever_QoL/
     GlobalCopy.lua      /copy, and tooltip IDs with their copy shortcut (the card is Shared/UI/CopyCard.lua)
     HideClutter.lua     UI Clutter
     UnitNames.lua       Names Over Heads: guild names, guild titles and player titles with player names
+    HDR.lua             HDR: the game's HDR and Peak Brightness
     ChatZones.lua       Chat Zones
+    ScoutData.lua       Scout's creature abilities and tameable beasts (packed) and armor by level, generated
+    Scout.lua           Scout: abilities, armor and pet family on a creature's tooltip
     TownMailboxes.lua   mailboxes by map (ns.TownMailboxes), generated
     TownSpiritHealers.lua  spirit healers by map (ns.TownSpiritHealers), generated
     TownTravel.lua      boats and zeppelins by map (ns.TownTravel), generated
@@ -78,8 +81,7 @@ NaowhForever_QoL/
     DamageMeterSkin.lua the card Default Damage Meter: the game's meter in the theme, and its place
     StealthReminder.lua the Stealth Reminder
     PetTracker.lua      the Pet Tracker
-    ScoutData.lua       Scout's creature abilities and tameable beasts (packed) and armor by level, generated
-    Scout.lua           Scout: abilities, armor and pet family on a creature's tooltip
+    SpellQueue.lua      Spell Queue: the game's Spell Queue Window
   Questing/
     BuffThanks.lua      Buff Thank You Message and its line editor
     Invites.lua         the people you keep an invite button for and their editor (ns.InvitePerson,
@@ -95,9 +97,6 @@ NaowhForever_QoL/
     Disband.lua         removing everyone from your group (ns.DisbandGroup), for the Disband button
     Trainer.lua         the trainer popup and rank swaps (ns.TrainerRankCheck, ns.TrainerForgetKept),
                         and its card on the Training Planner's page
-  Gambling/
-    Gamble.lua          Gamble sessions: Classic rolls and Deathroll
-    GambleHelp.lua      Holds help text on how the gamble function works.
   XP/
     GroupXP.lua         Group XP
     XPTicker.lua        XP per Hour (ns.ResetXPTicker)
@@ -134,9 +133,6 @@ NaowhForever_QoL/
     Quiz.lua            the Quiz (ns.ToggleQuiz, ns.QuizOffer, ns.QuizDismiss)
     DailyWordData.lua   the Daily Word's answers and accepted words, generated
     DailyWord.lua       the Daily Word (/nf word, ns.DailyWordPlay, ns.DailyWordOffer, ns.DailyWordDismiss)
-  System/
-    SlashCommands.lua   Custom Slash Commands and their editor (ns.SlashCommandList, ns.RefreshSlashCommands)
-    Performance.lua     QoL > System > Performance: recommended game settings and their backups
   Media/
     crosshair_ring.tga  the Crosshair's ring
     MouseRing/          the Mouse Ring's rings, glows and trail
@@ -382,31 +378,6 @@ NaowhForever_QoL/
 - The line editor's box fills the scroll area down to its buttons and grows past it with the
   lines. `Parts.ShowBeside` sets its height once, so its bottom is tied to the options window's
   too, to follow a resize.
-- Gamble uses party or raid chat for its announcements and join/leave words, and the addon-message
-  channel to keep Gamble windows in sync. Players and the host join or leave in group chat and use
-  `/roll` when prompted. The addon tracks rolls and reports settlements; it never moves gold.
-- Enter the pool as integer gold and silver, such as `10g50s`; one gold is 100 silver, so that
-  example sets the roll maximum to 1,050. Classic rerolls only players tied at the highest or
-  lowest roll to decide that side's winner or loser; the original high-low difference determines
-  the amount; when every roll is the same, everyone rolls again. Deathroll chooses two joined players and alternates their rolls until one rolls 1;
-  its first roll uses the same total-silver maximum.
-- Gamble registers chat events only while its window is open or a session is active. Its join and
-  leave words and game mode can be changed in the main window. The host can cancel an active
-  session from the main window. The title bar's How to play button opens a detailed in-game guide
-  from `Gambling/GambleHelp.lua`.
-- Gamble keys players by GUID: Forever names are not unique, a party or raid chat line carries
-  only the first name, and an addon message's sender is "Name Surname". A join takes the GUID from
-  its chat line; a `/roll` line has only the first name, so it is matched to the one expected roller
-  of that name (two with the same first name are not counted). The session message names the host's
-  GUID and every host message is checked against it with `ns.SenderIs`; the host has left when no
-  group unit has that GUID.
-- Chat, system and addon message arguments can be secret during chat lockdown; a secret one is
-  skipped before it is read.
-- The host sends each join and leave on its own ("J", "L") rather than the whole roster; the whole
-  roster ("R") goes out only when a window opens and asks ("Q"). A join is not repeated in chat:
-  the player has just typed it.
-- `MAX_POOL` is 1,000,000 silver (10000g00s), the highest `/roll` the game takes on retail; Forever's
-  UI source sets no limit of its own.
 - The Crosshair checks melee range with one ability per class, its lowest rank (Forever keeps
   every rank known). Druids depend on form: Claw in Cat Form (form 1), Maul in Bear and Dire Bear
   (5 and 8). Shamans without Stormstrike and casters have none; Melee Spell ID sets one of your
@@ -788,12 +759,14 @@ NaowhForever_QoL/
 - `KEYBOARD_SLOTS` is 180, the keyboard action slots; the controller's slots follow them.
 
 ### Quest Automation
-- Saved rewards live in the profile (quest ID to item ID), so a shared profile carries its picks.
+- Saved rewards live in the profile, kept per class (`questRewards[CLASS]`, quest ID to item ID), so a shared profile carries its picks and characters of different classes on one profile never take each other's reward. The Saved Quest Rewards window shows and clears only the current class's list, and redraws on a profile switch.
+- Picks from before they were kept per class sit at the top of `questRewards` with no class. The first class to read the picks takes them all, once; nothing is deleted, and a class's own pick wins over an old one for the same quest.
+- An old pick may be another class's, so it is taken as the negative item ID: not confirmed. It shows in the Saved Quest Rewards window as Not confirmed and is never selected or handed in for you; Alt-clicking that reward again confirms it.
 - A reward's item ID comes with it before the item is cached; its link may not.
 - Every layout of the rewards ends by clearing the choice (the reward panel's OnShow, then QUEST_ITEM_UPDATE as uncached items arrive), so the saved pick is selected after QuestInfo_ShowRewards.
 - A quest a player shared with you is not shared again when you accept it: the group already has it.
 - Sharing makes the same call as Blizzard's Share button (QuestLogPushQuest). It is blocked in combat, so a quest accepted mid-fight is not shared.
-- An NPC with several quests: the first finished one is handed in, else the first on offer is opened. A choice of rewards waits for the player unless the profile has a pick for it.
+- An NPC with several quests: the first finished one is handed in, else the first on offer is opened. A choice of rewards waits for the player unless this class has a pick for it.
 - The quest Modifier key keeps its saved key `questSkipModifier`; `questModifierMode` says whether holding it skips the quest steps (the default) or is what triggers them.
 - Auto Gossip picks a lone option only when its icon is one of `GOSSIP_ICON_PATHS` (vendor, trainer, banker, auctioneer, stable master), resolved with GetFileIDFromPath on first use. The binder (hearthstone), the generic gossip icon and the rest are never picked, so nothing that costs money or moves you. The taxi icon is left out too: some lone flight options fly you straight off. Without GetFileIDFromPath it does nothing.
 - Auto Gossip leaves a flagged `selectOptionWhenOnlyOption` option to Blizzard's gossip frame, which selects it before GOSSIP_SHOW reaches the addon, and leaves any window the game forces open (`ForceGossip`). It never acts with a quest listed (that is the quest automation's), with more than one option, with an option that is not Available, or in combat, and selects once until GOSSIP_CLOSED.
@@ -847,10 +820,8 @@ NaowhForever_QoL/
 - A spell whose description is empty is asked of the client once (Spell:ContinueOnSpellLoad); some
   creature spells have none, so asking again would never end.
 
-### Performance
-- The game keeps its settings per computer, so the values the recommended ones replaced live in the account store (`cvarBackups`), not the profile.
-- `SAME_WITHIN` compares numeric CVars loosely, as the game writes some back with float noise.
-- HDR and Peak Brightness set the game's own `HDRFactor` and `HDRPeakBrightness`, which have no place in the game's options. Peak Brightness also turns on `useHDRPeakBrightness`, without which the game ignores it. They are the player's own values, not recommended ones, so they are not backed up, and they show only where the client has `HDRFactor`. HDR Settings (`hdr`, off by default) is the opt-in: until it is on, the page leaves both alone.
+### HDR
+- HDR and Peak Brightness set the game's own `HDRFactor` and `HDRPeakBrightness`, which have no place in the game's options. Peak Brightness also turns on `useHDRPeakBrightness`, without which the game ignores it. The card shows only where the client has `HDRFactor`. HDR Settings (`hdr`, off by default) is the opt-in: until it is on, the card leaves both alone.
 
 ### Stealth Reminder
 - The form IDs are `GetShapeshiftFormID` values, the same ones the Threat Meter reads.
@@ -992,16 +963,6 @@ NaowhForever_QoL/
 - `MAP_CONTINENT` is the `Enum.UIMapType` of a continent: on it or anything larger the pins are drawn smaller.
 - The map calls `CheckMouseButtonPassthrough` on every acquired pin, and its SetPassThroughButtons is protected: from our refresh it is blocked in combat. These pins want their clicks, so the method is left empty, and a redraw asked for in combat waits for combat to end. A resize only changes sizes, so it is safe in combat.
 - The world map may load after this file, so switching on waits for Blizzard_WorldMap. The pin mixin is a global so the XML template can name it, made the first time it is switched on.
-
-### Custom Slash Commands
-- The default commands are copied into the profile on first use, so `DEFAULTS` is never written into.
-- Whenever chat text is parsed, the game moves SlashCmdList's entries into `hash_SlashCmdList` and a table behind SlashCmdList's metatable, so a command is looked for in all three.
-- A command's handler is called directly. Sending it through the chat box ran the game's chat code from the addon, and the player's next chat message was blocked.
-- /cast, /use, /target and the other secure commands run only from the chat box or a macro, so a custom command refuses them. The game blocks ReloadUI from addon code, so /reload is refused too.
-- The chat box caches handlers in `hash_SlashCmdList` the first time any slash command is typed, so a refresh drops our own cached entries there; the taint scan allows that one write.
-- A window command shows or hides the frame from addon code, so its OnShow / OnHide run tainted;
-  while `ns.GamepadOwnsPanels()` their gamepad handling is forbidden, so the command refuses.
-- Only the windows this client has are offered: `FRAMES` names each one's load-on-demand addon where it is not loaded up front.
 
 ### Town Map
 - The service NPCs (`Shared/Game/Towns.lua`, which the Training Planner and Professions read too) come from Classic Era data: `[uiMapID] = { { x, y, category, name, title, class token (class trainers), factions ("A", "H" or "AH"), optional NPC ID } }`, x and y in map percent. NPCs Forever added sit last in each map's list. Forever redrew Stormwind, Mulgore, Redridge and the Eastern Plaguelands, so Classic positions there went through world coordinates.

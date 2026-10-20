@@ -234,7 +234,9 @@ do
     local unitClass = { player = CLASSES[2] }
     for i = 1, RAID do unitClass[RAID_UNITS[i]] = CLASSES[i % 9 + 1] end
     local values = { enabled = true, raidBuffs = true, raidBuffsOwn = false,
-        consumablesWhere = "always", consumablesMinutes = 2, onlyIfCarried = true, carriedPicks = {}, hideResting = true,
+        consumablesWorld = true, consumablesDungeon = true, consumablesRaid = true,
+        raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
+        personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true, consumablesMinutes = 2, onlyIfCarried = true, carriedPicks = {}, hideResting = true,
         iconSize = 36, buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = true },
         consumableEntries = {
@@ -249,7 +251,8 @@ do
         ThemeTint = function(_, literal) return literal end,
         Font = function(parent) return New("FontString", nil, parent) end,
         UI = { AttachMover = function() return New("Mover") end },
-        Shared = { Parts = { HudFont = function(fs, _, size, outline) fs:SetFont("font", size, outline) end },
+        Shared = { Parts = { HudFont = function(fs, _, size, outline) fs:SetFont("font", size, outline) end,
+            Press = function() end },
             ItemBar = { SetItem = function(button, itemID) button.itemID = itemID end } } }
     local lastAfter
     local timer = { Cancel = function() end }

@@ -24,7 +24,8 @@ Shared/
   Decode.lua       a pasted import string read back as plain data, with size, depth and bomb caps, and
                    outside text cleaned for display (Decode.String, Decode.Text)
   Game/Items.lua   item helpers: an ID from a link or URL, its name and quality color, In Bag and In Bank,
-                   your loot lines, waiting on item data, the items the server would not send
+                   your loot lines, waiting on item data, the items the server would not send, and the
+                   Cozy Sleeping Bag's item ID (Items.SLEEPING_BAG)
   Game/Gear.lua    gear helpers on Shared.Items: gear slots, what fits where, what you wear, weapons in
                    short ("1h Sword"), what a class can use (ns.ClassCanUse)
   Game/Bags.lua    the item buttons in your bags, the game's, EllesmereUI's and Baganator's, for
@@ -306,6 +307,14 @@ What a comment in the code used to say, in short. The house rules behind it are 
   and one Pin Size number means the same on every kind (town 0.5625, quests, library books and Sleeping Bag steps 0.5, rares 0.75).
   On the full screen map pins are `FULL_SCREEN_PIN_SCALE` (1.5) times that: the same size on screen
   as in the small map's window read as too small on a map that fills the screen.
+- `Shared.PinClicks` is called by every clickable map pin as it is placed. While Ctrl is held
+  the pins take no mouse at all, so a Ctrl+Click on a pin goes to the map itself and places or
+  removes the game's waypoint there. The map removes its waypoint only when the mouse is over
+  the waypoint's own pin, so a pin beneath it that still took the mouse (even only for its
+  tooltip) made the map place a new waypoint instead, and a waypoint on a dungeon entrance or a
+  rare could not be removed. The click is passed by the game, never by addon code: clearing the
+  waypoint from addon code while the map is open would taint its pin. The pins' tooltips are
+  gone while Ctrl is held.
 - `Shared.MapPins` is a plain list, filled at load by the modules that have map pins and read
   only when QoL's Map Options or Map Pins card is drawn, so the load order of the addons does not matter.
   A section is `{ title, order, store, switch, rows, map }`: `map` puts it on the Map Options card instead of Map Pins, `switch` is its own on and off key in `store`, `order` (default 50, after the lower ones, then by load order) where it comes, and `title` its group, none to continue the one above.
@@ -355,6 +364,8 @@ What a comment in the code used to say, in short. The house rules behind it are 
 
 - `Items.KEPT_CODE` is the worn green at 200 of 255 (`KEPT_SHADE`): where you keep an item is a
   state of it, quieter than its name.
+- `Items.SLEEPING_BAG` is the Cozy Sleeping Bag's one item ID: Discovery's chain gives it and the
+  Campfire reminder offers it, two addons that may load without each other.
 - Your loot lines are found by the start of the game's own line (`LOOT_ITEM_SELF`,
   `LOOT_ITEM_PUSHED_SELF`, up to its first `%s`), so it works in any client language. A secret
   line (in an encounter) is nobody's: `issecretvalue` is checked before anything else.
@@ -457,6 +468,10 @@ What a comment in the code used to say, in short. The house rules behind it are 
 
 ### Item bars (`UI/ItemBar.lua`, `UI/Anchor.lua`, `Game/ActionKeys.lua`)
 
+- A weapon item (a poison, stone or oil) used on its own only asks which item to put it on, so
+  `ItemBar.SetWeapon` makes the button a macro that uses it and then that weapon slot: the left click
+  on the slot given (the main hand by default), the right click on the other hand. `ItemBar.SetItem`
+  turns a button back into a plain item.
 - `ActionKeys.Text` writes a mouse button as its modifiers' letters and M with its number (SM5), as
   action bar addons show it: the game's short text still spells out "s-Mouse Button 5". Every other key
   keeps the game's short text.

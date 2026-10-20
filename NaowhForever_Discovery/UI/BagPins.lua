@@ -73,6 +73,7 @@ end
 function NaowhForeverSleepingBagPinMixin:CheckMouseButtonPassthrough() end
 
 function NaowhForeverSleepingBagPinMixin:OnAcquired(entry)
+    ns.Shared.PinClicks(self)
     self.entry = entry
     local size = S.Get("bagMapPinSize")
     self:SetSize(size, size)

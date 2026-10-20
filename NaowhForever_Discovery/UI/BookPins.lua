@@ -77,6 +77,7 @@ end
 function NaowhForeverLibraryPinMixin:CheckMouseButtonPassthrough() end
 
 function NaowhForeverLibraryPinMixin:OnAcquired(entry)
+    ns.Shared.PinClicks(self)
     self.entry = entry
     self:SetSize(S.Get("mapPinSize"), S.Get("mapPinSize"))
     local icon = entry.book and (C_Item.GetItemIconByID(entry.book.item) or BOOK_ICON) or TURN_IN_ICON

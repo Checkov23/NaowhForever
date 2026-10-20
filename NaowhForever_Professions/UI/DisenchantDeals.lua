@@ -163,8 +163,9 @@ local function AddTooltip(tooltip, entry)
         tooltip:AddDoubleLine(label, Coin(math.abs(entry.profit)), color.r, color.g, color.b,
             color.r, color.g, color.b)
     end
-    tooltip:AddDoubleLine(TEXT_REQUIRES_ENCHANTING, tostring(entry.required), Style.GOLD_RGB.r,
-        Style.GOLD_RGB.g, Style.GOLD_RGB.b, 1, 1, 1)
+    local requirementColor = Deals.MeetsSkill(entry.required) and Style.PROFIT_RGB or Style.RED_RGB
+    tooltip:AddDoubleLine(TEXT_REQUIRES_ENCHANTING, tostring(entry.required), requirementColor.r,
+        requirementColor.g, requirementColor.b, requirementColor.r, requirementColor.g, requirementColor.b)
     if entry.guaranteed then
         tooltip:AddLine(TEXT_GUARANTEED_SCAN, Style.PROFIT_RGB.r, Style.PROFIT_RGB.g, Style.PROFIT_RGB.b)
     end

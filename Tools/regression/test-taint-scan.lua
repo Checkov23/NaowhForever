@@ -83,10 +83,7 @@ local UNGUARDED_ALLOWED = {
 local GAME_TABLES = { "hash_SlashCmdList", "hash_EmoteTokenList", "hash_ChatTypeInfoList",
     "UIPanelWindows", "UISpecialFrames" }
 
-local TABLE_WRITE_ALLOWED = {
-    ["NaowhForever_QoL/System/SlashCommands.lua"] = { why = "drops only our own commands' cached entries",
-        calls = { hash_SlashCmdList = 1 } },
-}
+local TABLE_WRITE_ALLOWED = {}
 
 local function ReadGlobals()
     local f = assert(io.open(".luacheckrc", "rb"))

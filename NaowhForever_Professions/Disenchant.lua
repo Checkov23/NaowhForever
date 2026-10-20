@@ -8,12 +8,10 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetItemGUID = C_Item.GetItemGUID
 
 local P = ns.Professions
+local Values = P.DisenchantValues
 
 local SPELL = 13262
 local ENCHANTING = 333
-local WEAPON, ARMOR = 2, 4
-local UNCOMMON, EPIC = 2, 4
-local NEVER = { INVTYPE_BODY = true, INVTYPE_TABARD = true }
 local SLOT_KEY_SCALE = 1000
 local LAST_BAG = NUM_TOTAL_EQUIPPED_BAG_SLOTS or NUM_BAG_SLOTS
 local KEEP_KEY, COPY_KEY = "profDisenchantKeep", "profDisenchantKeepCopy"
@@ -37,11 +35,8 @@ local function CopyGUID(bag, slot)
 end
 
 local function Takes(itemID, quality)
-    quality = quality or GetItemQualityByID(itemID)
-    if not quality or quality < UNCOMMON or quality > EPIC then return false end
     local _, _, _, equip, _, class = GetItemInfoInstant(itemID)
-    if class ~= WEAPON and class ~= ARMOR then return false end
-    return not NEVER[equip or ""]
+    return Values.ItemTakes(itemID, class, quality or GetItemQualityByID(itemID), equip)
 end
 
 local function Note(bag, slot, info)

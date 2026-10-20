@@ -15,6 +15,11 @@ local CLASS_INDEX = 6
 local REQUIRED_LEVEL = 5
 local ITEM_ICON = 10
 local ELITE = { elite = true, rareelite = true, worldboss = true }
+local WHERE = {
+    consumables = { none = "consumablesWorld", party = "consumablesDungeon", raid = "consumablesRaid" },
+    raidBuffs = { none = "raidBuffsWorld", party = "raidBuffsDungeon", raid = "raidBuffsRaid" },
+    personalBuffs = { none = "personalBuffsWorld", party = "personalBuffsDungeon", raid = "personalBuffsRaid" },
+}
 
 local GROUP_UNIT = { player = true }
 local RAID_UNITS, PARTY_UNITS_LIST = {}, {}
@@ -42,6 +47,7 @@ local carried
 local wellFedName
 local wakeAt
 local lastImbue
+local hidden = {}
 
 local function Secret(v)
     return issecretvalue and issecretvalue(v)
@@ -109,12 +115,9 @@ local function Left(aura)
     return expiry - GetTime()
 end
 
-local function ConsumablesHere()
-    if S.Get("hideResting") and IsResting() then return false end
-    local where = S.Get("consumablesWhere")
-    if where == "always" then return true end
-    local _, kind = IsInInstance()
-    return kind == "raid" or (where == "instance" and kind == "party")
+local function ShowsHere(kind, zone)
+    local keys = WHERE[kind]
+    return S.Get(keys[zone] or keys.none)
 end
 
 local function Wake(seconds)
@@ -285,7 +288,7 @@ local function Consumables(list, buffs)
                 icon = ns.AccountSettings().lastFoodIcon or icon or C_Spell.GetSpellTexture(D.WELL_FED[1])
             end
             Consumable(list, buffs, group, item, icon, LastIcon(category), onlyCarried)
-            if #list > before then list[#list].items = group.items end
+            if #list > before then list[#list].items, list[#list].key = group.items, category end
         end
     end
 end
@@ -339,17 +342,18 @@ local function IsTank(unit)
 end
 
 local function Missing(family, units)
-    local missing = 0
+    local missing, first = 0, nil
     if units then wipe(units) end
     for m = 1, memberCount do
         local member = members[m]
         if not (family.skip and family.skip[member.class]) and not (family.skipTanks and IsTank(member.unit))
             and not Find(member.buffs, family.spells) then
             missing = missing + 1
+            first = first or member.unit
             if units then units[missing] = member.unit end
         end
     end
-    return missing
+    return missing, first
 end
 
 local function RaidBuffs(list, playerBuffs)
@@ -365,10 +369,11 @@ local function RaidBuffs(list, playerBuffs)
                 units = missingUnits[family.key]
                 if not units then units = {}; missingUnits[family.key] = units end
             end
-            local missing = Missing(family, units)
+            local missing, first = Missing(family, units)
             if missing > 0 then
-                list[#list + 1] = { icon = C_Spell.GetSpellTexture(family.spells[1]),
-                    count = memberCount > 1 and missing, rangeUnits = units, rangeSpell = units and spell }
+                list[#list + 1] = { icon = C_Spell.GetSpellTexture(family.spells[1]), key = family,
+                    spell = spell or nil, unit = spell and first or nil, count = memberCount > 1 and missing,
+                    rangeUnits = units, rangeSpell = units and spell }
             end
         end
     end
@@ -394,13 +399,12 @@ local function SlotEnchanted(weaponSlot, warn)
     return false
 end
 
-local function Enchanted(slots, warn)
+local function MissingSlot(slots, warn)
     for _, slot in ipairs(slots) do
         if GetInventoryItemID("player", slot) and not SlotEnchanted(slot == 16 and 0 or 1, warn) then
-            return false
+            return slot
         end
     end
-    return true
 end
 
 local function WeaponSlots()
@@ -414,8 +418,8 @@ local function WeaponSlots()
     return slots
 end
 
-local function OwnWeaponBuff()
-    if not S.Get("personalBuffs") then return false end
+local function OwnWeaponBuff(zone)
+    if not (S.Get("personalBuffs") and ShowsHere("personalBuffs", zone)) then return false end
     local _, class = UnitClass("player")
     for _, family in ipairs(D.PERSONAL) do
         if family.weapons and family.class == class and PersonalPicked(family) and Knows(family.spells) then
@@ -425,15 +429,16 @@ local function OwnWeaponBuff()
     return false
 end
 
-local function WeaponEnhancement(list)
-    if OwnWeaponBuff() then return end
+local function WeaponEnhancement(list, zone)
+    if OwnWeaponBuff(zone) then return end
     local slots = WeaponSlots()
-    if #slots == 0 or Enchanted(slots, S.Get("consumablesMinutes") * SECONDS) then return end
+    local slot = #slots > 0 and MissingSlot(slots, S.Get("consumablesMinutes") * SECONDS)
+    if not slot then return end
     local item = FirstCarried(D.WEAPON_ITEMS)
     if not item and Carried("weapon") then return end
     local shown, used = Shown(D.WEAPON_ITEMS, LastIcon("weapon"), item)
     list[#list + 1] = { icon = shown or D.WEAPON_ICONS[D.WEAPON_ICON_ITEM], items = D.WEAPON_ITEMS,
-        item = used }
+        item = used, slot = slot, key = "weapon" }
 end
 
 local function TargetHas(spells)
@@ -455,7 +460,7 @@ local function EliteTarget()
 end
 
 local function Has(family, buffs, warn)
-    if family.weapons then return Enchanted(family.weapons, warn) end
+    if family.weapons then return MissingSlot(family.weapons, warn) == nil end
     if family.target then return not EliteTarget() or TargetHas(family.spells) end
     local aura = Find(buffs, family.spells, family.own)
     local duration = aura and not Secret(aura.duration) and aura.duration or nil
@@ -473,7 +478,16 @@ local function PersonalBuffs(list, buffs)
                 spell = lastImbue
             end
             local has, aura = Has(family, buffs, warn)
-            if not has then list[#list + 1] = { icon = C_Spell.GetSpellTexture(spell), aura = aura } end
+            if not has then
+                local entry = { icon = C_Spell.GetSpellTexture(spell), aura = aura, key = family }
+                if family.items then
+                    entry.items, entry.item = family.items, FirstCarried(family.items)
+                    entry.slot = MissingSlot(family.weapons, warn)
+                else
+                    entry.spell, entry.unit = spell, family.target and "target" or nil
+                end
+                list[#list + 1] = entry
+            end
         end
     end
 end
@@ -487,6 +501,7 @@ Reminders.Left = Left
 Reminders.Picked = Picked
 Reminders.PersonalPicked = PersonalPicked
 Reminders.Secret = Secret
+Reminders.ShowsHere = ShowsHere
 
 function Reminders.InRange(entry)
     local count = 0
@@ -605,17 +620,25 @@ function Reminders.WakeAt()
     return wakeAt
 end
 
+function Reminders.Hide(key)
+    hidden[key] = true
+end
+
 function Reminders.Collect()
     if InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then return nil end
     local buffs = Buffs("player")
     if not buffs then return nil end
     local list = {}
     wakeAt = nil
-    if ConsumablesHere() then
+    local _, zone = IsInInstance()
+    if ShowsHere("consumables", zone) and not (S.Get("hideResting") and IsResting()) then
         Consumables(list, buffs)
-        if S.Get("weaponEnhancements") then WeaponEnhancement(list) end
+        if S.Get("weaponEnhancements") then WeaponEnhancement(list, zone) end
     end
-    if S.Get("personalBuffs") then PersonalBuffs(list, buffs) end
-    if S.Get("raidBuffs") then RaidBuffs(list, buffs) end
+    if S.Get("personalBuffs") and ShowsHere("personalBuffs", zone) then PersonalBuffs(list, buffs) end
+    if S.Get("raidBuffs") and ShowsHere("raidBuffs", zone) then RaidBuffs(list, buffs) end
+    for i = #list, 1, -1 do
+        if hidden[list[i].key] then table.remove(list, i) end
+    end
     return list
 end

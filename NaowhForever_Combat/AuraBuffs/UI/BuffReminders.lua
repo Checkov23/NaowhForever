@@ -5,7 +5,7 @@ local A = ns.AuraBuffs
 local S = A.Settings
 local D = ns.BuffReminderData
 local R, Cell, Menu, Glow = A.Buffs, A.BuffCell, A.BuffMenu, A.Glow
-local ItemBar = ns.Shared.ItemBar
+local ItemBar, Parts = ns.Shared.ItemBar, ns.Shared.Parts
 local Left, Secret, GROUP_UNIT = R.Left, R.Secret, R.GROUP_UNIT
 
 local QUEUE_DELAY = 0.3
@@ -17,7 +17,10 @@ local HOME_Y = 220
 local CARD = A.PAGE .. ":buffs"
 local TEXT_MOVER = "Buff Reminders"
 local KEYS = {
-    consumableEntries = true, enabled = true, consumablesWhere = true, consumablesMinutes = true,
+    consumableEntries = true, enabled = true, consumablesMinutes = true,
+    consumablesWorld = true, consumablesDungeon = true, consumablesRaid = true,
+    raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
+    personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
     onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
     buffIconMode = true, raidBuffRange = true, raidBuffRangeHide = true, hideBlessingsOnPaladin = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true,
@@ -49,8 +52,10 @@ local function OnCellLeave()
     Menu.Leave()
 end
 
-local function OnCellUsed(cell)
-    if cell.itemID then Glow.Press(cell, "buffGlow") end
+local function OnCellUsed(cell, button, down)
+    if button ~= "MiddleButton" or down or not cell.key then return end
+    R.Hide(cell.key)
+    Queue()
 end
 
 local function GetCell(i)
@@ -60,6 +65,7 @@ local function GetCell(i)
     cell:EnableMouse(true)
     cell:RegisterForClicks("AnyUp", "AnyDown")
     cell:SetScript("PostClick", OnCellUsed)
+    Parts.Press(cell)
     cell:SetScript("OnEnter", OnCellEnter)
     cell:SetScript("OnLeave", OnCellLeave)
     cell:SetScript("OnHide", OnCellHide)
@@ -118,6 +124,14 @@ local function RangeMoves(entry)
     return false
 end
 
+local function SetAction(cell, entry)
+    if entry.item and entry.slot then ItemBar.SetWeapon(cell, entry.item, entry.slot) else ItemBar.SetItem(cell, entry.item) end
+    cell.slot = entry.slot
+    cell:SetAttribute("spell1", entry.spell)
+    cell:SetAttribute("unit1", entry.unit)
+    if entry.spell then cell:SetAttribute("type1", "spell") elseif not entry.item then cell:SetAttribute("type1", nil) end
+end
+
 local function Show(list)
     local size = S.Get("iconSize")
     local moving, shown = false, 0
@@ -128,8 +142,8 @@ local function Show(list)
             local cell = GetCell(shown)
             Cell.Place(cell, frame, shown, size, entry.icon, entry.count)
             cell.rangeIn, cell.rangeMissing = nil, nil
-            cell.items = entry.items
-            ItemBar.SetItem(cell, entry.item)
+            cell.items, cell.key = entry.items, entry.key
+            SetAction(cell, entry)
             ShowTimer(cell, entry.aura)
             cell:Show()
             PaintRange(cell, entry, inRange)
@@ -265,6 +279,7 @@ local function Listen()
 end
 
 function Apply()
+    A.Migrate()
     if InCombatLockdown() then
         if R.On() or unlocked or frame and frame:IsShown() then
             held = true

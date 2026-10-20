@@ -17,6 +17,7 @@ local TOO_HIGH = 5
 local SIGNATURE_BASE = 9
 local SIGNATURE_MOD = 2147483647
 local BOTH = "B"
+local FOLLOW_UP = "^Follow%-up from (.+)$"
 local SIDE_OF = { A = "Alliance", H = "Horde" }
 local PARTY = { "party1", "party2", "party3", "party4" }
 
@@ -131,6 +132,46 @@ local function BuildPath(id)
     end
     return false
 end
+
+local function Predecessor(quests, quest, name)
+    local found
+    for _, other in ipairs(quests) do
+        if other ~= quest and other[NAME] == name then
+            if other[SIDE] == quest[SIDE] then return other end
+            found = found or other
+        end
+    end
+    return found
+end
+
+local function LinkFollowUp(id, before)
+    local prereqs, series = J.QuestPrereqs, J.QuestChains
+    if not prereqs[id] then
+        local list = {}
+        for i, step in ipairs(prereqs[before] or {}) do list[i] = step end
+        list[#list + 1] = before
+        prereqs[id] = list
+    end
+    if series[id] then return end
+    local old = series[before]
+    local steps = {}
+    for i, step in ipairs(old or { before }) do steps[i] = step end
+    steps[#steps + 1] = id
+    for _, step in ipairs(steps) do
+        if type(step) == "number" and (series[step] == nil or series[step] == old) then series[step] = steps end
+    end
+end
+
+local function LinkFollowUps()
+    for _, dungeon in ipairs(J.QuestData) do
+        for _, quest in ipairs(dungeon.quests) do
+            local name = type(quest[WHERE]) == "string" and quest[WHERE]:match(FOLLOW_UP)
+            local before = name and Predecessor(dungeon.quests, quest, name)
+            if before then LinkFollowUp(quest[ID], before[ID]) end
+        end
+    end
+end
+LinkFollowUps()
 
 local function QuestByID(id)
     if not byID then

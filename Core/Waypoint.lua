@@ -1,4 +1,4 @@
--- Waypoint.lua: a waypoint on the map for any module (ns.PlaceWaypoint), TomTom's when loaded.
+-- Waypoint.lua: a waypoint on the map for any module (ns.PlaceWaypoint, ns.ToggleWaypoint for map pins), TomTom's when loaded.
 local ns = _G.NaowhForever
 
 local PERCENT = 100
@@ -12,12 +12,14 @@ local TEXT_PLACED = ns.L("Waypoint for ")
 local TEXT_ROUTE_STOP = ns.L("%s, stop %d of %d: %s%s")
 local TEXT_NO_WAYPOINTS = ns.L("That map does not take waypoints.")
 local TEXT_LATER = ns.L(" (placed when you close the map)")
+local TEXT_REMOVED = ns.L("Removed the waypoint for ")
+local TEXT_REMOVED_LATER = ns.L(" (removed when you close the map)")
 local PREVIEW_TEMPLATE = "NaowhForeverWaypointPreviewPinTemplate"
 local WORLD_POS_RETURN = 2
 
 ns.WAYPOINT_HOLD = 4
 
-local tomtomWaypoint
+local tomtomWaypoint, tomtomSpot
 local route
 local arrivals = 0
 local watch = CreateFrame("Frame")
@@ -49,7 +51,7 @@ local function PlaceTomTom(title, map, x, y, note)
         silent = true,
     })
     if not ok then return false end
-    tomtomWaypoint = uid
+    tomtomWaypoint, tomtomSpot = uid, { map, x, y }
     ns.Print(TEXT_TOMTOM .. ns.WaypointText(title, map, x, y, note))
     return true
 end
@@ -206,6 +208,52 @@ local function StillPlaced()
     local point, placed = C_Map.GetUserWaypoint(), ns.placedWaypoint
     return point ~= nil and placed ~= nil and point.uiMapID == placed.map and Near(point.position.x, placed.x)
         and Near(point.position.y, placed.y)
+end
+
+local function SameSpot(map, x, y, spotMap, spotX, spotY)
+    return map == spotMap and math.abs(x - spotX) < ARRIVED_WITHIN and math.abs(y - spotY) < ARRIVED_WITHIN
+end
+
+local function TomTomHere(map, x, y)
+    if not (tomtomWaypoint and TomTom and TomTom.RemoveWaypoint) then return false end
+    if TomTom.IsValidWaypoint and not TomTom:IsValidWaypoint(tomtomWaypoint) then return false end
+    return SameSpot(map, x, y, tomtomSpot[1], tomtomSpot[2], tomtomSpot[3])
+end
+
+local function PendingHere(map, x, y)
+    return pending ~= nil and pending ~= CLEAR and not pending.quest
+        and SameSpot(map, x, y, pending[2], pending[3], pending[4])
+end
+
+local function PlacedHere(map, x, y)
+    local placed = ns.placedWaypoint
+    return pending == nil and StillPlaced() and SameSpot(map, x, y, placed.map, placed.x, placed.y)
+end
+
+local function JourneyHere(map, x, y)
+    if not ns.JourneyDestination then return false end
+    local toMap, toX, toY = ns.JourneyDestination()
+    return toMap ~= nil and SameSpot(map, x, y, toMap, toX, toY)
+end
+
+function ns.ToggleWaypoint(title, map, x, y, note, icon, clearInside)
+    local later = false
+    if TomTomHere(map, x, y) then
+        pcall(TomTom.RemoveWaypoint, TomTom, tomtomWaypoint)
+        tomtomWaypoint, tomtomSpot = nil, nil
+    elseif JourneyHere(map, x, y) then
+        later = MapOpen()
+        ns.ClearWaypoint()
+    elseif PendingHere(map, x, y) then
+        DropPending()
+    elseif PlacedHere(map, x, y) then
+        later = MapOpen()
+        ns.ClearWaypoint()
+    else
+        return ns.PlaceWaypoint(title, map, x, y, note, icon, clearInside)
+    end
+    ns.Print(TEXT_REMOVED .. ns.WaypointText(title, map, x, y, note) .. (later and TEXT_REMOVED_LATER or ""))
+    return true
 end
 
 function ns.GuideWaypointIsCurrent()

@@ -45,6 +45,7 @@ local TEXT_NEW_NAME = ns.L("New profile's name")
 local TEXT_LIBRARY_MACROS = ns.L(" Library macros")
 local TEXT_TALENT_BUILDS = ns.L(" talent builds")
 local TEXT_BIS_LISTS = ns.L(" BiS lists")
+local TEXT_BAR_SETS = ns.L(" bar sets")
 local TEXT_ADDED = ns.L(" Added %s.")
 local TEXT_IMPORTED = ns.L("Imported as %s and switched to it.%s Reload so every module picks it up?")
 
@@ -223,6 +224,7 @@ local function Joined(added)
     if added.library > 0 then joined[#joined + 1] = added.library .. TEXT_LIBRARY_MACROS end
     if added.builds > 0 then joined[#joined + 1] = added.builds .. TEXT_TALENT_BUILDS end
     if added.bisLists > 0 then joined[#joined + 1] = added.bisLists .. TEXT_BIS_LISTS end
+    if added.actionBars > 0 then joined[#joined + 1] = added.actionBars .. TEXT_BAR_SETS end
     return #joined > 0 and TEXT_ADDED:format(table.concat(joined, ", ")) or ""
 end
 

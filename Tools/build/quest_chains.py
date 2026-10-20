@@ -67,6 +67,7 @@ ZONE_MAP = {
     400: 1441, 405: 1443, 406: 1442, 440: 1446, 490: 1449, 493: 1450, 618: 1452,
     1377: 1451, 1497: 1458, 1519: 1453, 1537: 1455, 1637: 1454, 1638: 1456, 1657: 1457,
     16593: 2521,   # Zephras Isle, Forever's
+    616: 2482, 16591: 2548, 16606: 2524, 16651: 2652,  # Forever build 1.60.1.70450 UiMapAssignment
 }
 # Forever redrew these, and Wowhead still gives their classic coordinates. Stormwind has
 # enough known quest givers to fit the conversion; on the others a step only gets a spot

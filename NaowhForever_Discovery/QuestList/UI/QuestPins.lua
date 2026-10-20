@@ -17,7 +17,8 @@ local TEXT_GIVER = ns.L("Quest giver")
 local TEXT_DROPS = ns.L("Drops %s, which begins:")
 local TEXT_LEVEL = ns.L("Level %d")
 local TEXT_REPEATABLE = ns.L("Repeatable, ")
-local TEXT_WAYPOINT = ns.L("Click for a waypoint.")
+local TEXT_DUNGEON = ns.L("Dungeon, ")
+local TEXT_WAYPOINT = ns.L("Click for a waypoint (again to remove it).")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events
@@ -33,22 +34,30 @@ local function On()
     return S.Get("enabled") and S.Get("mapPins")
 end
 
-local function SetMark(icon, grey, repeatable)
+local function SetMark(icon, giver)
     icon:SetVertexColor(1, 1, 1)
     icon:SetDesaturated(false)
-    if grey and icon:SetAtlas(GREY_ATLAS) then return end
-    if not grey and repeatable and icon:SetAtlas(REPEAT_ATLAS) then return end
+    local tint
+    if giver.repeatable and not giver.dungeon then
+        if icon:SetAtlas(REPEAT_ATLAS) then return end
+        tint = Style.REPEAT_RGB
+    elseif giver.grey then
+        if icon:SetAtlas(GREY_ATLAS) then return end
+        tint = Style.GREY_RGB
+    elseif giver.dungeon then
+        tint = Style.DUNGEON_RGB
+    end
     if not icon:SetAtlas(BANG_ATLAS) then icon:SetTexture(BANG_FILE) end
-    if not grey and not repeatable then return end
-    local c = grey and Style.GREY_RGB or Style.REPEAT_RGB
+    if not tint then return end
     icon:SetDesaturated(true)
-    icon:SetVertexColor(c.r, c.g, c.b)
+    icon:SetVertexColor(tint.r, tint.g, tint.b)
 end
 
 local function AddQuestLine(id)
     local c = Q.Trivial(id) and Style.GREY_RGB or GetQuestDifficultyColor(Q.Level(id))
     local level = TEXT_LEVEL:format(Q.Level(id))
     if Q.Repeatable(id) then level = TEXT_REPEATABLE .. level end
+    if Q.Dungeon(id) then level = TEXT_DUNGEON .. level end
     GameTooltip:AddDoubleLine(Q.Name(id), level, c.r, c.g, c.b, c.r, c.g, c.b)
 end
 
@@ -63,13 +72,14 @@ end
 function NaowhForeverQuestGiverPinMixin:CheckMouseButtonPassthrough() end
 
 function NaowhForeverQuestGiverPinMixin:OnAcquired(giver)
+    ns.Shared.PinClicks(self)
     self.quests = self.quests or {}
     wipe(self.quests)
     for i, id in ipairs(giver.quests) do self.quests[i] = id end
     self.grey = giver.grey
     local size = S.Get("mapPinSize")
     self:SetSize(size, size)
-    SetMark(self.Icon, giver.grey, giver.repeatable)
+    SetMark(self.Icon, giver)
     self:SetPosition(giver.x / PERCENT, giver.y / PERCENT)
     self:ApplyCurrentScale()
 end
@@ -97,7 +107,7 @@ function NaowhForeverQuestGiverPinMixin:OnClick(button)
     if button ~= "LeftButton" then return end
     local first = self.quests[1]
     local map, x, y = Q.Spot(first)
-    if map then ns.PlaceWaypoint(Q.Giver(first) or Q.Name(first), map, x, y) end
+    if map then ns.ToggleWaypoint(Q.Giver(first) or Q.Name(first), map, x, y) end
 end
 
 function provider:RemoveAllData()

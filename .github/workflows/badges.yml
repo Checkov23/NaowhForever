@@ -1,14 +1,16 @@
 name: badges
 
-# Daily: Core/Badges/Patrons.lua from naowh.gg's active Legendary and Epic patrons
-# (Tools/release/sync_badges.py). A new patron's characters are added, a lapsed one's removed; when the
-# list changed, the badge regression test runs and the commit goes straight to main with
-# RELEASE_DEPLOY_KEY (GITHUB_TOKEN can't bypass Protect main). Players get it with the next
-# release. Run workflow does the same on demand.
+# Daily at 7:00 Mexico City: Core/Badges/Patrons.lua from naowh.gg's active Legendary and Epic
+# patrons whose BattleTag Battle.net verified (Tools/release/sync_badges.py). A new patron's characters
+# are added, a lapsed one's removed; when the list changed, the badge regression test runs and the
+# commit goes straight to main with RELEASE_DEPLOY_KEY (GITHUB_TOKEN can't bypass Protect main).
+# Players get it with the next release, the daily one at 9:30 Mexico City. Run workflow does the same
+# on demand, and so does the Sync now button on naowh.gg's admin Syncs page.
 
 on:
   schedule:
-    - cron: "17 7 * * *"
+    # 7:00 Mexico City (UTC-6 all year), before the 15:30 UTC daily release.
+    - cron: "0 13 * * *"
   workflow_dispatch:
 
 permissions: {}

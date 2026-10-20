@@ -21,7 +21,7 @@ local TEXT_ENTRANCE_NAME = ns.L("Entrance")
 local TEXT_RAID = ns.L("Raid, %d players")
 local TEXT_DUNGEON = ns.L("Dungeon")
 local TEXT_KIND_LEVELS = "%s, %s"
-local TEXT_CLICK = ns.L("Click for a waypoint.")
+local TEXT_CLICK = ns.L("Click for a waypoint (again to remove it).")
 local TEXT_ENTRANCE = ns.L(" (entrance)")
 
 local provider, added, events
@@ -98,6 +98,7 @@ local function MakePinMixin()
     function Pin:CheckMouseButtonPassthrough() end
 
     function Pin:OnAcquired(group)
+        ns.Shared.PinClicks(self)
         self.group = group
         local size = PinSize(self:GetMap())
         self:SetSize(size, size)
@@ -132,7 +133,7 @@ local function MakePinMixin()
         if button ~= "LeftButton" then return end
         local dungeons = self.group.dungeons
         local entrance = dungeons[1].entrance
-        ns.PlaceWaypoint(GroupName(dungeons, dungeons[1].name), entrance.map, entrance.x, entrance.y, TEXT_ENTRANCE, nil, true)
+        ns.ToggleWaypoint(GroupName(dungeons, dungeons[1].name), entrance.map, entrance.x, entrance.y, TEXT_ENTRANCE, nil, true)
     end
 end
 

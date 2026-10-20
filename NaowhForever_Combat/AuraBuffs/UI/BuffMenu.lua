@@ -2,12 +2,12 @@
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
-local S = A.Settings
+local Parts = ns.Shared.Parts
 local St = A.Style
 local R, Cell = A.Buffs, A.BuffCell
-local Glow = A.Glow
+local ItemBar = ns.Shared.ItemBar
 
-local COLS, PAD, GAP = St.MENU_COLS, St.MENU_PAD, St.MENU_GAP
+local COLS, SIZE, PAD, GAP = St.MENU_COLS, St.MENU_CELL, St.MENU_PAD, St.MENU_GAP
 local ICON_GAP, CROP = St.BUFF_GAP, St.BUFF_CROP
 local LEAVE_DELAY = 0.15
 
@@ -44,12 +44,8 @@ local function OnItemLeave()
     Menu.Leave()
 end
 
-local function OnItemUsed(self)
-    Glow.Press(self, "buffGlow")
-    local owner = popup.owner
-    C_Timer.After(Glow.PRESS_TIME, function()
-        if popup.owner == owner then Menu.Hide() end
-    end)
+local function OnItemUsed(_, _, down)
+    if not down then Menu.Hide() end
 end
 
 local function Build()
@@ -68,11 +64,11 @@ local function Button(count)
     if button then return button end
     button = CreateFrame("Button", nil, popup, "SecureActionButtonTemplate")
     button:RegisterForClicks("AnyUp", "AnyDown")
-    button:SetAttribute("type1", "item")
     button.icon = button:CreateTexture(nil, "ARTWORK")
     button.icon:SetAllPoints()
     button.icon:SetTexCoord(CROP, 1 - CROP, CROP, 1 - CROP)
     Cell.Edge(button)
+    Parts.Press(button)
     button:SetScript("PostClick", OnItemUsed)
     button:SetScript("OnEnter", OnItemEnter)
     button:SetScript("OnLeave", OnItemLeave)
@@ -80,7 +76,7 @@ local function Button(count)
     return button
 end
 
-local function Fill(items)
+local function Fill(items, slot)
     local count = 0
     wipe(seen)
     for _, id in ipairs(items) do
@@ -88,8 +84,7 @@ local function Fill(items)
             seen[id] = true
             count = count + 1
             local button = Button(count)
-            button.itemID = id
-            button:SetAttribute("item1", "item:" .. id)
+            if slot then ItemBar.SetWeapon(button, id, slot) else ItemBar.SetItem(button, id) end
             button.icon:SetTexture(R.ItemIcon(id))
             Cell.PaintEdge(button)
             button:Show()
@@ -131,8 +126,8 @@ function Menu.Open(cell)
     if Menu.unlocked or InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() or not cell.items then return end
     if not popup then Build() end
     popup.owner = cell
-    local count = Fill(cell.items)
-    Anchor(cell, Lay(count, S.Get("iconSize")))
+    local count = Fill(cell.items, cell.slot)
+    Anchor(cell, Lay(count, SIZE))
     popup:SetShown(count > 0)
 end
 

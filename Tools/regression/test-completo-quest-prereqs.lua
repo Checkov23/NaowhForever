@@ -79,6 +79,8 @@ Check(Q.State(1) == "open" and #Q.Blocking(1) == 0, "no requirements, nothing bl
 
 local givers = Q.Givers(1, true, false)
 Check(#givers == 1 and givers[1].quests[1] == 7 and Q.State(7) == "open", "a dungeon quest gets its giver's pin")
+givers = Q.Givers(1, true, true)
+Check(#givers == 1 and givers[1].quests[1] == 7 and givers[1].dungeon, "a dungeon quest keeps its pin with Chains Only")
 local _, total = Q.ZoneProgress(ns.CompletoQuestData.Zones[1])
 Check(total == 5, "a dungeon quest is left out of the zone's progress")
 

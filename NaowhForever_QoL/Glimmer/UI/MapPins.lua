@@ -14,7 +14,7 @@ local OWN_KEYS = { enabled = true, gatheredPins = true, gatheredPinSize = true, 
     myProfessions = true, skillColors = true, oreColor = true, herbColor = true }
 local TEXT_LINE = "%s (%d)"
 local TEXT_COUNT = ns.L("Gathered %d times, last %s.")
-local TEXT_WAYPOINT = ns.L("Click for a waypoint.")
+local TEXT_WAYPOINT = ns.L("Click for a waypoint (again to remove it).")
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 local added, events, lastGUID
@@ -42,6 +42,7 @@ end
 function NaowhForeverGatheredPinMixin:CheckMouseButtonPassthrough() end
 
 function NaowhForeverGatheredPinMixin:OnAcquired(entry)
+    ns.Shared.PinClicks(self)
     local node = G.NODES[entry.id]
     self.entry, self.node = entry, node
     local size = S.Get("gatheredPinSize")
@@ -76,7 +77,7 @@ end
 function NaowhForeverGatheredPinMixin:OnClick(button)
     if button ~= "LeftButton" then return end
     local entry = self.entry
-    ns.PlaceWaypoint(ns.L(self.node[3]), self:GetMap():GetMapID(), entry.x * PERCENT / C.SPOT_SCALE,
+    ns.ToggleWaypoint(ns.L(self.node[3]), self:GetMap():GetMapID(), entry.x * PERCENT / C.SPOT_SCALE,
         entry.y * PERCENT / C.SPOT_SCALE)
 end
 

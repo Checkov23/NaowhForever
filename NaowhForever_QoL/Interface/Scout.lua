@@ -351,8 +351,8 @@ local function Summary(store)
     return TEXT_SUMMARY:format(ns.L(KEY_NAMES[store.Get("scoutKey")]))
 end
 
-ns.Shared.Settings.Page("QoL/Combat", S):Card({
-    id = "scout", name = "Scout", order = 110, switch = "scout",
+ns.Shared.Settings.Page("QoL/Interface", S):Card({
+    id = "scout", name = "Scout", order = 52, switch = "scout",
     help = "What a creature can do, and how much of your physical damage its armor takes, on its tooltip.",
     summary = Summary,
     rows = {

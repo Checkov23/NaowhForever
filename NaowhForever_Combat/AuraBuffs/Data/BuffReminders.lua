@@ -94,12 +94,21 @@ for _, scroll in ipairs(D.SCROLLS) do
     end
 end
 
+D.POISON_ITEMS = {
+    8928, 8927, 8926, 6950, 6949, 6947,
+    20844, 8985, 8984, 2893, 2892,
+    10922, 10921, 10920, 10918,
+    3776, 3775,
+    9186, 6951, 5237,
+}
+
 D.PERSONAL = {
     { key = "demonArmor", name = "Demon Armor", class = "WARLOCK",
         spells = { 11735, 11734, 11733, 1086, 706, 696, 687, 403619 } },
     { key = "mageArmor", name = "Mage Armor", class = "MAGE",
         spells = { 22783, 22782, 6117, 10220, 10219, 7320, 7302, 7301, 7300, 168 } },
-    { key = "poisons", name = "Poisons", class = "ROGUE", weapons = { 16, 17 }, spells = { 2842 } },
+    { key = "poisons", name = "Poisons", class = "ROGUE", weapons = { 16, 17 }, spells = { 2842 },
+        items = D.POISON_ITEMS },
     { key = "battleShout", name = "Battle Shout", class = "WARRIOR",
         spells = { 25289, 11551, 11550, 11549, 6192, 5242, 6673 } },
     { key = "innerFire", name = "Inner Fire", class = "PRIEST",

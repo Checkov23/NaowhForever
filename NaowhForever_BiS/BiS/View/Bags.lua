@@ -122,22 +122,23 @@ local function EllesmereSlot(button, data)
 end
 
 local function BaganatorInit(button)
-    Marks(button, button)
     local anchor = CreateFrame("Frame", nil, button)
-    anchor:Hide()
     held[anchor] = button
+    Marks(button, anchor):SetAllPoints(button)
+    anchor:Hide()
     return anchor
 end
 
 local function BaganatorSlot(anchor, details)
-    anchor:Hide()
     local set = sets[held[anchor]]
     if not set or not On() then
         if set then set:Hide() end
+        anchor:Hide()
         return false
     end
     local id = details and details.itemID
     Paint(set, id, id and details.itemLink)
+    anchor:SetShown(id ~= nil)
     return false
 end
 

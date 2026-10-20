@@ -189,6 +189,7 @@ local function Fixture(settings, units)
 
     env.waypoints = {}
     ns.PlaceWaypoint = function(name, map, x, y) env.waypoints[#env.waypoints + 1] = { name, map, x, y } end
+    ns.ToggleWaypoint = ns.PlaceWaypoint
     env.UIParent = Region()
     env.UIParent.GetCenter = function() return 400, 500 end
     env.UIParent.GetRight = function() return 1000 end
@@ -249,7 +250,7 @@ local function Fixture(settings, units)
         if opts.background == "card" then rows[#rows + 1] = { key = prefix .. "Background" } end
         return rows
     end
-    ns.Shared = { Settings = Settings, MapPins = {}, ScalePin = function() end, Places = dofile("Tools/regression/shared_places.lua"),
+    ns.Shared = { Settings = Settings, MapPins = {}, ScalePin = function() end, PinClicks = function() end, Places = dofile("Tools/regression/shared_places.lua"),
         -- Per character, by the player's GUID.
         CharacterData = function(key)
             account[key] = account[key] or {}
@@ -952,7 +953,7 @@ do
     howler:OnMouseEnter()
     Check(not Line("Drops"), "a rare with nothing special has no Drops section")
     local last = env.tip[#env.tip]
-    Check(last[1] == "Click for a waypoint, right-click to keep its spots shown." and Line(" ") ~= nil,
+    Check(last[1] == "Click for a waypoint (again to remove it), right-click to keep its spots shown." and Line(" ") ~= nil,
         "its tooltip ends with one hint line")
     Check(Line("Spawns at 1 more spots")[3] == 0.66,
         "its notes in the muted color")
@@ -968,11 +969,11 @@ do
         "right-clicking a star focuses its rare: its way stays and the others stay faded after the pointer leaves")
     Check(ns.mapPanel == nil, "and no panel comes up")
     star:OnMouseEnter()
-    Check(env.tip[#env.tip][1] == "Click for a waypoint, right-click to let go.", "hovered, the focused star has its tooltip")
+    Check(env.tip[#env.tip][1] == "Click for a waypoint (again to remove it), right-click to let go.", "hovered, the focused star has its tooltip")
     star:OnClick("RightButton")
     Check(#PinsOf(10647, "dot") == 0 and howler.Icon.alpha == 1 and star.size == 18,
         "right-clicked again, every star is back at once, while the pointer is still on it")
-    Check(env.tip[#env.tip][1] == "Click for a waypoint, right-click to keep its spots shown.", "its tooltip stays")
+    Check(env.tip[#env.tip][1] == "Click for a waypoint (again to remove it), right-click to keep its spots shown.", "its tooltip stays")
     star:OnMouseLeave()
     Check(#PinsOf(10647, "dot") == 0 and howler.Icon.alpha == 1, "and moving off changes nothing")
     star:OnClick("RightButton")

@@ -6,21 +6,31 @@ _G.NaowhForever = {
     Professions = {},
 }
 
+local bagItems = {
+    { itemID = 300, quality = 2 },
+    { itemID = 11287, quality = 2 },
+}
 _G.C_Container = {
-    GetContainerNumSlots = function() return 0 end,
-    GetContainerItemInfo = function() end,
+    GetContainerNumSlots = function(bag) return bag == 0 and #bagItems or 0 end,
+    GetContainerItemInfo = function(bag, slot) return bag == 0 and bagItems[slot] or nil end,
 }
 _G.C_Item = {
-    GetItemInfoInstant = function() end,
+    GetItemInfoInstant = function(itemID)
+        if itemID == 300 or itemID == 11287 then return itemID, nil, nil, "INVTYPE_RANGEDRIGHT", nil, 2 end
+    end,
     GetItemQualityByID = function() end,
 }
 _G.C_SpellBook = { IsSpellKnown = function() return true end }
 _G.NUM_BAG_SLOTS = 4
 _G.BACKPACK_CONTAINER = 0
 
+dofile("NaowhForever_Professions/Data/DisenchantValues.lua")
 dofile("NaowhForever_Professions/Disenchant.lua")
 
 local disenchant = _G.NaowhForever.Professions.Disenchant
+local collected, collectedCount = disenchant.Collect()
+assert(collectedCount == 1 and collected[1].itemID == 300,
+    "the Disenchant window listed equipment Forever cannot disenchant")
 local first = { bag = 0, slot = 1, itemID = 100, guid = "first", failureKey = "first", locked = false }
 local second = { bag = 0, slot = 2, itemID = 100, guid = "second", failureKey = "second", locked = false }
 

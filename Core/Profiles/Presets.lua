@@ -206,23 +206,6 @@ ns.PRESETS = {
                 scrapMarker = false,
                 scrapMarkerScope = "char",
                 scrapMarkerVendor = "ask",
-                slashList = {
-                    [1] = {
-                        enabled = true,
-                        frame = "CooldownViewerSettings",
-                        name = "cdm",
-                    },
-                    [2] = {
-                        enabled = true,
-                        frame = "EditModeManagerFrame",
-                        name = "em",
-                    },
-                    [3] = {
-                        enabled = true,
-                        frame = "QuickKeybindFrame",
-                        name = "kb",
-                    },
-                },
                 spellEfficiency = false,
                 talentPoints = true,
                 tooltipCopy = false,
@@ -538,23 +521,6 @@ ns.PRESETS = {
                 scrapMarker = true,
                 scrapMarkerScope = "char",
                 scrapMarkerVendor = "ask",
-                slashList = {
-                    [1] = {
-                        enabled = true,
-                        frame = "CooldownViewerSettings",
-                        name = "cdm",
-                    },
-                    [2] = {
-                        enabled = true,
-                        frame = "EditModeManagerFrame",
-                        name = "em",
-                    },
-                    [3] = {
-                        enabled = true,
-                        frame = "QuickKeybindFrame",
-                        name = "kb",
-                    },
-                },
                 spellEfficiency = false,
                 talentPoints = true,
                 tooltipCopy = true,

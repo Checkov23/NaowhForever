@@ -211,6 +211,9 @@ Modals and windows
   builds (previews, lazy journal reads) never run off-screen. A profile import can change any tab, so
   every cached tab is invalidated, not only the one on show.
 - Window scale is set from a dropdown, not a slider: the control sits inside the frame it resizes.
+- Every module with a command and every window added with `ns.RegisterMinimapFeature` gets its broker
+  launcher at login, so it can go on the Top Bar with its minimap icon off. A launcher is only a
+  table; the minimap icon is a frame, so a feature's is registered only once its switch is on.
 - Sidebar rows are 28 high (`NAV_ROW`) so every module fits the default 852-high window
   (test-navigation.lua).
 - The options window and a module's window size through `Parts.Resizable`; letting go of the grip
@@ -302,7 +305,8 @@ Profile strings
   profile string sends 0 as a marker and puts it back on import.
 - Reminder Packs (`NSRPACK2:`) are gone. An old pack string is refused before anything in it is
   read, in the Import box and through `NaowhForever_API:ImportProfile`, with a message saying so.
-- The Share picker offers Settings, Macros, Talent Builds, BiS Lists, Saved Quest Items and Look.
+- The Share picker offers Settings, Macros, Talent Builds, BiS Lists, Action Bars, Saved Quest Items
+  and Look.
   Macro Library and Consumables are no longer exported, but a string from an older build that carries
   them still lists them on Import, and `NaowhForever_API:ImportProfile` still takes them. The
   Consumables part is only `utilityReminders.consumables` from the reminders' store, and its import
@@ -314,10 +318,30 @@ Profile strings
   string from before the part existed carries them inside Settings; the decode lifts them out into
   the part, and a `questRewards` part wins over them. The part is checked whole (quest and item
   IDs whole numbers from 1 to 2^31 - 1, at most 2000 picks), and one bad pick leaves it all out.
+- The picks are kept per class (`questRewards[CLASS]`, a class token of capital letters). A string
+  from an older build carries one classless map; it is imported as it is, and the first class to
+  use that profile takes it, as with picks saved before the change. A pick it has not confirmed is
+  kept as the negative item ID and passes the check. Classes with no picks are left
+  out of the string. An older build's import rejects the per-class shape, so a string from this
+  build brings it no picks.
 - A string from an older build has its consumables inside a `smartReminders` or `reminders` part;
   the decode takes only those from either, and a `consumables` part wins over both. Older builds
   ignore the `consumables` key, so a string from this build brings them no consumables.
 - Class macros travel only in the Macros part, never with the consumables.
+- Action Bars is `account.barSets`, every class's saved sets, whole: slots, macros, keybinds and the
+  builder's choices. Import adds them beside yours, as BiS lists are, never over them or onto the
+  bars: a taken name gets a number, and a set you already have (same saved time and saver) is skipped,
+  so importing a string twice adds nothing. Each set is cleaned on import to what Action Bars can read;
+  a slot or macro it cannot use is dropped and the rest kept. The Action Bars module need not be on.
+- An imported set keeps only keybinds to action bar buttons, at most 2 keys each, the website code's
+  rule (`Sharing.lua`): a set saves every bound key, so another player's set would otherwise rebind
+  movement, chat and the camera. `BAR_BUTTONS` copies the button names from the Action Bars module's
+  `Data/Bars.lua`, which may not be loaded. Your own saved sets keep all their keys.
+- When a set lands under a new name, or is one you already have under another, the imported
+  settings' Import on New Character choice (`actionBars.autoImportSets`) for that class follows it,
+  so it still names the set it chose.
+- `NaowhForever_API` leaves Action Bars out of both import and export: an installer's string brings no
+  one's bar sets or keybinds.
 - Consumables and class macros come from another player, so each list is checked whole: IDs are
   whole numbers from 1 to 2^31 - 1, categories and class tokens are known shapes, names, bodies
   and notes fit the game's limits, lists have no holes, and there are at most 500 consumables and
@@ -352,7 +376,7 @@ Profile strings
   the string as that profile, replacing it, and moves every character to it. It prints its own
   failures because the installer ignores return values.
 - WagoUI Packs drives the same global table: `ExportProfile(key)` (any profile by name, the same
-  string the Profiles page makes with every part ticked), `ImportProfile(str, key)`,
+  string the Profiles page makes with every part but Action Bars ticked), `ImportProfile(str, key)`,
   `DecodeProfileString(str)` (the string's parts, for comparing), `SetProfile(key)` (this
   character only), `GetProfileKeys()`, `GetProfileAssignments()`, `GetCurrentProfileKey()`,
   `OpenConfig()` and `CloseConfig()`. Profile key = profile name. None of them reload the UI
@@ -367,6 +391,12 @@ Waypoints
 - The game redraws the world map's waypoint pin inside every change to its waypoint, so while that
   map is open a change waits for it to close: made from addon code it would taint the pin and the
   game would block its Share.
+- `ns.ToggleWaypoint` is a map pin's click: a second click on the pin whose waypoint is up removes
+  it (TomTom's arrow too). A spot still waiting for the map to close is just dropped, so its preview
+  goes at once; a placed waypoint waits for the map to close like any other change. A waypoint on
+  that spot set by hand, or placed by something else, is not the pin's, so the click places the pin's.
+  With Journeys on, the waypoint is the journey's next step, not the pin, so a click on the pin a
+  journey ends at cancels the journey and clears its waypoint.
 - Only the last TomTom waypoint is kept, so clicking pin after pin does not pile up arrows. Routes
   always use the game's waypoint, since TomTom's never reports arriving.
 - `ns.PlaceWaypoint`'s last argument, for a dungeon's entrance, clears the waypoint as you go from
