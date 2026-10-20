@@ -27,9 +27,14 @@ NaowhForever_Utilities/Journeys/
 
 ## Why
 
-- Every module's waypoint goes through `Core/Waypoint.lua`. With Journeys on, `ns.PlaceWaypoint` and
-  `ns.PlaceWaypointRoute` hand the destination to `ns.JourneyTo`, which returns false (and the plain
-  waypoint is placed) in an instance or when the module is off.
+- Every module's waypoint goes through `Core/Waypoint.lua`. With Journeys on, `ns.PlaceWaypoint`,
+  `ns.PlaceWaypointRoute` and the guide feed's `ns.SetGuideWaypoint` hand the destination to
+  `ns.JourneyTo`, which returns false (and the plain waypoint is placed) in an instance or when the
+  module is off.
+- A guide journey carries the guide's details on every step, so the pin keeps its quest and objectives
+  while naming the step to take. It stays quiet in chat, leaves a dismissed quest alone, and ends on
+  the plain guide waypoint at its destination, which stays until the guide moves on.
+  `ns.JourneyDetails` lets `ns.ClearGuideWaypoint` end it even before its first step is placed.
 - A step is placed with `ns.ShowJourneyStep`, the game's own waypoint, so the Waypoint Pin draws it.
   `ns.WaypointRoute` reports the journey, so the pin does not clear a step on arrival and its navigator
   shows "step N of M" and the next step.

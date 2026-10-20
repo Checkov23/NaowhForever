@@ -337,7 +337,8 @@ local function UserTarget()
     local info = point and C_Map.GetMapInfo(point.uiMapID)
     local where = info and info.name
     if IsPlaced(placed, point) then
-        return placed.details and placed.details.title or placed.title, where, NoteText(placed.note), placed.icon, true, placed.details
+        local title = not ns.WaypointRoute() and placed.details and placed.details.title or placed.title
+        return title, where, NoteText(placed.note), placed.icon, true, placed.details
     end
     return TEXT_MAP_PIN, where
 end

@@ -77,7 +77,8 @@ local function Sync(force)
         return
     end
     local changed = element ~= lastElement or map ~= lastMap or x ~= lastX or y ~= lastY
-    if not force and not changed and not ns.GuideWaypointIsCurrent() then return end
+    local routing = details ~= nil and ns.JourneyDetails and ns.JourneyDetails() == details
+    if not force and not changed and not routing and not ns.GuideWaypointIsCurrent() then return end
     local title, quest, objectives = ReadDetails(element)
     if force or changed then
         details = { guide = true, quest = quest, objectives = objectives, title = title }
@@ -86,7 +87,7 @@ local function Sync(force)
     elseif details.quest ~= quest or details.objectives ~= objectives or lastTitle ~= title then
         details.quest, details.objectives, details.title = quest, objectives, title
         local placed = ns.placedWaypoint
-        if placed and placed.details == details then placed.title = title end
+        if placed and placed.details == details and placed.title == lastTitle then placed.title = title end
         lastTitle = title
         if ns.RefreshWaypointPin then ns.RefreshWaypointPin() end
     end

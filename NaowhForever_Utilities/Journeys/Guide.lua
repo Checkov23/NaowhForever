@@ -65,11 +65,12 @@ end
 
 local function PlainWaypoint(stop)
     local title, map, x, y, note, icon = unpack(stop, 1, 6)
+    local details = journey.details
     journey = nil
     if events then events:UnregisterAllEvents() end
     Changed()
-    ns.Print(TEXT_NO_WAY:format(title))
-    ns.ShowJourneyStep(title, map, x, y, note, icon)
+    if not details then ns.Print(TEXT_NO_WAY:format(title)) end
+    ns.ShowJourneyStep(title, map, x, y, note, icon, details)
 end
 
 local function Action(legs)
@@ -92,8 +93,9 @@ end
 
 local function StopStep()
     local stop = Stop()
-    step = { title = stop[1], map = stop[2], x = stop[3], y = stop[4], note = stop[5], icon = stop[6] }
-    return ns.ShowJourneyStep(step.title, step.map, step.x, step.y, step.note, step.icon)
+    step = { title = stop[1], map = stop[2], x = stop[3], y = stop[4], note = stop[5], icon = stop[6],
+        details = journey.details }
+    return ns.ShowJourneyStep(step.title, step.map, step.x, step.y, step.note, step.icon, step.details)
 end
 
 local function OnStep(point)
@@ -105,7 +107,9 @@ end
 local function ShowStep()
     local stop = Stop()
     local action, spot = Action(journey.plan.legs)
-    local new = { title = stop[1], map = stop[2], x = stop[3], y = stop[4], note = stop[5], icon = stop[6] }
+    local details = journey.details
+    local new = { title = details and details.title or stop[1], map = stop[2], x = stop[3], y = stop[4],
+        note = stop[5], icon = stop[6], details = details }
     if action and action.mode ~= "walk" then new.title, new.note = Guide.LegText(action), nil end
     spot = not S.Get("stepEnds") and Corner() or spot
     if spot then
@@ -116,7 +120,8 @@ local function ShowStep()
         and step.x == new.x and step.y == new.y
     step = new
     if same then return Changed() end
-    if not ns.ShowJourneyStep(step.title, step.map, step.x, step.y, step.note, step.icon) and not StopStep() then
+    if not ns.ShowJourneyStep(step.title, step.map, step.x, step.y, step.note, step.icon, step.details)
+        and not StopStep() then
         ns.Print(TEXT_NO_PLACE)
         return Guide.Cancel()
     end
@@ -253,6 +258,7 @@ local function Replan()
     if journey.ride and not Walk.Ashore(here) then return end
     while Close(here, Stop().spot) do
         if journey.at == #journey.stops then
+            if journey.details then return PlainWaypoint(Stop()) end
             local quest = journey.quest
             journey = nil
             if events then events:UnregisterAllEvents() end
@@ -341,7 +347,7 @@ local function OnEvent(_, event, isWaypoint)
     end
 end
 
-function Guide.Start(title, stops, quest)
+function Guide.Start(title, stops, quest, details)
     if not Jy.On() or not World.Player() then return false end
     local own = {}
     for i, stop in ipairs(stops) do
@@ -349,9 +355,9 @@ function Guide.Start(title, stops, quest)
         if not spot then return false end
         own[i] = { stop[1], stop[2], stop[3], stop[4], stop[5], stop[6], spot = spot }
     end
-    journey, step = { title = title, stops = own, at = 1, done = 0, quest = quest, paths = {}, reaches = {},
-        scratch = Walk.Scratch() }, nil
-    if not hinted and next((World.Known())) == nil then
+    journey, step = { title = title, stops = own, at = 1, done = 0, quest = quest, details = details, paths = {},
+        reaches = {}, scratch = Walk.Scratch() }, nil
+    if not hinted and not details and next((World.Known())) == nil then
         hinted = true
         ns.Print(TEXT_NO_FLIGHTS)
     end
@@ -368,7 +374,7 @@ end
 
 function Guide.Cancel()
     if not journey then return end
-    dismissed = journey.quest
+    if not journey.details then dismissed = journey.quest end
     journey, step = nil, nil
     Abandon()
     events:UnregisterAllEvents()
@@ -383,6 +389,10 @@ function Guide.Destination()
     if not journey then return end
     local stop = journey.stops[#journey.stops]
     return stop[2], stop[3], stop[4]
+end
+
+function Guide.Details()
+    return journey and journey.details
 end
 
 function Guide.Points()
@@ -434,6 +444,7 @@ ns.JourneyTo = Guide.Start
 ns.JourneyCancel = Guide.Cancel
 ns.JourneyStep = Guide.Step
 ns.JourneyDestination = Guide.Destination
+ns.JourneyDetails = Guide.Details
 
 local function Apply()
     World.Apply()

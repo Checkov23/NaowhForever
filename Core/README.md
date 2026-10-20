@@ -391,6 +391,7 @@ Profile strings
 
 Waypoints
 - Guide waypoints carry optional quest/objective context through the same map-open hold as other placements. `GuideWaypointIsCurrent` checks coordinates before a guide clears anything, so a manual replacement is preserved.
+- With Journeys on, a guide destination becomes a journey whose steps all carry that context; clearing the guide waypoint ends the journey too. On a journey the pin names the step's own title, not the guide's.
 - The game redraws the world map's waypoint pin inside every change to its waypoint, so while that
   map is open a change waits for it to close: made from addon code it would taint the pin and the
   game would block its Share.

@@ -18,7 +18,7 @@ Core/Integrations/RestedXP/
   WindowModel.lua     what RestedXP shows, read as plain data for the window to draw
   Window.lua     the Naowh guide window: its frames, drawing, clicks and the look of the two small windows
   Icons.lua      Naowh's step icons, put in RestedXP's icon table as it loads
-  Waypoint.lua   optional current guide destination feed for the world pin
+  Waypoint.lua   optional current guide destination feed for the world pin, routed by Journeys when on
   Media/         the themes' arrow, frame and grip art (rxp_*.tga), drawn by Tools/media/make_media.py
   Media/Icons/   the step icons, line/ and filled/ (28 each), drawn by Tools/media/make_rxp_icons.py
 ```

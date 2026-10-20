@@ -74,6 +74,20 @@ objective.frame.text.GetText = function() return "1/10 Bandits" end
 rxp.UpdateGotoSteps()
 Check(writes == 1 and refreshes == 1 and current.details.objectives == "1/10 Bandits",
     "guide objective progress refreshes metadata without a map write")
+current.title = "Deeprun Tram to Stormwind"
+objective.frame.text.GetText = function() return "2/10 Bandits" end
+rxp.UpdateGotoSteps()
+Check(refreshes == 2 and current.title == "Deeprun Tram to Stormwind",
+    "objective progress leaves a journey step's own title alone")
+current.title = "The Criminal Element"
+local held = current
+tracking = false
+ns.JourneyDetails = function() return held.details end
+objective.frame.text.GetText = function() return "3/10 Bandits" end
+rxp.UpdateGotoSteps()
+Check(writes == 1 and refreshes == 3 and held.details.objectives == "3/10 Bandits",
+    "objective progress between journey steps still reaches the pin")
+ns.JourneyDetails, tracking = nil, true
 current = { guide = false, title = "Manual pin" }
 rxp.UpdateGotoSteps()
 Check(writes == 1 and current.title == "Manual pin", "same guide step does not steal a manual waypoint")
