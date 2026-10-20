@@ -1,4 +1,4 @@
--- Run with Lua 5.1 from the repository root: Scout's generated data (NaowhForever_QoL/Combat/ScoutData.lua),
+-- Run with Lua 5.1 from the repository root: Scout's generated data (NaowhForever_QoL/Interface/ScoutData.lua),
 -- unpacked the way the client does (Tools/regression/encoding_util.lua stands in for C_EncodingUtil). The
 -- abilities, the tameable beasts and each creature's stats come back as plain lists of numbers, a few known
 -- creatures have the abilities and stats the game's database gives them and none of the spells the scripts wrongly
@@ -20,7 +20,7 @@ local ns = {}
 local env = setmetatable({ NaowhForever = ns, C_EncodingUtil = dofile("Tools/regression/encoding_util.lua")() },
     { __index = _G })
 env._G = env
-local chunk = assert(loadfile("NaowhForever_QoL/Combat/ScoutData.lua"))
+local chunk = assert(loadfile("NaowhForever_QoL/Interface/ScoutData.lua"))
 setfenv(chunk, env)
 chunk()
 

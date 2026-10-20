@@ -1,4 +1,4 @@
--- Run with Lua 5.1 from the repository root: Scout (NaowhForever_QoL/Combat/Scout.lua) against a stub tooltip. Off,
+-- Run with Lua 5.1 from the repository root: Scout (NaowhForever_QoL/Interface/Scout.lua) against a stub tooltip. Off,
 -- it hooks and builds nothing. On, a creature's tooltip gets its abilities with range and cast time, its armor and the
 -- cut of your physical damage at your level, and a hint naming the details key. Holding that key shows Scout's own
 -- details box under the tooltip or the full spell tooltips beside it, and letting go hides them: the creature's
@@ -75,7 +75,7 @@ local function Fixture(settings)
         QoLConstants = { WHITE_RGB = { r = 1, g = 1, b = 1 }, PERCENT = 100 },
         Shared = { Style = { HAVE_RGB = { r = 0.3, g = 0.82, b = 0.48 }, RED_RGB = { r = 0.97, g = 0.44, b = 0.44 },
             FOREVER_GOLD_RGB = { r = 1, g = 0.82, b = 0 }, PLACE_DOT = " . " },
-            Settings = { Page = function() return { Card = function(_, card) s.card = card end } end } },
+            Settings = { Page = function(page) s.page = page; return { Card = function(_, card) s.card = card end } end } },
         Apply = function() end,
     }
     local function Unit(unit) return s.units[unit] or {} end
@@ -129,7 +129,7 @@ local function Fixture(settings)
             return unpack(out)
         end,
     }, { __index = _G })
-    local chunk = assert(loadfile("NaowhForever_QoL/Combat/Scout.lua"))
+    local chunk = assert(loadfile("NaowhForever_QoL/Interface/Scout.lua"))
     setfenv(chunk, env)
     chunk()
     s.ns, s.S = ns, S
@@ -190,7 +190,8 @@ do
     local s = Fixture({ scout = false })
     s.Login()
     check("off: nothing hooked, no frame but the login one", s.hooks == 0 and #s.frames == 2 and s.unpacked == nil)
-    check("the card is on the Combat tab with its switch", s.card.switch == "scout")
+    check("the card is on the Interface tab after Tooltips, with its switch", s.page == "QoL/Interface"
+        and s.card.order == 52 and s.card.switch == "scout")
 end
 
 do

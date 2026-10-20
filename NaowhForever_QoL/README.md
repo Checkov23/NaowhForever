@@ -42,6 +42,8 @@ NaowhForever_QoL/
     UnitNames.lua       Names Over Heads: guild names, guild titles and player titles with player names
     HDR.lua             HDR: the game's HDR and Peak Brightness
     ChatZones.lua       Chat Zones
+    ScoutData.lua       Scout's creature abilities and tameable beasts (packed) and armor by level, generated
+    Scout.lua           Scout: abilities, armor and pet family on a creature's tooltip
     TownMailboxes.lua   mailboxes by map (ns.TownMailboxes), generated
     TownSpiritHealers.lua  spirit healers by map (ns.TownSpiritHealers), generated
     TownTravel.lua      boats and zeppelins by map (ns.TownTravel), generated
@@ -79,8 +81,6 @@ NaowhForever_QoL/
     DamageMeterSkin.lua the card Default Damage Meter: the game's meter in the theme, and its place
     StealthReminder.lua the Stealth Reminder
     PetTracker.lua      the Pet Tracker
-    ScoutData.lua       Scout's creature abilities and tameable beasts (packed) and armor by level, generated
-    Scout.lua           Scout: abilities, armor and pet family on a creature's tooltip
     SpellQueue.lua      Spell Queue: the game's Spell Queue Window
   Questing/
     BuffThanks.lua      Buff Thank You Message and its line editor

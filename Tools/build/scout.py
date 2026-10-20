@@ -31,7 +31,7 @@ summon itself and all but the newest spell of a name are dropped.
 Armor by level is the game's ExpectedStat (classic rows, ExpansionID -2), for a creature the
 database lacks.
 
-Writes NaowhForever_QoL/Combat/ScoutData.lua: abilities, tameable beasts and stats packed as
+Writes NaowhForever_QoL/Interface/ScoutData.lua: abilities, tameable beasts and stats packed as
 glimmer_nodes.pack does (CBOR deflated in Base64, decoded by the client when Scout first needs
 them), and the armor by level as a plain list.
 
@@ -58,7 +58,7 @@ from glimmer_nodes import pack  # noqa: E402
 from journal import ROOT, header, write  # noqa: E402
 from quest_chains import ZONE_MAP  # noqa: E402
 
-OUT = ROOT / "NaowhForever_QoL" / "Combat" / "ScoutData.lua"
+OUT = ROOT / "NaowhForever_QoL" / "Interface" / "ScoutData.lua"
 CACHE = paths.DATA / "scout.json"
 SCRIPT_SPELLS = paths.DATA / "scout_script_spells.json"
 SUPPLEMENT = paths.DATA / "scout_ability_supplement.json"
