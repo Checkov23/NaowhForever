@@ -1700,6 +1700,15 @@ do
     Check("rogue keeps poisons only", t.Shown(), "spell:2842")
 end
 
+-- Where poisons do not show, the generic weapon reminder does.
+do
+    local t = Fixture({ instance = "party", units = { player = "ROGUE" }, known = { [2842] = true },
+        bags = { 20750 }, weapons = { [16] = false },
+        settings = { weaponEnhancements = true, personalBuffsDungeon = false } })
+    t.Login()
+    Check("poisons off in dungeons, weapon reminder shown", t.Shown(), ICONS .. "inv_potion_104")
+end
+
 -- The AuraBuffs window's consumables page, on the real Widgets: each row shows its item's icon and
 -- name, an uncached item is asked for once and the page drawn again when it lands, and an item
 -- dragged or clicked onto a section is added there.

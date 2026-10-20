@@ -418,8 +418,8 @@ local function WeaponSlots()
     return slots
 end
 
-local function OwnWeaponBuff()
-    if not S.Get("personalBuffs") then return false end
+local function OwnWeaponBuff(zone)
+    if not (S.Get("personalBuffs") and ShowsHere("personalBuffs", zone)) then return false end
     local _, class = UnitClass("player")
     for _, family in ipairs(D.PERSONAL) do
         if family.weapons and family.class == class and PersonalPicked(family) and Knows(family.spells) then
@@ -429,8 +429,8 @@ local function OwnWeaponBuff()
     return false
 end
 
-local function WeaponEnhancement(list)
-    if OwnWeaponBuff() then return end
+local function WeaponEnhancement(list, zone)
+    if OwnWeaponBuff(zone) then return end
     local slots = WeaponSlots()
     local slot = #slots > 0 and MissingSlot(slots, S.Get("consumablesMinutes") * SECONDS)
     if not slot then return end
@@ -633,7 +633,7 @@ function Reminders.Collect()
     local _, zone = IsInInstance()
     if ShowsHere("consumables", zone) and not (S.Get("hideResting") and IsResting()) then
         Consumables(list, buffs)
-        if S.Get("weaponEnhancements") then WeaponEnhancement(list) end
+        if S.Get("weaponEnhancements") then WeaponEnhancement(list, zone) end
     end
     if S.Get("personalBuffs") and ShowsHere("personalBuffs", zone) then PersonalBuffs(list, buffs) end
     if S.Get("raidBuffs") and ShowsHere("raidBuffs", zone) then RaidBuffs(list, buffs) end
