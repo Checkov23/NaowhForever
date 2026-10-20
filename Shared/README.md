@@ -126,7 +126,10 @@ Each file uses only the ones above it in `Shared.xml`. Every part sits on `ns.Sh
 - **Settings:** a module declares its settings next to its code, on the page they show on:
   `ns.Shared.Settings.Page("QoL/General", S):Card({ id, name, help, switch, summary, order,
   studio, rows = { ... } })`, rows like `{ key = "iconSize", label = "Icon Size", slider = { 12,
-  32, 1 } }` and `Settings.Group("Clock")` between them (see `Settings/Settings.lua`). A
+  32, 1 } }` and `Settings.Group("Clock")` between them (see `Settings/Settings.lua`).
+  `Settings.Group(title, true)` folds the rows up to the next group under a chevron, shut until
+  clicked, for this session; a search hit or a jump to one of its rows opens it (AuraBuffs' raid and
+  personal buffs). A
   row with `field` (and its own `get`/`set`) is one entry of a table setting `key`, with its own dot
   and reset (AuraBuffs' raid buff switches). A card's `switchWhy`, a function, holds its switch
   and its rows while it returns a reason, greyed with the reason in place of Off (the Food & Drink Bar while its

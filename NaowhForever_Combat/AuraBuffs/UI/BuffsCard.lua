@@ -33,6 +33,8 @@ local TEXT_WEAPON = "Weapon Enhancement"
 local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
 local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
 local TEXT_BLESSINGS = ns.L("Off by default: the Blessings module covers them.")
+local TEXT_RAID_PICKS = "Raid Buffs to Remind"
+local TEXT_PERSONAL_PICKS = "Personal Buffs to Remind"
 
 local PERSONAL, ALL_PERSONAL = {}, {}
 local _, playerClass = UnitClass("player")
@@ -188,7 +190,7 @@ for _, category in ipairs(A.CATEGORY_ORDER) do
     rows[#rows + 1] = CarriedRow(category, A.CATEGORY_NAMES[category], Enabled, OFF)
 end
 rows[#rows + 1] = CarriedRow("weapon", TEXT_WEAPON, WeaponOn, NEEDS_WEAPON)
-rows[#rows + 1] = Group("Raid Buffs")
+rows[#rows + 1] = Group("Raid Buffs", true)
 rows[#rows + 1] = { key = "raidBuffs", label = "Raid Buff Reminders", toggle = true, needs = Enabled, why = OFF,
     help = "Missing class buffs in your group, out of combat, with how many are missing them. A camp "
         .. "buff standing in for one, the Incense Candle for Arcane Intellect for example, is not seen, "
@@ -205,11 +207,12 @@ rows[#rows + 1] = { key = "raidBuffRange", label = "Show Buff Range", toggle = t
     why = NEEDS_RAID, help = "Shows how many missing buffs are in casting range and dims icons with none confirmed." }
 rows[#rows + 1] = { key = "raidBuffRangeHide", label = "Hide Out of Range", toggle = true, needs = RangeOn,
     why = NEEDS_RANGE, help = "Hides a raid buff until someone missing it is in casting range." }
+rows[#rows + 1] = Group(TEXT_RAID_PICKS, true)
 for _, family in ipairs(D.RAID) do rows[#rows + 1] = PickRow(family) end
 rows[#rows + 1] = { key = "hideBlessingsOnPaladin", label = "Hide Blessings on Paladins", toggle = true,
     needs = RaidBuffsOn, why = NEEDS_RAID, hidden = function() return playerClass ~= "PALADIN" end,
     help = "Hides blessing reminders while your paladin is grouped; use the Blessings tab instead." }
-rows[#rows + 1] = Group("Personal Buffs")
+rows[#rows + 1] = Group("Personal Buffs", true)
 rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", toggle = true, needs = Enabled,
     why = OFF, help = "Your class buffs when they are missing or about to run out." }
 rows[#rows + 1] = { key = "personalBuffsWorld", label = "Show in the World", toggle = true, needs = PersonalBuffsOn,
@@ -218,6 +221,7 @@ rows[#rows + 1] = { key = "personalBuffsDungeon", label = "Show in Dungeons", to
     why = NEEDS_PERSONAL }
 rows[#rows + 1] = { key = "personalBuffsRaid", label = "Show in Raids", toggle = true, needs = PersonalBuffsOn,
     why = NEEDS_PERSONAL }
+rows[#rows + 1] = Group(TEXT_PERSONAL_PICKS, true)
 for _, family in ipairs(ALL_PERSONAL) do rows[#rows + 1] = PersonalRow(family) end
 rows[#rows + 1] = Group("Glow")
 rows[#rows + 1] = { key = "buffGlow", label = "Glow", toggle = true, needs = Enabled, why = OFF,

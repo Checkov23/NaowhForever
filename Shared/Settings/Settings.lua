@@ -307,8 +307,16 @@ function Settings.Page(key, store)
     return page
 end
 
-function Settings.Group(title)
-    return { group = title }
+function Settings.Group(title, fold)
+    return { group = title, fold = fold }
+end
+
+function Settings.GroupOpen(group)
+    return open[group.card.uid .. ":" .. group.group] == true
+end
+
+function Settings.SetGroupOpen(group, on)
+    open[group.card.uid .. ":" .. group.group] = on or nil
 end
 
 function Settings.Look(prefix, opts)

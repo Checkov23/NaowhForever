@@ -29,9 +29,11 @@ local function IsGroup(row)
 end
 
 local function KeepRows(rows, card, only)
+    local shut = false
     for _, row in ipairs(Settings.Rows(card)) do
         local group = row.kind == "group"
-        local keep = not Hidden(row) and (not only or group or only[row.label])
+        if group then shut = row.fold and not only and not Settings.GroupOpen(row) end
+        local keep = not Hidden(row) and (group or not shut) and (not only or group or only[row.label])
         if keep and only and group and IsGroup(rows[#rows]) then
             rows[#rows] = row
         elseif keep then
@@ -193,7 +195,7 @@ function Draw:Settings(card, only)
         local row = rows[i]
         self.left, self.width = 0, w
         if row.kind == "group" then
-            self:Add("group", row.group)
+            self:Add("group", row.group, row, only ~= nil or Settings.GroupOpen(row))
             i = i + 1
         elseif row.wide or columns == 1 then
             self:Add("setting", row, false)
@@ -339,9 +341,18 @@ function Settings.FindRow(parent, label, cardUid)
     return row, row.top + ns.UI.CONTENT_PAD / 2
 end
 
-function Settings.Reveal(cardUid)
+function Settings.Reveal(cardUid, label)
     local card = cardUid and Settings.CardOf(cardUid)
-    if card then Settings.SetOpen(card, true) end
+    if not card then return end
+    Settings.SetOpen(card, true)
+    local group
+    for _, row in ipairs(Settings.Rows(card)) do
+        if row.kind == "group" then
+            group = row.fold and row
+        elseif group and label and row.label == label then
+            Settings.SetGroupOpen(group, true)
+        end
+    end
 end
 
 function Settings.CogPanel()
