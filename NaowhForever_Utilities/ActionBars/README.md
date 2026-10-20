@@ -9,10 +9,13 @@ Export to Website gives your bars, or a saved set, as a code the website's Impor
 `/nf bars save|import|test|delete <name>`
 and `/nf bars list` do the same from chat. `/nf ab <name>` imports a set and `/nf ab` lists them.
 Import on New Character imports a chosen set once, the first time a new character of that class
-logs in (level 1, no experience yet).
+logs in (level 1, no experience yet). Load on Its Own loads a set on entering a dungeon or raid, on
+joining a battleground (putting the bars from before back on leaving) and on the level-up that reaches a
+chosen level.
 Every import first backs up the bars, keybinds and the macros on the bars; the home offers Undo after
 an import, lists the last ten backups, and checks the bars for spells below their best rank and class
-spells on no bar. `/nf bars undo` undoes the last import.
+spells on no bar. `/nf bars undo` undoes the last import. Right-clicking the Action Bars launcher (minimap
+or Top Bar) opens a menu of the sets, Undo and Save Bars into the last set.
 
 ## Layout
 
@@ -30,6 +33,7 @@ NaowhForever_Utilities/ActionBars/
   Pending.lua                   spells an import could not place, put in their slots when learned (A.Pending)
   Backups.lua                   this character's bars before each import, the last ten, and putting one back (A.Backups)
   Sets.lua                      save, import, undo, rename, delete, /nf bars, and the public API (ns.ActionBarSets)
+  AutoLoad.lua                  sets loaded on their own: dungeons and raids, battlegrounds, a level (A.AutoLoad)
   Check.lua                     spells below their best rank, and class spells on no bar (A.Check)
   View/
     Style.lua                   the Bar Sets tab's colors and sizes, on top of Shared/Style.lua (A.Style)
@@ -40,11 +44,13 @@ NaowhForever_Utilities/ActionBars/
     SetsPage.lua                the home: Paste Code, Get Code and Save Current Bars over it with the class pill, Undo,
                                 the bar check, a filter and a card per saved set (icon, tags, a small strip of its bars,
                                 Import and More), a card to save a new one, and the backups (ns.BuildActionBarsPage,
-                                A.BuildSetsHeader)
+                                A.BuildSetsHeader,
+                                ns.ActionBarsMenu for the launcher's quick menu)
     Builder.lua                 the set builder: a name, icon and tags, your bars on the scene, what goes in, the macros or
                                 keybinds, and a summary to save (A.Builder)
     Preview.lua                 the import preview: what changes counted, the same scene now or after the import with each
                                 change marked, then what comes across, what fills in later and the keys that change (A.Preview)
+    Keys.lua                    the keybind map: a set's keys on a keyboard and mouse (A.Keys)
     Window.lua                  the Bar Sets tab, its views and its back link (ns.BuildActionBarsTab,
                                 ns.OpenActionBarsWindow)
     SettingsPage.lua            its settings page (Action Bars/Settings), declared as cards
@@ -180,8 +186,24 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   (`barSetSpellsHidden`, by name, so a new rank of a hidden spell stays hidden). A spell named in a macro
   on the bars counts as on the bars. Class spells come from the Training Planner's data, so without it
   loaded the check lists ranks only.
+- Load on Its Own keeps its rules per class (`autoLoad`) and makes and registers its events only while a rule names
+  a set that exists. The instance it is in, the set it loaded and that set's backup are kept per character
+  (`barSetAutoLoad`), so a reload inside changes nothing and logging in outside puts the bars back. In
+  combat it waits for `PLAYER_REGEN_ENABLED`. Switching it off, or clearing its rules, forgets the instance, so
+  turning it back on later never puts back an old backup.
+- The rules are shared by every character of the class, so the level rule fires only on the `PLAYER_LEVEL_UP`
+  whose level is the one picked (`FIRST_LOAD_LEVEL`, 2, until the slider is moved), never on entering the
+  world: an alt already past it keeps its bars. The level comes from the event, since `UnitLevel` can still
+  give the old one then.
+- Releasing after a wipe loads the graveyard outside: while `UnitIsDeadOrGhost` it stays inside, so a wipe
+  never swaps the bars out and back in, and never spends two of the ten backups. Taking a spirit healer's
+  resurrection outside keeps the instance's set until the next loading screen.
+- Each backup has its own number (`id`, from `taken`), and the backup to put back on leaving is found by it:
+  two taken in the same second share `saved`.
 - A set's icon and tags (at most three) are kept when it is saved again, by hand, from chat or on logout.
   A set with no icon shows its first spell on the strip's bars.
+- The keybind map reads a set's own keys, or the bars and keys as they are when the set keeps none. Each
+  key's colour is the bar its command presses; a ring marks a key that presses something else now.
 
 ## Checking
 
@@ -192,10 +214,10 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   game's setting.
 - `lua Tools/regression/test-action-bars-window.lua`: the Bar Sets tab's views built from the real files
   into a stand-in for the options page: Undo, the backups, the bar check, tags and the icon, the
-  preview's changes and its per-import switches, the home's cards and set rows, the paste and export
-  popups, the strip for each class (a Rogue's Stealth chips, a Druid's forms, a Hunter's pet row, a Mage
-  with neither), a bar left out by its label, a slot skipped, the bar picker, the summary, saving, and
-  the preview's strip and Import.
+  preview's changes and its per-import switches, the keybind map, the quick menu, the home's cards and
+  set rows, the paste and export popups, the strip for each class (a Rogue's Stealth chips, a Druid's
+  forms, a Hunter's pet row, a Mage with neither), a bar left out by its label, a slot skipped, the bar
+  picker, the summary, saving, and the preview's strip and Import.
 - `lua Tools/regression/test-action-bars-export.lua`: Export to Website read back through the addon's own
   import gives the same slots, macros and keybinds, with no Highest flag gained or lost, and leaves out what
   the website cannot show.

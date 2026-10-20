@@ -1,4 +1,4 @@
--- Window.lua: the Action Bars page's Bar Sets tab (/nfbars, /nf bars), its three views (the saved sets, the builder and the import preview) and its link back to the saved sets.
+-- Window.lua: the Action Bars page's Bar Sets tab (/nfbars, /nf bars), its views (the saved sets, the builder, the import preview and the keybind map) and its link back to the saved sets.
 local ns = _G.NaowhForever
 local T = ns.THEME
 local UI = ns.UI
@@ -8,6 +8,7 @@ local S = A.Settings
 local St = A.Style
 local Builder = A.Builder
 local Preview = A.Preview
+local Keys = A.Keys
 local Sets = ns.ActionBarSets
 local P = A.Parts
 local Parts = ns.Shared.Parts
@@ -113,7 +114,7 @@ local function Build(parent)
     window:SetScript("OnEvent", RedrawSoon)
     window:SetScript("OnShow", OnShow)
     window:SetScript("OnHide", OnHide)
-    views = { sets = BuildSets(), build = Builder.Build(W), import = Preview.Build(W) }
+    views = { sets = BuildSets(), build = Builder.Build(W), import = Preview.Build(W), keys = Keys.Build(W) }
     window:Hide()
     Show(view)
 end
@@ -159,6 +160,11 @@ function ns.OpenActionBarsImport(key)
     if not Sets.Get(key) then return end
     Preview.SetKey(key)
     Open("import")
+end
+
+function ns.OpenActionBarsKeys(key)
+    Keys.SetKey(key)
+    Open("keys")
 end
 
 S.OnChange(RedrawSoon)

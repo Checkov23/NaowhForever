@@ -1,4 +1,4 @@
--- SetsPage.lua: the Bar Sets tab's home: Paste Code, Get Code and Save Current Bars over it, an Undo after an import, the bar check, then your class's saved sets as cards with a small strip of their bars and a filter by tag, and the backups taken before each import (ns.BuildActionBarsPage, A.BuildSetsHeader).
+-- SetsPage.lua: the Bar Sets tab's home: Paste Code, Get Code and Save Current Bars over it, an Undo after an import, the bar check, then your class's saved sets as cards with a small strip of their bars and a filter by tag, and the backups taken before each import (ns.BuildActionBarsPage, A.BuildSetsHeader), and the launcher's quick menu (ns.ActionBarsMenu).
 local ns = _G.NaowhForever
 local T = ns.THEME
 local UI = ns.UI
@@ -84,6 +84,11 @@ local TEXT = {
     RESTORE_ASK = ns.L("Put back your bars, keybinds and macros from %s?"),
     BACKUP_NAME = ns.L("Name for the set made from this backup"),
     REPLACE = ns.L("Replace %s with these bars?"),
+    KEY_MAP = ns.L("Keybind Map"),
+    MENU_TITLE = ns.L("Load a Bar Set"),
+    MENU_ON = ns.L("%s (on your bars)"),
+    MENU_SAVE = ns.L("Save Bars into %s"),
+    MENU_OPEN = ns.L("Open Bar Sets"),
 }
 local CONTENTS_JOIN = ", "
 
@@ -145,11 +150,29 @@ end
 function A.SetMenu(key)
     MenuUtil.CreateContextMenu(UIParent, function(_, root)
         root:CreateButton(TEXT.EDIT, function() ns.OpenActionBarsBuilder(key) end)
+        root:CreateButton(TEXT.KEY_MAP, function() ns.OpenActionBarsKeys(key) end)
         root:CreateButton(TEXT.EXPORT, function() A.Sharing.ShowExport(key) end)
         root:CreateButton(TEXT.RENAME, function()
             ns.PromptText(TEXT.NEW_NAME .. key, key, NEW_NAME_MAX, function(new) A.Rename(key, new) end)
         end)
         root:CreateButton(TEXT.DELETE, function() A.ConfirmDelete(key) end)
+    end)
+end
+
+function ns.ActionBarsMenu(owner)
+    MenuUtil.CreateContextMenu(owner, function(_, root)
+        root:CreateTitle(TEXT.MENU_TITLE)
+        for _, key in ipairs(A.SortedNames()) do
+            local text = OnBars(key) and TEXT.MENU_ON:format(key) or key
+            root:CreateButton(text, function() A.ImportSet(key) end)
+        end
+        root:CreateDivider()
+        if A.lastImport then root:CreateButton(TEXT.UNDO, function() A.Undo() end) end
+        local last = A.Last()
+        if last and last.class == A.Class() and A.Sets()[last.name] then
+            root:CreateButton(TEXT.MENU_SAVE:format(last.name), function() ns.ActionBarSets.Save(last.name) end)
+        end
+        root:CreateButton(TEXT.MENU_OPEN, function() ns.OpenActionBarsWindow() end)
     end)
 end
 

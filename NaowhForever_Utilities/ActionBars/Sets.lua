@@ -177,6 +177,7 @@ local function Rename(key, new)
     end
     if logoutCopy and logoutCopy.key == key then logoutCopy.key = new end
     if A.AutoImportName() == key then A.SetAutoImport(new) end
+    A.RenameRules(key, new)
     A.Refresh()
 end
 
@@ -274,6 +275,7 @@ local function OnEvent(_, event)
     if event == "PLAYER_LOGIN" then
         Pending.Watch()
         WatchLogout()
+        A.AutoLoad.Watch()
         if AutoImportDue() then
             A.autoWaiting = true
             Pending.events:RegisterEvent("PLAYER_ENTERING_WORLD")

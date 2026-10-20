@@ -239,7 +239,8 @@ local env = setmetatable({
     Menu = { GetManager = function() return { IsAnyMenuOpen = function() return false end } end },
     MenuUtil = { CreateContextMenu = function(_, build)
         state.menu = {}
-        build(nil, { CreateButton = function(_, text, fn) state.menu[text] = fn end })
+        build(nil, { CreateButton = function(_, text, fn) state.menu[text] = fn end,
+            CreateTitle = NOTHING, CreateDivider = NOTHING })
     end },
     GameTooltip = Frame(), GameTooltip_Hide = NOTHING,
     GetActionInfo = ActionInfo,
@@ -643,6 +644,24 @@ check("a tag gets a filter over the saved sets", dungeonFilter ~= nil)
 Click(dungeonFilter)
 RunTimers()
 check("which shows only the sets with that tag", SetRow("Raid") ~= nil)
+
+state.binds = { { "ACTIONBUTTON2", "1" } }
+ns.OpenActionBarsKeys("Raid")
+local caps = {}
+for _, frame in ipairs(AllShown("full")) do caps[frame.full] = frame end
+check("the keybind map shows each key with the action it presses", caps["1"] and caps["1"].what == "Smite"
+    and caps["1"].icon.texture == 135924)
+check("a key that does something else here now is ringed", caps["1"].changed == true and caps["2"].changed == false)
+check("free keys near WASD are listed", Shown("head") ~= nil)
+
+ns.ActionBarsMenu(Frame())
+check("the launcher's quick menu loads a set, and names the one on your bars", state.menu["Raid (on your bars)"]
+    and state.menu["Open Bar Sets"] and state.menu["Save Bars into Raid"])
+
+-- More > Edit and Save Again opens the builder on the set, its picks in place.
+ns.OpenActionBarsBuilder("Raid")
+check("editing a set keeps its name", editBox.text == "Raid")
+check("and its left-out slot", Tile("bottom", 2).icon.desaturated == true)
 
 -------------------------------------------------------------------------------
 --  Each class's strip

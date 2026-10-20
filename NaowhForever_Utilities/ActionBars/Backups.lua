@@ -13,15 +13,21 @@ local RESTORE = { actions = true, macros = true, keys = true, exact = true }
 
 local TEXT_BEFORE_RESTORE = ns.L("Before putting back a backup")
 
-local function List()
+local function Data()
     local data = ns.Shared.CharacterData(STORE, true)
     data.list = data.list or {}
-    return data.list
+    return data
+end
+
+local function List()
+    return Data().list
 end
 
 local function Take(why)
-    local list = List()
-    table.insert(list, 1, { saved = time(), why = why, set = Capture.Snapshot(CHOICES), last = A.Last() })
+    local data = Data()
+    local list = data.list
+    data.taken = (data.taken or 0) + 1
+    table.insert(list, 1, { id = data.taken, saved = time(), why = why, set = Capture.Snapshot(CHOICES), last = A.Last() })
     for i = #list, MAX_BACKUPS + 1, -1 do list[i] = nil end
 end
 
