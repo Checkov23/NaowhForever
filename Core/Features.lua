@@ -84,7 +84,6 @@ ns.FEATURES = {
         durability = false,
         talentPoints = false,
         buffThanks = false,
-        gamble = false,
         combatAlert = true,
         hideErrors = false,
         hideTutorials = false,

@@ -10,8 +10,6 @@
     <Script file="Loot\Durability.lua"/>
     <Script file="Questing\TalentPoints.lua"/>
     <Script file="Questing\BuffThanks.lua"/>
-    <Script file="Gambling\GambleHelp.lua"/>
-    <Script file="Gambling\Gamble.lua"/>
     <Script file="Combat\CombatAlert.lua"/>
     <Script file="Questing\QuestAutomation.lua"/>
     <Script file="Questing\RewardList.lua"/>

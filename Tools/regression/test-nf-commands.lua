@@ -9,7 +9,7 @@ local function Read(path)
 end
 
 local function Fixture(badges)
-    local s = { printed = {}, opened = {}, barArgs = {}, abArgs = {}, toggled = 0, gambleToggled = 0, unlock = false }
+    local s = { printed = {}, opened = {}, barArgs = {}, abArgs = {}, toggled = 0, unlock = false }
     local ns = {
         UI = {},
         FEATURE_BADGES = badges, BADGES_LIVE = 1,
@@ -21,7 +21,6 @@ local function Fixture(badges)
         HideUnlockMode = function() s.unlock = false end,
         ActionBarsCommand = function(text) s.barArgs[#s.barArgs + 1] = text end,
         ActionBarsImportCommand = function(text) s.abArgs[#s.abArgs + 1] = text end,
-        ToggleGamble = function() s.gambleToggled = s.gambleToggled + 1 end,
     }
     local env = setmetatable({
         NaowhForever = ns,
@@ -56,7 +55,7 @@ do
     check("/nf help prints a list and leaves the window alone", #s.printed > 10 and s.toggled == 0)
     check("it names /nf move", Printed(s, "/nf move"))
     for _, word in ipairs({ "/nf bars", "/nf ab", "/nf xp", "/nf lockouts", "/nf ranks", "/nf trainer", "/nf profrank",
-            "/nf junk", "/nf efficiency", "/nf quiz", "/nf gamble", "/nf setup" }) do
+            "/nf junk", "/nf efficiency", "/nf quiz", "/nf setup" }) do
         check("it names " .. word, Printed(s, word))
     end
     for _, mod in ipairs(s.ns.Options.MODULES) do
@@ -98,8 +97,6 @@ do
 
     nf("nonsense")
     check("an unknown command still opens the window", s.toggled == 1)
-    nf("gamble")
-    check("/nf gamble opens Gamble", s.gambleToggled == 1 and s.toggled == 1)
 end
 
 do

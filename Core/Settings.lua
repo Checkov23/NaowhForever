@@ -296,8 +296,5 @@ local S = UI.ModuleSettings("qol", {
     waypointNav = true, waypointSound = "none", waypointHideGame = true,
     waypointRestedXP = F.waypointRestedXP, waypointObjectives = F.waypointObjectives,
     waypointDownArrows = F.waypointDownArrows,
-
-    gamble = F.gamble, gambleChannel = "PARTY", gamblePool = "200g00s", gambleMode = "classic",
-    gambleJoinWord = "join", gambleLeaveWord = "leave",
 })
 ns.QoLSettings = S
