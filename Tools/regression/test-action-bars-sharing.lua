@@ -27,6 +27,16 @@ for _, file in ipairs({ "NaowhForever_Utilities/ActionBars/Data/Bars.lua", "Naow
     local chunk = assert(loadfile(file)); setfenv(chunk, env); chunk()
 end
 local sharing = ns.ActionBars.Sharing
+local ACCOUNT_MACROS, CHARACTER_MACROS = 120, 60
+local function MacroList(accountCount, characterCount)
+    local list = {}
+    for i = 1, accountCount do list[#list + 1] = { name = "A" .. i, body = "/say a" .. i, perCharacter = false } end
+    for i = 1, characterCount do
+        list[#list + 1] = i % 2 == 0 and { name = "C" .. i, body = "/say c" .. i }
+            or { name = "C" .. i, body = "/say c" .. i, perCharacter = true }
+    end
+    return list
+end
 local function Valid()
     return { v = 1, class = 1, name = "My bars", slots = {
         [1] = { kind = "spell", id = 100, name = "Charge" },
@@ -125,6 +135,14 @@ payload.macros[3].icon = -5
 set = select(2, sharing.Decode("!NFA1!test"))
 Check("bad icon falls back to the question mark", set.macros[3].icon == 134400)
 payload = Valid()
+payload.macros = MacroList(ACCOUNT_MACROS, CHARACTER_MACROS)
+set = select(2, sharing.Decode("!NFA1!test"))
+local account, character = 0, 0
+for _, macro in ipairs(set and set.macros or {}) do
+    if macro.perCharacter then character = character + 1 else account = account + 1 end
+end
+Check("120 account and 60 character macros are taken", account == ACCOUNT_MACROS and character == CHARACTER_MACROS)
+payload = Valid()
 payload.slots = {}
 payload.macros = { { name = "Shout", body = "/yell hi" } }
 set = select(2, sharing.Decode("!NFA1!test"))
@@ -158,9 +176,13 @@ for _, mutate in ipairs({
     function(p) p.macros = "Pull" end,
     function(p) p.macros = { { name = "Pull" } } end,
     function(p) p.macros = { x = { name = "Pull", body = "/say pull" } } end,
+    function(p) p.macros = MacroList(ACCOUNT_MACROS + 1, CHARACTER_MACROS) end,
+    function(p) p.macros = MacroList(ACCOUNT_MACROS, CHARACTER_MACROS + 1) end,
+    function(p) p.macros = MacroList(0, CHARACTER_MACROS + 1) end,
+    function(p) p.macros = MacroList(ACCOUNT_MACROS + 1, 0) end,
     function(p)
-        p.macros = {}
-        for i = 1, 31 do p.macros[i] = { name = "M" .. i, body = "/say " .. i } end
+        p.macros = MacroList(ACCOUNT_MACROS, CHARACTER_MACROS)
+        p.slots[2] = { kind = "macro", name = "Extra", body = "/say extra" }
     end,
 }) do
     payload = Valid(); mutate(payload)
@@ -168,5 +190,5 @@ for _, mutate in ipairs({
 end
 payload = Valid()
 Check("wrong prefix rejected", sharing.Decode("!NFM1!test") == nil)
-Check("input size bounded", sharing.Decode(string.rep("a", 100001)) == nil)
+Check("input size bounded", sharing.Decode(string.rep("a", 200001)) == nil)
 print("action bar sharing: " .. checks .. " checks passed")

@@ -3,7 +3,10 @@ local ns = _G.NaowhForever
 
 local A = ns.ActionBars
 local MAX_NAME, MAX_MACRO_NAME, MAX_BODY, MAX_ID = 40, 16, 255, 10000000
-local VERSION, MAX_SUFFIX, MAX_MACROS = 1, 1000, 30
+local VERSION, MAX_SUFFIX = 1, 1000
+local WEBSITE_ACCOUNT_MACROS, WEBSITE_CHARACTER_MACROS = 120, 60
+local MACRO_CAPS = { account = WEBSITE_ACCOUNT_MACROS, character = WEBSITE_CHARACTER_MACROS }
+local MAX_MACROS = MACRO_CAPS.account + MACRO_CAPS.character
 local NAMES_SHOWN = 4
 local MAX_KEY, MAX_KEYS_PER_ACTION = 40, 2
 local MAX_BASE_KEY = 31
@@ -15,7 +18,7 @@ for _, key in ipairs(MODIFIER_ORDER) do MODIFIERS[key] = true end
 local KEY_ALIASES = { MINUS = "-", EQUALS = "=" }
 local IGNORED_KEYS = { UNKNOWN = true, BUTTON1 = true, BUTTON2 = true }
 local PREFIX = "!NFA1!"
-local LIMITS = { maxChars = 100000, maxBytes = 262144, maxDepth = 8, maxValues = 10000 }
+local LIMITS = { maxChars = 200000, maxBytes = 262144, maxDepth = 8, maxValues = 10000 }
 local CLASSES = { [1] = "WARRIOR", [2] = "PALADIN", [3] = "HUNTER", [4] = "ROGUE", [5] = "PRIEST",
     [7] = "SHAMAN", [8] = "MAGE", [9] = "WARLOCK", [11] = "DRUID" }
 local BUTTONS = {}
@@ -25,10 +28,10 @@ local MAX_BINDINGS = 0
 for _, count in pairs(BUTTONS) do MAX_BINDINGS = MAX_BINDINGS + count * MAX_KEYS_PER_ACTION end
 local TEXT_INVALID = ns.L("That is not a valid website bar layout for your class.")
 local TEXT_PROMPT = ns.L("Paste a code from naowh.gg")
-local TEXT_PROMPT_LINE = ns.L("Copy it with Copy import code on the website's Action Bars, then paste it here.")
+local TEXT_PROMPT_LINE = ns.L("Copy it with Export to string on the website's Action Bars, then paste it here.")
 local TEXT_IMPORT = ns.L("Import")
 local TEXT_EXPORT = ns.L("Export to Website")
-local TEXT_EXPORT_LINE = ns.L("Paste it on naowh.gg/forever Action Bars with Paste a code.")
+local TEXT_EXPORT_LINE = ns.L("Paste it on naowh.gg/forever Action Bars with Import a code.")
 local TEXT_CLOSE = ns.L("Close")
 local TEXT_ACTION, TEXT_ACTIONS = ns.L("%d action"), ns.L("%d actions")
 local TEXT_KEYBIND, TEXT_KEYBINDS = ns.L("%d keybind"), ns.L("%d keybinds")
@@ -75,6 +78,20 @@ local function Entry(row)
         return { kind = row.kind, id = row.id, name = row.name, top = row.top or nil }
     end
     if row.kind == "macro" then return Macro(row) end
+end
+
+local function MacroKind(entry)
+    return entry.perCharacter and "character" or "account"
+end
+
+local function MacrosFit(macros)
+    local counts = { account = 0, character = 0 }
+    for _, entry in ipairs(macros) do
+        local kind = MacroKind(entry)
+        counts[kind] = counts[kind] + 1
+        if counts[kind] > MACRO_CAPS[kind] then return false end
+    end
+    return true
 end
 
 local function AddMacro(macros, seen, entry)
@@ -163,7 +180,7 @@ local function Decode(text)
         slots[slot], count = entry, count + 1
         if entry.kind == "macro" then AddMacro(macros, seen, entry) end
     end
-    if count == 0 and #macros == 0 then return end
+    if (count == 0 and #macros == 0) or not MacrosFit(macros) then return end
     local bindings = Bindings(data.bindings)
     if not bindings then return end
     for _, slot in ipairs(A.Capture.Slots()) do
@@ -200,7 +217,9 @@ end
 local function AddExportMacro(out, entry)
     local listed = out.byName[entry.name]
     if listed then return listed.body == entry.body end
-    if #out.macros >= MAX_MACROS then return false end
+    local kind = MacroKind(entry)
+    if out.kinds[kind] >= MACRO_CAPS[kind] then return false end
+    out.kinds[kind] = out.kinds[kind] + 1
     out.byName[entry.name] = entry
     out.macros[#out.macros + 1] = entry
     return true
@@ -263,8 +282,8 @@ local function Export(key)
     if not set then return end
     local classID = CLASS_IDS[A.Class()]
     local known = Catalog(classID)
-    local out = { slots = {}, macros = {}, byName = {}, bindings = {}, left = {}, actions = 0, keys = 0,
-        macrosLeft = 0, spells = known ~= nil }
+    local out = { slots = {}, macros = {}, byName = {}, kinds = { account = 0, character = 0 }, bindings = {},
+        left = {}, actions = 0, keys = 0, macrosLeft = 0, spells = known ~= nil }
     for _, slot in ipairs(SlotOrder(set.slots or {})) do ExportSlot(out, slot, set.slots[slot], known) end
     for _, row in ipairs(set.macros or {}) do
         local entry = ExportMacro(row)
@@ -273,7 +292,7 @@ local function Export(key)
     ExportBindings(out, set.bindings)
     local code = ns.Shared.Encode.String(PREFIX, { v = VERSION, class = classID, name = name, slots = out.slots,
         macros = #out.macros > 0 and out.macros or nil, bindings = next(out.bindings) and out.bindings or nil })
-    out.byName = nil
+    out.byName, out.kinds = nil, nil
     return code, out
 end
 

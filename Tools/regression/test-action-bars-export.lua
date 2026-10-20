@@ -111,6 +111,74 @@ name, set = Sharing.Decode((Sharing.Export()))
 Check("the bars as they are export under the character's name", name == "Alt bars" and set.slots[1].top == true
     and set.slots[2] == nil and set.macros[1].name == "Shout" and set.bindings["1"] == "ACTIONBUTTON1")
 
+local ACCOUNT_MACROS, CHARACTER_MACROS, EXTRA_ACCOUNT, EXTRA_CHARACTER = 120, 60, 5, 3
+local MAX_BODY, MAX_CHARS, FIRST_PRINTABLE, PRINTABLE = 255, 200000, 32, 95
+local SEED, MULTIPLIER, MODULUS, LOW_BITS = 12345, 16807, 2147483647, 65536
+local seed = SEED
+local function Body()
+    local bytes = {}
+    for i = 1, MAX_BODY do
+        seed = seed * MULTIPLIER % MODULUS
+        bytes[i] = string.char(FIRST_PRINTABLE + math.floor(seed / LOW_BITS) % PRINTABLE)
+    end
+    return table.concat(bytes)
+end
+local function Macros(accountCount, characterCount)
+    local list = {}
+    for i = 1, accountCount do
+        list[#list + 1] = { kind = "macro", name = "A" .. i, body = Body(), icon = 132333, perCharacter = false }
+    end
+    for i = 1, characterCount do
+        list[#list + 1] = { kind = "macro", name = "C" .. i, body = Body(), icon = 132337, perCharacter = true }
+    end
+    return list
+end
+local function Kinds(list)
+    local account, character = 0, 0
+    for _, m in ipairs(list) do
+        if m.perCharacter then character = character + 1 else account = account + 1 end
+    end
+    return account, character
+end
+sets.Macros = { saved = 1, slots = { [4] = { kind = "item", id = 6948 } },
+    macros = Macros(ACCOUNT_MACROS + EXTRA_ACCOUNT, CHARACTER_MACROS + EXTRA_CHARACTER) }
+code, report = Sharing.Export("Macros")
+set = select(2, Sharing.Decode(code))
+local account, character = Kinds(set and set.macros or {})
+Check("120 account and 60 character macros round-trip", account == ACCOUNT_MACROS and character == CHARACTER_MACROS
+    and set.macros[1].body == sets.Macros.macros[1].body and set.macros[1].perCharacter == false)
+Check("the first of each kind are kept", set.macros[ACCOUNT_MACROS].name == "A" .. ACCOUNT_MACROS
+    and set.macros[ACCOUNT_MACROS + 1].name == "C1")
+Check("the rest are left out", report.macrosLeft == EXTRA_ACCOUNT + EXTRA_CHARACTER)
+summary = Sharing.ExportSummary(report)
+Check("and the popup names them", summary:find("1 action, 0 keybinds and 180 macros.", 1, true)
+    and summary:find("Left out: 8 macros, past the website's limit or sharing a name.", 1, true))
+local full = Macros(ACCOUNT_MACROS, CHARACTER_MACROS)
+local placed = {}
+for i, m in ipairs(full) do placed[i] = m end
+local KEYS_PER_ACTION, FUNCTION_KEYS, SLOTS_PER_BAR = 2, 24, 12
+local MODIFIERS = { "", "ALT-", "CTRL-", "SHIFT-", "ALT-CTRL-", "ALT-SHIFT-", "CTRL-SHIFT-", "ALT-CTRL-SHIFT-", "META-" }
+local bindings, bound, commands = {}, 0, {}
+local function Bind(command)
+    for _ = 1, KEYS_PER_ACTION do
+        bindings[MODIFIERS[math.floor(bound / FUNCTION_KEYS) + 1] .. "F" .. (bound % FUNCTION_KEYS + 1)] = command
+        bound = bound + 1
+    end
+end
+for _, bar in ipairs(ns.ActionBars.BARS) do
+    if not commands[bar.button] then
+        commands[bar.button] = true
+        for button = 1, SLOTS_PER_BAR do Bind(bar.button .. button) end
+    end
+end
+for button = 1, ns.ActionBars.PET_BAR.buttons do Bind(ns.ActionBars.PET_BAR.button .. button) end
+sets.Full = { saved = 1, slots = placed, macros = full, bindings = bindings }
+code, report = Sharing.Export("Full")
+set = select(2, Sharing.Decode(code))
+Check("180 placed macros of 255 bytes and every keybind stay within the code's size limit", #code <= MAX_CHARS
+    and set and #set.macros == ACCOUNT_MACROS + CHARACTER_MACROS and report.macrosLeft == 0
+    and report.actions == #full and report.keys == bound)
+
 ns.TrainingData = nil
 sets.Solo = { saved = 1, slots = { [1] = { kind = "spell", id = 100 }, [2] = { kind = "item", id = 6948 } } }
 code, report = Sharing.Export("Solo")

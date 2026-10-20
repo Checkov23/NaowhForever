@@ -5,7 +5,7 @@ Sets belong to a class and are shared by every character of that class on the ac
 window (`/nfbars`, `/nf bars`, Open Action Bars on its settings page) shows your class's saved
 sets, the set builder (pick the bars, slots, keybinds and macros that go in) and the import
 preview (your bars as an import would leave them), laid out like the Forever website's Action Bars.
-Export to Website gives your bars, or a saved set, as a code the website's Paste a code loads.
+Export to Website gives your bars, or a saved set, as a code the website's Import a code loads.
 `/nf bars save|import|test|delete <name>`
 and `/nf bars list` do the same from chat. `/nf ab <name>` imports a set and `/nf ab` lists them.
 Import on New Character imports a chosen set once, the first time a new character of that class
@@ -192,12 +192,17 @@ the preview lets players inspect them before import. No hooks, events or frames 
 until the player opens the existing window.
 The layout's macro list (`macros`, at most `MAX_MACROS`) is made with the macros on its bars, whether
 placed or not, each once by name and text. A macro is a character macro unless the layout marks it
-account-wide, and keeps the icon it was given, except a `#showtooltip` macro (above).
+account-wide (`perCharacter = false`), and keeps the icon it was given, except a `#showtooltip` macro
+(above). A layout with more account or character macros than the website holds (`MACRO_CAPS`, 120 and
+60) is turned down. These are the website's limits, not the game's (`Constants.MacroConsts` says 30
+character macros), so the import itself makes only what fits in the game's free slots of each kind.
+A code of 180 macros of 255 bytes, each also on a slot, with every keybind, is about 108,000 characters,
+so `LIMITS.maxChars` is 200,000; `maxBytes` (262,144) and `maxValues` (10,000) stay well above it.
 
 ## Website exports
 
 Export to Website (the home's card for the bars as they are, a set's More menu for that set) writes the
-same `!NFA1!` code the website's own export does, so its Paste a code loads it: `v` 1, the class's number,
+same `!NFA1!` code the website's own export does, so its Import a code loads it: `v` 1, the class's number,
 the name (the set's, or "<character> bars"), the slots, the macro list and the keybinds.
 - The website reads only its own writer's form of LibSerialize, without the short forms LibSerialize itself
   writes, so the code is written by `Shared/Encode.lua` and only deflated by LibDeflate. The addon's import
@@ -208,8 +213,9 @@ the name (the set's, or "<character> bars"), the slots, the macro list and the k
   gamepad slots are left out and named in the popup, never failing the export. Without the Training
   Planner loaded every spell is left out, and the popup says so. Items and macros stay.
 - A spell keeps Highest (`top`) as saved, or, for the bars as they are, by the rule saving uses.
-- The website holds at most 30 macros, each name once: the macros on the bars go first, then the set's
-  list (or every macro you have), and a second macro of a name already in is left out.
+- The website holds at most 120 account and 60 character macros (`MACRO_CAPS`), each name once: the
+  macros on the bars go first, then the set's list (or every macro you have).
+  A macro past its kind's limit, or a second macro of a name already in, is left out and counted in the popup.
 - Keybinds keep only the commands the website takes (the bars' buttons and the pet bar's 10), at most two
   per action, normalized like an import's.
 - The popup's code box is read-only and selected, ready for Ctrl+C. Nothing is made until it opens.
