@@ -7,7 +7,7 @@ local Parts, St, View = Shared.Parts, Shared.Style, Shared.View
 local Rewards = ns.QuestRewards
 
 local PAGE = "QoL/Questing & Group"
-local WIDTH, HEIGHT = 460, 480
+local WIDTH, HEIGHT = 620, 480
 local HEADER, PAD, FOOTER, SCROLLBAR = St.WINDOW_HEADER, St.WINDOW_PAD, St.WINDOW_FOOTER, St.SCROLLBAR
 local INSET = St.CONTENT_INSET
 local BOTTOM_H = 34

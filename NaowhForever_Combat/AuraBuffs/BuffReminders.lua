@@ -15,10 +15,14 @@ local CLASS_INDEX = 6
 local REQUIRED_LEVEL = 5
 local ITEM_ICON = 10
 local ELITE = { elite = true, rareelite = true, worldboss = true }
+local MAX_LEVEL = 60
 local WHERE = {
-    consumables = { none = "consumablesWorld", party = "consumablesDungeon", raid = "consumablesRaid" },
-    raidBuffs = { none = "raidBuffsWorld", party = "raidBuffsDungeon", raid = "raidBuffsRaid" },
-    personalBuffs = { none = "personalBuffsWorld", party = "personalBuffsDungeon", raid = "personalBuffsRaid" },
+    consumables = { none = "consumablesWorld", party = "consumablesDungeon", raid = "consumablesRaid",
+        atMax = "consumablesMaxHide" },
+    raidBuffs = { none = "raidBuffsWorld", party = "raidBuffsDungeon", raid = "raidBuffsRaid",
+        atMax = "raidBuffsMaxHide" },
+    personalBuffs = { none = "personalBuffsWorld", party = "personalBuffsDungeon", raid = "personalBuffsRaid",
+        atMax = "personalBuffsMaxHide" },
 }
 
 local GROUP_UNIT = { player = true }
@@ -42,11 +46,12 @@ for _, icon in pairs(D.WEAPON_ICONS) do CLASSIC_WEAPON_ICON[icon] = true end
 
 local buffPool, members, memberCount, classes = {}, {}, 0, {}
 local missingUnits = {}
-local itemBuffs, requested = {}, {}
+local requested = {}
 local carried
 local wellFedName
 local wakeAt
 local lastImbue
+local leveledTo
 local hidden = {}
 
 local function Secret(v)
@@ -79,19 +84,6 @@ local function WellFed(buffs)
     end
 end
 
-local function ItemBuff(itemID)
-    if not itemBuffs[itemID] then
-        local _, spell = C_Item.GetItemSpell(itemID)
-        if spell then
-            itemBuffs[itemID] = spell
-        elseif not requested[itemID] then
-            requested[itemID] = true
-            C_Item.RequestLoadItemDataByID(itemID)
-        end
-    end
-    return itemBuffs[itemID]
-end
-
 local function ItemIcon(itemID)
     if D.WEAPON_ICONS[itemID] then return D.WEAPON_ICONS[itemID] end
     local icon = select(ITEM_ICON, C_Item.GetItemInfo(itemID))
@@ -117,6 +109,8 @@ end
 
 local function ShowsHere(kind, zone)
     local keys = WHERE[kind]
+    local level = math.max(UnitLevel("player"), leveledTo or 0)
+    if zone == "none" and S.Get(keys.atMax) and level >= MAX_LEVEL then return false end
     return S.Get(keys[zone] or keys.none)
 end
 
@@ -189,25 +183,6 @@ local function Consumable(list, buffs, group, item, icon, last, onlyCarried)
     list[#list + 1] = { icon = shown or icon, aura = aura, item = used }
 end
 
-local function Groups()
-    local groups = {}
-    for _, entry in ipairs(S.Get("consumableEntries") or {}) do
-        if type(entry) == "table" and type(entry.itemID) == "number" then
-            local group = groups[entry.category]
-            if not group then group = { items = {}, auras = {} }; groups[entry.category] = group end
-            group.items[#group.items + 1] = entry.itemID
-            if type(entry.auras) == "table" then
-                for _, id in ipairs(entry.auras) do group.auras[#group.auras + 1] = id end
-            elseif entry.category == "food" then
-                group.wellFed = true
-            else
-                group.auras[#group.auras + 1] = ItemBuff(entry.itemID)
-            end
-        end
-    end
-    return groups
-end
-
 local function ScanBags()
     carried = {}
     local best, level = {}, UnitLevel("player")
@@ -235,16 +210,10 @@ local function ScanBags()
     return carried
 end
 
-local function CarriedBuiltIn(category, group, builtIn)
+local function CarriedBuiltIn(category, builtIn)
     local items = (carried or ScanBags())[category]
-    if not items then return group end
-    local auras = builtIn.auras
-    if group then
-        auras = {}
-        for _, id in ipairs(group.auras) do auras[#auras + 1] = id end
-        for _, id in ipairs(builtIn.auras) do auras[#auras + 1] = id end
-    end
-    return { items = items, auras = auras, wellFed = builtIn.wellFed or group and group.wellFed }, items[1]
+    if not items then return end
+    return { items = items, auras = builtIn.auras, wellFed = builtIn.wellFed }, items[1]
 end
 
 local function ScrollGroup(items, buffs)
@@ -268,18 +237,15 @@ local function ScrollGroup(items, buffs)
 end
 
 local function Consumables(list, buffs)
-    local groups = Groups()
     for _, category in ipairs(CATEGORY_ORDER) do
         local onlyCarried = Carried(category)
-        local group = groups[category]
-        local builtIn = not (category == "battle" and groups.guardian) and D.DEFAULT_GROUPS[category]
-        if group and builtIn and builtIn.carried then builtIn = nil end
-        local carriedOnly = onlyCarried or builtIn and builtIn.carried
-        if not (group or carriedOnly) then group = builtIn end
-        local item = group and FirstCarried(group.items)
-        if not item and carriedOnly and builtIn then
-            group, item = CarriedBuiltIn(category, group, builtIn)
+        local builtIn = D.DEFAULT_GROUPS[category]
+        local group, item
+        if onlyCarried or builtIn.carried then
+            group, item = CarriedBuiltIn(category, builtIn)
             if item and category == "scroll" then group, item = ScrollGroup(group.items, buffs) end
+        else
+            group, item = builtIn, FirstCarried(builtIn.items)
         end
         if group then
             local before = #list
@@ -503,6 +469,15 @@ Reminders.PersonalPicked = PersonalPicked
 Reminders.Secret = Secret
 Reminders.ShowsHere = ShowsHere
 
+function Reminders.WatchesLevel()
+    return (S.Get("consumablesMaxHide") or S.Get("raidBuffsMaxHide") or S.Get("personalBuffsMaxHide"))
+        and UnitLevel("player") < MAX_LEVEL
+end
+
+function Reminders.NoteLevel(level)
+    leveledTo = level
+end
+
 function Reminders.InRange(entry)
     local count = 0
     if not entry.rangeSpell or InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then return count end
@@ -582,10 +557,9 @@ function Reminders.NoteUseCast(spellID)
     if not LastUsed() or InCombatLockdown() then return false end
     local category, icon = "weapon", UsedIcon(D.WEAPON_ITEMS, spellID)
     if not icon then
-        local groups = Groups()
         for _, name in ipairs(CATEGORY_ORDER) do
-            local group = groups[name] or not (name == "battle" and groups.guardian) and D.DEFAULT_GROUPS[name]
-            icon = group and not group.wellFed and UsedIcon(group.items, spellID)
+            local group = D.DEFAULT_GROUPS[name]
+            icon = not group.wellFed and UsedIcon(group.items, spellID)
             if icon then
                 category = name
                 break

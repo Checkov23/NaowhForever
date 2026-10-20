@@ -108,6 +108,10 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
 - Blizzard's window stays open under ours at zero alpha: hiding it would close the trade skill (its
   OnHide calls CloseTradeSkill) and take the recipe data with it. Ours sits one strata higher, so
   nothing of Blizzard's can be clicked, and is never narrower or shorter than it.
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the recipe window, Train Favorites
+  and Favorite Recipe Marks stay off and the game's own windows are used. That style drives the
+  profession, trainer and merchant windows with the D-pad from secure code, which the invisible
+  window under ours, the docked tabs and cards, and our hooks on those windows would taint.
 - Blizzard's profession tabs switch profession by casting its spell, which only Blizzard's code may
   do, so the real tabs move onto our window's edge and ignore their invisible parent's alpha.
 - The overview's spell buttons (Smelting, Find Minerals) cast and the red cross unlearns, so they stay

@@ -77,9 +77,11 @@ local root = {}
 function root:CreateTitle(text) menu[#menu + 1] = { title = text } end
 function root:CreateButton(text, fn) menu[#menu + 1] = { text = text, fn = fn } end
 
+local alts, toBox = {}, {}
+
 local function Load()
     for k in pairs(frames) do frames[k] = nil end
-    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+    local ns = { GamepadStandDown = function() return false end, L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLSettings = { Get = function(key) return settings[key] end, Set = function() end },
         QoLConstants = dofile("Tools/regression/qol_constants.lua"),
         Color = function(_, text) return text end,
@@ -92,6 +94,8 @@ local function Load()
         Tooltip = function() end,
         Apply = function() end,
         Shared = { Settings = { Page = function() return { Card = function() end } end } },
+        AltList = function() return alts end,
+        ClassColoredName = function(name) return name end,
     }
     for k in pairs(env) do env[k] = nil end
     setmetatable(env, { __index = _G })
@@ -106,7 +110,11 @@ local function Load()
     env.hooksecurefunc = function() end
     env.wipe = function(t) for k in pairs(t) do t[k] = nil end return t end
     env.BACKPACK_CONTAINER, env.NUM_TOTAL_EQUIPPED_BAG_SLOTS = 0, 1
-    env.WHITE_FONT_COLOR = {}
+    env.WHITE_FONT_COLOR, env.GRAY_FONT_COLOR = {}, {}
+    env.GetMoney = function() return 0 end
+    env.C_CurrencyInfo = { GetCoinTextureString = function(copper) return tostring(copper) end }
+    env.SendMailNameEditBox = { SetText = function(_, text) toBox.text = text end }
+    env.SendMailSubjectEditBox = { SetFocus = function() end }
     env.SendMailFrame, env.MailFrame = Frame(), Frame()
     env.MenuUtil = { CreateContextMenu = function(owner, gen)
         for k in pairs(menu) do menu[k] = nil end
@@ -296,6 +304,23 @@ Case("no garbage per attach step", function()
     collectgarbage("restart")
     assert(landSlot and lastAttached ~= 0, "still attaching")
     assert(after - before <= 0, ("%.3f KB per two steps"):format(after - before))
+end)
+
+Case("the Alts menu fills the whole name, and says when one still lacks its last name", function()
+    alts[1] = { name = "Kre Stonehand", class = "WARRIOR", level = 30, money = 0, full = true }
+    alts[2] = nil
+    buttons.Alts()
+    local hint = menu[#menu].title
+    assert(not (hint and hint:find("last name", 1, true)), "no hint while every name is whole")
+    menu[2].fn()
+    assert(toBox.text == "Kre Stonehand", "the To box gets " .. tostring(toBox.text))
+    alts[2] = { name = "Kreyn", class = "MAGE", level = 8, money = 0, full = true }
+    buttons.Alts()
+    hint = menu[#menu].title
+    assert(not (hint and hint:find("last name", 1, true)), "a name saved since the fix has no hint, surname or not")
+    alts[2].full = nil
+    buttons.Alts()
+    assert(menu[#menu].title and menu[#menu].title:find("last name", 1, true), "a first name alone gets the hint")
 end)
 
 collectgarbage("restart")

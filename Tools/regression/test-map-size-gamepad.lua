@@ -1,6 +1,6 @@
 local file = assert(io.open("NaowhForever_QoL/Interface/MapSize.lua", "rb"))
 local source = file:read("*a"):gsub("\r\n", "\n"); file:close()
-local owns, moved = false, 0
+local owns, standDown, moved = false, false, 0
 local function noop() end
 local function Widget()
  local w = { shown = true }
@@ -25,7 +25,8 @@ map.GetFrameLevel = function() return 1 end
 local settings = { enabled = true, mapSizePercent = 120, mapSizePos = { x = 100, y = 500 } }
 local S = { Get = function(key) return settings[key] end, Set = noop }
 local ns = { QoLSettings = S, QoLConstants = { PERCENT = 100, ROUND = 0.5 }, L = function(text) return text end,
- Tooltip = noop, Apply = noop, GamepadOwnsPanels = function() return owns end }
+ Tooltip = noop, Apply = noop, GamepadOwnsPanels = function() return owns end,
+ GamepadStandDown = function() return standDown end }
 local env = setmetatable({
  NaowhForever = ns,
  WorldMapFrame = map,
@@ -37,6 +38,11 @@ local chunk = assert(loadstring((source:gsub("hooksecurefunc%(ns, \"Apply\", Set
 setfenv(chunk, env)
 chunk()
 local Setup = env.Setup
+standDown = true
+local before = #built
+Setup()
+assert(moved == 0 and #built == before, "a session in the Gamepad interface style builds and moves nothing")
+standDown = false
 owns = true
 Setup()
 assert(moved == 0, "the map must not be scaled or anchored while the gamepad owns Blizzard's panels")

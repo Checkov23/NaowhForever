@@ -235,12 +235,15 @@ function Parts.TitleBar(window, title, subtitle, page)
     window.title:SetText(ns.L(title))
     window.subtitle = ns.Font(window, SMALL_SIZE, nil, T.muted)
     window.subtitle:SetPoint("TOPLEFT", window.title, "BOTTOMLEFT", 0, -SUBTITLE_GAP)
+    window.subtitle:SetJustifyH("LEFT")
+    window.subtitle:SetWordWrap(false)
     window.subtitle:SetText(ns.L(subtitle))
     window.backLink = Parts.Link(window, BackClicked, true)
     window.backLink:SetPoint("LEFT", window.title, "RIGHT", BACK_GAP, -BACK_DROP)
     window.backLink:Hide()
     local close = ns.Button(window, TEXT_CLOSE, CLOSE_SIZE, CLOSE_SIZE, function() window:Hide() end)
     close:SetPoint("RIGHT", window, "TOPRIGHT", -CLOSE_IN, middle)
+    window.subtitle:SetPoint("RIGHT", close, "LEFT", -St.BAR_GAP, 0)
     if window.forever then ForeverTitleBar(window, close, middle) end
     return close
 end

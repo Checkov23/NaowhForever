@@ -50,7 +50,7 @@ local function PutBack(slot)
 end
 
 local function SoftNames()
-    local names = { [C.RANGE_CVAR] = true, [C.ARC_CVAR] = true, [C.PLATE_CVAR] = true }
+    local names = { [C.INTERACT_CVAR] = true, [C.RANGE_CVAR] = true, [C.ARC_CVAR] = true, [C.PLATE_CVAR] = true }
     for name in pairs(C.SOFT_CVARS) do names[name] = true end
     return names
 end
@@ -63,7 +63,9 @@ end
 local function ApplySoft()
     if InCombatLockdown() then return Later(ApplySoft) end
     if G.On() then
+        local first = ns.AccountSettings()[SOFT_SAVED] == nil
         Save(SOFT_SAVED, SoftNames())
+        if first then Write(C.INTERACT_CVAR, C.INTERACT_ON) end
         for name, value in pairs(C.SOFT_CVARS) do Write(name, value) end
         Write(C.RANGE_CVAR, tostring(S.Get("range")))
         Write(C.ARC_CVAR, tostring(S.Get("arc")))
@@ -127,6 +129,10 @@ function CVars.SetPlate(open)
     if open == plateOpen or InCombatLockdown() then return end
     plateOpen = open
     Write(C.PLATE_CVAR, open and ON or OFF)
+end
+
+function CVars.InteractOn()
+    return GetCVar(C.INTERACT_CVAR) == C.INTERACT_ON
 end
 
 function CVars.Saved()

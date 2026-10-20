@@ -371,7 +371,10 @@ local function SetForeverHead(head, card, isOpen, held)
     head.sign:SetPoint("CENTER", head, "RIGHT", -SS.FOREVER_SIGN_RIGHT, 0)
     head.name:ClearAllPoints()
     if card.switchGet then
+        local switchHeld = card.switchWhy and card.switchWhy() ~= nil
         head.switch:Show()
+        head.switch:EnableMouse(not switchHeld)
+        head.switch:SetAlpha(switchHeld and DIM_ALPHA or 1)
         head.switch._refreshValue()
         head.switch:ClearAllPoints()
         head.switch:SetPoint("LEFT", PAD, 0)
@@ -405,21 +408,63 @@ local function SetHead(head, card, isOpen, held)
     return HEAD_H
 end
 
+local function GroupClicked(hit)
+    local row = hit:GetParent()
+    if row:GetParent().filter then return end
+    Settings.SetGroupOpen(row.spec, not Settings.GroupOpen(row.spec))
+    row:GetParent():QueueSettingsRedraw()
+end
+
+local function GroupEnter(hit)
+    hit:GetParent().chevron:SetVertexColor(T.fg.r, T.fg.g, T.fg.b, 1)
+end
+
+local function GroupLeave(hit)
+    hit:GetParent().chevron:SetVertexColor(T.muted.r, T.muted.g, T.muted.b, 1)
+end
+
 local function NewGroup(view)
     local row = CreateFrame("Frame", nil, view)
     row.text = ns.Font(row, SMALL_SIZE, nil, T.accentSoft)
-    row.text:SetPoint("BOTTOMLEFT", PAD, GROUP_RISE)
     local rule = Rule(row)
+    row.chevron = row:CreateTexture(nil, "ARTWORK")
+    row.chevron:SetTexture(ns.UI.CHEVRON)
+    row.chevron:SetSize(CHEVRON_SIZE, CHEVRON_SIZE)
+    row.chevron:SetVertexColor(T.muted.r, T.muted.g, T.muted.b, 1)
+    row.hit = CreateFrame("Button", nil, row)
+    row.hit:SetAllPoints()
+    row.hit:SetScript("OnClick", GroupClicked)
+    row.hit:SetScript("OnEnter", GroupEnter)
+    row.hit:SetScript("OnLeave", GroupLeave)
     if ns.foreverSkin then
         row.heading = Parts.ForeverHeading(row, LABEL_SIZE, PAD)
         row.heading:SetAllPoints()
         row.text:Hide()
         rule:Hide()
+        row.chevron:SetPoint("RIGHT", -PAD, 0)
     end
     return row
 end
 
-local function SetGroup(row, title)
+local function SetFold(row, spec, isOpen)
+    local fold = spec ~= nil and spec.fold == true
+    row.spec = fold and spec or nil
+    row.chevron:SetShown(fold)
+    row.hit:SetShown(fold)
+    if fold then row.chevron:SetRotation(isOpen and OPEN_TURN or 0) end
+    if row.heading then return end
+    row.chevron:ClearAllPoints()
+    row.chevron:SetPoint("BOTTOMLEFT", PAD, GROUP_RISE)
+    row.text:ClearAllPoints()
+    if fold then
+        row.text:SetPoint("LEFT", row.chevron, "RIGHT", CONTROL_GAP, 0)
+    else
+        row.text:SetPoint("BOTTOMLEFT", PAD, GROUP_RISE)
+    end
+end
+
+local function SetGroup(row, title, spec, isOpen)
+    SetFold(row, spec, isOpen)
     if row.heading then
         row.heading.text:SetText(ns.L(title))
         return GROUP_H

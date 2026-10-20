@@ -60,6 +60,10 @@ GAP = 8
 # profession.
 KEPT_SORTS = {"Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid",
               "Reputation", "Epic", "Legendary"}
+# The battleground areas (AreaTable) CMaNGOS sorts quests under: Alterac Valley, the Alterac Valley
+# area in the Alterac Mountains outside it, Warsong Gulch and Arathi Basin. Their quests are
+# instance quests, but not dungeon or raid ones.
+BATTLEGROUNDS = {2597, 2839, 3277, 3358}
 CONTINENTS = {"0", "1"}   # Eastern Kingdoms and Kalimdor, as CMaNGOS and C_Map number them
 ZONE_MAPS = set(ZONE_MAP.values())
 # A giver Wowhead places that has more spawns than this is left out of the agreement check.
@@ -240,7 +244,7 @@ def main():
         out[str(qid)] = {"name": q["Title"], "level": int(q["QuestLevel"]), "reqlevel": int(q["MinLevel"]),
                          "side": side, "reqrace": races, "reqclass": int(q["RequiredClasses"]),
                          "after": sorted(after.get(qid, ())), "map": m, "x": x, "y": y, "giver": giver,
-                         "dungeon": sort > 0 and sort not in ZONE_MAP}
+                         "dungeon": sort > 0 and sort not in ZONE_MAP, "battleground": sort in BATTLEGROUNDS}
 
     OUT.write_text(json.dumps({"cmangos": dungeon_quests.COMMIT, "build": wago.BUILD, "quests": out},
                               indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\r\n")

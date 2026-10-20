@@ -126,7 +126,10 @@ Each file uses only the ones above it in `Shared.xml`. Every part sits on `ns.Sh
 - **Settings:** a module declares its settings next to its code, on the page they show on:
   `ns.Shared.Settings.Page("QoL/General", S):Card({ id, name, help, switch, summary, order,
   studio, rows = { ... } })`, rows like `{ key = "iconSize", label = "Icon Size", slider = { 12,
-  32, 1 } }` and `Settings.Group("Clock")` between them (see `Settings/Settings.lua`). A
+  32, 1 } }` and `Settings.Group("Clock")` between them (see `Settings/Settings.lua`).
+  `Settings.Group(title, true)` folds the rows up to the next group under a chevron, shut until
+  clicked, for this session; a search hit or a jump to one of its rows opens it (AuraBuffs' raid and
+  personal buffs). A
   row with `field` (and its own `get`/`set`) is one entry of a table setting `key`, with its own dot
   and reset (AuraBuffs' raid buff switches). A card's `switchWhy`, a function, holds its switch
   and its rows while it returns a reason, greyed with the reason in place of Off (the Food & Drink Bar while its
@@ -400,6 +403,11 @@ What a comment in the code used to say, in short. The house rules behind it are 
   fixed lines, so ours is a tooltip of our own `TIP_GAP` under it, which hides itself as soon as
   the Friends tooltip stops showing that row. List rows are hooked with `HookScript`, after the
   game's own, once each. A GUID is used only when it is a readable string, never a secret value.
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the game's bags and the Friends
+  and Guild lists are left alone: `Bags.OnGameUpdate` hooks no bag frame and `Roster.AddTooltip`
+  hooks no list, so Bag Marks, Junk Marker, the badges and Naowh Score add nothing there.
+  EllesmereUI's and Baganator's bags still get their marks. That style navigates these windows
+  from secure code, which our hooks and tooltip lines would taint.
 - `Places.ShowMap` opens the world map only out of combat, where addon code may open it. While
   `ns.GamepadOwnsPanels()` it says so in chat instead: `C_Map.OpenWorldMap` runs the game's
   `ShowUIPanel` from our click, and the gamepad builds its bindings inside that, which is how the
@@ -514,6 +522,10 @@ What a comment in the code used to say, in short. The house rules behind it are 
   but Esc.
 - A window's size grip keeps its size account-wide under its `sizeKey`, as the options window's
   is; its place is kept account-wide under `positionKey`.
+- The title bar's subtitle is one line, cut short `BAR_GAP` before the close button: the header
+  has room for one line, and a long one ran under the close button and out of the window. A window
+  that puts its own buttons left of the close button anchors the subtitle's right edge to the
+  left-most of them, as the Shopping List does.
 - A switch's hairlines are made once, when made: its parts are laid out again on a change.
 - A module's settings card holds itself in its button's click, made once: `ns.Button` calls its
   click with no arguments.

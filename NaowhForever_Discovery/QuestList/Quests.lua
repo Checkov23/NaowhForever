@@ -183,7 +183,7 @@ local function AddToGiver(id, trivial)
     table.insert(entry.quests, id)
     if not trivial then entry.grey = false end
     if not Q.Repeatable(id) then entry.repeatable = false end
-    if Q.Dungeon(id) then entry.dungeon = true end
+    if Q.Dungeon(id) and not Q.Battleground(id) then entry.dungeon = true end
 end
 
 function Q.Refresh()
@@ -221,6 +221,7 @@ function Q.Giver(id) return D.Quests[id][GIVER] end
 function Q.Item(id) return D.Quests[id][ITEM] end
 function Q.Repeatable(id) return D.Repeatable ~= nil and D.Repeatable[id] == true end
 function Q.Dungeon(id) return D.Dungeon ~= nil and D.Dungeon[id] == true end
+function Q.Battleground(id) return D.Battleground ~= nil and D.Battleground[id] == true end
 function Q.Elsewhere(id) return D.Elsewhere ~= nil and D.Elsewhere[id] == true end
 
 function Q.Spot(id)

@@ -144,7 +144,7 @@ read_globals = {
     "UnitLevel", "UnitName", "UnitPower", "UnitPowerMax", "UnitPowerPercent", "UnitNameFromGUID", "UnitOnTaxi", "UnitPosition", "UnitRace", "UnitStat",
     "UnitSpellTargetClass", "UnitSpellTargetName",
     "UnitXP", "UnitXPMax", "UnregisterStateDriver",
-    "UpdateAddOnMemoryUsage", "UpdateUIPanelPositions", "WHITE_FONT_COLOR", "wipe", "WorldFrame", "WorldMapFrame",
+    "UpdateAddOnMemoryUsage", "UpdateUIPanelPositions", "WHITE_FONT_COLOR", "GRAY_FONT_COLOR", "wipe", "WorldFrame", "WorldMapFrame",
     "ZoneTextFrame",
     "ClickSendMailItemButton", "GetInboxHeaderInfo", "GetInboxItem", "GetInboxNumItems",
     "GetSendMailItem",

@@ -4,6 +4,7 @@
  "quests": {
   "1470": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Venya Marthand",
    "level": 3,
@@ -20,6 +21,7 @@
    "after": [
     1473
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Carendin Halgar",
    "level": 10,
@@ -34,6 +36,7 @@
   },
   "1472": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Carendin Halgar",
    "level": 20,
@@ -48,6 +51,7 @@
   },
   "1473": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Carendin Halgar",
    "level": 10,
@@ -64,6 +68,7 @@
    "after": [
     1476
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Carendin Halgar",
    "level": 20,
@@ -80,6 +85,7 @@
    "after": [
     1472
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Godrick Farsan",
    "level": 20,
@@ -94,6 +100,7 @@
   },
   "1478": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ageron Kargal",
    "level": 10,
@@ -108,6 +115,7 @@
   },
   "1485": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ruzan",
    "level": 4,
@@ -124,6 +132,7 @@
    "after": [
     880
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Tonga Runetotem",
    "level": 16,
@@ -140,6 +149,7 @@
    "after": [
     1489
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Arch Druid Hamuul Runetotem",
    "level": 16,
@@ -156,6 +166,7 @@
    "after": [
     1485
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ruzan",
    "level": 4,
@@ -170,6 +181,7 @@
   },
   "1501": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gan'rul Bloodeye",
    "level": 11,
@@ -186,6 +198,7 @@
    "after": [
     1501
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gan'rul Bloodeye",
    "level": 11,
@@ -200,6 +213,7 @@
   },
   "1505": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Krang Stonehoof",
    "level": 10,
@@ -214,6 +228,7 @@
   },
   "1506": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ophek",
    "level": 10,
@@ -228,6 +243,7 @@
   },
   "1507": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gan'rul Bloodeye",
    "level": 20,
@@ -244,6 +260,7 @@
    "after": [
     1507
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Cazul",
    "level": 20,
@@ -260,6 +277,7 @@
    "after": [
     1508
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zankaja",
    "level": 20,
@@ -276,6 +294,7 @@
    "after": [
     1509
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gazrog",
    "level": 20,
@@ -292,6 +311,7 @@
    "after": [
     1512
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gan'rul Bloodeye",
    "level": 20,
@@ -308,6 +328,7 @@
    "after": [
     1511
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grunt Logmar",
    "level": 20,
@@ -322,6 +343,7 @@
   },
   "1516": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Canaga Earthcaller",
    "level": 4,
@@ -338,6 +360,7 @@
    "after": [
     1516
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Canaga Earthcaller",
    "level": 4,
@@ -352,6 +375,7 @@
   },
   "1519": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Seer Ravenfeather",
    "level": 4,
@@ -368,6 +392,7 @@
    "after": [
     1519
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Seer Ravenfeather",
    "level": 4,
@@ -384,6 +409,7 @@
    "after": [
     1524
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Telf Joolam",
    "level": 12,
@@ -400,6 +426,7 @@
    "after": [
     1525
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Telf Joolam",
    "level": 13,
@@ -414,6 +441,7 @@
   },
   "1530": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Islen Waterseer",
    "level": 22,
@@ -428,6 +456,7 @@
   },
   "1598": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Drusilla La Salle",
    "level": 4,
@@ -442,6 +471,7 @@
   },
   "1599": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Alamar Grimm",
    "level": 4,
@@ -458,6 +488,7 @@
    "after": [
     1638
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Harry Burlguard",
    "level": 10,
@@ -474,6 +505,7 @@
    "after": [
     1639
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bartleby",
    "level": 10,
@@ -490,6 +522,7 @@
    "after": [
     1642
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Duthorian Rall",
    "level": 12,
@@ -506,6 +539,7 @@
    "after": [
     1643
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Stephanie Turner",
    "level": 13,
@@ -522,6 +556,7 @@
    "after": [
     1646
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tiza Battleforge",
    "level": 12,
@@ -538,6 +573,7 @@
    "after": [
     1647
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "John Turner",
    "level": 13,
@@ -554,6 +590,7 @@
    "after": [
     1649
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Duthorian Rall",
    "level": 23,
@@ -570,6 +607,7 @@
    "after": [
     1650
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Daphne Stilwell",
    "level": 25,
@@ -586,6 +624,7 @@
    "after": [
     1651
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Daphne Stilwell",
    "level": 25,
@@ -602,6 +641,7 @@
    "after": [
     1652
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Duthorian Rall",
    "level": 21,
@@ -616,6 +656,7 @@
   },
   "1661": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Duthorian Rall",
    "level": 40,
@@ -632,6 +673,7 @@
    "after": [
     1640
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bartleby",
    "level": 10,
@@ -648,6 +690,7 @@
    "after": [
     1665
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Harry Burlguard",
    "level": 10,
@@ -664,6 +707,7 @@
    "after": [
     1666
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marshal Haggard",
    "level": 10,
@@ -680,6 +724,7 @@
    "after": [
     1679
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Muren Stormpike",
    "level": 11,
@@ -694,6 +739,7 @@
   },
   "1679": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Granis Swiftaxe",
    "level": 10,
@@ -710,6 +756,7 @@
    "after": [
     1678
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Muren Stormpike",
    "level": 11,
@@ -726,6 +773,7 @@
    "after": [
     1680
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tormus Deepforge",
    "level": 11,
@@ -742,6 +790,7 @@
    "after": [
     1681
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tormus Deepforge",
    "level": 10,
@@ -758,6 +807,7 @@
    "after": [
     1684
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Elanaria",
    "level": 10,
@@ -772,6 +822,7 @@
   },
   "1685": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Remen Marcot",
    "level": 10,
@@ -788,6 +839,7 @@
    "after": [
     1683
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Elanaria",
    "level": 10,
@@ -802,6 +854,7 @@
   },
   "1688": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gakin the Darkbinder",
    "level": 10,
@@ -818,6 +871,7 @@
    "after": [
     1688
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gakin the Darkbinder",
    "level": 10,
@@ -834,6 +888,7 @@
    "after": [
     1686
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Elanaria",
    "level": 10,
@@ -850,6 +905,7 @@
    "after": [
     1692
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathiel",
    "level": 10,
@@ -864,6 +920,7 @@
   },
   "1699": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Yorus Barleybrew",
    "level": 22,
@@ -880,6 +937,7 @@
    "after": [
     1701
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Furen Longbeard",
    "level": 28,
@@ -896,6 +954,7 @@
    "after": [
     1702
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Furen Longbeard",
    "level": 28,
@@ -912,6 +971,7 @@
    "after": [
     1699
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Yorus Barleybrew",
    "level": 22,
@@ -928,6 +988,7 @@
    "after": [
     1701
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Furen Longbeard",
    "level": 28,
@@ -944,6 +1005,7 @@
    "after": [
     1701
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Furen Longbeard",
    "level": 28,
@@ -958,6 +1020,7 @@
   },
   "1705": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grimand Elmore",
    "level": 28,
@@ -974,6 +1037,7 @@
    "after": [
     1705
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grimand Elmore",
    "level": 30,
@@ -988,6 +1052,7 @@
   },
   "1708": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Klockmort Spannerspan",
    "level": 29,
@@ -1004,6 +1069,7 @@
    "after": [
     1708
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Klockmort Spannerspan",
    "level": 30,
@@ -1018,6 +1084,7 @@
   },
   "1710": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathiel",
    "level": 30,
@@ -1034,6 +1101,7 @@
    "after": [
     1710
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathiel",
    "level": 30,
@@ -1050,6 +1118,7 @@
    "after": [
     1791
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bath'rah the Windwatcher",
    "level": 40,
@@ -1066,6 +1135,7 @@
    "after": [
     1712
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bath'rah the Windwatcher",
    "level": 40,
@@ -1080,6 +1150,7 @@
   },
   "1715": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lago Blackwrench",
    "level": 10,
@@ -1094,6 +1165,7 @@
   },
   "1716": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gakin the Darkbinder",
    "level": 20,
@@ -1108,6 +1180,7 @@
   },
   "1717": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lago Blackwrench",
    "level": 20,
@@ -1124,6 +1197,7 @@
    "after": [
     1718
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Klannoc Macleod",
    "level": 30,
@@ -1140,6 +1214,7 @@
    "after": [
     1738
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gakin the Darkbinder",
    "level": 20,
@@ -1156,6 +1231,7 @@
    "after": [
     1648
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "John Turner",
    "level": 13,
@@ -1172,6 +1248,7 @@
    "after": [
     1778
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tiza Battleforge",
    "level": 13,
@@ -1188,6 +1265,7 @@
    "after": [
     1644
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Stephanie Turner",
    "level": 13,
@@ -1204,6 +1282,7 @@
    "after": [
     1780
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Duthorian Rall",
    "level": 13,
@@ -1220,6 +1299,7 @@
    "after": [
     1701
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Furen Longbeard",
    "level": 28,
@@ -1236,6 +1316,7 @@
    "after": [
     1779
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Muiredon Battleforge",
    "level": 13,
@@ -1252,6 +1333,7 @@
    "after": [
     1783
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Narm Faulk",
    "level": 13,
@@ -1268,6 +1350,7 @@
    "after": [
     1784
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Muiredon Battleforge",
    "level": 13,
@@ -1284,6 +1367,7 @@
    "after": [
     1781
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gazin Tenorm",
    "level": 13,
@@ -1300,6 +1384,7 @@
    "after": [
     1786
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Henze Faulk",
    "level": 13,
@@ -1316,6 +1401,7 @@
    "after": [
     1787
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gazin Tenorm",
    "level": 13,
@@ -1332,6 +1418,7 @@
    "after": [
     1719
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Klannoc Macleod",
    "level": 30,
@@ -1348,6 +1435,7 @@
    "after": [
     1713
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bath'rah the Windwatcher",
    "level": 40,
@@ -1362,6 +1450,7 @@
   },
   "1798": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gakin the Darkbinder",
    "level": 30,
@@ -1378,6 +1467,7 @@
    "after": [
     1758
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Krom Stoutarm",
    "level": 30,
@@ -1394,6 +1484,7 @@
    "after": [
     1801
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jorah Annison",
    "level": 30,
@@ -1410,6 +1501,7 @@
    "after": [
     1802
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Krom Stoutarm",
    "level": 30,
@@ -1426,6 +1518,7 @@
    "after": [
     1803
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jorah Annison",
    "level": 30,
@@ -1442,6 +1535,7 @@
    "after": [
     1654
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jordan Stilwell",
    "level": 22,
@@ -1458,6 +1552,7 @@
    "after": [
     1818
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Deathguard Dillinger",
    "level": 10,
@@ -1474,6 +1569,7 @@
    "after": [
     1819
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Deathguard Dillinger",
    "level": 10,
@@ -1490,6 +1586,7 @@
    "after": [
     1820
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Coleman Farthing",
    "level": 11,
@@ -1506,6 +1603,7 @@
    "after": [
     1821
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Coleman Farthing",
    "level": 11,
@@ -1520,6 +1618,7 @@
   },
   "1823": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sorek",
    "level": 20,
@@ -1534,6 +1633,7 @@
   },
   "1842": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ula'elek",
    "level": 30,
@@ -1550,6 +1650,7 @@
    "after": [
     1842
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ula'elek",
    "level": 30,
@@ -1564,6 +1665,7 @@
   },
   "1844": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Orm Stonehoof",
    "level": 30,
@@ -1580,6 +1682,7 @@
    "after": [
     1844
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Orm Stonehoof",
    "level": 30,
@@ -1594,6 +1697,7 @@
   },
   "1846": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Velora Nitely",
    "level": 30,
@@ -1610,6 +1714,7 @@
    "after": [
     1846
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Velora Nitely",
    "level": 30,
@@ -1626,6 +1731,7 @@
    "after": [
     1963
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Therzok",
    "level": 13,
@@ -1640,6 +1746,7 @@
   },
   "1859": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Kaplak",
    "level": 10,
@@ -1654,6 +1761,7 @@
   },
   "1860": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zaldimar Wefhellt",
    "level": 10,
@@ -1670,6 +1778,7 @@
    "after": [
     1860
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jennea Cannon",
    "level": 10,
@@ -1684,6 +1793,7 @@
   },
   "1879": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Magis Sparkmantle",
    "level": 10,
@@ -1700,6 +1810,7 @@
    "after": [
     1879
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bink",
    "level": 10,
@@ -1714,6 +1825,7 @@
   },
   "1881": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Cain Firesong",
    "level": 10,
@@ -1728,6 +1840,7 @@
   },
   "1882": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anastasia Hartwell",
    "level": 10,
@@ -1742,6 +1855,7 @@
   },
   "1883": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Uthel'nay",
    "level": 10,
@@ -1756,6 +1870,7 @@
   },
   "1884": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Un'Thuwa",
    "level": 10,
@@ -1770,6 +1885,7 @@
   },
   "1885": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marion Call",
    "level": 10,
@@ -1786,6 +1902,7 @@
    "after": [
     1885
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mennet Carkad",
    "level": 13,
@@ -1802,6 +1919,7 @@
    "after": [
     1886
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mennet Carkad",
    "level": 13,
@@ -1818,6 +1936,7 @@
    "after": [
     1898
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Andron Gant",
    "level": 13,
@@ -1832,6 +1951,7 @@
   },
   "1920": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jennea Cannon",
    "level": 16,
@@ -1848,6 +1968,7 @@
    "after": [
     1920
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jennea Cannon",
    "level": 15,
@@ -1862,6 +1983,7 @@
   },
   "1938": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Sorcerer Andromath",
    "level": 28,
@@ -1876,6 +1998,7 @@
   },
   "1939": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jennea Cannon",
    "level": 26,
@@ -1892,6 +2015,7 @@
    "after": [
     1938
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Sorcerer Andromath",
    "level": 26,
@@ -1908,6 +2032,7 @@
    "after": [
     1921
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Wynne Larson",
    "level": 15,
@@ -1924,6 +2049,7 @@
    "after": [
     1940
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Wynne Larson",
    "level": 26,
@@ -1938,6 +2064,7 @@
   },
   "1943": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anastasia Hartwell",
    "level": 26,
@@ -1952,6 +2079,7 @@
   },
   "1944": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Deino",
    "level": 26,
@@ -1968,6 +2096,7 @@
    "after": [
     1944
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Deino",
    "level": 26,
@@ -1982,6 +2111,7 @@
   },
   "1948": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -1998,6 +2128,7 @@
    "after": [
     1947
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 38,
@@ -2014,6 +2145,7 @@
    "after": [
     1949
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Magus Tirth",
    "level": 30,
@@ -2030,6 +2162,7 @@
    "after": [
     1951
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -2046,6 +2179,7 @@
    "after": [
     1953
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -2062,6 +2196,7 @@
    "after": [
     1954
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -2078,6 +2213,7 @@
    "after": [
     1956
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -2094,6 +2230,7 @@
    "after": [
     1957
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -2108,6 +2245,7 @@
   },
   "1959": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Uthel'nay",
    "level": 15,
@@ -2122,6 +2260,7 @@
   },
   "1960": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anastasia Hartwell",
    "level": 16,
@@ -2138,6 +2277,7 @@
    "after": [
     1960
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anastasia Hartwell",
    "level": 15,
@@ -2154,6 +2294,7 @@
    "after": [
     1961
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Josef Gregorian",
    "level": 15,
@@ -2170,6 +2311,7 @@
    "after": [
     1859
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Therzok",
    "level": 13,
@@ -2186,6 +2328,7 @@
    "after": [
     1899
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mennet Carkad",
    "level": 13,
@@ -2200,6 +2343,7 @@
   },
   "1998": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mennet Carkad",
    "level": 16,
@@ -2216,6 +2360,7 @@
    "after": [
     1998
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mennet Carkad",
    "level": 20,
@@ -2232,6 +2377,7 @@
    "after": [
     2198
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Talvash del Kissel",
    "level": 41,
@@ -2248,6 +2394,7 @@
    "after": [
     2199
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Talvash del Kissel",
    "level": 42,
@@ -2262,6 +2409,7 @@
   },
   "2205": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Keryn Sylvius",
    "level": 10,
@@ -2276,6 +2424,7 @@
   },
   "2206": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Master Mathias Shaw",
    "level": 10,
@@ -2290,6 +2439,7 @@
   },
   "2218": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Hogral Bakkan",
    "level": 10,
@@ -2304,6 +2454,7 @@
   },
   "2238": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Hulfdan Blackbeard",
    "level": 10,
@@ -2320,6 +2471,7 @@
    "after": [
     2238
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Onin MacHammar",
    "level": 10,
@@ -2334,6 +2486,7 @@
   },
   "2241": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jannok Breezesong",
    "level": 10,
@@ -2348,6 +2501,7 @@
   },
   "2242": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Syurna",
    "level": 10,
@@ -2362,6 +2516,7 @@
   },
   "2259": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jannok Breezesong",
    "level": 16,
@@ -2376,6 +2531,7 @@
   },
   "2260": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Erion Shadewhisper",
    "level": 16,
@@ -2390,6 +2546,7 @@
   },
   "2281": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Renzik \"The Shiv\"",
    "level": 16,
@@ -2406,6 +2563,7 @@
    "after": [
     2281
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lucius",
    "level": 20,
@@ -2420,6 +2578,7 @@
   },
   "2283": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Dran Droffers",
    "level": 41,
@@ -2436,6 +2595,7 @@
    "after": [
     2283
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Dran Droffers",
    "level": 41,
@@ -2450,6 +2610,7 @@
   },
   "2298": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Hulfdan Blackbeard",
    "level": 16,
@@ -2464,6 +2625,7 @@
   },
   "2299": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Hogral Bakkan",
    "level": 16,
@@ -2478,6 +2640,7 @@
   },
   "2300": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Keryn Sylvius",
    "level": 16,
@@ -2494,6 +2657,7 @@
    "after": [
     2318
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jarkal Mossmeld",
    "level": 42,
@@ -2510,6 +2674,7 @@
    "after": [
     2338
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jarkal Mossmeld",
    "level": 44,
@@ -2526,6 +2691,7 @@
    "after": [
     2339
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jarkal Mossmeld",
    "level": 44,
@@ -2542,6 +2708,7 @@
    "after": [
     2340
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Dran Droffers",
    "level": 44,
@@ -2556,6 +2723,7 @@
   },
   "2358": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Arantir",
    "level": 22,
@@ -2570,6 +2738,7 @@
   },
   "2360": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Master Mathias Shaw",
    "level": 20,
@@ -2586,6 +2755,7 @@
    "after": [
     2204
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Talvash del Kissel",
    "level": 44,
@@ -2600,6 +2770,7 @@
   },
   "2378": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mennet Carkad",
    "level": 16,
@@ -2617,6 +2788,7 @@
     2378,
     2380
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shenthul",
    "level": 16,
@@ -2631,6 +2803,7 @@
   },
   "2380": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Kaplak",
    "level": 16,
@@ -2647,6 +2820,7 @@
    "after": [
     2382
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Wrenix the Wretched",
    "level": 18,
@@ -2663,6 +2837,7 @@
    "after": [
     2379
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zando'zan",
    "level": 16,
@@ -2679,6 +2854,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -2695,6 +2871,7 @@
    "after": [
     2460
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shenthul",
    "level": 20,
@@ -2709,6 +2886,7 @@
   },
   "2460": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shenthul",
    "level": 20,
@@ -2725,6 +2903,7 @@
    "after": [
     2478
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shenthul",
    "level": 26,
@@ -2739,6 +2918,7 @@
   },
   "26": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathrengyl Bearwalker",
    "level": 16,
@@ -2755,6 +2935,7 @@
    "after": [
     2359
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Master Mathias Shaw",
    "level": 20,
@@ -2771,6 +2952,7 @@
    "after": [
     2607
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Doc Mixilpixil",
    "level": 20,
@@ -2787,6 +2969,7 @@
    "after": [
     2608
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Doc Mixilpixil",
    "level": 20,
@@ -2803,6 +2986,7 @@
    "after": [
     29
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tajarri",
    "level": 16,
@@ -2819,6 +3003,7 @@
    "after": [
     26
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 16,
@@ -2833,6 +3018,7 @@
   },
   "2864": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Krazek",
    "level": 45,
@@ -2849,6 +3035,7 @@
    "after": [
     27
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 16,
@@ -2863,6 +3050,7 @@
   },
   "2923": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Brother Sarno",
    "level": 26,
@@ -2877,6 +3065,7 @@
   },
   "2925": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Mathiel",
    "level": 30,
@@ -2891,6 +3080,7 @@
   },
   "2927": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Gnoarn",
    "level": 27,
@@ -2905,6 +3095,7 @@
   },
   "2931": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Gaxim Rustfizzle",
    "level": 28,
@@ -2919,6 +3110,7 @@
   },
   "2983": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Swart",
    "level": 10,
@@ -2933,6 +3125,7 @@
   },
   "2984": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Narm Skychaser",
    "level": 10,
@@ -2947,6 +3140,7 @@
   },
   "2985": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Swart",
    "level": 20,
@@ -2961,6 +3155,7 @@
   },
   "2986": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Narm Skychaser",
    "level": 20,
@@ -2975,6 +3170,7 @@
   },
   "2996": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gan'rul Bloodeye",
    "level": 30,
@@ -2989,6 +3185,7 @@
   },
   "2997": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Azar Stronghammer",
    "level": 12,
@@ -3003,6 +3200,7 @@
   },
   "2998": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Brother Wilhelm",
    "level": 12,
@@ -3017,6 +3215,7 @@
   },
   "2999": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Brandur Ironhammer",
    "level": 12,
@@ -3033,6 +3232,7 @@
    "after": [
     28
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tajarri",
    "level": 16,
@@ -3047,6 +3247,7 @@
   },
   "3000": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 12,
@@ -3061,6 +3262,7 @@
   },
   "3001": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Carendin Halgar",
    "level": 30,
@@ -3077,6 +3279,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3093,6 +3296,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3109,6 +3313,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3125,6 +3330,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3141,6 +3347,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3157,6 +3364,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3173,6 +3381,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3189,6 +3398,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3205,6 +3415,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3221,6 +3432,7 @@
    "after": [
     788
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gornek",
    "level": 1,
@@ -3237,6 +3449,7 @@
    "after": [
     747
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grull Hawkwind",
    "level": 1,
@@ -3253,6 +3466,7 @@
    "after": [
     747
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grull Hawkwind",
    "level": 1,
@@ -3269,6 +3483,7 @@
    "after": [
     747
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grull Hawkwind",
    "level": 1,
@@ -3285,6 +3500,7 @@
    "after": [
     747
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grull Hawkwind",
    "level": 1,
@@ -3301,6 +3517,7 @@
    "after": [
     364
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shadow Priest Sarvis",
    "level": 1,
@@ -3317,6 +3534,7 @@
    "after": [
     364
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shadow Priest Sarvis",
    "level": 1,
@@ -3333,6 +3551,7 @@
    "after": [
     364
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shadow Priest Sarvis",
    "level": 1,
@@ -3349,6 +3568,7 @@
    "after": [
     364
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shadow Priest Sarvis",
    "level": 1,
@@ -3365,6 +3585,7 @@
    "after": [
     364
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shadow Priest Sarvis",
    "level": 1,
@@ -3381,6 +3602,7 @@
    "after": [
     30
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 16,
@@ -3397,6 +3619,7 @@
    "after": [
     7
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marshal McBride",
    "level": 1,
@@ -3413,6 +3636,7 @@
    "after": [
     7
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marshal McBride",
    "level": 1,
@@ -3429,6 +3653,7 @@
    "after": [
     7
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marshal McBride",
    "level": 1,
@@ -3445,6 +3670,7 @@
    "after": [
     7
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marshal McBride",
    "level": 1,
@@ -3461,6 +3687,7 @@
    "after": [
     7
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marshal McBride",
    "level": 1,
@@ -3477,6 +3704,7 @@
    "after": [
     7
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Marshal McBride",
    "level": 1,
@@ -3493,6 +3721,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3509,6 +3738,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3525,6 +3755,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3541,6 +3772,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3557,6 +3789,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3573,6 +3806,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3589,6 +3823,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3605,6 +3840,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3621,6 +3857,7 @@
    "after": [
     179
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sten Stoutarm",
    "level": 1,
@@ -3637,6 +3874,7 @@
    "after": [
     456
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Conservator Ilthalaine",
    "level": 1,
@@ -3653,6 +3891,7 @@
    "after": [
     456
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Conservator Ilthalaine",
    "level": 1,
@@ -3669,6 +3908,7 @@
    "after": [
     456
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Conservator Ilthalaine",
    "level": 1,
@@ -3685,6 +3925,7 @@
    "after": [
     456
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Conservator Ilthalaine",
    "level": 1,
@@ -3701,6 +3942,7 @@
    "after": [
     456
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Conservator Ilthalaine",
    "level": 1,
@@ -3715,6 +3957,7 @@
   },
   "3380": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Witch Doctor Uzer'i",
    "level": 51,
@@ -3729,6 +3972,7 @@
   },
   "3631": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zevrost",
    "level": 40,
@@ -3743,6 +3987,7 @@
   },
   "3661": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Erelas Ambersky",
    "level": 47,
@@ -3757,6 +4002,7 @@
   },
   "3681": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Brandur Ironhammer",
    "level": 12,
@@ -3771,6 +4017,7 @@
   },
   "3801": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Franclorn Forgewright",
    "level": 52,
@@ -3787,6 +4034,7 @@
    "after": [
     3801
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Franclorn Forgewright",
    "level": 52,
@@ -3801,6 +4049,7 @@
   },
   "384": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ragnar Thunderbrew",
    "level": 7,
@@ -3817,6 +4066,7 @@
    "after": [
     4001
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Thrall",
    "level": 54,
@@ -3833,6 +4083,7 @@
    "after": [
     4122
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Grark Lorkrub",
    "level": 58,
@@ -3847,6 +4098,7 @@
   },
   "4133": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Apothecary Zinge",
    "level": 55,
@@ -3861,6 +4113,7 @@
   },
   "4324": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Yorba Screwspigot",
    "level": 53,
@@ -3875,6 +4128,7 @@
   },
   "4485": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Arthur the Faithful",
    "level": 40,
@@ -3889,6 +4143,7 @@
   },
   "4486": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Brandur Ironhammer",
    "level": 40,
@@ -3903,6 +4158,7 @@
   },
   "4487": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Briarthorn",
    "level": 40,
@@ -3917,6 +4173,7 @@
   },
   "4488": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Demisette Cloyce",
    "level": 40,
@@ -3931,6 +4188,7 @@
   },
   "4489": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Kaal Soulreaper",
    "level": 40,
@@ -3945,6 +4203,7 @@
   },
   "4734": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Tinkee Steamboil",
    "level": 60,
@@ -3959,6 +4218,7 @@
   },
   "4736": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Briarthorn",
    "level": 31,
@@ -3973,6 +4233,7 @@
   },
   "4737": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zevrost",
    "level": 31,
@@ -3987,6 +4248,7 @@
   },
   "4738": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Demisette Cloyce",
    "level": 31,
@@ -4001,6 +4263,7 @@
   },
   "4739": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Kaal Soulreaper",
    "level": 31,
@@ -4017,6 +4280,7 @@
    "after": [
     4764
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Mayara Brightwing",
    "level": 60,
@@ -4031,6 +4295,7 @@
   },
   "4766": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Count Remington Ridgewell",
    "level": 60,
@@ -4045,6 +4310,7 @@
   },
   "4769": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Apothecary Zinge",
    "level": 60,
@@ -4061,6 +4327,7 @@
    "after": [
     4781
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Xizk Goodstitch",
    "level": 34,
@@ -4077,6 +4344,7 @@
    "after": [
     4810
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Felnok Steelspring",
    "level": 60,
@@ -4093,6 +4361,7 @@
    "after": [
     1799
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -4107,6 +4376,7 @@
   },
   "4965": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Briarthorn",
    "level": 35,
@@ -4121,6 +4391,7 @@
   },
   "4967": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zevrost",
    "level": 35,
@@ -4135,6 +4406,7 @@
   },
   "4968": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Demisette Cloyce",
    "level": 35,
@@ -4149,6 +4421,7 @@
   },
   "4969": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Kaal Soulreaper",
    "level": 35,
@@ -4165,6 +4438,7 @@
    "after": [
     4961
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tabetha",
    "level": 40,
@@ -4181,6 +4455,7 @@
    "after": [
     272
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 16,
@@ -4197,6 +4472,7 @@
    "after": [
     5002
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Marshal Maxwell",
    "level": 60,
@@ -4211,6 +4487,7 @@
   },
   "5250": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Daryn Lightwind",
    "level": 56,
@@ -4227,6 +4504,7 @@
    "after": [
     5522
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Leonid Barthalomew the Revered",
    "level": 60,
@@ -4243,6 +4521,7 @@
    "after": [
     5622
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Laurna Morninglight",
    "level": 4,
@@ -4257,6 +4536,7 @@
   },
   "5622": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Shanda",
    "level": 4,
@@ -4271,6 +4551,7 @@
   },
   "5623": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Priestess Anetta",
    "level": 4,
@@ -4287,6 +4568,7 @@
    "after": [
     5623
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Priestess Josetta",
    "level": 4,
@@ -4303,6 +4585,7 @@
    "after": [
     5626
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Maxan Anvol",
    "level": 4,
@@ -4317,6 +4600,7 @@
   },
   "5626": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Branstock Khalder",
    "level": 4,
@@ -4338,6 +4622,7 @@
     5632,
     5633
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Priestess Alathea",
    "level": 10,
@@ -4352,6 +4637,7 @@
   },
   "5628": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Priestess Josetta",
    "level": 10,
@@ -4366,6 +4652,7 @@
   },
   "5629": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Laurna Morninglight",
    "level": 10,
@@ -4380,6 +4667,7 @@
   },
   "5630": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Maxan Anvol",
    "level": 10,
@@ -4394,6 +4682,7 @@
   },
   "5631": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Brother Joshua",
    "level": 10,
@@ -4408,6 +4697,7 @@
   },
   "5632": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Nara Meideros",
    "level": 10,
@@ -4422,6 +4712,7 @@
   },
   "5633": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Braenna Flintcrag",
    "level": 10,
@@ -4436,6 +4727,7 @@
   },
   "5634": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lariia",
    "level": 10,
@@ -4450,6 +4742,7 @@
   },
   "5635": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Maxan Anvol",
    "level": 10,
@@ -4464,6 +4757,7 @@
   },
   "5636": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Laurna Morninglight",
    "level": 10,
@@ -4478,6 +4772,7 @@
   },
   "5637": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Priestess Josetta",
    "level": 10,
@@ -4492,6 +4787,7 @@
   },
   "5638": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Nara Meideros",
    "level": 10,
@@ -4506,6 +4802,7 @@
   },
   "5639": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Priest Rohan",
    "level": 10,
@@ -4520,6 +4817,7 @@
   },
   "5641": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Priestess Laurena",
    "level": 20,
@@ -4534,6 +4832,7 @@
   },
   "5643": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Father Lankester",
    "level": 20,
@@ -4548,6 +4847,7 @@
   },
   "5644": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zayus",
    "level": 20,
@@ -4562,6 +4862,7 @@
   },
   "5645": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Toldren Deepiron",
    "level": 20,
@@ -4576,6 +4877,7 @@
   },
   "5647": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lariia",
    "level": 20,
@@ -4592,6 +4894,7 @@
    "after": [
     5649
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tai'jin",
    "level": 4,
@@ -4606,6 +4909,7 @@
   },
   "5649": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ken'jai",
    "level": 4,
@@ -4622,6 +4926,7 @@
    "after": [
     5651
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dark Cleric Beryl",
    "level": 4,
@@ -4636,6 +4941,7 @@
   },
   "5651": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dark Cleric Duesten",
    "level": 4,
@@ -4650,6 +4956,7 @@
   },
   "5652": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ur'kyo",
    "level": 10,
@@ -4664,6 +4971,7 @@
   },
   "5654": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Var'jun",
    "level": 10,
@@ -4678,6 +4986,7 @@
   },
   "5655": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tai'jin",
    "level": 10,
@@ -4692,6 +5001,7 @@
   },
   "5656": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Father Lankester",
    "level": 10,
@@ -4706,6 +5016,7 @@
   },
   "5657": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ken'jai",
    "level": 10,
@@ -4720,6 +5031,7 @@
   },
   "5658": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Father Lankester",
    "level": 10,
@@ -4734,6 +5046,7 @@
   },
   "5660": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tai'jin",
    "level": 10,
@@ -4748,6 +5061,7 @@
   },
   "5662": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ur'kyo",
    "level": 10,
@@ -4762,6 +5076,7 @@
   },
   "5663": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dark Cleric Beryl",
    "level": 10,
@@ -4776,6 +5091,7 @@
   },
   "5672": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Laurna Morninglight",
    "level": 20,
@@ -4790,6 +5106,7 @@
   },
   "5673": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Priestess Laurena",
    "level": 20,
@@ -4804,6 +5121,7 @@
   },
   "5674": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Astarii Starseeker",
    "level": 20,
@@ -4818,6 +5136,7 @@
   },
   "5675": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Priest Rohan",
    "level": 20,
@@ -4832,6 +5151,7 @@
   },
   "5676": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Brother Joshua",
    "level": 20,
@@ -4846,6 +5166,7 @@
   },
   "5677": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Priest Rohan",
    "level": 20,
@@ -4860,6 +5181,7 @@
   },
   "5679": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Father Lankester",
    "level": 20,
@@ -4874,6 +5196,7 @@
   },
   "5680": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Zayus",
    "level": 20,
@@ -4888,6 +5211,7 @@
   },
   "5921": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathrengyl Bearwalker",
    "level": 10,
@@ -4902,6 +5226,7 @@
   },
   "5924": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Theridran",
    "level": 10,
@@ -4916,6 +5241,7 @@
   },
   "5925": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Kal",
    "level": 10,
@@ -4930,6 +5256,7 @@
   },
   "5926": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Innkeeper Pala",
    "level": 10,
@@ -4944,6 +5271,7 @@
   },
   "5927": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Innkeeper Gryshka",
    "level": 10,
@@ -4958,6 +5286,7 @@
   },
   "5928": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gennia Runetotem",
    "level": 10,
@@ -4974,6 +5303,7 @@
    "after": [
     5921
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 10,
@@ -4990,6 +5320,7 @@
    "after": [
     5922
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 10,
@@ -5006,6 +5337,7 @@
    "after": [
     5929
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 10,
@@ -5022,6 +5354,7 @@
    "after": [
     5930
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 10,
@@ -5038,6 +5371,7 @@
    "after": [
     5931
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathrengyl Bearwalker",
    "level": 10,
@@ -5052,6 +5386,7 @@
   },
   "6061": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Yaw Sharpmane",
    "level": 10,
@@ -5066,6 +5401,7 @@
   },
   "6062": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Thotar",
    "level": 10,
@@ -5080,6 +5416,7 @@
   },
   "6063": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dazalar",
    "level": 10,
@@ -5094,6 +5431,7 @@
   },
   "6064": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grif Wildheart",
    "level": 10,
@@ -5108,6 +5446,7 @@
   },
   "6065": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Kary Thunderhorn",
    "level": 10,
@@ -5122,6 +5461,7 @@
   },
   "6066": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lanka Farshot",
    "level": 10,
@@ -5136,6 +5476,7 @@
   },
   "6067": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Thotar",
    "level": 10,
@@ -5150,6 +5491,7 @@
   },
   "6068": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Jen'shan",
    "level": 10,
@@ -5164,6 +5506,7 @@
   },
   "6069": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sian'dur",
    "level": 10,
@@ -5178,6 +5521,7 @@
   },
   "6070": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Sian'dur",
    "level": 10,
@@ -5192,6 +5536,7 @@
   },
   "6072": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ayanna Everstride",
    "level": 10,
@@ -5206,6 +5551,7 @@
   },
   "6074": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Thorgas Grimson",
    "level": 10,
@@ -5220,6 +5566,7 @@
   },
   "6075": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Regnus Thundergranite",
    "level": 10,
@@ -5234,6 +5581,7 @@
   },
   "6076": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Einris Brightspear",
    "level": 10,
@@ -5250,6 +5598,7 @@
    "after": [
     6082
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Thotar",
    "level": 10,
@@ -5266,6 +5615,7 @@
    "after": [
     6083
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Thotar",
    "level": 10,
@@ -5282,6 +5632,7 @@
    "after": [
     6062
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Thotar",
    "level": 10,
@@ -5298,6 +5649,7 @@
    "after": [
     6064
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grif Wildheart",
    "level": 10,
@@ -5314,6 +5666,7 @@
    "after": [
     6084
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grif Wildheart",
    "level": 10,
@@ -5330,6 +5683,7 @@
    "after": [
     6085
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grif Wildheart",
    "level": 10,
@@ -5346,6 +5700,7 @@
    "after": [
     6061
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Yaw Sharpmane",
    "level": 10,
@@ -5362,6 +5717,7 @@
    "after": [
     6087
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Yaw Sharpmane",
    "level": 10,
@@ -5378,6 +5734,7 @@
    "after": [
     6088
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Yaw Sharpmane",
    "level": 10,
@@ -5394,6 +5751,7 @@
    "after": [
     6063
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dazalar",
    "level": 10,
@@ -5410,6 +5768,7 @@
    "after": [
     6101
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dazalar",
    "level": 10,
@@ -5426,6 +5785,7 @@
    "after": [
     6102
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dazalar",
    "level": 10,
@@ -5440,6 +5800,7 @@
   },
   "6121": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathrengyl Bearwalker",
    "level": 14,
@@ -5456,6 +5817,7 @@
    "after": [
     6121
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 14,
@@ -5472,6 +5834,7 @@
    "after": [
     6124
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 14,
@@ -5488,6 +5851,7 @@
    "after": [
     6126
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 14,
@@ -5504,6 +5868,7 @@
    "after": [
     6127
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tonga Runetotem",
    "level": 14,
@@ -5520,6 +5885,7 @@
    "after": [
     6128
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Tonga Runetotem",
    "level": 14,
@@ -5536,6 +5902,7 @@
    "after": [
     6129
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Dendrite Starblaze",
    "level": 14,
@@ -5552,6 +5919,7 @@
    "after": [
     220
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Islen Waterseer",
    "level": 23,
@@ -5566,6 +5934,7 @@
   },
   "6562": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Tsunaman",
    "level": 22,
@@ -5582,6 +5951,7 @@
    "after": [
     6568
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Myranda the Hag",
    "level": 60,
@@ -5596,6 +5966,7 @@
   },
   "6722": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Einris Brightspear",
    "level": 10,
@@ -5610,6 +5981,7 @@
   },
   "7081": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Sergeant Durgen Stormpike",
    "level": 60,
@@ -5624,6 +5996,7 @@
   },
   "7082": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Corporal Teeka Bloodsnarl",
    "level": 60,
@@ -5638,6 +6011,7 @@
   },
   "7101": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Corporal Teeka Bloodsnarl",
    "level": 60,
@@ -5652,6 +6026,7 @@
   },
   "7102": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Sergeant Durgen Stormpike",
    "level": 60,
@@ -5666,6 +6041,7 @@
   },
   "7122": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Sergeant Durgen Stormpike",
    "level": 60,
@@ -5680,6 +6056,7 @@
   },
   "7124": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Corporal Teeka Bloodsnarl",
    "level": 60,
@@ -5696,6 +6073,7 @@
    "after": [
     7221
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Prospector Stonehewer",
    "level": 60,
@@ -5712,6 +6090,7 @@
    "after": [
     7222
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Voggah Deathgrip",
    "level": 60,
@@ -5726,6 +6105,7 @@
   },
   "7161": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Warmaster Laggrond",
    "level": 60,
@@ -5740,6 +6120,7 @@
   },
   "7162": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Lieutenant Haggerdin",
    "level": 60,
@@ -5756,6 +6137,7 @@
    "after": [
     7161
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Warmaster Laggrond",
    "level": 60,
@@ -5772,6 +6154,7 @@
    "after": [
     7163
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Warmaster Laggrond",
    "level": 60,
@@ -5788,6 +6171,7 @@
    "after": [
     7164
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Warmaster Laggrond",
    "level": 60,
@@ -5804,6 +6188,7 @@
    "after": [
     7165
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Warmaster Laggrond",
    "level": 60,
@@ -5820,6 +6205,7 @@
    "after": [
     7166
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Warmaster Laggrond",
    "level": 60,
@@ -5836,6 +6222,7 @@
    "after": [
     7162
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Lieutenant Haggerdin",
    "level": 60,
@@ -5852,6 +6239,7 @@
    "after": [
     7168
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Lieutenant Haggerdin",
    "level": 60,
@@ -5868,6 +6256,7 @@
    "after": [
     7169
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Lieutenant Haggerdin",
    "level": 60,
@@ -5884,6 +6273,7 @@
    "after": [
     7170
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Lieutenant Haggerdin",
    "level": 60,
@@ -5900,6 +6290,7 @@
    "after": [
     7171
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Lieutenant Haggerdin",
    "level": 60,
@@ -5916,6 +6307,7 @@
    "after": [
     720
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Prospector Ryedol",
    "level": 35,
@@ -5930,6 +6322,7 @@
   },
   "7241": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Frostwolf Ambassador Rokhstrom",
    "level": 60,
@@ -5944,6 +6337,7 @@
   },
   "7261": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Lieutenant Rotimer",
    "level": 60,
@@ -5958,6 +6352,7 @@
   },
   "7492": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warcaller Gorlach",
    "level": 57,
@@ -5974,6 +6369,7 @@
    "after": [
     7562
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mor'zul Bloodbringer",
    "level": 58,
@@ -5990,6 +6386,7 @@
    "after": [
     7563
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mor'zul Bloodbringer",
    "level": 58,
@@ -6004,6 +6401,7 @@
   },
   "7581": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Daio the Decrepit",
    "level": 60,
@@ -6018,6 +6416,7 @@
   },
   "7582": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Daio the Decrepit",
    "level": 60,
@@ -6035,6 +6434,7 @@
     7581,
     7582
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Daio the Decrepit",
    "level": 60,
@@ -6049,6 +6449,7 @@
   },
   "7601": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Niby the Almighty",
    "level": 50,
@@ -6065,6 +6466,7 @@
    "after": [
     7601
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Impsy",
    "level": 55,
@@ -6081,6 +6483,7 @@
    "after": [
     7602
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Impsy",
    "level": 55,
@@ -6095,6 +6498,7 @@
   },
   "7621": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Eris Havenfire",
    "level": 60,
@@ -6109,6 +6513,7 @@
   },
   "7622": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Eris Havenfire",
    "level": 60,
@@ -6123,6 +6528,7 @@
   },
   "7623": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gorzeeki Wildeyes",
    "level": 58,
@@ -6139,6 +6545,7 @@
    "after": [
     7564
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mor'zul Bloodbringer",
    "level": 60,
@@ -6155,6 +6562,7 @@
    "after": [
     7564
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mor'zul Bloodbringer",
    "level": 60,
@@ -6171,6 +6579,7 @@
    "after": [
     7564
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mor'zul Bloodbringer",
    "level": 60,
@@ -6188,6 +6597,7 @@
     7564,
     7625
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gorzeeki Wildeyes",
    "level": 60,
@@ -6206,6 +6616,7 @@
     7627,
     7628
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Gorzeeki Wildeyes",
    "level": 60,
@@ -6223,6 +6634,7 @@
     7629,
     7630
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mor'zul Bloodbringer",
    "level": 60,
@@ -6239,6 +6651,7 @@
    "after": [
     7638
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 60,
@@ -6253,6 +6666,7 @@
   },
   "7638": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Duthorian Rall",
    "level": 60,
@@ -6269,6 +6683,7 @@
    "after": [
     7637
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "High Priest Rohan",
    "level": 60,
@@ -6285,6 +6700,7 @@
    "after": [
     7639
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 60,
@@ -6301,6 +6717,7 @@
    "after": [
     7640
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 60,
@@ -6317,6 +6734,7 @@
    "after": [
     7641
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grimand Elmore",
    "level": 60,
@@ -6333,6 +6751,7 @@
    "after": [
     7642
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 60,
@@ -6347,6 +6766,7 @@
   },
   "7645": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Merideth Carlson",
    "level": 60,
@@ -6363,6 +6783,7 @@
    "after": [
     7644
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 60,
@@ -6379,6 +6800,7 @@
    "after": [
     7646
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 60,
@@ -6395,6 +6817,7 @@
    "after": [
     7642
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Grimand Elmore",
    "level": 60,
@@ -6411,6 +6834,7 @@
    "after": [
     7785
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Highlord Demitrian",
    "level": 60,
@@ -6425,6 +6849,7 @@
   },
   "8041": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6441,6 +6866,7 @@
    "after": [
     8041
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6457,6 +6883,7 @@
    "after": [
     8042
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6473,6 +6900,7 @@
    "after": [
     8043
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6487,6 +6915,7 @@
   },
   "8045": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6503,6 +6932,7 @@
    "after": [
     8045
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6519,6 +6949,7 @@
    "after": [
     8046
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6535,6 +6966,7 @@
    "after": [
     8047
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6549,6 +6981,7 @@
   },
   "8049": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6565,6 +6998,7 @@
    "after": [
     8049
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6581,6 +7015,7 @@
    "after": [
     8050
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6597,6 +7032,7 @@
    "after": [
     8051
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6611,6 +7047,7 @@
   },
   "8053": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 61,
@@ -6625,6 +7062,7 @@
   },
   "8054": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 61,
@@ -6639,6 +7077,7 @@
   },
   "8055": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 61,
@@ -6653,6 +7092,7 @@
   },
   "8056": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -6667,6 +7107,7 @@
   },
   "8057": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -6681,6 +7122,7 @@
   },
   "8058": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6695,6 +7137,7 @@
   },
   "8059": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6709,6 +7152,7 @@
   },
   "8060": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6723,6 +7167,7 @@
   },
   "8061": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6737,6 +7182,7 @@
   },
   "8062": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -6751,6 +7197,7 @@
   },
   "8063": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -6765,6 +7212,7 @@
   },
   "8064": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -6779,6 +7227,7 @@
   },
   "8065": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -6793,6 +7242,7 @@
   },
   "8066": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -6807,6 +7257,7 @@
   },
   "8067": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -6821,6 +7272,7 @@
   },
   "8068": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6835,6 +7287,7 @@
   },
   "8069": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6849,6 +7302,7 @@
   },
   "8070": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6863,6 +7317,7 @@
   },
   "8071": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6877,6 +7332,7 @@
   },
   "8072": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -6891,6 +7347,7 @@
   },
   "8073": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -6905,6 +7362,7 @@
   },
   "8074": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -6919,6 +7377,7 @@
   },
   "8075": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -6933,6 +7392,7 @@
   },
   "8076": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6947,6 +7407,7 @@
   },
   "8077": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -6961,6 +7422,7 @@
   },
   "8078": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6975,6 +7437,7 @@
   },
   "8079": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Jin'rokh the Breaker",
    "level": 60,
@@ -6989,6 +7452,7 @@
   },
   "8101": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7005,6 +7469,7 @@
    "after": [
     8101
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7021,6 +7486,7 @@
    "after": [
     8102
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7037,6 +7503,7 @@
    "after": [
     8103
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7051,6 +7518,7 @@
   },
   "8105": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Field Marshal Oslight",
    "level": 55,
@@ -7065,6 +7533,7 @@
   },
   "8106": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7081,6 +7550,7 @@
    "after": [
     8106
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7097,6 +7567,7 @@
    "after": [
     8107
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7113,6 +7584,7 @@
    "after": [
     8108
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Al'tabim the All-Seeing",
    "level": 60,
@@ -7127,6 +7599,7 @@
   },
   "8110": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7143,6 +7616,7 @@
    "after": [
     8110
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7159,6 +7633,7 @@
    "after": [
     8111
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7175,6 +7650,7 @@
    "after": [
     8112
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7189,6 +7665,7 @@
   },
   "8114": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Field Marshal Oslight",
    "level": 60,
@@ -7203,6 +7680,7 @@
   },
   "8115": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Field Marshal Oslight",
    "level": 60,
@@ -7217,6 +7695,7 @@
   },
   "8116": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7233,6 +7712,7 @@
    "after": [
     8116
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7249,6 +7729,7 @@
    "after": [
     8117
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7265,6 +7746,7 @@
    "after": [
     8118
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Maywiki of Zuldazar",
    "level": 60,
@@ -7279,6 +7761,7 @@
   },
   "8120": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Deathmaster Dwire",
    "level": 55,
@@ -7293,6 +7776,7 @@
   },
   "8121": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Deathmaster Dwire",
    "level": 60,
@@ -7307,6 +7791,7 @@
   },
   "8122": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Deathmaster Dwire",
    "level": 60,
@@ -7321,6 +7806,7 @@
   },
   "8141": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7337,6 +7823,7 @@
    "after": [
     8141
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7353,6 +7840,7 @@
    "after": [
     8142
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7369,6 +7857,7 @@
    "after": [
     8143
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7383,6 +7872,7 @@
   },
   "8145": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7399,6 +7889,7 @@
    "after": [
     8145
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7415,6 +7906,7 @@
    "after": [
     8146
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7431,6 +7923,7 @@
    "after": [
     8147
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Falthir the Sightless",
    "level": 60,
@@ -7445,6 +7938,7 @@
   },
   "8151": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Olmin Burningbeard",
    "level": 52,
@@ -7461,6 +7955,7 @@
    "after": [
     8151
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ogtinc",
    "level": 52,
@@ -7475,6 +7970,7 @@
   },
   "8166": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Field Marshal Oslight",
    "level": 45,
@@ -7489,6 +7985,7 @@
   },
   "8167": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Field Marshal Oslight",
    "level": 35,
@@ -7503,6 +8000,7 @@
   },
   "8168": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Field Marshal Oslight",
    "level": 25,
@@ -7517,6 +8015,7 @@
   },
   "8169": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Deathmaster Dwire",
    "level": 45,
@@ -7531,6 +8030,7 @@
   },
   "8170": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Deathmaster Dwire",
    "level": 35,
@@ -7545,6 +8045,7 @@
   },
   "8171": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Deathmaster Dwire",
    "level": 25,
@@ -7561,6 +8062,7 @@
    "after": [
     4788
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Prospector Ironboot",
    "level": 58,
@@ -7575,6 +8077,7 @@
   },
   "8201": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Exzhal",
    "level": 60,
@@ -7591,6 +8094,7 @@
    "after": [
     8153
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ogtinc",
    "level": 52,
@@ -7607,6 +8111,7 @@
    "after": [
     8231
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ogtinc",
    "level": 52,
@@ -7623,6 +8128,7 @@
    "after": [
     8233
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Jorach Ravenholdt",
    "level": 52,
@@ -7639,6 +8145,7 @@
    "after": [
     8234
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Archmage Xylem",
    "level": 52,
@@ -7655,6 +8162,7 @@
    "after": [
     8235
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Archmage Xylem",
    "level": 52,
@@ -7669,6 +8177,7 @@
   },
   "8240": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Vinchaxa",
    "level": 60,
@@ -7683,6 +8192,7 @@
   },
   "8249": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Fahrad",
    "level": 60,
@@ -7699,6 +8209,7 @@
    "after": [
     8250
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Archmage Xylem",
    "level": 52,
@@ -7715,6 +8226,7 @@
    "after": [
     8251
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Archmage Xylem",
    "level": 52,
@@ -7731,6 +8243,7 @@
    "after": [
     8252
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Archmage Xylem",
    "level": 52,
@@ -7747,6 +8260,7 @@
    "after": [
     8254
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ogtinc",
    "level": 52,
@@ -7763,6 +8277,7 @@
    "after": [
     8255
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ogtinc",
    "level": 52,
@@ -7779,6 +8294,7 @@
    "after": [
     8256
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Ogtinc",
    "level": 52,
@@ -7793,6 +8309,7 @@
   },
   "8260": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Samuel Hawke",
    "level": 34,
@@ -7807,6 +8324,7 @@
   },
   "8261": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Samuel Hawke",
    "level": 44,
@@ -7821,6 +8339,7 @@
   },
   "8262": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Samuel Hawke",
    "level": 60,
@@ -7835,6 +8354,7 @@
   },
   "8263": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Rutherford Twing",
    "level": 34,
@@ -7849,6 +8369,7 @@
   },
   "8264": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Rutherford Twing",
    "level": 44,
@@ -7863,6 +8384,7 @@
   },
   "8265": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Rutherford Twing",
    "level": 60,
@@ -7879,6 +8401,7 @@
    "after": [
     7141
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Prospector Stonehewer",
    "level": 60,
@@ -7895,6 +8418,7 @@
    "after": [
     7142
    ],
+   "battleground": true,
    "dungeon": true,
    "giver": "Voggah Deathgrip",
    "level": 60,
@@ -7911,6 +8435,7 @@
    "after": [
     8286
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Baristolth of the Shifting Sands",
    "level": 60,
@@ -7925,6 +8450,7 @@
   },
   "8368": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 19,
@@ -7939,6 +8465,7 @@
   },
   "8369": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 60,
@@ -7953,6 +8480,7 @@
   },
   "8370": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 29,
@@ -7967,6 +8495,7 @@
   },
   "8371": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Alliance Brigadier General",
    "level": 60,
@@ -7981,6 +8510,7 @@
   },
   "8372": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 19,
@@ -7995,6 +8525,7 @@
   },
   "8374": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 29,
@@ -8009,6 +8540,7 @@
   },
   "8375": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 60,
@@ -8023,6 +8555,7 @@
   },
   "8393": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 39,
@@ -8037,6 +8570,7 @@
   },
   "8394": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 49,
@@ -8051,6 +8585,7 @@
   },
   "8395": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 59,
@@ -8065,6 +8600,7 @@
   },
   "8396": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 60,
@@ -8079,6 +8615,7 @@
   },
   "8399": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 29,
@@ -8093,6 +8630,7 @@
   },
   "8400": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 39,
@@ -8107,6 +8645,7 @@
   },
   "8401": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 49,
@@ -8121,6 +8660,7 @@
   },
   "8402": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 59,
@@ -8135,6 +8675,7 @@
   },
   "8403": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Alliance Brigadier General",
    "level": 60,
@@ -8149,6 +8690,7 @@
   },
   "8411": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bath'rah the Windwatcher",
    "level": 50,
@@ -8165,6 +8707,7 @@
    "after": [
     8410
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bath'rah the Windwatcher",
    "level": 52,
@@ -8181,6 +8724,7 @@
    "after": [
     8412
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Bath'rah the Windwatcher",
    "level": 52,
@@ -8195,6 +8739,7 @@
   },
   "8414": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Commander Ashlam Valorfist",
    "level": 52,
@@ -8209,6 +8754,7 @@
   },
   "8415": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Lord Grayson Shadowbreaker",
    "level": 52,
@@ -8225,6 +8771,7 @@
    "after": [
     8416
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Commander Ashlam Valorfist",
    "level": 52,
@@ -8239,6 +8786,7 @@
   },
   "8420": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Impsy",
    "level": 52,
@@ -8256,6 +8804,7 @@
     8419,
     8420
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Impsy",
    "level": 52,
@@ -8272,6 +8821,7 @@
    "after": [
     8421
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Impsy",
    "level": 52,
@@ -8286,6 +8836,7 @@
   },
   "8423": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Fallen Hero of the Horde",
    "level": 52,
@@ -8302,6 +8853,7 @@
    "after": [
     8423
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Fallen Hero of the Horde",
    "level": 52,
@@ -8318,6 +8870,7 @@
    "after": [
     8424
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Fallen Hero of the Horde",
    "level": 52,
@@ -8332,6 +8885,7 @@
   },
   "8426": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 29,
@@ -8346,6 +8900,7 @@
   },
   "8427": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 39,
@@ -8360,6 +8915,7 @@
   },
   "8428": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 49,
@@ -8374,6 +8930,7 @@
   },
   "8429": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 59,
@@ -8388,6 +8945,7 @@
   },
   "8430": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 60,
@@ -8402,6 +8960,7 @@
   },
   "8436": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 39,
@@ -8416,6 +8975,7 @@
   },
   "8437": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 49,
@@ -8430,6 +8990,7 @@
   },
   "8439": {
    "after": [],
+   "battleground": true,
    "dungeon": true,
    "giver": "Horde Warbringer",
    "level": 60,
@@ -8446,6 +9007,7 @@
    "after": [
     8446
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Keeper Remulos",
    "level": 60,
@@ -8460,6 +9022,7 @@
   },
   "8461": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Nafien",
    "level": 55,
@@ -8474,6 +9037,7 @@
   },
   "8464": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Salfa",
    "level": 58,
@@ -8488,6 +9052,7 @@
   },
   "8481": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Gorn One Eye",
    "level": 60,
@@ -8504,6 +9069,7 @@
    "after": [
     8481
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Gorn One Eye",
    "level": 60,
@@ -8520,6 +9086,7 @@
    "after": [
     8481
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Gorn One Eye",
    "level": 60,
@@ -8534,6 +9101,7 @@
   },
   "8556": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8548,6 +9116,7 @@
   },
   "8557": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8562,6 +9131,7 @@
   },
   "8558": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8576,6 +9146,7 @@
   },
   "8689": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8590,6 +9161,7 @@
   },
   "8690": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8604,6 +9176,7 @@
   },
   "8691": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8618,6 +9191,7 @@
   },
   "8692": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8632,6 +9206,7 @@
   },
   "8693": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8646,6 +9221,7 @@
   },
   "8694": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8660,6 +9236,7 @@
   },
   "8695": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8674,6 +9251,7 @@
   },
   "8696": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Keyl Swiftclaw",
    "level": 60,
@@ -8688,6 +9266,7 @@
   },
   "8697": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8702,6 +9281,7 @@
   },
   "8698": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8716,6 +9296,7 @@
   },
   "8699": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8730,6 +9311,7 @@
   },
   "8700": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8744,6 +9326,7 @@
   },
   "8701": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8758,6 +9341,7 @@
   },
   "8702": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8772,6 +9356,7 @@
   },
   "8703": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8786,6 +9371,7 @@
   },
   "8704": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Windcaller Yessendra",
    "level": 60,
@@ -8800,6 +9386,7 @@
   },
   "8705": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8814,6 +9401,7 @@
   },
   "8706": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8828,6 +9416,7 @@
   },
   "8707": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8842,6 +9431,7 @@
   },
   "8708": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8856,6 +9446,7 @@
   },
   "8709": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8870,6 +9461,7 @@
   },
   "8710": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8884,6 +9476,7 @@
   },
   "8711": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8898,6 +9491,7 @@
   },
   "8712": {
    "after": [],
+   "battleground": false,
    "dungeon": true,
    "giver": "Warden Haro",
    "level": 60,
@@ -8914,6 +9508,7 @@
    "after": [
     8947
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Anthion Harmon",
    "level": 60,
@@ -8937,6 +9532,7 @@
     8958,
     8959
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Deliana",
    "level": 60,
@@ -8954,6 +9550,7 @@
     8960,
     9032
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -8970,6 +9567,7 @@
    "after": [
     8961
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -8986,6 +9584,7 @@
    "after": [
     8961
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9002,6 +9601,7 @@
    "after": [
     8961
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9018,6 +9618,7 @@
    "after": [
     8961
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9034,6 +9635,7 @@
    "after": [
     8962
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9050,6 +9652,7 @@
    "after": [
     8963
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9066,6 +9669,7 @@
    "after": [
     8964
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9082,6 +9686,7 @@
    "after": [
     8965
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9099,6 +9704,7 @@
     8964,
     8970
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9116,6 +9722,7 @@
     8965,
     8970
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9133,6 +9740,7 @@
     8962,
     8970
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9150,6 +9758,7 @@
     8963,
     8970
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9166,6 +9775,7 @@
    "after": [
     8986
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9182,6 +9792,7 @@
    "after": [
     8985
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9198,6 +9809,7 @@
    "after": [
     8987
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9214,6 +9826,7 @@
    "after": [
     8988
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9233,6 +9846,7 @@
     8991,
     8992
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9249,6 +9863,7 @@
    "after": [
     8994
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Bodley",
    "level": 60,
@@ -9272,6 +9887,7 @@
     9021,
     9022
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Mokvar",
    "level": 60,
@@ -9290,6 +9906,7 @@
     9122,
     9123
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Commander Eligor Dawnbringer",
    "level": 60,
@@ -9306,6 +9923,7 @@
    "after": [
     9052
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Torwa Pathfinder",
    "level": 52,
@@ -9320,6 +9938,7 @@
   },
   "9052": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Torwa Pathfinder",
    "level": 52,
@@ -9336,6 +9955,7 @@
    "after": [
     9051
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Torwa Pathfinder",
    "level": 52,
@@ -9350,6 +9970,7 @@
   },
   "9063": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Mathrengyl Bearwalker",
    "level": 52,
@@ -9366,6 +9987,7 @@
    "after": [
     9033
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Korfax, Champion of the Light",
    "level": 60,
@@ -9382,6 +10004,7 @@
    "after": [
     9229
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Korfax, Champion of the Light",
    "level": 60,
@@ -9398,6 +10021,7 @@
    "after": [
     9033
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9414,6 +10038,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9430,6 +10055,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9446,6 +10072,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9462,6 +10089,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9478,6 +10106,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9494,6 +10123,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9510,6 +10140,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9526,6 +10157,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9542,6 +10174,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9558,6 +10191,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9574,6 +10208,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9590,6 +10225,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9606,6 +10242,7 @@
    "after": [
     9233
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Craftsman Wilhelm",
    "level": 60,
@@ -9622,6 +10259,7 @@
    "after": [
     9250
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anachronos",
    "level": 60,
@@ -9638,6 +10276,7 @@
    "after": [
     9251
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anachronos",
    "level": 60,
@@ -9654,6 +10293,7 @@
    "after": [
     9251
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anachronos",
    "level": 60,
@@ -9670,6 +10310,7 @@
    "after": [
     9251
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anachronos",
    "level": 60,
@@ -9686,6 +10327,7 @@
    "after": [
     9251
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Anachronos",
    "level": 60,
@@ -9700,6 +10342,7 @@
   },
   "9362": {
    "after": [],
+   "battleground": false,
    "dungeon": false,
    "giver": "Archmage Xylem",
    "level": 60,
@@ -9716,6 +10359,7 @@
    "after": [
     9362
    ],
+   "battleground": false,
    "dungeon": false,
    "giver": "Archmage Xylem",
    "level": 60,
@@ -9732,6 +10376,7 @@
    "after": [
     3661
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Erelas Ambersky",
    "level": 55,
@@ -9748,6 +10393,7 @@
    "after": [
     978
    ],
+   "battleground": false,
    "dungeon": true,
    "giver": "Erelas Ambersky",
    "level": 57,

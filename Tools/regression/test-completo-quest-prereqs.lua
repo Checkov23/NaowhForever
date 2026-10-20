@@ -32,12 +32,14 @@ local env = setmetatable({
 
 local function Quest(name, side) return { name, 10, 1, side or 3, 0, 0 } end
 ns.CompletoQuestData = {
-    Zones = { { map = 1, name = "Zone", quests = { 1, 2, 3, 4, 5, 6, 7 } } },
+    Zones = { { map = 1, name = "Zone", quests = { 1, 2, 3, 4, 5, 6, 7 } }, { map = 2, name = "Arathi", quests = { 8 } } },
     Quests = { [1] = Quest("First"), [2] = Quest("Second A"), [3] = Quest("Second B"), [4] = Quest("Last"),
         [5] = Quest("Horde Only", 2), [6] = Quest("Alone"),
-        [7] = { "Into the Dungeon", 10, 1, 3, 0, 0, 1, 40.0, 50.0, "Dungeon Giver" } },
+        [7] = { "Into the Dungeon", 10, 1, 3, 0, 0, 1, 40.0, 50.0, "Dungeon Giver" },
+        [8] = { "The Battle for Arathi Basin!", 10, 1, 3, 0, 0, 2, 45.8, 45.5, "Field Marshal" } },
     Repeatable = {},
-    Dungeon = { [7] = true },
+    Dungeon = { [7] = true, [8] = true },
+    Battleground = { [8] = true },
     Requires = { [4] = { 1, { 2, 3 }, 900 }, [6] = { { 5 } } },
     Chains = {},
 }
@@ -83,6 +85,11 @@ givers = Q.Givers(1, true, true)
 Check(#givers == 1 and givers[1].quests[1] == 7 and givers[1].dungeon, "a dungeon quest keeps its pin with Chains Only")
 local _, total = Q.ZoneProgress(ns.CompletoQuestData.Zones[1])
 Check(total == 5, "a dungeon quest is left out of the zone's progress")
+givers = Q.Givers(2, true, false)
+Check(#givers == 1 and givers[1].quests[1] == 8 and not givers[1].dungeon,
+    "a battleground quest's giver is not marked as a dungeon's")
+givers = Q.Givers(2, true, true)
+Check(#givers == 1 and givers[1].quests[1] == 8, "a battleground quest keeps its pin with Chains Only")
 
 local real = setmetatable({ _G = { NaowhForever = { AccountSettings = ns.AccountSettings, CompletoQuestData = {} } } },
     { __index = env })
@@ -98,6 +105,14 @@ Check(D.Dungeon[167] and brother[7] == 1453 and brother[10] == "Wilder Thistlene
     "Oh Brother. . . is pinned at its giver in Stormwind")
 Check(D.Dungeon[1654] and D.Quests[1654][6] == 2 and D.Requires[1654][1] == 1653,
     "a class's dungeon quest keeps its class and the quest before it")
+Check(D.Dungeon[8105] and D.Battleground[8105] and D.Battleground[8372] and D.Battleground[8375]
+    and D.Battleground[7141], "Arathi Basin, Warsong Gulch and Alterac Valley quests are battleground quests")
+Check(not D.Battleground[167] and not D.Battleground[8053], "dungeon and raid quests are not")
+local outside = 0
+for id in pairs(D.Battleground) do
+    if not D.Dungeon[id] then outside = outside + 1 end
+end
+Check(outside == 0, "every battleground quest is an instance quest")
 local inStormwind = false
 for _, zone in ipairs(D.Zones) do
     if zone.map == 1453 then

@@ -8,8 +8,9 @@ ns.Glimmer.C = {
     GUID_OBJECT = "^GameObject%-%d+%-%d+%-%d+%-%d+%-(%d+)%-",
     PROFESSION_OF = { ore = 186, herb = 182 },
     SKILL_ORANGE = 25, SKILL_YELLOW = 50, SKILL_GREEN = 100,
+    INTERACT_CVAR = "SoftTargetInteract",
+    INTERACT_ON = "3",
     SOFT_CVARS = {
-        SoftTargetInteract = "3",
         SoftTargetInteractOnlyInRange = "0",
         SoftTargetIconGameObject = "1",
     },

@@ -179,10 +179,10 @@ local function EndRoute()
     watch:UnregisterAllEvents()
 end
 
-function ns.ShowJourneyStep(title, map, x, y, note, icon)
+function ns.ShowJourneyStep(title, map, x, y, note, icon, details)
     EndRoute()
     if not C_Map.CanSetUserWaypointOnMap(map) then return false end
-    SetGameWaypoint(title, map, x, y, note, icon)
+    SetGameWaypoint(title, map, x, y, note, icon, false, details)
     return true
 end
 
@@ -267,14 +267,17 @@ function ns.SetGuideWaypoint(title, map, x, y, details)
     if not C_Map.CanSetUserWaypointOnMap(map) then return false end
     if ns.JourneyCancel then ns.JourneyCancel() end
     EndRoute()
+    if ns.JourneyTo and ns.JourneyTo(title, { { title, map, x, y } }, nil, details) then return true end
     SetGameWaypoint(title, map, x, y, nil, nil, false, details)
     return true
 end
 
 function ns.ClearGuideWaypoint()
+    local journey = ns.JourneyDetails and ns.JourneyDetails()
+    if journey and journey.guide == true and ns.JourneyCancel then ns.JourneyCancel() end
     if pending and pending[PLACE_FIELDS] and pending[PLACE_FIELDS].guide == true then DropPending() end
     if not ns.GuideWaypointIsCurrent() then return end
-    if MapOpen() then Hold(CLEAR) else ClearNow() end
+    ns.ClearWaypoint()
 end
 
 local function InDungeon()

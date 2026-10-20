@@ -47,7 +47,9 @@ local function RunTimers()
     for _, fn in ipairs(run) do fn() end
 end
 
+local rxpPin = false
 local ns = {
+    RestedXPPin = function() return rxpPin end,
     JourneyQuestSpots = {
         [104] = { { IRONFORGE, 50, 50 }, { { DARNASSUS, 50, 50 }, { IRONFORGE, 50, 50 } } },
         [105] = { { DARNASSUS, 50, 50 }, { { IRONFORGE, 50, 50 } } },
@@ -379,6 +381,13 @@ RunTimers()
 Check(not Jy.Guide.Current(), "with Journeys to Map Pins off, a pin is left alone")
 Jy.Settings.Set("mapPins", true)
 env.C_Map.ClearUserWaypoint()
+RunTimers()
+rxpPin = true
+env.C_Map.SetUserWaypoint({ map = DARNASSUS, x = 0.5, y = 0.5 })
+RunTimers()
+Check(not Jy.Guide.Current(), "a pin RestedXP's guide puts down is not a journey")
+rxpPin = false
+env.C_Map.ClearUserWaypoint()
 
 -- Removing the pin yourself ends its journey; the game clearing it as you arrive does not.
 local function PinJourney()
@@ -555,6 +564,10 @@ Jy.Settings.Set("stepEnds", true)
 here = { x = -8835.6, y = 489.3, c = 0 }
 local flights = account.journeyFlights["Glyadin-Forever"]
 account.journeyFlights["Glyadin-Forever"] = {}
+local hintBefore = #printed
+Check(ns.SetGuideWaypoint("Far Spot", IRONFORGE, 50, 50, { guide = true, title = "Far Spot" }) and Jy.Guide.Current()
+    and #printed == hintBefore, "a guide journey never prints the flight point hint")
+ns.ClearGuideWaypoint()
 Check(ns.PlaceWaypoint("Far Spot", IRONFORGE, 50, 50), "a journey by the tram")
 Check(printed[#printed] and printed[#printed]:find("flight points", 1, true), "with no flight points known, it says how to learn them")
 local tramLegs = Jy.Guide.Current().plan.legs
@@ -623,7 +636,47 @@ Check(#stopsAt == 3 and stopsAt[1] == ns.JourneyNetwork.flights[6][3] and stopsA
 Jy.Guide.Cancel()
 account.journeyFlights["Glyadin-Forever"][DARKSHIRE_FLIGHT] = nil
 
+-- A guide destination is a journey too, and every step it shows carries the guide's details.
+here = { x = -4821.8, y = -1155.4, c = 0 }
+local guide = { guide = true, quest = 7, objectives = "0/10 Bandits", title = "Mathrengyl Bearwalker" }
+tracking = 101
+Fire("SUPER_TRACKING_CHANGED")
+ns.ClearWaypoint()
+Check(Jy.Guide.Dismissed() == 101, "a quest journey dismissed before the guide takes over")
+Check(ns.SetGuideWaypoint("Mathrengyl Bearwalker", DARNASSUS, 50, 50, guide), "a guide destination is placed")
+local guided = Jy.Guide.Current()
+Check(guided and guided.details == guide and Title() == "Deeprun Tram to Stormwind",
+    "with Journeys on, the guide destination becomes a journey: " .. tostring(Title()))
+Check(ns.placedWaypoint.details == guide and ns.GuideWaypointIsCurrent(), "its first step is the guide's waypoint")
+ns.ClearGuideWaypoint()
+Check(not Jy.Guide.Current() and current == nil, "clearing the guide waypoint ends its journey")
+Fire("SUPER_TRACKING_CHANGED")
+Check(Jy.Guide.Dismissed() == 101 and not Jy.Guide.Current(), "and the dismissed quest stays dismissed")
+tracking = 0
+Check(ns.SetGuideWaypoint("Mathrengyl Bearwalker", DARNASSUS, 50, 50, guide) and Jy.Guide.Current(), "a guide journey again")
+current = nil
+ns.ClearGuideWaypoint()
+Check(not Jy.Guide.Current(), "a guide journey with nothing placed yet still ends when the guide lets go")
+Check(ns.SetGuideWaypoint("Mathrengyl Bearwalker", DARNASSUS, 50, 50, guide) and Jy.Guide.Current(), "and again")
+here = { x = 9945.0, y = 2490.0, c = 1 }
+Fire("PLAYER_ENTERING_WORLD")
+RunTimers()
+Check(not Jy.Guide.Current() and current and current.uiMapID == DARNASSUS and ns.placedWaypoint.details == guide
+    and ns.GuideWaypointIsCurrent(), "arriving keeps the guide destination up until the guide moves on")
+here = { x = -4821.8, y = -1155.4, c = 0 }
+ns.ClearGuideWaypoint()
+local printedBefore = #printed
+Jy.Planner.Plan = function() return nil end
+Check(ns.SetGuideWaypoint("Mathrengyl Bearwalker", DARNASSUS, 50, 50, guide) and not Jy.Guide.Current()
+    and ns.placedWaypoint.details == guide and ns.placedWaypoint.x == 50, "no way found: the plain guide waypoint")
+Check(#printed == printedBefore, "and the guide feed says nothing in chat about it")
+Jy.Planner.Plan = realPlan
+ns.ClearGuideWaypoint()
+
 Jy.Settings.Set("enabled", false)
 Check(not Jy.Guide.Current(), "turning Journeys off ends the journey")
+Check(ns.SetGuideWaypoint("Mathrengyl Bearwalker", DARNASSUS, 50, 50, guide) and not Jy.Guide.Current()
+    and ns.placedWaypoint.details == guide and ns.placedWaypoint.x == 50, "with Journeys off, the plain guide waypoint")
+ns.ClearGuideWaypoint()
 
 print(("journeys guide: %d checks passed"):format(checks))

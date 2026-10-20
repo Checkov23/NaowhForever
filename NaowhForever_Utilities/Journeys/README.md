@@ -27,9 +27,14 @@ NaowhForever_Utilities/Journeys/
 
 ## Why
 
-- Every module's waypoint goes through `Core/Waypoint.lua`. With Journeys on, `ns.PlaceWaypoint` and
-  `ns.PlaceWaypointRoute` hand the destination to `ns.JourneyTo`, which returns false (and the plain
-  waypoint is placed) in an instance or when the module is off.
+- Every module's waypoint goes through `Core/Waypoint.lua`. With Journeys on, `ns.PlaceWaypoint`,
+  `ns.PlaceWaypointRoute` and the guide feed's `ns.SetGuideWaypoint` hand the destination to
+  `ns.JourneyTo`, which returns false (and the plain waypoint is placed) in an instance or when the
+  module is off.
+- A guide journey carries the guide's details on every step, so the pin keeps its quest and objectives
+  while naming the step to take. It stays quiet in chat, leaves a dismissed quest alone, and ends on
+  the plain guide waypoint at its destination, which stays until the guide moves on.
+  `ns.JourneyDetails` lets `ns.ClearGuideWaypoint` end it even before its first step is placed.
 - A step is placed with `ns.ShowJourneyStep`, the game's own waypoint, so the Waypoint Pin draws it.
   `ns.WaypointRoute` reports the journey, so the pin does not clear a step on arrival and its navigator
   shows "step N of M" and the next step.
@@ -37,6 +42,9 @@ NaowhForever_Utilities/Journeys/
   cleared in the same frame as `NAVIGATION_DESTINATION_REACHED` means arrived (or off the continents,
   where the journey holds). Any other clear is you removing the pin, and ends the journey; so does a
   waypoint set anywhere else, as clearing it from the navigator does.
+- A waypoint a RestedXP `.ingamewaypoint` step puts down itself (`ns.RestedXPPin`) is the guide's to
+  place and clear, not yours, so Journeys to Map Pins leaves it alone. A journey to it outlived the
+  step, as RestedXP only clears its waypoint where it put it; Follow RestedXP routes the guide's arrow.
 - Reaching the game's own destination only clears its super-tracking, not the pin itself, so the last
   stop of a journey with no quest to hand back to clears the waypoint on arrival; otherwise it would
   sit on the map pointing at where you already are.

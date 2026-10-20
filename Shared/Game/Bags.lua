@@ -26,6 +26,7 @@ local Bags = {}
 ns.Shared.Bags = Bags
 
 function Bags.OnGameUpdate(painter)
+    if ns.GamepadStandDown() then return end
     if #painters == 0 then HookGameBags() end
     painters[#painters + 1] = painter
 end

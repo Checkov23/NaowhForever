@@ -454,6 +454,10 @@ local function OnEvent(_, event, text, ...)
     end
 end
 
+local function HideWindowOn()
+    return S.Get("hideLootWindow") and not ns.GamepadStandDown()
+end
+
 local function AllTakeable()
     local threshold = IsInGroup() and GetLootThreshold()
     local items = 0
@@ -492,7 +496,7 @@ end
 local function OnLootReady()
     if IsShiftKeyDown() then return end
     lootWatch:RegisterEvent("UI_ERROR_MESSAGE")
-    lootHidden = S.Get("hideLootWindow") and AllTakeable()
+    lootHidden = HideWindowOn() and AllTakeable()
     lootGen = lootGen + 1
     local gen = lootGen
     local count = GetNumLootItems()
@@ -523,9 +527,9 @@ lootWatch:SetScript("OnEvent", function(_, event, _, arg2)
 end)
 
 local function ApplyLootWindow()
-    if not S.Get("hideLootWindow") then ShowLootWindow() end
-    if S.Get("enabled") and (S.Get("hideLootWindow") or S.Get("fastLoot")) then
-        if not lootHooked then
+    if not HideWindowOn() then ShowLootWindow() end
+    if S.Get("enabled") and (HideWindowOn() or S.Get("fastLoot")) then
+        if not lootHooked and not ns.GamepadStandDown() then
             lootHooked = true
             hooksecurefunc(LootFrame, "Open", OnLootWindowOpen)
             LootFrame.HideAnim:HookScript("OnFinished", RestoreLootWindow)
@@ -1064,6 +1068,7 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
           help = "Starts the gold per hour count again from your next loot." },
         Group("Loot Window"),
         { key = "hideLootWindow", label = "Hide Blizzard Loot Window", toggle = true, always = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "Takes everything the moment you loot, with Blizzard's loot window kept out of "
               .. "sight, so the feed is all you see. Works with or without the game's auto loot. "
               .. "Hold Shift while looting to get the window back. It also appears whenever "

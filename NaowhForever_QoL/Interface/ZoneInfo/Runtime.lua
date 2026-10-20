@@ -14,7 +14,7 @@ local elapsedTotal, lastX, lastY, lastMap, hovered = 0, nil, nil, nil, nil
 local added, unlockHooks, unlocked, journalWatch = false, false, false, false
 
 function Z.Enabled()
-    return S.Get("enabled") and S.Get("zoneInfo") == true
+    return S.Get("enabled") and S.Get("zoneInfo") == true and not ns.GamepadStandDown()
 end
 
 local function MapText()

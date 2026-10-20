@@ -44,7 +44,7 @@ local hidden = {}
 local events = CreateFrame("Frame")
 
 local function On()
-    return S.Get("enabled") and S.Get("finderRoles")
+    return S.Get("enabled") and S.Get("finderRoles") and not ns.GamepadStandDown()
 end
 
 local function AnyPicked(set)
@@ -219,6 +219,6 @@ boot:RegisterEvent("PLAYER_LOGIN")
 boot:SetScript("OnEvent", Apply)
 
 ns.Shared.Settings.Page("QoL/Questing & Group", S):Card({
-    id = "finderRoles", name = "Group Finder Roles", order = 45, switch = "finderRoles",
+    id = "finderRoles", name = "Group Finder Roles", order = 45, switch = "finderRoles", switchWhy = ns.GamepadWhy,
     help = "Role buttons on the Group Finder that show only the players and groups you want.",
 })

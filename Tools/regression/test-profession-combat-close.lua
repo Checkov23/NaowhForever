@@ -14,8 +14,8 @@ end
 local source = Read("NaowhForever_Professions/UI/Takeover.lua")
 local first = assert(source:find("local function Deactivate()", 1, true))
 local last = assert(source:find("\nend\n", first, true))
-local chunk = "local win\n" .. source:sub(first, last + 4)
-    .. "return function(w) win = w end, Deactivate"
+local chunk = "local win, hooked\n" .. source:sub(first, last + 4)
+    .. "return function(w, h) win, hooked = w, h ~= false end, Deactivate"
 
 local combat = false
 local calls = {}
@@ -57,6 +57,12 @@ win = Frame(false)
 Set(win)
 Deactivate()
 check("not protected, the window hides in combat too", not win.shown)
+
+combat, calls, pf.alpha = false, {}, 0.5
+Set(nil, false)
+Deactivate()
+check("never hooked, as under the Gamepad style: Blizzard's window is left alone", #calls == 0 and pf.alpha == 0.5)
+pf.alpha = 1
 
 local activate = assert(source:find("local function Activate(mode)", 1, true))
 local activateEnd = assert(source:find("\nend\n", activate, true))

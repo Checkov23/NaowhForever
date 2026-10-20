@@ -32,7 +32,7 @@ local hookedTrainer
 local events = CreateFrame("Frame")
 
 local function On()
-    return S.Get("enabled") and S.Get("trainFavorites")
+    return S.Get("enabled") and S.Get("trainFavorites") and not ns.GamepadStandDown()
 end
 
 local function LearnClick(row)

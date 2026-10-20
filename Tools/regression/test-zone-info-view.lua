@@ -4,7 +4,9 @@ local function Read(path)
 end
 local harness = Read("Tools/regression/test-forever-skin.lua")
 local head = assert(harness:match("^(.-)%-%- Naowh: nothing"))
-head = head:gsub("C_AddOns = {", "C_Item = { GetItemInfo = function() end, GetItemIconByID = function() end }, C_AddOns = {", 1)
+head = head:gsub("C_AddOns = {", "C_Item = { GetItemInfo = function() end, GetItemIconByID = function() end }, "
+    .. "InputUtil = { IsGamepadUIEnabled = function() return false end }, IsLoggedIn = function() return true end, "
+    .. "C_AddOns = {", 1)
 local Load, New = assert(loadstring(head .. "\nreturn Load, New"))()
 local ns = Load({}, {}, {}, { "Core/Features.lua", "Core/Settings.lua", "Shared/Data/SameMaps.lua", "Shared/Game/Places.lua", "Shared/View/Kinds.lua", "Shared/Settings/Studio.lua",
     "NaowhForever_QoL/Interface/ZoneLevelsData.lua", "NaowhForever_QoL/Interface/FishingLevelsData.lua",

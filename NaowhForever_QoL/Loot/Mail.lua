@@ -17,6 +17,7 @@ local GEAR = { [Enum.ItemClass.Weapon] = true, [Enum.ItemClass.Armor] = true }
 
 local TEXT_GOLD = ns.L("Gold on this realm: ")
 local TEXT_NO_ALTS = ns.L("Log in on your other characters once and they appear here.")
+local TEXT_NO_SURNAME = ns.L("A name without its last name gets it the next time you log in on that character.")
 local TEXT_ALT = "%s  |cff808080%d|r  %s"
 local TEXT_FULL = ns.L("%s: %d %s didn't fit, all %d attachment slots are full. Send this one and attach again.")
 local TEXT_STACK, TEXT_STACKS = ns.L("stack"), ns.L("stacks")
@@ -72,13 +73,16 @@ local function OpenAltsMenu(owner)
             root:CreateTitle(TEXT_NO_ALTS, WHITE_FONT_COLOR)
             return
         end
+        local firstOnly = false
         for _, alt in ipairs(list) do
             local text = TEXT_ALT:format(ns.ClassColoredName(alt.name, alt.class), alt.level, Coins(alt.money))
             root:CreateButton(text, function()
                 SendMailNameEditBox:SetText(alt.name)
                 SendMailSubjectEditBox:SetFocus()
             end)
+            if not alt.full then firstOnly = true end
         end
+        if firstOnly then root:CreateTitle(TEXT_NO_SURNAME, GRAY_FONT_COLOR) end
     end)
 end
 
@@ -273,7 +277,7 @@ local function OnAttachClick()
 end
 
 local function Build()
-    if altsButton or not (SendMailFrame and MailFrame) then return end
+    if altsButton or ns.GamepadStandDown() or not (SendMailFrame and MailFrame) then return end
     altsButton = ns.Button(SendMailFrame, TEXT_ALTS, BUTTON_W, BUTTON_H, OnAltsClick)
     altsButton:SetPoint("TOPLEFT", MailFrame, "TOPRIGHT", BUTTON_X, BUTTON_Y)
     ns.Tooltip(altsButton, TEXT_ALTS_TIP, TEXT_ALTS_HELP)
@@ -348,9 +352,11 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
               .. "their bags, bank and mailbox. Each character is counted once you log in on it, "
               .. "and its bank once you open it." },
         { key = "mailAlts", label = "Alts Button on Mail", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "An Alts button beside the mailbox's Send tab lists your characters on this realm "
               .. "and faction with their level and gold. Pick one to fill the To box." },
         { key = "mailQuickAttach", label = "Quick Attach", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "An Attach button beside the mailbox's Send tab: attach every trade good, one type "
               .. "of trade good, or your unbound gear in one click." },
         { key = "mailExpiry", label = "Mail Expiry Warning", toggle = true,

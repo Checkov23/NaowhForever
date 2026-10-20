@@ -648,6 +648,15 @@ S.Set("waypointCard", true)
 driver.scripts.OnUpdate()
 Check(pin.card.name.text == "The Criminal Element" and pin.objectives.text.text == "0/10 Bandits",
     "guide title and objective context reach the world pin")
+routeInfo = { "The Criminal Element", 1, 3, "Fly to Sentinel Hill" }
+ns.placedWaypoint.title = "Deeprun Tram to Stormwind"
+ns.RefreshWaypointPin()
+driver.scripts.OnUpdate()
+Check(pin.card.name.text == "Deeprun Tram to Stormwind" and pin.objectives.text.text == "0/10 Bandits",
+    "on a guide journey the pin names the step to take, with the guide's objectives")
+routeInfo = nil
+ns.placedWaypoint.title = "Guide step"
+ns.RefreshWaypointPin()
 local guideClears = cleared
 nav.distance = 100
 driver.scripts.OnUpdate()

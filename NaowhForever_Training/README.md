@@ -106,6 +106,9 @@ view files and the window share.
   inside it, and are drawn a frame later from a timer, outside the game's own show. Nothing of the book's is
   called, changed or hidden: it casts from its own buttons' clicks, which must stay untainted.
 - The book has no secure frames on Forever, so the tab and panel show in combat too.
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the Spellbook Tab and the Panel at
+  the Trainer stay off. That style opens and navigates the spellbook and the trainer from secure
+  code, and our OnShow hooks on them would run inside it and taint it.
 - The tab sits where the game anchors its own bottom tabs (`TAB_X`, `TAB_Y`: 22 in, 2 up); Forever hides those,
   as its book and talents open as separate windows.
 

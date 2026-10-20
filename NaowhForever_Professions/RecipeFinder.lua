@@ -60,7 +60,7 @@ local trainerQueued = false
 local events = CreateFrame("Frame")
 
 local function On()
-    return S.Get("enabled") and S.Get("recipeFinder")
+    return S.Get("enabled") and S.Get("recipeFinder") and not ns.GamepadStandDown()
 end
 
 local function Faction()

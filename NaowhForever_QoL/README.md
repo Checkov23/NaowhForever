@@ -147,6 +147,14 @@ NaowhForever_QoL/
 
 ## Why
 
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the features that hook, move or
+  add to the game's own windows stay off and their settings say why: Zone Info and the Town Pins
+  button on the world map, the Map Window, Type DELETE For You, Auto-Accept Layer Swap, Saved Quest
+  Rewards, Hide Blizzard Loot Window, the Alts and Quick Attach buttons on the mailbox, the Scan Prices
+  button, Group Finder Roles, Zones in Group Finder, Land Early Button and Glow New Abilities. That
+  style opens and navigates those windows, popups and action bars from secure code, and our work on
+  them would taint it, blocking its gamepad bindings in combat. EllesmereUI's matching features
+  stand down the same way.
 - The Damage Meter Skin never hides or re-lays out the game's meter: it recolors its textures and
   fonts after the game sets them (hooksecurefunc on each entry, a scroll box callback for new
   ones), and remembers the art, the font with its flags and shadow, and the bar's atlas to give
@@ -416,6 +424,12 @@ NaowhForever_QoL/
 - Alts are kept per realm and faction, because characters there can mail each other. Forever has
   been seen to return "Name-Realm" for the player, and the mail box wants the bare name, so the
   name is cut at the dash.
+- An alt is kept by its whole name, surname included (`GetUnitName("player", true)`): `UnitName`
+  gives only the first name on Forever, and the To box needs the whole name. A
+  character saved under its first name before is moved to its whole name the next time it logs in, only
+  when the class matches: with surnames two characters can share a first name. A record saved by its
+  whole name is marked `full`; until every listed alt is, the Alts menu says so under the list, since
+  another character's surname cannot be read.
 - Forget a character exists because deleted or transferred characters otherwise stay in the
   counts and the Alts list for good.
 - The Forever bank is the character bank tabs; a tab not bought has no slots.
@@ -762,6 +776,8 @@ NaowhForever_QoL/
 - Saved rewards live in the profile, kept per class (`questRewards[CLASS]`, quest ID to item ID), so a shared profile carries its picks and characters of different classes on one profile never take each other's reward. The Saved Quest Rewards window shows and clears only the current class's list, and redraws on a profile switch.
 - Picks from before they were kept per class sit at the top of `questRewards` with no class. The first class to read the picks takes them all, once; nothing is deleted, and a class's own pick wins over an old one for the same quest.
 - An old pick may be another class's, so it is taken as the negative item ID: not confirmed. It shows in the Saved Quest Rewards window as Not confirmed and is never selected or handed in for you; Alt-clicking that reward again confirms it.
+- The Saved Quest Rewards window is `WIDTH` 620 wide so its English subtitle, with the Alt-click hint, fits on
+  its one line before the close button; it ran out of the window at 460. A longer translation is cut short.
 - A reward's item ID comes with it before the item is cached; its link may not.
 - Every layout of the rewards ends by clearing the choice (the reward panel's OnShow, then QUEST_ITEM_UPDATE as uncached items arrive), so the saved pick is selected after QuestInfo_ShowRewards.
 - A quest a player shared with you is not shared again when you accept it: the group already has it.
@@ -1202,6 +1218,9 @@ NaowhForever_QoL/
 - `SoftTargetInteract` 3 keeps the soft target on, and `SoftTargetInteractOnlyInRange` 0 lets it pick
   objects beyond reach, so they can light up dim before you get there. The range is capped at 15
   yards on the page because the client drops the soft target near there whatever is asked.
+- `SoftTargetInteract` is the game's Enable Interact Key checkbox (3 checked, 1 gamepad only), so
+  Glimmer sets it only when it is turned on, not on every login. A player who unchecks it keeps it
+  off, and the Glimmer card says nothing will light up.
 - `SoftTargetIconGameObject` 1 is needed too: with it at 0 the game picks the object as the soft
   target but never makes its nameplate, so nothing lights up. A setting Glimmer adds later is saved
   into the old values the first time it is written, so turning Glimmer off puts it back as well.

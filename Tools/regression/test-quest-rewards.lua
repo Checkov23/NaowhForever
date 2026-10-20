@@ -1,7 +1,8 @@
 -- Run with Lua 5.1 from the repository root: the saved quest rewards list reads, removes and clears the picks,
 -- keeps them per class and hands old classless picks to the first class to log in, unconfirmed until that class picks
 -- them again, tolerates damaged entries, and falls back to the title kept at save time; the window's X removes that
--- quest's pick, loaded with the Shared files and the window against stubs.
+-- quest's pick, and its subtitle stays on one line that stops before the close button, loaded with the Shared files
+-- and the window against stubs.
 local Load = dofile("Tools/regression/load_files.lua")
 local TocFiles = dofile("Tools/regression/toc_files.lua")
 
@@ -17,6 +18,11 @@ local METHODS = {
     GetWidth = function() return 400 end,
     GetHeight = function() return 24 end,
     SetText = function(f, text) f.text = text end,
+    SetPoint = function(f, point, relativeTo, relativePoint, x, y)
+        f.points = rawget(f, "points") or {}
+        f.points[point] = { relativeTo, relativePoint, x, y }
+    end,
+    SetWordWrap = function(f, wrap) f.wordWrap = wrap end,
     GetText = function(f) return rawget(f, "text") or "" end,
     GetStringWidth = function() return 40 end,
     GetStringHeight = function() return 12 end,
@@ -54,6 +60,7 @@ local settings = {}
 local S = { Get = function(key) return settings[key] end, Set = function() end, DB = function() return db end }
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLSettings = S, Print = NOTHING, Apply = NOTHING, AccountSettings = function() return account end,
+    GamepadStandDown = function() return false end, GamepadFree = function() return true end, GamepadWhy = NOTHING,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent) return Frame(parent) end,
@@ -64,7 +71,11 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
     Border = function() return { SetColor = NOTHING } end,
     AccentBorder = function() return { SetColor = NOTHING } end,
     AllowOffscreen = NOTHING,
-    Button = function(parent) return Frame(parent) end,
+    Button = function(parent, text)
+        local button = Frame(parent)
+        if text == "x" then parent.closeButton = button end
+        return button
+    end,
     UIFontPath = function() return "font" end,
     UIScale = function() return 1 end,
     UI = { Keep = NOTHING, SlimScroll = function(parent) return Frame(parent) end, CloseOnEscape = NOTHING },
@@ -181,6 +192,14 @@ end
 db.questRewards = { DRUID = { [10] = 111, [20] = 222, [30] = -333 }, PALADIN = { [60] = 666 } }
 ns.OpenQuestRewards()
 local rewardView = views[1]
+local rewardWindow
+for _, frame in ipairs(frames) do
+    if frame.title and frame.title.text == "Saved Quest Rewards" then rewardWindow = frame end
+end
+local subtitle = rewardWindow.subtitle
+local right = subtitle.points and subtitle.points.RIGHT
+check("the subtitle stays on one line and stops before the close button", subtitle.wordWrap == false
+    and right and right[1] == rewardWindow.closeButton and right[2] == "LEFT" and right[3] < 0)
 local function Find(questID)
     for i = 1, rewardView.pools.item.used do
         local row = rewardView.pools.item[i]

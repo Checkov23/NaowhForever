@@ -72,9 +72,11 @@ local function Fire(event, arg)
     for _, frame in ipairs(copy) do frame.scripts.OnEvent(frame, event, arg) end
 end
 
+local gamepad = false
 local ns = {
     L = function(text) return text end,
     Apply = Noop,
+    GamepadStandDown = function() return gamepad end,
     UI = {
         ModuleSettings = function(_, defaults)
             local S = {}
@@ -152,6 +154,13 @@ Load({ "NaowhForever_Professions/UI/FavoriteMarks.lua" }, env)
 Check("the feature is off by default", not S.Get("favoriteVendorMarks"))
 Check("off creates no frame or game hook", #frames == 0 and Listening() == 0
     and not merchantHook and not trainerHook and not favoriteHook and not scrollHook)
+
+gamepad = true
+S.Set("favoriteVendorMarks", true)
+Check("the Gamepad interface style keeps it off: no frame or game hook", #frames == 0 and Listening() == 0
+    and not merchantHook and not trainerHook and not favoriteHook and not scrollHook)
+S.Set("favoriteVendorMarks", false)
+gamepad = false
 
 S.Set("favoriteVendorMarks", true)
 Check("enabling registers only its eight events", #frames == 1 and Listening() == 8)

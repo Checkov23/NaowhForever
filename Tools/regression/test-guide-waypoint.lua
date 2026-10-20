@@ -74,6 +74,20 @@ objective.frame.text.GetText = function() return "1/10 Bandits" end
 rxp.UpdateGotoSteps()
 Check(writes == 1 and refreshes == 1 and current.details.objectives == "1/10 Bandits",
     "guide objective progress refreshes metadata without a map write")
+current.title = "Deeprun Tram to Stormwind"
+objective.frame.text.GetText = function() return "2/10 Bandits" end
+rxp.UpdateGotoSteps()
+Check(refreshes == 2 and current.title == "Deeprun Tram to Stormwind",
+    "objective progress leaves a journey step's own title alone")
+current.title = "The Criminal Element"
+local held = current
+tracking = false
+ns.JourneyDetails = function() return held.details end
+objective.frame.text.GetText = function() return "3/10 Bandits" end
+rxp.UpdateGotoSteps()
+Check(writes == 1 and refreshes == 3 and held.details.objectives == "3/10 Bandits",
+    "objective progress between journey steps still reaches the pin")
+ns.JourneyDetails, tracking = nil, true
 current = { guide = false, title = "Manual pin" }
 rxp.UpdateGotoSteps()
 Check(writes == 1 and current.title == "Manual pin", "same guide step does not steal a manual waypoint")
@@ -111,4 +125,15 @@ Check(current and not tracking and next(frames[1].events) == nil, "module off re
 rxp.UpdateGotoSteps()
 Check(current and not tracking, "installed hooks remain inert while off")
 Check(alphaWrites == 0, "guide arrow is never touched")
+local pinAt
+env.C_Map = { GetUserWaypointPositionForMap = function(map) return pinAt and pinAt.map == map and pinAt or nil end }
+Check(ns.RestedXPPin() == false, "no guide window steps: no RestedXP pin")
+local pinned = { zone = 1429, zx = 0.4, zy = 0.6, waypointSet = true }
+rxp.RXPFrame = { activeSteps = { {}, { elements = { { tag = "goto" }, pinned } } } }
+pinAt = { map = 1429, x = 0.4, y = 0.6 }
+Check(ns.RestedXPPin() == true, "the pin a guide step placed is RestedXP's")
+pinAt = { map = 1429, x = 0.5, y = 0.6 }
+Check(ns.RestedXPPin() == false, "a pin elsewhere on the same map is not")
+pinAt, pinned.waypointSet = { map = 1429, x = 0.4, y = 0.6 }, false
+Check(ns.RestedXPPin() == false, "a step that let its pin go no longer owns it")
 print(("test-guide-waypoint: %d checks passed"):format(checks))

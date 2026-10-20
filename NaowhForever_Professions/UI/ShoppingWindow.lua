@@ -498,7 +498,6 @@ local function BuildBar(close)
     pickerFullWidth = picker:GetWidth()
     picker:SetPoint("RIGHT", close, "LEFT", -St.BAR_GAP, 0)
     window.subtitle:SetPoint("RIGHT", picker, "LEFT", -St.BAR_GAP, 0)
-    window.subtitle:SetWordWrap(false)
 end
 
 local function Build()

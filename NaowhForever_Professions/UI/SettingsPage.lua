@@ -23,6 +23,7 @@ local TEXT_NONE = ns.L("No professions learned yet")
 local TEXT_PROFESSION = "%s %d/%d"
 local TEXT_DETAIL_OFF = ns.L("Turn on Professions to use Naowh's recipe window in place of the game's.")
 local TEXT_DETAIL_ON = ns.L("Open a profession from your spellbook: Naowh's recipe window takes the place of the game's.")
+local TEXT_DETAIL_PAD = ns.L("With the Gamepad interface style, the game's own recipe window is used.")
 local TEXT_RECIPE_SUMMARY = ns.L("%d of %d on")
 local TEXT_ORDERS_SUMMARY = ns.L("Suggested tip %d%% of value")
 local TEXT_NO_BUYING = ns.L("No prices or buying")
@@ -39,6 +40,14 @@ local CRAFT_STATES = {
 
 local function On()
     return S.Get("enabled") == true
+end
+
+local function PadFree()
+    return On() and not ns.GamepadStandDown()
+end
+
+local function PadWhy()
+    return ns.GamepadWhy() or TEXT_OFF
 end
 
 local function ProfitOn()
@@ -80,6 +89,7 @@ end
 
 local function Detail()
     if not On() then return TEXT_DETAIL_OFF end
+    if ns.GamepadStandDown() then return TEXT_DETAIL_PAD end
     return TEXT_DETAIL_ON
 end
 
@@ -138,7 +148,7 @@ page:Window({
 })
 
 page:Card({
-    id = "recipeWindow", name = "Recipe Window", order = ORDER_RECIPES,
+    id = "recipeWindow", name = "Recipe Window", order = ORDER_RECIPES, switchWhy = ns.GamepadWhy,
     help = "What Naowh's profession window adds to each recipe: the ones you have not learned yet, your next "
         .. "rank, and how many of each reagent you have.",
     search = "filter favorites favourites have materials skill-up skill up profitable boe bop bind on equip pickup "
@@ -169,7 +179,7 @@ page:Card({
 })
 
 page:Card({
-    id = "craftOrders", name = "Craft Orders", order = ORDER_ORDERS, switch = "craftOrders",
+    id = "craftOrders", name = "Craft Orders", order = ORDER_ORDERS, switch = "craftOrders", switchWhy = ns.GamepadWhy,
     help = "Opens another player's profession link in this window, to order crafts from them. Choose a recipe, "
         .. "set how many crafts, tick the materials you bring (or type how many), and Add to Order. The order "
         .. "on the right has a suggested tip per craft that you can change; Ask sends the crafter one message "
@@ -241,8 +251,8 @@ page:Card({
         { key = "manualPatternScan", label = "Manual Favorite Scans", toggle = true, needs = FavoriteSearchOn,
           why = "Needs Search Favorites AH",
           help = "Adds Scan, Pause and Resume controls instead of searching every favourite automatically." },
-        { key = "favoriteVendorMarks", label = "Favorite Recipe Marks", toggle = true, needs = On,
-          why = TEXT_OFF,
+        { key = "favoriteVendorMarks", label = "Favorite Recipe Marks", toggle = true, needs = PadFree,
+          why = PadWhy,
           help = "Marks favorite unlearned recipes sold by the open trainer or merchant." },
         { key = "ownedAuctions", label = "Your Auctions", toggle = true, needs = On, why = TEXT_OFF,
           help = "Marks recipe rows whose results you have listed at the auction house.",

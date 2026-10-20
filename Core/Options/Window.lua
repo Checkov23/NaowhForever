@@ -384,7 +384,7 @@ function UI.GoToSetting(key, label, card)
         UI.ClearSearch()
         searchJump = false
     end
-    if card then ns.Shared.Settings.Reveal(card) end
+    if card then ns.Shared.Settings.Reveal(card, label) end
     if wrappers[key] then wrappers[key]._dirty = true end
     ShowPage(key)
     ScrollToSetting(key, label, card)

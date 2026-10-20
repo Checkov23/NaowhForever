@@ -38,14 +38,20 @@ function ns.AltRealm()
 end
 
 function ns.AltName()
-    me = me or (UnitName("player")):match("^[^-]+")
+    me = me or (GetUnitName("player", true)):match("^[^-]+")
     return me
 end
 
 local function Me()
     local realm = ns.AltRealm()
     local name = ns.AltName()
+    local first = UnitName("player")
+    local old = first ~= name and realm[first]
+    if not realm[name] and old and old.class == select(2, UnitClass("player")) then
+        realm[name], realm[first] = old, nil
+    end
     realm[name] = realm[name] or {}
+    realm[name].full = true
     return realm[name]
 end
 
@@ -200,7 +206,8 @@ function ns.AltList()
     local list, mine = {}, ns.AltName()
     for name, c in pairs(ns.AltRealm()) do
         if name ~= mine then
-            list[#list + 1] = { name = name, class = c.class, level = c.level or 0, money = c.money or 0 }
+            list[#list + 1] = { name = name, class = c.class, level = c.level or 0, money = c.money or 0,
+                full = c.full == true }
         end
     end
     table.sort(list, ByLevelThenName)

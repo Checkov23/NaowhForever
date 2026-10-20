@@ -74,6 +74,13 @@ check("an old Utilities module's folder is said to be in Utilities, and a reload
     and w.printed[1]:find("Naowh Forever: Utilities", 1, true) and #w.reloads == 1 and w.disabled.NaowhForever_Macros)
 for addon in pairs(retiredText) do check(addon .. " is one of the retired folders", listed[addon]) end
 
+w = Run({ NaowhForever_DamageMeter = true }, { NaowhForever_DamageMeter = true })
+check("an old Damage Meter folder, no longer shipped, is switched off and said to be no longer part of it",
+    w.disabled.NaowhForever_DamageMeter and #w.printed == 1 and #w.reloads == 1
+    and w.printed[1] == retiredText.NaowhForever_DamageMeter:format("NaowhForever_DamageMeter")
+    and w.printed[1]:find("no longer part of Naowh Forever", 1, true))
+check("and the release leaves the Damage Meter out", io.open(".pkgmeta", "rb"):read("*a"):find("ignore:.-NaowhForever_DamageMeter") ~= nil)
+
 w = Run({ NaowhForever_Language = true }, { NaowhForever_Language = true })
 check("the old Language folder is said to be part of Naowh Forever, and a reload offered", #w.printed == 1
     and w.printed[1] == retiredText.NaowhForever_Language:format("NaowhForever_Language")

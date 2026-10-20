@@ -47,7 +47,7 @@ local bookDocked, bookPending = false, nil
 local events = CreateFrame("Frame")
 
 local function On()
-    return S.Get("enabled")
+    return S.Get("enabled") and not ns.GamepadStandDown()
 end
 
 local function NextStrata(strata)
@@ -191,7 +191,7 @@ local function Deactivate()
     elseif win then
         win:Hide()
     end
-    if ProfessionsFrame then
+    if ProfessionsFrame and hooked then
         DockTabs(false)
         DockBook(false)
         ProfessionsFrame:SetAlpha(1)

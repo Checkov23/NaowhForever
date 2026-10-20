@@ -185,6 +185,8 @@ local function NewFrame()
     function f:Hide() self.shown = false end
     return f
 end
+local gamepad = false
+ns.GamepadStandDown = function() return gamepad end
 ns.Solid = function() return { SetAllPoints = function() end, SetPoint = function() end } end
 ns.Hairline = function() end
 ns.Shared = RealShared()
@@ -241,6 +243,10 @@ local env = setmetatable({
 local chunk = assert(loadstring(Read("NaowhForever_QoL/Interface/MapPinsPanel.lua")))
 setfenv(chunk, env)
 chunk()
+gamepad = true
+boot.scripts.OnEvent(boot)
+Check(made == 0, "the Gamepad interface style: no button on the map")
+gamepad = false
 boot.scripts.OnEvent(boot)
 Check(made == 1 and button.shown, "the button is made with QoL on, whatever is switched on")
 S.Set("enabled", false)

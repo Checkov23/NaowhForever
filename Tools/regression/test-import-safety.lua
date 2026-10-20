@@ -139,7 +139,7 @@ do -- a profile string: names, consumables, class macros, the look and BiS lists
     check("the profile decodes", payload ~= nil)
     check("its name, author and date are plain text", not payload.name:find("|", 1, true)
         and #payload.name <= 64 and payload.author == "cffe6cc80Naowhr[Naowh]: trust me" and payload.made == "Hurl:xh")
-    check("consumables that fail the checks are left out", payload.parts.consumables == nil)
+    check("consumables are left out", payload.parts.consumables == nil)
     check("an old reminders part is gone, and cannot stand in for them", payload.parts.reminders == nil)
     check("class macros past the game's limits are left out", payload.parts.macros.classMacros == nil)
     local _, added = w.ns.ImportProfile(payload, { consumables = true, macros = true, look = true, bisLists = true }, "Mine")

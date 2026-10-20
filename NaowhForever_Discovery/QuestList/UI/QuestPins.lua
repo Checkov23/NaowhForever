@@ -12,7 +12,8 @@ local BANG_FILE = "Interface\\GossipFrame\\AvailableQuestIcon"
 local PERCENT = Completo.C.PERCENT
 local QUEST_PIN_SCALE = 0.5
 local EVENTS = { "QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED", "PLAYER_LEVEL_UP" }
-local OWN_KEYS = { enabled = true, mapPins = true, mapGrey = true, mapChainsOnly = true, mapPinSize = true }
+local OWN_KEYS = { enabled = true, mapPins = true, mapGrey = true, mapChainsOnly = true, mapPinSize = true,
+    mapDungeon = true, mapDungeonColor = true }
 local TEXT_GIVER = ns.L("Quest giver")
 local TEXT_DROPS = ns.L("Drops %s, which begins:")
 local TEXT_LEVEL = ns.L("Level %d")
@@ -38,14 +39,15 @@ local function SetMark(icon, giver)
     icon:SetVertexColor(1, 1, 1)
     icon:SetDesaturated(false)
     local tint
-    if giver.repeatable and not giver.dungeon then
+    local dungeon = giver.dungeon and S.Get("mapDungeon")
+    if giver.repeatable and not dungeon then
         if icon:SetAtlas(REPEAT_ATLAS) then return end
         tint = Style.REPEAT_RGB
     elseif giver.grey then
         if icon:SetAtlas(GREY_ATLAS) then return end
         tint = Style.GREY_RGB
-    elseif giver.dungeon then
-        tint = Style.DUNGEON_RGB
+    elseif dungeon then
+        tint = S.Get("mapDungeonColor") or Style.DUNGEON_RGB
     end
     if not icon:SetAtlas(BANG_ATLAS) then icon:SetTexture(BANG_FILE) end
     if not tint then return end
@@ -57,7 +59,7 @@ local function AddQuestLine(id)
     local c = Q.Trivial(id) and Style.GREY_RGB or GetQuestDifficultyColor(Q.Level(id))
     local level = TEXT_LEVEL:format(Q.Level(id))
     if Q.Repeatable(id) then level = TEXT_REPEATABLE .. level end
-    if Q.Dungeon(id) then level = TEXT_DUNGEON .. level end
+    if Q.Dungeon(id) and not Q.Battleground(id) then level = TEXT_DUNGEON .. level end
     GameTooltip:AddDoubleLine(Q.Name(id), level, c.r, c.g, c.b, c.r, c.g, c.b)
 end
 

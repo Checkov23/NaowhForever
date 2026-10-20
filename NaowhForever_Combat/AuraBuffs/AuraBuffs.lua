@@ -4,9 +4,10 @@ local ns = _G.NaowhForever
 local F = ns.FEATURES.auraBuffs
 
 local S = ns.UI.ModuleSettings("auraBuffs", {
-    enabled = F.enabled, consumableEntries = {},
+    enabled = F.enabled,
     campBuffTextSize = 16, campBuffSide = "right", campShowMissing = true,
     consumablesWorld = false, consumablesDungeon = true, consumablesRaid = true, consumablesMinutes = 2,
+    consumablesMaxHide = false, raidBuffsMaxHide = false, personalBuffsMaxHide = false,
     onlyIfCarried = true, carriedPicks = {}, hideResting = true,
     raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
     personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
@@ -14,10 +15,6 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     hideBlessingsOnPaladin = F.hideBlessingsOnPaladin,
     raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false, salvation = false },
     personalBuffs = F.personalBuffs, personalBuffPicks = {}, weaponEnhancements = F.weaponEnhancements,
-    classBuffTracker = F.classBuffTracker, classBuffSize = 40,
-    classBuffGlow = F.classBuffGlow, classBuffGlowType = "proc",
-    classBuffGlowColor = { r = 1, g = 0.82, b = 0.2 },
-    classBuffGlowLines = 8, classBuffGlowThickness = 2, classBuffGlowSpeed = 5,
     buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 }, buffGlowLines = 8,
     buffGlowThickness = 2, buffGlowSpeed = 5,
     iconSize = 48, buffIconMode = "default", buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
@@ -45,71 +42,31 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     campBuffMode = false,
 })
 
-local ENTRIES = "consumableEntries"
 local OLD_ADDON = "NaowhForever_AuraBuffs"
 local OLD_COPY = C_AddOns.DoesAddOnExist(OLD_ADDON) and C_AddOns.GetAddOnEnableState(OLD_ADDON) > 0
-local MIN_ID, MAX_ID = 1, 2147483647
-local LIST_PREFIX = "NFCONSUMABLES1:"
-local MAX_ENTRIES = 500
 local CATEGORY_NAMES = { food = ns.L("Food"), flask = ns.L("Flask"), scroll = ns.L("Scroll"),
-    battle = ns.L("Battle Elixir"), guardian = ns.L("Guardian Elixir") }
-local CATEGORY_ORDER = { "food", "flask", "scroll", "battle", "guardian" }
+    battle = ns.L("Battle Elixir") }
+local CATEGORY_ORDER = { "food", "flask", "scroll", "battle" }
 local OLD_WHERE = {
     always = { world = true, dungeon = true, raid = true },
     instance = { world = false, dungeon = true, raid = true },
     raid = { world = false, dungeon = false, raid = true },
 }
 
-local GetSetting, SetSetting = S.Get, S.Set
+local GetSetting = S.Get
 
 function S.Get(key)
     if key == "enabled" and OLD_COPY then return false end
-    if key == ENTRIES and ns.DB then
-        local data = ns.DB().utilityReminders
-        return data and data.consumables or {}
-    end
     return GetSetting(key)
 end
 
-function S.Set(key, value)
-    if key ~= ENTRIES or not ns.DB then
-        SetSetting(key, value)
-        return
-    end
-    local db = ns.DB()
-    db.utilityReminders = db.utilityReminders or {}
-    db.utilityReminders.consumables = value
-end
-
 ns.AuraBuffSettings = S
-
-local function ParseListString(text, entries)
-    for group in text:sub(#LIST_PREFIX + 1):gmatch("[^;]+") do
-        local category, ids = group:match("^(%a+)=(.+)$")
-        if not category then return end
-        for item in ids:gmatch("[^,]+") do
-            local entry = ns.ParseConsumableEntry(category, (item:gsub("/", ",")))
-            if not entry then return end
-            entries[#entries + 1] = entry
-        end
-    end
-    return entries
-end
-
-local function ProfileConsumables(text, entries)
-    local payload = ns.DecodeProfile(text)
-    local list = payload and payload.parts.consumables
-    if type(list) ~= "table" then return entries end
-    for _, entry in ipairs(list) do entries[#entries + 1] = entry end
-    return entries
-end
 
 local A = {
     Settings = S,
     PAGE = "AuraBuffs/Settings",
     CATEGORY_NAMES = CATEGORY_NAMES,
     CATEGORY_ORDER = CATEGORY_ORDER,
-    MAX_ENTRIES = MAX_ENTRIES,
     OLD_COPY = OLD_COPY,
 }
 ns.AuraBuffs = A
@@ -128,47 +85,6 @@ function A.Migrate()
     db.consumablesWhere = nil
     if not old then return end
     db.consumablesWorld, db.consumablesDungeon, db.consumablesRaid = old.world, old.dungeon, old.raid
-end
-
-function ns.ParseConsumableEntry(category, text)
-    if not CATEGORY_NAMES[category] or type(text) ~= "string" then return end
-    local ids = {}
-    for token in text:gmatch("[^,%s]+") do
-        if not token:match("^%d+$") then return end
-        local id = tonumber(token)
-        if id < MIN_ID or id > MAX_ID then return end
-        ids[#ids + 1] = id
-    end
-    if #ids == 0 then return end
-    local itemID = table.remove(ids, 1)
-    return { category = category, itemID = itemID, auras = ids[1] and ids or nil }
-end
-
-function ns.ConsumableListString(entries)
-    local byCategory = {}
-    for _, entry in ipairs(entries) do
-        local ids = byCategory[entry.category] or {}
-        byCategory[entry.category] = ids
-        ids[#ids + 1] = entry.auras and entry.itemID .. "/" .. table.concat(entry.auras, "/") or tostring(entry.itemID)
-    end
-    local groups = {}
-    for _, category in ipairs(CATEGORY_ORDER) do
-        if byCategory[category] then
-            groups[#groups + 1] = category .. "=" .. table.concat(byCategory[category], ",")
-        end
-    end
-    return LIST_PREFIX .. table.concat(groups, ";")
-end
-
-function ns.ParseConsumableList(text)
-    text = text:gsub("%s", "")
-    local entries
-    if text:sub(1, #LIST_PREFIX) == LIST_PREFIX then
-        entries = ParseListString(text, {})
-    else
-        entries = ProfileConsumables(text, {})
-    end
-    if entries and #entries > 0 then return entries end
 end
 
 function ns.CampBuffMode()

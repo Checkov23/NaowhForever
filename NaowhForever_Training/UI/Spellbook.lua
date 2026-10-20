@@ -41,7 +41,7 @@ local rowCount, headerCount = 0, 0
 local queued, hookAsked = false, false
 
 local function On()
-    return Training.On() and S.Get("spellbook")
+    return Training.On() and S.Get("spellbook") and not ns.GamepadStandDown()
 end
 
 local function HideAll()

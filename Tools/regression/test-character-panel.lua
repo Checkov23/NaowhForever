@@ -745,6 +745,12 @@ S.Set("characterPanel", true)
 S.Set("characterPanel", false)
 check("EllesmereUI's turned off by you: ours on and off leaves it off, no reload asked",
     db.themedCharacterSheet == false and state.reloads == 2)
+db.themedCharacterSheet, gamepad = true, true
+S.Set("characterPanel", true)
+check("under the Gamepad style, turning it on leaves EllesmereUI's alone, no reload asked",
+    db.themedCharacterSheet == true and state.reloads == 2 and not state.values.characterPanelTookOver)
+S.Set("characterPanel", false)
+db.themedCharacterSheet, gamepad = false, false
 -- With both on at login: a newcomer gets ours from the next reload, told in chat; anyone else is
 -- asked, once.
 local asked, printed = 0, {}

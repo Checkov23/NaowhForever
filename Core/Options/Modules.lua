@@ -151,7 +151,6 @@ local MODULES = {
       } },
     { name = "AuraBuffs", group = "COMBAT", navIcon = "aura", settings = "AuraBuffSettings",
       addon = "NaowhForever_AuraBuffs", host = "NaowhForever_Combat",
-      open = "ToggleAuraBuffsWindow",
       command = "buffs", short = "Buffs", icon = "Interface\\Icons\\Spell_Holy_WordFortitude",
       subtitle = "Buff, consumable and campfire reminders, and a low health warning.",
       tabs = {

@@ -77,7 +77,8 @@ local function Sync(force)
         return
     end
     local changed = element ~= lastElement or map ~= lastMap or x ~= lastX or y ~= lastY
-    if not force and not changed and not ns.GuideWaypointIsCurrent() then return end
+    local routing = details ~= nil and ns.JourneyDetails and ns.JourneyDetails() == details
+    if not force and not changed and not routing and not ns.GuideWaypointIsCurrent() then return end
     local title, quest, objectives = ReadDetails(element)
     if force or changed then
         details = { guide = true, quest = quest, objectives = objectives, title = title }
@@ -86,7 +87,7 @@ local function Sync(force)
     elseif details.quest ~= quest or details.objectives ~= objectives or lastTitle ~= title then
         details.quest, details.objectives, details.title = quest, objectives, title
         local placed = ns.placedWaypoint
-        if placed and placed.details == details then placed.title = title end
+        if placed and placed.details == details and placed.title == lastTitle then placed.title = title end
         lastTitle = title
         if ns.RefreshWaypointPin then ns.RefreshWaypointPin() end
     end
@@ -126,6 +127,24 @@ local function Apply()
     HookGuide()
     if not hooked then events:RegisterEvent("ADDON_LOADED") end
     Sync(first)
+end
+
+function ns.RestedXPPin()
+    local rxp = _G.RXP
+    local steps = rxp and rxp.RXPFrame and rxp.RXPFrame.activeSteps
+    if type(steps) ~= "table" then return false end
+    for _, step in ipairs(steps) do
+        local list = type(step) == "table" and step.elements
+        if type(list) == "table" then
+            for _, element in ipairs(list) do
+                if element.waypointSet == true and type(element.zone) == "number" then
+                    local pos = C_Map.GetUserWaypointPositionForMap(element.zone)
+                    if pos and pos.x == element.zx and pos.y == element.zy then return true end
+                end
+            end
+        end
+    end
+    return false
 end
 
 function OnSetting(key)
