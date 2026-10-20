@@ -10,6 +10,7 @@ local Items = ns.Shared.Items
 local St = ns.Shared.Style
 
 local KEPT_SHADE = 200
+local SLEEPING_BAG = 211527
 local UNKNOWN_QUALITY_CODE = "|cffffffff"
 local LINK_ID = "item[:=](%d+)"
 local BARE_ID = "^%s*(%d+)%s*$"
@@ -38,6 +39,7 @@ end
 
 Items.KEPT_CODE = KEPT_CODE
 Items.READS_LOOT = LOOTED ~= nil
+Items.SLEEPING_BAG = SLEEPING_BAG
 
 function Items.IDFrom(value)
     if type(value) == "number" then return value end

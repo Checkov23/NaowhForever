@@ -23,7 +23,8 @@ local CAMP_FILES = { "Core/Features.lua", "NaowhForever_Combat/AuraBuffs/AuraBuf
     "NaowhForever_Combat/AuraBuffs/Constants.lua", "NaowhForever_Combat/AuraBuffs/Data/Campfire.lua", "NaowhForever_Combat/AuraBuffs/CampReader.lua",
     "NaowhForever_Combat/AuraBuffs/View/Style.lua", "NaowhForever_Combat/AuraBuffs/View/Glow.lua", "NaowhForever_Combat/AuraBuffs/View/CampIcon.lua",
     "NaowhForever_Combat/AuraBuffs/View/CampBar.lua", "NaowhForever_Combat/AuraBuffs/View/CampAlert.lua",
-    "NaowhForever_Combat/AuraBuffs/UI/SettingsPage.lua", "NaowhForever_Combat/AuraBuffs/UI/GlowRows.lua", "NaowhForever_Combat/AuraBuffs/UI/Campfire.lua",
+    "NaowhForever_Combat/AuraBuffs/UI/SettingsPage.lua", "NaowhForever_Combat/AuraBuffs/UI/GlowRows.lua",
+    "NaowhForever_Combat/AuraBuffs/UI/CampBag.lua", "NaowhForever_Combat/AuraBuffs/UI/Campfire.lua",
     "NaowhForever_Combat/AuraBuffs/UI/CampfireCards.lua" }
 local TocFiles = dofile("Tools/regression/toc_files.lua")
 local Measure = dofile("Tools/regression/measure.lua")
@@ -96,7 +97,7 @@ end
 local function Fixture(settings)
     local state = { now = 1000, auras = {}, frames = {}, named = {}, timers = {}, bars = 0, tips = {},
         emotes = {}, glows = {}, tooltipReads = 0, secret = false, combat = false, cursorX = 0, cursorY = 0, shift = false, menus = 0,
-        groups = {},
+        groups = {}, carried = {}, itemIcons = {}, reads = {},
         tooltip = { lines = { { leftText = "Camp Benefits" } } }, spellNames = {} }
     for id, name in pairs(NAMES) do state.spellNames[id] = name end
     local widths = {}
@@ -125,6 +126,10 @@ local function Fixture(settings)
         SetScale = function(f, scale) f.scale = scale end,
         GetScale = function(f) return rawget(f, "scale") or 1 end,
         SetPassThroughButtons = function(f, ...) f.passThrough = { ... } end,
+        SetAttribute = function(f, key, value)
+            local attrs = rawget(f, "attrs") or {}
+            attrs[key], f.attrs = value, attrs
+        end,
         GetWidth = function(f) return rawget(f, "w") or 600 end,
         GetHeight = function(f) return rawget(f, "h") or 230 end,
         SetPoint = function(f, a, rel, _, d, e) f.pt[a], f.pty[a], f.rel[a] = d or 0, e or 0, rel end,
@@ -142,6 +147,8 @@ local function Fixture(settings)
         GetStringWidth = function(f) return Width(rawget(f, "text") or "", rawget(f, "size") or 12) end,
         SetFont = function(f, path, size, outline) f.font, f.path, f.size, f.outline, f.flags = path, path, size, outline, outline end,
         SetAlpha = function(f, a) f.alpha = a end,
+        SetCooldown = function(f, start, duration) f.cooldownStart, f.cooldownDuration = start, duration end,
+        SetHideCountdownNumbers = function(f, on) f.hideNumbers = on end,
         SetCooldownFromExpirationTime = function(f, expiry, duration)
             f.cooldownExpiry, f.cooldownDuration = expiry, duration
         end,
@@ -149,7 +156,7 @@ local function Fixture(settings)
         SetVertexColor = function(f, r, g, b, a) f.r, f.g, f.b, f.a = r, g, b, a end,
         SetColorTexture = function(f, r, g, b, a) f.r, f.g, f.b, f.a = r, g, b, a end,
         SetGradient = function(f, _, from, to) f.from, f.to = from, to end,
-        SetTexture = function(f, texture) f.texture = texture end,
+        SetTexture = function(f, texture, _, _, filter) f.texture, f.filter = texture, filter end,
         Show = function(f) f.shown = true end,
         Hide = function(f) f.shown = false end,
         SetShown = function(f, shown) f.shown = shown and true or false end,
@@ -285,9 +292,11 @@ local function Fixture(settings)
     tooltip.AddDoubleLine = function(_, left, right) state.tips[#state.tips + 1] = { left, right } end
     local env = setmetatable({
         NaowhForever = ns,
-        CreateFrame = function(kind, name, parent)
+        CreateFrame = function(kind, name, parent, template)
             if kind == "StatusBar" then state.bars = state.bars + 1 end
-            return Frame(parent, name)
+            local f = Frame(parent, name)
+            f.template = template
+            return f
         end,
         Mixin = function(target, ...)
             for i = 1, select("#", ...) do
@@ -308,7 +317,10 @@ local function Fixture(settings)
         IsInInstance = function() return false end,
         issecretvalue = function(v) return v == SECRET_TEXT or (state.secret and v == 2) end,
         C_Secrets = { ShouldAurasBeSecret = function() return false end },
-        C_UnitAuras = { GetPlayerAuraBySpellID = function(id) return state.auras[id] end },
+        C_UnitAuras = { GetPlayerAuraBySpellID = function(id)
+            state.reads[id] = (state.reads[id] or 0) + 1
+            return state.auras[id]
+        end },
         C_ChatInfo = { PerformEmote = function(token) state.emotes[#state.emotes + 1] = token end },
         LibStub = function()
             return {
@@ -336,7 +348,13 @@ local function Fixture(settings)
         C_StringUtil = { CreateNumericRuleFormatter = function()
             return { SetBreakpoints = function(fmt, points) fmt.points = points end }
         end },
-        C_Item = {},
+        C_Container = { GetItemCooldown = function()
+            local cd = state.bagCooldown
+            if not cd then return 0, 0, 1 end
+            return cd.start, cd.duration, 1
+        end },
+        C_Item = { GetItemCount = function(id) return state.carried[id] or 0 end,
+            GetItemIconByID = function(id) return state.itemIcons[id] end },
         Enum = {
             StatusBarTimerDirection = { ElapsedTime = 0, RemainingTime = 1 },
             StatusBarInterpolation = { Immediate = 0 },
@@ -1442,6 +1460,163 @@ do
     check("and back to pixel", s.glows[icon].kind == "pixel")
     s.S.Set("campGlow", false)
     check("Enable Glow off stops either", s.glows[icon] == nil)
+end
+
+-- The Sleeping Bag: a smaller round icon at Round's lower right, only while the bag is carried and
+-- a campfire is in range (or you sit at one), a secure button that uses it, left alone in combat.
+do
+    local BAG = tonumber(Read("Shared/Game/Items.lua"):match("local SLEEPING_BAG = (%d+)"))
+    local s = Fixture()
+    local St = s.ns.AuraBuffs.Style
+    local Look = s.ns.AuraBuffs.CampIcon
+    local WELL_RESTED = s.ns.AuraBuffs.CampData.WELL_RESTED
+    local function Bag()
+        for i = 1, #s.frames do
+            local f = s.frames[i]
+            if f.template == "SecureActionButtonTemplate" and rawget(f, "label") then return f end
+        end
+    end
+    s.auras[NEARBY] = {}
+    s.fire("PLAYER_LOGIN")
+    local icon = s.named.NaowhForeverCampfire
+    icon.cx, icon.cy = 500, 300
+    s.fire("UNIT_AURA")
+    check("bag: near a campfire without the bag, nothing is built", icon.shown and Bag() == nil)
+    check("bag: the campfire listens for bag changes while on", s.listener("BAG_UPDATE_DELAYED") ~= nil)
+    s.carried[BAG] = 1
+    s.fire("BAG_UPDATE_DELAYED")
+    local bag = Bag()
+    check("bag: carried and near a campfire, the Sleeping Bag shows", bag and bag.shown)
+    check("bag: one ID, the one Discovery's chain gives", BAG == 211527
+        and Read("NaowhForever_Discovery/Data/SleepingBag.lua"):find("item = ns.Shared.Items.SLEEPING_BAG", 1, true)
+        and not Read("NaowhForever_Combat/AuraBuffs/UI/CampBag.lua"):find(tostring(BAG), 1, true))
+    check("bag: a secure button that uses the bag on a left click", bag.attrs.type1 == "item"
+        and bag.attrs.item1 == "item:" .. BAG and bag.clicks[1] == "AnyUp")
+    check("bag: never the fire's child, so the fire stays unprotected", bag.parent ~= icon
+        and bag.rel.CENTER ~= icon)
+    check("bag: about half the fire, named in the fire's soft blue", bag.w == 64 * St.CAMP_BAG_SCALE
+        and bag.label.text == "Sleeping Bag" and Same(bag.label, s.T.accentSoft)
+        and bag.label.size == St.CAMP_BAG_TEXT_SIZE)
+    local reach = (64 + bag.w) / 2 + St.CAMP_TRACK_OUT * 2 + St.CAMP_BAG_GAP
+    check("bag: at the fire's lower right", bag.pt.CENTER == 500 + reach and bag.pty.CENTER == 300 - 32)
+    check("bag: round like the fire, its plate, mask and ring",
+        bag.plate and bag.mask and bag.ring and bag.tex.texture == St.CAMP_BAG_FALLBACK_ICON)
+    check("bag: a game icon is never loaded TRILINEAR, which crashed the client", bag.tex.filter == nil)
+    s.itemIcons[BAG] = 777
+    s.fire("UNIT_AURA")
+    check("bag: the item's own icon once the client has it", bag.tex.texture == 777)
+    bag.scripts.OnEnter(bag)
+    check("bag: its tooltip says a click uses it", s.tipText():find("Click to use your Sleeping Bag.", 1, true))
+    check("bag: ready, in full color with no countdown", not bag.tex.desaturated and not bag.cooldown.shown)
+    s.bagCooldown = { start = s.now, duration = 1.5 }
+    s.fire("BAG_UPDATE_COOLDOWN")
+    check("bag: the global cooldown is not the bag's", not bag.tex.desaturated and not bag.cooldown.shown)
+    s.bagCooldown = { start = s.now, duration = 600 }
+    s.fire("BAG_UPDATE_COOLDOWN")
+    check("bag: used, it greys with a countdown", bag.tex.desaturated and bag.cooldown.shown
+        and bag.cooldown.cooldownStart == s.now and bag.cooldown.cooldownDuration == 600
+        and not bag.cooldown.hideNumbers)
+    local reads = s.reads[CAMP] or 0
+    s.fire("BAG_UPDATE_COOLDOWN")
+    check("bag: a bag event updates only the bag, not the whole campfire",
+        (s.reads[CAMP] or 0) == reads and bag.cooldown.shown)
+    check("bag: no Well-Rested, no ring and no stacks", not bag.drain.shown and not bag.timer.shown
+        and not bag.count.shown)
+    s.auras[WELL_RESTED] = { expirationTime = s.now + 5000, duration = 7200, applications = 3 }
+    s.fire("UNIT_AURA")
+    check("bag: Well-Rested runs the fire's ring and countdown, with its stacks",
+        bag.drain.shown and bag.timer.shown and bag.track.shown
+        and bag.drain.cooldownExpiry == s.now + 5000 and bag.drain.cooldownDuration == 7200
+        and bag.timer.cooldownExpiry == s.now + 5000 and bag.count.shown and bag.count.text == 3)
+    check("bag: the cooldown keeps its grey but leaves the middle to Well-Rested",
+        bag.tex.desaturated and bag.cooldown.hideNumbers == true)
+    check("bag: its label sits clear of the ring", bag.label.pty.TOP == -Look.LABEL_DROP)
+    s.auras[WELL_RESTED] = nil
+    s.fire("UNIT_AURA")
+    check("bag: Well-Rested gone, the ring and stacks go", not bag.drain.shown and not bag.count.shown
+        and bag.cooldown.hideNumbers == false)
+    local waits = #s.timers
+    s.fire("UNIT_AURA")
+    check("bag: one wake per cooldown, not per refresh", #s.timers == waits)
+    s.advance(601)
+    check("bag: the cooldown over, it is ready again", not bag.tex.desaturated and not bag.timer.shown)
+    do
+        s.auras[CAMP] = { duration = 3600, expirationTime = s.now + 2400, auraInstanceID = 1 }
+        s.fire("UNIT_AURA")
+        check("bag: with Camp Benefits up and a campfire in range, it stays", bag.shown)
+        local frame, onEvent = s.listener("UNIT_AURA")
+        Measure(check)("a Round refresh with the Sleeping Bag", 1, function() onEvent(frame, "UNIT_AURA") end)
+        s.auras[CAMP] = nil
+    end
+    s.auras[NEARBY] = nil
+    s.fire("UNIT_AURA")
+    check("bag: out of the campfire's range, it hides", not bag.shown)
+    s.auras[SITTING] = { duration = 60, expirationTime = s.now + 60 }
+    s.fire("UNIT_AURA")
+    check("bag: sitting at a campfire, it shows beside Resting", bag.shown and icon.label.text == "Resting")
+    s.auras[SITTING], s.auras[NEARBY] = nil, {}
+    s.fire("UNIT_AURA")
+    s.carried[BAG] = 0
+    s.fire("BAG_UPDATE_DELAYED")
+    check("bag: no longer carried, it hides", not bag.shown)
+    s.carried[BAG] = 1
+    s.fire("BAG_UPDATE_DELAYED")
+    s.combat = true
+    s.auras[NEARBY] = nil
+    s.fire("PLAYER_REGEN_DISABLED")
+    s.fire("UNIT_AURA")
+    check("bag: in combat the secure button is left as it was", bag.shown)
+    s.combat = false
+    s.fire("PLAYER_REGEN_ENABLED")
+    check("bag: combat over, it hides", not bag.shown)
+    s.auras[NEARBY] = {}
+    s.S.Set("campBuffSide", "right")
+    check("bag: buffs set to the right but none shown, still at the lower right",
+        bag.shown and bag.pt.CENTER == 500 + reach)
+    s.auras[CAMP] = { duration = 3600, expirationTime = s.now + 60, auraInstanceID = 2 }
+    s.fire("UNIT_AURA")
+    check("bag: with the buffs showing on the right, at the lower left",
+        icon.buffs.shown and bag.shown and bag.pt.CENTER == 500 - reach)
+    s.S.Set("campBuffMode", "hover")
+    check("bag: the buffs hidden until hovered, at the lower right",
+        icon.buffs.alpha == 0 and bag.shown and bag.pt.CENTER == 500 + reach)
+    s.S.Set("campBuffMode", "off")
+    check("bag: the buffs off, at the lower right", bag.shown and bag.pt.CENTER == 500 + reach)
+    s.S.Set("campBuffMode", "always")
+    check("bag: the buffs always shown again, at the lower left", bag.shown and bag.pt.CENTER == 500 - reach)
+    s.S.Set("campShowUnder", true)
+    s.auras[CAMP] = { duration = 3600, expirationTime = s.now + 3000, auraInstanceID = 3 }
+    s.fire("UNIT_AURA")
+    check("bag: the fire hidden until the camp runs low, the bag stays, at the lower right",
+        not icon.shown and bag.shown and bag.pt.CENTER == 500 + reach)
+    s.S.Set("campShowUnder", false)
+    s.auras[CAMP] = nil
+    s.fire("UNIT_AURA")
+    s.S.Set("campBuffSide", "below")
+    s.S.Set("campIconSize", 80)
+    check("bag: a new icon size resizes it", bag.w == 80 * St.CAMP_BAG_SCALE)
+    s.S.Set("campShowMissing", false)
+    check("bag: the fire hidden while missing, the bag stays", not icon.shown and bag.shown)
+    s.S.Set("campShowMissing", true)
+    check("bag: the fire back, the bag still there", icon.shown and bag.shown)
+    s.S.Set("campStyle", "simple")
+    check("bag: Round only, never on the Simple bar", not bag.shown)
+    check("bag: Simple listens to no bag events", not s.listener("BAG_UPDATE_DELAYED")
+        and not s.listener("BAG_UPDATE_COOLDOWN"))
+    s.S.Set("campStyle", "round")
+    check("bag: Round again, it is back", bag.shown)
+    check("bag: Round listens to bag events again", s.listener("BAG_UPDATE_DELAYED") ~= nil
+        and s.listener("BAG_UPDATE_COOLDOWN") ~= nil)
+    s.ns.ShowUnlockMode()
+    check("bag: hidden in Unlock Mode", not bag.shown)
+    s.ns.HideUnlockMode()
+    check("bag: back after Unlock Mode", bag.shown)
+    s.combat = true
+    s.S.Set("campfire", false)
+    check("bag: the Campfire turned off in combat waits for combat to end", bag.shown)
+    s.combat = false
+    s.fire("PLAYER_REGEN_ENABLED")
+    check("bag: then hides with the Campfire", not bag.shown and not icon.shown)
 end
 
 print(checks .. " campfire look checks passed")

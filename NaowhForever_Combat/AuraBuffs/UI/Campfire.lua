@@ -1,4 +1,4 @@
--- Campfire.lua: the Campfire reminder on screen, Round or Simple, and the Camp Nearby alert.
+-- Campfire.lua: the Campfire reminder on screen, Round or Simple, the Sleeping Bag beside Round, and the Camp Nearby alert.
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
@@ -7,7 +7,7 @@ local T = ns.THEME
 local St = A.Style
 local Parts = ns.Shared.Parts
 local D, Camp = A.CampData, A.Camp
-local Look, Bar, Alert, Glow = A.CampIcon, A.CampBar, A.CampAlert, A.Glow
+local Look, Bar, Alert, Glow, CampBag = A.CampIcon, A.CampBar, A.CampAlert, A.Glow, A.CampBag
 
 local CAMP_BENEFITS, CAMPFIRE_NEARBY = D.CAMP_BENEFITS, D.CAMPFIRE_NEARBY
 local WELCOMING_CAMPFIRE, WELCOMING_CAMPFIRE_CRAFT = D.WELCOMING_CAMPFIRE, D.WELCOMING_CAMPFIRE_CRAFT
@@ -546,7 +546,7 @@ local function RefreshUp(aura)
     ShowUp(duration, expiry, Camp.text, Camp.barLabels, Camp.barIcons, Camp.barCount)
 end
 
-local function Refresh(_, event)
+local function ShowCamp(event)
     if not icon then return end
     if unlocked then
         ShowUp(UNLOCK_DURATION, GetTime() + UNLOCK_LEFT, UNLOCK_TEXT, Camp.sampleLabels, Camp.sampleIcons,
@@ -580,8 +580,23 @@ local function Refresh(_, event)
     UpdateAlert(aura)
 end
 
+local function SyncBag()
+    CampBag.Sync(icon, not unlocked and not BarShown() and On() and Camp.InOpenWorld())
+end
+
+local function Refresh(_, event)
+    ShowCamp(event)
+    SyncBag()
+end
+
+local function OnEvent(_, event)
+    if event == "BAG_UPDATE_DELAYED" or event == "BAG_UPDATE_COOLDOWN" then return SyncBag() end
+    Refresh(nil, event)
+end
+
 local function Layout(simple)
     UseStyle(simple)
+    CampBag.Layout()
     icon:EnableMouse(not simple and ns.CampBuffMode() == "hover")
     if simple then
         Bar.Layout(simpleBar)
@@ -596,6 +611,13 @@ local function Listen()
     events:RegisterEvent("PLAYER_ENTERING_WORLD")
     events:RegisterEvent("PLAYER_REGEN_ENABLED")
     events:RegisterEvent("PLAYER_REGEN_DISABLED")
+    if Simple() then
+        events:UnregisterEvent("BAG_UPDATE_DELAYED")
+        events:UnregisterEvent("BAG_UPDATE_COOLDOWN")
+    else
+        events:RegisterEvent("BAG_UPDATE_DELAYED")
+        events:RegisterEvent("BAG_UPDATE_COOLDOWN")
+    end
 end
 
 local function Apply()
@@ -606,7 +628,7 @@ local function Apply()
         HideAlert()
         if icon then SetGlow(false) end
         if icon and not unlocked then icon:Hide() end
-        if not unlocked then return end
+        if not unlocked then return CampBag.Sync(icon, false) end
     end
     if not icon then Build() end
     Layout(Simple())
@@ -635,7 +657,7 @@ end
 
 Camp.Refresh = Refresh
 
-events:SetScript("OnEvent", Refresh)
+events:SetScript("OnEvent", OnEvent)
 hooksecurefunc(S, "Set", OnSet)
 hooksecurefunc(ns, "Apply", Apply)
 hooksecurefunc(ns, "ShowUnlockMode", OnUnlock)

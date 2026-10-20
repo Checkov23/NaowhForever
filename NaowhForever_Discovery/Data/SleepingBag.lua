@@ -15,7 +15,7 @@ local SATCHEL = { object = "Hastily Rolled-Up Satchel", map = 1417, x = 22.5, y 
 
 ns.SleepingBag = {
     level = 14,
-    item = 211527,
+    item = ns.Shared.Items.SLEEPING_BAG,
     steps = {
         A = {
             { object = "Burned-Out Remains", map = 1436, x = 37.5, y = 50.7, place = "Alexston Farmstead",

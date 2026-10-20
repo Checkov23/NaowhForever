@@ -18,7 +18,13 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
   With no Camp Benefits it glows (LibCustomGlow) and its fire is grey. With a campfire in range the
   fire lights up, the words say Click to sit, and a click on the fire or its words performs the
   /sit emote (Round: the icon and the label under it; Simple: the whole bar); it glows brighter
-  under the mouse. Camp Nearby's fire does the same.
+  under the mouse. Camp Nearby's fire does the same. With Round, while you carry the Cozy Sleeping
+  Bag and a campfire is in range (or you sit at one), a smaller round Sleeping Bag icon sits at the
+  fire's lower right (lower left while the buffs show on the right); a click uses the bag. It stays
+  while the fire itself is hidden (Show Only Under, Show When Missing off). While the
+  bag is on cooldown its icon is grey with a countdown. While its Well-Rested buff is on you, the
+  bag wears the fire's ring, in the accent blue, running down with the buff's time left, the time
+  in its middle and the stacks in its corner.
 - **Camp Nearby:** the same bar drawn bare (no backdrop, edge or line), larger by its own scale,
   sized to what it says and stacked in the Alerts group (`ns.AlertStack`), with the camp's time
   left inline after a dot while it still runs.
@@ -53,6 +59,7 @@ NaowhForever_Combat/AuraBuffs/
   UI/
     SettingsPage.lua           the page's banner (Open AuraBuffs) and its Window card
     GlowRows.lua               the glow type, color and pixel look rows a card adds (A.GlowRows)
+    CampBag.lua                the Sleeping Bag beside the Round campfire, a secure button (A.CampBag)
     Campfire.lua               the Campfire reminder and the Camp Nearby alert on screen
     CampfireCards.lua          the Campfire and Camp Nearby cards, with their editable previews
     LowHealth.lua              the Low Health icon on screen
@@ -290,6 +297,29 @@ NaowhForever_Combat/AuraBuffs/
   for one emote. The click only takes the fire's own square, so Camp Nearby still lets every other
   click through, and only while a campfire is in range, the only time /sit can refresh the camp.
   A lit fire with no Camp Benefits is the hint: grey says no camp, lit says a fire is here to sit at.
+- The Sleeping Bag icon is part of the Campfire, with no switch of its own: Jason's call. Its ID is
+  `ns.Shared.Items.SLEEPING_BAG`, the one Discovery's chain uses, since either addon can load
+  without the other. It shows only out of combat, with Round, in the open world, while the bag
+  is carried (`C_Item.GetItemCount`, read again on `BAG_UPDATE_DELAYED`) and Campfire Nearby or
+  Welcoming Campfire is on you.
+- The Sleeping Bag button is secure (`type1 = "item"`) so a click uses the bag. It is parented to
+  UIParent and placed at screen coordinates worked out from the fire's centre, never anchored to
+  the fire: a secure child or anchor would make the fire a protected frame, and the fire is shown,
+  hidden and moved in places that can run in combat. So in combat the button is left as it was; a
+  change that should hide it waits for `PLAYER_REGEN_ENABLED`, registered only then. Its size and
+  font are applied on the next refresh out of combat after a setting change.
+- `CAMP_BAG_SCALE` makes the bag about half the fire, as in Jason's mockup; `CAMP_BAG_FALLBACK_ICON`
+  is the question mark, shown until the client has the bag's icon.
+- Well-Rested (429959, read in game 2026-10-20) is the bag's stacking buff: three stacks, two
+  hours. The bag's use spell, Unroll Bag (429961), only places the bag. While Well-Rested shows,
+  the cooldown keeps its grey and swipe but hides its numbers, so the middle is the buff's time.
+- The bag's cooldown is `C_Container.GetItemCooldown`, read on each refresh and on
+  `BAG_UPDATE_COOLDOWN`; one of `GCD` (1.5 s) or less is the global cooldown, not the bag's. One
+  timer per cooldown end shows it ready again, since no event fires when a cooldown runs out.
+  `BAG_UPDATE_COOLDOWN` fires on every global cooldown, so the two bag events update only the
+  bag, not the whole Campfire, and are registered only while Round is picked.
+- The bag's icon is set with a plain `SetTexture`, never through `Parts.Smooth`: a game icon file
+  (134400) loaded with the TRILINEAR filter crashed the Forever client on its disk thread.
 - The Round icon's plate follows the theme's Panels color (`ns.ThemeTint`), and a black circle one
   pixel wider behind it is its 1px round border. The black disk extends past the time ring on both
   sides, edging it.
@@ -328,8 +358,8 @@ NaowhForever_Combat/AuraBuffs/
 ## Checking
 
 - `lua Tools/regression/test-buff-reminders.lua`: which reminders show, the item menu, the card.
-- `lua Tools/regression/test-campfire-simple.lua`: both Campfire looks, the reader, Camp Nearby and
-  the cards' previews.
+- `lua Tools/regression/test-campfire-simple.lua`: both Campfire looks, the reader, Camp Nearby,
+  the Sleeping Bag beside Round and the cards' previews.
 - `lua Tools/regression/test-icon-look.lua`: Low Health's text.
 - `lua Tools/regression/test-robin-final.lua`: consumable entries and the Round campfire.
 - `lua Tools/regression/test-combat-perf.lua`: the buff reminders' cost in a raid.

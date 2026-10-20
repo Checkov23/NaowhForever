@@ -24,7 +24,8 @@ Shared/
   Decode.lua       a pasted import string read back as plain data, with size, depth and bomb caps, and
                    outside text cleaned for display (Decode.String, Decode.Text)
   Game/Items.lua   item helpers: an ID from a link or URL, its name and quality color, In Bag and In Bank,
-                   your loot lines, waiting on item data, the items the server would not send
+                   your loot lines, waiting on item data, the items the server would not send, and the
+                   Cozy Sleeping Bag's item ID (Items.SLEEPING_BAG)
   Game/Gear.lua    gear helpers on Shared.Items: gear slots, what fits where, what you wear, weapons in
                    short ("1h Sword"), what a class can use (ns.ClassCanUse)
   Game/Bags.lua    the item buttons in your bags, the game's, EllesmereUI's and Baganator's, for
@@ -355,6 +356,8 @@ What a comment in the code used to say, in short. The house rules behind it are 
 
 - `Items.KEPT_CODE` is the worn green at 200 of 255 (`KEPT_SHADE`): where you keep an item is a
   state of it, quieter than its name.
+- `Items.SLEEPING_BAG` is the Cozy Sleeping Bag's one item ID: Discovery's chain gives it and the
+  Campfire reminder offers it, two addons that may load without each other.
 - Your loot lines are found by the start of the game's own line (`LOOT_ITEM_SELF`,
   `LOOT_ITEM_PUSHED_SELF`, up to its first `%s`), so it works in any client language. A secret
   line (in an encounter) is nobody's: `issecretvalue` is checked before anything else.
