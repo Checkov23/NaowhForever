@@ -138,7 +138,11 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   (`ns.Shared.MapPins`), with every other map pin; the keys stay in Completo's store.
 - Quest pins redraw on a quest taken, handed in or dropped, and on a level up (which turns some
   grey and lets others be picked up). A giver whose quests are all repeatable gets the game's blue
-  mark; where an atlas is missing, the gossip window's ! is tinted instead.
+  mark, grey or not: a repeatable quest is done for its reward, not its experience; where an atlas
+  is missing, the gossip window's ! is tinted instead. A giver with a dungeon
+  or raid quest gets a green ! (`DUNGEON_RGB`), as the tracker's dungeon quests stand out from the
+  zone's: no green quest atlas is known in the client, so it is the yellow ! tinted. Chains Only
+  leaves dungeon and raid quests on the map: most are no chain, and the run is the reason to go.
 - The game keeps no record of the rares you killed, so Completo counts them itself, per character
   by GUID (`completoRareKills`, `completoRareDrops`), from when it is on: a rare you targeted dying
   while it was yours (not tapped by someone else), or a corpse you loot. Each creature counts once,

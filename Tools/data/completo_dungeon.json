@@ -2188,6 +2188,19 @@
    "x": 65.2,
    "y": 60.2
   },
+  "92456": {
+   "after": [],
+   "giver": "Shylamiir",
+   "level": 33,
+   "map": 1453,
+   "name": "A Green Sample",
+   "reqclass": 0,
+   "reqlevel": 33,
+   "reqrace": 0,
+   "side": 1,
+   "x": 31.5,
+   "y": 62.6
+  },
   "92489": {
    "after": [],
    "giver": "High Sorcerer Andromath",
@@ -2252,6 +2265,19 @@
    "side": 1,
    "x": 11.8,
    "y": 58.6
+  },
+  "95697": {
+   "after": [],
+   "giver": "Borstan",
+   "level": 31,
+   "map": 1454,
+   "name": "Changing Tastes",
+   "reqclass": 0,
+   "reqlevel": 24,
+   "reqrace": 0,
+   "side": 2,
+   "x": 57.4,
+   "y": 53.4
   },
   "95772": {
    "after": [],

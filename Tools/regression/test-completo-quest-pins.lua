@@ -89,4 +89,31 @@ for _, scale in ipairs({ 0.5, 1, 2.5 }) do
     onScreen = size
 end
 
+-- The mark: a dungeon quest's giver is the ! tinted green, a repeatable-only giver the game's blue
+-- !, a grey one the game's grey mark.
+ns.Completo.Style.DUNGEON_RGB = { r = 0.3, g = 1, b = 0.3 }
+ns.Completo.Style.REPEAT_RGB = { r = 0.35, g = 0.7, b = 1 }
+local function Mark(giver)
+    local seen = {}
+    local p = NewPin()
+    p.Icon.SetAtlas = function(_, atlas) seen.atlas = atlas; return true end
+    p.Icon.SetDesaturated = function(_, on) seen.desaturated = on end
+    p.Icon.SetVertexColor = function(_, r, g, b) seen.color = { r, g, b } end
+    giver.x, giver.y, giver.quests = 50, 50, { 1 }
+    p:OnAcquired(giver)
+    return seen
+end
+local m = Mark({ grey = false, repeatable = false, dungeon = true })
+Check(m.atlas == "QuestNormal" and m.desaturated and m.color[2] == 1 and m.color[1] < 1, "a dungeon quest's giver is green")
+m = Mark({ grey = false, repeatable = true, dungeon = true })
+Check(m.atlas == "QuestNormal" and m.color[2] == 1, "a dungeon quest stays green when it is also repeatable")
+m = Mark({ grey = false, repeatable = true, dungeon = false })
+Check(m.atlas == "QuestDaily" and not m.desaturated, "a repeatable-only giver gets the game's blue !")
+m = Mark({ grey = true, repeatable = true, dungeon = false })
+Check(m.atlas == "QuestDaily", "a repeatable-only giver stays blue when its quests no longer give experience")
+m = Mark({ grey = true, repeatable = false, dungeon = true })
+Check(m.atlas == "TrivialQuests", "a grey dungeon quest stays grey")
+m = Mark({ grey = false, repeatable = false, dungeon = false })
+Check(m.atlas == "QuestNormal" and not m.desaturated and m.color[1] == 1, "any other giver keeps the yellow !")
+
 print(("test-completo-quest-pins: %d checks passed"):format(checks))
