@@ -1,6 +1,31 @@
 # Changelog
 
-## Unreleased
+## 1.1.38
+
+### Added
+- Map pins: Color Dungeon Quests and Dungeon Quest Color on QoL > Map & Pins turn the green ! off or
+  pick its color.
+- AuraBuffs: Hide in the World at Level 60 for consumables, raid buffs and personal buffs, on Buffs
+  & Consumables.
+
+### Changed
+- AuraBuffs: the Class Buff Tracker is removed.
+- AuraBuffs: the hand-made consumables list and the AuraBuffs window are removed. The reminders
+  watch the built-in food, flasks, elixirs and scrolls, and /nfbuffs opens the settings.
+- AuraBuffs: the raid and personal buff settings and their buff lists are dropdowns on Buffs &
+  Consumables.
+
+### Fixed
+- Action Bars: website codes now carry up to 120 account and 60 character macros, so bigger macro
+  collections come across. The popups name the website's new Import a code and Export to string
+  buttons.
+- Mail: the Alts button lists and fills each character's whole name, last name included. Log in once
+  on each character to save its last name.
+- Settings: Modules and Minimap Icons are boxed like the other dropdowns.
+- Map pins: battleground quest givers no longer get the green dungeon !.
+- Saved Quest Rewards: the text under the title stays inside the window.
+- An old Damage Meter folder left from an earlier version no longer throws Lua errors: it is
+  switched off at login, with a note to delete it.
 
 ## 1.1.37
 
