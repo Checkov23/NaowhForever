@@ -70,6 +70,14 @@ local function JournalOn()
     return S.Get("enabled") == true
 end
 
+local function PadFree()
+    return JournalOn() and not ns.GamepadStandDown()
+end
+
+local function PadWhy()
+    return ns.GamepadWhy() or TEXT_JOURNAL_OFF
+end
+
 local function EntrancesOn()
     return JournalOn() and S.Get("mapEntrances") == true
 end
@@ -205,8 +213,8 @@ local function DeclareTracker()
                 "Opens the quest tracker when you enter a dungeon with quests for you."),
             Toggle("trackerOutside", "Show Outside Dungeons",
                 "Opens the quest tracker out in the world, on the dungeon your quests are for."),
-            Toggle("hideGameTracker", "Hide the Game's Quest Tracker",
-                "Fades out the game's quest tracker while this one is open in a dungeon."),
+            { key = "hideGameTracker", label = "Hide the Game's Quest Tracker", toggle = true, needs = PadFree,
+              why = PadWhy, help = "Fades out the game's quest tracker while this one is open in a dungeon." },
             Toggle("shareRequests", "Quest Share Requests",
                 "Ask your group to share a dungeon quest you don't have, from its group icon."),
             Toggle("acceptShared", "Accept Shared Dungeon Quests",
@@ -230,7 +238,7 @@ end
 local function DeclareMap()
     local map = Settings.Page("Dungeon Journal/Map", S)
     map:Card({
-        id = "map", name = "Beside the World Map", order = ORDER_FIRST,
+        id = "map", name = "Beside the World Map", order = ORDER_FIRST, switchWhy = ns.GamepadWhy,
         help = "The Journal beside the world map: bosses and loot in dungeons, factions outside.",
         search = "dungeon page map link pin fold map and bosses only",
         summary = MapSummary,

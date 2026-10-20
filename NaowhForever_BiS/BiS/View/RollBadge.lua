@@ -75,10 +75,12 @@ end
 
 B.RollBadge = { Show = Show }
 
-for i = 1, ROLL_FRAMES do
-    local frame = _G[ROLL_FRAME .. i]
-    if frame then
-        frame:HookScript("OnShow", MarkRoll)
-        frame:HookScript("OnHide", UnmarkRoll)
+if not ns.GamepadStandDown() then
+    for i = 1, ROLL_FRAMES do
+        local frame = _G[ROLL_FRAME .. i]
+        if frame then
+            frame:HookScript("OnShow", MarkRoll)
+            frame:HookScript("OnHide", UnmarkRoll)
+        end
     end
 end

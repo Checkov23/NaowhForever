@@ -331,6 +331,11 @@ the game's own tables, and what they can't settle is listed in the pull request 
 
 - The on/off switches' defaults (`enabled`, `mapPanel`, `mapFactions`, `mapEntrances`) are read
   from `ns.FEATURES.journal`: one file holds every feature's switch and default.
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the panel beside the world map
+  and Hide the Game's Quest Tracker stay off, and their settings say why. That style opens and
+  navigates the world map and drives the game's tracker from secure code, which our hooks on the
+  map and the tracker's faded alpha would taint. The entrance pins stay: they are a data provider
+  through the map's own API. Opening the map from the Journal goes through `Places.ShowMap`.
 - The opacity was one setting (`windowAlpha`) before the tracker had its own: a player who set it
   keeps it on the tracker, copied once on the first login with it; the tracker's own setting, once
   set, is never written over. The Journal's windows have no opacity setting: they are always solid.

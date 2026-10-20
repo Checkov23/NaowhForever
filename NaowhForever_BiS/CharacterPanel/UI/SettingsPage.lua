@@ -61,6 +61,7 @@ local page = Settings.Page("BiS List/Character", S)
 
 page:Card({
     id = "characterPanel", name = "Character Panel", order = 10, switch = "characterPanel", store = S,
+    switchWhy = ns.GamepadWhy,
     help = "Your character panel (C) in the BiS List's look: each slot with its marks, your stats for your "
         .. "spec, and your Naowh Score under your level. The game keeps the panel and everything it does. With "
         .. "EllesmereUI, turning this on turns its character panel off, and off turns it back on, after a reload.",
@@ -70,6 +71,7 @@ page:Card({
 
 page:Card({
     id = "slotMarks", name = "Slot Marks", order = 20, switch = "characterPanelSlotMarks", store = S,
+    switchWhy = ns.GamepadWhy,
     help = "The marks on the game's own character panel, as it looks (or EllesmereUI's), without the Naowh "
         .. "Character Panel. With it on, its slots have them already.",
     summary = MarksSummary,

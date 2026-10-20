@@ -174,8 +174,10 @@ local enchantTodo = { [5] = true }
 local ASSASSINATION = { name = "Assassination Rogue" }
 local WEIGHTS = { agi = 1, hit = 10, str = 0.5, int = 0 }
 local STATS = { 44, 80 }   -- your Strength and Agility
+local gamepad = false
 
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+    GamepadStandDown = function() return gamepad end,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent) return Frame(parent) end,
@@ -346,6 +348,18 @@ local before = made
 ns.Apply()
 check("off by default: the game's slot update not hooked, nothing made", hooks.PaperDollItemSlotButton_Update == nil
     and made == before and not CP.On())
+
+-------------------------------------------------------------------------------
+--  Gamepad interface style: the panel and Slot Marks stay off, hooking and making nothing.
+-------------------------------------------------------------------------------
+gamepad = true
+S.Set("characterPanel", true)
+S.Set("characterPanelSlotMarks", true)
+check("gamepad style: the panel and Slot Marks hook nothing and make nothing", not CP.On()
+    and hooks.PaperDollItemSlotButton_Update == nil and made == before and character.NineSlice.alpha ~= 0)
+S.Set("characterPanelSlotMarks", false)
+S.Set("characterPanel", false)
+gamepad = false
 
 -------------------------------------------------------------------------------
 --  On: the game's art faded, ours over each slot.

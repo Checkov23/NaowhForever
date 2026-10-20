@@ -27,6 +27,8 @@ NaowhForever_BiS/
 
 ## Why
 
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the Roll Frame Badge stays off:
+  the game's roll frames are not hooked, as EllesmereUI's loot roll skin stands down there too.
 - The order is layering: the Naowh Score and Stat Weights are read by the BiS List's paperdoll,
   upgrades and enchants; the Character Panel shows the BiS List's stars, upgrades and enchant dots;
   the Inspect Panel reuses the Character Panel's parts.

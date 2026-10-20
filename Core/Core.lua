@@ -78,6 +78,7 @@ local TEXT_LIBRARIES_MISSING = "Libraries missing (%s), so parts of the addon wi
 local TEXT_RELOAD_BLOCKED = "Can't reload from a button in combat. Type /reload."
 local TEXT_COPY_HINT = "Ctrl+A, Ctrl+C to copy"
 local TEXT_GAME_DEFAULT = "Game Default"
+local TEXT_GAMEPAD_STYLE = "Not available with the Gamepad interface style"
 local UTF8_LATIN = "\195"
 local LATIN_CAPITAL, LATIN_SMALL = "\195([\128-\158])", "\195([\160-\190])"
 local LATIN_CASE_STEP, LATIN_TIMES, LATIN_DIVIDE = 32, 151, 183
@@ -1155,6 +1156,19 @@ end
 function ns.GamepadOwnsPanels()
     return InputUtil.IsGamepadUIEnabled() or CanAutoSetGamePadCursorControl(true)
         or CanAutoSetGamePadCursorControl(false)
+end
+
+local padStandDown
+
+function ns.GamepadStandDown()
+    if padStandDown ~= nil then return padStandDown end
+    local on = InputUtil.IsGamepadUIEnabled()
+    if IsLoggedIn() then padStandDown = on end
+    return on
+end
+
+function ns.GamepadWhy()
+    if ns.GamepadStandDown() then return ns.L(TEXT_GAMEPAD_STYLE) end
 end
 
 local function OnNameKnown(self)

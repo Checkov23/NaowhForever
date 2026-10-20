@@ -17,7 +17,7 @@ local newcomer
 
 local function AskOnce()
     for _, rival in ipairs(rivals) do rival.Repair() end
-    if InCombatLockdown() then return end
+    if InCombatLockdown() or ns.GamepadStandDown() then return end
     for _, rival in ipairs(rivals) do
         if not rival.Due() then
             rival.Forget()
@@ -49,6 +49,7 @@ function CP.Rival(r)
 
     function rival.On()
         return S.Get("enabled") == true and S.Get(r.key) == true and not rival.Styled()
+            and not ns.GamepadStandDown()
     end
 
     local function Swap(on)

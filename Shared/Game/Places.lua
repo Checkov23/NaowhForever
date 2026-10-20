@@ -3,6 +3,7 @@ local ns = _G.NaowhForever
 
 local NONE = {}
 local SAME = ns.Shared.SameMaps
+local TEXT_GAMEPAD = "The world map cannot be opened from Naowh Forever with a gamepad."
 
 local zones
 
@@ -39,6 +40,10 @@ end
 
 function Places.ShowMap(map)
     if not map or InCombatLockdown() then return false end
+    if ns.GamepadOwnsPanels() then
+        ns.Print(ns.L(TEXT_GAMEPAD))
+        return false
+    end
     C_Map.OpenWorldMap(map)
     return true
 end

@@ -35,7 +35,7 @@ local shownBoss
 local folder
 
 local function On()
-    return S.Get("enabled") and (S.Get("mapPanel") or S.Get("mapFactions"))
+    return S.Get("enabled") and (S.Get("mapPanel") or S.Get("mapFactions")) and not ns.GamepadStandDown()
 end
 
 local function DrawShown()

@@ -40,7 +40,8 @@ local function PaintAll()
 end
 
 local function MarksOn()
-    return CP.On() or (S.Get("enabled") == true and S.Get("characterPanelSlotMarks") == true)
+    return CP.On() or (S.Get("enabled") == true and S.Get("characterPanelSlotMarks") == true
+        and not ns.GamepadStandDown())
 end
 
 local function SlotUpdated(button)

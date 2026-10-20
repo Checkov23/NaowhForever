@@ -122,7 +122,7 @@ local function PinClicked(pin, mouse)
         return
     end
     ns.PlaceWaypoint(name, spot.map, spot.x, spot.y, note)
-    if not InCombatLockdown() then C_Map.OpenWorldMap(spot.map) end
+    ns.Shared.Places.ShowMap(spot.map)
 end
 
 local function PlaceStats(row, stats)

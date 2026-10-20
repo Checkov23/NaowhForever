@@ -137,7 +137,9 @@ state.values = { enabled = true, characterPanel = false, inspectPanel = false, i
 
 local SCORE = { player = 26.4 }
 local COMPLETE = { player = true }
+local gamepad = false
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+    GamepadStandDown = function() return gamepad end,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent)
@@ -369,6 +371,17 @@ local before = made
 ns.Apply()
 check("off: the game's inspect window not waited for, nothing hooked or made", state.onLoaded == nil
     and hooks.InspectPaperDollItemSlotButton_Update == nil and made == before and not IP.On())
+
+-------------------------------------------------------------------------------
+--  Gamepad interface style: it stays off, waiting for and hooking nothing.
+-------------------------------------------------------------------------------
+gamepad = true
+S.Set("inspectPanel", true)
+check("gamepad style: the inspect window not waited for, nothing hooked or made", state.onLoaded == nil
+    and state.waitingFor == nil and hooks.InspectPaperDollItemSlotButton_Update == nil and made == before
+    and not IP.On())
+S.Set("inspectPanel", false)
+gamepad = false
 
 -------------------------------------------------------------------------------
 --  On before the game has loaded its inspect window: it waits for it, and builds nothing.

@@ -67,6 +67,8 @@ local function Fixture(opts)
             return true
         end,
         CanPlaceWaypoint = function() return true end,   -- every map takes one, as PlaceWaypoint says
+        GamepadOwnsPanels = function() return opts.gamepad == true end,
+        Shared = {},
     }
     local env = setmetatable({
         _G = { NaowhForever = ns },
@@ -94,7 +96,8 @@ local function Fixture(opts)
         QuestDifficultyColors = COLORS,
         GetQuestDifficultyColor = function(questLevel) return DifficultyColor(questLevel, level) end,
     }, { __index = _G })
-    for _, path in ipairs({ "NaowhForever_DungeonJournal/Constants.lua", "NaowhForever_DungeonJournal/Quests.lua" }) do
+    for _, path in ipairs({ "Shared/Data/SameMaps.lua", "Shared/Game/Places.lua",
+            "NaowhForever_DungeonJournal/Constants.lua", "NaowhForever_DungeonJournal/Quests.lua" }) do
         local chunk = assert(loadfile(path))
         setfenv(chunk, env)
         chunk()
@@ -415,6 +418,12 @@ Case("a waypoint opens the map to it, out of combat only", function()
     local Q2, q2, seen2 = Fixture({ done = { 65, 132, 135 }, combat = true })
     Q2.Waypoint(q2[214])
     assert(#seen2.placed == 1 and seen2.mapOpened == nil)
+end)
+
+Case("with the gamepad owning the game's panels, the waypoint is set and chat says why the map stays shut", function()
+    local Q, q, seen = Fixture({ done = { 65, 132, 135 }, gamepad = true })
+    Q.Waypoint(q[214])
+    assert(#seen.placed == 1 and seen.mapOpened == nil and #seen.printed == 1)
 end)
 
 Case("a step in your log goes where the game routes you", function()

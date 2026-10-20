@@ -14,7 +14,8 @@ local function KeepFaded(frame)
 end
 
 local function ShouldFade()
-    return S.Get("enabled") and S.Get("hideGameTracker") and Tracker.IsShown() and J.Current() ~= nil
+    return S.Get("enabled") and S.Get("hideGameTracker") and not ns.GamepadStandDown() and Tracker.IsShown()
+        and J.Current() ~= nil
 end
 
 function Tracker.SyncGameTracker()

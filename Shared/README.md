@@ -400,7 +400,10 @@ What a comment in the code used to say, in short. The house rules behind it are 
   fixed lines, so ours is a tooltip of our own `TIP_GAP` under it, which hides itself as soon as
   the Friends tooltip stops showing that row. List rows are hooked with `HookScript`, after the
   game's own, once each. A GUID is used only when it is a readable string, never a secret value.
-- `Places.ShowMap` opens the world map only out of combat, where addon code may open it.
+- `Places.ShowMap` opens the world map only out of combat, where addon code may open it. While
+  `ns.GamepadOwnsPanels()` it says so in chat instead: `C_Map.OpenWorldMap` runs the game's
+  `ShowUIPanel` from our click, and the gamepad builds its bindings inside that, which is how the
+  Map Window tainted them. Every "show on the map" in the addon goes through it.
 - Forever has Zephras Isle twice: map 2521 (under Azeroth) and map 2665 (no parent), with the
   same name, continent (2991) and bounds in the game's UiMapAssignment, so a map percentage is
   the same spot on both; the game puts players on 2665 too (the Nightclaw Druids' Wowhead data

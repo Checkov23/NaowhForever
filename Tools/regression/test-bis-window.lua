@@ -146,6 +146,8 @@ local function Fixture()
             HideWidgetTooltip = NOTHING },
         AccountSettings = function() return state.account end,
         Print = function(text) state.printed[#state.printed + 1] = text end,
+        GamepadStandDown = function() return false end,
+        GamepadOwnsPanels = function() return false end,
         Color = function(_, text) return text end,
         L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         Font = function(parent) return Frame(parent) end,

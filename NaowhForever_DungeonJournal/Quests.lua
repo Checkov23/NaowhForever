@@ -430,7 +430,7 @@ end
 function Q.Waypoint(quest)
     local name, map, x, y, note, why = Q.Spot(quest)
     if map then
-        if ns.PlaceWaypoint(name, map, x, y, note) and not InCombatLockdown() then C_Map.OpenWorldMap(map) end
+        if ns.PlaceWaypoint(name, map, x, y, note) then ns.Shared.Places.ShowMap(map) end
     elseif why then
         ns.Print(why)
     end

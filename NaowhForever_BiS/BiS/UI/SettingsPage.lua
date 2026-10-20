@@ -26,6 +26,14 @@ local TEXT_MARKS_BOTH, TEXT_MARKS_TIPS = ns.L("On tooltips and in your bags"), n
 local TEXT_MARKS_BAGS, TEXT_MARKS_NONE = ns.L("In your bags"), ns.L("Only in its window")
 local TEXT_ON_SCREEN, TEXT_IN_CHAT = ns.L(", on screen"), ns.L(", in chat")
 
+local function BadgeFree()
+    return S.Get("bis") and not ns.GamepadStandDown()
+end
+
+local function BadgeWhy()
+    return ns.GamepadWhy() or BIS_OFF
+end
+
 local function Headline()
     local list, spec = L.List(), L.CurrentSpec()
     return TEXT_HEADLINE:format(ns.Color("accentSoft", (list.name:gsub("||", "|"))),
@@ -141,7 +149,7 @@ page:Card({
           help = "Which of your picks alert: your BiS only, your top two, or every pick on your list." },
         { key = "bisAlertChat", label = "Chat Line", toggle = true, needs = "bis", why = BIS_OFF,
           help = "A line in chat with the item's link." },
-        { key = "bisAlertBadge", label = "Roll Frame Badge", toggle = true, needs = "bis", why = BIS_OFF,
+        { key = "bisAlertBadge", label = "Roll Frame Badge", toggle = true, needs = BadgeFree, why = BadgeWhy,
           help = "Your star and rank on the game's roll frame." },
         SoundRow("bisDropSound", "Drop Sound", "When it is up for a roll or drops."),
         SoundRow("bisYoursSound", "It's Yours Sound", "When it is yours."),

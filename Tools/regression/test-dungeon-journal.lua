@@ -256,6 +256,8 @@ local function fixture(settings, noBis)
             return box
         end,
         Print = function(text) state.printed[#state.printed + 1] = text end,
+        GamepadStandDown = function() return false end,
+        GamepadOwnsPanels = function() return false end,
         -- The copy box: kept, so a test can read what it was given to copy.
         ShowCopyBox = function(title, text) state.copied = { title = title, text = text } end,
         ShowCopyLine = function(title, text) state.copied = { title = title, text = text } end,

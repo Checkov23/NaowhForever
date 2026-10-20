@@ -204,6 +204,10 @@ Modals and windows
   (`ShowUIPanel`, the game menu and bags call the protected `SetGamePadCursorControl`). Opening or
   closing a Blizzard panel from addon code then gets forbidden, so anything that would (the game
   menu button, the Top Bar clock, custom slash commands) stands down.
+- `ns.GamepadStandDown()` is the Gamepad interface style alone, decided once at login and kept for
+  the session, as EllesmereUI's `PadGamepadUI` stand-down is. Features that hook, restyle or move
+  Blizzard's windows stay off under it, since their hooks install once and cannot be taken back.
+  `ns.GamepadWhy()` is the reason their settings cards show.
 - The options window is DIALOG and the HUD Editor draws at HIGH, so the two never share the
   screen: Unlock Mode steps the window out and puts it back on exit. Stash the window before
   arming, or its OnHide disarms the mode in the same click.

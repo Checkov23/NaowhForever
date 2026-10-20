@@ -77,6 +77,11 @@ the game's art comes back and ours hides.
   as on a first run.
 - EllesmereUI styles a window when its public `GetBlizzWindowStyle` says anything but `"off"`; it is
   nil when its window skins are not loaded.
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the Character Panel, the Inspect
+  Panel and Slot Marks stay off, and their cards say why. That style opens, closes and navigates
+  these windows from secure code, so our hooks and restyling on them taint it, and its gamepad
+  bindings are then blocked in combat. EllesmereUI's window skins stand down the same way, and the
+  question about taking over from them is not asked.
 - The parts both panels use (`Frame.lua`, `Restyler.lua`, `Slots.lua`, `Score.lua`, `Badge.lua`) make
   nothing at load; the `Your*` files, `SpecStats.lua` and `Chrome.lua` put them on your panel. These
   load in that order so their setting listeners and `ns.Apply` hooks run in it: the slots, your score,

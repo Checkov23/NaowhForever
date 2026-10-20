@@ -41,6 +41,7 @@ end
 
 Settings.Page("BiS List/Character", S):Card({
     id = "inspectPanel", name = "Inspect Panel", order = ORDER_INSPECT, switch = "inspectPanel", store = S,
+    switchWhy = ns.GamepadWhy,
     help = "The inspect window in the BiS List's look, with their score, gear check, talents and history.",
     search = "note notes tag tags player tab",
     summary = Summary,

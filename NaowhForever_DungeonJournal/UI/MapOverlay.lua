@@ -23,7 +23,7 @@ local overlay, overlayView
 local function UpToZone()
     overlay:Hide()
     local entrance = overlayView.dungeon.entrance
-    if entrance and not InCombatLockdown() then C_Map.OpenWorldMap(entrance.map) end
+    if entrance then ns.Shared.Places.ShowMap(entrance.map) end
 end
 
 local function OverlayClicked(_, button)
