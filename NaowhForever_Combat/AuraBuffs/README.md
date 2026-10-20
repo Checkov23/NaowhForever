@@ -32,7 +32,7 @@ NaowhForever_Combat/AuraBuffs/
   AuraBuffs.lua                the settings (ns.AuraBuffSettings), the module table (ns.AuraBuffs, A),
                                consumable entries kept in the profile, ns.ParseConsumableEntry,
                                the consumables list string (ns.ConsumableListString,
-                               ns.ParseConsumableList), ns.CampBuffMode
+                               ns.ParseConsumableList), ns.CampBuffMode, A.Migrate
   Constants.lua                the numbers several of its files share (A.C)
   Data/
     BuffReminders.lua          the spells and items behind the buff reminders (ns.BuffReminderData)
@@ -101,6 +101,15 @@ NaowhForever_Combat/AuraBuffs/
   `NFCONSUMABLES1:food=13931,2680;battle=13454/17539`. Import also takes a profile string and keeps
   only its consumables, through the same checks as the profile import; it adds what is not listed
   yet, up to `MAX_ENTRIES` (500, the same limit the profile import enforces).
+- Consumables (with the weapon enhancement reminder), raid buffs and personal buffs each have World,
+  Dungeons and Raids switches, read from `IsInInstance()`: a party instance is a dungeon, a raid
+  instance a raid, and anything else (the world, battlegrounds, arenas) the world, as the old Show In
+  choice treated it. `PLAYER_ENTERING_WORLD` fires through every instance's loading screen, so it
+  is enough to follow the place. There is no In Combat switch: the row does not refresh in combat,
+  and its buttons are secure, so it cannot be hidden then.
+- `A.Migrate` turns the old Show In choice (`consumablesWhere`) into the three consumables switches
+  on every Apply and clears it, so an old profile string is moved too: Everywhere is all three,
+  Dungeons & Raids the last two, Raids Only raids alone. Hide While Resting still applies on top.
 - Group auras change in bursts, so a buff refresh waits `QUEUE_DELAY` and covers the lot. Nothing
   fires as a buff runs down, so the earliest one to cross the warning time is timed.
 - Show Buff Range starts off. When enabled, raid buff reminders show confirmed recipients in

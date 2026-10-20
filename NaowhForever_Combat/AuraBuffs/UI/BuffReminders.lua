@@ -17,7 +17,10 @@ local HOME_Y = 220
 local CARD = A.PAGE .. ":buffs"
 local TEXT_MOVER = "Buff Reminders"
 local KEYS = {
-    consumableEntries = true, enabled = true, consumablesWhere = true, consumablesMinutes = true,
+    consumableEntries = true, enabled = true, consumablesMinutes = true,
+    consumablesWorld = true, consumablesDungeon = true, consumablesRaid = true,
+    raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
+    personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
     onlyIfCarried = true, carriedPicks = true, hideResting = true, raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = true, iconSize = true,
     buffIconMode = true, raidBuffRange = true, raidBuffRangeHide = true, hideBlessingsOnPaladin = true,
     personalBuffs = true, personalBuffPicks = true, weaponEnhancements = true,
@@ -261,6 +264,7 @@ local function Listen()
 end
 
 function Apply()
+    A.Migrate()
     if InCombatLockdown() then
         if R.On() or unlocked or frame and frame:IsShown() then
             held = true

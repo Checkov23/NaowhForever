@@ -108,8 +108,10 @@ local function Fixture(opts)
 
     local defaults = {
         enabled = true,
-        consumablesWhere = "instance", consumablesMinutes = 2,
+        consumablesWorld = false, consumablesDungeon = true, consumablesRaid = true, consumablesMinutes = 2,
         onlyIfCarried = true, carriedPicks = {}, hideResting = true,
+        raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
+        personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
         raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
@@ -124,6 +126,7 @@ local function Fixture(opts)
     end
     function S.Set(k, v) settings[k] = v end
     function S.Raw(k) return settings[k] end
+    function S.DB() return settings end
     function S.Default(k) return defaults[k] end
 
     local account = {}
@@ -417,26 +420,68 @@ do
     Check("Glow off stops them", Glowing(), "")
 end
 
--- Show In: Dungeons & Raids keeps them out of the open world; Everywhere does not.
+-- Where to show: consumables stay out of the world by default; each place is its own switch.
 do
     local t = Fixture({ bags = { 13931, 13510 } })
     t.Login()
-    Check("open world, dungeons only", t.Shown(), "")
-    t.Set("consumablesWhere", "always")
-    Check("everywhere", t.Shown(), "item:13931 item:13510")
-    t.Set("consumablesWhere", "raid")
+    Check("open world, off by default", t.Shown(), "")
+    t.Set("consumablesWorld", true)
+    Check("shown in the world", t.Shown(), "item:13931 item:13510")
+    t.state.instance = "pvp"
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("a battleground counts as the world", t.Shown(), "item:13931 item:13510")
+    t.Set("consumablesDungeon", false)
     t.state.instance = "party"
     t.Fire("PLAYER_ENTERING_WORLD")
     t.Advance(0.5)
-    Check("raids only, in a dungeon", t.Shown(), "")
+    Check("dungeons off, in a dungeon", t.Shown(), "")
     t.state.instance = "raid"
     t.Fire("PLAYER_ENTERING_WORLD")
     t.Advance(0.5)
-    Check("raids only, in a raid", t.Shown(), "item:13931 item:13510")
+    Check("raids on, in a raid", t.Shown(), "item:13931 item:13510")
+    t.Set("consumablesRaid", false)
+    Check("raids off, in a raid", t.Shown(), "")
+    t.Set("consumablesRaid", true)
     t.state.resting = true
     t.Fire("PLAYER_UPDATE_RESTING")
     t.Advance(0.5)
     Check("hidden while resting", t.Shown(), "")
+end
+
+-- The old Show In choice becomes the three switches once, and is gone after.
+do
+    for _, case in ipairs({
+        { "always", true, true, true }, { "instance", false, true, true }, { "raid", false, false, true },
+    }) do
+        local t = Fixture({ settings = { consumablesWhere = case[1] } })
+        t.Login()
+        Check(case[1] .. " moved", tostring(t.Get("consumablesWorld")) .. tostring(t.Get("consumablesDungeon"))
+            .. tostring(t.Get("consumablesRaid")), tostring(case[2]) .. tostring(case[3]) .. tostring(case[4]))
+        Check(case[1] .. " old key gone", t.Get("consumablesWhere"), nil)
+        t.Set("consumablesWorld", not case[2])
+        t.ns.Apply()
+        Check(case[1] .. " a later change kept", t.Get("consumablesWorld"), not case[2])
+    end
+end
+
+-- Raid and personal buff reminders each have their own places to show.
+do
+    local t = Fixture({ settings = { raidBuffs = true },
+        group = "party", units = { player = "MAGE", party1 = "WARRIOR", party2 = "PRIEST" },
+        known = { [1460] = true, [7302] = true },
+        auras = { player = {}, party1 = {}, party2 = {} } })
+    t.Login()
+    Check("both shown in the world", t.Shown(), "spell:7302 spell:10157x2")
+    t.Set("raidBuffsWorld", false)
+    Check("raid buffs off in the world", t.Shown(), "spell:7302")
+    t.Set("personalBuffsWorld", false)
+    Check("personal buffs off in the world", t.Shown(), "")
+    t.Set("personalBuffsDungeon", false)
+    t.state.instance = "party"
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("in a dungeon, raid buffs only", t.Shown(), "spell:10157x2")
 end
 
 -- Only If I Carry One: nothing carried shows nothing; off, a generic icon per kind.
@@ -1408,6 +1453,10 @@ do
     end
     Check("preview in the world", Preview("world"), "personal:spell:16362")
     Check("preview resting", Preview("resting"), "")
+    t.Set("personalBuffsWorld", false)
+    Check("preview in the world, personal buffs kept out", Preview("world"), "")
+    Check("preview in a raid", Preview("raid"),
+        "spell:1248406 item:13510 item:13454 item:10306 personal:spell:16362")
 end
 
 -- Only If I Carry One off: flasks and elixirs show with none listed or carried, food only when listed.

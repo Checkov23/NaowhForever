@@ -17,11 +17,9 @@ local ICON_MODES = { { default = "Default", last = "Last Used" }, { "default", "
 local ORDER_BUFFS = 10
 local PREVIEW = A.BuffPreview
 local RAID_SAMPLE = #PREVIEW
-local WHERE = { { always = "Everywhere", instance = "Dungeons & Raids", raid = "Raids Only" },
-    { "always", "instance", "raid" } }
 local STATES = {
-    { key = "raid", label = "In a Raid", tip = "In a raid, where every Show In choice reminds you." },
-    { key = "world", label = "Open World", tip = "Out in the world, where only Everywhere reminds you." },
+    { key = "raid", label = "In a Raid", tip = "In a raid, with each reminder you show in raids." },
+    { key = "world", label = "Open World", tip = "Out in the world, with each reminder you show in the world." },
     { key = "resting", label = "Resting", tip = "In a city or an inn, where Hide While Resting hides them.",
       needs = "hideResting" },
 }
@@ -63,9 +61,8 @@ local function EditList()
     if ns.OpenFromOptions then ns.OpenFromOptions(OpenList) else OpenList() end
 end
 
-local function ConsumablesShown(state)
-    if state == "resting" then return false end
-    return state == "raid" or S.Get("consumablesWhere") == "always"
+local function ShownIn(kind, state)
+    return R.ShowsHere(kind, state == "raid" and "raid" or "none")
 end
 
 local function NewPreview(stage)
@@ -102,8 +99,9 @@ end
 
 local function PaintPreview(shot, state)
     local size = S.Get("iconSize")
-    local consumables, raid = ConsumablesShown(state), R.RaidSample()
-    local personal = state ~= "resting" and PersonalSample()
+    local consumables = state ~= "resting" and ShownIn("consumables", state)
+    local raid = ShownIn("raidBuffs", state) and R.RaidSample()
+    local personal = state ~= "resting" and ShownIn("personalBuffs", state) and PersonalSample()
     local n = 0
     local function Put(cell, icon, count)
         n = n + 1
@@ -184,7 +182,9 @@ end
 
 local rows = {
     Group("Consumables"),
-    { key = "consumablesWhere", label = "Show In", choice = WHERE, needs = Enabled, why = OFF },
+    { key = "consumablesWorld", label = "Show in the World", toggle = true, needs = Enabled, why = OFF },
+    { key = "consumablesDungeon", label = "Show in Dungeons", toggle = true, needs = Enabled, why = OFF },
+    { key = "consumablesRaid", label = "Show in Raids", toggle = true, needs = Enabled, why = OFF },
     { key = "consumablesMinutes", label = "Warn With Minutes Left", slider = MINUTES_RANGE, unit = " min",
       needs = Enabled, why = OFF,
       help = "A consumable or personal buff with less time than this left counts as missing." },
@@ -207,6 +207,12 @@ rows[#rows + 1] = { key = "raidBuffs", label = "Raid Buff Reminders", toggle = t
     help = "Missing class buffs in your group, out of combat, with how many are missing them. A camp "
         .. "buff standing in for one, the Incense Candle for Arcane Intellect for example, is not seen, "
         .. "so it still counts as missing." }
+rows[#rows + 1] = { key = "raidBuffsWorld", label = "Show in the World", toggle = true, needs = RaidBuffsOn,
+    why = NEEDS_RAID }
+rows[#rows + 1] = { key = "raidBuffsDungeon", label = "Show in Dungeons", toggle = true, needs = RaidBuffsOn,
+    why = NEEDS_RAID }
+rows[#rows + 1] = { key = "raidBuffsRaid", label = "Show in Raids", toggle = true, needs = RaidBuffsOn,
+    why = NEEDS_RAID }
 rows[#rows + 1] = { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggle = true, needs = RaidBuffsOn,
     why = NEEDS_RAID, help = "Off: every buff a class in your group can cast." }
 rows[#rows + 1] = { key = "raidBuffRange", label = "Show Buff Range", toggle = true, needs = RaidBuffsOn,
@@ -220,6 +226,12 @@ rows[#rows + 1] = { key = "hideBlessingsOnPaladin", label = "Hide Blessings on P
 rows[#rows + 1] = Group("Personal Buffs")
 rows[#rows + 1] = { key = "personalBuffs", label = "Personal Buff Reminders", toggle = true, needs = Enabled,
     why = OFF, help = "Your class buffs when they are missing or about to run out." }
+rows[#rows + 1] = { key = "personalBuffsWorld", label = "Show in the World", toggle = true, needs = PersonalBuffsOn,
+    why = NEEDS_PERSONAL }
+rows[#rows + 1] = { key = "personalBuffsDungeon", label = "Show in Dungeons", toggle = true, needs = PersonalBuffsOn,
+    why = NEEDS_PERSONAL }
+rows[#rows + 1] = { key = "personalBuffsRaid", label = "Show in Raids", toggle = true, needs = PersonalBuffsOn,
+    why = NEEDS_PERSONAL }
 for _, family in ipairs(ALL_PERSONAL) do rows[#rows + 1] = PersonalRow(family) end
 rows[#rows + 1] = Group("Glow")
 rows[#rows + 1] = { key = "buffGlow", label = "Glow", toggle = true, needs = Enabled, why = OFF,

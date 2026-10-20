@@ -6,8 +6,10 @@ local F = ns.FEATURES.auraBuffs
 local S = ns.UI.ModuleSettings("auraBuffs", {
     enabled = F.enabled, consumableEntries = {},
     campBuffTextSize = 16, campBuffSide = "right", campShowMissing = true,
-    consumablesWhere = "instance", consumablesMinutes = 2,
+    consumablesWorld = false, consumablesDungeon = true, consumablesRaid = true, consumablesMinutes = 2,
     onlyIfCarried = true, carriedPicks = {}, hideResting = true,
+    raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
+    personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
     raidBuffs = F.raidBuffs, raidBuffsOwn = true, raidBuffRange = F.raidBuffRange, raidBuffRangeHide = F.raidBuffRangeHide,
     hideBlessingsOnPaladin = F.hideBlessingsOnPaladin,
     raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false, salvation = false },
@@ -52,6 +54,11 @@ local MAX_ENTRIES = 500
 local CATEGORY_NAMES = { food = ns.L("Food"), flask = ns.L("Flask"), scroll = ns.L("Scroll"),
     battle = ns.L("Battle Elixir"), guardian = ns.L("Guardian Elixir") }
 local CATEGORY_ORDER = { "food", "flask", "scroll", "battle", "guardian" }
+local OLD_WHERE = {
+    always = { world = true, dungeon = true, raid = true },
+    instance = { world = false, dungeon = true, raid = true },
+    raid = { world = false, dungeon = false, raid = true },
+}
 
 local GetSetting, SetSetting = S.Get, S.Set
 
@@ -113,6 +120,14 @@ end
 
 function A.Needs(key)
     return function() return S.Get("enabled") and S.Get(key) and true or false end
+end
+
+function A.Migrate()
+    local db = S.DB()
+    local old = OLD_WHERE[db.consumablesWhere]
+    db.consumablesWhere = nil
+    if not old then return end
+    db.consumablesWorld, db.consumablesDungeon, db.consumablesRaid = old.world, old.dungeon, old.raid
 end
 
 function ns.ParseConsumableEntry(category, text)

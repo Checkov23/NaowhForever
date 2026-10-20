@@ -15,6 +15,11 @@ local CLASS_INDEX = 6
 local REQUIRED_LEVEL = 5
 local ITEM_ICON = 10
 local ELITE = { elite = true, rareelite = true, worldboss = true }
+local WHERE = {
+    consumables = { none = "consumablesWorld", party = "consumablesDungeon", raid = "consumablesRaid" },
+    raidBuffs = { none = "raidBuffsWorld", party = "raidBuffsDungeon", raid = "raidBuffsRaid" },
+    personalBuffs = { none = "personalBuffsWorld", party = "personalBuffsDungeon", raid = "personalBuffsRaid" },
+}
 
 local GROUP_UNIT = { player = true }
 local RAID_UNITS, PARTY_UNITS_LIST = {}, {}
@@ -109,12 +114,9 @@ local function Left(aura)
     return expiry - GetTime()
 end
 
-local function ConsumablesHere()
-    if S.Get("hideResting") and IsResting() then return false end
-    local where = S.Get("consumablesWhere")
-    if where == "always" then return true end
-    local _, kind = IsInInstance()
-    return kind == "raid" or (where == "instance" and kind == "party")
+local function ShowsHere(kind, zone)
+    local keys = WHERE[kind]
+    return S.Get(keys[zone] or keys.none)
 end
 
 local function Wake(seconds)
@@ -487,6 +489,7 @@ Reminders.Left = Left
 Reminders.Picked = Picked
 Reminders.PersonalPicked = PersonalPicked
 Reminders.Secret = Secret
+Reminders.ShowsHere = ShowsHere
 
 function Reminders.InRange(entry)
     local count = 0
@@ -611,11 +614,12 @@ function Reminders.Collect()
     if not buffs then return nil end
     local list = {}
     wakeAt = nil
-    if ConsumablesHere() then
+    local _, zone = IsInInstance()
+    if ShowsHere("consumables", zone) and not (S.Get("hideResting") and IsResting()) then
         Consumables(list, buffs)
         if S.Get("weaponEnhancements") then WeaponEnhancement(list) end
     end
-    if S.Get("personalBuffs") then PersonalBuffs(list, buffs) end
-    if S.Get("raidBuffs") then RaidBuffs(list, buffs) end
+    if S.Get("personalBuffs") and ShowsHere("personalBuffs", zone) then PersonalBuffs(list, buffs) end
+    if S.Get("raidBuffs") and ShowsHere("raidBuffs", zone) then RaidBuffs(list, buffs) end
     return list
 end
