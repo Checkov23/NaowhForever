@@ -30,6 +30,7 @@ local NEEDS_PERSONAL = ns.L("Needs Personal Buff Reminders")
 local NEEDS_WEAPON = ns.L("Needs Weapon Enhancement Reminder")
 local NEEDS_RANGE = ns.L("Needs Show Buff Range")
 local TEXT_WEAPON = "Weapon Enhancement"
+local TEXT_AT_60 = "Hide in the World at Level 60"
 local TEXT_CARRIED = "Off: a reminder even with none in your bags, so you know to buy some."
 local TEXT_NOTHING = ns.L("Nothing to remind you of here.")
 local TEXT_BLESSINGS = ns.L("Off by default: the Blessings module covers them.")
@@ -177,6 +178,8 @@ local rows = {
     { key = "consumablesWorld", label = "Show in the World", toggle = true, needs = Enabled, why = OFF },
     { key = "consumablesDungeon", label = "Show in Dungeons", toggle = true, needs = Enabled, why = OFF },
     { key = "consumablesRaid", label = "Show in Raids", toggle = true, needs = Enabled, why = OFF },
+    { key = "consumablesMaxHide", label = TEXT_AT_60, toggle = true, needs = Enabled, why = OFF,
+      help = "At level 60, consumable reminders stay out of the open world." },
     { key = "consumablesMinutes", label = "Warn With Minutes Left", slider = MINUTES_RANGE, unit = " min",
       needs = Enabled, why = OFF,
       help = "A consumable or personal buff with less time than this left counts as missing." },
@@ -201,6 +204,8 @@ rows[#rows + 1] = { key = "raidBuffsDungeon", label = "Show in Dungeons", toggle
     why = NEEDS_RAID }
 rows[#rows + 1] = { key = "raidBuffsRaid", label = "Show in Raids", toggle = true, needs = RaidBuffsOn,
     why = NEEDS_RAID }
+rows[#rows + 1] = { key = "raidBuffsMaxHide", label = TEXT_AT_60, toggle = true, needs = RaidBuffsOn,
+    why = NEEDS_RAID, help = "At level 60, raid buff reminders stay out of the open world." }
 rows[#rows + 1] = { key = "raidBuffsOwn", label = "Only Buffs I Can Cast", toggle = true, needs = RaidBuffsOn,
     why = NEEDS_RAID, help = "Off: every buff a class in your group can cast." }
 rows[#rows + 1] = { key = "raidBuffRange", label = "Show Buff Range", toggle = true, needs = RaidBuffsOn,
@@ -221,6 +226,8 @@ rows[#rows + 1] = { key = "personalBuffsDungeon", label = "Show in Dungeons", to
     why = NEEDS_PERSONAL }
 rows[#rows + 1] = { key = "personalBuffsRaid", label = "Show in Raids", toggle = true, needs = PersonalBuffsOn,
     why = NEEDS_PERSONAL }
+rows[#rows + 1] = { key = "personalBuffsMaxHide", label = TEXT_AT_60, toggle = true, needs = PersonalBuffsOn,
+    why = NEEDS_PERSONAL, help = "At level 60, personal buff reminders stay out of the open world." }
 rows[#rows + 1] = Group(TEXT_PERSONAL_PICKS, true)
 for _, family in ipairs(ALL_PERSONAL) do rows[#rows + 1] = PersonalRow(family) end
 rows[#rows + 1] = Group("Glow")

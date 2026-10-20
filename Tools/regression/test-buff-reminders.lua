@@ -105,6 +105,7 @@ local function Fixture(opts)
         onlyIfCarried = true, carriedPicks = {}, hideResting = true,
         raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
         personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
+        consumablesMaxHide = false, raidBuffsMaxHide = false, personalBuffsMaxHide = false,
         raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
@@ -481,6 +482,38 @@ do
     t.Fire("PLAYER_ENTERING_WORLD")
     t.Advance(0.5)
     Check("in a dungeon, raid buffs only", t.Shown(), "spell:10157x2")
+end
+
+-- Hide in the World at Level 60: each kind can leave the world once you reach 60, and shows while levelling.
+do
+    local t = Fixture({ settings = { raidBuffs = true, consumablesWorld = true }, bags = { 13510 },
+        group = "party", units = { player = "MAGE", party1 = "WARRIOR", party2 = "PRIEST" },
+        known = { [1460] = true, [7302] = true },
+        auras = { player = {}, party1 = {}, party2 = {} } })
+    t.state.level = 59
+    t.Login()
+    Check("off: no level event", t.Listening("PLAYER_LEVEL_UP"), false)
+    t.Set("consumablesMaxHide", true)
+    t.Set("raidBuffsMaxHide", true)
+    t.Set("personalBuffsMaxHide", true)
+    Check("on: the level up is listened for", t.Listening("PLAYER_LEVEL_UP"), true)
+    Check("levelling: all shown in the world", t.Shown(), "item:13510 spell:7302 spell:10157x2")
+    t.Fire("PLAYER_LEVEL_UP", 60)
+    t.Advance(0.5)
+    Check("at 60, before the client's level catches up: none in the world", t.Shown(), "")
+    t.state.level = 60
+    t.Set("iconSize", 40)
+    Check("at 60 the level event is no longer listened for", t.Listening("PLAYER_LEVEL_UP"), false)
+    t.Set("raidBuffsMaxHide", false)
+    Check("each kind on its own", t.Shown(), "spell:10157x2")
+    t.state.instance = "pvp"
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("at 60 in a battleground: the World switches as before", t.Shown(), "item:13510 spell:7302 spell:10157x2")
+    t.state.instance = "raid"
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("at 60 in a raid: shown as before", t.Shown(), "item:13510 spell:7302 spell:10157x2")
 end
 
 -- Only If I Carry One: nothing carried shows nothing; off, a generic icon per kind.

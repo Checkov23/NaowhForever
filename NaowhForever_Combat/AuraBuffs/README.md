@@ -98,6 +98,12 @@ NaowhForever_Combat/AuraBuffs/
   choice treated it. `PLAYER_ENTERING_WORLD` fires through every instance's loading screen, so it
   is enough to follow the place. There is no In Combat switch: the row does not refresh in combat,
   and its buttons are secure, so it cannot be hidden then.
+- Hide in the World at Level 60 (`consumablesMaxHide`, `raidBuffsMaxHide`, `personalBuffsMaxHide`, off by
+  default) is Robin's: while levelling you want the reminders out in the world, at 60 maybe only in dungeons and
+  raids. From level `MAX_LEVEL` (60, Forever's cap) it hides that kind in the open world only: battlegrounds and
+  arenas, which the World switch also covers, keep following it, and Dungeons and Raids are left alone.
+  `PLAYER_LEVEL_UP` is listened for only while one of them is on and you are under 60, and its new level is
+  used, since `UnitLevel` can still read the old one around that event.
 - `A.Migrate` turns the old Show In choice (`consumablesWhere`) into the three consumables switches
   on every Apply and clears it, so an old profile string is moved too: Everywhere is all three,
   Dungeons & Raids the last two, Raids Only raids alone. Hide While Resting still applies on top.

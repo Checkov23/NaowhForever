@@ -7,6 +7,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     enabled = F.enabled,
     campBuffTextSize = 16, campBuffSide = "right", campShowMissing = true,
     consumablesWorld = false, consumablesDungeon = true, consumablesRaid = true, consumablesMinutes = 2,
+    consumablesMaxHide = false, raidBuffsMaxHide = false, personalBuffsMaxHide = false,
     onlyIfCarried = true, carriedPicks = {}, hideResting = true,
     raidBuffsWorld = true, raidBuffsDungeon = true, raidBuffsRaid = true,
     personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
