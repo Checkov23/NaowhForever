@@ -53,7 +53,7 @@ local function NameItem(dialog)
 end
 
 local function OnPopupShow(which)
-    if not (DIALOGS[which] and S.Get("enabled") and S.Get("deleteConfirm")) then return end
+    if not (DIALOGS[which] and S.Get("enabled") and S.Get("deleteConfirm")) or ns.GamepadStandDown() then return end
     local dialog = StaticPopup_FindVisible(which)
     if not dialog then return end
     HookLinks(dialog)
@@ -67,6 +67,7 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
     id = "looting", name = "Looting", order = 10, into = "lootTrade",
     rows = {
         { key = "deleteConfirm", label = "Type DELETE For You", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "Types DELETE into the confirmation box for you, and names the item in the dialog as a "
               .. "link you can hover for its tooltip." },
         { key = "fastLoot", label = "Faster Auto Loot", toggle = true,

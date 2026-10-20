@@ -1173,6 +1173,10 @@ function ns.GamepadWhy()
     if ns.GamepadStandDown() then return ns.L(TEXT_GAMEPAD_STYLE) end
 end
 
+function ns.GamepadFree()
+    return not ns.GamepadStandDown()
+end
+
 local function OnNameKnown(self)
     if UnitName("player") == UNKNOWNOBJECT then return end
     self:UnregisterAllEvents()

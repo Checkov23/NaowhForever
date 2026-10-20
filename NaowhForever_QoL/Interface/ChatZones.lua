@@ -263,7 +263,7 @@ local function Filter(_, event, msg, author, ...)
 end
 
 local function FinderOn()
-    return On() and S.Get("chatZonesFinder")
+    return On() and S.Get("chatZonesFinder") and not ns.GamepadStandDown()
 end
 
 local function ZoneString(store, parent, font)
@@ -515,6 +515,7 @@ ns.Shared.Settings.Page("QoL/Interface", S):Card({
               .. "runs a /who for them and prints their zone; their next messages are tagged." },
         Group("Group Finder"),
         { key = "chatZonesFinder", label = "Zones in Group Finder", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "The leader's zone on each Group Finder listing, and every member's zone when you "
               .. "hover it." },
         Group("Other Players"),

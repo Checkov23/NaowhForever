@@ -7,7 +7,7 @@ local events = CreateFrame("Frame")
 local hooked
 
 local function On()
-    return S.Get("enabled") and S.Get("layerSwap")
+    return S.Get("enabled") and S.Get("layerSwap") and not ns.GamepadStandDown()
 end
 
 local function Accept()
@@ -51,6 +51,6 @@ boot:RegisterEvent("PLAYER_LOGIN")
 boot:SetScript("OnEvent", Apply)
 
 ns.Shared.Settings.Page("QoL/Questing & Group", S):Card({
-    id = "layerSwap", name = "Auto-Accept Layer Swap", order = 26, switch = "layerSwap",
+    id = "layerSwap", name = "Auto-Accept Layer Swap", order = 26, switch = "layerSwap", switchWhy = ns.GamepadWhy,
     help = "Accepts the layer swap prompt when you join a group.",
 })

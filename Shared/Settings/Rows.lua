@@ -371,7 +371,10 @@ local function SetForeverHead(head, card, isOpen, held)
     head.sign:SetPoint("CENTER", head, "RIGHT", -SS.FOREVER_SIGN_RIGHT, 0)
     head.name:ClearAllPoints()
     if card.switchGet then
+        local switchHeld = card.switchWhy and card.switchWhy() ~= nil
         head.switch:Show()
+        head.switch:EnableMouse(not switchHeld)
+        head.switch:SetAlpha(switchHeld and DIM_ALPHA or 1)
         head.switch._refreshValue()
         head.switch:ClearAllPoints()
         head.switch:SetPoint("LEFT", PAD, 0)

@@ -158,7 +158,7 @@ end
 
 local function RefreshGlow()
     local new = NewSpells()
-    local show = On() and S.Get("trainerGlow")
+    local show = On() and S.Get("trainerGlow") and not ns.GamepadStandDown()
     local LCG = LibStub("LibCustomGlow-1.0")
     local color = { T.accent.r, T.accent.g, T.accent.b, 1 }
     for _, btn in pairs(ActionBarButtonEventsFrame.frames) do
@@ -427,7 +427,7 @@ end
 local function Learned(spellID)
     if C_Spell.IsSpellPassive(spellID) or IsRecipe(spellID) then return end
     learned[#learned + 1] = spellID
-    if S.Get("trainerGlow") then
+    if S.Get("trainerGlow") and not ns.GamepadStandDown() then
         NewSpells()[spellID] = true
         WatchGlow()
         QueueGlow()
@@ -474,7 +474,8 @@ local function OnEvent(_, event, arg1, _, arg3)
 end
 
 function WatchGlow()
-    local watch = On() and S.Get("trainerGlow") and (next(NewSpells()) ~= nil or next(glowing) ~= nil)
+    local watch = On() and S.Get("trainerGlow") and not ns.GamepadStandDown()
+        and (next(NewSpells()) ~= nil or next(glowing) ~= nil)
     if watch then
         events:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
         for _, event in ipairs(GLOW_EVENTS) do events:RegisterEvent(event) end
@@ -552,6 +553,7 @@ Settings.Page(SETTINGS_PAGE, S):Card({
     summary = TrainerSummary,
     rows = {
         { key = "trainerGlow", label = "Glow New Abilities", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "Lights up the new abilities on your action bars until you use them." },
         { key = "trainerRanks", label = "Offer to Replace Lower Ranks", toggle = true,
           help = "Adds a button to the popup that swaps every lower rank on your bars for the highest rank "

@@ -137,6 +137,7 @@ function Roster.Showing(row)
 end
 
 function Roster.AddTooltip(fn)
+    if ns.GamepadStandDown() then return end
     adders[#adders + 1] = fn
     if #adders > 1 then return end
     if CommunitiesFrame then

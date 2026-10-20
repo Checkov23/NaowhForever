@@ -19,7 +19,9 @@ local settings = { enabled = true }
 local setHooks, applyHooks = {}, {}
 local S = { Get = function(k) return settings[k] end }
 local card
+local gamepad = false
 local ns = {
+    GamepadStandDown = function() return gamepad end,
     QoLSettings = S,
     Apply = NOTHING,
     Shared = { Settings = { Page = function() return { Card = function(_, c) card = c end } end } },
@@ -68,6 +70,14 @@ end)
 Case("off by default: no events, nothing hooked", function()
     boot.scripts.OnEvent(boot, "PLAYER_LOGIN")
     assert(next(events.events) == nil and #shownHooks == 0)
+end)
+
+Case("the Gamepad interface style: switching on listens to nothing and hooks nothing", function()
+    gamepad = true
+    Set("layerSwap", true)
+    assert(next(events.events) == nil and #shownHooks == 0)
+    Set("layerSwap", false)
+    gamepad = false
 end)
 
 Case("a game without the prompt: switching on only listens", function()

@@ -152,6 +152,14 @@ settings.mapFishing = false
 boot()
 Hover(1411)
 Check(label.fishing.text == "" and label.text.text == "Level 5-10", "Fishing off leaves Zone Levels alone")
+settings.zoneInfo = true
+ns.GamepadStandDown = function() return true end
+boot()
+Check(label.shown, "Zone Info stood down by the Gamepad style leaves Zone Levels on")
+ns.GamepadStandDown = function() return false end
+boot()
+Check(not label.shown, "Zone Info running takes Zone Levels' place")
+settings.zoneInfo, ns.GamepadStandDown = nil, nil
 settings.zoneLevels = false
 boot()
 Check(not label.shown, "both off: the label hides")

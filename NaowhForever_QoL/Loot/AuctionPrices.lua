@@ -207,7 +207,7 @@ end
 
 local function ShowButton()
     local frame = _G.AuctionHouseFrame
-    if not frame then return end
+    if not frame or ns.GamepadStandDown() then return end
     if not button then BuildButton(frame) end
     Anchor()
     C_Timer.After(0, Anchor)
@@ -258,6 +258,7 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
     id = "auctionPrices", name = "Auction Prices", order = 30, into = "lootTrade",
     rows = {
         { key = "ahPrices", label = "Scan Prices Button", toggle = true, note = ScanLine,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "A Scan Prices button on the auction house. It reads every listing and keeps the "
               .. "lowest buyout for each item, for this realm and faction. Blizzard allows one full "
               .. "scan every 15 minutes." },

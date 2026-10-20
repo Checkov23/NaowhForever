@@ -20,12 +20,16 @@ local lastX, lastY, lastMapID
 local added
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
 
+local function ZoneInfoOn()
+    return S.Get("zoneInfo") and not ns.GamepadStandDown()
+end
+
 local function LevelsOn()
-    return S.Get("enabled") and S.Get("zoneLevels") and not S.Get("zoneInfo")
+    return S.Get("enabled") and S.Get("zoneLevels") and not ZoneInfoOn()
 end
 
 local function FishingOn()
-    return S.Get("enabled") and S.Get("mapFishing") and not S.Get("zoneInfo")
+    return S.Get("enabled") and S.Get("mapFishing") and not ZoneInfoOn()
 end
 
 local function On()

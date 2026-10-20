@@ -54,7 +54,9 @@ local bnet = {
     [2] = { gameAccountInfo = { wowProjectID = 9, playerGuid = "Player-1-B2", characterLevel = 60, isOnline = true } },
 }
 
-local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = {} }
+local gamepad = false
+local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, Shared = {},
+    GamepadStandDown = function() return gamepad end }
 local env = setmetatable({
     _G = { NaowhForever = ns, NaowhForeverFriendTooltipTextLeft1 = fontLine,
         NaowhForeverFriendTooltipTextRight1 = fontRight },
@@ -82,6 +84,11 @@ chunk()
 local Roster = ns.Shared.Roster
 
 check("nothing hooked at load", state.callback == nil and next(state.onLoaded) == nil)
+gamepad = true
+Roster.AddTooltip(function() end)
+check("the Gamepad interface style: the friends and guild lists are left alone", next(state.onLoaded) == nil
+    and state.hooked == nil)
+gamepad = false
 Roster.AddTooltip(function(_, guid, info, row)
     state.calls[#state.calls + 1] = "badge:" .. guid .. ":" .. info.level
     return false

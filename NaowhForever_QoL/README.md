@@ -147,6 +147,14 @@ NaowhForever_QoL/
 
 ## Why
 
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the features that hook, move or
+  add to the game's own windows stay off and their settings say why: Zone Info and the Town Pins
+  button on the world map, the Map Window, Type DELETE For You, Auto-Accept Layer Swap, Saved Quest
+  Rewards, Hide Blizzard Loot Window, the Alts and Quick Attach buttons on the mailbox, the Scan Prices
+  button, Group Finder Roles, Zones in Group Finder, Land Early Button and Glow New Abilities. That
+  style opens and navigates those windows, popups and action bars from secure code, and our work on
+  them would taint it, blocking its gamepad bindings in combat. EllesmereUI's matching features
+  stand down the same way.
 - The Damage Meter Skin never hides or re-lays out the game's meter: it recolors its textures and
   fonts after the game sets them (hooksecurefunc on each entry, a scroll box callback for new
   ones), and remembers the art, the font with its flags and shadow, and the bar's atlas to give

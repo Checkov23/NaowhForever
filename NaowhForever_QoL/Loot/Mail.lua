@@ -277,7 +277,7 @@ local function OnAttachClick()
 end
 
 local function Build()
-    if altsButton or not (SendMailFrame and MailFrame) then return end
+    if altsButton or ns.GamepadStandDown() or not (SendMailFrame and MailFrame) then return end
     altsButton = ns.Button(SendMailFrame, TEXT_ALTS, BUTTON_W, BUTTON_H, OnAltsClick)
     altsButton:SetPoint("TOPLEFT", MailFrame, "TOPRIGHT", BUTTON_X, BUTTON_Y)
     ns.Tooltip(altsButton, TEXT_ALTS_TIP, TEXT_ALTS_HELP)
@@ -352,9 +352,11 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
               .. "their bags, bank and mailbox. Each character is counted once you log in on it, "
               .. "and its bank once you open it." },
         { key = "mailAlts", label = "Alts Button on Mail", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "An Alts button beside the mailbox's Send tab lists your characters on this realm "
               .. "and faction with their level and gold. Pick one to fill the To box." },
         { key = "mailQuickAttach", label = "Quick Attach", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "An Attach button beside the mailbox's Send tab: attach every trade good, one type "
               .. "of trade good, or your unbound gear in one click." },
         { key = "mailExpiry", label = "Mail Expiry Warning", toggle = true,

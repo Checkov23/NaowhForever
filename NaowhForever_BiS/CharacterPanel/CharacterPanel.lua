@@ -55,6 +55,7 @@ function CP.Rival(r)
     local function Swap(on)
         local db = _G.EllesmereUIDB
         if type(db) ~= "table" or not (_G.EllesmereUI and _G.EllesmereUI.GetBlizzWindowStyle) then return end
+        if on and ns.GamepadStandDown() then return end
         if on and db[r.dbKey] ~= false then
             db[r.dbKey] = false
             S.Set(tookOver, true)

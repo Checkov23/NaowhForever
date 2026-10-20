@@ -66,15 +66,16 @@ local function Find(key)
         for _, card in pairs(page.cards) do
             if card.switch == key then return card.name, card end
             for _, row in ipairs(card.rows) do
-                if row.key == key then return row.label, card end
+                if row.key == key then return row.label, card, row end
             end
         end
     end
 end
 
 local function OnHere(key)
-    local label, card = Find(key)
+    local label, card, row = Find(key)
     if not (label and card.store.Get(key)) then return false end
+    if row and Settings.Off(row) or not row and card.switchWhy and card.switchWhy() then return false end
     return type(card.switch) ~= "string" or card.store.Get(card.switch) == true
 end
 

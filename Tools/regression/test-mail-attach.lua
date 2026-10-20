@@ -81,7 +81,7 @@ local alts, toBox = {}, {}
 
 local function Load()
     for k in pairs(frames) do frames[k] = nil end
-    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+    local ns = { GamepadStandDown = function() return false end, L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
         QoLSettings = { Get = function(key) return settings[key] end, Set = function() end },
         QoLConstants = dofile("Tools/regression/qol_constants.lua"),
         Color = function(_, text) return text end,

@@ -403,6 +403,11 @@ What a comment in the code used to say, in short. The house rules behind it are 
   fixed lines, so ours is a tooltip of our own `TIP_GAP` under it, which hides itself as soon as
   the Friends tooltip stops showing that row. List rows are hooked with `HookScript`, after the
   game's own, once each. A GUID is used only when it is a readable string, never a secret value.
+- Under Forever's Gamepad interface style (`ns.GamepadStandDown()`) the game's bags and the Friends
+  and Guild lists are left alone: `Bags.OnGameUpdate` hooks no bag frame and `Roster.AddTooltip`
+  hooks no list, so Bag Marks, Junk Marker, the badges and Naowh Score add nothing there.
+  EllesmereUI's and Baganator's bags still get their marks. That style navigates these windows
+  from secure code, which our hooks and tooltip lines would taint.
 - `Places.ShowMap` opens the world map only out of combat, where addon code may open it. While
   `ns.GamepadOwnsPanels()` it says so in chat instead: `C_Map.OpenWorldMap` runs the game's
   `ShowUIPanel` from our click, and the gamepad builds its bindings inside that, which is how the

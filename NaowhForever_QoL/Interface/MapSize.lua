@@ -235,7 +235,7 @@ end
 
 local function Setup()
     local map = WorldMapFrame
-    if not map then return end
+    if not map or ns.GamepadStandDown() then return end
     if On() and not grip then
         BuildGrip()
         BuildHandle()

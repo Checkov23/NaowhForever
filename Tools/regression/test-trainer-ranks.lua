@@ -221,6 +221,18 @@ Case("normal new-ability notifications still appear after closing the trainer", 
     t.Event("TRAINER_CLOSED")
     assert(t.Shown() and t.env.popup.titleText == "New Abilities" and t.env.listed[1] == 591)
 end)
+Case("under the Gamepad style new spells are not kept for a glow that cannot clear them", function()
+    local t = Lifecycle()
+    local new = {}
+    t.settings.trainerGlow = true
+    t.env.NewSpells = function() return new end
+    t.env.ns = { GamepadStandDown = function() return true end }
+    t.Event("LEARNED_SPELL_IN_SKILL_LINE", 591)
+    assert(next(new) == nil)
+    t.env.ns.GamepadStandDown = function() return false end
+    t.Event("LEARNED_SPELL_IN_SKILL_LINE", 591)
+    assert(new[591])
+end)
 Case("disabling the feature cancels a combat-deferred rank check", function()
     local t = Lifecycle()
     t.Event("TRAINER_SHOW")

@@ -31,8 +31,10 @@ local box, text = Frame(), Frame()
 function box:GetParent() return dialog end
 
 local cursor
+local gamepad = false
 local env = setmetatable({
     NaowhForever = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, QoLSettings = { Get = function(key) return settings[key] end },
+        GamepadStandDown = function() return gamepad end,
         Shared = { Settings = { Page = function() return { Card = function() end } end } } },
     hooksecurefunc = function(name, fn)
         assert(name == "StaticPopup_Show")
@@ -74,6 +76,12 @@ Case("off by default: the box is left to type in", function()
     assert(box.shown and box.text == nil and not yes.enabled)
 end)
 settings.deleteConfirm = true
+Case("the Gamepad interface style: the popup is left as the game shows it", function()
+    gamepad = true
+    hook("DELETE_GOOD_ITEM")
+    gamepad = false
+    assert(box.text == nil and not yes.enabled and not dialog.resized and next(dialog.hooks) == nil)
+end)
 Case("on: DELETE filled in, the box left showing, and Yes clickable", function()
     hook("DELETE_GOOD_ITEM")
     assert(box.text == "DELETE" and box.shown, "filled in and showing")

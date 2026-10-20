@@ -76,7 +76,7 @@ function S.Set(k, v)
 end
 local card
 local tips = {}
-local ns = {
+local ns = { GamepadStandDown = function() return false end,
     QoLSettings = S,
     Apply = NOTHING,
     THEME = { muted = {} },

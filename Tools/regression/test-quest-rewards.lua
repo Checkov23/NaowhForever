@@ -60,6 +60,7 @@ local settings = {}
 local S = { Get = function(key) return settings[key] end, Set = function() end, DB = function() return db end }
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     QoLSettings = S, Print = NOTHING, Apply = NOTHING, AccountSettings = function() return account end,
+    GamepadStandDown = function() return false end, GamepadFree = function() return true end, GamepadWhy = NOTHING,
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     Color = function(_, text) return tostring(text) end,
     Font = function(parent) return Frame(parent) end,

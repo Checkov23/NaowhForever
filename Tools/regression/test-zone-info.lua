@@ -59,7 +59,7 @@ local function Fixture(runtime)
     function base:OnRemoved() self.owner = nil end
     function base:GetMap() return self.owner end
     local T = { muted = {}, fg = {} }
-    local ns = { QoLSettings = S, THEME = T, UI = {}, ZoneLevels = { [1] = { 9, 18 }, [2] = { 30, 40 } },
+    local ns = { GamepadStandDown = function() return false end, QoLSettings = S, THEME = T, UI = {}, ZoneLevels = { [1] = { 9, 18 }, [2] = { 30, 40 } },
         FishingLevels = { [1] = { 1, 75 } }, Shared = { Style = { HAVE_RGB = {}, TIME_OUT_RGB = {} },
             Places = { SameMap = function(id) return id end } } }
     ns.L = function(text) return text end

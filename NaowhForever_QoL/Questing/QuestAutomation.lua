@@ -65,7 +65,7 @@ local function ChoiceItemID(index)
 end
 
 local function PickedChoice()
-    local picked = On("questRewardPicks") and Picks()[GetQuestID()]
+    local picked = On("questRewardPicks") and not ns.GamepadStandDown() and Picks()[GetQuestID()]
     if not picked or picked < 0 then return end
     for i = 1, GetNumQuestChoices() do
         if ChoiceItemID(i) == picked then return i end
@@ -137,6 +137,7 @@ function QuestRewards.Clear()
 end
 
 local function OnRewardButton(rewardsFrame, index)
+    if ns.GamepadStandDown() then return end
     local button = rewardsFrame.RewardButtons[index]
     if button and not hooked[button] then
         hooked[button] = true
@@ -322,6 +323,7 @@ page:Card({
           help = "When an NPC offers several things, goes straight to a finished quest to hand in, "
               .. "or the first quest on offer. Works with the two options above." },
         { key = "questRewardPicks", label = "Saved Quest Rewards", toggle = true,
+          needs = ns.GamepadFree, why = ns.GamepadWhy,
           help = "Alt-click a reward you can choose, in the quest log or at the quest giver, to save "
               .. "it for that quest on this class; Alt-click it again to clear it. It is selected "
               .. "when you hand the quest in, and Hand In Quests takes it for you." },

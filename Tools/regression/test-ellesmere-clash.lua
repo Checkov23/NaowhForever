@@ -21,7 +21,8 @@ local clutter = { name = "Hide Clutter", store = store, switch = "hideClutter",
     rows = { { key = "skipCinematics", label = "Skip Cinematics" } } }
 local quests = { name = "Quests", store = store, rows = { { key = "questAccept", label = "Accept Quests" } } }
 local Settings = { pages = { ["QoL/Loot"] = { cards = { restock = restock, lootFeed = feed } },
-    ["QoL/Interface"] = { cards = { clutter = clutter } }, ["QoL/Questing"] = { cards = { quests = quests } } } }
+    ["QoL/Interface"] = { cards = { clutter = clutter } }, ["QoL/Questing"] = { cards = { quests = quests } } },
+    Off = function(row) return row.held == true end }
 
 local asked, refreshed = {}, 0
 local openers = {}
@@ -134,6 +135,10 @@ check("several at once in one popup", #asked == 7
     and Last().text == "Auto Repair, Auto Sell Junk are on in both EllesmereUI and Naowh Forever. Turn one of each off.")
 Last().yes()
 check("Turn Off Here turns each off", values.autoRepair == false and values.sellJunk == false)
+values.autoRepair, restock.rows[1].held = true, true
+Clash(restock, "autoRepair")
+check("a row held off here, as under the Gamepad style, never asks", #asked == 7)
+restock.rows[1].held = nil
 
 local qol = {}
 _G.NaowhForever = qol

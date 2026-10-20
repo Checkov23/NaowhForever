@@ -141,4 +141,17 @@ row.anim.scripts.OnFinished()
 Loot(WOOL)
 check("a faded line is not merged into", row.shown and row.name.text:find("x1", 1, true) ~= nil)
 
+local function LootWatched()
+    for _, f in ipairs(frames) do if f.events.LOOT_READY then return true end end
+    return false
+end
+ns.GamepadStandDown = function() return true end
+S.Set("hideLootWindow", true)
+check("under the Gamepad style, Hide Blizzard Loot Window loots nothing", not LootWatched())
+S.Set("fastLoot", true)
+check("while Faster Auto Loot still does", LootWatched())
+S.Set("fastLoot", false)
+S.Set("hideLootWindow", false)
+ns.GamepadStandDown = nil
+
 print(("test-loot-feed-items: %d checks passed"):format(checks))
