@@ -8,8 +8,9 @@ minimap and Top Bar button). Its on/off switches and their defaults come from
 - **Buffs & Consumables:** a row of icons for missing food, flask and elixir buffs from the
   consumables you watch, class buffs missing in your group, and your own class buff (armor, Inner
   Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
-  shows, or hover it to pick another carried item. The worn gear and fishing pole reminders moved
-  to QoL > Loot & Items > Gear Reminders (`NaowhForever_QoL/Loot/GearReminders.lua`).
+  shows, or hover it to pick another carried item. Middle-click one to hide it until you reload. The worn
+  gear and fishing pole reminders moved to QoL > Loot & Items > Gear Reminders
+  (`NaowhForever_QoL/Loot/GearReminders.lua`).
 - **Campfire:** in two looks on one mover. Round, a camp icon with a time ring and a countdown;
   Simple, a bar in the windows' backdrop with the campfire at its left, the camp's bonuses with
   their amounts, and the time left on the right over a line that runs down green, yellow, then
@@ -247,6 +248,11 @@ NaowhForever_Combat/AuraBuffs/
   Consumable Bar's do. A press used to start a second, faster Pixel Glow over the reminder's own, so
   the glow seemed to speed up; the pressed look replaced it. The menu closes when the click is let
   go: the buttons take both the down and the up, and the item may be used on either.
+- Middle-click hides a reminder for the session: its key (the consumable kind, `weapon`, or the personal
+  or raid buff family's own table) goes in a table that is never saved, and `Collect` leaves it out.
+  A reload or relog brings it back. The secure buttons set only `type1`, so a middle click uses nothing;
+  `PostClick` sees both its down and its up and acts on the up. In combat the row holds, so the icon goes
+  once combat ends. There is no switch: it costs nothing until clicked.
 - The row's and the menu's icon edges take the theme's Borders & Lines color (`ns.ThemeTint`), and
   stay black with the default theme.
 - Camp Benefits (1229741, probed 2026-09-19), Campfire Nearby (1283391, the area aura in range of

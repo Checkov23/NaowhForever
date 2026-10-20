@@ -47,6 +47,7 @@ local carried
 local wellFedName
 local wakeAt
 local lastImbue
+local hidden = {}
 
 local function Secret(v)
     return issecretvalue and issecretvalue(v)
@@ -287,7 +288,7 @@ local function Consumables(list, buffs)
                 icon = ns.AccountSettings().lastFoodIcon or icon or C_Spell.GetSpellTexture(D.WELL_FED[1])
             end
             Consumable(list, buffs, group, item, icon, LastIcon(category), onlyCarried)
-            if #list > before then list[#list].items = group.items end
+            if #list > before then list[#list].items, list[#list].key = group.items, category end
         end
     end
 end
@@ -369,7 +370,7 @@ local function RaidBuffs(list, playerBuffs)
             end
             local missing = Missing(family, units)
             if missing > 0 then
-                list[#list + 1] = { icon = C_Spell.GetSpellTexture(family.spells[1]),
+                list[#list + 1] = { icon = C_Spell.GetSpellTexture(family.spells[1]), key = family,
                     count = memberCount > 1 and missing, rangeUnits = units, rangeSpell = units and spell }
             end
         end
@@ -435,7 +436,7 @@ local function WeaponEnhancement(list)
     if not item and Carried("weapon") then return end
     local shown, used = Shown(D.WEAPON_ITEMS, LastIcon("weapon"), item)
     list[#list + 1] = { icon = shown or D.WEAPON_ICONS[D.WEAPON_ICON_ITEM], items = D.WEAPON_ITEMS,
-        item = used }
+        item = used, key = "weapon" }
 end
 
 local function TargetHas(spells)
@@ -475,7 +476,7 @@ local function PersonalBuffs(list, buffs)
                 spell = lastImbue
             end
             local has, aura = Has(family, buffs, warn)
-            if not has then list[#list + 1] = { icon = C_Spell.GetSpellTexture(spell), aura = aura } end
+            if not has then list[#list + 1] = { icon = C_Spell.GetSpellTexture(spell), aura = aura, key = family } end
         end
     end
 end
@@ -608,6 +609,10 @@ function Reminders.WakeAt()
     return wakeAt
 end
 
+function Reminders.Hide(key)
+    hidden[key] = true
+end
+
 function Reminders.Collect()
     if InCombatLockdown() or C_Secrets.ShouldAurasBeSecret() then return nil end
     local buffs = Buffs("player")
@@ -621,5 +626,8 @@ function Reminders.Collect()
     end
     if S.Get("personalBuffs") and ShowsHere("personalBuffs", zone) then PersonalBuffs(list, buffs) end
     if S.Get("raidBuffs") and ShowsHere("raidBuffs", zone) then RaidBuffs(list, buffs) end
+    for i = #list, 1, -1 do
+        if hidden[list[i].key] then table.remove(list, i) end
+    end
     return list
 end

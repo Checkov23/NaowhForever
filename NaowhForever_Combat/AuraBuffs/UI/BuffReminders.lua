@@ -52,12 +52,19 @@ local function OnCellLeave()
     Menu.Leave()
 end
 
+local function OnCellUsed(cell, button, down)
+    if button ~= "MiddleButton" or down or not cell.key then return end
+    R.Hide(cell.key)
+    Queue()
+end
+
 local function GetCell(i)
     local cell = cells[i]
     if cell then return cell end
     cell = Cell.New(frame, "SecureActionButtonTemplate")
     cell:EnableMouse(true)
     cell:RegisterForClicks("AnyUp", "AnyDown")
+    cell:SetScript("PostClick", OnCellUsed)
     Parts.Press(cell)
     cell:SetScript("OnEnter", OnCellEnter)
     cell:SetScript("OnLeave", OnCellLeave)
@@ -127,7 +134,7 @@ local function Show(list)
             local cell = GetCell(shown)
             Cell.Place(cell, frame, shown, size, entry.icon, entry.count)
             cell.rangeIn, cell.rangeMissing = nil, nil
-            cell.items = entry.items
+            cell.items, cell.key = entry.items, entry.key
             ItemBar.SetItem(cell, entry.item)
             ShowTimer(cell, entry.aura)
             cell:Show()

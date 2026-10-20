@@ -790,6 +790,43 @@ do
     Check("everyone buffed", t.Shown(), "")
 end
 
+-- Middle-click hides that reminder until reload, on the click's up only, and holds in combat like the row.
+do
+    local t = Fixture({ instance = "raid", bags = { 13931, 13510 }, settings = { raidBuffs = true },
+        group = "party", units = { player = "MAGE", party1 = "WARRIOR", party2 = "PRIEST" },
+        known = { [1460] = true }, auras = { player = {}, party1 = {}, party2 = {} } })
+    local function Cell(texture)
+        for _, f in ipairs(t.frames) do
+            if rawget(f, "icon") and f.shown and f.icon.texture == texture and rawget(f, "scripts").PostClick then
+                return f
+            end
+        end
+    end
+    local function Middle(cell, down) cell.scripts.PostClick(cell, "MiddleButton", down); t.Advance(0.5) end
+    t.Login()
+    Check("food, flask and a raid buff", t.Shown(), "item:13931 item:13510 spell:10157x2")
+    local food = Cell("item:13931")
+    food.scripts.PostClick(food, "LeftButton", true)
+    Check("a left click starts no glow", t.state.presses[food], nil)
+    t.Advance(0.5)
+    Middle(food, true)
+    Check("a middle press alone hides nothing", t.Shown(), "item:13931 item:13510 spell:10157x2")
+    Middle(food, false)
+    Check("letting go hides that reminder", t.Shown(), "item:13510 spell:10157x2")
+    Check("and glows nothing", next(t.state.presses), nil)
+    t.Fire("BAG_UPDATE_DELAYED"); t.Advance(0.5)
+    Check("it stays hidden on a refresh", t.Shown(), "item:13510 spell:10157x2")
+    Middle(Cell("spell:10157"), false)
+    Check("a raid buff hides the same way", t.Shown(), "item:13510")
+    local flask = Cell("item:13510")
+    t.state.combat = true
+    Middle(flask, false)
+    Check("in combat the row holds", t.Shown(), "item:13510")
+    t.state.combat = false
+    t.Fire("PLAYER_REGEN_ENABLED"); t.Advance(0.5)
+    Check("and drops it once combat ends", t.Shown(), "")
+end
+
 -- Range follows the learned rank, treats unavailable results as out, and never rescans auras on a tick.
 do
     local t = Fixture({ settings = { raidBuffs = true, personalBuffs = false }, group = "party",
@@ -1085,7 +1122,8 @@ do
     Check("row icon uses the item it shows", (cell.attributes.type1 or "") .. " " .. (cell.attributes.item1 or ""),
         "item item:111")
     Check("row icons take the hover and pressed look", cell.pressLook, true)
-    Check("clicking a row icon runs nothing after the item", cell.scripts.PostClick, nil)
+    cell.scripts.PostClick(cell, "LeftButton", false)
+    Check("a left click on a row icon runs nothing after the item", next(t.state.presses), nil)
     cell.scripts.OnEnter(cell)
     Check("open menu hangs under its cell", popup.anchor, cell)
     Check("menu sits centred under its cell", popup.point .. ">" .. popup.relativePoint, "TOP>BOTTOM")
