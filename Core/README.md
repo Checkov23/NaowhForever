@@ -335,8 +335,9 @@ Profile strings
   a slot or macro it cannot use is dropped and the rest kept. The Action Bars module need not be on.
 - An imported set keeps only keybinds to action bar buttons, at most 2 keys each, the website code's
   rule (`Sharing.lua`): a set saves every bound key, so another player's set would otherwise rebind
-  movement, chat and the camera. `BAR_BUTTONS` copies the button names from the Action Bars module's
-  `Data/Bars.lua`, which may not be loaded. Your own saved sets keep all their keys.
+  movement, chat and the camera. `BAR_BUTTONS` copies the button names and counts (the pet bar's 10
+  included) from the Action Bars module's `Data/Bars.lua`, which may not be loaded. Your own saved
+  sets keep all their keys.
 - When a set lands under a new name, or is one you already have under another, the imported
   settings' Import on New Character choice (`actionBars.autoImportSets`) for that class follows it,
   so it still names the set it chose.

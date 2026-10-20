@@ -1,33 +1,41 @@
 -- Bar sets against a small fake of the action bars, spellbook, macros and cursor, driven
 -- through the /nf bars command the way a player would.
--- The module's rules as ActionBars.xml lists them, and the saved sets page; not its window.
+-- The module's rules as ActionBars.xml lists them, and the saved sets' menu; not its window
+-- (test-action-bars-window.lua draws that).
 rawset(_G, "C_AddOns", { DoesAddOnExist = function() return false end, GetAddOnEnableState = function() return 0 end })
-local FILES = { "Core/Features.lua" }
+local FILES = { "Core/Features.lua", "Shared/Style.lua" }
 for _, path in ipairs(dofile("Tools/regression/toc_files.lua")("^NaowhForever_Utilities/ActionBars/.*%.lua$")) do
-    if not path:find("/View/") and (not path:find("/UI/") or path:find("/UI/SetsPage%.lua$")) then
+    if not path:find("/UI/") or path:find("/UI/SetsPage%.lua$") then
         FILES[#FILES + 1] = path
     end
 end
 
--- Spells by id: name, rank and the level it is learned at.
+-- Spells by id: name, rank (or the spellbook's text for a variant without one) and the level it is learned at.
 local SPELLS = {
     [2054] = { "Heal", 1, 16 }, [2055] = { "Heal", 2, 22 }, [6064] = { "Heal", 4, 34 },
     [585] = { "Smite", 1, 1 }, [598] = { "Smite", 3, 14 },
+    [116] = { "Frostbolt", 1, 4 }, [205] = { "Frostbolt", 2, 8 }, [837] = { "Frostbolt", 3, 14 },
+    [118] = { "Polymorph", 1, 8 }, [12826] = { "Polymorph", 4, 60 }, [28272] = { "Polymorph", "Pig", 60 },
 }
+
+local function SubName(id)
+    local rank = SPELLS[id][2]
+    return type(rank) == "string" and rank or "Rank " .. rank
+end
 
 local function World(known)
     local w = { bars = {}, macros = {}, charMacros = {}, binds = {}, cursor = nil, opts = {}, account = {},
         printed = {}, combat = false, level = 1, guid = "Player-1", timers = {} }
     local book = {}
     for _, id in ipairs(known) do
-        book[#book + 1] = { name = SPELLS[id][1], subName = "Rank " .. SPELLS[id][2], actionID = id,
+        book[#book + 1] = { name = SPELLS[id][1], subName = SubName(id), actionID = id,
             itemType = 1, isPassive = false }
     end
     local function Known(id)
         for _, item in ipairs(book) do if item.actionID == id then return true end end
     end
     function w.learn(id)
-        book[#book + 1] = { name = SPELLS[id][1], subName = "Rank " .. SPELLS[id][2], actionID = id,
+        book[#book + 1] = { name = SPELLS[id][1], subName = SubName(id), actionID = id,
             itemType = 1, isPassive = false }
     end
     w.opts.enabled, w.opts.importMacros, w.opts.importBindings = true, true, true
@@ -108,6 +116,7 @@ local function World(known)
             GetSpellName = function(id) return SPELLS[id][1] end,
             PickupSpell = function(id) if Known(id) then w.cursor = { kind = "spell", id = id } end end,
             GetSpellLevelLearned = function(id) return SPELLS[id][3] end,
+            GetSpellSubtext = function(id) return SPELLS[id] and SubName(id) end,
         },
         C_Item = {
             PickupItem = function(id) w.cursor = { kind = "item", id = id } end,
@@ -225,13 +234,9 @@ local function Bars(w)
     return table.concat(out, " ")
 end
 
--- The page's rows, then the More menu of the named set.
+-- The More menu of the named set, as its row's More button opens it.
 local function More(w, name)
-    w.rows, w.buttons = {}, {}
-    w.ns.BuildActionBarsPage(nil, 0)
-    for _, row in ipairs(w.rows) do
-        if row.name == name then row.more() end
-    end
+    w.ns.ActionBars.SetMenu(name)
     return w.menu
 end
 
@@ -452,8 +457,8 @@ Case("the set row says what it holds", function()
     w.binds = { { "ACTIONBUTTON1", "1", "F1" } }
     w.bars = { [2] = Spell(598), [3] = Macro("Pull") }
     w.run("save Raid")
-    More(w, "Raid")
-    assert(w.lastHas == "2 actions, 1 macro, 2 keybinds", w.lastHas)
+    local has = w.ns.ActionBars.SetContents(w.account.barSets.PRIEST.Raid)
+    assert(has == "2 actions, 1 macro, 2 keybinds", has)
 end)
 Case("set names match whatever the case", function()
     local w = World({ 598 })
@@ -574,23 +579,12 @@ Case("a rename moves Save on Logout only for characters of this class", function
     assert(w.account.barSetLast["Preview-Realm"].name == "Main")
     assert(w.account.barSetLast["Warrior-Realm"].name == "Raid", "the warrior keeps its own set")
 end)
-Case("Save Current Bars opens the builder, and More can edit a set there", function()
+Case("More can edit a set in the builder", function()
     local w = World({ 598 })
     w.bars = { [2] = Spell(598) }
     w.run("save Raid")
     More(w, "Raid")["Edit and Save Again"]()
     assert(w.opened == "builder Raid", w.opened)
-    w.buttons["Save Current Bars"]()
-    assert(w.opened == "builder nil", w.opened)
-end)
-Case("the row's Import opens the preview", function()
-    local w = World({ 598 })
-    w.bars = { [2] = Spell(598) }
-    w.run("save Raid")
-    w.rows, w.buttons = {}, {}
-    w.ns.BuildActionBarsPage(nil, 0)
-    w.buttons.Import()
-    assert(w.opened == "import Raid", w.opened)
 end)
 Case("slots no set can restore are left as they are", function()
     local w = World({ 598 })
@@ -778,6 +772,88 @@ Case("with Fill In off nothing waits", function()
     alt.opts.fillLater = true
     alt.ns.ActionBarSettings.Set("fillLater", true)
     assert(not alt.events.registered.LEARNED_SPELL_IN_SKILL_LINE, "nothing pending, so nothing to wait for")
+end)
+Case("a saved top rank is saved as Highest, a lower rank keeps its rank", function()
+    local w = World({ 116, 205, 837 })
+    w.bars = { [1] = Spell(837), [2] = Spell(116) }
+    w.run("save Frost")
+    local slots = w.account.barSets.PRIEST.Frost.slots
+    assert(slots[1].top == true and slots[2].top == nil, "only the highest rank known is Highest")
+    local alt = World({ 116, 205 })
+    alt.account = w.account
+    alt.run("import Frost")
+    assert(Bars(alt) == "1=spell205 2=spell116", "Highest is the alt's best, Rank 1 stays Rank 1: " .. Bars(alt))
+end)
+Case("a slot marked Highest places the best rank known, one without it its own rank", function()
+    local w = World({ 116, 205 })
+    w.account.barSets = { PRIEST = { Web = { saved = 0, slots = {
+        [1] = { kind = "spell", id = 837, name = "Frostbolt", top = true },
+        [2] = { kind = "spell", id = 116, name = "Frostbolt" },
+        [3] = { kind = "spell", id = 837, name = "Frostbolt" } } } } }
+    w.run("import Web")
+    assert(Bars(w) == "1=spell205 2=spell116 3=spell205", "an unknown rank still falls back: " .. Bars(w))
+    w.opts.highestRank = true
+    w.run("import Web")
+    assert(Bars(w) == "1=spell205 2=spell205 3=spell205", "Highest Rank still forces it everywhere: " .. Bars(w))
+end)
+Case("the rank is found by the client's own spell name, not the one the code carries", function()
+    local w = World({ 116, 205 })
+    w.account.barSets = { PRIEST = { Web = { saved = 0, slots = {
+        [1] = { kind = "spell", id = 837, name = "Frostblitz", top = true },
+        [2] = { kind = "spell", id = 837, name = "Frostblitz" } } } } }
+    w.run("import Web")
+    assert(Bars(w) == "1=spell205 2=spell205", Bars(w))
+end)
+Case("Polymorph: Pig is its own spell, never Polymorph's top rank", function()
+    local w = World({ 118, 12826, 28272 })
+    w.bars = { [1] = Spell(28272), [2] = Spell(118), [3] = Spell(12826) }
+    w.run("save Sheep")
+    local slots = w.account.barSets.PRIEST.Sheep.slots
+    assert(slots[1].top == nil and slots[2].top == nil and slots[3].top == true, "only Rank 4 is Highest")
+    w.opts.highestRank = true
+    w.bars = {}
+    w.run("import Sheep")
+    assert(Bars(w) == "1=spell28272 2=spell12826 3=spell12826", "Pig stays Pig: " .. Bars(w))
+    w.opts.highestRank = false
+    w.account.barSets.PRIEST.Pig = { saved = 0, slots = { [1] = { kind = "spell", id = 28272, name = "Polymorph", top = true } } }
+    w.bars = {}
+    w.run("import Pig")
+    assert(Bars(w) == "1=spell28272", "a website Highest on Pig keeps Pig: " .. Bars(w))
+    local alt = World({ 118, 12826 })
+    alt.account = w.account
+    alt.run("import Pig")
+    assert(Bars(alt) == "", "an alt without Pig gets no sheep in its place: " .. Bars(alt))
+end)
+Case("pet bar keys are saved and imported with the set, and can be left out", function()
+    local w = World({})
+    Sets = w.ns.ActionBarSets
+    w.binds = { { "BONUSACTIONBUTTON1", "CTRL-1" }, { "BONUSACTIONBUTTON10", "CTRL-0" }, { "ACTIONBUTTON1", "1" } }
+    w.run("save Pets")
+    local set = w.account.barSets.PRIEST.Pets
+    assert(set.bindings["CTRL-1"] == "BONUSACTIONBUTTON1" and set.bindings["CTRL-0"] == "BONUSACTIONBUTTON10")
+    w.binds = {}
+    w.run("import Pets")
+    local keys = {}
+    for _, b in ipairs(w.binds) do keys[b[2]] = b[1] end
+    assert(keys["CTRL-1"] == "BONUSACTIONBUTTON1" and keys["1"] == "ACTIONBUTTON1", "bound again")
+    local choices = Choices()
+    choices.petOff = true
+    Sets.Save("NoPets", choices)
+    set = w.account.barSets.PRIEST.NoPets
+    assert(set.bindings["CTRL-1"] == nil and set.bindings["1"] == "ACTIONBUTTON1", "the pet bar left out keeps the rest")
+end)
+Case("a website layout binds pet bar keys, and never places a pet action", function()
+    local w = World({})
+    w.ns.Shared.Decode = { String = function()
+        return { v = 1, class = 5, name = "Pet", slots = { [1] = { kind = "item", id = 6948 } },
+            bindings = { ["SHIFT-1"] = "BONUSACTIONBUTTON1", F = "BONUSACTIONBUTTON2" } }
+    end }
+    w.ns.ImportActionBarString("!NFA1!x")
+    w.run("import Pet")
+    local keys = {}
+    for _, b in ipairs(w.binds) do keys[b[2]] = b[1] end
+    assert(keys["SHIFT-1"] == "BONUSACTIONBUTTON1" and keys.F == "BONUSACTIONBUTTON2", "the pet keys")
+    assert(Bars(w) == "1=item6948", Bars(w))
 end)
 Case("/nf bars delete asks first, and keeps the set on No", function()
     local w = World({ 2055 })

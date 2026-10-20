@@ -4,7 +4,8 @@ local ns = _G.NaowhForever
 local A = ns.ActionBars
 local MAX_NAME, MAX_MACRO_NAME, MAX_BODY, MAX_ID = 40, 16, 255, 10000000
 local VERSION, MAX_SUFFIX, MAX_MACROS = 1, 1000, 30
-local MAX_BINDINGS, MAX_KEY, MAX_KEYS_PER_ACTION = 192, 40, 2
+local NAMES_SHOWN = 4
+local MAX_KEY, MAX_KEYS_PER_ACTION = 40, 2
 local MAX_BASE_KEY = 31
 local FIRST_MOUSE_BUTTON, LAST_MOUSE_BUTTON, LAST_FUNCTION_KEY = 3, 31, 24
 local MODIFIER_ORDER = { "LALT", "RALT", "LCTRL", "RCTRL", "LSHIFT", "RSHIFT", "LMETA", "RMETA",
@@ -17,12 +18,37 @@ local PREFIX = "!NFA1!"
 local LIMITS = { maxChars = 100000, maxBytes = 262144, maxDepth = 8, maxValues = 10000 }
 local CLASSES = { [1] = "WARRIOR", [2] = "PALADIN", [3] = "HUNTER", [4] = "ROGUE", [5] = "PRIEST",
     [7] = "SHAMAN", [8] = "MAGE", [9] = "WARLOCK", [11] = "DRUID" }
+local BUTTONS = {}
+for _, bar in ipairs(A.BARS) do BUTTONS[bar.button] = A.C.SLOTS_PER_BAR end
+BUTTONS[A.PET_BAR.button] = A.PET_BAR.buttons
+local MAX_BINDINGS = 0
+for _, count in pairs(BUTTONS) do MAX_BINDINGS = MAX_BINDINGS + count * MAX_KEYS_PER_ACTION end
 local TEXT_INVALID = ns.L("That is not a valid website bar layout for your class.")
-local TEXT_PROMPT = ns.L("Paste an Action Bars & Macros import code from naowh.gg")
+local TEXT_PROMPT = ns.L("Paste a code from naowh.gg")
+local TEXT_PROMPT_LINE = ns.L("Copy it with Copy import code on the website's Action Bars, then paste it here.")
+local TEXT_IMPORT = ns.L("Import")
+local TEXT_EXPORT = ns.L("Export to Website")
+local TEXT_EXPORT_LINE = ns.L("Paste it on naowh.gg/forever Action Bars with Paste a code.")
+local TEXT_CLOSE = ns.L("Close")
+local TEXT_ACTION, TEXT_ACTIONS = ns.L("%d action"), ns.L("%d actions")
+local TEXT_KEYBIND, TEXT_KEYBINDS = ns.L("%d keybind"), ns.L("%d keybinds")
+local TEXT_MACRO, TEXT_MACROS = ns.L("%d macro"), ns.L("%d macros")
+local TEXT_WENT_IN = ns.L("In the code: %s, %s and %s.")
+local TEXT_LEFT_OUT = ns.L("Left out, as the website cannot show them: %s.")
+local TEXT_MORE_NAMES = ns.L("%s and %d more")
+local TEXT_MACROS_LEFT = ns.L("Left out: %s, past the website's limit or sharing a name.")
+local TEXT_NO_SPELLS = ns.L("Spells need the Training Planner addon turned on, so they were left out.")
+local TEXT_NO_CODE = ns.L("The website code could not be made.")
 local TEXT_COMBAT = ns.L("Bar sets can be imported out of combat.")
 local TEXT_OFF = ns.L("Action Bars is switched off.")
 local TEXT_CONFIRM = ns.L("Save %s as a new bar set and review it? Your bars stay unchanged until you apply the preview.")
 local TEXT_FULL = ns.L("There are too many saved bar sets with that name.")
+local TEXT_BARS = ns.L("%s bars")
+local KINDS = { summonmount = ns.L("Mount"), summonpet = ns.L("Pet"), companion = ns.L("Companion"),
+    flyout = ns.L("Flyout"), equipmentset = ns.L("Equipment set") }
+local CLASS_IDS = {}
+for id, class in pairs(CLASSES) do CLASS_IDS[class] = id end
+local catalog, catalogClass
 
 local function Integer(value, maximum)
     return type(value) == "number" and value >= 1 and value <= maximum and value % 1 == 0
@@ -45,7 +71,8 @@ local function Entry(row)
     if row.kind == "spell" or row.kind == "item" then
         if not Integer(row.id, MAX_ID) then return end
         if row.name ~= nil and not Text(row.name, MAX_BODY) then return end
-        return { kind = row.kind, id = row.id, name = row.name }
+        if row.top ~= nil and (type(row.top) ~= "boolean" or (row.top and row.kind ~= "spell")) then return end
+        return { kind = row.kind, id = row.id, name = row.name, top = row.top or nil }
     end
     if row.kind == "macro" then return Macro(row) end
 end
@@ -109,13 +136,9 @@ local function Bindings(input)
         local normalized = Key(key)
         if not normalized or bindings[normalized] or type(command) ~= "string" then return end
         local prefix, number = command:match("^(.-)(%d+)$")
-        local valid = false
-        if Integer(tonumber(number), A.C.SLOTS_PER_BAR) then
-            for _, bar in ipairs(A.BARS) do
-                if bar.button == prefix then valid = true break end
-            end
-        end
-        if not valid then return end
+        local buttons = prefix and BUTTONS[prefix]
+        local n = tonumber(number)
+        if not (buttons and Integer(n, buttons) and tostring(n) == number) then return end
         counts[command] = (counts[command] or 0) + 1
         if counts[command] > MAX_KEYS_PER_ACTION then return end
         count = count + 1
@@ -150,6 +173,110 @@ local function Decode(text)
         choices = { skip = skip, keys = next(bindings) ~= nil, website = true, macros = true, macroOff = {} } }
 end
 
+local function Catalog(classID)
+    local spells = ns.TrainingData and ns.TrainingData[classID]
+    if not spells then return nil end
+    if catalogClass == classID then return catalog end
+    local tree = ns.TrainingBuilds and ns.TrainingBuilds[classID]
+    catalog, catalogClass = {}, classID
+    for _, row in ipairs(spells) do catalog[row[2]] = true end
+    for _, talent in pairs(tree and tree.talents or {}) do catalog[talent[1]] = true end
+    return catalog
+end
+
+local function LeftName(entry)
+    if entry.kind == "spell" then return C_Spell.GetSpellName(entry.id) or entry.name or tostring(entry.id) end
+    if entry.kind == "macro" then return entry.name end
+    return KINDS[entry.kind] or entry.kind
+end
+
+local function ExportMacro(row)
+    if type(row) ~= "table" then return end
+    local body = type(row.body) == "string" and row.body:gsub("\r", "") or ""
+    if not body:find("%S") then return end
+    return Macro({ name = row.name, body = body, icon = row.icon, perCharacter = row.perCharacter })
+end
+
+local function AddExportMacro(out, entry)
+    local listed = out.byName[entry.name]
+    if listed then return listed.body == entry.body end
+    if #out.macros >= MAX_MACROS then return false end
+    out.byName[entry.name] = entry
+    out.macros[#out.macros + 1] = entry
+    return true
+end
+
+local function ExportSpell(entry, known)
+    if not (known and known[entry.id] and Integer(entry.id, MAX_ID)) then return end
+    return { kind = "spell", id = entry.id, name = Text(entry.name, MAX_BODY) and entry.name or nil,
+        top = entry.top and true or nil }
+end
+
+local function ExportSlot(out, slot, entry, known)
+    local row
+    if slot <= A.C.KEYBOARD_SLOTS then
+        if entry.kind == "spell" then row = ExportSpell(entry, known) end
+        if entry.kind == "item" and Integer(entry.id, MAX_ID) then row = { kind = "item", id = entry.id } end
+        if entry.kind == "macro" then
+            row = ExportMacro(entry)
+            if row and not AddExportMacro(out, row) then row = nil end
+        end
+    end
+    if row then
+        out.slots[slot], out.actions = row, out.actions + 1
+    else
+        out.left[#out.left + 1] = LeftName(entry)
+    end
+end
+
+local function ExportBindings(out, bindings)
+    local counts = {}
+    for key, command in pairs(bindings or {}) do
+        local normalized = Key(key)
+        local prefix, number
+        if type(command) == "string" then prefix, number = command:match("^(.-)(%d+)$") end
+        local n = tonumber(number)
+        local buttons = prefix and BUTTONS[prefix]
+        if normalized and buttons and Integer(n, buttons) and tostring(n) == number and not out.bindings[normalized]
+            and (counts[command] or 0) < MAX_KEYS_PER_ACTION then
+            counts[command] = (counts[command] or 0) + 1
+            out.bindings[normalized], out.keys = command, out.keys + 1
+        end
+    end
+end
+
+local function SlotOrder(slots)
+    local order = {}
+    for slot in pairs(slots) do order[#order + 1] = slot end
+    table.sort(order)
+    return order
+end
+
+local function ExportSet(key)
+    local set = key and A.Sets()[key]
+    if key and not set then return end
+    return set or A.Capture.Snapshot(), key or TEXT_BARS:format(UnitName("player"))
+end
+
+local function Export(key)
+    local set, name = ExportSet(key)
+    if not set then return end
+    local classID = CLASS_IDS[A.Class()]
+    local known = Catalog(classID)
+    local out = { slots = {}, macros = {}, byName = {}, bindings = {}, left = {}, actions = 0, keys = 0,
+        macrosLeft = 0, spells = known ~= nil }
+    for _, slot in ipairs(SlotOrder(set.slots or {})) do ExportSlot(out, slot, set.slots[slot], known) end
+    for _, row in ipairs(set.macros or {}) do
+        local entry = ExportMacro(row)
+        if not (entry and AddExportMacro(out, entry)) then out.macrosLeft = out.macrosLeft + 1 end
+    end
+    ExportBindings(out, set.bindings)
+    local code = ns.Shared.Encode.String(PREFIX, { v = VERSION, class = classID, name = name, slots = out.slots,
+        macros = #out.macros > 0 and out.macros or nil, bindings = next(out.bindings) and out.bindings or nil })
+    out.byName = nil
+    return code, out
+end
+
 local function Ready()
     if not A.On() then ns.Print(TEXT_OFF) return false end
     if InCombatLockdown() then ns.Print(TEXT_COMBAT) return false end
@@ -181,8 +308,42 @@ local function Import(text)
 end
 
 local function Prompt()
-    if Ready() then ns.PromptText(TEXT_PROMPT, "", LIMITS.maxChars, Import) end
+    if not Ready() then return end
+    ns.Shared.Parts.CodeModal({ title = TEXT_PROMPT, line = TEXT_PROMPT_LINE, acceptText = TEXT_IMPORT,
+        onAccept = Import, maxLetters = LIMITS.maxChars })
 end
 
-A.Sharing = { Decode = Decode, Import = Import, Prompt = Prompt }
+local function LeftNames(left)
+    local seen, names = {}, {}
+    for _, name in ipairs(left) do
+        if not seen[name] then
+            seen[name] = true
+            names[#names + 1] = name
+        end
+    end
+    local text = table.concat(names, ", ", 1, math.min(#names, NAMES_SHOWN))
+    if #names > NAMES_SHOWN then text = TEXT_MORE_NAMES:format(text, #names - NAMES_SHOWN) end
+    return A.Plural(#left, TEXT_ACTION, TEXT_ACTIONS) .. ": " .. text
+end
+
+local function ExportSummary(out)
+    local lines = { TEXT_WENT_IN:format(A.Plural(out.actions, TEXT_ACTION, TEXT_ACTIONS),
+        A.Plural(out.keys, TEXT_KEYBIND, TEXT_KEYBINDS), A.Plural(#out.macros, TEXT_MACRO, TEXT_MACROS)) }
+    if #out.left > 0 then lines[#lines + 1] = TEXT_LEFT_OUT:format(LeftNames(out.left)) end
+    if out.macrosLeft > 0 then
+        lines[#lines + 1] = TEXT_MACROS_LEFT:format(A.Plural(out.macrosLeft, TEXT_MACRO, TEXT_MACROS))
+    end
+    if not out.spells then lines[#lines + 1] = TEXT_NO_SPELLS end
+    return table.concat(lines, "\n")
+end
+
+local function ShowExport(key)
+    local code, out = Export(key)
+    if not code then ns.Print(TEXT_NO_CODE) return end
+    ns.Shared.Parts.CodeModal({ title = TEXT_EXPORT, line = TEXT_EXPORT_LINE, code = code, copy = true,
+        summary = ExportSummary(out), closeText = TEXT_CLOSE })
+end
+
+A.Sharing = { Decode = Decode, Import = Import, Prompt = Prompt, Export = Export, ShowExport = ShowExport,
+    ExportSummary = ExportSummary }
 ns.ImportActionBarString = Import

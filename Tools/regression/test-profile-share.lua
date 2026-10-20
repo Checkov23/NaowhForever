@@ -432,15 +432,17 @@ Case("a bar set keeps only what an import can use", function()
     w.db.account.barSets = nil
     w.ns.ImportProfile({ name = "X", parts = { actionBars = {
         PALADIN = {
-            Good = { slots = { [1] = { kind = "spell", id = 635 }, [2] = { kind = "spell" },
+            Good = { slots = { [1] = { kind = "spell", id = 635, top = true }, [2] = { kind = "spell" },
                 [3] = { kind = "Bad", id = 1 }, [4] = { kind = "macro", name = "x" }, [-1] = { kind = "item", id = 1 },
-                [5] = { kind = "flyout", id = 9 } },
+                [5] = { kind = "flyout", id = 9 }, [6] = { kind = "item", id = 6948, top = true } },
                 macros = { { name = "A|cff", body = "/x" }, { name = "B", body = "/b" } },
                 bindings = { ["CTRL-1"] = "ACTIONBUTTON1", ["X|r"] = "ACTIONBUTTON2", W = "MOVEFORWARD",
                     ENTER = "OPENCHAT", ["CTRL-F12"] = "MULTIACTIONBAR7BUTTON12", F1 = "MULTIACTIONBAR8BUTTON1",
                     F2 = "ACTIONBUTTON13", F3 = "ACTIONBUTTON0", F4 = "ACTIONBUTTON", F5 = "ACTIONBUTTON1X",
-                    ["1"] = "ACTIONBUTTON3", ["2"] = "ACTIONBUTTON3", ["3"] = "ACTIONBUTTON3", [5] = "ACTIONBUTTON4" },
-                choices = { skip = { [7] = true, x = true }, macroOff = { k = "yes" }, keys = "no", website = true } },
+                    ["1"] = "ACTIONBUTTON3", ["2"] = "ACTIONBUTTON3", ["3"] = "ACTIONBUTTON3", [5] = "ACTIONBUTTON4",
+                    F6 = "BONUSACTIONBUTTON10", F7 = "BONUSACTIONBUTTON11" },
+                choices = { skip = { [7] = true, x = true }, macroOff = { k = "yes" }, keys = "no", website = true,
+                    petOff = true } },
             NoSlots = { macros = {} },
             ["Bad|cname"] = { slots = {} },
         },
@@ -449,6 +451,9 @@ Case("a bar set keeps only what an import can use", function()
     local sets = w.db.account.barSets.PALADIN
     local good = sets.Good
     assert(good.slots[1].id == 635 and good.slots[5].kind == "flyout")
+    assert(good.slots[1].top == true and good.slots[6].top == nil, "Highest kept on a spell only")
+    assert(good.bindings.F6 == "BONUSACTIONBUTTON10" and good.bindings.F7 == nil, "the pet bar's 10 buttons")
+    assert(good.choices.petOff == true, "the pet bar left out stays out")
     assert(good.slots[2] == nil and good.slots[3] == nil and good.slots[4] == nil and good.slots[-1] == nil)
     assert(#good.macros == 1 and good.macros[1].name == "B")
     assert(good.bindings["CTRL-1"] and good.bindings["X|r"] == nil)

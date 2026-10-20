@@ -233,6 +233,7 @@ Shared.Style = {
     TIME_OUT_RGB = { r = 0.97, g = 0.27, b = 0.27 },
     PICKED_RGB = { r = 1, g = 0.82, b = 0 },
     TIP_TITLE_RGB = { r = 1, g = 1, b = 1 },
+    ON_ACCENT_RGB = { r = 1, g = 1, b = 1 },
     GUIDE_RGB = { r = 0xf2 / 255, g = 0xa3 / 255, b = 0x3a / 255 },
 
     ARROW = MEDIA .. "chevron",
@@ -282,6 +283,7 @@ Shared.Style = {
     ALIGN_ACROSS = MEDIA .. "align_across",
     ALIGN_DOWN = MEDIA .. "align_down",
     SOFT_SHADE = MEDIA .. "soft_shade",
+    MONO_FONT = MEDIA .. "Fonts\\JetBrainsMonoNL-Regular.ttf",
     CHECK = "Interface\\RaidFrame\\ReadyCheck-Ready",
     WHITE = "Interface\\Buttons\\WHITE8X8",
     CLASS_ICONS = "Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes",

@@ -54,11 +54,11 @@ local function ClearCopies(set, skip, pending, spell)
 end
 
 local function PlaceLearned(pending)
-    local best, placed = Import.HighestRanks(), {}
+    local ranks, placed = Import.HighestRanks(), {}
     for slot, entry in pairs(pending.slots) do
         if GetActionInfo(slot) then
             pending.slots[slot] = nil
-        elseif Import.PickUp(entry, best) then
+        elseif Import.PickUp(entry, ranks) then
             PlaceAction(slot)
             pending.slots[slot] = nil
             local _, id = GetActionInfo(slot)

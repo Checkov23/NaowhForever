@@ -8,7 +8,6 @@ local Capture = A.Capture
 
 local MacroKey, Body, Lookup = Capture.MacroKey, Capture.Body, Capture.Lookup
 local QUESTION = C.QUESTION
-local PLAYER_BANK = Enum.SpellBookSpellBank.Player
 local SHOWTOOLTIP = "^#showtooltip"
 
 local RESTORABLE = { spell = true, macro = true, item = true, equipmentset = true }
@@ -18,31 +17,6 @@ local function Describe(entry)
     if entry.kind == "macro" then return ns.L("macro ") .. entry.name end
     if entry.kind == "item" then return C_Item.GetItemNameByID(entry.id) or (ns.L("item ") .. entry.id) end
     return ("%s %s"):format(entry.kind, tostring(entry.id))
-end
-
-local function Rank(item)
-    return tonumber(item.subName and item.subName:match("%d+")) or 0
-end
-
-local function AddLine(info, best, rank)
-    for i = info.itemIndexOffset + 1, info.itemIndexOffset + info.numSpellBookItems do
-        local item = C_SpellBook.GetSpellBookItemInfo(i, PLAYER_BANK)
-        if item and item.itemType == Enum.SpellBookItemType.Spell and not item.isPassive then
-            local r = Rank(item)
-            if not rank[item.name] or r > rank[item.name] then
-                best[item.name], rank[item.name] = item.actionID, r
-            end
-        end
-    end
-end
-
-local function HighestRanks()
-    local best, rank = {}, {}
-    for line = 1, C_SpellBook.GetNumSpellBookSkillLines() do
-        local info = C_SpellBook.GetSpellBookSkillLineInfo(line)
-        if info and not info.isGuild then AddLine(info, best, rank) end
-    end
-    return best
 end
 
 local function MacroRoom(perCharacter, plan)
@@ -114,17 +88,22 @@ local function ImportBindings(set, test)
     return count
 end
 
-local function PickUpSpell(entry, best)
-    local top = entry.name and best[entry.name]
-    if top and S.Get("highestRank") then C_Spell.PickupSpell(top) end
+local function PickUpSpell(entry, ranks)
+    if entry.top or S.Get("highestRank") then
+        local top = Capture.Highest(entry, ranks)
+        if top then C_Spell.PickupSpell(top) end
+    end
     if not GetCursorInfo() then C_Spell.PickupSpell(entry.id) end
-    if not GetCursorInfo() and top then C_Spell.PickupSpell(top) end
+    if GetCursorInfo() or Capture.Variant(entry.id, ranks) then return end
+    local name = Capture.SpellName(entry)
+    local known = name and ranks.best[name]
+    if known then C_Spell.PickupSpell(known) end
 end
 
-local function PickUp(entry, best, index, test)
+local function PickUp(entry, ranks, index, test)
     ClearCursor()
     if entry.kind == "spell" then
-        PickUpSpell(entry, best)
+        PickUpSpell(entry, ranks)
     elseif entry.kind == "macro" then
         local found = Lookup(index, entry)
         if test then return found ~= nil end
@@ -148,9 +127,9 @@ local function Missed(result, slot, entry, test)
     return row
 end
 
-local function Restore(result, slot, entry, test, best, index, fresh)
+local function Restore(result, slot, entry, test, ranks, index, fresh)
     result.actions = result.actions + 1
-    if not PickUp(entry, best, index, test) then return Missed(result, slot, entry, test) end
+    if not PickUp(entry, ranks, index, test) then return Missed(result, slot, entry, test) end
     result.placed = result.placed + 1
     local new = entry.kind == "macro" and fresh[MacroKey(entry.name, entry.body)]
     if not test then PlaceAction(slot) end
@@ -162,7 +141,7 @@ local function Run(set, test)
     local result = { slots = {}, actions = 0, placed = 0, later = {}, macros = {} }
     local index, fresh = Capture.MacroIndex(), {}
     if S.Get("importMacros") then index, fresh, result.macros = ImportMacros(set, test) end
-    local best = HighestRanks()
+    local ranks = Capture.Ranks()
     for _, slot in ipairs(Capture.Slots()) do
         local entry = set.slots[slot]
         local row
@@ -172,7 +151,7 @@ local function Run(set, test)
             row = { state = "clear" }
             if not test and GetActionInfo(slot) then PickupAction(slot) end
         else
-            row = Restore(result, slot, entry, test, best, index, fresh)
+            row = Restore(result, slot, entry, test, ranks, index, fresh)
         end
         ClearCursor()
         result.slots[slot] = row
@@ -181,4 +160,4 @@ local function Run(set, test)
     return result
 end
 
-A.Import = { Describe = Describe, HighestRanks = HighestRanks, PickUp = PickUp, Run = Run }
+A.Import = { Describe = Describe, HighestRanks = Capture.Ranks, PickUp = PickUp, Run = Run }

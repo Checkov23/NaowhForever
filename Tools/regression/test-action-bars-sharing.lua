@@ -82,6 +82,33 @@ set = select(2, sharing.Decode("!NFA1!test"))
 local bound = 0
 for _ in pairs(set and set.bindings or {}) do bound = bound + 1 end
 Check("two keys for all 96 action commands", bound == 192)
+local pet = ns.ActionBars.PET_BAR
+for button = 1, pet.buttons do
+    local ordinal = 0
+    for _ in pairs(payload.bindings) do ordinal = ordinal + 1 end
+    local modifier = ({ "", "ALT-", "CTRL-", "SHIFT-", "ALT-CTRL-", "ALT-SHIFT-", "CTRL-SHIFT-", "ALT-CTRL-SHIFT-", "META-" })[math.floor(ordinal / 24) + 1]
+    payload.bindings[modifier .. "F" .. (ordinal % 24 + 1)] = pet.button .. button
+    payload.bindings[modifier .. "F" .. (ordinal % 24 + 2)] = pet.button .. button
+end
+set = select(2, sharing.Decode("!NFA1!test"))
+bound = 0
+for _ in pairs(set and set.bindings or {}) do bound = bound + 1 end
+Check("and two for each of the pet bar's 10 buttons", bound == 212)
+payload = Valid()
+payload.bindings = { ["CTRL-1"] = "BONUSACTIONBUTTON1", ["CTRL-0"] = "BONUSACTIONBUTTON10" }
+set = select(2, sharing.Decode("!NFA1!test"))
+Check("pet bar keys imported", set and set.bindings["CTRL-1"] == "BONUSACTIONBUTTON1"
+    and set.bindings["CTRL-0"] == "BONUSACTIONBUTTON10" and set.choices.keys)
+for _, command in ipairs({ "BONUSACTIONBUTTON11", "BONUSACTIONBUTTON0", "BONUSACTIONBUTTON", "PETACTIONBUTTON1",
+    "ACTIONBUTTON01", "ACTIONBUTTON13", "MULTIACTIONBAR8BUTTON1", "SHAPESHIFTBUTTON1", "bonusactionbutton1" }) do
+    payload = Valid(); payload.bindings.Z = command
+    Check("unknown command rejects the whole layout: " .. command, sharing.Decode("!NFA1!test") == nil)
+end
+payload = Valid()
+payload.slots[1].top = true
+payload.slots[3] = { kind = "spell", id = 116, name = "Frostbolt", top = false }
+set = select(2, sharing.Decode("!NFA1!test"))
+Check("a Highest slot keeps its flag, an exact one has none", set and set.slots[1].top == true and set.slots[3].top == nil)
 payload = Valid()
 payload.slots[2] = { kind = "macro", name = "Pull", body = "/say pull", icon = 134400, perCharacter = true }
 payload.macros = {
@@ -125,6 +152,8 @@ for _, mutate in ipairs({
     function(p) p.slots = {} end,
     function(p) p.bindings.Q = "RUNSCRIPT" end,
     function(p) p.bindings["BUTTON1"] = "ACTIONBUTTON1" end,
+    function(p) p.slots[1].top = "yes" end,
+    function(p) p.slots[12].top = true end,
     function(p) p.slots[1] = { kind = "macro", name = "bad", body = string.rep("a", 256) } end,
     function(p) p.macros = "Pull" end,
     function(p) p.macros = { { name = "Pull" } } end,

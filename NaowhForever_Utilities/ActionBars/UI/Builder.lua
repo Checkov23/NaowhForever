@@ -1,4 +1,4 @@
--- Builder.lua: the Action Bars window's set builder: your bars as they are, each slot in or out, then keybinds, macros and a name (ns.ActionBars.Builder).
+-- Builder.lua: the Action Bars window's set builder: your bars on the scene's strip with each bar and slot in or out, keybinds and macros, then a name (ns.ActionBars.Builder).
 local ns = _G.NaowhForever
 local T = ns.THEME
 
@@ -6,31 +6,40 @@ local A = ns.ActionBars
 local St = A.Style
 local P = A.Parts
 local Sets = ns.ActionBarSets
+local Capture = A.Capture
 
-local WIDTH, HEIGHT, CARD, SIDE_W, GAP = St.WIDTH, St.HEIGHT, St.CARD, St.SIDE_W, St.CARD_GAP
-local HEADER, FOOTER = St.WINDOW_HEADER, St.WINDOW_FOOTER
-local ROW_GAP, ROW_FILL, ICON_CROP, OUT_ALPHA = St.ROW_GAP, St.ROW_FILL, St.ICON_CROP, St.OUT_ALPHA
-local SWITCH_W, BUTTON_H, LINE_GAP, HEADING_H = St.SWITCH_W, St.BUTTON_H, St.LINE_GAP, St.HEADING_H
-local BLACK, SLOTS_PER_BAR = St.BORDER_RGB, A.C.SLOTS_PER_BAR
-local SMALL_SIZE, NOTE_SIZE, NAME_SIZE, TITLE_SIZE = St.SMALL_SIZE, St.NOTE_SIZE, St.NAME_SIZE, St.TITLE_SIZE
-local KEEP_H = 330
-local OFF_BAR_ALPHA, OFF_MACRO_ALPHA = 0.55, 0.45
-local BOX_GAP = 8
-local MACRO_ROW_H, MACRO_GAP, MACRO_INSET, MACRO_ICON_PAD = 38, 4, 8, 12
-local CHIP_INSET_X, CHIP_INSET_Y, STACK_GAP, TEXT_GAP = 8, 6, St.STACK_GAP, 6
-local SWITCH_GAP, SWITCH_DROP, OPTION_H, DIVIDER_GAP = 10, 4, 44, 10
-local NAME_LABEL_TOP, NAME_H, NAME_MAX, SUMMARY_GAP, FILL_W = 24, 26, 40, 10, St.FILL_W
+local WIDTH, HEIGHT, CARD, GAP = St.WIDTH, St.HEIGHT, St.CARD, St.CARD_GAP
+local HEADER, FOOTER, GLASS_PAD = St.WINDOW_HEADER, St.WINDOW_FOOTER, St.GLASS_PAD
+local OUT_ALPHA, ICON_CROP = St.OUT_ALPHA, St.ICON_CROP
+local BUTTON_H, LINE_GAP = St.BUTTON_H, St.LINE_GAP
+local SLOTS_PER_BAR = A.C.SLOTS_PER_BAR
+local SMALL_SIZE, NOTE_SIZE = St.SMALL_SIZE, St.NOTE_SIZE
+local PET_BAR, PET_CLASSES = A.PET_BAR, A.PET_CLASSES
+local DOT = St.PLACE_DOT
+local MAIN_PAGE, LEFT_PAGE, TOP_PAGE, RIGHT_PAGE, MAIN_VIEW = P.MAIN_PAGE, P.LEFT_PAGE, P.TOP_PAGE, P.RIGHT_PAGE, P.MAIN_VIEW
+local NAME_BAR, HEAD_H = 62, 58
+local OFF_MACRO_ALPHA = 0.45
+local MACRO_ROW_H, MACRO_GAP, MACRO_INSET, MACRO_ICON = 30, 4, 8, 22
+local NAME_COLUMN, TEXT_GAP, TAG_GAP = 140, 8, 4
+local NAME_H, NAME_MAX, NAME_W, SUMMARY_GAP, SAVE_W = 26, 40, 260, 18, 120
+local HALF_W = (WIDTH - CARD * 2 - GAP) / 2
 
 local TEXT_TITLE, TEXT_EDIT = ns.L("New Bar Set"), ns.L("Edit ")
 local TEXT_SUBTITLE = ns.L("Pick what goes in, then import it on any %s.")
-local TEXT_PICK = ns.L("1. PICK YOUR BARS")
-local TEXT_PICK_HINT = ns.L("Click a slot to leave it out, or a bar's box for the whole bar.")
-local TEXT_KEEP, TEXT_NAME_SAVE = ns.L("2. ALSO KEEP"), ns.L("3. NAME AND SAVE")
+local TEXT_PICK_HINT = ns.L("Click a bar's name to leave it out, or a button to skip just that slot.")
+local TEXT_MAIN, TEXT_MAIN_BARS, TEXT_PET_BAR = ns.L("Main"), ns.L("Main bars"), ns.L("Pet Bar")
+local TEXT_PICKED_BAR = "%s (%d)"
+local TEXT_CHIP = "%s %d"
 local TEXT_KEYBINDS, TEXT_MACROS, TEXT_SET_NAME = ns.L("Keybinds"), ns.L("Macros"), ns.L("Set name")
 local TEXT_SAVE_SET = ns.L("Save Set")
-local TEXT_COUNT = "%d / %d"
+local TEXT_ACTION, TEXT_ACTIONS = ns.L("%d action"), ns.L("%d actions")
+local TEXT_KEYBIND, TEXT_KEYBINDS_N = ns.L("%d keybind"), ns.L("%d keybinds")
+local TEXT_MACRO, TEXT_MACROS_N = ns.L("%d macro"), ns.L("%d macros")
 local TEXT_LEAVE_BAR, TEXT_PUT_BAR = ns.L("Leave this bar out"), ns.L("Put this bar back in")
 local TEXT_BAR_HINT = ns.L("A bar left out is not touched by an import.")
+local TEXT_LEAVE_PET, TEXT_PUT_PET = ns.L("Leave the pet bar's keys out"), ns.L("Put the pet bar's keys back in")
+local TEXT_PET_HINT = ns.L("Only the pet bar's keys go in a set, never your pet's actions.")
+local TEXT_PET_TIP = ns.L("Only this button's keys go in the set.")
 local TEXT_EMPTY_SLOT = ns.L("Empty slot")
 local TEXT_KEPT = ns.L("In the set. Click to leave it out.")
 local TEXT_KEPT_EMPTY = ns.L("In the set as empty: an import clears it. Click to leave it out.")
@@ -40,19 +49,29 @@ local TEXT_ON_BARS_TIP = ns.L("On a slot in the set, so it always comes along.")
 local TEXT_REUSE_TIP = ns.L("An alt that already has this macro, by name and text or text alone, uses its own.")
 local TEXT_NO_NAME = ns.L("Give the set a name first.")
 local TEXT_REPLACE = ns.L("Replace %s with these bars?")
-local TEXT_KEYS_ON = ns.L("All %d bound keys come along.")
+local TEXT_KEYS_ON = ns.L("All %d come along: %d on your bars, %d for other commands.")
 local TEXT_KEYS_OFF = ns.L("Off: an import leaves your keys alone.")
 local TEXT_MACROS_ON = ns.L("%d of %d come along. An alt reuses the ones it has.")
 local TEXT_MACROS_OFF = ns.L("Only the macros on your kept slots come along.")
-local TEXT_SUMMARY = ns.L("This set holds %s.")
-local TEXT_ACTIONS, TEXT_KEYBIND_COUNT, TEXT_MACRO_COUNT = ns.L("%d actions"), ns.L("%d keybinds"), ns.L("%d macros")
 local BODY_JOIN = "  "
+local BAR_COMMAND = "^(.-)%d+$"
+
+local Plural = A.Plural
 
 local Builder = {}
 A.Builder = Builder
 
 local W, draft
-local onBars = {}
+local viewPage, formPage = MAIN_VIEW, MAIN_PAGE
+local onBars, look, parts, barButtons = {}, {}, {}, {}
+local pages, order, petCommands, forms
+local model = { regions = { left = {}, top = {}, bottom = {}, right = {} }, single = nil, chips = {},
+    pet = nil }
+local single, chipPool = {}, {}
+local picker = { values = {}, order = {} }
+
+for _, bar in ipairs(A.BARS) do barButtons[bar.button] = true end
+barButtons[PET_BAR.button] = true
 
 local function Copy(t)
     local out = {}
@@ -65,85 +84,148 @@ local function Flip(t, key)
     W.Redraw()
 end
 
-local function SlotTip(slot, kept)
-    return function(tip)
-        if GetActionInfo(slot) then tip:SetAction(slot) else tip:SetText(TEXT_EMPTY_SLOT, 1, 1, 1) end
-        tip:AddLine(" ")
-        local line = kept and (GetActionInfo(slot) and TEXT_KEPT or TEXT_KEPT_EMPTY) or TEXT_LEFT_OUT
-        tip:AddLine(line, T.muted.r, T.muted.g, T.muted.b, true)
-    end
+local function SlotTip(tip, tile)
+    local slot = tile.slot
+    if GetActionInfo(slot) then tip:SetAction(slot) else tip:SetText(TEXT_EMPTY_SLOT, 1, 1, 1) end
+    tip:AddLine(" ")
+    local line = tile.kept and (GetActionInfo(slot) and TEXT_KEPT or TEXT_KEPT_EMPTY) or TEXT_LEFT_OUT
+    tip:AddLine(line, T.muted.r, T.muted.g, T.muted.b, true)
 end
 
-local function BoxEnter(box)
-    P.Hint(box, box.barOn and TEXT_LEAVE_BAR or TEXT_PUT_BAR, TEXT_BAR_HINT)
+local function SlotClicked(tile)
+    Flip(draft.choices.skip, tile.slot)
+end
+
+local function PetAction(i)
+    if not GetPetActionInfo then return nil end
+    local name, texture, isToken = GetPetActionInfo(i)
+    if isToken and texture then texture = _G[texture] end
+    return name, texture
+end
+
+local function PetTip(tip, tile)
+    if PetAction(tile.slot) then tip:SetPetAction(tile.slot) else tip:SetText(TEXT_EMPTY_SLOT, 1, 1, 1) end
+    tip:AddLine(" ")
+    tip:AddLine(TEXT_PET_TIP, T.muted.r, T.muted.g, T.muted.b, true)
+end
+
+local function BarHint(label)
+    P.Hint(label, label.out and TEXT_PUT_BAR or TEXT_LEAVE_BAR, TEXT_BAR_HINT)
+end
+
+local function PetHint(label)
+    P.Hint(label, label.out and TEXT_PUT_PET or TEXT_LEAVE_PET, TEXT_PET_HINT)
+end
+
+local function BarClicked(label)
+    local skip = draft.choices.skip
+    for _, slot in ipairs(label.entry.list) do skip[slot] = (not label.out) or nil end
+    W.Redraw()
+end
+
+local function PetClicked()
+    local choices = draft.choices
+    if not choices.keys then return end
+    choices.petOff = not choices.petOff or nil
+    W.Redraw()
 end
 
 local function Counts(list, skip)
-    local used, total, out = 0, 0, 0
+    local used, out = 0, 0
     for _, slot in ipairs(list) do
-        if GetActionInfo(slot) then
-            total = total + 1
-            if not skip[slot] then used = used + 1 end
-        end
+        if GetActionInfo(slot) and not skip[slot] then used = used + 1 end
         if skip[slot] then out = out + 1 end
     end
-    return used, total, out
+    return used, out
 end
 
-local function PaintBarBox(row, list, skip, barOn)
-    row.box:Show()
-    P.PaintBox(row.box, barOn)
-    row.box.barOn = barOn
-    row.box.onClick = function()
-        for _, slot in ipairs(list) do skip[slot] = barOn or nil end
-        W.Redraw()
+local function PaintSlot(tile, region, i)
+    local entry, skip = region.entry, draft.choices.skip
+    local slot = entry.list[i]
+    local kept = not skip[slot]
+    local dim = not kept and not region.out
+    wipe(look)
+    look.texture = GetActionTexture(slot)
+    look.key = GetActionInfo(slot) and P.KeyText(entry.commands[i]) or ""
+    look.alpha, look.grey, look.mark = dim and OUT_ALPHA or 1, not kept, dim
+    look.edge = dim and T.muted or nil
+    look.tip, look.onClick = SlotTip, SlotClicked
+    P.PaintTile(tile, look)
+    tile.slot, tile.kept = slot, kept
+end
+
+local function Region(region, entry, label)
+    local _, out = Counts(entry.list, draft.choices.skip)
+    region.entry, region.label = entry, label or entry.bar.name
+    region.out = out == SLOTS_PER_BAR
+    region.onClick, region.hint = BarClicked, BarHint
+    return region
+end
+
+local function DrawChips()
+    wipe(model.chips)
+    if not forms then return end
+    local skip = draft.choices.skip
+    for i, page in ipairs(forms) do
+        local entry = pages[page]
+        local used, out = Counts(entry.list, skip)
+        local chip = chipPool[i] or {}
+        chipPool[i] = chip
+        chip.text = TEXT_CHIP:format(page == MAIN_PAGE and TEXT_MAIN or entry.form, used)
+        chip.picked, chip.out, chip.page = page == formPage, out == SLOTS_PER_BAR, page
+        chip.onClick = Builder.PickForm
+        model.chips[i] = chip
     end
-    row.box:SetScript("OnEnter", BoxEnter)
-    row.box:SetScript("OnLeave", GameTooltip_Hide)
 end
 
-local function PaintBarTiles(row, bar, list, skip)
-    for i, slot in ipairs(list) do
-        local kept = not skip[slot]
-        P.PaintTile(row.tiles[i], {
-            texture = GetActionTexture(slot),
-            key = GetActionInfo(slot) and P.KeyText(bar.button .. i) or "",
-            alpha = kept and 1 or OUT_ALPHA, grey = not kept,
-            edge = (not kept) and T.muted or nil,
-            tip = SlotTip(slot, kept),
-            onClick = function() Flip(skip, slot) end,
-        })
+local function DrawPet()
+    if not PET_CLASSES[A.Class()] then
+        model.pet = nil
+        return
     end
+    local pet = model.petLook or { keys = {} }
+    model.petLook, model.pet = pet, pet
+    local choices = draft.choices
+    pet.label, pet.out = TEXT_PET_BAR, not (choices.keys and not choices.petOff)
+    pet.tip, pet.onClick, pet.hint = PetTip, PetClicked, PetHint
+    for i = 1, PET_BAR.buttons do pet.keys[i] = P.KeyText(petCommands[i]) end
 end
 
-local function DrawBar(content, y, bar, list, skip, used, total, out)
-    local row = ns.UI.Keep(content, "bar", P.NewBarRow)
-    row:SetPoint("TOPLEFT", 0, y)
-    row:SetPoint("TOPRIGHT", 0, y)
-    local barOn = out < SLOTS_PER_BAR
-    row:SetAlpha(barOn and 1 or OFF_BAR_ALPHA)
-    PaintBarBox(row, list, skip, barOn)
-    row.name:ClearAllPoints()
-    row.name:SetPoint("LEFT", row.box, "RIGHT", BOX_GAP, 0)
-    row.name:SetText(bar.name)
-    row.count:SetText(TEXT_COUNT:format(used, total))
-    PaintBarTiles(row, bar, list, skip)
-    return y - row:GetHeight() - ROW_GAP
-end
-
-local function DrawBars(v)
-    local content, skip = v.content, draft.choices.skip
-    ns.UI.BeginReusableRows(content)
-    local y, actions = 0, 0
-    for _, bar in ipairs(Sets.BARS) do
-        local list = P.BarSlots(bar)
-        local used, total, out = Counts(list, skip)
-        if total > 0 or out > 0 then
-            actions = actions + used
-            y = DrawBar(content, y, bar, list, skip, used, total, out)
+local function DrawPicker()
+    local values, list, skip = picker.values, picker.order, draft.choices.skip
+    wipe(values)
+    wipe(list)
+    values[MAIN_VIEW], list[1] = TEXT_MAIN_BARS, MAIN_VIEW
+    for _, entry in ipairs(order) do
+        if entry.other then
+            local used = Counts(entry.list, skip)
+            values[entry.bar.page] = TEXT_PICKED_BAR:format(entry.bar.name, used)
+            list[#list + 1] = entry.bar.page
         end
     end
-    content:SetHeight(math.max(1, -y))
+end
+
+local function DrawScene(v)
+    local regions = model.regions
+    if not forms then formPage = MAIN_PAGE end
+    local bottom = pages[formPage]
+    local formName = formPage == MAIN_PAGE and TEXT_MAIN or bottom.form
+    Region(regions.left, pages[LEFT_PAGE])
+    Region(regions.top, pages[TOP_PAGE])
+    Region(regions.right, pages[RIGHT_PAGE])
+    Region(regions.bottom, bottom, pages[MAIN_PAGE].bar.name .. DOT .. formName)
+    model.single = viewPage ~= MAIN_VIEW and pages[viewPage] and Region(single, pages[viewPage]) or nil
+    DrawChips()
+    DrawPet()
+    DrawPicker()
+    model.caption = TEXT_PICK_HINT
+    model.Paint = PaintSlot
+    P.DrawScene(v.scene, model)
+end
+
+local function ActionCount()
+    local actions, skip = 0, draft.choices.skip
+    for _, entry in ipairs(order) do actions = actions + Counts(entry.list, skip) end
     return actions
 end
 
@@ -151,30 +233,37 @@ local function MacroEnter(row)
     P.Hint(row, row.tipTitle, row.tipLine)
 end
 
+local function MacroClicked(row)
+    if row.locked or not draft.choices.macros then return end
+    Flip(draft.choices.macroOff, row.key)
+end
+
 local function NewMacroRow(parent)
     local row = CreateFrame("Button", nil, parent)
     row:SetHeight(MACRO_ROW_H)
-    ns.Solid(row, "BACKGROUND", T.bg, ROW_FILL):SetAllPoints()
-    ns.Border(row, BLACK)
+    ns.Solid(row, "BACKGROUND", T.bg, St.ROW_FILL):SetAllPoints()
+    ns.Border(row, St.BORDER_RGB)
     row.box = P.Box(row)
     row.box:SetPoint("LEFT", MACRO_INSET, 0)
     row.box:EnableMouse(false)
     row.icon = row:CreateTexture(nil, "ARTWORK")
-    row.icon:SetSize(MACRO_ROW_H - MACRO_ICON_PAD, MACRO_ROW_H - MACRO_ICON_PAD)
+    row.icon:SetSize(MACRO_ICON, MACRO_ICON)
     row.icon:SetPoint("LEFT", row.box, "RIGHT", MACRO_INSET, 0)
     row.icon:SetTexCoord(ICON_CROP, 1 - ICON_CROP, ICON_CROP, 1 - ICON_CROP)
     row.scope = P.Chip(row)
-    row.scope:SetPoint("TOPRIGHT", -CHIP_INSET_X, -CHIP_INSET_Y)
+    row.scope:SetPoint("RIGHT", -MACRO_INSET, 0)
     row.onBars = P.Chip(row)
-    row.onBars:SetPoint("TOPRIGHT", row.scope, "BOTTOMRIGHT", 0, -STACK_GAP)
-    row.name = P.Label(row, NAME_SIZE, T.fg)
-    row.name:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", MACRO_INSET, 0)
-    row.name:SetPoint("RIGHT", row.scope, "LEFT", -TEXT_GAP, 0)
+    row.onBars:SetPoint("RIGHT", row.scope, "LEFT", -TAG_GAP, 0)
+    row.name = P.Label(row, NOTE_SIZE, T.fg)
+    row.name:SetPoint("LEFT", row.icon, "RIGHT", MACRO_INSET, 0)
+    row.name:SetWidth(NAME_COLUMN)
     row.name:SetWordWrap(false)
-    row.body = P.Label(row, St.TAG_SIZE, T.muted)
-    row.body:SetPoint("TOPLEFT", row.name, "BOTTOMLEFT", 0, -STACK_GAP)
-    row.body:SetPoint("RIGHT", row.scope, "LEFT", -TEXT_GAP, 0)
+    row.body = P.Mono(row, St.MONO_SIZE, T.muted)
+    row.body:SetJustifyH("LEFT")
+    row.body:SetPoint("LEFT", row.name, "RIGHT", TEXT_GAP, 0)
+    row.body:SetPoint("RIGHT", row.onBars, "LEFT", -TEXT_GAP, 0)
     row.body:SetWordWrap(false)
+    row.onClick = MacroClicked
     row:SetScript("OnClick", P.Clicked)
     row:SetScript("OnEnter", MacroEnter)
     row:SetScript("OnLeave", GameTooltip_Hide)
@@ -194,16 +283,14 @@ local function PaintMacro(row, macro, key, locked, on, choices)
     P.PaintBox(row.box, on, locked)
     row.icon:SetTexture(macro.icon)
     row.name:SetText(macro.name)
-    row.body:SetText((macro.body or ""):gsub("[\r\n]+", BODY_JOIN))
+    row.body:SetText((((macro.body or ""):gsub("[\r\n]+", BODY_JOIN))))
     P.PaintChip(row.scope, macro.perCharacter and TEXT_CHARACTER or TEXT_ACCOUNT,
         macro.perCharacter and St.CHARACTER_RGB or St.ACCOUNT_RGB)
     if locked then P.PaintChip(row.onBars, TEXT_ON_BARS, T.grey) else row.onBars:Hide() end
+    row.body:SetPoint("RIGHT", locked and row.onBars or row.scope, "LEFT", -TEXT_GAP, 0)
     row.tipTitle = macro.name
     row.tipLine = locked and TEXT_ON_BARS_TIP or TEXT_REUSE_TIP
-    row.onClick = function()
-        if locked or not choices.macros then return end
-        Flip(choices.macroOff, key)
-    end
+    row.key, row.locked = key, locked
 end
 
 local function DrawMacros(v, slots)
@@ -227,9 +314,14 @@ local function DrawMacros(v, slots)
 end
 
 local function BindingCount()
-    local n = 0
-    for _ in pairs(Sets.CaptureBindings()) do n = n + 1 end
-    return n
+    local n, onBar, petOff = 0, 0, draft.choices.petOff
+    for _, command in pairs(Sets.CaptureBindings()) do
+        if not (petOff and Capture.PetKey(command)) then
+            n = n + 1
+            if barButtons[command:match(BAR_COMMAND) or command] then onBar = onBar + 1 end
+        end
+    end
+    return n, onBar
 end
 
 local function SaveDraft()
@@ -249,78 +341,96 @@ local function SaveDraft()
     end
 end
 
-local function Option(pane, y, title, get, set)
-    local label = P.Label(pane, TITLE_SIZE, T.fg)
-    label:SetPoint("TOPLEFT", 0, y)
-    label:SetText(title)
-    local line = P.Label(pane, SMALL_SIZE, T.muted)
-    line:SetPoint("TOPLEFT", label, "BOTTOMLEFT", 0, -STACK_GAP)
-    line:SetPoint("RIGHT", -(SWITCH_W + SWITCH_GAP), 0)
-    local switch = P.Switch(pane, get, set)
-    switch:SetPoint("TOPRIGHT", 0, y - SWITCH_DROP)
-    return line, switch
-end
-
 local function KeysOn() return draft.choices.keys end
 local function SetKeys(on) draft.choices.keys = on; W.Redraw() end
 local function MacrosOn() return draft.choices.macros end
 local function SetMacros(on) draft.choices.macros = on; W.Redraw() end
+local function ViewPage() return viewPage end
+local function SetViewPage(page) viewPage = page; W.Redraw() end
 
-local function BuildKeep(v, rightX, top)
-    local keep = P.Pane(W.frame, rightX, top, CARD, HEIGHT - top - KEEP_H)
-    keep:SetParent(v.frame)
-    P.Heading(keep, TEXT_KEEP)
-    local y = -HEADING_H
-    v.keysLine, v.keysSwitch = Option(keep, y, TEXT_KEYBINDS, KeysOn, SetKeys)
-    y = y - OPTION_H
-    P.Divider(keep, y)
-    y = y - DIVIDER_GAP
-    v.macrosLine, v.macrosSwitch = Option(keep, y, TEXT_MACROS, MacrosOn, SetMacros)
-    v.macroScroll, v.macroContent = P.List(keep, -(y - OPTION_H))
+local function BuildScene(v, top)
+    v.scene = P.NewScene(v.frame)
+    v.scene:SetPoint("TOPLEFT", CARD, -top)
+    v.scene:SetPoint("TOPRIGHT", -CARD, -top)
+    P.ScenePicker(v.scene, picker.values, picker.order, ViewPage, SetViewPage)
+end
+
+local function BuildKeep(v, bottom)
+    v.keys = P.GlassPanel(v.frame, TEXT_KEYBINDS)
+    v.keys:SetPoint("TOPLEFT", v.scene, "BOTTOMLEFT", 0, -GAP)
+    v.keys:SetSize(HALF_W, HEAD_H)
+    v.keysSwitch = P.PanelSwitch(v.keys, KeysOn, SetKeys)
+    v.macros = P.GlassPanel(v.frame, TEXT_MACROS)
+    v.macros:SetPoint("TOPRIGHT", v.scene, "BOTTOMRIGHT", 0, -GAP)
+    v.macros:SetSize(HALF_W, HEAD_H)
+    v.macrosSwitch = P.PanelSwitch(v.macros, MacrosOn, SetMacros)
+    local list = P.Glass(CreateFrame("Frame", nil, v.frame))
+    list:SetPoint("TOPLEFT", v.keys, "BOTTOMLEFT", 0, -GAP)
+    list:SetPoint("BOTTOMRIGHT", -CARD, bottom)
+    local inner = CreateFrame("Frame", nil, list)
+    P.Place(inner, GLASS_PAD, GLASS_PAD, GLASS_PAD, GLASS_PAD)
+    v.macroScroll, v.macroContent = P.List(inner, 0)
 end
 
 local function UnFocus(box) box:ClearFocus() end
 
-local function BuildSave(v, rightX, top, bottom)
-    local save = P.Pane(W.frame, rightX, top + KEEP_H + GAP, CARD, bottom)
-    save:SetParent(v.frame)
-    P.Heading(save, TEXT_NAME_SAVE)
-    local label = P.Label(save, SMALL_SIZE, T.muted)
-    label:SetPoint("TOPLEFT", 0, -NAME_LABEL_TOP)
+local function BuildName(v, top)
+    local bar = P.Glass(CreateFrame("Frame", nil, v.frame))
+    bar:SetPoint("TOPLEFT", CARD, -top)
+    bar:SetPoint("BOTTOMRIGHT", -CARD, FOOTER + CARD)
+    local label = P.Label(bar, SMALL_SIZE, T.muted)
+    label:SetPoint("TOPLEFT", GLASS_PAD, -GLASS_PAD + LINE_GAP)
     label:SetText(TEXT_SET_NAME)
-    v.box = ns.NewEditBox(save)
-    v.box:SetHeight(NAME_H)
+    v.box = ns.NewEditBox(bar)
+    v.box:SetSize(NAME_W, NAME_H)
     v.box:SetMaxLetters(NAME_MAX)
     v.box:SetPoint("TOPLEFT", label, "BOTTOMLEFT", 0, -LINE_GAP)
-    v.box:SetPoint("RIGHT")
     v.box:SetScript("OnEnterPressed", UnFocus)
     v.box:SetScript("OnEscapePressed", UnFocus)
-    v.summary = P.Label(save, NOTE_SIZE, T.fg)
-    v.summary:SetPoint("TOPLEFT", v.box, "BOTTOMLEFT", 0, -SUMMARY_GAP)
-    v.summary:SetPoint("RIGHT")
-    v.button = ns.AccentBorder(ns.Button(save, TEXT_SAVE_SET, FILL_W, BUTTON_H, SaveDraft))
-    v.button:SetPoint("BOTTOMLEFT")
-    v.button:SetPoint("BOTTOMRIGHT")
+    v.button = P.Primary(ns.Button(bar, TEXT_SAVE_SET, SAVE_W, BUTTON_H, SaveDraft))
+    v.button:SetPoint("RIGHT", -GLASS_PAD, 0)
+    v.summary = P.Label(bar, NOTE_SIZE, T.fg)
+    v.summary:SetPoint("LEFT", v.box, "RIGHT", SUMMARY_GAP, 0)
+    v.summary:SetPoint("RIGHT", v.button, "LEFT", -SUMMARY_GAP, 0)
+    v.summary:SetWordWrap(false)
 end
 
 local function Summary(actions, keys, kept)
-    local parts = { TEXT_ACTIONS:format(actions) }
-    if draft.choices.keys then parts[#parts + 1] = TEXT_KEYBIND_COUNT:format(keys) end
-    parts[#parts + 1] = TEXT_MACRO_COUNT:format(kept)
-    return TEXT_SUMMARY:format(table.concat(parts, ", "))
+    wipe(parts)
+    parts[1] = Plural(actions, TEXT_ACTION, TEXT_ACTIONS)
+    if draft.choices.keys then parts[#parts + 1] = Plural(keys, TEXT_KEYBIND, TEXT_KEYBINDS_N) end
+    parts[#parts + 1] = Plural(kept, TEXT_MACRO, TEXT_MACROS_N)
+    return table.concat(parts, DOT)
 end
 
 local function Draw(v)
     local slots = Sets.Capture()
-    local actions = DrawBars(v)
+    DrawScene(v)
     local kept, all = DrawMacros(v, slots)
     local choices = draft.choices
-    local keys = choices.keys and BindingCount() or 0
-    v.keysLine:SetText(choices.keys and TEXT_KEYS_ON:format(keys) or TEXT_KEYS_OFF)
-    v.macrosLine:SetText(choices.macros and TEXT_MACROS_ON:format(kept, all) or TEXT_MACROS_OFF)
+    local keys, onBar = 0, 0
+    if choices.keys then keys, onBar = BindingCount() end
+    v.keys.line:SetText(choices.keys and TEXT_KEYS_ON:format(keys, onBar, keys - onBar) or TEXT_KEYS_OFF)
+    v.macros.line:SetText(choices.macros and TEXT_MACROS_ON:format(kept, all) or TEXT_MACROS_OFF)
     v.keysSwitch._refreshValue()
     v.macrosSwitch._refreshValue()
-    v.summary:SetText(Summary(actions, keys, kept))
+    v.summary:SetText(Summary(ActionCount(), keys, kept))
+end
+
+local function Order()
+    pages, petCommands = P.Pages()
+    forms = P.FormPages(pages)
+    order = {}
+    for _, bar in ipairs(Sets.BARS) do
+        local entry = pages[bar.page]
+        entry.other = P.IsOther(bar.page, forms)
+        order[#order + 1] = entry
+    end
+end
+
+function Builder.PickForm(chip)
+    formPage = chip.page
+    W.Redraw()
 end
 
 function Builder.NewDraft(key)
@@ -329,7 +439,7 @@ function Builder.NewDraft(key)
     draft = {
         key = set and key or nil, name = set and key or "",
         choices = { skip = Copy(choices.skip), macroOff = Copy(choices.macroOff),
-            keys = choices.keys ~= false, macros = choices.macros ~= false },
+            keys = choices.keys ~= false, macros = choices.macros ~= false, petOff = choices.petOff or nil },
     }
 end
 
@@ -340,27 +450,22 @@ end
 function Builder.Build(window)
     W = window
     local v = { cards = {} }
-    local top, bottom = HEADER + CARD, FOOTER + CARD
-    local rightX = WIDTH - CARD - SIDE_W
-    P.Cards(W.frame, v.cards, CARD, top, SIDE_W + CARD + GAP, bottom)
-    P.Cards(W.frame, v.cards, rightX, top, CARD, HEIGHT - top - KEEP_H)
-    P.Cards(W.frame, v.cards, rightX, top + KEEP_H + GAP, CARD, bottom)
+    local nameTop = HEIGHT - FOOTER - CARD - NAME_BAR
     v.frame = CreateFrame("Frame", nil, W.frame)
     v.frame:SetAllPoints()
-    local bars = P.Pane(W.frame, CARD, top, SIDE_W + CARD + GAP, bottom)
-    bars:SetParent(v.frame)
-    P.Heading(bars, TEXT_PICK, TEXT_PICK_HINT)
-    v.scroll, v.content = P.List(bars, HEADING_H)
-    BuildKeep(v, rightX, top)
-    BuildSave(v, rightX, top, bottom)
+    BuildScene(v, HEADER + CARD)
+    BuildKeep(v, FOOTER + CARD + NAME_BAR + GAP)
+    BuildName(v, nameTop)
     v.title = TEXT_TITLE
-    v.subtitle = TEXT_SUBTITLE:format(UnitClass("player"))
     function v.Open()
+        Order()
+        viewPage, formPage = MAIN_VIEW, MAIN_PAGE
         v.box:SetText(draft.name)
         draft.box = v.box
         v.title = draft.key and (TEXT_EDIT .. draft.key) or TEXT_TITLE
+        v.subtitle = TEXT_SUBTITLE:format(UnitClass("player"))
     end
     function v.Draw() Draw(v) end
-    v.events = { "ACTIONBAR_SLOT_CHANGED", "UPDATE_BINDINGS", "UPDATE_MACROS" }
+    v.events = { "ACTIONBAR_SLOT_CHANGED", "UPDATE_BINDINGS", "UPDATE_MACROS", "PET_BAR_UPDATE" }
     return v
 end

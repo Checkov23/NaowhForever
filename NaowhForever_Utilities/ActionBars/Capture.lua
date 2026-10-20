@@ -1,10 +1,13 @@
--- Capture.lua: the bars, macros and keybinds as they are now, read into a set, and the macros this character has (ns.ActionBars.Capture).
+-- Capture.lua: the bars, macros and keybinds as they are now, read into a set, the macros this character has, and the highest rank of each spell it knows (ns.ActionBars.Capture).
 local ns = _G.NaowhForever
 
 local A = ns.ActionBars
 local C = A.C
 
 local KEYBOARD_SLOTS = C.KEYBOARD_SLOTS
+local PLAYER_BANK = Enum.SpellBookSpellBank.Player
+local SPELL_ITEM = Enum.SpellBookItemType.Spell
+local PET_PREFIX = "^" .. A.PET_BAR.button .. "%d+$"
 
 local function Slots()
     local list = {}
@@ -67,6 +70,59 @@ local function MacroSlot(slot)
     return { kind = "macro", name = name, icon = icon, body = body, perCharacter = index > FirstCharacterMacro() }
 end
 
+local function RankNumber(text)
+    return tonumber(text and text:match("%d+"))
+end
+
+local function AddRanks(info, ranks)
+    for i = info.itemIndexOffset + 1, info.itemIndexOffset + info.numSpellBookItems do
+        local item = C_SpellBook.GetSpellBookItemInfo(i, PLAYER_BANK)
+        if item and item.itemType == SPELL_ITEM and not item.isPassive then
+            local name, id = item.name, item.actionID
+            local r = RankNumber(item.subName)
+            if r then ranks.numbered[id] = true else ranks.plain[id] = true end
+            r = r or 0
+            if not ranks.rank[name] or r > ranks.rank[name] then
+                ranks.best[name], ranks.rank[name] = id, r
+            end
+        end
+    end
+end
+
+local function Ranks()
+    local ranks = { best = {}, rank = {}, numbered = {}, plain = {} }
+    for line = 1, C_SpellBook.GetNumSpellBookSkillLines() do
+        local info = C_SpellBook.GetSpellBookSkillLineInfo(line)
+        if info and not info.isGuild then AddRanks(info, ranks) end
+    end
+    return ranks
+end
+
+local function Variant(id, ranks)
+    if ranks.plain[id] then return true end
+    if ranks.numbered[id] then return false end
+    local text = C_Spell.GetSpellSubtext(id)
+    return text ~= nil and text ~= "" and not text:find("%d")
+end
+
+local function SpellName(entry)
+    return C_Spell.GetSpellName(entry.id) or entry.name
+end
+
+local function Highest(entry, ranks)
+    local name = SpellName(entry)
+    if not (name and (ranks.rank[name] or 0) > 0) or Variant(entry.id, ranks) then return nil end
+    return ranks.best[name]
+end
+
+local function MarkTop(slots)
+    local ranks = Ranks()
+    for _, entry in pairs(slots) do
+        if entry.kind == "spell" then entry.top = Highest(entry, ranks) == entry.id or nil end
+    end
+    return slots
+end
+
 local function CaptureSlot(slot)
     local kind, id = GetActionInfo(slot)
     if kind == "spell" then return { kind = "spell", id = id, name = C_Spell.GetSpellName(id) } end
@@ -74,9 +130,10 @@ local function CaptureSlot(slot)
     if kind then return { kind = kind, id = id } end
 end
 
-local function Capture()
+local function Capture(marked)
     local slots = {}
     for _, slot in ipairs(Slots()) do slots[slot] = CaptureSlot(slot) end
+    if marked then MarkTop(slots) end
     return slots
 end
 
@@ -102,6 +159,18 @@ local function CaptureBindings()
     return bindings
 end
 
+local function PetKey(command)
+    return type(command) == "string" and command:find(PET_PREFIX) ~= nil
+end
+
+local function KeptBindings(bindings, choices)
+    if not choices.petOff then return bindings end
+    for key, command in pairs(bindings) do
+        if PetKey(command) then bindings[key] = nil end
+    end
+    return bindings
+end
+
 local function KeptMacros(slots, macros, choices)
     local onBars, kept = {}, {}
     for _, entry in pairs(slots) do
@@ -117,15 +186,16 @@ local function KeptMacros(slots, macros, choices)
 end
 
 local function Snapshot(choices, captured)
-    local slots, macros, bindings = captured or Capture(), CaptureMacros(), CaptureBindings()
+    local slots, macros, bindings = captured or Capture(true), CaptureMacros(), CaptureBindings()
     if choices then
         for slot in pairs(choices.skip) do slots[slot] = nil end
         macros = KeptMacros(slots, macros, choices)
-        if not choices.keys then bindings = nil end
+        bindings = choices.keys and KeptBindings(bindings, choices) or nil
     end
     return { saved = time(), by = UnitName("player"), slots = slots, macros = macros, bindings = bindings,
         choices = choices }
 end
 
 A.Capture = { Slots = Slots, Body = Body, MacroKey = MacroKey, MacroIndex = MacroIndex, Lookup = Lookup,
-    Capture = Capture, CaptureMacros = CaptureMacros, CaptureBindings = CaptureBindings, Snapshot = Snapshot }
+    Ranks = Ranks, Variant = Variant, SpellName = SpellName, Highest = Highest, Capture = Capture, CaptureMacros = CaptureMacros,
+    CaptureBindings = CaptureBindings, PetKey = PetKey, Snapshot = Snapshot }

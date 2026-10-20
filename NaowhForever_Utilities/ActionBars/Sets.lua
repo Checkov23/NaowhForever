@@ -208,7 +208,7 @@ end
 local function CopyBars()
     copyQueued = false
     local key = LogoutKey()
-    logoutCopy = key and { key = key, slots = Capture.Capture() } or nil
+    logoutCopy = key and { key = key, slots = Capture.Capture(true) } or nil
 end
 
 local function QueueCopy()

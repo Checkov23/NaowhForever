@@ -1,4 +1,4 @@
--- Parts.lua: the small parts a page is made of (ns.Shared.Parts): icons in text, smooth textures, hover cards, the chevron, links, icon buttons, the flat hover and pressed look for a bar button, pills, the worn bar and the Wowhead copy card.
+-- Parts.lua: the small parts a page is made of (ns.Shared.Parts): icons in text, smooth textures, hover cards, the chevron, links and back links, icon buttons, the flat hover and pressed look for a bar button, pills, the worn bar and the Wowhead copy card.
 local ns = _G.NaowhForever
 local T = ns.THEME
 local Shared = ns.Shared
@@ -152,6 +152,15 @@ end
 function Parts.SetLink(link, text)
     link.text:SetText(ns.L(text))
     link:SetWidth(math.ceil(link.text:GetStringWidth()) + (link.arrow and LINK_ARROW_ROOM or 0))
+end
+
+function Parts.FlipLink(link)
+    if not link.arrow then return end
+    link.arrow:ClearAllPoints()
+    link.arrow:SetPoint("LEFT", -LINK_ARROW_OUT, 0)
+    link.arrow:SetRotation(math.pi)
+    link.text:ClearAllPoints()
+    link.text:SetPoint("LEFT", link.arrow, "RIGHT", 0, 0)
 end
 
 function Parts.IconButton(parent, onClick, texture, margin, tip)

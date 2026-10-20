@@ -1,4 +1,4 @@
--- Window.lua: the Action Bars window (/nfbars, /nf bars) and its three views: the saved sets, the builder and the import preview.
+-- Window.lua: the Action Bars window (/nfbars, /nf bars), its three views (the saved sets, the builder and the import preview) and its link back to the saved sets or Settings.
 local ns = _G.NaowhForever
 local UI = ns.UI
 
@@ -16,10 +16,12 @@ local INSET, SCROLLBAR = St.CONTENT_INSET, St.SCROLLBAR
 local PAGE = "Action Bars/Settings"
 local TOP_Y = -6
 local SCROLL_RIGHT = 4
+local LINK_GAP = 12
 
 local TEXT_TITLE = "Action Bars"
 local TEXT_SUBTITLE = ns.L("Save your bars, macros and keybinds, then import them on any character.")
 local TEXT_BACK = ns.L("Saved Sets")
+local TEXT_SETTINGS = ns.L("Settings")
 
 local W = {}
 local window, views, view
@@ -44,6 +46,12 @@ local function RedrawSoon()
     C_Timer.After(0, Redraw)
 end
 
+local function PaintBack()
+    local settings = window.onBack ~= nil
+    window.backLink:SetShown(settings or view ~= "sets")
+    Parts.SetLink(window.backLink, settings and TEXT_SETTINGS or TEXT_BACK)
+end
+
 local function ShowView(v, on)
     v.frame:SetShown(on)
     for _, part in ipairs(v.cards) do part:SetShown(on) end
@@ -59,7 +67,7 @@ local function Show(name)
     if v.Open then v.Open() end
     window.title:SetText(v.title)
     window.subtitle:SetText(v.subtitle)
-    window.backLink:SetShown(name ~= "sets")
+    PaintBack()
     Redraw()
 end
 
@@ -70,7 +78,7 @@ local function DrawSets(v)
 end
 
 local function BuildSets()
-    local v = { cards = window.backdrop:Card(CARD, HEADER + CARD, CARD, FOOTER + CARD) }
+    local v = { cards = {} }
     v.frame = CreateFrame("Frame", nil, window)
     v.frame:SetAllPoints()
     local left, top = CARD + INSET, HEADER + CARD + PAD
@@ -85,6 +93,10 @@ local function BuildSets()
     return v
 end
 
+local function BackClicked()
+    if window.onBack then window:Hide() else Show("sets") end
+end
+
 local function OnHide()
     for _, v in pairs(views) do
         for _, event in ipairs(v.events or {}) do window:UnregisterEvent(event) end
@@ -94,11 +106,13 @@ end
 local function Build()
     window = Parts.Window(WIDTH, HEIGHT, "actionBarsWindow")
     W.frame = window
-    Parts.TitleBar(window, TEXT_TITLE, "", PAGE)
+    local close = Parts.TitleBar(window, TEXT_TITLE, "", PAGE)
     Parts.FooterBrand(window, PAGE)
     window.note = Parts.FooterNote(window, "")
-    Parts.SetLink(window.backLink, TEXT_BACK)
-    window.backLink:SetScript("OnClick", function() Show("sets") end)
+    window.backLink:ClearAllPoints()
+    window.backLink:SetPoint("RIGHT", close, "LEFT", -LINK_GAP, 0)
+    Parts.FlipLink(window.backLink)
+    window.backLink:SetScript("OnClick", BackClicked)
     if not Builder.HasDraft() then Builder.NewDraft() end
     window:SetScript("OnEvent", RedrawSoon)
     window:HookScript("OnHide", OnHide)

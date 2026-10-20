@@ -162,7 +162,7 @@ local function ForeverCheck(t)
     return t, Paint, Snap
 end
 
-function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize)
+function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize, onColor)
     local W, H = w or TOGGLE.w, h or TOGGLE.h
     local KNOB = knobSize or math.floor(H * TOGGLE.knobShare + ROUND)
     local INSET = math.max(TOGGLE.minInset, math.floor(H * TOGGLE.insetShare + ROUND))
@@ -204,7 +204,7 @@ function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize)
         minus:SetShown(not on)
         knob:ClearAllPoints()
         if on then
-            PaintTrack(T.accent, 1)
+            PaintTrack(onColor or T.accent, 1)
             knob:SetVertexColor(1, 1, 1, 1)
             knob:SetPoint("RIGHT", t, "RIGHT", -INSET, 0)
         else
@@ -215,10 +215,10 @@ function UI.BuildToggleControl(parent, frameLevel, get, set, w, h, knobSize)
     end
 
     t:SetScript("OnEnter", function()
-        PaintTrack(on and T.accentSoft or T.grey, 1)
+        PaintTrack(on and (onColor or T.accentSoft) or T.grey, 1)
     end)
     t:SetScript("OnLeave", function()
-        PaintTrack(on and T.accent or T.line, 1)
+        PaintTrack(on and (onColor or T.accent) or T.line, 1)
     end)
 
     local function Snap() Paint(Truthy(t._get())) end

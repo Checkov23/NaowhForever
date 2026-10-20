@@ -55,11 +55,11 @@ local LEGACY_PARTS = {
 local API_PARTS = { settings = true, macros = true, library = true, consumables = true, builds = true,
     bisLists = true, questRewards = true, look = true }
 local BAR_KINDS_NEED_ID = { spell = true, item = true }
-local BAR_FLAGS = { "keys", "macros", "website" }
-local BAR_BUTTONS = { ACTIONBUTTON = true, MULTIACTIONBAR1BUTTON = true, MULTIACTIONBAR2BUTTON = true,
-    MULTIACTIONBAR3BUTTON = true, MULTIACTIONBAR4BUTTON = true, MULTIACTIONBAR5BUTTON = true,
-    MULTIACTIONBAR6BUTTON = true, MULTIACTIONBAR7BUTTON = true }
-local BAR_BUTTON_SLOTS, BAR_KEYS_PER_ACTION = 12, 2
+local BAR_FLAGS = { "keys", "macros", "website", "petOff" }
+local BAR_BUTTONS = { ACTIONBUTTON = 12, MULTIACTIONBAR1BUTTON = 12, MULTIACTIONBAR2BUTTON = 12,
+    MULTIACTIONBAR3BUTTON = 12, MULTIACTIONBAR4BUTTON = 12, MULTIACTIONBAR5BUTTON = 12,
+    MULTIACTIONBAR6BUTTON = 12, MULTIACTIONBAR7BUTTON = 12, BONUSACTIONBUTTON = 10 }
+local BAR_KEYS_PER_ACTION = 2
 local LIST_NOUN = { bisLists = ns.L("lists"), library = ns.L("macros"), builds = ns.L("builds") }
 local TEXT_NO_LIBRARIES = ns.L("The serializer libraries are missing from this build.")
 local TEXT_TOO_BIG_PROFILE = ns.L("This profile is too big to share.")
@@ -643,6 +643,7 @@ local function CleanBarAction(entry, kind)
     if BarBody(entry.body) then out.body = entry.body end
     if PositiveID(entry.icon) or BarBody(entry.icon) then out.icon = entry.icon end
     if type(entry.perCharacter) == "boolean" then out.perCharacter = entry.perCharacter end
+    if kind == "spell" and entry.top == true then out.top = true end
     if BAR_KINDS_NEED_ID[kind] and type(out.id) ~= "number" then return nil end
     if (kind == nil or kind == "macro") and not (out.name and out.body) then return nil end
     return out
@@ -652,7 +653,7 @@ local function BarButton(command)
     if type(command) ~= "string" then return false end
     local prefix, n = command:match("^(.-)(%d+)$")
     n = tonumber(n)
-    return BAR_BUTTONS[prefix] and n >= 1 and n <= BAR_BUTTON_SLOTS
+    return BAR_BUTTONS[prefix] and n >= 1 and n <= BAR_BUTTONS[prefix]
 end
 
 local function CleanBarChoices(raw)
