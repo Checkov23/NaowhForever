@@ -50,7 +50,7 @@ NaowhForever_Combat/AuraBuffs/
   LowHealth.lua                the item to offer and the curve that shows it (A.LowHealth)
   View/
     Style.lua                  its look (A.Style), on top of Shared/Style.lua
-    Glow.lua                   a reminder's glow, with optional proc style, from its glow settings (A.Glow)
+    Glow.lua                   a reminder's glow, Pixel or Standard, from its glow settings (A.Glow)
     BuffCell.lua               a buff reminder icon (A.BuffCell)
     CampIcon.lua               the campfire art and the Round look (A.CampIcon)
     CampBar.lua                the Simple bar (A.CampBar)
@@ -66,7 +66,6 @@ NaowhForever_Combat/AuraBuffs/
     LowHealthCard.lua          the Low Health card
     BuffMenu.lua               the carried items a buff reminder offers, as secure buttons
     BuffReminders.lua          the buff reminder row on screen
-    ClassBuffs.lua             secure self-buff buttons for missing buffs, and managed active icons
     BuffsCard.lua              the Buffs & Consumables card
     WindowPages.lua            the window's page: consumables, with list import and export, and
                                items dragged onto a section
@@ -155,7 +154,7 @@ NaowhForever_Combat/AuraBuffs/
   per stat (Wowhead's Forever data, build 1.60.1). Flask of Petrification is left out: it is a
   minute of stone form, not a buff to keep up.
 - Hide Blessings on Paladins (`hideBlessingsOnPaladin`, off by default) suppresses both paladin
-  raid reminder families and Class Buff Tracker slots while the player is a grouped paladin, since
+  raid reminder families while the player is a grouped paladin, since
   the Blessings tab already covers them. It keeps the saved picks and does not hide the Blessing bar.
   Leaving the group, turning the option off, or playing another class restores the selected reminders.
 - Paladin blessings start off in the raid buff picks: the Blessings module covers them. Salvation is a raid
@@ -363,49 +362,3 @@ NaowhForever_Combat/AuraBuffs/
 - `lua Tools/regression/test-icon-look.lua`: Low Health's text.
 - `lua Tools/regression/test-robin-final.lua`: consumable entries and the Round campfire.
 - `lua Tools/regression/test-combat-perf.lua`: the buff reminders' cost in a raid.
-
-## Class Buff Tracker
-
-- Off by default, under AuraBuffs / Class Buff Tracker, with its own HUD Editor mover.
-  It shows known personal and raid buff families of your class, following the existing
-  personal and raid buff picks independently of the reminder switches.
-- Secure spell buttons target `player`; their configured spell and layout change only
-  outside combat. Enabling, disabling or changing picks in combat waits for
-  `PLAYER_REGEN_ENABLED`. Alternative-buff families cast their first known spell;
-  the full native spell tooltip describes that cast.
-- Blizzard's `CustomAuraContainerTemplate` overlays active icons during combat using
-  helpful spell-ID filters, and an own-caster filter for aspects. No code reads the
-  managed icon, its visibility or hidden aura data. Weapon enchants and target debuffs
-  are excluded. The existing consumable and group reminders are unchanged.
-- Missing-buff glow is off by default and updates only when aura data is readable.
-  It shares one bounded scan across all icons, reusing scratch tables. A secret ID,
-  unknown required caster or incomplete scan suppresses the warning. Combat entry
-  clears glows immediately, before lockdown may become true; combat end refreshes them.
-- Glow uses the shared Pixel/Standard wrapper plus an optional Gold style using the
-  embedded library's proc outline, without an opening flash. Other callers keep their
-  existing choices. Gold is the tracker's default style, with glow itself still off.
-- `HOME_Y` puts the tracker below the default reminder position. `ACTIVE_LEVEL` puts
-  the managed icon above its grey placeholder. The shared icon crop, one-pixel inset
-  and outlined short labels match the suite's bars. Labels fit the icon spacing.
-- No frames or events are created before first enable. Disabling unregisters events,
-  disables managed containers and stops glows. Construction failures hide the tracker,
-  print an unavailable message and retain the original error through the error handler.
-- Out of combat, a buff you have is left off the row and the rest close up, so the row is
-  only what is missing; one that drops comes back. The buttons are secure, so the row can
-  only be laid out out of combat: in combat it holds as it was, Blizzard's container still
-  showing the active icons on it, and combat end lays it out again. Aura data that cannot
-  be read keeps every button. Unlock Mode shows every button so the row can be placed.
-- An aura change reads the auras once; only one that changes which buffs are active lays
-  the row out again (a second read, by the layout).
-- Opening or closing settings updates only the mover overlay and missing-buff glow,
-  without hiding unchanged buttons. Tooltip ownership is cleared when its button hides.
-- User confirmed self-casting, labels, tooltips and settings/glow behavior in the Forever
-  client. Restricted-instance coverage and before/after in-game screenshots are missing.
-- Offline checks: `lua Tools/regression/test-class-buffs.lua` covers lifecycle, native
-  tooltip wiring, secure self-cast attributes, one shared scan, buff removal, unknown
-  data, combat deferral, feature disable and mover open/close.
-
-- Gold Glow's Thickness control widens the outline with up to six copies of its native
-  artwork, each half a UI unit farther out. The icon keeps its size. The shared glow
-  wrapper owns and stops every keyed layer; changing thickness replaces the old layers.
-  Pixel Glow retains its direct stroke-width control, and Standard Glow is unchanged.
