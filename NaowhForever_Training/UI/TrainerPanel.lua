@@ -58,7 +58,7 @@ local events = CreateFrame("Frame")
 local Render
 
 local function On()
-    return Training.On() and S.Get("trainerPanel")
+    return Training.On() and S.Get("trainerPanel") and not ns.GamepadStandDown()
 end
 
 local function Key(offer)

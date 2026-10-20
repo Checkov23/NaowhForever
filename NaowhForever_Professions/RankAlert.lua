@@ -31,7 +31,7 @@ local queued = false
 local events = CreateFrame("Frame")
 
 local function On()
-    return S.Get("enabled") and S.Get("rankAlert")
+    return S.Get("enabled") and S.Get("rankAlert") and not ns.GamepadStandDown()
 end
 
 local function Announced()

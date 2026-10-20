@@ -298,6 +298,7 @@ local account = {}
 local ns, logoPage, launcher
 ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, MEDIA = dofile("Tools/regression/core_media.lua"),
     RegisterMinimapFeature = function(feature) launcher = feature end,
+    GamepadStandDown = function() return false end,
     Shared = { CharacterData = function(key, create)
         local all = account[key]
         if type(all) ~= "table" then

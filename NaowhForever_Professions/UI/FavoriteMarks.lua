@@ -22,7 +22,7 @@ local merchantHooked, trainerHooked, favoritesHooked = false, false, false
 local trainerScroll
 
 local function On()
-    return P.On() and S.Get("favoriteVendorMarks")
+    return P.On() and S.Get("favoriteVendorMarks") and not ns.GamepadStandDown()
 end
 
 local function HideMarks(marks)

@@ -68,7 +68,9 @@ local UI = {
         return S
     end,
 }
+local gamepad = false
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+    GamepadStandDown = function() return gamepad end,
     MEDIA = dofile("Tools/regression/core_media.lua"),
     Shared = { Style = dofile("Tools/regression/shared_style.lua") },
     THEME = setmetatable({}, { __index = function() return WHITE end }),
@@ -200,6 +202,12 @@ check("and does not wait on the spellbook addon", #waiting == 0)
 
 env.PlayerSpellsFrame = nil
 window.SpellBookFrame:Hide()
+gamepad = true
+ns.TrainingSettings.Set("spellbook", true)
+check("the Gamepad interface style keeps it off: no wait on the spellbook, nothing built", #waiting == 0
+    and #frames == before + 1)
+ns.TrainingSettings.Set("spellbook", false)
+gamepad = false
 ns.TrainingSettings.Set("spellbook", true)
 check("turned on, it waits for the load-on-demand spellbook", #waiting == 1
     and waiting[1][1] == "Blizzard_PlayerSpells")

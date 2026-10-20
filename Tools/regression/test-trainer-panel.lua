@@ -34,8 +34,10 @@ local frames, timers, bought = {}, {}, {}
 local values = { enabled = true, trainerPanel = true }
 local trainer = Stub()
 local COLOR = { r = 1, g = 1, b = 1 }
+local gamepad = false
 
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
+    GamepadStandDown = function() return gamepad end,
     THEME = setmetatable({}, { __index = function() return COLOR end }),
     Training = {
         Settings = { Get = function(key) return values[key] end, OnChange = NOTHING },
@@ -85,6 +87,11 @@ env._G = env
 Load({ "NaowhForever_Training/UI/TrainerPanel.lua" }, env)
 
 local events, boot = frames[1], frames[2]
+gamepad = true
+boot.scripts.OnEvent(boot, "PLAYER_LOGIN")
+check("the Gamepad interface style: the trainer window not hooked", trainer.scripts.OnShow == nil
+    and trainer.scripts.OnHide == nil)
+gamepad = false
 boot.scripts.OnEvent(boot, "PLAYER_LOGIN")
 
 local function RunTimers()

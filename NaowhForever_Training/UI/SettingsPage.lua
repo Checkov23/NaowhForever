@@ -21,6 +21,14 @@ local TEXT_BOTH, TEXT_TOAST, TEXT_PANEL, TEXT_NOTHING =
 local TEXT_FOLLOWING = ns.L("Following: %s")
 local TEXT_NOT_FOLLOWING = ns.L("Not following a build")
 
+local function PadFree()
+    return Training.On() and not ns.GamepadStandDown()
+end
+
+local function PadWhy()
+    return ns.GamepadWhy() or TEXT_OFF
+end
+
 local function Headline(plan)
     if #plan.now > 0 then
         return TEXT_TRAIN_NOW:format(#plan.now, #plan.now == 1 and TEXT_SPELL or TEXT_SPELLS,
@@ -105,7 +113,7 @@ page:Card({
               .. "buttons to open the planner and to put a waypoint on your nearest trainer. Move it in the "
               .. "HUD Editor." },
         { key = "trainerPanel", label = "Panel at the Trainer", toggle = true,
-          needs = Training.On, why = TEXT_OFF,
+          needs = PadFree, why = PadWhy,
           help = "Beside your class trainer, the spells you can learn now, ticked, with their total and Learn "
               .. "Selected. Untick one to leave it.",
           search = "put the new ranks on my bars swap ranks /nf ranks nf ranks" },
@@ -130,7 +138,7 @@ page:Card({
           why = TEXT_OFF,
           help = "A small bar with your next trainer visit and your gold, to leave up while you level. Move it "
               .. "by dragging." },
-        { key = "spellbook", label = "Spellbook Tab", toggle = true, needs = Training.On, why = TEXT_OFF,
+        { key = "spellbook", label = "Spellbook Tab", toggle = true, needs = PadFree, why = PadWhy,
           help = "A Trainable tab under your spellbook that lists the spells you can train.",
           search = "spell book trainable" },
     },

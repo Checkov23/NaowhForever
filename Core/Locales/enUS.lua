@@ -7155,3 +7155,4 @@ L["+ %d forms"] = true
 L["+ %d more bars"] = true
 L["+ 1 more bar"] = true
 L["+ pet keys"] = true
+L["With the Gamepad interface style, the game's own recipe window is used."] = true
