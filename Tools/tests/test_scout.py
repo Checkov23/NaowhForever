@@ -4,6 +4,7 @@ import gzip
 import sys
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest import mock
 
@@ -68,6 +69,48 @@ class Cleaning(unittest.TestCase):
 
 
 class Creatures(unittest.TestCase):
+    def test_reviewed_instance_npcs_fill_roster_gaps_without_replacing_cached_names(self):
+        cache = {"zones": {"1": [{"id": 448, "name": "Hogger"}]}, "npcs": {}}
+        extra = {"448": {"name": "Old name"}, "12129": {"name": "Onyxian Warder"}}
+        with mock.patch.object(scout, "zones", return_value=[1]), \
+                mock.patch.object(scout, "instances", return_value=set()), \
+                mock.patch.object(scout, "instance_npcs", return_value={}):
+            names, first = scout.creatures(cache, offline=True, extra=extra)
+        self.assertEqual(names, {448: "Hogger", 12129: "Onyxian Warder"})
+        self.assertEqual(first, {448, 12129})
+
+    def test_instance_bosses_include_resolved_names_and_preserve_pinned_identity(self):
+        dungeons = [{"npcs": {"Boss": 448}, "wings": [{"bosses": ["Boss", "Unresolved"],
+                     "rare": ["Rare"], "optional": ["Optional"], "quest": ["Quest Target"]}]}]
+        lookup = {"npc:Boss": 999, "npc:Unresolved": None, "npc:Rare": 1001, "npc:Optional": 1002,
+                  "npc:Quest Target": 1003}
+        self.assertEqual(scout.instance_npcs(dungeons, lookup), {448: "Boss", 1001: "Rare", 1002: "Optional"})
+
+    def test_offline_keeps_cached_zones_and_instance_bosses_without_http(self):
+        cache = {"zones": {"1": [{"id": 448, "name": "Hogger"}]}, "npcs": {}}
+        with mock.patch.object(scout, "zones", return_value=[1, 2]), \
+                mock.patch.object(scout, "instances", return_value={2}), \
+                mock.patch.object(scout, "instance_npcs", return_value={11502: "Ragnaros"}), \
+                mock.patch.object(scout, "fetch_zone", side_effect=AssertionError("unexpected HTTP")):
+            names, first = scout.creatures(cache, offline=True)
+        self.assertEqual(names, {448: "Hogger", 11502: "Ragnaros"})
+        self.assertEqual(first, {11502})
+        self.assertNotIn("2", cache["zones"])
+
+    def test_blocked_zone_keeps_later_cached_zones_and_stops_fetching(self):
+        cache = {"zones": {"3": [{"id": 448, "name": "Hogger"}]}, "npcs": {}}
+        blocked = urllib.error.HTTPError("https://example.test", 403, "Forbidden", {}, None)
+        self.addCleanup(blocked.close)
+        with mock.patch.object(scout, "zones", return_value=[1, 2, 3]), \
+                mock.patch.object(scout, "instances", return_value=set()), \
+                mock.patch.object(scout, "instance_npcs", return_value={}), \
+                mock.patch.object(scout, "save"), \
+                mock.patch.object(scout, "fetch_zone", side_effect=blocked) as fetch:
+            names, _ = scout.creatures(cache)
+        self.assertEqual(names, {448: "Hogger"})
+        fetch.assert_called_once_with(1)
+        self.assertEqual(set(cache["zones"]), {"3"})
+
     def test_keeps_what_someone_can_attack_but_critters(self):
         self.assertTrue(scout.attackable({"react": [-1, -1], "type": 7}))
         self.assertTrue(scout.attackable({"react": [1, -1], "type": 1}))
@@ -95,6 +138,18 @@ class Zones(unittest.TestCase):
 
     def test_reads_every_zone_page_again_when_refreshing(self):
         self.assertEqual(self.read(True), {2: "New"})
+
+    def test_failed_refresh_keeps_the_current_and_later_cached_zones(self):
+        cache = {"zones": {"1": [{"id": 448, "name": "Hogger"}],
+                           "2": [{"id": 2850, "name": "Broken Tooth"}]}, "npcs": {}}
+        with mock.patch.object(scout, "zones", return_value=[1, 2]), \
+                mock.patch.object(scout, "instances", return_value=set()), \
+                mock.patch.object(scout, "instance_npcs", return_value={}), \
+                mock.patch.object(scout, "save"), \
+                mock.patch.object(scout, "fetch_zone", side_effect=TimeoutError("unavailable")) as fetch:
+            names, _ = scout.creatures(cache, refresh=True)
+        self.assertEqual(names, {448: "Hogger", 2850: "Broken Tooth"})
+        fetch.assert_called_once_with(1)
 
 
 class Database(unittest.TestCase):
@@ -204,6 +259,69 @@ class Armor(unittest.TestCase):
         self.assertEqual(len(armor), 63)
         self.assertEqual(armor[0], 10)
         self.assertEqual(armor[62], 630)
+
+
+class ScriptedBaseline(unittest.TestCase):
+    def test_joins_by_exact_script_not_a_similar_creature_name(self):
+        result = scout.script_casts(DUMP, {"boss_ragnaros": [20565], "boss_ragnaros_extra": [3009]})
+        self.assertEqual(result, {11502: {20565}})
+
+    def test_cached_spell_and_known_empty_records_win_over_classic_script(self):
+        baseline = {11502: {20565}}
+        self.assertEqual(scout.creature_spells(11502, {}, {}, baseline), {20565})
+        self.assertEqual(scout.creature_spells(11502, {}, {"11502": {"abilities": [[3009, "Claw"]]}}, baseline), {3009})
+        self.assertEqual(scout.creature_spells(11502, {}, {"11502": {"abilities": []}}, baseline), set())
+        self.assertEqual(scout.creature_spells(11502, {11502: {17257}}, {}, baseline), {17257})
+
+    def test_rejects_non_spell_values(self):
+        for spells in ([True], [0], [-1], ["20565"], []):
+            with self.subTest(spells=spells), self.assertRaises(ValueError):
+                scout.script_casts(DUMP, {"boss_ragnaros": spells})
+
+
+class SupplementalAbilities(unittest.TestCase):
+    def test_reuses_journal_abilities_only_for_a_gap(self):
+        journal = {"11502": {"abilities": [[20565, "Magma Blast"], [99999999, "Unknown"]]}}
+        self.assertEqual(scout.creature_abilities(11502, "Ragnaros", {}, {}, {}, {}, NAMES, journal), [20565])
+        self.assertEqual(scout.creature_abilities(11502, "Ragnaros", {11502: {6016}}, {}, {}, {}, NAMES,
+                                                journal), [6016])
+        self.assertEqual(scout.creature_abilities(11502, "Ragnaros", {}, {"11502": {"abilities": []}}, {}, {},
+                                                NAMES, journal), [])
+
+    def test_preserves_existing_fallback_and_uses_reviewed_casts_last(self):
+        journal = {"11502": {"abilities": [[20565, "Magma Blast"]]}}
+        self.assertEqual(scout.creature_abilities(11502, "Ragnaros", {}, {}, {}, {11502: [6016]}, NAMES,
+                                                journal, {11502: [17257]}), [6016])
+        self.assertEqual(scout.creature_abilities(11502, "Ragnaros", {}, {}, {}, {}, NAMES,
+                                                journal, {11502: [17257]}), [20565])
+        self.assertEqual(scout.creature_abilities(11502, "Ragnaros", {}, {}, {}, {}, NAMES,
+                                                {"11502": {"abilities": []}}, {11502: [17257, 99999999]}), [17257])
+
+    def abilities(self, casts=None, pages=None, baseline=None, supplement=None):
+        return scout.creature_abilities(11502, "Ragnaros", casts or {}, pages or {}, baseline or {},
+                                        supplement or {11502: {17257, 19774, 99999999}}, NAMES)
+
+    def test_fills_only_the_gap_and_filters_unknown_and_self_summoning_spells(self):
+        self.assertEqual(self.abilities(), [17257])
+        self.assertEqual(self.abilities(casts={11502: {99999999}}), [17257])
+
+    def test_preserves_database_page_and_reviewed_script_abilities(self):
+        self.assertEqual(self.abilities(casts={11502: {6016}}), [6016])
+        self.assertEqual(self.abilities(pages={"11502": {"abilities": [[6016, "Pierce Armor"]]}}), [6016])
+        self.assertEqual(self.abilities(baseline={11502: {20565}}), [20565])
+
+    def test_preserves_an_explicit_empty_cached_page(self):
+        self.assertEqual(self.abilities(pages={"11502": {"abilities": []}}), [])
+
+    def test_supplement_uses_the_same_rank_cleanup(self):
+        self.assertEqual(self.abilities(supplement={11502: [3009, 3010, 16828]}), [16828])
+
+    def test_rejects_invalid_ids_in_supplement(self):
+        self.assertEqual(scout.supplemental_casts({"448": [6016, 6016]}), {448: {6016}})
+        for records in ([], {"0448": [6016]}, {"0": [6016]}, {"448": []}, {"448": [True]},
+                        {"448": [0]}, {"448": [-1]}, {"448": ["6016"]}, {448: [6016]}):
+            with self.subTest(records=records), self.assertRaises(ValueError):
+                scout.supplemental_casts(records)
 
 
 if __name__ == "__main__":

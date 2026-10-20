@@ -1,0 +1,436 @@
+{
+ "source": "https://www.wowhead.com/forever/guide/city-of-dalaran-dungeon-overview-location-rewards",
+ "scope": "Reported Forever beta NPC casts from the published dungeon guide, updated 2026-10-10. Numeric links validated against client SpellName build 1.60.1.70450; not an in-game verification. No armor or immunity values inferred. Onyxian guards and whelps are a Classic roster baseline from the SQL and pinned encounter source. Additional Classic combat casts use an exact NPC ID/name join against the second database's latest 1.12 template, spell-list and combat event records. Existing abilities remain authoritative. Reviewed combat auras and exact creature AI casts also supply passive enemy abilities and encounter-add actions; cosmetic, hidden threat and movement-helper effects are excluded.",
+ "creatures": {
+  "247126": {
+   "name": "Atrexis the Grave Knight",
+   "instance": "Dalaran",
+   "spells": [
+    3391,
+    6713,
+    12057,
+    1303264,
+    1303266
+   ]
+  },
+  "245999": {
+   "name": "Arcane Anomaly",
+   "instance": "Dalaran",
+   "spells": [
+    15230,
+    1241501
+   ]
+  },
+  "246016": {
+   "name": "Arcanic Enigma",
+   "instance": "Dalaran",
+   "spells": [
+    1224125,
+    1240869,
+    1304455
+   ]
+  },
+  "246017": {
+   "name": "Unstable Sentinel",
+   "instance": "Dalaran",
+   "spells": [
+    1241329
+   ]
+  },
+  "246008": {
+   "name": "Mana Devourer",
+   "instance": "Dalaran",
+   "spells": [
+    1240738,
+    1240750
+   ]
+  },
+  "246003": {
+   "name": "Fel Ancient",
+   "instance": "Dalaran",
+   "spells": [
+    22994,
+    1240706
+   ]
+  },
+  "247032": {
+   "name": "Lyn the Ignored",
+   "instance": "Dalaran",
+   "spells": [
+    17228,
+    1303266,
+    1304473
+   ]
+  },
+  "246020": {
+   "name": "Shade of the Archmage",
+   "instance": "Dalaran",
+   "spells": [
+    15230,
+    28450,
+    1241515,
+    1303598,
+    1303599
+   ]
+  },
+  "269475": {
+   "name": "Mana Phantom",
+   "instance": "Dalaran",
+   "spells": [
+    20817
+   ]
+  },
+  "12129": {
+   "name": "Onyxian Warder",
+   "instance": "OnyxiasLair",
+   "spells": []
+  },
+  "11262": {
+   "name": "Onyxian Whelp",
+   "instance": "OnyxiasLair",
+   "spells": []
+  },
+  "3636": {
+   "name": "Deviate Ravager",
+   "instance": "Wailing Caverns",
+   "edition": "classic",
+   "spells": [
+    3391
+   ]
+  },
+  "3865": {
+   "name": "Shadow Charger",
+   "instance": "Shadowfang Keep",
+   "edition": "classic",
+   "spells": [
+    7139
+   ]
+  },
+  "3976": {
+   "name": "Scarlet Commander Mograine",
+   "instance": "Scarlet Monastery - Cathedral",
+   "edition": "classic",
+   "spells": [
+    1020,
+    5589,
+    8990,
+    14518
+   ]
+  },
+  "6231": {
+   "name": "Techbot",
+   "instance": "Gnomeregan",
+   "edition": "classic",
+   "spells": [
+    10852,
+    10855,
+    10858,
+    10860
+   ]
+  },
+  "7079": {
+   "name": "Viscous Fallout",
+   "instance": "Gnomeregan",
+   "edition": "classic",
+   "spells": [
+    21687
+   ]
+  },
+  "7800": {
+   "name": "Mekgineer Thermaplugg",
+   "instance": "Gnomeregan",
+   "edition": "classic",
+   "spells": [
+    11130
+   ]
+  },
+  "8443": {
+   "name": "Avatar of Hakkar",
+   "instance": "Sunken Temple",
+   "edition": "classic",
+   "spells": [
+    6607,
+    12888
+   ]
+  },
+  "8923": {
+   "name": "Panzor the Invincible",
+   "instance": "Blackrock Depths",
+   "edition": "classic",
+   "spells": [
+    9941
+   ]
+  },
+  "9016": {
+   "name": "Bael'Gar",
+   "instance": "Blackrock Depths",
+   "edition": "classic",
+   "spells": [
+    13895,
+    23379
+   ]
+  },
+  "9816": {
+   "name": "Pyroguard Emberseer",
+   "instance": "Upper Blackrock Spire",
+   "edition": "classic",
+   "spells": [
+    16079,
+    16536
+   ]
+  },
+  "10683": {
+   "name": "Rookery Hatcher",
+   "instance": "Upper Blackrock Spire",
+   "edition": "classic",
+   "spells": [
+    15572,
+    15580
+   ]
+  },
+  "10697": {
+   "name": "Bile Slime",
+   "instance": "Stratholme",
+   "edition": "classic",
+   "spells": [
+    7992,
+    16866
+   ]
+  },
+  "10813": {
+   "name": "Balnazzar",
+   "instance": "Stratholme",
+   "edition": "classic",
+   "spells": [
+    12098,
+    13704,
+    17287,
+    17399,
+    17405
+   ]
+  },
+  "11321": {
+   "name": "Molten Elemental",
+   "instance": "Ragefire Chasm",
+   "edition": "classic",
+   "spells": [
+    18968
+   ]
+  },
+  "11389": {
+   "name": "Bloodscalp Speaker",
+   "instance": "Zul'Gurub",
+   "edition": "classic",
+   "spells": [
+    6713,
+    8599,
+    16509
+   ]
+  },
+  "11390": {
+   "name": "Skullsplitter Speaker",
+   "instance": "Zul'Gurub",
+   "edition": "classic",
+   "spells": [
+    16172,
+    24048
+   ]
+  },
+  "11477": {
+   "name": "Rotting Highborne",
+   "instance": "Dire Maul",
+   "edition": "classic",
+   "spells": [
+    22825
+   ]
+  },
+  "14321": {
+   "name": "Guard Fengus",
+   "instance": "Dire Maul",
+   "edition": "classic",
+   "spells": [
+    8269,
+    10101,
+    11972,
+    15580,
+    15749
+   ]
+  },
+  "14322": {
+   "name": "Stomper Kreeg",
+   "instance": "Dire Maul",
+   "edition": "classic",
+   "spells": [
+    8269,
+    15577,
+    16740,
+    22833,
+    22835
+   ]
+  },
+  "14323": {
+   "name": "Guard Slip'kik",
+   "instance": "Dire Maul",
+   "edition": "classic",
+   "spells": [
+    8269,
+    10101,
+    11972,
+    15580,
+    15749
+   ]
+  },
+  "14326": {
+   "name": "Guard Mol'dar",
+   "instance": "Dire Maul",
+   "edition": "classic",
+   "spells": [
+    8269,
+    10101,
+    11972,
+    15580,
+    15749
+   ]
+  },
+  "14354": {
+   "name": "Pusillin",
+   "instance": "Dire Maul",
+   "edition": "classic",
+   "spells": [
+    14145,
+    15228,
+    22424
+   ]
+  },
+  "14513": {
+   "name": "Malicious Spirit",
+   "instance": "Scholomance",
+   "edition": "classic",
+   "spells": [
+    13738
+   ]
+  },
+  "14514": {
+   "name": "Banal Spirit",
+   "instance": "Scholomance",
+   "edition": "classic",
+   "spells": [
+    23262
+   ]
+  },
+  "14520": {
+   "name": "Aspect of Malice",
+   "instance": "Scholomance",
+   "edition": "classic",
+   "spells": [
+    13738,
+    16098
+   ]
+  },
+  "7785": {
+   "name": "Ward of Zum'rah",
+   "instance": "Zul'Farrak",
+   "edition": "classic",
+   "spells": [
+    11088
+   ]
+  },
+  "16049": {
+   "name": "Lefty",
+   "instance": "Blackrock Depths",
+   "edition": "classic",
+   "spells": [
+    27673
+   ]
+  },
+  "16055": {
+   "name": "Va'jashni",
+   "instance": "Blackrock Depths",
+   "edition": "classic",
+   "spells": [
+    17138,
+    20697,
+    23895
+   ]
+  },
+  "14965": {
+   "name": "Frenzied Bloodseeker Bat",
+   "instance": "Zul'Gurub",
+   "edition": "classic",
+   "spells": [
+    19629,
+    23970
+   ]
+  },
+  "16056": {
+   "name": "Diseased Maggot",
+   "instance": "Naxxramas",
+   "edition": "classic",
+   "spells": [
+    30079
+   ]
+  },
+  "16449": {
+   "name": "Spirit of Naxxramas",
+   "instance": "Naxxramas",
+   "edition": "classic",
+   "spells": [
+    28599
+   ]
+  },
+  "11789": {
+   "name": "Deep Borer",
+   "instance": "Maraudon",
+   "edition": "classic",
+   "spells": [
+    8876
+   ]
+  },
+  "12143": {
+   "name": "Son of Flame",
+   "instance": "Molten Core",
+   "edition": "classic",
+   "spells": [
+    21857
+   ]
+  },
+  "15977": {
+   "name": "Infectious Skitterer",
+   "instance": "Naxxramas",
+   "edition": "classic",
+   "spells": [
+    28429
+   ]
+  },
+  "16290": {
+   "name": "Fallout Slime",
+   "instance": "Naxxramas",
+   "edition": "classic",
+   "spells": [
+    28156
+   ]
+  },
+  "16427": {
+   "name": "Soldier of the Frozen Wastes",
+   "instance": "Naxxramas",
+   "edition": "classic",
+   "spells": [
+    28458
+   ]
+  },
+  "16429": {
+   "name": "Soul Weaver",
+   "instance": "Naxxramas",
+   "edition": "classic",
+   "spells": [
+    28460
+   ]
+  }
+ },
+ "additional_sources": [
+  "https://github.com/cmangos/classic-db/blob/master/Full_DB/ClassicDB_1_12_1_z2815.sql.gz",
+  "https://github.com/cmangos/mangos-classic/blob/547c55eb9cd6b7795d2951f844d679d3d7f18957/src/game/AI/ScriptDevAI/scripts/kalimdor/onyxias_lair/onyxias_lair.h",
+  "https://github.com/vmangos/core/releases/download/db_latest/db-sqlite-4641790.zip",
+  "https://github.com/vmangos/core/tree/68334f7ea48659dc31db48c41df09d7763fd8598/src/scripts"
+ ]
+}

@@ -137,6 +137,15 @@ NaowhForever_Utilities/Journeys/
   about 530 KB of garbage to about 33 KB.
 - A tracked dungeon quest the game marks nowhere and the quest spots have no place for goes to its
   dungeon's entrance from the Dungeon Journal, when that addon is on and the quest is not yet complete.
+- Imported quest spots may also supply a reviewed outdoor dungeon entrance in their third slot,
+  so entrance guidance works without the Dungeon Journal loaded. Exact spots take priority;
+  an entrance is never used as a completed quest's turn-in. Interior coordinates remain unknown.
+- The fourth quest-spot slot contains reviewed alternative turn-ins and their factions. A complete
+  quest, or one with no objective camps, uses the nearest candidate for the player's faction.
+  Alternatives do not imply seasonal availability; unresolved seasonal and conditional moves
+  remain outside this data. An unfinished quest with camps keeps following its objectives.
+- A completed quest with no eligible recorded turn-in does not revisit its objective camps
+  or item vendors. The game's own marker or waypoint can still supply its destination.
 - The Hearthstone lands where you stood when you bound it (`HEARTHSTONE_BOUND`, at the innkeeper), and
   where it last landed. A teleport lands at its city's flight master until it has been cast once; the
   client has no table of where a teleport goes.

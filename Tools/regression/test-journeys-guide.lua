@@ -27,6 +27,7 @@ local MAPS = {
 local frames, timers, printed, tickers = {}, {}, {}, {}
 local tracking, handedBack = 0, nil
 local QUESTS = { [101] = { 1457, 0.5, 0.5 }, [102] = { 1455, 0.5, 0.5 }, [106] = { CROSSING, 0.5, 0.5 } }
+QUESTS[116] = { DARNASSUS, 0.5, 0.5 }
 local here = { x = -4821.8, y = -1155.4, c = 0 }
 local current, placedAtSet
 local combat = false
@@ -50,6 +51,17 @@ local ns = {
     JourneyQuestSpots = {
         [104] = { { IRONFORGE, 50, 50 }, { { DARNASSUS, 50, 50 }, { IRONFORGE, 50, 50 } } },
         [105] = { { DARNASSUS, 50, 50 }, { { IRONFORGE, 50, 50 } } },
+        [107] = { false, {}, { { DARNASSUS, 50, 50 } } },
+        [108] = { false, {}, { { DARNASSUS, 50, 50 } } },
+        [109] = { false, { { DUSKWOOD, 50, 50 } }, { { DARNASSUS, 50, 50 } } },
+        [110] = { false, { { IRONFORGE, 50, 50 } }, {},
+            { { IRONFORGE, 50, 50, "H" }, { DARNASSUS, 50, 50, "A" } } },
+        [111] = { false, { { DUSKWOOD, 50, 50 } }, {}, { { DARNASSUS, 50, 50, "A" } } },
+        [112] = { false, {}, {}, { { DARNASSUS, 50, 50, "H" } } },
+        [113] = { false, {}, {}, { { IRONFORGE, 50, 50, "A" }, { DARNASSUS, 50, 50, "H" } } },
+        [114] = { false, { { DARNASSUS, 50, 50 } } },
+        [115] = { false, { { DARNASSUS, 50, 50 } }, {}, { { DUSKWOOD, 50, 50, "H" } } },
+        [116] = { false, { { DUSKWOOD, 50, 50 } } },
     },
     L = dofile("Tools/regression/locale_stub.lua").L,
     Print = function(msg) printed[#printed + 1] = msg end,
@@ -157,7 +169,7 @@ local env = setmetatable({
     C_QuestLog = {
         GetNextWaypoint = function(id) local q = QUESTS[id]; if q then return q[1], q[2], q[3] end end,
         GetTitleForQuestID = function(id) return "Quest " .. id end,
-        IsComplete = function(id) return id == 105 end,
+        IsComplete = function(id) return id == 105 or id == 108 or id == 110 or id == 114 or id == 115 or id == 116 end,
         GetQuestsOnMap = function(map)
             if map == DARNASSUS then return { { questID = 103, x = 0.5, y = 0.5 }, { questID = 106, x = 0.5, y = 0.5 } } end
             return {}
@@ -301,6 +313,54 @@ tracking = 105
 Fire("SUPER_TRACKING_CHANGED")
 local done = Jy.Guide.Current()
 Check(done and done.quest == 105 and done.stops[1][2] == DARNASSUS, "a finished quest goes to its turn-in")
+Jy.Guide.Cancel()
+
+tracking = 107
+Fire("SUPER_TRACKING_CHANGED")
+local dungeon = Jy.Guide.Current()
+Check(dungeon and dungeon.stops[1][2] == DARNASSUS, "an unmapped dungeon quest uses its recorded entrance")
+Jy.Guide.Cancel()
+tracking = 108
+Fire("SUPER_TRACKING_CHANGED")
+Check(not Jy.Guide.Current(), "a completed quest never uses an entrance as its turn-in")
+tracking = 109
+Fire("SUPER_TRACKING_CHANGED")
+local objective = Jy.Guide.Current()
+Check(objective and objective.stops[1][2] == DUSKWOOD, "an exact objective takes priority over entrance guidance")
+Jy.Guide.Cancel()
+
+tracking = 110
+Fire("SUPER_TRACKING_CHANGED")
+local alternative = Jy.Guide.Current()
+Check(alternative and alternative.stops[1][2] == DARNASSUS,
+    "a completed quest chooses its faction's turn-in over the closer enemy and objective")
+Jy.Guide.Cancel()
+tracking = 111
+Fire("SUPER_TRACKING_CHANGED")
+local unfinished = Jy.Guide.Current()
+Check(unfinished and unfinished.stops[1][2] == DUSKWOOD, "an unfinished quest follows its objective before alternative turn-ins")
+Jy.Guide.Cancel()
+tracking = 112
+Fire("SUPER_TRACKING_CHANGED")
+Check(not Jy.Guide.Current(), "an alternative for the opposite faction never becomes a destination")
+env.UnitFactionGroup = function() return "Horde" end
+tracking = 113
+Fire("SUPER_TRACKING_CHANGED")
+local horde = Jy.Guide.Current()
+Check(horde and horde.stops[1][2] == DARNASSUS, "Horde chooses its own alternative turn-in")
+Jy.Guide.Cancel()
+env.UnitFactionGroup = function() return "Alliance" end
+
+tracking = 114
+Fire("SUPER_TRACKING_CHANGED")
+Check(not Jy.Guide.Current(), "a completed quest without a turn-in never returns to its objective or vendor")
+tracking = 115
+Fire("SUPER_TRACKING_CHANGED")
+Check(not Jy.Guide.Current(), "a completed quest with only an enemy turn-in never falls back to its objective")
+tracking = 116
+Fire("SUPER_TRACKING_CHANGED")
+local liveEnd = Jy.Guide.Current()
+Check(liveEnd and liveEnd.stops[1][2] == DARNASSUS, "a completed quest still uses the game's waypoint when its static turn-in is unknown")
 Jy.Guide.Cancel()
 
 -- A pin you put on the map yourself becomes a journey; our own pins do not start another.

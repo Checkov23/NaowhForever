@@ -38,6 +38,7 @@ QUESTS = paths.DATA / "completo_quests.json"
 REQUIRES = paths.DATA / "completo_requires.json"
 DUNGEON = paths.DATA / "completo_dungeon.json"
 ELSEWHERE = paths.DATA / "completo_elsewhere.json"
+CATALOG = paths.DATA / "quest_entity_catalog.json"
 # Wowhead answers 403 after ~125 pages at 1.5s apart; 5s ran clean.
 GAP = 4
 
@@ -221,18 +222,22 @@ def prerequisites(quests, requires, known):
     return {q: sorted(p) for q, p in before.items() if p}
 
 
-def requirements(before, known):
+def requirements(before, known, requires=None):
     """questID -> what must be done before it: each element a quest, or a list of alternatives,
     one of which will do. Quests of one name are alternatives (a Requires box lists each class's
     version of a quest), as are the ones the zones lack, which cannot be told apart. The
     versions that are not the player's own are left out by the addon."""
     out = {}
     for qid, prev in before.items():
+        explicit = ((requires or {}).get(str(qid)) or {}).get("groups")
+        if explicit is not None:
+            covered = {i for g in explicit for i in (g if isinstance(g, list) else [g])}
+            prev = set(prev) - covered
         groups = {}
         for p in prev:
             groups.setdefault(known[p][1]["name"] if p in known else None, []).append(p)
-        out[qid] = sorted((g if len(g) > 1 else g[0] for g in groups.values()),
-                          key=lambda e: e[0] if isinstance(e, list) else e)
+        out[qid] = list(explicit or []) + sorted((g if len(g) > 1 else g[0] for g in groups.values()),
+                                                key=lambda e: e[0] if isinstance(e, list) else e)
     return out
 
 
@@ -382,7 +387,7 @@ def main():
             save(ITEMS, items)
             time.sleep(GAP)
 
-    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}))
+    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}), load(CATALOG))
     for line in failed:
         print("FAILED", line, file=sys.stderr)
 
@@ -392,7 +397,9 @@ def main():
 PLACEHOLDER = re.compile(r"^\s*[<(]|unused|\bnyi\b", re.I)
 
 
-def write(zones, quests, requires, items, dungeon, elsewhere):
+def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None):
+    catalog = catalog or {}
+    zones = {k: {**z, "quests": list(z["quests"])} for k, z in zones.items()}
     for z in zones.values():
         z["quests"] = [q for q in z["quests"] if not PLACEHOLDER.search(q["name"])]
     # A dungeon or elsewhere quest's spot is Forever's already, and its giver's zone is the one it
@@ -409,6 +416,14 @@ def write(zones, quests, requires, items, dungeon, elsewhere):
         spots[int(key)] = d
         if d["after"] and not requires.get(key):
             requires[key] = {"quests": d["after"]}
+    existing = {q["id"] for zone in zones.values() for q in zone["quests"]}
+    for key, quest in catalog.items():
+        qid = int(key)
+        if qid in existing or PLACEHOLDER.search(quest["name"]):
+            continue
+        zone = zones.setdefault(str(quest["zone"]), {"name": quest["zone_name"], "quests": []})
+        zone["quests"].append(dict(quest, id=qid))
+        existing.add(qid)
     rows = {q["id"]: (int(area), q) for area, z in zones.items() for q in z["quests"]}
     before = prerequisites(quests, requires, rows)
     chains = chains_of(quests, before, rows)
@@ -424,8 +439,8 @@ def write(zones, quests, requires, items, dungeon, elsewhere):
         if not ids:
             continue
         conts = [q.get("category2", 0) for q in z["quests"] if q["id"] not in spots]
-        cont = max(set(conts), key=conts.count)
-        lines.append(f"    {{ map = {ZONE_MAP[int(area)]}, name = {lua_string(z['name'])}, "
+        cont = max(set(conts), key=conts.count) if conts else -2
+        lines.append(f"    {{ map = {ZONE_MAP[int(area)] if int(area) else 0}, name = {lua_string(z['name'])}, "
                      f"continent = {cont}, quests = {{ {', '.join(map(str, ids))} }} }},")
     lines += [
         "}",
@@ -435,6 +450,8 @@ def write(zones, quests, requires, items, dungeon, elsewhere):
     for qid in sorted(rows):
         area, q = rows[qid]
         start = (quests.get(str(qid)) or {}).get("start")
+        if not (start and start.get("coord") and start.get("zone") in ZONE_MAP):
+            start = (catalog.get(str(qid)) or {}).get("start")
         spot = "nil, nil, nil, nil"
         if qid in spots:
             d = spots[qid]
@@ -442,7 +459,7 @@ def write(zones, quests, requires, items, dungeon, elsewhere):
             spot = f"{d['map']}, {d['x']:.1f}, {d['y']:.1f}, {giver}"
         elif start and start.get("coord") and start["zone"] in ZONE_MAP:
             m = ZONE_MAP[start["zone"]]
-            x, y = forever_spot(m, *start["coord"])
+            x, y = start["coord"] if start.get("coordinate_space") == "forever" else forever_spot(m, *start["coord"])
             giver = lua_string(start["npc"]) if start.get("npc") else "nil"
             spot = f"{m}, {x:.1f}, {y:.1f}, {giver}"
         else:
@@ -454,7 +471,8 @@ def write(zones, quests, requires, items, dungeon, elsewhere):
         lines.append(f"    [{qid}] = {{ {lua_string(q['name'])}, {q.get('level') or 0}, "
                      f"{q.get('reqlevel') or 0}, {q.get('side') or 3}, {q.get('reqrace') or 0}, "
                      f"{q.get('reqclass') or 0}, {spot} }},")
-    repeatable = sorted(set((items or {}).get("repeatable", [])) & set(rows))
+    repeatable = sorted((set((items or {}).get("repeatable", [])) |
+                         {int(k) for k, v in catalog.items() if v["repeatable"]}) & set(rows))
     lines += [
         "}",
         "",
@@ -481,7 +499,7 @@ def write(zones, quests, requires, items, dungeon, elsewhere):
         "",
         "D.Requires = {",
     ]
-    required = requirements(before, rows)
+    required = requirements(before, rows, requires)
     for qid in sorted(required):
         parts = ["{ " + ", ".join(map(str, e)) + " }" if isinstance(e, list) else str(e) for e in required[qid]]
         lines.append(f"    [{qid}] = {{ {', '.join(parts)} }},")
