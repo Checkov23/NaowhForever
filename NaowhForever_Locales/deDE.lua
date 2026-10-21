@@ -7035,3 +7035,5 @@ L["Keeps newly learned spells in your spellbook instead of on your bars."] = "Be
 L["What the game does with a spell you have just learned."] = "Was das Spiel mit einem gerade gelernten Zauber macht."
 L["New Spells"] = "Neue Zauber"
 L["Click to use your Sleeping Bag."] = "Klicke, um deinen Schlafsack zu benutzen."
+L["Capture Other Addons' Scans"] = "Scans anderer Add-ons erfassen"
+L["Also keeps the prices from full auction house scans that other addons start, such as Auctionator or TSM."] = "Übernimmt auch die Preise aus vollständigen Auktionshaus-Scans, die andere Add-ons starten, etwa Auctionator oder TSM."

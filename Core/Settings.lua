@@ -74,7 +74,7 @@ local S = UI.ModuleSettings("qol", {
     lootFeedFont = "", lootFeedFontSize = 11, lootFeedOutline = "OUTLINE",
     lootFeedPos = { point = "CENTER", relPoint = "CENTER", x = -508, y = 322 },
     alertsPos = { point = "CENTER", relPoint = "CENTER", x = -519, y = 167 },
-    ahPrices = F.ahPrices, ahTooltip = F.ahTooltip,
+    ahPrices = F.ahPrices, ahCapture = F.ahCapture, ahTooltip = F.ahTooltip,
     altCounts = F.altCounts, mailAlts = F.mailAlts, mailQuickAttach = F.mailQuickAttach, mailExpiry = F.mailExpiry,
     xpTicker = F.xpTicker, xpTickerLevel = true, xpTickerElapsed = true,
     xpTickerHideResting = true, xpTickerFont = "", xpTickerFontSize = 24, xpTickerOutline = "",

@@ -7324,4 +7324,6 @@ L["+ %d forms"] = true
 L["+ %d more bars"] = true
 L["+ 1 more bar"] = true
 L["+ pet keys"] = true
+L["Capture Other Addons' Scans"] = true
+L["Also keeps the prices from full auction house scans that other addons start, such as Auctionator or TSM."] = true
 L["With the Gamepad interface style, the game's own recipe window is used."] = true

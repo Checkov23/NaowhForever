@@ -42,6 +42,7 @@ ns.FEATURES = {
         hideLootWindow = false,
         fastLoot = true,
         ahPrices = true,
+        ahCapture = false,
         ahTooltip = true,
         altCounts = false,
         mailAlts = false,
