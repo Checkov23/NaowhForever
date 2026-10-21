@@ -101,7 +101,7 @@ NaowhForever_DungeonJournal/
     MapOverlay.lua     the dungeon's map over the world map's picture, inside the dungeon
     MapTools.lua       /nf mappins (place the pins, Copy for Data/Maps.lua) and /nf mapcheck
     SettingsPage.lua   its settings pages (Journal, Quest Tracker, Map), declared as cards
-  Media/Maps/          the addon's own pictures of floors the game has no map art for (Data/Maps.lua)
+  Media/Maps/          local dungeon pictures, including 36 imported and 22 assembled maps; selected by Data/Maps.lua
   README.md            this file
 ```
 
@@ -288,29 +288,23 @@ the game's own tables, and what they can't settle is listed in the pull request 
   `QuestPrereqs` (the steps before it can be picked up), `QuestMinLevel`, `QuestWhere` (the
   where text without the guide's prerequisite note), `QuestChainNames` and `QuestChainStarts`
   (`{ uiMapID, x, y, quest giver }`) for the steps not in `Data/Quests.lua`.
-- `Data/Maps.lua`: `[dungeon key] = { art, floors, names, order, image, images, floor, entrance,
+- `Data/Maps.lua`: `[dungeon key] = { art, floors, names, order, image, images, imageBottom, floor, entrance,
   pins }`. `art` is the folder of `Interface\WorldMap\<art>\<art><floor>_<tile>`: twelve 256px
   tiles four across, of which the map shows the top left 1002 by 668. `order` lists the art's
   floors in the order you walk them where the art's own numbers are not that order, or it holds
   another dungeon's floors (the switch offers only these; pins keep the art's number). `image`
-  is the addon's own picture (`Media/Maps`) for a dungeon the game has no art for yet: a 1024
-  square TGA with the map in its top 1024 by 683, a floor after the first its own picture with
-  the floor's number after the name (Dalaran2); its pins are placed on that picture, so they are
-  placed again when the game's art comes. `images = { [floor] = picture }` adds pictures of
-  floors the art lacks. `floor` is the one floor a dungeon is on where dungeons share the art
-  (Scarlet Monastery's wings). `entrance = { floor, x, y }` and `pins = { [NPC ID] = { floor,
-  x, y } }` (a chest by minus its object ID), x and y from 0 to 1 across and down. Floor counts
-  are as `/nf mapcheck` found them in the client, build 1.60.1.70170.
-- Wailing Caverns has the addon's own picture although the client has art for it: the client's
-  art is the Cataclysm redraw, and the picture is the old map (Wowpedia's
-  WorldMap-WailingCaverns-old.jpg), drawn the same, with its pins placed on it in game.
-- Ruins of Lordaeron and City of Dalaran are Santiago Reyes's recreations (Atlas de Azeroth:
-  Forever, 2026), credited on the map, until the game has art of its own; Dalaran's are the
-  Underbelly, where you come in, and the city above. Upper Blackrock Spire's art has only the
-  seventh of its levels (Lower's are the art's first six); the other two are screenshots of
-  Blizzard's later map (Wowhead screenshots 852258 and 852257), walked backwards: in at
-  Dragonspire Hall (9), Emberseer and Solakar on 8, Rend and Drakkisath on the art's 7. Zul'Farrak
-  has no art in the client under "ZulFarrak", nor have the dungeons new in Forever.
+  is a local picture (`Media/Maps`). Without `images`, floors after the first append their
+  number to `image`; `images = { [floor] = picture }` supplies explicit paths instead and can
+  replace individual tiled floors. `imageBottom` is the bottom texture coordinate: `1`
+  shows a complete image; the default `683 / 1024` crops older square TGAs to their map area.
+  `floor` restricts a dungeon to one floor of shared art. Scarlet Monastery's wings now each
+  use a separate one-floor picture. `entrance = { floor, x, y }` and
+  `pins = { [NPC ID] = { floor, x, y } }` (a chest by minus its object ID), x and y from 0 to
+  1 across and down. Pins and floor numbers follow the chosen picture.
+- City of Dalaran uses two explicit pictures named Sewers and Streets in the floor switch.
+- Upper Blackrock Spire keeps screenshots of Blizzard's later map (Wowhead screenshots
+  852258 and 852257) for floors 8 and 9. Its order is Dragonspire Hall (9), Emberseer and
+  Solakar (8), then Rend and Drakkisath (7); floor 7 is now a bundled picture in Media/Maps.
 - `Data/BossInfo.lua`: NPC ID -> `{ lowest level, highest level (-1: ??), classification (0
   normal, 1 elite, 2 rare elite, 3 boss, 4 rare), creature type (Wowhead's number: 7 is
   Humanoid), title or nil }`.
@@ -328,6 +322,33 @@ the game's own tables, and what they can't settle is listed in the pull request 
   answers with S shared, N not in their log, P the game does not let it be shared, W wait.
 
 ## Why
+
+- `ForeverInstanceMaps` pictures are copied unchanged and require no other addon at runtime.
+- `Media/Maps` includes 36 pictures imported through the local
+  ForeverInstanceMaps addon backup. No public repository URL for that addon is recorded.
+- The Hall of Thanes, Ruins of Lordaeron, Excavation Site and City of Dalaran illustrations
+  are by Santiago Reyes, [Atlas de Azeroth: Forever](https://asguevara433.wixsite.com/srmaps/post/proyecto-atlas-de-azeroth-forever).
+  His project page publishes usage conditions and asks that watermarks and credits remain intact.
+- The same folder contains 22 pictures assembled from map tiles in
+  [keyboardturner/WoWMapUprez_Dungeons](https://github.com/keyboardturner/WoWMapUprez_Dungeons),
+  commit `c8325d4583c9cdce52658e1a245963e623501dfa`. The project upscales Blizzard's
+  original dungeon map artwork; downloaded tiles and generated images are recorded in
+  `Tools/media/dungeon_maps/sources.json`.
+- Imported pictures use `imageBottom = 1` to show the entire image without the older square
+  TGA crop.
+- A spot saved by `/nf mappins` on a floor its map no longer has is ignored for the data's spot:
+  placings made before the pictures changed used the old floor numbers.
+- Boss positions imported with those pictures use one marker per NPC: grouped bosses share
+  a position, and multi-spawn rares use their first spot. Some positions are estimates;
+  Journal-only positions are retained where the source has no matching boss.
+- Sunken Temple, Blackrock Depths, Dire Maul, Blackrock Spire, Scholomance and Stratholme
+  use bundled TGA pictures from `Media/Maps`: their client texture paths and
+  numeric file IDs can fail on the Russian client. These pictures preserve the tiled map's
+  visible area, so the existing floor order and pin coordinates still apply. Upper Blackrock
+  Spire keeps its existing pictures for floors 8 and 9. The import script, documentation
+  and source checksums live separately in `Tools/media/dungeon_maps/`;
+  `python Tools/media/dungeon_maps/import_maps.py --cache <scratch-folder>` rebuilds
+  all 22 pictures. No other addon is required at runtime.
 
 - The on/off switches' defaults (`enabled`, `mapPanel`, `mapFactions`, `mapEntrances`) are read
   from `ns.FEATURES.journal`: one file holds every feature's switch and default.

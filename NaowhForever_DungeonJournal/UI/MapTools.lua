@@ -28,6 +28,7 @@ local ORDER_FIELD = " order = { %s },"
 local NAMED = "[%d] = %q"
 local NAMES_LINE = "        names = { %s },"
 local IMAGES_LINE = "        images = { %s },"
+local IMAGE_BOTTOM_LINE = "        imageBottom = %s,"
 local ENTRANCE_LINE = "        entrance = %s,"
 local PINS_OPEN = "        pins = {"
 local PIN_LINE = "            [%d] = %s,   -- %s"
@@ -126,6 +127,7 @@ function Map.Copy(dungeon)
     local map = J.Maps[dungeon.key]
     wipe(lines)
     lines[1] = FirstLine(dungeon, map)
+    if map.imageBottom then lines[#lines + 1] = IMAGE_BOTTOM_LINE:format(Number(map.imageBottom)) end
     if map.names then lines[#lines + 1] = Named(map.floors, map.names, NAMES_LINE) end
     if map.images then lines[#lines + 1] = Named(map.floors, map.images, IMAGES_LINE) end
     local door = Map.Spot(dungeon, ENTRANCE_KEY)

@@ -81,6 +81,11 @@ local METHODS = {
     GetText = function(frame) return rawget(frame, "text") or "" end,
     IsShown = function(frame) return rawget(frame, "shown") ~= false end,
     SetTexture = function(frame, texture) frame.texture = texture end,
+    SetTexCoord = function(frame, left, right, top, bottom)
+        frame.texCoord = frame.texCoord or {}
+        local coords = frame.texCoord
+        coords[1], coords[2], coords[3], coords[4] = left, right, top, bottom
+    end,
     SetPoint = function(frame, _, a, b, c)
         frame.pointX = type(a) == "number" and a or type(b) == "number" and b or c
         frame.pointY = type(a) == "number" and b or c
@@ -762,12 +767,12 @@ do
     state.subzone = nil
     check("each wing's quests: the Library's books", #J.Get("ScarletMonasteryLibrary").quests.quests == 4
         and #J.Get("ScarletMonasteryArmory").quests.quests == 0)
-    check("each wing on its own floor of the map", J.Maps.ScarletMonasteryCathedral.floor == 4
+    check("each wing has its own map", J.Maps.ScarletMonasteryCathedral.floors == 1
         and J.Maps.ScarletMonasteryGraveyard.pins[3983] ~= nil)
     local function Pinned(key, npc)
         local map = J.Maps[key]
         local pin = map.pins[npc]
-        return pin ~= nil and pin[1] == map.floor
+        return pin ~= nil and pin[1] == (map.floor or 1)
     end
     check("each wing's bosses stand on its own floor", Pinned("ScarletMonasteryLibrary", 3974)
         and Pinned("ScarletMonasteryLibrary", 6487) and Pinned("ScarletMonasteryArmory", 3975)
@@ -2025,6 +2030,10 @@ do
     J.DrawDungeonMap()
     check("boxed in: no label", door.side == nil and rawget(door.text, "shown") == false)
     check("but the entrance still shows", rawget(door, "shown") ~= false)
+    state.account.journalMapPins.RagefireChasm[11517] = { 2, 0.44, 0.5 }
+    J.DrawDungeonMap()
+    check("a placing on a floor the map no longer has: the data's spot", PinFor("Oggleflint") ~= nil
+        and PinFor("Oggleflint").atX == J.Maps.RagefireChasm.pins[11517][2] * J.C.MAP_W)
     state.account.journalMapPins = placedPins
     rawset(door.text, "GetStringWidth", nil)
     _G.SetPortraitTextureFromCreatureDisplayID = portraits
@@ -2096,7 +2105,11 @@ do
     local text = state.copied and state.copied.text or ""
     check("Copy gives where each boss stands", text:find("[11517] = { 1, 0.5, 0.4 },   -- Oggleflint", 1, true) ~= nil)
     check("and the entrance", text:find("entrance = { 1, 0.5, 0.9 },", 1, true) ~= nil)
-    check("and its art", text:find('RagefireChasm = { art = "Ragefire", floors = 1,', 1, true) ~= nil)
+    do
+        local ragefireCopy = assert(loadstring("return {\n" .. text .. "\n}"))().RagefireChasm
+        check("and its local image without cropping", ragefireCopy.image == J.Maps.RagefireChasm.image
+            and ragefireCopy.imageBottom == 1)
+    end
     ns.DungeonMapCommand("mappins")
     J.OpenDungeonMap(ragefire)
     check("a second Map closes it", true)
@@ -2122,7 +2135,7 @@ do
     local NOT_PLACED = {
         BlackrockDepths = { [9024] = "Pyromancer Loregrain", [9499] = "Plugger Spazzring",
             [9537] = "Hurley Blackbreath", [9543] = "Ribbly Screwspigot" },
-        Dalaran = { [246008] = "Mana Devourer", [246931] = "Mana Wraith" },
+        Dalaran = { [246931] = "Mana Wraith" },
         LowerBlackrockSpire = { [10584] = "Urok Doomhowl" },
         RazorfenKraul = { [6168] = "Roogug" },
         Scholomance = { [10432] = "Vectus", [10433] = "Marduk Blackpool", [10508] = "Ras Frostwhisper",
@@ -2154,7 +2167,8 @@ do
         if map.image then
             check("its picture is shipped: " .. key, Shipped(map.image))
             for n = 2, map.floors do
-                check("its floor's picture is shipped: " .. key .. " " .. n, Shipped(map.image .. n))
+                check("its floor's picture is shipped: " .. key .. " " .. n,
+                    Shipped(map.images and map.images[n] or map.image .. n))
             end
         end
         for n, path in pairs(map.images or {}) do
@@ -2193,11 +2207,13 @@ do
             and rawget(ubrsView.picture, "shown") == true
             and ubrsView.picture.texture == "Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\UpperBlackrockSpire8"
             and rawget(ubrsView.tiles[1], "shown") == false)
+        check("switching from an imported image restores the original crop", ubrsView.picture.texCoord[4] == 683 / 1024)
         check("named for the switch", rawget(ubrsView.floorName, "text") == "Hall of Binding and the Rookery")
         ubrsView:Step(1)
         check("the art's seventh floor next, numbered as walked", ubrsView.floor == 7
-            and rawget(ubrsView.floorName, "text") == "Floor 3" and rawget(ubrsView.picture, "shown") == false
-            and ubrsView.tiles[1].texture == "Interface\\WorldMap\\BlackrockSpire\\BlackrockSpire7_1")
+            and rawget(ubrsView.floorName, "text") == "Floor 3" and rawget(ubrsView.picture, "shown") == true
+            and rawget(ubrsView.tiles[1], "shown") == false
+            and ubrsView.picture.texture == "Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\BlackrockSpire7")
         check("with Rend's pin on it", PinFor("Warchief Rend Blackhand") ~= nil and PinFor("Pyroguard Emberseer") == nil)
         ubrsView:Step(1)
         check("then round to Dragonspire Hall, where you come in", ubrsView.floor == 9
@@ -2212,15 +2228,18 @@ do
             FloorsOf(ShownView("War Master Voone") or ShownView("Highlord Omokk")) == "1,2,3,4,5,6")
         J.OpenDungeonMap(J.Get("ShadowfangKeep"))
         local sfkView = ShownView("Rethilgore")
-        check("Shadowfang Keep: the art's seventh floor third", FloorsOf(sfkView) == "1,2,7,4,6")
+        check("an imported map shows the complete image", sfkView.picture.texCoord[4] == 1
+            and rawget(sfkView.tiles[1], "shown") == false)
+        check("Shadowfang Keep: the imported floors in order", FloorsOf(sfkView) == "1,2,4,5,7")
         sfkView:Step(2)
-        check("and called Floor 3", sfkView.floor == 7 and rawget(sfkView.floorName, "text") == "Floor 3")
+        check("the courtyard's first floor third", sfkView.floor == 4
+            and rawget(sfkView.floorName, "text") == "Courtyard's 1st Floor")
         local odo = RowFor("Odo the Blindwatcher")
         odo.scripts.OnEnter(odo)
         check("hovering a mapRow lights its pin on the floor shown", rawget(PinFor("Odo the Blindwatcher").glow, "shown") == true)
         odo.scripts.OnLeave(odo)
         sfkView:Step(1)
-        check("Floor 5 after it", sfkView.floor == 4 and rawget(sfkView.floorName, "text") == "Floor 5"
+        check("Fenrus' Room after it", sfkView.floor == 5 and rawget(sfkView.floorName, "text") == "Fenrus' Room"
             and PinFor("Odo the Blindwatcher") == nil and PinFor("Fenrus the Devourer") ~= nil)
         for _, key in ipairs({ "RazorfenDowns", "Uldaman", "Maraudon", "SunkenTemple", "BlackrockDepths", "DireMaul",
             "LowerBlackrockSpire", "UpperBlackrockSpire", "Scholomance", "Stratholme", "Dalaran", "ShadowfangKeep",
@@ -2233,6 +2252,15 @@ do
             end
             local lit, linked, seen = true, true, 0
             for _ = 1, shownView and #shownView.floors or 0 do
+                if J.Maps[key].image then
+                    local map = J.Maps[key]
+                    local image = map.images and map.images[shownView.floor]
+                        or map.image .. (shownView.floor > 1 and shownView.floor or "")
+                    check(key .. ": its floor uses the shipped picture: " .. shownView.floor,
+                        shownView.picture.texture == image and rawget(shownView.picture, "shown") == true
+                            and rawget(shownView.tiles[1], "shown") == false
+                            and rawget(shownView.tiles[12], "shown") == false)
+                end
                 for _, mapRow in ipairs(Rows()) do
                     local pin = PinFor(mapRow.boss.name)
                     if pin then
@@ -2277,16 +2305,16 @@ do
         check("Lyn the Ignored a rare", rawget(RowFor("Lyn the Ignored").tag, "text") == "RARE")
         check("the Mana Wraith optional", rawget(RowFor("Mana Wraith").tag, "text") == "OPTIONAL")
         local dalView = ShownView("Atrexis the Grave Knight")
-        check("opens in the Underbelly, its first picture", dalView ~= nil and dalView.floor == 1
+        check("opens in the sewers, its first imported picture", dalView ~= nil and dalView.floor == 1
             and FloorsOf(dalView) == "1,2"
-            and dalView.picture.texture == "Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\Dalaran"
-            and rawget(dalView.floorName, "text") == "The Underbelly")
+            and dalView.picture.texture == "Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\CityOfDalaran_1"
+            and rawget(dalView.floorName, "text") == "Sewers")
         check("Atrexis alone there", PinFor("Arcane Anomaly") == nil)
         local shade = RowFor("Shade of the Archmage")
         shade.scripts.OnClick(shade)
         check("a mapRow on the city's floor goes up to it", dalView.floor == 2
-            and dalView.picture.texture == "Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\Dalaran2"
-            and rawget(dalView.floorName, "text") == "City of Dalaran")
+            and dalView.picture.texture == "Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\CityOfDalaran_2"
+            and rawget(dalView.floorName, "text") == "Streets")
         check("its pin ringed there, Atrexis's gone", rawget(PinFor("Shade of the Archmage").gold, "shown") == true
             and PinFor("Atrexis the Grave Knight") == nil)
         local anomaly = PinFor("Arcane Anomaly")
@@ -2297,7 +2325,7 @@ do
         dalView:Step(-1)
         ns.DungeonMapCommand("mappins")
         check("placing: Arcane Anomaly waits along the top, from the city", PinFor("Arcane Anomaly") ~= nil
-            and PinFor("Arcane Anomaly").atX == nil and PinFor("Arcane Anomaly").elsewhere == "City of Dalaran")
+            and PinFor("Arcane Anomaly").atX == nil and PinFor("Arcane Anomaly").elsewhere == "Streets")
         check("Atrexis stays where it is", PinFor("Atrexis the Grave Knight").atX ~= nil
             and PinFor("Atrexis the Grave Knight").elsewhere == nil)
         check("and the Mana Wraith, on no floor yet, waits too", PinFor("Mana Wraith").atX == nil
@@ -2319,7 +2347,7 @@ do
         text = state.copied and state.copied.text or ""
         check("Copy leaves it out", text:find("[247126]", 1, true) == nil and text:find("[245999]", 1, true) ~= nil)
         check("and keeps the floors' names",
-            text:find('names = { [1] = "The Underbelly", [2] = "City of Dalaran" },', 1, true) ~= nil)
+            text:find('names = { [1] = "Sewers", [2] = "Streets" },', 1, true) ~= nil)
         ns.DungeonMapCommand("mappins")
         check("taken off, it is on no floor, whatever the data says", PinFor("Atrexis the Grave Knight") == nil)
         state.account.journalMapPins = nil
@@ -2354,6 +2382,19 @@ do
         ns.OpenJournalWindow(wailing)
         check("closed, it stays closed", rawget(mapWindow, "shown") == false)
         J.OpenDungeonMap(J.Get("Stockade"))
+        do
+            local stockadeView = ShownView("Bazil Thredd")
+            check("Stockade uses its shipped local picture", stockadeView.picture.texture
+                == "Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\Stockade"
+                and rawget(stockadeView.picture, "shown") == true and stockadeView.picture.texCoord[4] == 1)
+            for i, tile in ipairs(stockadeView.tiles) do
+                check("Stockade hides the client tile: " .. i, rawget(tile, "shown") == false)
+            end
+            J.DungeonMap.Copy(J.Get("Stockade"))
+            local pastedStockade = assert(loadstring("return {\n" .. state.copied.text .. "\n}"))().Stockade
+            check("Stockade Copy preserves the local picture and crop",
+                pastedStockade.image == J.Maps.Stockade.image and pastedStockade.imageBottom == 1)
+        end
         ns.OpenJournalWindow(ragefire)
         check("a map opened from nothing stays on its dungeon", PinFor("Bazil Thredd") ~= nil and PinFor("Oggleflint") == nil)
         J.OpenDungeonMap(J.Get("Stockade"))
@@ -2387,6 +2428,12 @@ do
         if rawget(made, "glow") and boss and rawget(made, "shown") ~= false then onWorld[boss.name] = true end
     end
     check("with its bosses", onWorld["Bazil Thredd"] and onWorld["Dextren Ward"])
+    do
+        local stockadeView = PinFor("Bazil Thredd").view
+        check("Stockade also uses the local picture over the world map",
+            stockadeView.picture.texture == J.Maps.Stockade.image and rawget(stockadeView.picture, "shown") == true
+            and rawget(stockadeView.tiles[1], "shown") == false and rawget(stockadeView.tiles[12], "shown") == false)
+    end
     Measure("the dungeon's map shown on the world map", 2, function() J.ShowMapOnWorldMap(stockade) end)
     -- A boss's loot from its pin closes with the map.
     local opened, closed = 0, 0
@@ -2430,19 +2477,19 @@ do
     J.ShowMapOnWorldMap(bfd)
     local floorText, up
     for _, font in ipairs(state.fonts) do
-        if rawget(font, "text") == "Floor 1" and rawget(font, "shown") ~= false then floorText = font end
+        if rawget(font, "text") == "Pool of Ask'ar" and rawget(font, "shown") ~= false then floorText = font end
     end
     for _, button in ipairs(state.buttons) do
         if button.label == ">" and floorText and button:GetParent() == floorText:GetParent() then up = button end
     end
     check("Blackfathom Deeps opens on its first floor, with a switch", floorText ~= nil and up ~= nil)
     up.onClick()
-    check("the switch goes to its second floor", floorText.text == "Floor 2")
+    check("the switch goes to its second floor", floorText.text == "Moonshrine Sanctum")
     J.ShowMapOnWorldMap(bfd)
-    check("and drawn again for a boss's page, it stays there", floorText.text == "Floor 2")
+    check("and drawn again for a boss's page, it stays there", floorText.text == "Moonshrine Sanctum")
     J.ShowMapOnWorldMap(stockade)
     J.ShowMapOnWorldMap(bfd)
-    check("another dungeon in between: it starts on its first floor again", floorText.text == "Floor 1")
+    check("another dungeon in between: it starts on its first floor again", floorText.text == "Pool of Ask'ar")
     J.ShowMapOnWorldMap(nil)
     state.account.journalMapPins, state.copied = nil, nil
     J.Maps.RagefireChasm.pins[11519] = bazzalan
@@ -2458,8 +2505,8 @@ do
         end
         -- A floor the art lacks, as the addon's own picture.
         for n, path in pairs(map.images or {}) do
-            check("its floor's picture is the addon's: " .. key .. " " .. n, type(map.art) == "string"
-                and n >= 1 and n <= map.floors and path:find("^Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\") ~= nil)
+            check("its floor's picture is the addon's: " .. key .. " " .. n,
+                n >= 1 and n <= map.floors and path:find("^Interface\\AddOns\\NaowhForever_DungeonJournal\\Media\\Maps\\") ~= nil)
         end
         -- Every pin is one of its bosses, on one of its floors, on the map.
         local bosses = {}
