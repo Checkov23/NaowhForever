@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+- Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70532.
+- Naowh Score: refitted to the latest Forever items.
+
 ## 1.1.40
 
 ### Fixed
