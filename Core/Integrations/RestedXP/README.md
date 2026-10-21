@@ -363,3 +363,13 @@ Core/Integrations/RestedXP/
 
 - Follow RestedXP is a separate QoL > Interface > Waypoint Pin switch, independent of the theme/window. It hooks guide map/goto refreshes only after first enable, with no added polling. Only zone/map coordinates the native waypoint supports are forwarded; unsupported or world-only guide targets get no pin.
 - RestedXP's guide arrow stays as it is beside the pin. No RestedXP settings, frames, frame scripts or guide completion state are changed.
+
+- With the guide arrow hidden, map refreshes may be intermediate; the guide target is read after the
+  goto refresh finishes. Replacing an element at the same map coordinates only refreshes its details,
+  without restarting navigation. The hidden-arrow preference does not remove an active destination,
+  but an empty waypoint list, a stopped guide, or a completed target still releases its pin.
+- With the guide arrow hidden, arriving at a loop point can repeatedly skip and restore it
+  while the loop step stays active. A skipped point from that same guide and step is ignored
+  until a usable destination is selected, keeping the last destination without clearing or
+  restarting navigation. Completion, a different step, and an empty waypoint list still
+  release the owned pin; the integration does not change the guide's progress or arrow.

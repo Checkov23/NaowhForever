@@ -7,7 +7,8 @@ local PERCENT = 100
 local TEXT_GUIDE = ns.L("Guide destination")
 
 local hooked, settingsHooked, active
-local lastElement, lastMap, lastX, lastY
+local lastMap, lastX, lastY
+local lastGuide, lastStep
 local details, lastTitle
 local lines = {}
 local events
@@ -57,7 +58,8 @@ end
 
 local function Stop()
     ns.ClearGuideWaypoint()
-    lastElement, lastMap, lastX, lastY, lastTitle, details = nil, nil, nil, nil, nil, nil
+    lastMap, lastX, lastY, lastTitle, details = nil, nil, nil, nil, nil
+    lastGuide, lastStep = nil, nil
 end
 
 local function Sync(force)
@@ -66,24 +68,33 @@ local function Sync(force)
     local arrow = rxp and rxp.arrowFrame
     local profile = rxp and rxp.settings and rxp.settings.profile
     local element = arrow and arrow.element
+    local waypoints = rxp and rxp.activeWaypoints
     if not (rxp and rxp.currentGuide and profile and profile.showEnabled ~= false
-        and not rxp.hideArrow and type(element) == "table") then Stop() return end
+        and (not rxp.hideArrow or profile.disableArrow == true) and type(element) == "table")
+        or type(waypoints) == "table" and #waypoints == 0 then Stop() return end
     local map, x, y = element.zone, element.x, element.y
     if type(map) ~= "number" or type(x) ~= "number" or type(y) ~= "number"
-        or x ~= x or y ~= y or x < 0 or x > PERCENT or y < 0 or y > PERCENT or element.completed or element.skip
+        or x ~= x or y ~= y or x < 0 or x > PERCENT or y < 0 or y > PERCENT or element.completed
         or element.parent and (element.parent.completed or element.parent.skip)
         or element.step and element.step.active == false then
         Stop()
         return
     end
-    local changed = element ~= lastElement or map ~= lastMap or x ~= lastX or y ~= lastY
+    if element.skip then
+        local step = element.step
+        if profile.disableArrow and rxp.currentGuide == lastGuide and step == lastStep
+            and step and step.active and step.loop then return end
+        Stop()
+        return
+    end
+    local changed = map ~= lastMap or x ~= lastX or y ~= lastY
     local routing = details ~= nil and ns.JourneyDetails and ns.JourneyDetails() == details
     if not force and not changed and not routing and not ns.GuideWaypointIsCurrent() then return end
     local title, quest, objectives = ReadDetails(element)
     if force or changed then
         details = { guide = true, quest = quest, objectives = objectives, title = title }
         if not ns.SetGuideWaypoint(title, map, x, y, details) then Stop() return end
-        lastElement, lastMap, lastX, lastY, lastTitle = element, map, x, y, title
+        lastMap, lastX, lastY, lastTitle = map, x, y, title
     elseif details.quest ~= quest or details.objectives ~= objectives or lastTitle ~= title then
         details.quest, details.objectives, details.title = quest, objectives, title
         local placed = ns.placedWaypoint
@@ -91,9 +102,18 @@ local function Sync(force)
         lastTitle = title
         if ns.RefreshWaypointPin then ns.RefreshWaypointPin() end
     end
+    lastGuide, lastStep = rxp.currentGuide, element.step
 end
 
 local function OnGuideUpdate()
+    Sync(false)
+end
+
+local function OnMapUpdate()
+    if not On() then return end
+    local rxp = _G.RXP
+    local profile = rxp and rxp.settings and rxp.settings.profile
+    if profile and profile.disableArrow then return end
     Sync(false)
 end
 
@@ -101,7 +121,7 @@ local function HookGuide()
     local rxp = _G.RXP
     if hooked or not (rxp and type(rxp.UpdateMap) == "function" and type(rxp.UpdateGotoSteps) == "function") then return end
     hooked = true
-    hooksecurefunc(rxp, "UpdateMap", OnGuideUpdate)
+    hooksecurefunc(rxp, "UpdateMap", OnMapUpdate)
     hooksecurefunc(rxp, "UpdateGotoSteps", OnGuideUpdate)
 end
 
