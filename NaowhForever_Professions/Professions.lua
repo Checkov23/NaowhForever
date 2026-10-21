@@ -12,7 +12,7 @@ local S = ns.UI.ModuleSettings("professions", {
     craftTimer = F.craftTimer, craftTimerShowCastBar = F.craftTimerShowCastBar,
     craftTimerFont = "", craftTimerFontSize = 14, craftTimerOutline = "OUTLINE", craftTimerTexture = "",
     craftTimerBgAlpha = 0.9,
-    shoppingList = F.shoppingList,
+    shoppingList = F.shoppingList, shoppingListDock = F.shoppingListDock,
     craftQueue = F.craftQueue,
     shoppingVendor = F.shoppingVendor,
     trainFavorites = F.trainFavorites, searchFavoritesAH = F.searchFavoritesAH,

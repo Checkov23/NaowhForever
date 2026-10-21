@@ -216,6 +216,7 @@ function Parts.Resizable(window, sizeKey, minW, minH, onSized, onReleased)
 end
 
 Parts.Logo = Logo
+Parts.Place = Place
 
 local function ForeverTitleBar(window, close, middle)
     local portrait = window.forever.portrait
@@ -227,7 +228,7 @@ local function ForeverTitleBar(window, close, middle)
     close:Hide()
 end
 
-function Parts.TitleBar(window, title, subtitle, page)
+function Parts.TitleBar(window, title, subtitle, page, closeSize, closeText)
     local middle = -HEADER / 2
     window.logo = Logo(window, page, middle)
     window.title = ns.Font(window, TITLE_SIZE, nil, ns.foreverSkin and T.accent or T.fg, true)
@@ -241,7 +242,8 @@ function Parts.TitleBar(window, title, subtitle, page)
     window.backLink = Parts.Link(window, BackClicked, true)
     window.backLink:SetPoint("LEFT", window.title, "RIGHT", BACK_GAP, -BACK_DROP)
     window.backLink:Hide()
-    local close = ns.Button(window, TEXT_CLOSE, CLOSE_SIZE, CLOSE_SIZE, function() window:Hide() end)
+    closeSize = closeSize or CLOSE_SIZE
+    local close = ns.Button(window, closeText or TEXT_CLOSE, closeSize, closeSize, function() window:Hide() end)
     close:SetPoint("RIGHT", window, "TOPRIGHT", -CLOSE_IN, middle)
     window.subtitle:SetPoint("RIGHT", close, "LEFT", -St.BAR_GAP, 0)
     if window.forever then ForeverTitleBar(window, close, middle) end

@@ -11,6 +11,8 @@ local Style = P.Style
 local STRATA = { "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "FULLSCREEN", "FULLSCREEN_DIALOG" }
 local FALLBACK_STRATA = "HIGH"
 local TABS_DROP = -60
+local FLIP = { LEFT = "RIGHT", RIGHT = "LEFT", TOPLEFT = "TOPRIGHT", TOPRIGHT = "TOPLEFT",
+    BOTTOMLEFT = "BOTTOMRIGHT", BOTTOMRIGHT = "BOTTOMLEFT" }
 local UNLEARN_GAP = 6
 local UNLEARN_ATLAS = "Profession-button-red-crossmark"
 local UNLEARN_FALLBACK = "Interface/RAIDFRAME/ReadyCheck-NotReady"
@@ -40,7 +42,11 @@ local EMPTY = {}
 local waiting = R.waiting
 local win, hooked, lastMode
 local queued = false
-local savedTabPoints
+local savedTabPoints, tabsLeft
+local mirrored = {}
+local flippedArt = setmetatable({}, { __mode = "k" })
+local hookedArt = setmetatable({}, { __mode = "k" })
+local placing = false
 local docked = {}
 local outlines = setmetatable({}, { __mode = "k" })
 local bookDocked, bookPending = false, nil
@@ -71,26 +77,102 @@ local function ShowUnlearn(button)
     if button.Overlay then button.Overlay:SetSize(UNLEARN_SIZE, UNLEARN_SIZE) end
 end
 
+local function Points(region)
+    local points = {}
+    for i = 1, region:GetNumPoints() do points[i] = { region:GetPoint(i) } end
+    return points
+end
+
+local function FlipPoints(region, tab, points)
+    placing = true
+    region:ClearAllPoints()
+    for _, pt in ipairs(points) do
+        local point, rel, relPoint, x, y = unpack(pt)
+        if rel == tab then
+            region:SetPoint(FLIP[point] or point, rel, FLIP[relPoint] or relPoint, -(x or 0), y or 0)
+        else
+            region:SetPoint(unpack(pt))
+        end
+    end
+    placing = false
+end
+
+local function OnTabArtPlaced(region)
+    local saved = flippedArt[region]
+    if placing or not (saved and savedTabPoints) then return end
+    local _, rel = region:GetPoint(1)
+    if rel ~= saved.tab then return end
+    FlipPoints(region, saved.tab, Points(region))
+end
+
+local function MirrorRegion(region, tab)
+    local saved = { region = region, tab = tab, points = Points(region) }
+    local kind = region:GetObjectType()
+    if kind == "Texture" and region:GetAtlas() then
+        saved.coords = { region:GetTexCoord() }
+        local ulx, uly, llx, lly, urx, ury, lrx, lry = region:GetTexCoord()
+        region:SetTexCoord(urx, ury, lrx, lry, ulx, uly, llx, lly)
+    elseif kind == "MaskTexture" and region.SetRotation then
+        saved.rotation = region:GetRotation()
+        region:SetRotation(saved.rotation + math.pi)
+    end
+    mirrored[#mirrored + 1] = saved
+    if #saved.points == 0 then return end
+    flippedArt[region] = saved
+    if not hookedArt[region] then
+        hookedArt[region] = true
+        hooksecurefunc(region, "SetPoint", OnTabArtPlaced)
+    end
+    FlipPoints(region, tab, saved.points)
+end
+
+local function MirrorTab(tab)
+    for _, region in ipairs({ tab:GetRegions() }) do MirrorRegion(region, tab) end
+end
+
+local function Unmirror()
+    for _, saved in ipairs(mirrored) do
+        local region = saved.region
+        if saved.coords then region:SetTexCoord(unpack(saved.coords)) end
+        if saved.rotation then region:SetRotation(saved.rotation) end
+        if #saved.points > 0 then
+            placing = true
+            region:ClearAllPoints()
+            for _, pt in ipairs(saved.points) do region:SetPoint(unpack(pt)) end
+            placing = false
+        end
+    end
+    wipe(mirrored)
+end
+
 local function DockTabs(on)
     local head = ProfessionsFrame.ProfessionsOverviewTab
     if not head then return end
+    local tabs = ProfessionsFrame.rightProfessionTabs or EMPTY
     if on then
         if not savedTabPoints then
-            savedTabPoints = {}
-            for i = 1, head:GetNumPoints() do savedTabPoints[i] = { head:GetPoint(i) } end
+            savedTabPoints = Points(head)
+            if tabsLeft then
+                MirrorTab(head)
+                for _, tab in ipairs(tabs) do MirrorTab(tab) end
+            end
         end
+        local point, relPoint = "TOPLEFT", "TOPRIGHT"
+        if tabsLeft then point, relPoint = "TOPRIGHT", "TOPLEFT" end
         head:ClearAllPoints()
-        head:SetPoint("TOPLEFT", win, "TOPRIGHT", 0, TABS_DROP)
+        head:SetPoint(point, win, relPoint, 0, TABS_DROP)
     elseif savedTabPoints then
         head:ClearAllPoints()
         for _, pt in ipairs(savedTabPoints) do head:SetPoint(unpack(pt)) end
         savedTabPoints = nil
+        Unmirror()
     end
+    local outline = on and not tabsLeft
     if head.SetIgnoreParentAlpha then head:SetIgnoreParentAlpha(on) end
-    OutlineTab(head, on)
-    for _, tab in ipairs(ProfessionsFrame.rightProfessionTabs or EMPTY) do
+    OutlineTab(head, outline)
+    for _, tab in ipairs(tabs) do
         if tab.SetIgnoreParentAlpha then tab:SetIgnoreParentAlpha(on) end
-        OutlineTab(tab, on)
+        OutlineTab(tab, outline)
     end
 end
 
@@ -230,6 +312,17 @@ function Drag.Save()
     S.Set("windowPos", { x = win:GetLeft(), y = win:GetTop() })
 end
 
+function Drag.Fit()
+    if not tabsLeft then return end
+    local head = ProfessionsFrame.ProfessionsOverviewTab
+    local left = win:GetLeft()
+    if not (head and left) then return end
+    local room = head:GetWidth() * head:GetEffectiveScale() / win:GetEffectiveScale()
+    if left >= room then return end
+    S.Set("windowPos", { x = room, y = win:GetTop() })
+    Drag.Follow()
+end
+
 local function OnDragStart(self)
     if InCombatLockdown() then return end
     local x, y = self:GetLeft(), self:GetTop()
@@ -242,9 +335,11 @@ local function OnDragStop(self)
     self:StopMovingOrSizing()
     Drag.Save()
     Drag.Follow()
+    Drag.Fit()
 end
 
 local function FirstBuild(strata)
+    tabsLeft = S.Get("shoppingListDock")
     win = P.Window.Build()
     if ns.ShoppingListAttach then ns.ShoppingListAttach(win) end
     win:SetFrameStrata(NextStrata(strata))
@@ -283,6 +378,7 @@ local function Activate(mode)
         W.selectedID, W.selectedUnlearned, W.offset = nil, nil, 0
         win:Show()
         Drag.Follow()
+        Drag.Fit()
     end
     W.linked = linked
     win.rank:SetWidth(width - Style.PAD * 2 - RANK_INSET * 2)

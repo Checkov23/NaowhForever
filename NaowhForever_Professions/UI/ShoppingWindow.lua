@@ -38,6 +38,11 @@ local STEP_GAP, MINUS_GAP = 6, 2
 local PIN_GAP = 4
 local MAKE_W, KEEP_W = 40, 34
 local SUMMARY_SIZE = 12
+local CLOSE = Style.WINDOW_CLOSE
+local DETACH_W = 60
+local DOCK_GAP = 2
+local FLOAT_STRATA = "HIGH"
+local PANEL_KEY = "shoppingListPanel"
 local EVENTS = { "BAG_UPDATE_DELAYED" }
 local TEXT_TITLE = ns.L("Shopping List")
 local TEXT_SUBTITLE = ns.L("Crafts, other items and what to buy.")
@@ -76,8 +81,14 @@ local TIP_ADD_HELP = ns.L("Puts that many of the item on the list.")
 local TEXT_CONSUMABLES = ns.L("Consumables")
 local TIP_CONSUMABLES_HELP = ns.L("Picks food, flasks, elixirs and more for your class to buy.")
 local TIP_VENDOR_WAYPOINT = ns.L("Sets a waypoint to the nearest known vendor for this material.")
+local TEXT_CLOSE = "X"
+local TEXT_DETACH, TEXT_ATTACH = ns.L("Detach"), ns.L("Dock")
+local TIP_DETACH_HELP = ns.L("Lifts the Shopping List off the profession window, to drag it anywhere.")
+local TIP_ATTACH_HELP = ns.L("Puts the Shopping List back beside the profession window.")
+local TEXT_DOCK_RELOAD = ns.L("Reload UI to dock or undock the Shopping List.")
 
 local window, side, scroll, input, qty, empty, total, clear, picker, pickerFullWidth, events
+local profession, docked, detach, grip, closingWithProfession
 local crafts, craftPool, items, itemPool, madeList, madePool = {}, {}, {}, {}, {}, {}
 local pools = { crafts = {}, items = {}, materials = {}, vendor = {}, made = {} }
 local heads = {}
@@ -423,6 +434,61 @@ local function FitPicker()
     picker:SetWidth(fits and pickerFullWidth or picker:GetHeight())
 end
 
+local function ProfessionOpen()
+    return profession ~= nil and detach ~= nil and profession:IsVisible() and profession:GetAlpha() > 0
+end
+
+local function Remember(on)
+    ns.AccountSettings()[PANEL_KEY] = on or nil
+end
+
+local function SavedHeight()
+    local sizes = ns.AccountSettings().windowSizes
+    local saved = sizes and sizes.shoppingList
+    return saved and math.max(saved[2], MIN_H) or HEIGHT
+end
+
+local function RefreshDetach()
+    if not detach then return end
+    detach:SetShown(docked or ProfessionOpen())
+    ns.SetButtonText(detach, docked and TEXT_DETACH or TEXT_ATTACH)
+    ns.Tooltip(detach, docked and TEXT_DETACH or TEXT_ATTACH, docked and TIP_DETACH_HELP or TIP_ATTACH_HELP)
+end
+
+local function Dock()
+    docked = true
+    window:ClearAllPoints()
+    window:SetPoint("TOPLEFT", profession, "TOPRIGHT", DOCK_GAP, 0)
+    window:SetPoint("BOTTOMLEFT", profession, "BOTTOMRIGHT", DOCK_GAP, 0)
+    window:SetFrameStrata(profession:GetFrameStrata())
+    grip:Hide()
+    RefreshDetach()
+end
+
+local function Float(left, top, height)
+    docked = false
+    window:ClearAllPoints()
+    if left then
+        window:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+        ns.AccountSettings()[window.positionKey] = { "TOPLEFT", "BOTTOMLEFT", left, top }
+    else
+        Parts.Place(window, window.positionKey)
+    end
+    window:SetHeight(height)
+    window:SetFrameStrata(FLOAT_STRATA)
+    grip:Show()
+    RefreshDetach()
+end
+
+local function OnDetach()
+    if not docked then
+        if ProfessionOpen() then Dock() end
+        return
+    end
+    Remember(false)
+    Float(window:GetLeft(), window:GetTop(), window:GetHeight())
+end
+
 local function OnShow()
     FitPicker()
     for _, event in ipairs(EVENTS) do events:RegisterEvent(event) end
@@ -431,6 +497,27 @@ end
 
 local function OnHide()
     events:UnregisterAllEvents()
+    if not docked then return end
+    if not closingWithProfession then Remember(false) end
+    Float(nil, nil, SavedHeight())
+end
+
+local function OnDragStart(self)
+    if not docked then self:StartMoving() end
+end
+
+local function OnProfessionShow()
+    if window and window:IsShown() then return RefreshDetach() end
+    if On() and ns.AccountSettings()[PANEL_KEY] then ns.OpenShoppingList() end
+end
+
+local function OnProfessionHide()
+    if not (window and window:IsShown()) then return end
+    if not docked then return RefreshDetach() end
+    Remember(true)
+    closingWithProfession = true
+    window:Hide()
+    closingWithProfession = false
 end
 
 local function OnSized(_, width)
@@ -492,25 +579,39 @@ local function OnConsumables()
     Shopping.ToggleConsumables(window)
 end
 
-local function BuildBar(close)
+local function BuildBar(close, dock)
+    local right = close
+    if dock then
+        detach = ns.Button(window, TEXT_DETACH, DETACH_W, CLOSE, OnDetach)
+        detach:SetPoint("RIGHT", close, "LEFT", -St.BAR_GAP, 0)
+        detach:Hide()
+        right = detach
+    end
     picker = Parts.BarButton(window, St.BAG, TEXT_CONSUMABLES, TIP_CONSUMABLES_HELP, OnConsumables,
         TEXT_CONSUMABLES)
     pickerFullWidth = picker:GetWidth()
-    picker:SetPoint("RIGHT", close, "LEFT", -St.BAR_GAP, 0)
+    picker:SetPoint("RIGHT", right, "LEFT", -St.BAR_GAP, 0)
     window.subtitle:SetPoint("RIGHT", picker, "LEFT", -St.BAR_GAP, 0)
 end
 
 local function Build()
     window = Parts.Window(WIDTH, HEIGHT, "shoppingListWindow")
     window.backdrop:Card(CARD_INSET, HEADER + CARD_INSET, CARD_INSET, FOOTER + CARD_INSET)
-    BuildBar(Parts.TitleBar(window, TEXT_TITLE, TEXT_SUBTITLE, PAGE))
+    if S.Get("shoppingListDock") then
+        BuildBar(Parts.TitleBar(window, TEXT_TITLE, TEXT_SUBTITLE, PAGE, CLOSE, TEXT_CLOSE), true)
+    else
+        BuildBar(Parts.TitleBar(window, TEXT_TITLE, TEXT_SUBTITLE, PAGE))
+    end
     Parts.FooterBrand(window, PAGE)
     BuildBody(BuildInput())
     BuildFooter()
-    Parts.Resizable(window, "shoppingList", MIN_W, MIN_H, OnSized)
+    grip = Parts.Resizable(window, "shoppingList", MIN_W, MIN_H, OnSized)
     OnSized(window, window:GetWidth())
     events = CreateFrame("Frame")
     events:SetScript("OnEvent", RenderWindow)
+    local dragStop = window:GetScript("OnDragStop")
+    window:SetScript("OnDragStart", OnDragStart)
+    window:SetScript("OnDragStop", function(self) if not docked then dragStop(self) end end)
     window:SetScript("OnReceiveDrag", OnReceiveDrag)
     window:SetScript("OnMouseUp", DropClick)
     window:HookScript("OnShow", OnShow)
@@ -522,8 +623,17 @@ function ns.OpenShoppingList()
     if not On() then return ns.Print(TEXT_OFF) end
     if not window then Build() end
     window:SetScale(ns.UIScale())
+    if not window:IsShown() and ProfessionOpen() then Dock() end
     window:Show()
     window.backdrop:Paint(1)
+    RefreshDetach()
+end
+
+function ns.ShoppingListDockTo(frame)
+    profession = frame
+    frame:HookScript("OnShow", OnProfessionShow)
+    frame:HookScript("OnHide", OnProfessionHide)
+    if ProfessionsFrame then ProfessionsFrame:HookScript("OnHide", OnProfessionHide) end
 end
 
 function ns.ToggleShoppingList()
@@ -536,3 +646,7 @@ ns.RegisterMinimapFeature({
 })
 
 Shopping.RenderWindow = RenderWindow
+
+S.OnChange(function(key)
+    if key == "shoppingListDock" then ns.ConfirmReload(TEXT_DOCK_RELOAD) end
+end)

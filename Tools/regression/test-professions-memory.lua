@@ -140,6 +140,9 @@ function methods.GetFrameLevel() return 1 end
 function methods.GetFrameStrata() return "MEDIUM" end
 function methods.GetNumPoints() return 0 end
 function methods.GetAlpha() return 1 end
+function methods.GetLeft() return 300 end
+function methods.GetTop() return 700 end
+function methods.GetEffectiveScale() return 1 end
 function methods.HasFocus() return false end
 function methods.GetChecked(self) return self.checked end
 function methods.SetChecked(self, v) self.checked = v end

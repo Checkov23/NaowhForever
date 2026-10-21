@@ -68,6 +68,7 @@ P.Style = setmetatable({
     PROFIT_LINE = PROFIT_LINE,
     PROFIT_H = 3 * PROFIT_LINE,
     BUTTON_H = 24,
+    WINDOW_CLOSE = 22,
     STEP_W = STEP_W,
     STEP_GAP = STEP_GAP,
     QTY_W = QTY_W,

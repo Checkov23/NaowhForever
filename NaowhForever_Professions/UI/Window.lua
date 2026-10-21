@@ -20,7 +20,7 @@ local LOGO = 26
 local LOGO_X, LOGO_DROP = 10, 5
 local SETTINGS_PAGE = "Professions/Settings"
 local TITLE_GAP = 8
-local CLOSE, CLOSE_RIGHT, CLOSE_DROP = 22, 8, 7
+local CLOSE, CLOSE_RIGHT, CLOSE_DROP = Style.WINDOW_CLOSE, 8, 7
 local RANK_DROP, RANK_H = 40, 18
 local RANK_INSET = 2
 local BANNER_Y, BANNER_H, BANNER_SHIFT = -64, 40, 46
@@ -208,6 +208,7 @@ local function BuildHeader()
     win.title:SetPoint("LEFT", logo, "RIGHT", TITLE_GAP, 0)
     local close = ns.Button(win, "X", CLOSE, CLOSE, CloseAll)
     close:SetPoint("TOPRIGHT", -CLOSE_RIGHT, -CLOSE_DROP)
+    win.close = close
     local rank = CreateFrame("StatusBar", nil, win)
     rank:SetPoint("TOPLEFT", Style.PAD + RANK_INSET, -RANK_DROP)
     rank:SetSize(Style.WINDOW_W - Style.PAD * 2 - RANK_INSET * 2, RANK_H)

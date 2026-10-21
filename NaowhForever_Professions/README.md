@@ -66,7 +66,7 @@ NaowhForever_Professions/
     Window.lua         the window: frame, title, skill bar, rank banner, search, Filter, drawing (P.Window)
     Takeover.lua       showing it over Blizzard's window, docking Blizzard's tabs and cards, dragging, events
     ShoppingAdd.lua    Add to List under a recipe, and the button that opens the shopping list
-    ShoppingWindow.lua the Shopping List window: crafts, other items, materials (ns.ToggleShoppingList)
+    ShoppingWindow.lua the Shopping List window: crafts, other items, materials, docked beside the profession window or detached (ns.ToggleShoppingList)
     ShoppingConsumables.lua the Consumables picker beside the Shopping List: search and favourites
     ShoppingVendor.lua Shopping List materials sold by the open merchant, with Buy and Buy All
     ShoppingList.lua   the shopping list beside the auction house: check and buy
@@ -115,14 +115,30 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   profession, trainer and merchant windows with the D-pad from secure code, which the invisible
   window under ours, the docked tabs and cards, and our hooks on those windows would taint.
 - Blizzard's profession tabs switch profession by casting its spell, which only Blizzard's code may
-  do, so the real tabs move onto our window's edge and ignore their invisible parent's alpha.
+  do, so the real tabs move onto our window's right edge, or its left edge with Dock Shopping List on,
+  and ignore their invisible parent's alpha.
+- On the left edge the tabs are mirrored so their open side faces the window, and put back when
+  undocked: their atlas art is flipped and their anchors swapped; the icons keep their look. The
+  icon's mask is turned half a turn instead: a MaskTexture with flipped tex coords hides the icon,
+  and the side tab mask is the same top and bottom, so turning it mirrors it. Clicking a tab
+  re-anchors every icon to its right-side spot, so a SetPoint hook mirrors it again.
+- With the tabs on the left, the window moves right just enough to keep them on screen: the game opens
+  it at the screen's left edge.
+- Dock Shopping List (`shoppingListDock`) is off by default. Off, the Shopping List is a window of its
+  own, the tabs stay on the right edge and the Shopping List button keeps its place. It is read once,
+  when the profession window and the Shopping List are first built, so changing it asks for a reload.
+- With it on, the Shopping List docks on the right edge, where the tabs used to be. Opened from the
+  profession window it docks; Detach floats it where it is, to drag and resize, and Dock puts it back.
+  Closing it ends the detach. It comes back with the profession window only if it was docked and open
+  when that window closed (account `shoppingListPanel`).
 - The overview's spell buttons (Smelting, Find Minerals) cast and the red cross unlearns, so they stay
   Blizzard's. A card draws its buttons as part of itself, so Blizzard's whole card moves into ours with
   its art at zero alpha; the buttons stay children of that card, where their click reads the
   spellbook offset. They are secure: docked out of combat only, and undocked whenever the overview
   is not showing.
 - Blizzard only makes a tab for a profession you have learned, so an unlearned one has none. The docked
-  tabs get a Naowh-blue outline so they stand out on the dark window. The Unlearn button beside a skill
+  tabs on the right edge get a Naowh-blue outline so they stand out on the dark window; mirrored onto
+  the left edge they read as part of it and have none. The Unlearn button beside a skill
   bar is drawn from the atlas `Profession-button-red-crossmark` at 20px and full strength; where that
   atlas is missing it falls back to the red cross of `ReadyCheck-NotReady`, or the button shows nothing.
 - With the overview docked our window holds secure buttons and is protected, so closing it in combat
