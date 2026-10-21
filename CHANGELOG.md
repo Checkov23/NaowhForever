@@ -1,9 +1,69 @@
 # Changelog
 
-## Unreleased
+## 1.1.39
+
+### Added
+- Action Bars: every import backs up your bars first; Undo Import on the Bar Sets tab or /nf bars
+  undo puts them back, and Backups lists the last ten.
+- Action Bars: the import preview counts what changes, shows your bars now or after the import with
+  each change marked, lists the spells that fill in later and the keys that change, and can leave
+  actions, macros or keybinds out of that import.
+- Action Bars: saved sets are cards with an icon, tags and a tag filter, picked in the set builder.
+- Action Bars: the Bar Sets tab lists spells below your best rank (Upgrade All) and spells you know
+  that are on no bar, to drag onto them.
+- Action Bars: Load on Its Own on the Settings tab loads a set in dungeons and raids, in
+  battlegrounds or at a level, and puts your bars back on leaving.
+- Action Bars: right-click the Action Bars minimap or Top Bar button for a menu of your sets, Undo
+  and Save Bars.
+- Action Bars: a set's More menu opens its keybind map.
+- Action Bars: bar sets and website codes keep your stance and form keybinds (Warrior stances, Rogue
+  Stealth, Druid forms).
+- Tracking Reminder module to enable reminders for tracking spells for classes/races.
+- Auction Prices can keep prices from full auction house scans started by other addons, such as
+  Auctionator or TSM: turn on the new Capture Other Addons' Scans setting (off by default) under QoL
+  > Loot & Items > Auction Prices.
+- German: the Action Bars builder, website codes and the other new parts up to 1.1.37 now show in
+  German on German clients.
+- Professions: Dock Shopping List, off by default (Professions settings, under Shopping List). With
+  it on, the Shopping List opens as a panel on the right of the profession window (Detach floats it,
+  Dock puts it back, and a docked list reopens with the profession window), the profession tabs move
+  to the left of the window without their blue outline, and the Shopping List button sits beside the
+  close button.
 
 ### Changed
 - Naowh Score: refitted to the latest Forever items.
+- Action Bars: the saved sets, builder and import preview are a Bar Sets tab on the Action Bars page
+  instead of their own window.
+- Action Bars: the set builder puts the name, icon and tags at the top, what goes in in one panel,
+  the macros and keybinds in tabs, and adds Save and Get Code.
+- Action Bars: the Bar Sets home has Paste Code, Get Code and Save Current Bars buttons over it,
+  filter pills and three columns of set cards.
+- Professions > Disenchant Deals: detailed deal tooltips now default to Enchanters for players
+  turning them on for the first time, with an opt-in to show them on all characters. Players who
+  already had them on keep them on every character.
+- Action Bars: the strip's forms and stances sit over it as on the website, as icons with their
+  stance bar keys; clicking one shows that page as Action Bar 1.
+
+### Fixed
+- Journeys: RestedXP guide steps now get a route on the world map and minimap, with the guide's
+  quest and objectives on the Waypoint Pin.
+- QoL: features that change the game's own windows (Zone Info, the Town Pins button, Type DELETE For
+  You, Auto-Accept Layer Swap, Saved Quest Rewards, Hide Blizzard Loot Window, the mailbox and
+  auction house buttons, the Group Finder additions, Land Early Button and Glow New Abilities) stay
+  off with the Gamepad interface style, so the gamepad's bindings keep working in combat.
+- Professions and Training Planner: the recipe window, Train Favorites, Favorite Recipe Marks, the
+  Spellbook Tab and the Panel at the Trainer stay off with the Gamepad interface style, so the
+  gamepad's bindings keep working in combat.
+- Journeys: moving on to the next RestedXP guide step no longer leaves a "Map Pin" behind that you
+  had to remove yourself.
+- Glimmer: Enable Interact Key in the game's Controls settings stays off after a reload or relog
+  when you turn it off. Glimmer turns it on only when you turn Glimmer on, and its card says nothing
+  lights up while the key is off.
+- Professions: vendor reagents such as Coarse Thread and Weak Flux use their vendor price before you
+  visit a merchant, instead of a dearer auction house price, and their tooltip in the recipe pane
+  shows that price.
+- German: the bar names in the Action Bars builder and import preview (Action Bar 2, Stance Bar 1
+  and so on) now show in German too.
 
 ## 1.1.38
 
