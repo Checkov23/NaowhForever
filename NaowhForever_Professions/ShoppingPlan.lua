@@ -105,8 +105,7 @@ end
 
 local function VendorPrice(item)
     local api = ns.ProfWindowAPI
-    local vendor = api and api.IsVendorItem(item) and ns.AccountSettings().profVendorPrices
-    return vendor and vendor[item]
+    return api and api.IsVendorItem(item) and api.VendorPrice(item)
 end
 
 local function BuyPrice(item)

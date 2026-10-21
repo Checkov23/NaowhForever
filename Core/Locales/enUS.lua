@@ -803,6 +803,7 @@ L[" sells"] = true
 L[" short"] = true
 L[" short."] = true
 L[" Sold by vendors"] = true
+L[" Sold by vendors: %s"] = true
 L[" Some %s: read them in /macro before you use them."] = true
 L[" spell"] = true
 L[" spells"] = true

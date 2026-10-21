@@ -311,7 +311,8 @@ ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, L
             all["Player-1-SELF"] = {}
         end
         return all["Player-1-SELF"]
-    end, Style = dofile("Tools/regression/shared_style.lua"), Parts = { Logo = function(parent, page) logoPage = page; return Widget(parent) end }, Settings = {
+    end, Style = dofile("Tools/regression/shared_style.lua"), Parts = { Logo = function(parent, page) logoPage = page; return Widget(parent) end,
+        Coins = function(copper) return "<coins " .. copper .. ">" end }, Settings = {
         Group = function() return {} end, Look = function() return {} end,
         Page = function() return { Window = Noop, Card = Noop } end } },
     THEME = { accent = { r = 0, g = 0.57, b = 0.93 }, muted = { r = 0.6, g = 0.6, b = 0.6 },
@@ -856,6 +857,29 @@ check("with the auction house closed, a level up queues no Favorite Patterns dra
 check("the recipe window's logo opens the Professions settings", logoPage == "Professions/Settings")
 check("the Shopping List has a launcher that toggles it, with a real icon path", launcher
     and launcher.open == ns.ToggleShoppingList and launcher.icon == "Interface\\Icons\\INV_Misc_Note_01")
+
+local tipLines = {}
+env.GameTooltip.AddLine = function(_, text) tipLines[#tipLines + 1] = text end
+local _, reagentRows = ns.Professions.Reagents.Build(Widget())
+local reagentRow = reagentRows[1]
+account.profVendorPrices = nil
+reagentRow.itemID, reagentRow.vendor = 2320, true
+reagentRow.scripts.OnEnter(reagentRow)
+check("a vendor reagent's tooltip shows its built-in vendor price",
+    tipLines[#tipLines]:find("Sold by vendors: <coins 10>", 1, true) ~= nil)
+account.profVendorPrices = { [2320] = 12.6 }
+reagentRow.scripts.OnEnter(reagentRow)
+check("a learned price with a fraction shows whole coins",
+    tipLines[#tipLines]:find("Sold by vendors: <coins 13>", 1, true) ~= nil)
+account.profVendorPrices = nil
+reagentRow.itemID = 2665
+reagentRow.scripts.OnEnter(reagentRow)
+check("a vendor reagent with no known price keeps the plain line",
+    tipLines[#tipLines]:sub(-#" Sold by vendors") == " Sold by vendors")
+reagentRow.itemID, reagentRow.vendor = 2589, false
+local before = #tipLines
+reagentRow.scripts.OnEnter(reagentRow)
+check("a reagent vendors do not sell gets no vendor line", #tipLines == before)
 
 if #failures > 0 then
     for _, label in ipairs(failures) do print("  FAIL " .. label) end

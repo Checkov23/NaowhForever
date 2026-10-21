@@ -227,7 +227,7 @@ local function Requirements(entry)
         local have = R.ItemCount(itemID)
         local short = math.max(0, need - have)
         local vendor = V.IsVendorItem(itemID) and true or false
-        local price = vendor and V.Prices()[itemID]
+        local price = vendor and V.Price(itemID)
         if short > 0 then
             missing = true
             if price then vendorCost = vendorCost + price * short end

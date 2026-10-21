@@ -20,7 +20,7 @@ local function AuctionPrice(itemID)
 end
 
 local function BuyPrice(itemID)
-    local vendor = V.Prices()[itemID]
+    local vendor = V.Price(itemID)
     local ah = AuctionPrice(itemID)
     if vendor and (not ah or vendor <= ah) then return vendor, FROM_VENDOR end
     if ah then return ah, FROM_AH end
