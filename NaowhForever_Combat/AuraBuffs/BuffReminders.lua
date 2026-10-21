@@ -522,6 +522,19 @@ function Reminders.WatchesImbue()
     return false
 end
 
+function Reminders.CastCovers(key, spellID)
+    for _, family in ipairs(D.PERSONAL) do
+        if family == key then
+            if family.weapons or family.target or family.others then return false end
+            for _, id in ipairs(family.spells) do
+                if id == spellID then return true end
+            end
+            return false
+        end
+    end
+    return false
+end
+
 function Reminders.NoteImbueCast(spellID)
     for _, family in ipairs(D.PERSONAL) do
         if family.key == "imbue" then

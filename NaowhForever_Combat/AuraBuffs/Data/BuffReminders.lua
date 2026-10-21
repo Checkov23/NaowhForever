@@ -123,7 +123,7 @@ D.PERSONAL = {
     { key = "huntersMark", name = "Hunter's Mark on Elites", class = "HUNTER", target = true,
         help = "A hostile elite, rare elite or boss targeted out of combat without Hunter's Mark.",
         spells = { 14325, 14324, 14323, 1130 } },
-    { key = "thorns", name = "Thorns", class = "DRUID", spells = { 9910, 9756, 8914, 1075, 782, 467 } },
+    { key = "thorns", name = "Thorns", class = "DRUID", others = true, spells = { 9910, 9756, 8914, 1075, 782, 467 } },
     { key = "imbue", name = "Weapon Imbue", class = "SHAMAN", weapons = { 16 },
         spells = { 16362, 10486, 8235, 8232, 16342, 16341, 16339, 8030, 8027, 8024,
             16356, 16355, 10456, 8038, 8033, 16316, 16315, 16314, 10399, 8019, 8018, 8017 } },

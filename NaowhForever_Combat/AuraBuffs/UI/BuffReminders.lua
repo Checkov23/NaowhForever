@@ -146,6 +146,7 @@ local function Show(list)
             cell.items, cell.key = entry.items, entry.key
             SetAction(cell, entry)
             ShowTimer(cell, entry.aura)
+            cell:SetAlpha(1)
             cell:Show()
             PaintRange(cell, entry, inRange)
             entry.cell = cell
@@ -217,6 +218,12 @@ function Queue()
     C_Timer.After(QUEUE_DELAY, Refresh)
 end
 
+local function FadeCast(spellID)
+    for _, cell in ipairs(cells) do
+        if cell:IsShown() and R.CastCovers(cell.key, spellID) then cell:SetAlpha(0) end
+    end
+end
+
 local function OnEvent(_, event, unit, arg2, spellID)
     if event == "UNIT_AURA" and (InCombatLockdown() or Secret(unit)
         or not (GROUP_UNIT[unit] or unit == "target" and R.WatchesTarget())) then return end
@@ -229,6 +236,7 @@ local function OnEvent(_, event, unit, arg2, spellID)
     if event == "PLAYER_REGEN_ENABLED" and held then return Apply() end
     if event == "BAG_UPDATE_DELAYED" or event == "PLAYER_ENTERING_WORLD" then R.ForgetBags() end
     if event == "ITEM_DATA_LOAD_RESULT" and not R.Requested(unit) then return end
+    if event == "UNIT_SPELLCAST_SUCCEEDED" and not Secret(spellID) then FadeCast(spellID) end
     if event == "UNIT_SPELLCAST_SUCCEEDED" and (Secret(spellID)
         or not (R.NoteImbueCast(spellID) or R.NoteFoodCast(spellID) or R.NoteUseCast(spellID))) then return end
     Queue()
@@ -269,7 +277,7 @@ local function Listen()
     if S.Get("personalBuffs") or S.Get("weaponEnhancements") then
         events:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
     end
-    if R.WatchesImbue() or not R.Carried("food") or S.Get("buffIconMode") == "last" then
+    if S.Get("personalBuffs") or R.WatchesImbue() or not R.Carried("food") or S.Get("buffIconMode") == "last" then
         events:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
     end
     events:RegisterEvent("PLAYER_ENTERING_WORLD")

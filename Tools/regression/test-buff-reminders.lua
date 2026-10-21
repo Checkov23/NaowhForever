@@ -74,6 +74,7 @@ local function Fixture(opts)
         function f:GetHeight() return 120 end
         function f:Show() f.shown = true end
         function f:Hide() f.shown = false end
+        function f:SetAlpha(alpha) f.alpha = alpha end
         function f:SetShown(v) f.shown = v and true or false end
         function f:SetScript(key, fn) f.scripts[key] = fn; if key == "OnEvent" then f.handler = fn end end
         function f:RegisterEvent(e) f.events[e] = true end
@@ -351,6 +352,15 @@ local function Fixture(opts)
                 if rawget(f.count, "text") and f.count.text ~= "" then s = s .. "x" .. f.count.text end
                 if rawget(f.timer, "shown") then s = s .. "(t)" end
                 out[#out + 1] = s
+            end
+        end
+        return table.concat(out, " ")
+    end
+    function t.Faded()
+        local out = {}
+        for _, f in ipairs(frames) do
+            if rawget(f, "icon") and rawget(f, "count") and f.shown and f.alpha == 0 then
+                out[#out + 1] = f.icon.texture
             end
         end
         return table.concat(out, " ")
@@ -1620,6 +1630,38 @@ do
         settings = { weaponEnhancements = true, personalBuffsDungeon = false } })
     t.Login()
     Check("poisons off in dungeons, weapon reminder shown", t.Shown(), ICONS .. "inv_potion_104")
+end
+
+-- A personal buff cast in combat fades its reminder until the row can refresh again.
+do
+    local t = Fixture({ units = { player = "SHAMAN" }, known = { [325] = true } })
+    t.Login()
+    Check("Lightning Shield missing", t.Shown(), "spell:325")
+    Check("listens for casts with personal buffs on", t.Listening("UNIT_SPELLCAST_SUCCEEDED"), true)
+    t.state.combat = true
+    t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast1", 403)
+    Check("another spell leaves it", t.Faded(), "")
+    t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast2", SECRET)
+    Check("a secret spell leaves it", t.Faded(), "")
+    t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast3", 325)
+    Check("casting it in combat fades it", t.Faded(), "spell:325")
+    t.state.auras.player = { { 325, 600, 600 } }
+    t.state.combat = false
+    t.Fire("PLAYER_REGEN_ENABLED")
+    t.Advance(0.5)
+    Check("gone once combat ends", t.Shown(), "")
+    t.state.auras.player = {}
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("back at full alpha when it drops", t.Shown() .. "|" .. t.Faded(), "spell:325|")
+end
+
+do
+    local t = Fixture({ units = { player = "DRUID" }, known = { [467] = true } })
+    t.Login()
+    t.state.combat = true
+    t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast1", 467)
+    Check("Thorns may have gone on someone else, so it stays", t.Faded(), "")
 end
 
 if failures > 0 then

@@ -84,6 +84,10 @@ NaowhForever_Combat/AuraBuffs/
   ends, or they would read every buff as missing. `InCombatLockdown()` is still false while
   `PLAYER_REGEN_DISABLED` is handled, so that event is checked too.
 - A `UNIT_AURA` unit arrives secret while auras are restricted; `PLAYER_REGEN_ENABLED` catches up.
+- A personal buff cast while the row is frozen (Lightning Shield recast mid-pull) fades its reminder to
+  alpha 0, the one change a secure cell allows in combat, read from the `UNIT_SPELLCAST_SUCCEEDED`
+  spell ID when it is not secret. Weapon buffs, target debuffs and Thorns (`others`, it may have gone on
+  someone else) are left; the next refresh puts the alpha back.
 - The reminders watch the built-in consumables only (`D.DEFAULT_GROUPS`): Naowh had the hand-made list
   and its window removed. A list an older profile still holds (`utilityReminders.consumables`, the
   profile string's old Consumables part) is left in place and not read.
@@ -200,8 +204,8 @@ NaowhForever_Combat/AuraBuffs/
 - Icon (Default or Last Used): Last Used shows the icon of the flask, elixir, scroll or weapon item
   used last (`lastIcons` in the account settings, food's is `lastFoodIcon`), taken from the item whose
   use spell `UNIT_SPELLCAST_SUCCEEDED` reports; a spell no built-in item uses is ignored, and
-  nothing is read in combat. The cast event is listened for only while Last Used is chosen or food
-  needs it (Only If I Carry One off for food). Icon Size defaults to 48 and goes to 96; a profile that saved a
+  nothing is read in combat. The cast event is listened for only while personal buffs are on, Last Used
+  is chosen or food needs it (Only If I Carry One off for food). Icon Size defaults to 48 and goes to 96; a profile that saved a
   size keeps it. The row is sized to its icons and anchored by its centre, so reminders spread left
   and right of the saved spot, and one sits on it.
 - Warn With Minutes Left covers personal buffs too, except a buff no longer than the warning
