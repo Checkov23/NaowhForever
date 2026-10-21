@@ -38,8 +38,8 @@ NaowhForever_Utilities/ActionBars/
   View/
     Style.lua                   the Bar Sets tab's colors and sizes, on top of Shared/Style.lua (A.Style)
     Parts.lua                   labels, chips, tick boxes, slot tiles, glass panels, the bar strip at any size (the
-                                scene's, and a set row's small one), the scene with its pet row, form chips and bar
-                                picker, the tab's panes (A.Parts)
+                                scene's, and a set row's small one), the scene with its pet row, form or stance
+                                bar and bar picker, the tab's panes (A.Parts)
   UI/
     SetsPage.lua                the home: Paste Code, Get Code and Save Current Bars over it with the class pill, Undo,
                                 the bar check, a filter and a card per saved set (icon, tags, a small strip of its bars,
@@ -133,8 +133,7 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   width and height, so the builder's two heads and the preview's three panels share whatever width the
   tab has. The scene is as tall as what it holds: 190, or 249 with the pet bar's row (`P.SCENE_H`,
   `P.PET_SCENE_H`), and the panels under it hang from its bottom.
-- The bar picker sits under Action Bar 3, beside the form chips, as the site's switcher does, so it never
-  pushes the strip down.
+- The bar picker sits under Action Bar 3, as the site's switcher does, so it never pushes the strip down.
 - One strip drawing (`P.PlaceStrip`) lays out the scene's buttons and a saved set's small strip on the home,
   12 (`MINI_TILE`) with 1 between, so three cards fit across the narrowest tab; the small one is textures only, drawn from the saved slots, never the bars.
   Its tags name what it cannot show: the form pages ("+ Stealth", "+ 3 forms"), other bars and the pet bar's keys.
@@ -144,8 +143,18 @@ table (the frame, `Show` and `Redraw`) when it builds them.
   for other commands. Its list shows the macros (Select None keeps the ones on the bars) or, on its
   Keybinds tab, each key with what it presses now.
 - A class with form pages (`A.FORMS`: a Rogue's Stealth, a Druid's forms and Prowl, a Warrior's stances)
-  gets a chip per page under the strip; the chip picks which page Action Bar 1's row shows, with its
-  count, and dims when that page is left out. The other bars (Action Bar 5 to 8, Page 2, the stance and extra
+  gets the website's bar over the strip, FORMS for a Druid and STANCE BAR otherwise (`A.FORM_BAR`): MAIN as a
+  word, each form as its spell's icon with the key its stance bar button is bound to, and Prowl, which has no
+  button of its own, as a word. A chip picks which page Action Bar 1's row shows (its label then reads, say,
+  ACTION BAR 1 - STEALTH), dims when that page is left out, and its tooltip counts the page's actions. The
+  forms are matched to the stance bar by spell ID (`spells`, every rank), so it works in any language, and a
+  form not learned yet still shows its icon, with no key. The preview shows the key the set binds there, as
+  the rest of its strip does. The bar's height stays reserved while a single bar is picked from the list, so
+  the panels under the scene never move. Its title sits beside its box, so it costs one row of height. The
+  builder's What Goes In and the preview's three panels scroll their rows when the tab is too short for them,
+  so a Druid, Rogue or Warrior on a small window loses no row to the taller scene. A Druid's are in stance bar order (Bear, Cat, Prowl,
+  Moonkin). A Warrior is always in a stance, so MAIN shows only when page 1 holds something (`A.NO_MAIN`) and
+  Battle Stance opens first, as on the site. The other bars (Action Bar 5 to 8, Page 2, the stance and extra
   pages a class has no form for) are picked from the scene's list, as on the site, and shown on their own.
 - Show empty bars is gone: the strip always shows every button, empty ones empty, and the list picks the
   other bars, so nothing is hidden for it to show.

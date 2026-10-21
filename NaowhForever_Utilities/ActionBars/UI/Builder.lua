@@ -19,7 +19,7 @@ local PET_BAR, PET_CLASSES, STANCE_BAR = A.PET_BAR, A.PET_CLASSES, A.STANCE_BAR
 local DOT = St.PLACE_DOT
 local MAIN_PAGE, LEFT_PAGE, TOP_PAGE, RIGHT_PAGE, MAIN_VIEW = P.MAIN_PAGE, P.LEFT_PAGE, P.TOP_PAGE, P.RIGHT_PAGE, P.MAIN_VIEW
 local SUMMARY_BAR, IDENT_H, LEFT_W = 60, 54, 300
-local PART_H, PART_GAP, PART_PAD, LIST_TABS_W, LIST_HEAD = 52, 6, 8, 240, 34
+local PART_H, PART_GAP, PART_PAD, PARTS, LIST_TABS_W, LIST_HEAD = 52, 6, 8, 5, 240, 34
 local SWATCH, LEGEND_H, LEGEND_GAP, LEGEND_TEXT_GAP = 12, 20, 18, 6
 local COUNT_NUMBER, COUNT_GAP, SAVE_CODE_W = 22, 22, 150
 local ICON_BUTTON, PICKER_TILE, PICKER_GAP, PICKER_COLUMNS, PICKER_MAX, PICKER_LEVEL = 44, 28, 3, 10, 40, 20
@@ -39,7 +39,6 @@ local TEXT = {
     MAIN_BARS = ns.L("Main bars"),
     PET_BAR = ns.L("Pet Bar"),
     PICKED_BAR = "%s (%d)",
-    CHIP = "%s %d",
     KEYBINDS = ns.L("Keybinds"),
     MACROS = ns.L("Macros"),
     SET_NAME = ns.L("Set name"),
@@ -220,7 +219,8 @@ local function DrawChips()
         local used, out = Counts(entry.list, skip)
         local chip = chipPool[i] or {}
         chipPool[i] = chip
-        chip.text = TEXT.CHIP:format(page == MAIN_PAGE and TEXT.MAIN or entry.form, used)
+        chip.text, chip.icon, chip.key, chip.count = page == MAIN_PAGE and TEXT.MAIN or entry.form, entry.formIcon,
+            P.KeyText(entry.formCommand), used
         chip.picked, chip.out, chip.page = page == formPage, out == SLOTS_PER_BAR, page
         chip.onClick = Builder.PickForm
         model.chips[i] = chip
@@ -256,7 +256,7 @@ end
 
 local function DrawScene(v)
     local regions = model.regions
-    if not forms then formPage = MAIN_PAGE end
+    formPage = P.FormPage(forms, formPage)
     local bottom = pages[formPage]
     local formName = formPage == MAIN_PAGE and TEXT.MAIN or bottom.form
     Region(regions.left, pages[LEFT_PAGE])
@@ -267,7 +267,7 @@ local function DrawScene(v)
     DrawChips()
     DrawPet()
     DrawPicker()
-    model.caption = TEXT.PICK_HINT
+    model.caption, model.formBar = TEXT.PICK_HINT, P.FormBarName()
     model.Paint = PaintSlot
     P.DrawScene(v.scene, model)
 end
@@ -509,11 +509,11 @@ local function BuildLegend(v)
     v.legend = row
 end
 
-local function NewPart(panel, above, name, get, set)
-    local part = CreateFrame("Frame", nil, panel)
+local function NewPart(body, above, name, get, set)
+    local part = CreateFrame("Frame", nil, body)
     part:SetHeight(PART_H)
-    part:SetPoint("TOPLEFT", above, "BOTTOMLEFT", 0, above == panel.head and -PART_GAP or 0)
-    part:SetPoint("RIGHT", -GLASS_PAD, 0)
+    if above then part:SetPoint("TOPLEFT", above, "BOTTOMLEFT") else part:SetPoint("TOPLEFT") end
+    part:SetPoint("RIGHT", body, "RIGHT")
     part.title = P.Label(part, St.NAME_SIZE, T.fg)
     part.title:SetPoint("TOPLEFT", 0, -PART_PAD)
     part.title:SetPoint("RIGHT", -(St.SWITCH_W + PART_PAD), 0)
@@ -540,12 +540,16 @@ local function BuildParts(v, bottom)
     panel.head = P.Mono(panel, St.MONO_SIZE, St.GOLD_RGB)
     panel.head:SetPoint("TOPLEFT", GLASS_PAD, -GLASS_PAD)
     panel.head:SetText(TEXT.WHAT_GOES_IN)
-    v.actions = NewPart(panel, panel.head, TEXT.ACTIONS_PART)
-    v.keys = NewPart(panel, v.actions, TEXT.KEYBINDS, KeysOn, SetKeys)
-    v.macros = NewPart(panel, v.keys, TEXT.MACROS, MacrosOn, SetMacros)
-    v.highest = NewPart(panel, v.macros, TEXT.HIGHEST, HighestOn, SetHighest)
+    local inner = CreateFrame("Frame", nil, panel)
+    P.Place(inner, GLASS_PAD, GLASS_PAD + St.MONO_SIZE + PART_GAP, GLASS_PAD, GLASS_PAD)
+    local _, body = P.List(inner, 0)
+    v.partsBody = body
+    v.actions = NewPart(body, nil, TEXT.ACTIONS_PART)
+    v.keys = NewPart(body, v.actions, TEXT.KEYBINDS, KeysOn, SetKeys)
+    v.macros = NewPart(body, v.keys, TEXT.MACROS, MacrosOn, SetMacros)
+    v.highest = NewPart(body, v.macros, TEXT.HIGHEST, HighestOn, SetHighest)
     v.highest.line:SetText(TEXT.HIGHEST_LINE)
-    v.pet = NewPart(panel, v.highest, TEXT.PET_PART, PetOn, SetPet)
+    v.pet = NewPart(body, v.highest, TEXT.PET_PART, PetOn, SetPet)
     v.keysSwitch, v.macrosSwitch = v.keys.switch, v.macros.switch
     v.parts = panel
 end
@@ -800,6 +804,7 @@ local function DrawParts(v, keys, onBar, kept, all)
     v.keys.line:SetText(choices.keys and TEXT.KEYS_ON:format(keys, onBar, keys - onBar) or TEXT.KEYS_OFF)
     v.macros.line:SetText(choices.macros and TEXT.MACROS_ON:format(kept, all) or TEXT.MACROS_OFF)
     v.pet:SetShown(PET_CLASSES[A.Class()] == true)
+    v.partsBody:SetHeight(PART_H * (v.pet:IsShown() and PARTS or PARTS - 1))
     v.pet.line:SetText(PetOn() and TEXT.PET_ON or TEXT.PET_OFF)
     for _, part in ipairs({ v.keys, v.macros, v.highest, v.pet }) do part.switch._refreshValue() end
     return actions
@@ -837,7 +842,7 @@ end
 
 local function Order()
     pages, petCommands = P.Pages()
-    forms = P.FormPages(pages)
+    forms = P.FormPages(pages, P.PageUsed(pages[MAIN_PAGE]))
     order = {}
     wipe(slotOf)
     for _, bar in ipairs(Sets.BARS) do

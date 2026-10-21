@@ -23,7 +23,7 @@ local STAT_H, STAT_STRIPE, STAT_NUMBER = 58, 3, 22
 local MODE_W, MODE_H, MODE_GAP = 240, 26, 8
 local LEGEND_H, SWATCH, SWATCH_EDGE, LEGEND_GAP, LEGEND_TEXT_GAP = 22, 12, 2, 18, 6
 local ACTION_BAR = 52
-local PANEL_HEAD_GAP, ROW_H, ROW_GAP, ROWS_SHOWN = 10, 28, 4, 6
+local PANEL_HEAD_GAP, ROW_H, ROW_GAP, ROWS_SHOWN, BODY_FOOT = 10, 28, 4, 6, 20
 local KEY_W, KEY_H = 64, 18
 local BUTTON_GAP, CANCEL_W, TEST_W, IMPORT_W = 8, 100, 110, 170
 local SAVED_DATE = "%d %b %Y"
@@ -80,7 +80,6 @@ local TEXT = {
     MAIN_BARS = ns.L("Main bars"),
     PET_BAR = ns.L("Pet Bar"),
     PICKED_BAR = "%s (%d)",
-    CHIP = "%s %d",
     EMPTY_SLOT = ns.L("Empty slot"),
     NOT_IN_SET = ns.L("Not in the set: stays as it is."),
     PET_KEYS = ns.L("Only this button's keys come across."),
@@ -249,7 +248,8 @@ local function DrawChips()
         local entry = pages[page]
         local chip = chipPool[i] or {}
         chipPool[i] = chip
-        chip.text = TEXT.CHIP:format(page == MAIN_PAGE and TEXT.MAIN or entry.form, Placed(entry.list))
+        chip.text, chip.icon, chip.key, chip.count = page == MAIN_PAGE and TEXT.MAIN or entry.form, entry.formIcon,
+            keyFor(entry.formCommand), Placed(entry.list)
         chip.picked, chip.page, chip.onClick = page == formPage, page, Preview.PickForm
         model.chips[i] = chip
     end
@@ -284,7 +284,7 @@ end
 local function DrawScene(v, set)
     keyFor = PreviewKeys(set)
     local regions = model.regions
-    if not forms then formPage = MAIN_PAGE end
+    formPage = P.FormPage(forms, formPage)
     local formName = formPage == MAIN_PAGE and TEXT.MAIN or pages[formPage].form
     Region(regions.left, pages[LEFT_PAGE])
     Region(regions.top, pages[TOP_PAGE])
@@ -294,7 +294,7 @@ local function DrawScene(v, set)
     DrawChips()
     DrawPet(set)
     DrawPicker()
-    model.caption, model.Paint = TEXT.CAPTION, PaintSlot
+    model.caption, model.Paint, model.formBar = TEXT.CAPTION, PaintSlot, P.FormBarName()
     P.DrawScene(v.scene, model)
 end
 
@@ -373,26 +373,30 @@ local function BuildModes(v, top)
     v.dim.onClick = ToggleDim
 end
 
-local function PanelHead(panel, text)
+local function PanelBody(panel, text)
     local head = P.Mono(panel, MONO_SIZE, St.GOLD_RGB)
     head:SetPoint("TOPLEFT", GLASS_PAD, -GLASS_PAD)
     head:SetText(text)
-    return head
+    local inner = CreateFrame("Frame", nil, panel)
+    P.Place(inner, GLASS_PAD, GLASS_PAD + MONO_SIZE + PANEL_HEAD_GAP, GLASS_PAD, GLASS_PAD)
+    local _, body = P.List(inner, 0)
+    panel.body = body
+    return body
 end
 
 local function RowY(i)
-    return -(GLASS_PAD + MONO_SIZE + PANEL_HEAD_GAP + (i - 1) * (ROW_H + ROW_GAP))
+    return -(i - 1) * (ROW_H + ROW_GAP)
 end
 
-local function PlaceRow(row, panel, i)
+local function PlaceRow(row, body, i)
     row:SetHeight(ROW_H)
-    row:SetPoint("TOPLEFT", panel, "TOPLEFT", GLASS_PAD, RowY(i))
-    row:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -GLASS_PAD, RowY(i))
+    row:SetPoint("TOPLEFT", body, "TOPLEFT", 0, RowY(i))
+    row:SetPoint("TOPRIGHT", body, "TOPRIGHT", 0, RowY(i))
     return row
 end
 
-local function NewChoiceRow(panel, i, onClick)
-    local row = PlaceRow(CreateFrame("Button", nil, panel), panel, i)
+local function NewChoiceRow(body, i, onClick)
+    local row = PlaceRow(CreateFrame("Button", nil, body), body, i)
     ns.Solid(row, "BACKGROUND", T.bg, St.ROW_FILL):SetAllPoints()
     ns.Border(row, St.BORDER_RGB)
     row.box = P.Box(row)
@@ -407,8 +411,8 @@ local function NewChoiceRow(panel, i, onClick)
     return row
 end
 
-local function NewListRow(panel, i)
-    local row = PlaceRow(CreateFrame("Frame", nil, panel), panel, i)
+local function NewListRow(body, i)
+    local row = PlaceRow(CreateFrame("Frame", nil, body), body, i)
     row.chip = P.Chip(row)
     row.chip:SetPoint("RIGHT")
     row.name = P.Label(row, NOTE_SIZE, T.fg)
@@ -418,8 +422,8 @@ local function NewListRow(panel, i)
     return row
 end
 
-local function NewKeyRow(panel, i)
-    local row = PlaceRow(CreateFrame("Frame", nil, panel), panel, i)
+local function NewKeyRow(body, i)
+    local row = PlaceRow(CreateFrame("Frame", nil, body), body, i)
     local box = CreateFrame("Frame", nil, row)
     box:SetSize(KEY_W, KEY_H)
     box:SetPoint("LEFT")
@@ -438,11 +442,11 @@ local function ListPanel(v, after, head, newRow)
     local panel = P.Glass(CreateFrame("Frame", nil, v.frame))
     panel:SetPoint("TOPLEFT", after, "TOPRIGHT", GAP, 0)
     panel:SetPoint("BOTTOMLEFT", after, "BOTTOMRIGHT", GAP, 0)
-    PanelHead(panel, head)
+    local body = PanelBody(panel, head)
     panel.rows = {}
-    for i = 1, ROWS_SHOWN do panel.rows[i] = newRow(panel, i) end
-    panel.note = P.Label(panel, SMALL_SIZE, T.muted)
-    panel.more = P.Label(panel, SMALL_SIZE, T.muted)
+    for i = 1, ROWS_SHOWN do panel.rows[i] = newRow(body, i) end
+    panel.note = P.Label(body, SMALL_SIZE, T.muted)
+    panel.more = P.Label(body, SMALL_SIZE, T.muted)
     panel.more:SetPoint("TOPLEFT", panel.rows[ROWS_SHOWN], "BOTTOMLEFT", 0, -LINE_GAP)
     return panel
 end
@@ -462,9 +466,10 @@ local function BuildPanels(v)
     v.bring = P.Glass(CreateFrame("Frame", nil, v.frame))
     v.bring:SetPoint("TOPLEFT", v.legend, "BOTTOMLEFT", 0, -LINE_GAP)
     v.bring:SetPoint("BOTTOMLEFT", 0, ACTION_BAR + GAP)
-    PanelHead(v.bring, TEXT.BRING)
-    v.bring.rows = { NewChoiceRow(v.bring, 1, Choice("actions")), NewChoiceRow(v.bring, 2, Choice("macros")),
-        NewChoiceRow(v.bring, 3, Choice("keys")), NewChoiceRow(v.bring, 4, ToggleFill) }
+    local body = PanelBody(v.bring, TEXT.BRING)
+    v.bring.rows = { NewChoiceRow(body, 1, Choice("actions")), NewChoiceRow(body, 2, Choice("macros")),
+        NewChoiceRow(body, 3, Choice("keys")), NewChoiceRow(body, 4, ToggleFill) }
+    body:SetHeight(#v.bring.rows * (ROW_H + ROW_GAP))
     v.later = ListPanel(v, v.bring, TEXT.LATER_HEAD, NewListRow)
     v.keys = ListPanel(v, v.later, TEXT.KEYS_HEAD, NewKeyRow)
 end
@@ -573,12 +578,13 @@ local function PaintNote(panel, text, below)
     if below then
         panel.note:SetPoint("TOPLEFT", below, "BOTTOMLEFT", 0, -LINE_GAP)
     else
-        panel.note:SetPoint("TOPLEFT", GLASS_PAD, RowY(1))
+        panel.note:SetPoint("TOPLEFT", panel.body, "TOPLEFT")
     end
-    panel.note:SetPoint("RIGHT", -GLASS_PAD, 0)
+    panel.note:SetPoint("RIGHT", panel.body, "RIGHT")
 end
 
 local function PaintMore(panel, total)
+    panel.body:SetHeight(math.min(total, ROWS_SHOWN) * (ROW_H + ROW_GAP) + BODY_FOOT)
     local more = total - ROWS_SHOWN
     panel.more:SetShown(more > 0)
     if more > 0 then panel.more:SetText(TEXT.MORE:format(more)) end
@@ -680,7 +686,7 @@ local function Open(v)
     opts = Import.Options()
     preview = Sets.Preview(importKey, opts)
     pages, petCommands = P.Pages()
-    forms = P.FormPages(pages)
+    forms = P.FormPages(pages, P.PageUsed(pages[MAIN_PAGE], set.slots))
     wipe(slotOf)
     for _, bar in ipairs(A.BARS) do
         local entry = pages[bar.page]

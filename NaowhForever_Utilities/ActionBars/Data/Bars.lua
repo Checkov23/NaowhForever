@@ -1,4 +1,4 @@
--- Bars.lua: the action bars as the game numbers them: each one's page of slots and the binding its buttons answer to, the pet and stance bars' keys, and the pages a class's forms swap in (ns.ActionBars.BARS).
+-- Bars.lua: the action bars as the game numbers them: each one's page of slots and the binding its buttons answer to, the pet and stance bars' keys, and the pages a class's forms swap in, with the spells that put each on the stance bar (ns.ActionBars.BARS).
 local ns = _G.NaowhForever
 
 ns.ActionBars.BARS = {
@@ -26,9 +26,14 @@ ns.ActionBars.STANCE_BAR = { name = "Stance Bar", button = "SHAPESHIFTBUTTON", b
 ns.ActionBars.PET_CLASSES = { HUNTER = true, WARLOCK = true }
 
 ns.ActionBars.FORMS = {
-    ROGUE = { { page = 7, name = "Stealth" } },
-    DRUID = { { page = 7, name = "Cat" }, { page = 8, name = "Prowl" }, { page = 9, name = "Bear" },
-        { page = 10, name = "Moonkin" } },
-    WARRIOR = { { page = 7, name = "Battle Stance" }, { page = 8, name = "Defensive Stance" },
-        { page = 9, name = "Berserker Stance" } },
+    ROGUE = { { page = 7, name = "Stealth", spells = { 1784, 1785, 1786, 1787 } } },
+    DRUID = { { page = 9, name = "Bear", spells = { 5487, 9634 } }, { page = 7, name = "Cat", spells = { 768 } },
+        { page = 8, name = "Prowl" }, { page = 10, name = "Moonkin", spells = { 24858 } } },
+    WARRIOR = { { page = 7, name = "Battle Stance", spells = { 2457 } },
+        { page = 8, name = "Defensive Stance", spells = { 71 } },
+        { page = 9, name = "Berserker Stance", spells = { 2458 } } },
 }
+
+ns.ActionBars.FORM_BAR = { DRUID = "Forms" }
+
+ns.ActionBars.NO_MAIN = { WARRIOR = true }
