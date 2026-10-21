@@ -205,7 +205,7 @@ end
 
 local function Region(region, entry, label)
     local _, out = Counts(entry.list, draft.choices.skip)
-    region.entry, region.label = entry, label or entry.bar.name
+    region.entry, region.label = entry, label or ns.L(entry.bar.name)
     region.out = out == SLOTS_PER_BAR
     region.onClick, region.hint = BarClicked, BarHint
     return region
@@ -248,7 +248,7 @@ local function DrawPicker()
     for _, entry in ipairs(order) do
         if entry.other then
             local used = Counts(entry.list, skip)
-            values[entry.bar.page] = TEXT.PICKED_BAR:format(entry.bar.name, used)
+            values[entry.bar.page] = TEXT.PICKED_BAR:format(ns.L(entry.bar.name), used)
             list[#list + 1] = entry.bar.page
         end
     end
@@ -262,7 +262,7 @@ local function DrawScene(v)
     Region(regions.left, pages[LEFT_PAGE])
     Region(regions.top, pages[TOP_PAGE])
     Region(regions.right, pages[RIGHT_PAGE])
-    Region(regions.bottom, bottom, pages[MAIN_PAGE].bar.name .. DOT .. formName)
+    Region(regions.bottom, bottom, ns.L(pages[MAIN_PAGE].bar.name) .. DOT .. formName)
     model.single = viewPage ~= MAIN_VIEW and pages[viewPage] and Region(single, pages[viewPage]) or nil
     DrawChips()
     DrawPet()
@@ -773,7 +773,7 @@ local function LeftOut()
     for _, entry in ipairs(order) do
         local _, out = Counts(entry.list, skip)
         if out == SLOTS_PER_BAR then
-            if Counts(entry.list, {}) > 0 then bars[#bars + 1] = entry.bar.name end
+            if Counts(entry.list, {}) > 0 then bars[#bars + 1] = ns.L(entry.bar.name) end
         else
             slots = slots + out
         end

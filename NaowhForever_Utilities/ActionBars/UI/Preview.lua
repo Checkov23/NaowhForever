@@ -239,7 +239,7 @@ local function Placed(list)
 end
 
 local function Region(region, entry, label, form)
-    region.entry, region.label, region.form, region.out = entry, label or entry.bar.name, form, false
+    region.entry, region.label, region.form, region.out = entry, label or ns.L(entry.bar.name), form, false
     return region
 end
 
@@ -275,7 +275,7 @@ local function DrawPicker()
     values[MAIN_VIEW], list[1] = TEXT.MAIN_BARS, MAIN_VIEW
     for _, bar in ipairs(A.BARS) do
         if P.IsOther(bar.page, forms) then
-            values[bar.page] = TEXT.PICKED_BAR:format(bar.name, Placed(pages[bar.page].list))
+            values[bar.page] = TEXT.PICKED_BAR:format(ns.L(bar.name), Placed(pages[bar.page].list))
             list[#list + 1] = bar.page
         end
     end
@@ -289,7 +289,7 @@ local function DrawScene(v, set)
     Region(regions.left, pages[LEFT_PAGE])
     Region(regions.top, pages[TOP_PAGE])
     Region(regions.right, pages[RIGHT_PAGE])
-    Region(regions.bottom, pages[formPage], pages[MAIN_PAGE].bar.name .. DOT .. formName, forms ~= nil)
+    Region(regions.bottom, pages[formPage], ns.L(pages[MAIN_PAGE].bar.name) .. DOT .. formName, forms ~= nil)
     model.single = viewPage ~= MAIN_VIEW and pages[viewPage] and Region(single, pages[viewPage]) or nil
     DrawChips()
     DrawPet(set)
