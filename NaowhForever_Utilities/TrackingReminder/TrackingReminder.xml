@@ -1,0 +1,7 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- TrackingReminder.xml: the Tracking Reminder's files, in load order. -->
+    <Script file="TrackingReminder.lua"/>
+    <Script file="Data\Spells.lua"/>
+    <Script file="UI\Reminder.lua"/>
+    <Script file="UI\SettingsPage.lua"/>
+</Ui>

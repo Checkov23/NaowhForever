@@ -245,6 +245,11 @@ ns.FEATURES = {
         castClip = false,
         targetSwing = false,
     },
+    trackingReminder = {
+        enabled = false,
+        trackRacial = true,
+        trackClass = true,
+    },
     account = {
         gameMenuButton = true,
         rxpThemes = false,
