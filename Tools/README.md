@@ -16,7 +16,6 @@ and ship the result as plain Lua data. The scripts keep that repeatable.
 | `sources/` | The readers the builders share: the game's tables (`wago.py`), Wowhead (`wowhead.py`), wowsrc.com (`wowsrc.py`), the recipes bosses drop (`recipe_drops.py`) and a client's own item cache (`items_in_game.py`). |
 | `data/` | Every JSON input and cache the tools read and write, wowsrc's pages (`data/wowsrc_pages/`, not committed) and the two preset profiles (`preset_*.lua`). |
 | `media/` | The scripts that draw the addon's textures and record its voice clips. |
-| `media/dungeon_maps/` | Dungeon map importer, instructions and source checksums; generated TGA images live in `NaowhForever_DungeonJournal/Media/Maps/`. |
 | `release/` | Release, the daily build watch and the daily badge sync, run by the workflows. |
 | `hooks/` | The checks pre-commit and the workflows run. |
 | `regression/` | Offline Lua tests against stubs. |

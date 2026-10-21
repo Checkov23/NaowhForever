@@ -332,23 +332,23 @@ the game's own tables, and what they can't settle is listed in the pull request 
 - The same folder contains 22 pictures assembled from map tiles in
   [keyboardturner/WoWMapUprez_Dungeons](https://github.com/keyboardturner/WoWMapUprez_Dungeons),
   commit `c8325d4583c9cdce52658e1a245963e623501dfa`. The project upscales Blizzard's
-  original dungeon map artwork; downloaded tiles and generated images are recorded in
-  `Tools/media/dungeon_maps/sources.json`.
+  original dungeon map artwork.
 - Imported pictures use `imageBottom = 1` to show the entire image without the older square
   TGA crop.
 - A spot saved by `/nf mappins` on a floor its map no longer has is ignored for the data's spot:
   placings made before the pictures changed used the old floor numbers.
 - Boss positions imported with those pictures use one marker per NPC: grouped bosses share
   a position, and multi-spawn rares use their first spot. Some positions are estimates;
-  Journal-only positions are retained where the source has no matching boss.
+  Journal-only positions are retained where the source has no matching boss. Each boss pin
+  sits on its skull where the picture has one. Captain Greenskin and Odo the Blindwatcher have
+  none: Greenskin stands on the ship's deck ahead of Mr. Smite, Odo on the rampart past
+  Commander Springvale. Razorfen Kraul's skulls are not numbered, so its bosses take them in
+  kill order along the path from the entrance.
 - Sunken Temple, Blackrock Depths, Dire Maul, Blackrock Spire, Scholomance and Stratholme
   use bundled TGA pictures from `Media/Maps`: their client texture paths and
   numeric file IDs can fail on the Russian client. These pictures preserve the tiled map's
   visible area, so the existing floor order and pin coordinates still apply. Upper Blackrock
-  Spire keeps its existing pictures for floors 8 and 9. The import script, documentation
-  and source checksums live separately in `Tools/media/dungeon_maps/`;
-  `python Tools/media/dungeon_maps/import_maps.py --cache <scratch-folder>` rebuilds
-  all 22 pictures. No other addon is required at runtime.
+  Spire keeps its existing pictures for floors 8 and 9. No other addon is required at runtime.
 
 - The on/off switches' defaults (`enabled`, `mapPanel`, `mapFactions`, `mapEntrances`) are read
   from `ns.FEATURES.journal`: one file holds every feature's switch and default.
