@@ -6,7 +6,6 @@ ns.BADGE_PATRONS = {
         ["Player-4613-0153064D"] = { since = "2025-08", tier = "epic", claim = "8675c14a" },
         ["Player-4613-0155842D"] = { since = "2025-08", tier = "epic", claim = "cbba3332" },
         ["Player-4618-0155DEF2"] = { since = "2025-08", tier = "epic", claim = "340e2376" },
-        ["Player-4619-01615B15"] = { since = "2026-05", tier = "epic", claim = "46f23f82" },
         ["Player-4620-010418F2"] = { since = "2026-09", tier = "epic", claim = "84b1f8bf" },
     },
     [110] = {
@@ -30,6 +29,7 @@ ns.BADGE_PATRONS = {
         ["Player-4618-01889588"] = { since = "2026-08", tier = "epic", claim = "5eed51d0" },
         ["Player-4618-0189B5D8"] = { since = "2025-12", tier = "epic", claim = "0edeec8a" },
         ["Player-4619-017DB0A3"] = { since = "2026-10", tier = "epic", claim = "7854c363" },
+        ["Player-4619-0197C73E"] = { since = "2026-10", tier = "epic", claim = "1af90126" },
         ["Player-4620-0062D867"] = { since = "2026-10", tier = "epic", claim = "dc06dc55" },
         ["Player-4620-006B18A4"] = { since = "2024-07", claim = "4f73a7fa" },
         ["Player-4620-0072D18D"] = { since = "2026-10", tier = "epic", claim = "773ab823" },
