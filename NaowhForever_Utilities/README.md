@@ -1,10 +1,11 @@
 # Utilities
 
-One addon, `NaowhForever_Utilities`, holding five modules that used to ship as addons of their own:
-Instance Tracker, Journeys, Macros, Group Inspect and Action Bars. Each keeps its own folder, its own
-XML, its own settings store and its own switch under Settings > Modules; only the AddOns list shows
-one line for all five. It works as `NaowhForever_Combat` does (its README has the module switches,
-the AddOns list entry and the old folders); this file has what differs.
+One addon, `NaowhForever_Utilities`, holding six modules. Instance Tracker, Journeys, Macros, Group
+Inspect, and Action Bars used to ship as addons of their own. Racial and Class Tracking ships here
+from the start. Each keeps its own folder, its own XML, its own settings store and its own switch
+under Settings > Modules; only the AddOns list shows one line for all six. It works as
+`NaowhForever_Combat` does (its README has the module switches, the AddOns list entry and the old
+folders); this file has what differs.
 
 ## Layout
 
@@ -17,12 +18,13 @@ NaowhForever_Utilities/
   Macros/                      Macros
   GroupInspect/                Group Inspect
   ActionBars/                  Action Bars
+  TrackingReminder/            Racial and Class Tracking
   README.md                    this file
 ```
 
 ## Why
 
-- Group Inspect needs the BiS List, but this addon does not depend on it, so the other four load for
+- Group Inspect needs the BiS List, but this addon does not depend on it, so the other five load for
   a player with the BiS List off. `OptionalDeps` loads `NaowhForever_BiS` first when it is on. When it
   is not loaded, `GroupInspect.lua` returns before making `ns.GroupInspect` and every other Group
   Inspect file returns when there is none, so nothing is made, listened to or hooked. Settings > Modules

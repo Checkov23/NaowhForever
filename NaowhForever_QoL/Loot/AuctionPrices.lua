@@ -36,6 +36,7 @@ local TEXT_EACH = ns.L(" |cff808080each, %s ago|r")
 local MINUTES, HOURS, DAYS = "m", "h", "d"
 
 local button, scanning, scanGen = nil, nil, 0
+local ownScan, houseOpen, hooked
 local houseKey
 local priced, pricedAt
 local ageTicker
@@ -110,7 +111,8 @@ local function Stop(message)
     scanGen = scanGen + 1
     events:UnregisterEvent("REPLICATE_ITEM_LIST_UPDATE")
     Label(TEXT_SCAN)
-    if message then ns.Print(Tag() .. ": " .. message) end
+    if message and ownScan then ns.Print(Tag() .. ": " .. message) end
+    ownScan = nil
 end
 
 local function ReadListing(prices, i)
@@ -166,13 +168,28 @@ local function Scan()
         ns.Print(TEXT_WAIT:format(Tag(), math.ceil(wait / SECONDS_PER_MINUTE)))
         return
     end
-    scanning = true
+    scanning, ownScan = true, true
     scanGen = scanGen + 1
     local gen = scanGen
     Label(TEXT_SCANNING)
     events:RegisterEvent("REPLICATE_ITEM_LIST_UPDATE")
     C_AuctionHouse.ReplicateItems()
     C_Timer.After(TIMEOUT, function() OnTimeout(gen) end)
+end
+
+local function OnReplicate()
+    if scanning or not (houseOpen and S.Get("ahCapture")) then return end
+    scanning = true
+    scanGen = scanGen + 1
+    local gen = scanGen
+    events:RegisterEvent("REPLICATE_ITEM_LIST_UPDATE")
+    C_Timer.After(TIMEOUT, function() OnTimeout(gen) end)
+end
+
+local function HookReplicate()
+    if hooked or not S.Get("ahCapture") then return end
+    hooked = true
+    hooksecurefunc(C_AuctionHouse, "ReplicateItems", OnReplicate)
 end
 
 local function ButtonTip()
@@ -217,6 +234,7 @@ local function ShowButton()
 end
 
 local function OnClosed()
+    houseOpen = nil
     if scanning then Stop(TEXT_CLOSED) end
     if ageTicker then
         ageTicker:Cancel()
@@ -226,6 +244,7 @@ end
 
 local function OnEvent(_, event)
     if event == "AUCTION_HOUSE_SHOW" then
+        houseOpen = true
         ShowButton()
     elseif event == "AUCTION_HOUSE_CLOSED" then
         OnClosed()
@@ -236,6 +255,7 @@ end
 
 local function OnSettingChanged(key)
     if key == "ahPrices" and button then button:SetShown(S.Get("ahPrices")) end
+    if key == "ahCapture" then HookReplicate() end
 end
 
 local function OnItemTooltip(tooltip, data)
@@ -252,6 +272,7 @@ events:SetScript("OnEvent", OnEvent)
 events:RegisterEvent("AUCTION_HOUSE_SHOW")
 events:RegisterEvent("AUCTION_HOUSE_CLOSED")
 hooksecurefunc(S, "Set", OnSettingChanged)
+HookReplicate()
 TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, OnItemTooltip)
 
 ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
@@ -265,5 +286,8 @@ ns.Shared.Settings.Page("QoL/Loot & Items", S):Card({
         { key = "ahTooltip", label = "Auction House Price", toggle = true,
           help = "Item tooltips show the item's price at your last auction house scan, for one of it, "
               .. "and how long ago that was. Scan with the Scan Prices button on the auction house." },
+        { key = "ahCapture", label = "Capture Other Addons' Scans", toggle = true,
+          help = "Also keeps the prices from full auction house scans that other addons start, "
+              .. "such as Auctionator or TSM." },
     },
 })

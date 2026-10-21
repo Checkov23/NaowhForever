@@ -439,12 +439,21 @@ NaowhForever_QoL/
   bags you are looking at.
 - Auction Prices keeps one price table per auction house (realm and faction), as prices differ;
   the key is worked out once because it is read on every item tooltip.
+- Capture Other Addons' Scans hooks `C_AuctionHouse.ReplicateItems` the first time it is on, so a
+  full scan another addon starts while the auction house is open is read like one from Scan Prices.
+  A secure hook cannot be removed, so the hook checks the setting on each call and turning it off
+  needs no reload. It works with the Scan Prices button hidden.
+- A captured scan updates the last-scan time and the Scan Prices cooldown, but never prints a
+  timeout, empty or closed message: we did not start it.
+- Only `REPLICATE_ITEM_LIST_UPDATE` results are read; Auctionator's summary scans use browse
+  queries and are not captured. The reader stops listening before it reads, so later cache updates
+  do not repeat a scan.
 - The Scan Prices button sits after the last auction house tab added through LibAHTab
   (Auctionator's Shopping, Selling, Cancelling and Auctionator), read from the library's
   `internalState.Tabs`, which is not public API; without it the button sits next to Auctions.
   Those tabs can be made on the same AUCTION_HOUSE_SHOW, after us, so the button is placed again
   a frame later.
-- Blizzard allows one full auction house scan every 15 minutes (`SCAN_COOLDOWN` 900s). The
+- Blizzard allows one full replication scan every 15 minutes (`SCAN_COOLDOWN` 900s). The
   listings arrive all at once and are read 1000 a frame (`CHUNK`), so a large auction house does
   not stall; bid-only listings are skipped. The profession window's crafting profit reads these
   prices, so it is refreshed after a scan.

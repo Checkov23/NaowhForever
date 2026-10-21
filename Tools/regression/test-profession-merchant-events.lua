@@ -52,6 +52,8 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
                 for i = 1, #listeners do listeners[i](k, v) end
             end
             function S.OnChange(fn) listeners[#listeners + 1] = fn end
+            function S.Raw(key) return settings[key] end
+            function S.DB() return settings end
             return S
         end,
     },

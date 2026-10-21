@@ -43,6 +43,10 @@ local function VendorPrices()
     return account.profVendorPrices
 end
 
+local function VendorPrice(itemID)
+    return VendorPrices()[itemID] or (P.VendorPrices or {})[itemID]
+end
+
 local function LearnedSpots()
     local account = ns.AccountSettings()
     account.profVendorSpots = account.profVendorSpots or {}
@@ -360,7 +364,7 @@ end
 
 P.Vendors = {
     IsVendorItem = IsVendorItem,
-    Prices = VendorPrices,
+    Price = VendorPrice,
     CraftableWithVendor = CraftableWithVendor,
     Open = Open,
     List = List,
@@ -374,6 +378,7 @@ P.Vendors = {
 }
 
 ns.ProfWindowAPI.IsVendorItem = IsVendorItem
+ns.ProfWindowAPI.VendorPrice = VendorPrice
 
 local function MerchantWanted()
     return P.On() and (ShoppingOn() or S.Get("vendorMaterials") or S.Get("craftProfit") or S.Get("buyVendor"))

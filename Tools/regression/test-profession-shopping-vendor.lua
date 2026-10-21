@@ -150,6 +150,11 @@ P.ShoppingVendorView = { Hide = Noop, OnMerchantEvent = function() viewEvents = 
 Load({ "NaowhForever_Professions/Vendors.lua" }, env)
 local V = P.Vendors
 
+P.VendorPrices = { [111] = 99, [333] = 7 }
+check("a built-in vendor price is known before any merchant visit", V.Price(333) == 7)
+check("the Shopping List reads the same vendor price", ns.ProfWindowAPI.VendorPrice == V.Price)
+check("an item with no built-in or seen price has none", V.Price(444) == nil)
+
 check("a built-in vendor waypoint works before any merchant visit", V.VendorWaypoint(333) == true
     and waypoint.name == "Catalog Supplies" and waypoint.map == 10 and waypoint.x == 30 and waypoint.y == 30)
 check("a built-in vendor waypoint ignores the other faction even when it is nearer",
@@ -170,6 +175,7 @@ check("Shopping List alone learns nothing at a merchant", settings.account.profV
 P.Settings.Set("shoppingVendor", true)
 check("Vendor Items on Shopping List learns vendor trade goods", settings.account.profVendorItems[111] == true)
 check("and records the vendor unit price", settings.account.profVendorPrices[111] == 40)
+check("a price seen at a merchant wins over the built-in one", V.Price(111) == 40)
 check("and remembers which merchant sold each item",
     settings.account.profVendorSpots[111][1][1] == "Far Supplies")
 

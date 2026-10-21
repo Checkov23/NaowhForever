@@ -200,8 +200,8 @@ Check("the first deal purchase confirmation reflows the shopping list",
     dealsSource:find('confirm:Hide%(%)[\r\n]+%s*confirm:HookScript%("OnShow", QueuePlace%)') ~= nil)
 Check("the deal purchase confirmation names the selected item",
     dealsSource:find("confirm.item:SetText%(ItemLabel%(entry%)%)") ~= nil)
-Check("detailed deal tooltips can be limited to characters that know Enchanting",
-    dealsSource:find('S.Get%("disenchantDealsTooltipEnchanters"%) and not P.Disenchant.Known%(%)') ~= nil)
+Check("detailed deal tooltips default to characters that know Enchanting",
+    dealsSource:find('not S.Get%("disenchantDealsTooltipAllCharacters"%) and not P.Disenchant.Known%(%)') ~= nil)
 Check("detailed deal tooltips can be limited to the open auction house",
     dealsSource:find('S.Get%("disenchantDealsTooltipAuctionOnly"%) and not AuctionHouseOpen%(%)') ~= nil)
 Check("detailed deal tooltips use the shared item-tooltip processor instead of deal rows",
@@ -213,8 +213,9 @@ Check("the Enchanting requirement uses green when met and red when unmet",
 
 local settingsFile = assert(io.open("NaowhForever_Professions/UI/SettingsPage.lua", "rb"))
 local settingsSource = settingsFile:read("*a"); settingsFile:close()
-Check("the Enchanter-only tooltip setting depends on detailed deal tooltips",
-    settingsSource:find('key = "disenchantDealsTooltipEnchanters"') ~= nil
+Check("the all-character tooltip opt-in depends on detailed deal tooltips",
+    settingsSource:find('key = "disenchantDealsTooltipAllCharacters"') ~= nil
+        and settingsSource:find('label = "Show on All Characters"') ~= nil
         and settingsSource:find('needs = DisenchantDealsTooltipOn') ~= nil)
 Check("the auction-only tooltip setting depends on detailed deal tooltips",
     settingsSource:find('key = "disenchantDealsTooltipAuctionOnly"') ~= nil

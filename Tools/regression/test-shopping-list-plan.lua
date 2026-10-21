@@ -10,6 +10,7 @@ local Load = dofile("Tools/regression/load_files.lua")
 -- Items: ore smelts to bars, two ore a bar; a sword takes bars. Arcanite is a transmute.
 local ORE, BAR, SWORD, THORIUM, CRYSTAL, ARCANITE, FLUX = 1, 2, 3, 4, 5, 6, 7
 local account, prices, vendor, own = {}, {}, {}, true
+local builtIn = {}
 local profSettings = {}
 local recipes, cooldownBase, cooldownLeft, dayCooldown = {}, {}, {}, {}
 local ALCHEMY, MINING, TAILORING = 171, 186, 197
@@ -49,6 +50,10 @@ local env = {
         ProfWindowAPI = {
             Owned = function() return {} end,
             IsVendorItem = function(item) return vendor[item] or false end,
+            VendorPrice = function(item)
+                local seen = account.profVendorPrices
+                return seen and seen[item] or builtIn[item]
+            end,
             Own = function() return own end,
             Reagents = function(id)
                 local out = {}
@@ -175,6 +180,10 @@ check("equal prices: material stays with the vendor", Empty(auctionBuy) and Only
 account.profVendorPrices = nil
 auctionBuy, _, vendorBuy = Plan()
 check("unknown vendor price: material stays with the vendor", Empty(auctionBuy) and Only(vendorBuy, FLUX, 3))
+builtIn[FLUX] = 50
+auctionBuy, _, vendorBuy = Plan()
+check("a built-in vendor price routes like a seen one", Only(auctionBuy, FLUX, 3) and Empty(vendorBuy))
+builtIn[FLUX] = nil
 recipes[10] = { need = { [FLUX] = 1 } }
 check("a recipe with only vendor materials can be added", SL.HasNeeds(10))
 SL.Clear(); SL.AddItem(FLUX, 2)

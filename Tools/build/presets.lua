@@ -18,7 +18,8 @@ local INFO = {
         modulesOff = { "NaowhForever_InstanceTracker", "NaowhForever_Training", "NaowhForever_Journeys",
             "NaowhForever_Discovery", "NaowhForever_GearSets", "NaowhForever_Blessings", "NaowhForever_Professions",
             "NaowhForever_Macros", "NaowhForever_ConsumableBar", "NaowhForever_ActionBars", "NaowhForever_AuraBuffs",
-            "NaowhForever_ThreatMeter", "NaowhForever_GroupInspect", "NaowhForever_PvP", "NaowhForever_SwingTimer" } },
+            "NaowhForever_ThreatMeter", "NaowhForever_GroupInspect", "NaowhForever_PvP", "NaowhForever_SwingTimer",
+            "NaowhForever_TrackingReminder" } },
     recommended = { order = 2, name = "Everything Enabled",
         about = "Every module enabled for the full Naowh Forever experience. Great if you're a power user with addons and want all the bells and whistles.", modulesOff = {} },
 }

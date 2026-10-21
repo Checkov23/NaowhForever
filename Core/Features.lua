@@ -42,6 +42,7 @@ ns.FEATURES = {
         hideLootWindow = false,
         fastLoot = true,
         ahPrices = true,
+        ahCapture = false,
         ahTooltip = true,
         altCounts = false,
         mailAlts = false,
@@ -244,6 +245,11 @@ ns.FEATURES = {
         autoShotWindow = false,
         castClip = false,
         targetSwing = false,
+    },
+    trackingReminder = {
+        enabled = false,
+        trackRacial = true,
+        trackClass = true,
     },
     account = {
         gameMenuButton = true,

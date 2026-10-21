@@ -152,7 +152,7 @@ ns = {
         },
         Vendors = {
             IsVendorItem = function(id) return id == 4000 end,
-            Prices = function() return { [4000] = 25 } end,
+            Price = function(id) return ({ [4000] = 25 })[id] end,
         },
     },
 }

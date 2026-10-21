@@ -2,6 +2,7 @@
 local ns = _G.NaowhForever
 
 local T = ns.THEME
+local Parts = ns.Shared.Parts
 
 local P = ns.Professions
 local S = P.Settings
@@ -30,12 +31,14 @@ local BRING_W = BRING_STEP + BRING_GAP + BRING_BOX + BRING_GAP + BRING_STEP
 local BRING_INSET = 2
 local BRING_LETTERS = 4
 local NAME_GAP = 8
+local ROUND = P.C.ROUND
 local TEXT_REAGENTS = ns.L("Reagents:")
 local TEXT_BANK, TEXT_BAGS = ns.L("Bank"), ns.L("Bags")
 local TEXT_COUNT = "%d/%d"
 local TEXT_BUY_MORE = ns.L("   %sbuy %d more|r")
 local TEXT_ORDER_COUNT = ns.L("%d needed   %s%d in bags|r")
 local TEXT_SOLD = ns.L(" Sold by vendors")
+local TEXT_SOLD_FOR = ns.L(" Sold by vendors: %s")
 local TIP_BRING = ns.L("I bring this")
 local TIP_BRING_HELP = ns.L("Tick a material you hand the crafter: all the crafts need of it. "
     .. "Use - and + beside it to bring only part.")
@@ -117,8 +120,9 @@ local function OnRowEnter(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetItemByID(self.itemID)
     if self.vendor then
-        local c = Style.VENDOR_RGB
-        GameTooltip:AddLine(Style.VENDOR_ICON .. TEXT_SOLD, c.r, c.g, c.b)
+        local c, price = Style.VENDOR_RGB, V.Price(self.itemID)
+        local sold = price and TEXT_SOLD_FOR:format(Parts.Coins(math.floor(price + ROUND))) or TEXT_SOLD
+        GameTooltip:AddLine(Style.VENDOR_ICON .. sold, c.r, c.g, c.b)
     end
     GameTooltip:Show()
 end

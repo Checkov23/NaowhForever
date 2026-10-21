@@ -187,7 +187,7 @@ end
 local function OnItemTooltip(tooltip, data)
     if not (P.On() and S.Get("disenchantDeals") and S.Get("disenchantDealsTooltip")) then return end
     if tooltip:IsForbidden() then return end
-    if S.Get("disenchantDealsTooltipEnchanters") and not P.Disenchant.Known() then return end
+    if not S.Get("disenchantDealsTooltipAllCharacters") and not P.Disenchant.Known() then return end
     if S.Get("disenchantDealsTooltipAuctionOnly") and not AuctionHouseOpen() then return end
     local itemID = data and data.id
     if not itemID or issecretvalue and issecretvalue(itemID) then return end

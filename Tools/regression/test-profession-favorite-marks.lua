@@ -89,6 +89,8 @@ local ns = {
                 for _, fn in ipairs(listeners) do fn(key, value) end
             end
             function S.OnChange(fn) listeners[#listeners + 1] = fn end
+            function S.Raw(key) return values[key] end
+            function S.DB() return values end
             return S
         end,
     },

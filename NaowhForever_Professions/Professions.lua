@@ -25,7 +25,7 @@ local S = ns.UI.ModuleSettings("professions", {
     buyMaterials = F.buyMaterials, buyVendor = F.buyVendor,
     craftROI = F.craftROI, roiGreyBelow = 10, roiGreenFrom = 30,
     disenchant = F.disenchant, disenchantDeals = F.disenchantDeals, disenchantDealsTooltip = false,
-    disenchantDealsTooltipEnchanters = false, disenchantDealsTooltipAuctionOnly = false,
+    disenchantDealsTooltipAllCharacters = false, disenchantDealsTooltipAuctionOnly = false,
     filterMaterials = false, filterSkillUp = false, filterProfit = false,
     filterNotSelling = false, filterBoE = false, filterBoP = false, filterFavorite = false,
 })
@@ -37,6 +37,17 @@ local P = {
     State = { offset = 0, query = "", linked = false, stale = true, listChanged = false },
 }
 ns.Professions = P
+
+local function SplitTooltipCharacters()
+    if S.Raw("disenchantDealsTooltipAllCharacters") ~= nil then return end
+    local onlyEnchanters = S.Raw("disenchantDealsTooltipEnchanters")
+    local all = S.Raw("disenchantDealsTooltip") == true
+    if onlyEnchanters ~= nil then all = not onlyEnchanters end
+    S.DB().disenchantDealsTooltipEnchanters = nil
+    S.Set("disenchantDealsTooltipAllCharacters", all)
+end
+
+hooksecurefunc(ns, "Apply", SplitTooltipCharacters)
 
 local temporary = {}
 

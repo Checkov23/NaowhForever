@@ -21,6 +21,7 @@ local POSITIONS = {
     instanceTracker = { "pos" },
     journeys = { "cardPos" },
     professions = { "gatherPos", "windowPos" },
+    trackingReminder = { "trackingPos" },
     topBar = { "pos" },
     training = { "toastPos" },
     unlockMode = { "anchoredTo", "hidden", "locked", "layouts", "layout" },
