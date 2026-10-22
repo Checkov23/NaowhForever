@@ -280,7 +280,7 @@ local S = UI.ModuleSettings("qol", {
     trainerPopup = F.trainerPopup, trainerGlow = true, trainerRanks = true,
     trainerPos = { point = "TOP", relPoint = "TOP", x = -274, y = -77 },
 
-    flightTimer = F.flightTimer, flightTimerScale = 1, flightTimerAlpha = 1, flightEarlyLanding = true, flightTimerMapTime = false,
+    flightTimer = F.flightTimer, flightTimerScale = 1, flightTimerAlpha = 1, flightEarlyLanding = true, flightTimerMapTime = true,
     transportTimers = F.transportTimers,
     flightPoint = F.flightPoint, flightPointFont = "",
     flightPointFontSize = 12, flightPointOutline = "OUTLINE", flightPointBackground = "none",
