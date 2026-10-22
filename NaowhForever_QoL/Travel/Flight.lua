@@ -750,7 +750,7 @@ end
 
 local function Build()
     bar = CreateFrame("Frame", "NaowhForeverFlightTimer", UIParent)
-    bar:SetFrameStrata("HIGH")
+    bar:SetFrameStrata("MEDIUM")
     Look.New(bar)
     bar:SetMovable(true)
     bar:SetClampedToScreen(true)
