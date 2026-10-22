@@ -1,6 +1,20 @@
 # Changelog
 
-## Unreleased
+## 1.1.43
+
+### Added
+- Druid Mana: a bar of your mana while shapeshifted, with the five second rule, the cost of a
+  powershift and the shifts left. Turn it on under Settings > Modules.
+
+### Changed
+- Group XP: the bars no longer show in raids; turn on Show in Raids in the Group XP card to keep
+  them.
+
+### Fixed
+- Flight Timer: the bar no longer shows on top of the world map and other windows opened during a
+  flight.
+- Glimmer: Quest Item Sparkle no longer turns off the game's outlines, so Self Highlight's outline
+  works again; outlines it turned off before come back.
 
 ## 1.1.42
 
