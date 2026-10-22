@@ -439,7 +439,6 @@ end
 
 local function CheckReached(yards, near)
     local leave = near + LEAVE_MARGIN
-    if shown.quest and shown.objectives then reached = false return end
     if shown.quest then near, leave = QUEST_NEAR, QUEST_LEAVE end
     if shown.ground or yards > leave then
         reached = false
@@ -577,7 +576,7 @@ local function Retitle()
     shown.guide = details and details.guide == true
     shown.ground = shown.user or kind == types.Corpse
     shown.card, shown.beam = S.Get("waypointCard"), S.Get("waypointBeam") and shown.ground
-    pin.onNav, reached = false, false
+    pin.onNav = false
 end
 
 function ns.RefreshWaypointPin()
@@ -608,7 +607,7 @@ local function Attach()
     navFrame = C_Navigation.GetFrame()
     if not navFrame then Detach() return end
     if not driver then Build() end
-    seenAway, seenFar = false, false
+    seenAway, seenFar, reached = false, false, false
     PlaceNav()
     Retitle()
     lastX, lastY = nil, nil
@@ -695,13 +694,14 @@ local function OnEvent(_, event, isWaypoint)
     elseif event == "NAVIGATION_FRAME_DESTROYED" then
         Detach()
     elseif event == "NAVIGATION_DESTINATION_REACHED" then
-        if not isWaypoint and not shown.guide and not (shown.quest and shown.objectives) then Arrived() end
+        if not isWaypoint and not shown.guide then Arrived() end
     elseif not C_SuperTrack.GetHighestPrioritySuperTrackingType() then
         if navFrame then Detach() end
     elseif not navFrame then
         if C_Navigation.GetFrame() then Attach() end
     elseif not arrived then
         selfCleared = false
+        if event ~= "QUEST_LOG_UPDATE" then reached = false end
         Retitle()
     end
 end

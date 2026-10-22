@@ -593,7 +593,7 @@ Check(gameMarker.Icon.alpha == 1 and gameMarker.IconBorder.alpha == 1, "and the 
 Check(#printed == 0, "nothing printed")
 
 -- Optional objectives and downward arrows use the existing pin and update on quest progress.
-tracking, nav.frame, nav.distance = 0, navFrame, 20
+tracking, nav.frame, nav.distance = 0, navFrame, 100
 questObjectives = { { text = "0/10 Highlands Bandit slain", finished = false },
     { text = "0/1 Bennic slain", finished = false }, { text = "Done", finished = true } }
 S.Set("waypoints", true)
@@ -601,7 +601,7 @@ Check(pin.objectives == nil and pin.down == nil, "new presentation switches defa
 S.Set("waypointObjectives", true)
 S.Set("waypointDownArrows", true)
 driver.scripts.OnUpdate()
-Check(pin:IsShown() and pin.objectives.shown, "objectives keep the quest pin visible inside its area")
+Check(pin:IsShown() and pin.objectives.shown, "objectives show above the quest pin")
 Check(pin.objectives.text.text == "0/10 Highlands Bandit slain\n0/1 Bennic slain", "only unfinished objectives shown")
 Check(pin.down[1].shown and pin.down[3].shown and pin.down[1].rotation == -math.pi / 2, "three downward chevrons")
 Check(pin.card.point[5] > 8, "title card makes room above the arrows")
@@ -621,8 +621,16 @@ Check(not pin.objectives.shown, "completed objectives do not leave a stale panel
 questObjectives[1].finished, questObjectives[2].finished = false, false
 events.scripts.OnEvent(events, "QUEST_LOG_UPDATE")
 driver.scripts.OnUpdate()
+nav.distance = 39
+driver.scripts.OnUpdate()
+Check(not pin:IsShown(), "unfinished objectives still let the quest pin go inside its area")
+nav.distance = 50
+events.scripts.OnEvent(events, "QUEST_LOG_UPDATE")
+driver.scripts.OnUpdate()
+Check(not pin:IsShown(), "quest progress inside the area does not bring it back")
 events.scripts.OnEvent(events, "NAVIGATION_DESTINATION_REACHED", false)
-Check(driver.scripts.OnUpdate ~= nil and pin:IsShown(), "arrival does not hide unfinished quest objectives")
+Check(driver.scripts.OnUpdate == nil and pin.card.dist.text == "Arrived", "reaching the quest shows the arrival")
+events.scripts.OnEvent(events, "NAVIGATION_FRAME_CREATED")
 nav.distance, nav.clamped, nav.x, nav.y = 300, true, 1900, 700
 driver.scripts.OnUpdate()
 Check(not pin.objectives.shown and not pin.down[1].shown, "off-screen direction does not show downward arrows or objective panel")

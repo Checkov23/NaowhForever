@@ -1061,7 +1061,7 @@ NaowhForever_QoL/
   6256).
 
 ### Waypoint Pin
-- Quest Objectives and Downward Arrows are independent switches, initially off. Objectives come from the tracked quest or guide context and refresh on quest-log changes; unfinished objectives keep the quest pin visible inside its area. The three chevrons use the existing shared arrow art and disappear in off-screen and arrival modes.
+- Quest Objectives and Downward Arrows are independent switches, initially off. Objectives come from the tracked quest or guide context and refresh on quest-log changes, which do not bring back a pin that went inside the quest's area. The three chevrons use the existing shared arrow art and disappear in off-screen and arrival modes.
 - Follow RestedXP is initially off and uses the shared guide waypoint feed. Guide destinations skip our manual-pin auto-clear; if native navigation ends at arrival, the pin waits for the next guide destination. RestedXP's own arrow stays shown throughout. A manual pin temporarily takes priority until the next guide destination.
 - It follows the game's navigation frame (`C_Navigation`), so quests, your corpse and map pins get it as well as `ns.PlaceWaypoint`'s spots, which it names. A user waypoint counts as ours when it lies within `SAME_SPOT` (map percent) of `ns.placedWaypoint`.
 - A map pin's or corpse's navigation point is the spot on the ground: the ring at the line's foot goes there and the pin stands above it. A quest giver's is over their head, where the pin goes as it is, with no line down.
