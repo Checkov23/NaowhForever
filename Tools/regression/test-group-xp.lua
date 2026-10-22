@@ -6,7 +6,7 @@ local NO_ADDON = "|cff9ca3afno addon|r"
 -- Methods a stub frame lacks do nothing, from one shared function, so stubs add no garbage.
 local function Noop() end
 local NOOP_META = { __index = function() return Noop end }
-local DEFAULTS = { enabled = true, groupXP = true, groupXPShowSelf = true, groupXPWidth = 260,
+local DEFAULTS = { enabled = true, groupXP = true, groupXPShowSelf = true, groupXPRaid = false, groupXPWidth = 260,
     groupXPFont = "", groupXPFontSize = 12, groupXPOutline = "OUTLINE", groupXPTexture = "", groupXPBgAlpha = 0.85 }
 local GRADIENT = "Interface\\AddOns\\NaowhForever\\Core\\Media\\NaowhGradient.tga"
 
@@ -244,6 +244,21 @@ do -- solo: hidden, no send
     s.run(2)
     check("hidden solo", not s.display.shown)
     check("no send solo", #s.sent == 0)
+end
+
+do -- raid: hidden unless Show in Raids is on, still sharing
+    local s = boot()
+    s.raid = true
+    s.fire("GROUP_ROSTER_UPDATE")
+    s.run(2)
+    check("hidden in a raid by default", not s.display.shown)
+    check("still shares in a raid", s.messages() == "2 Player-1-01 20 500 1000" and s.sent[1][3] == "RAID")
+    s.S.Set("groupXPRaid", true)
+    check("Show in Raids shows it", s.display.shown)
+    s.raid = false
+    s.S.Set("groupXPRaid", false)
+    s.fire("GROUP_ROSTER_UPDATE")
+    check("back to a party, it shows again", s.display.shown)
 end
 
 do -- Show Yourself off drops your row
