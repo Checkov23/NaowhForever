@@ -8,4 +8,5 @@
     <Include file="PvP\PvP.xml"/>
     <Include file="SwingTimer\SwingTimer.xml"/>
     <Include file="RaidDebuffs\RaidDebuffs.xml"/>
+    <Include file="DruidMana\DruidMana.xml"/>
 </Ui>

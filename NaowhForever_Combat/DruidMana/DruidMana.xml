@@ -1,0 +1,7 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- DruidMana.xml: the Druid Mana module's files, in load order. -->
+    <Script file="DruidMana.lua"/>
+    <Script file="View\Style.lua"/>
+    <Script file="UI\Bar.lua"/>
+    <Script file="UI\SettingsPage.lua"/>
+</Ui>

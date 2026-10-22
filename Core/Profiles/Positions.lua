@@ -13,6 +13,8 @@ local POSITIONS = {
         "coTankPos", "coTankAnchor", "coTankX", "coTankY" },
     auraBuffs = { "buffsPos", "campPos", "lowHealthPos" },
     pvp = { "pos", "focusPos", "scoresPos", "timerPos", "flagButtonPos" },
+    druidMana = { "druidManaPos", "druidManaAnchor", "druidManaAnchorPoint", "druidManaAnchorRelPoint",
+        "druidManaX", "druidManaY" },
     raidDebuffs = { "pos" },
     swingTimer = { "swingPos" },
     threatMeter = { "threatPos", "width", "height" },

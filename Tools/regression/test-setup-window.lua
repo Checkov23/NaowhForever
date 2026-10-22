@@ -436,7 +436,7 @@ local function Grouped()
     end
     return true
 end
-local page3H = 660 - St.WINDOW_HEADER - (26 + St.WINDOW_PAD * 2)
+local page3H = 720 - St.WINDOW_HEADER - (26 + St.WINDOW_PAD * 2)
 local function AboveFooter()
     for _, tile in ipairs(Tiles()) do
         if -tile.point[5] + tile.h > page3H then return false end
