@@ -1,10 +1,37 @@
 # Changelog
 
-## Unreleased
+## 1.1.41
+
+### Added
+- Raid Debuffs: a bar of the raid debuffs you pick on your target (Sunder Armor, Faerie Fire, the
+  warlock curses and more), dimmed while missing or lit with Highlight Missing, working in combat.
+  Turn it on under Settings > Modules.
+- Professions: Disenchant Next Item key binding (Key Bindings, Naowh Forever, or the Disenchant
+  Window settings), one item per press; the Disenchant All tooltip shows the key or where to set
+  one.
+- German: bar sets, the Keybind Map, Racial and Class Tracking and the other new parts up to 1.1.39
+  now show in German on German clients.
 
 ### Changed
 - Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70532.
 - Naowh Score: refitted to the latest Forever items.
+- Racial and Class Tracking: its settings moved to Quality of Life > Interface.
+- Flight Timer: Flight Time on Map is now on by default, showing the flight time when you hover a
+  destination on the flight master's map.
+
+### Fixed
+- Waypoint Pin: following a guide with its arrow hidden no longer repeatedly removes and replaces
+  nearby loop destinations.
+- Waypoint Pin: with Quest Objectives on, a tracked quest's pin now hides inside the quest's area
+  instead of staying on screen.
+- Blessings: a paladin who sends no plan now shows "No reply: Blessings off or not installed"
+  instead of "Not running Naowh Forever".
+- Professions: Disenchant All no longer stops after one item when it reaches an item your Enchanting
+  skill cannot disenchant; it moves on and works through the whole list.
+- Professions: the Disenchant, Shopping List and Crafting Queue buttons on the profession window's
+  title bar no longer overlap, and a hidden one leaves no gap.
+- German: the date of a bar backup and the Show on All Characters option of Disenchant Deals now
+  show in German too.
 
 ## 1.1.40
 
