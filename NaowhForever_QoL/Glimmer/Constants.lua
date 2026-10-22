@@ -19,10 +19,6 @@ ns.Glimmer.C = {
     PLATE_CVAR = "SoftTargetNameplateInteract",
     SPARKLE_CVARS = {
         outlineModeShowLootEffectWhenDisabled = "1",
-        graphicsOutlineMode = "0",
-        OutlineEngineMode = "0",
-        raidGraphicsOutlineMode = "0",
-        RAIDOutlineEngineMode = "0",
     },
     SPARKLE_RESETS = { graphicsquality = true, raidgraphicsquality = true },
     SPARKLE_AGAIN = 1,

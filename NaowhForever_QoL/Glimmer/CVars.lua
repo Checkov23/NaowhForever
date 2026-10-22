@@ -76,9 +76,22 @@ local function ApplySoft()
     end
 end
 
+-- Older versions of the sparkle also turned the outlines off, which took Self Highlight's outline with it.
+local function PutBackOutlines()
+    local saved = ns.AccountSettings()[SPARKLE_SAVED]
+    if not saved then return end
+    for name, value in pairs(saved) do
+        if not C.SPARKLE_CVARS[name] then
+            Write(name, value)
+            saved[name] = nil
+        end
+    end
+end
+
 local function ApplySparkle()
     if InCombatLockdown() then return Later(ApplySparkle) end
     if G.On() and S.Get("questSparkle") then
+        PutBackOutlines()
         Save(SPARKLE_SAVED, C.SPARKLE_CVARS)
         for name, value in pairs(C.SPARKLE_CVARS) do Write(name, value) end
         CVars.sparkleShown = true
