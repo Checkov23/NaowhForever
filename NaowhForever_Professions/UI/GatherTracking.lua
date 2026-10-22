@@ -9,7 +9,7 @@ local S = P.Settings
 local Style = P.Style
 local Parts = ns.Shared.Parts
 
-local FIND_HERBS, FIND_MINERALS, FIND_FISH = 2383, 2580, 43308
+local FIND_HERBS, FIND_MINERALS, FIND_FISH = P.C.FIND_SPELL.herb, P.C.FIND_SPELL.ore, 43308
 local TRACKINGS = {
     { spell = FIND_HERBS, label = ns.L("Herbs") },
     { spell = FIND_MINERALS, label = ns.L("Minerals") },

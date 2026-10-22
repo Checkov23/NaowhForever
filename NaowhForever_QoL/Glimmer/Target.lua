@@ -80,8 +80,8 @@ end
 function Target.Skill(category)
     local line = C.PROFESSION_OF[category]
     for _, index in pairs({ GetProfessions() }) do
-        local _, _, rank, _, _, _, skillLine = GetProfessionInfo(index)
-        if skillLine == line then return rank end
+        local _, _, rank, _, _, _, skillLine, modifier = GetProfessionInfo(index)
+        if skillLine == line then return rank + modifier end
     end
     return 0
 end

@@ -58,7 +58,7 @@ local function Session(settings, opts)
     }
     log.cvars = cvars
     local game = { combat = false, instance = false, guid = nil, object = true, near = false, related = false,
-        tooltip = nil, plate = nil, mining = 70, herbalism = 0, loaded = opts.loaded or {}, px = 0.5, py = 0.5,
+        tooltip = nil, plate = nil, mining = 70, miningBonus = 0, herbalism = 0, loaded = opts.loaded or {}, px = 0.5, py = 0.5,
         pins = {} }
     log.game = game
     local account = {}
@@ -138,8 +138,8 @@ local function Session(settings, opts)
         GetFileIDFromPath = function() return nil end,
         GetProfessions = function() return 1, game.herbalism > 0 and 2 or nil end,
         GetProfessionInfo = function(i)
-            if i == 2 then return "Herbalism", 0, game.herbalism, 300, 0, 0, 182 end
-            return "Mining", 0, game.mining, 300, 0, 0, 186
+            if i == 2 then return "Herbalism", 0, game.herbalism, 300, 0, 0, 182, 0 end
+            return "Mining", 0, game.mining, 300, 0, 0, 186, game.miningBonus
         end,
         InCombatLockdown = function() return game.combat end,
         IsInInstance = function() return game.instance end,
@@ -339,6 +339,10 @@ check("too low: the skill it needs", LineText(log) == "Requires Mining 65")
 log.Set("hideLocked", true)
 check("too low and hidden: dark", Lit(log) == nil)
 log.Set("hideLocked", false)
+log.game.miningBonus = 50
+log.Fire("PLAYER_SOFT_INTERACT_CHANGED", "x", "y")
+check("a Mining bonus counts toward the skill it needs", Lit(log) and Lit(log).locked == false)
+log.game.miningBonus = 0
 
 -- No Mining at all: grey, like a node the skill is too low for.
 log.game.mining = 0
@@ -569,6 +573,24 @@ do
     m.game.tracking = 2383
     m.Fire("MINIMAP_UPDATE_TRACKING")
     check("Find Herbs alone leaves a vein's icon in the middle", pin.icon.point[2] == nil)
+end
+
+-- Minimap Node Icons drawing a live node on a spot: Glimmer's pin there is left out until the node goes.
+do
+    local m = Session({ enabled = true, minimapIcons = true })
+    local covered = false
+    m.ns.NodeIconAt = function() return covered end
+    m.ns.NodeIconsChanged = function() end
+    m.Login()
+    local pin
+    for _, f in ipairs(m.frames) do if f.ring and f.shown and f.id then pin = f end end
+    check("no live node icon: the pin is drawn", pin.alpha == 1)
+    covered = true
+    m.ns.NodeIconsChanged()
+    check("a live node icon on its spot: the pin is not drawn", pin.alpha == 0)
+    covered = false
+    m.ns.NodeIconsChanged()
+    check("the node gone: the pin is back", pin.alpha == 1)
 end
 
 -- Gathered: noted on loot, at the spot it grows, and shown on the world map.

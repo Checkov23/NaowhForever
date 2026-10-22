@@ -1284,6 +1284,13 @@ NaowhForever_QoL/
   Data/Spots.lua on first use), and herbs and ore show together whatever you track. The icons draw over
   the game's tracking dot, so while Find Herbs or Find Minerals tracks (`MINIMAP_UPDATE_TRACKING`),
   that kind's icon moves onto its ring and the dot shows inside the ring when the node is up.
+- With Professions' Minimap Node Icons on and drawing a live node, the icon for a spot within 8 yards of
+  it is not drawn (`ns.NodeIconAt`, repainted on `ns.NodeIconsChanged`), so a node that is up shows one
+  picture, Node Icons' item, and a spot with nothing up keeps its ring. Both reads are guarded, so
+  Glimmer runs the same without Professions.
+- The skill a node is compared with is the profession's rank plus its bonus (`GetProfessionInfo`'s
+  modifier): gear, enchant and racial bonuses count toward a node's requirement, and the game's own rank
+  bar shows them as part of the skill. Professions' Minimap Node Icons compares the same.
 - The minimap shows at most `MINIMAP_MAX` icons, the spots inside its view. Placing them is
   `Parts.MinimapLayer` (Shared/UI/MinimapPins.lua): it moves them only while you move or the minimap
   turns.

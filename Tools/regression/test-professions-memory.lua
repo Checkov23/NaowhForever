@@ -400,6 +400,7 @@ env = {
     UnitLevel = function() return 40 end,
     GetRealmName = function() return "Realm" end,
     UnitFactionGroup = function() return "Alliance" end,
+    GetLocale = function() return "enUS" end,
     GetProfessions = function() return 1 end,
     GetProfessionInfo = function() return "Tailoring", 1, 150, 225, 0, 0, PROF, 0 end,
     SecondsToTime = function() return "1 min" end,
@@ -423,6 +424,7 @@ env = {
     C_Map = { GetBestMapForUnit = function() return nil end, GetMapInfo = function() return nil end,
         GetAreaInfo = function() return "Area" end },
     C_QuestLog = { GetTitleForQuestID = function() return nil end },
+    C_TooltipInfo = {},
     C_Item = {
         IsUsableItem = function(id) return usableItems[id] == true end,
         GetItemNameByID = function(id) if loaded[id] then return ItemNameOf(id) end end,

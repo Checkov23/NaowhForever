@@ -174,6 +174,7 @@ ns.FEATURES = {
         manualPatternScan = false,
         favoriteVendorMarks = false,
         gatherReminder = false,
+        nodeIcons = false,
         ahSearch = false,
         ahShiftClick = false,
         craftProfit = false,

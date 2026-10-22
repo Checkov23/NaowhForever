@@ -171,7 +171,8 @@ do
     local settings = { enabled = true, gatherReminder = true, gatherInInstances = false, gatherIconSize = 40,
         gatherFish = false, gatherFont = "", gatherFontSize = 13, gatherOutline = "OUTLINE" }
     local S, fonts = Load({ "Core/Features.lua", "NaowhForever_Professions/Professions.lua",
-        "NaowhForever_Professions/View/Style.lua", "NaowhForever_Professions/UI/GatherTracking.lua" }, settings)
+        "NaowhForever_Professions/Constants.lua", "NaowhForever_Professions/View/Style.lua",
+        "NaowhForever_Professions/UI/GatherTracking.lua" }, settings)
     local label = Find(fonts, "Track ")
     check("Tracking: the line as today", label and label.font == "" and label.size == 13
         and label.outline == "OUTLINE")

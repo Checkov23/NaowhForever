@@ -106,13 +106,17 @@ end
 do -- Total Craft Timer, drawn on its card's preview
     local S = Store({ enabled = true, craftTimer = true, craftTimerFont = "", craftTimerFontSize = 14,
         craftTimerOutline = "OUTLINE", craftTimerTexture = "", craftTimerBgAlpha = 0.9 })
-    local _, cards = Load({ "NaowhForever_Professions/View/Style.lua", "NaowhForever_Professions/View/Widgets.lua",
+    local _, cards = Load({ "NaowhForever_Professions/Constants.lua", "NaowhForever_Professions/View/Style.lua",
+        "NaowhForever_Professions/View/Widgets.lua",
         "NaowhForever_Professions/UI/CraftTimer.lua", "NaowhForever_Professions/UI/SettingsPage.lua" },
-        { Professions = { Settings = S } }, { CreateColor = function() return {} end })
-    local card
+        { Professions = { Settings = S, NodeScan = { Usable = function() return false end } } },
+        { CreateColor = function() return {} end })
+    local card, nodeIcons
     for _, c in ipairs(cards) do
         if c.id == "craftTimer" then card = c end
+        if c.id == "nodeIcons" then nodeIcons = c end
     end
+    check("a client whose node names are not English has no Minimap Node Icons card", nodeIcons == nil)
     local preview = card.studio.new(Widget("Frame"))
     card.studio.paint(preview, "crafting")
     check("craft timer default: the Naowh Gradient", preview.track.texture

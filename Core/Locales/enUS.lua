@@ -7374,3 +7374,6 @@ L["With the Gamepad interface style, the game's own recipe window is used."] = t
 L["%d %b %H:%M"] = true
 L["Show on All Characters"] = true
 L["Shows detailed deal tooltips on characters without Enchanting."] = true
+L["Minimap Node Icons"] = true
+L["Shows what each tracked herb and vein gives on the minimap, ringed red if you can't gather it."] = true
+L["How big each node's picture is on the minimap."] = true

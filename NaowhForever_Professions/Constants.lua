@@ -20,4 +20,8 @@ ns.Professions.C = {
     PERCENT = 100,
     SKILL_LINE_INDEX = 7,
     QUEUE_DELAY = 0.2,
+    NODE_ICON_MIN = 10,
+    NODE_ICON_MAX = 24,
+    FIND_SPELL = { herb = 2383, ore = 2580 },
+    SKILL_ORANGE = 25, SKILL_YELLOW = 50, SKILL_GREEN = 100,
 }
