@@ -7371,3 +7371,6 @@ L["Extra Bar 2"] = true
 L["Capture Other Addons' Scans"] = true
 L["Also keeps the prices from full auction house scans that other addons start, such as Auctionator or TSM."] = true
 L["With the Gamepad interface style, the game's own recipe window is used."] = true
+L["%d %b %H:%M"] = true
+L["Show on All Characters"] = true
+L["Shows detailed deal tooltips on characters without Enchanting."] = true
