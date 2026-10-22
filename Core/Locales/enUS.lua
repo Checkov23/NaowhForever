@@ -7377,3 +7377,7 @@ L["Shows detailed deal tooltips on characters without Enchanting."] = true
 L["Minimap Node Icons"] = true
 L["Shows what each tracked herb and vein gives on the minimap, ringed red if you can't gather it."] = true
 L["How big each node's picture is on the minimap."] = true
+L["New Herbs and Ores"] = true
+L["Names the herbs and veins a Herbalism or Mining skill-up lets you gather."] = true
+L["You can now gather %s."] = true
+L["You can now mine %s."] = true

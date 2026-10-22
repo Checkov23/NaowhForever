@@ -59,6 +59,7 @@
     <Script file="UI\CraftTimer.lua"/>
     <Script file="UI\GatherTracking.lua"/>
     <Script file="UI\NodeIcons.lua"/>
+    <Script file="UI\NodeToast.lua"/>
     <Script file="UI\Disenchant.lua"/>
     <Script file="UI\DisenchantDeals.lua"/>
     <Script file="UI\SettingsPage.lua"/>

@@ -33,6 +33,7 @@
     <Script file="UI\Tabs.lua"/>
     <Script file="UI\SettingsCard.lua"/>
     <Script file="UI\Tracker.lua"/>
+    <Script file="UI\Toast.lua"/>
     <Script file="UI\ItemBar.lua"/>
     <Script file="UI\Anchor.lua"/>
     <Script file="UI\MinimapPins.lua"/>

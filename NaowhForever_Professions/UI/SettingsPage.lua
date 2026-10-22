@@ -14,7 +14,7 @@ local TIP_RANGE, ICON_RANGE, TEXT_RANGE = { 0, 50, 1 }, { 24, 80, 1 }, ns.Shared
 local ROI_RANGE = { 0, 100, 1 }
 local ORDER_RECIPES, ORDER_ORDERS, ORDER_CRAFT_TIMER, ORDER_BUYING, ORDER_GATHER = 10, 20, 30, 40, 50
 local ORDER_DISENCHANT, ORDER_DISENCHANT_DEALS = 60, 70
-local ORDER_NODE_ICONS = 55
+local ORDER_NODE_ICONS, ORDER_NODE_TOAST = 55, 56
 local NODE_ICON_RANGE = { P.C.NODE_ICON_MIN, P.C.NODE_ICON_MAX, 1 }
 local SAMPLE_ICON = "Interface\\Icons\\INV_Ingot_02"
 local SAMPLE_NAME, SAMPLE_DONE, SAMPLE_COUNT = ns.L("Smelt Copper"), 4, 10
@@ -318,6 +318,12 @@ if P.NodeScan.Usable() then
             { key = "nodeIconSize", label = "Icon Size", slider = NODE_ICON_RANGE, needs = On, why = TEXT_OFF,
               help = "How big each node's picture is on the minimap." },
         },
+    })
+
+    page:Card({
+        id = "nodeToast", name = "New Herbs and Ores", order = ORDER_NODE_TOAST, switch = "nodeToast",
+        help = "Names the herbs and veins a Herbalism or Mining skill-up lets you gather.",
+        search = "herb ore vein mining herbalism skill toast popup gather new",
     })
 end
 

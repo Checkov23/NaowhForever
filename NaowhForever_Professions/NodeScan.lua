@@ -28,6 +28,7 @@ local hits = {}
 local seen, stack = {}, {}
 local places = {}
 local placeCount = 0
+local unlockNeed = {}
 local skills = {}
 local cache = {}
 local cacheCount = 0
@@ -228,6 +229,23 @@ function Scan.Refine(left, bottom, scale, name, x, y)
     y = y + Span(left, bottom, scale, name, x, y, 0, 1)
     Minimap:SetUsingSoftCursor(false)
     return x, y
+end
+
+local function ByNeed(a, b)
+    if unlockNeed[a] ~= unlockNeed[b] then return unlockNeed[a] < unlockNeed[b] end
+    return a < b
+end
+
+function Scan.Unlocked(kind, from, to, out)
+    wipe(out)
+    for name, node in pairs(NODES) do
+        if node[KIND] == kind and node[NEED] > from and node[NEED] <= to then
+            out[#out + 1] = name
+            unlockNeed[name] = node[NEED]
+        end
+    end
+    table.sort(out, ByNeed)
+    return out
 end
 
 function Scan.Places()

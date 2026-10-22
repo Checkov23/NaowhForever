@@ -81,6 +81,7 @@ NaowhForever_Professions/
     CraftTimer.lua     Total Craft Timer
     GatherTracking.lua the Tracking Reminder
     NodeIcons.lua      Minimap Node Icons: an item picture on each tracked herb and vein, the skill on its tooltip
+    NodeToast.lua      New Herbs and Ores: a toast naming the herbs or veins a skill-up has just reached
     Disenchant.lua     the Disenchant window and its button on the Enchanting window (ns.ToggleDisenchant)
     DisenchantDeals.lua Disenchant Deals beside the auction house, with click-confirmed purchases
     SettingsPage.lua   its settings page (Professions/Settings), declared as cards
@@ -139,6 +140,14 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   Glimmer compares the same. The tooltip line is red below the node's skill, then orange, yellow, green
   and grey at `SKILL_ORANGE`, `SKILL_YELLOW` and `SKILL_GREEN` (25, 50 and 100) over it, as Glimmer
   colours it. These and `FIND_SPELL` are in `Constants.lua`; Glimmer's own are in QoL, out of reach.
+- New Herbs and Ores compares Herbalism and Mining (rank plus bonus, as gathering checks them) with the
+  highest each has been since login, on `SKILL_LINES_CHANGED`, and names every node of
+  `Data/GatherNodes.lua` whose skill lies between the two (`NodeScan.Unlocked`). Nothing shows at login
+  or when a profession is learned (from 0), and a bonus taken off and put on again does not show the
+  same nodes twice. Unlearning a profession forgets its highest, so learning it again shows its nodes anew
+  as it climbs. One icon per item, so Silver Vein and its Ooze Covered twin share Silver Ore's. It
+  is the shared toast (`Parts.Toast`) and goes after 20 seconds, as the Level-Up Toast does. It names nodes
+  as Minimap Node Icons reads them, in English, so it too is offered only on an English client.
 - Skill-up Thresholds is off by default. It creates its line only when an enabled recipe pane first
   needs it. Selection and skill updates use the existing redraw path; this feature adds no events,
   hooks, timers, route planning or polling.
