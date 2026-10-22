@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Discovery
 ## Notes: Library books, the Cozy Sleeping Bag, and every quest and rare by zone (the Quest List, once Completo): where to find each one.
 ## Author: Naowh
-## Version: 1.1.41
+## Version: 1.1.42
 ## Dependencies: NaowhForever
 ## Group: NaowhForever
 ## IconTexture: Interface\AddOns\NaowhForever\Core\Media\LogoAddon.tga
