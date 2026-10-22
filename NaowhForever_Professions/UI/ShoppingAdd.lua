@@ -8,11 +8,13 @@ local Shopping = P.Shopping
 local Queue = P.CraftQueue
 local Style = P.Style
 local Widgets = P.Widgets
+local TitleButtons = P.TitleButtons
 
 local ADD_W = 90
 local ADD_DROP = 4
 local ADD_OVERHANG = 4
-local OPEN_W, QUEUE_W, OPEN_H, OPEN_RIGHT, OPEN_DROP, OPEN_GAP = 100, 108, 22, 132, 7, 6
+local OPEN_W, QUEUE_W, OPEN_H = 100, 108, 22
+local OPEN_ORDER, QUEUE_ORDER = 2, 3
 local TEXT_ADD = ns.L("Add to List")
 local TEXT_ADD_QUEUE = ns.L("Add to Queue")
 local TEXT_OPEN = ns.L("Shopping List")
@@ -76,17 +78,13 @@ function ns.ShoppingListAttach(win)
     ns.Tooltip(qty, TIP_CRAFTS, TIP_CRAFTS_HELP)
     local dock = S.Get("shoppingListDock")
     opener = ns.Button(win, TEXT_OPEN, OPEN_W, OPEN_H, ns.ToggleShoppingList)
-    if dock then
-        opener:SetPoint("RIGHT", win.close, "LEFT", -OPEN_GAP, 0)
-    else
-        opener:SetPoint("TOPRIGHT", -OPEN_RIGHT, -OPEN_DROP)
-    end
     ns.Tooltip(opener, TIP_OPEN, dock and TIP_DOCKED_HELP or TIP_OPEN_HELP)
     opener:Hide()
+    TitleButtons.Add(opener, OPEN_ORDER)
     queueOpener = ns.Button(win, TEXT_QUEUE, QUEUE_W, OPEN_H, ns.ToggleCraftQueue)
-    queueOpener:SetPoint("RIGHT", opener, "LEFT", -OPEN_GAP, 0)
     ns.Tooltip(queueOpener, TEXT_QUEUE, TIP_QUEUE_HELP)
     queueOpener:Hide()
+    TitleButtons.Add(queueOpener, QUEUE_ORDER)
     if dock then ns.ShoppingListDockTo(win) end
 end
 

@@ -143,8 +143,8 @@ check("off: the title bar keeps the shared close button",
     source:find("BuildBar(Parts.TitleBar(window, TEXT_TITLE, TEXT_SUBTITLE, PAGE))", 1, true))
 local add = Read("NaowhForever_Professions/UI/ShoppingAdd.lua")
 check("off: the profession window is not hooked", add:find("if dock then ns.ShoppingListDockTo(win) end", 1, true))
-check("off: the Shopping List button keeps its place",
-    add:find("opener:SetPoint(\"TOPRIGHT\", -OPEN_RIGHT, -OPEN_DROP)", 1, true))
+check("on or off: the Shopping List button takes its place on the title bar",
+    add:find("TitleButtons.Add(opener, OPEN_ORDER)", 1, true))
 check("Dock Shopping List is off by default",
     Read("Core/Features.lua"):find("\n        shoppingListDock = false,\n", 1, true))
 

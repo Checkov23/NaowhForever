@@ -65,6 +65,7 @@ NaowhForever_Professions/
     Book.lua           the overview's profession cards (P.Book)
     Window.lua         the window: frame, title, skill bar, rank banner, search, Filter, drawing (P.Window)
     Takeover.lua       showing it over Blizzard's window, docking Blizzard's tabs and cards, dragging, events
+    TitleButtons.lua   the feature buttons on its title bar, lined up left of the close button (P.TitleButtons)
     ShoppingAdd.lua    Add to List under a recipe, and the button that opens the shopping list
     ShoppingWindow.lua the Shopping List window: crafts, other items, materials, docked beside the profession window or detached (ns.ToggleShoppingList)
     ShoppingConsumables.lua the Consumables picker beside the Shopping List: search and favourites
@@ -125,12 +126,16 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
 - With the tabs on the left, the window moves right just enough to keep them on screen: the game opens
   it at the screen's left edge.
 - Dock Shopping List (`shoppingListDock`) is off by default. Off, the Shopping List is a window of its
-  own, the tabs stay on the right edge and the Shopping List button keeps its place. It is read once,
+  own and the tabs stay on the right edge. It is read once,
   when the profession window and the Shopping List are first built, so changing it asks for a reload.
 - With it on, the Shopping List docks on the right edge, where the tabs used to be. Opened from the
   profession window it docks; Detach floats it where it is, to drag and resize, and Dock puts it back.
   Closing it ends the detach. It comes back with the profession window only if it was docked and open
   when that window closed (account `shoppingListPanel`).
+- The title-bar buttons (Disenchant, Shopping List, Crafting Queue) are lined up by `UI/TitleButtons.lua`
+  rather than each placing itself: each shown one takes the next place left of the close button, in a
+  set order, so any mix of features never overlaps and a hidden button leaves no gap. Each re-lines
+  them when it shows or hides, so the features need not know about each other.
 - The overview's spell buttons (Smelting, Find Minerals) cast and the red cross unlearns, so they stay
   Blizzard's. A card draws its buttons as part of itself, so Blizzard's whole card moves into ours with
   its art at zero alpha; the buttons stay children of that card, where their click reads the

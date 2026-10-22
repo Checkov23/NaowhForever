@@ -43,6 +43,7 @@
     <Script file="UI\Learn.lua"/>
     <Script file="UI\Book.lua"/>
     <Script file="UI\Window.lua"/>
+    <Script file="UI\TitleButtons.lua"/>
     <Script file="UI\Takeover.lua"/>
     <Script file="UI\ShoppingAdd.lua"/>
     <Script file="UI\ShoppingWindow.lua"/>
