@@ -51,6 +51,8 @@ NaowhForever_Combat/Blessings/
   `UnitFullName` and addon message senders give the whole one ("Glyadin Skywolf"). Names are kept as
   senders carry them: the realm only when it is not ours. Another paladin's plan is kept by that
   name (realm when not ours): `{ classes, aura, known }`.
+- With Blessings off a client neither listens nor replies, and the new-install preset turns it off,
+  so a paladin who sends no plan reads as "No reply" rather than as not running the addon.
 - The saved plan once held only `{ CLASS = blessing }`, before per-player choices and auras; such a
   plan is read into the new shape.
 - Unit identity and auras can come back secret in restricted content; those are skipped. A member
