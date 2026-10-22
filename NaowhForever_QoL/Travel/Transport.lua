@@ -1,4 +1,4 @@
--- Transport.lua: boat and zeppelin times, from a ride or a recorded sighting, on minimap pins at each stop, and its Travel settings.
+-- Transport.lua: boat and zeppelin times, from a ride or a recorded sighting, on minimap pins at each stop and the world map's docks, and its Travel settings.
 local ns = _G.NaowhForever
 
 local GetServerTime = GetServerTime
@@ -40,6 +40,9 @@ local TEXT_MINUTES = ns.L("%dm %02ds")
 local TEXT_PLACE = ns.L("%s, %s")
 local TEXT_UNTIMED = ns.L("Not timed yet")
 local TEXT_RIDE = ns.L("Ride it once to time it.")
+local TEXT_AT_DOCK = ns.L("Time it from its minimap pin at the dock.")
+local TEXT_SHIP_DEPARTS = ns.L("Departs in %d:%02d")
+local TEXT_SHIP_ARRIVES = ns.L("Arrives in %d:%02d")
 
 local layer, events
 local spots = {}
@@ -49,13 +52,21 @@ local function On()
     return S.Get("enabled") == true and S.Get("transportTimers") == true
 end
 
+local function Color(kind, seconds)
+    if kind == ARRIVAL then return SAILING_RGB end
+    return seconds > LEAVING_SOON and DOCKED_RGB or LEAVING_RGB
+end
+
+local function Countdown(seconds, kind, named)
+    local rounded = math.ceil(seconds)
+    local text = named and (kind == ARRIVAL and TEXT_SHIP_ARRIVES or TEXT_SHIP_DEPARTS)
+        or (kind == ARRIVAL and TEXT_ARRIVES or TEXT_DEPARTS)
+    return text:format(math.floor(rounded / SECONDS_PER_MINUTE), rounded % SECONDS_PER_MINUTE)
+end
+
 local function Status(key)
     local seconds, kind = Times.Next(key, GetServerTime())
-    if seconds then
-        local rounded = math.ceil(seconds)
-        return (kind == ARRIVAL and TEXT_ARRIVES or TEXT_DEPARTS):format(math.floor(rounded / SECONDS_PER_MINUTE),
-            rounded % SECONDS_PER_MINUTE)
-    end
+    if seconds then return Countdown(seconds, kind) end
     if kind == "stale" then return TEXT_STALE end
     if kind == "expired" then return TEXT_EXPIRED end
     return TEXT_NEW
@@ -81,7 +92,7 @@ local function ShowRoute(pin, name)
         local seconds, kind = Times.Dock(name, index, now)
         if seconds then
             timed = true
-            local color = kind == ARRIVAL and SAILING_RGB or (seconds > LEAVING_SOON and DOCKED_RGB or LEAVING_RGB)
+            local color = Color(kind, seconds)
             GameTooltip:AddDoubleLine(kind == ARRIVAL and TEXT_ARRIVAL or TEXT_DEPARTURE, Clock(seconds),
                 LABEL_RGB.r, LABEL_RGB.g, LABEL_RGB.b, color.r, color.g, color.b)
         else
@@ -107,6 +118,32 @@ local function ShowTip(pin)
     GameTooltip:AddLine(TEXT_LEFT, HINT.r, HINT.g, HINT.b)
     GameTooltip:AddLine(TEXT_RIGHT, HINT.r, HINT.g, HINT.b)
     GameTooltip:Show()
+end
+
+local function Timer(key, now)
+    if not On() or not Data[key] then return nil end
+    local seconds, kind = Times.Next(key, now)
+    if not seconds then return false, nil, kind end
+    return seconds, Color(kind, seconds), kind
+end
+
+local function TimerTip(tooltip, now, ...)
+    local hint
+    for i = 1, select("#", ...) do
+        local key = select(i, ...)
+        local seconds, color, kind = Timer(key, now)
+        local named = key and Times.RouteAt(key) ~= nil
+        if seconds then
+            tooltip:AddDoubleLine(ns.L(Data[key].routes[1]), Countdown(seconds, kind, named),
+                LABEL_RGB.r, LABEL_RGB.g, LABEL_RGB.b, color.r, color.g, color.b)
+        elseif seconds == false then
+            tooltip:AddDoubleLine(ns.L(Data[key].routes[1]), kind == "stale" and TEXT_STALE
+                or kind == "expired" and TEXT_EXPIRED or TEXT_UNTIMED,
+                LABEL_RGB.r, LABEL_RGB.g, LABEL_RGB.b, HINT.r, HINT.g, HINT.b)
+            hint = hint or (named and TEXT_RIDE or TEXT_AT_DOCK)
+        end
+    end
+    if hint then tooltip:AddLine(hint, HINT.r, HINT.g, HINT.b) end
 end
 
 local function OnTick(pin, delta)
@@ -203,7 +240,14 @@ S.OnChange(OnSetting)
 hooksecurefunc(ns, "Apply", Apply)
 Apply()
 
+ns.TransportTimer = Timer
+ns.TransportTimerTip = TimerTip
+
 ns.Shared.Settings.Page("QoL/Travel", S):Card({
     id = "transportTimers", name = "Boat and Zeppelin Timers", order = 13, switch = "transportTimers",
-    help = "Shows when boats and zeppelins come and go on the minimap, timed as you ride them.",
+    help = "Shows when boats and zeppelins come and go on the minimap and world map.",
+    rows = {
+        { key = "transportShare", label = "Share Timings", toggle = true,
+          help = "Sends the ships you time to your group and guild." },
+    },
 })

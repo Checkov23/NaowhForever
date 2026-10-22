@@ -2,8 +2,10 @@
 local ns = _G.NaowhForever
 
 local ARRIVAL, DEPARTURE = "arrival", "departure"
+local EMPTY = {}
 local SECONDS_PER_WEEK = 7 * ns.QoLConstants.SECONDS_PER_DAY
 local STALE_CYCLES = 6
+local SCHEDULE_CYCLES = 300
 local REFINE_BAND = 0.15
 local RIDE_MISS = 3
 local RIDE_BAND = 0.02
@@ -55,9 +57,11 @@ function Times.RouteAt(key)
     if dock then return dock.name, dock.index end
 end
 
-function Times.Ride(name, since)
-    local route = ns.TransportRoutes[name]
-    if not route then return false end
+local function InBand(period, route)
+    return math.abs(period - route.period) <= RIDE_BAND * route.period
+end
+
+local function Store(name, route, since, period, shared)
     local rides = Rides()
     local row = rides[name]
     if row and since == row.at then return false end
@@ -65,24 +69,48 @@ function Times.Ride(name, since)
         local cycles = math.floor((since - row.base) / (row.period or route.period) + 0.5)
         local measured = cycles >= 1 and (since - row.base) / cycles
         if cycles >= 0 and math.abs(since - row.base - cycles * (row.period or route.period)) <= RIDE_MISS then
-            if measured and math.abs(measured - route.period) <= RIDE_BAND * route.period then
+            if measured and InBand(measured, route) then
                 row.period = measured
             end
             row.at = since
+            row.shared = shared
             return true
         end
     end
-    rides[name] = { base = since, at = since }
+    rides[name] = { base = since, at = since, period = period, shared = shared }
     return true
+end
+
+function Times.Ride(name, since)
+    local route = ns.TransportRoutes[name]
+    if not route or not Store(name, route, since) then return false end
+    if Times.OnTimed then Times.OnTimed(name) end
+    return true
+end
+
+function Times.Shared(name, at, period, now)
+    local route = ns.TransportRoutes[name]
+    if not route or at > now + RIDE_MISS then return false end
+    if period and not InBand(period, route) then return false end
+    local row = Rides()[name]
+    if row and row.at >= at then return false end
+    return Store(name, route, at, period, true)
+end
+
+function Times.Latest(name)
+    local row = Rides()[name]
+    if row and not row.shared then return row.at, row.period end
 end
 
 function Times.Dock(name, index, now)
     local route = ns.TransportRoutes[name]
-    local row = route and Rides()[name]
+    local ride = route and Rides()[name]
+    local row = ride or route and (ns.TransportSchedule or EMPTY)[name]
     if not row then return nil, "new" end
     if now < row.at then return nil, "stale" end
     local dock = route.docks[index]
     local period = row.period or route.period
+    if not ride and now - row.at > SCHEDULE_CYCLES * period then return nil, "expired" end
     local phase = (now - row.at) % period
     if phase >= dock.arrive and phase < dock.leave then return dock.leave - phase, DEPARTURE end
     return (dock.arrive - phase) % period, ARRIVAL

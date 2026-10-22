@@ -289,7 +289,8 @@ dofile("NaowhForever_QoL/Travel/TransportRide.lua")
 dofile("NaowhForever_QoL/Travel/Transport.lua")
 Check(made == 0 and mapReads == 0 and layers == 0 and #tickers == 0,
     "default off builds no frames, reads no maps and watches no rides")
-Check(card.switch == "transportTimers" and card.rows == nil, "the settings card is the switch alone")
+Check(card.switch == "transportTimers" and #card.rows == 1 and card.rows[1].key == "transportShare",
+    "the settings card is the switch and its sharing toggle")
 ns.QoLSettings.Set("unrelated", true)
 Check(made == 0, "an unrelated setting builds nothing")
 

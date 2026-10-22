@@ -124,9 +124,11 @@ NaowhForever_QoL/
     FlightPoint.lua     zone-entry and nearby-town flight point reminders
     TransportData.lua   each boat and zeppelin stop with its period and dwell, generated from Journeys data
     TransportRoutes.lua the ships NauticusClassic timed: cycle, docks and trigger points (ns.TransportRoutes), generated
+    TransportSchedule.lua a timing of each ship from a ride on Forever, used until it is timed in game (ns.TransportSchedule)
     TransportTimes.lua  saved per-realm server-clock sightings and ride timings (ns.TransportTimes)
     TransportRide.lua   times a ship as the player rides past one of its trigger points (ns.TransportRide)
-    Transport.lua       Boat and Zeppelin Timers: its minimap pins, their tooltips and Travel settings
+    TransportShare.lua  ride timings sent to and kept from your group and guild
+    Transport.lua       Boat and Zeppelin Timers: its minimap pins, their tooltips, the world map's dock times and Travel settings
     AimTrainer.lua      the Aim Trainer (/nfaim, ns.AimRules, ns.AimPlay, ns.AimOffer)
     AimBoard.lua        the Aim Trainer's leaderboard (ns.AimBoard)
     QuizData.lua        the quiz questions (ns.QUIZ_QUESTIONS)
@@ -952,6 +954,50 @@ NaowhForever_QoL/
 - Each stop's map position is worked out once, with `C_Map.GetMapPosFromWorldPos`, the first time
   its map is shown. Disable unregisters the events and hides the pins; nothing is built until the
   feature is first on in a zone with a stop.
+- Forever is one world, and a ship stands at the same place on every shard, so one timing of a ship
+  holds for every player. `TransportSchedule.lua` keeps one cycle start per ship (server clock),
+  from a ride on Forever, and `TransportTimes.Dock` uses it when no ride or shared timing is saved:
+  those ships count down from the first login. A timing of your own, or one shared with you,
+  replaces it, and the schedule is never sent on as yours.
+- The schedule uses the ships' cycles from `TransportRoutes.lua`. It holds the Horde zeppelins,
+  timed on 2026-10-21; a ship is added once it has been ridden on Forever. Whether a server restart
+  moves the ships is not known yet: if it does, the schedule is off until the next ride corrects it.
+  A cycle 0.1 s off adds about 25 s a day, so a ride a day or more after its timing checks it.
+- A schedule row is used for `SCHEDULE_CYCLES` (300) cycles after its timing, about a day, and then
+  shows as out of date: past that, a cycle 0.1 s off has drifted by 30 s, the yellow-to-red warning
+  window. A row can carry its own measured `period`, used in place of the route's. A ride or shared
+  timing has no such limit, because each new one corrects it.
+- The world map's dock pins are the town map's Boats & Zeppelins (`TownMap.lua`), so the times show
+  there only with both switched on and need no switch of their own. Each pin finds its stops by its
+  map and labels (`<map>:<label>`, the key `TransportData.lua` uses); a label with no stop of its own
+  (the Southshore boat's second destination) is skipped, so that pin shows its one ship.
+- `ns.TransportTimer` and `ns.TransportTimerTip` are how the town map reads the times: it loads
+  before the transport files, so it looks them up at draw time. They return nothing while the
+  timers are off, which leaves the pin as it was.
+- A dock pin's countdown under it is the same countdown its tooltip shows, in the same colors; a
+  tower's two zeppelins are left click's then right click's, split by ` / `, and one nobody has
+  timed is `-:--`. A pin with no timed ship has no countdown.
+- The countdowns and an open dock tooltip are redrawn every `TIME_EVERY` (1 s) by one frame made
+  on the map the first time a dock is timed. It is a child of the map, so it runs only while the
+  map is open, and it is hidden when the map shows no timed dock.
+- Each ride timing (from a ride or a click at a dock) goes to your group and guild on the
+  `NaowhShips` prefix as its cycle start and measured cycle, and one heard there is kept the same
+  way a ride is (`TransportTimes.Shared`): only when it is newer than yours, never from the future,
+  and only with a cycle within `RIDE_BAND` of the ship's. A shared timing is never sent on, so a
+  bad one cannot spread past its first hop: it is saved in the same ride row, marked `shared`, which
+  the countdown reads but `TransportTimes.Latest` (what is sent and answered) skips, and your own
+  next ride of that ship clears the mark.
+- Share Timings (`transportShare`) is on by default under the timers, as Share My Score is under the
+  Naowh Score. Off, nothing is sent or answered, and the `NaowhShips` prefix and its events are not
+  registered, so others' timings are not received either: hearing them needs the prefix.
+- The message carries the sender's GUID, checked with `ns.SenderIs` (Core/Senders.lua) as Naowh
+  Score does. Forever is one world: the ships stand at the same place on every shard, so a timing
+  from any shard is good, and the GUID's server number (which can differ between shards) is not
+  compared.
+- Joining a group, and the first login in a guild, asks for the others' timings. An ask is
+  answered after a random wait of up to `ANSWER_SPREAD` (3 s), leaving out each ship someone else
+  answered with as fresh a timing in the meantime, and the guild at most once every
+  `GUILD_ANSWER_GAP` (30 s), so a big guild does not all answer at once.
 
 ### Mail
 - Quick Attach puts in one stack at a time, from a scan made at the click: each is checked in its bag slot and on the cursor before it goes in, and the next goes only once the last has landed (MAIL_SEND_INFO_UPDATE).

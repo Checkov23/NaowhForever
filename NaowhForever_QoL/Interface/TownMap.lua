@@ -1,6 +1,7 @@
--- TownMap.lua: the QoL town map: service NPCs, mailboxes and spirit healers on the world map and minimap.
+-- TownMap.lua: the QoL town map: service NPCs, mailboxes, spirit healers and timed docks on the world map and minimap.
 local ns = _G.NaowhForever
 
+local GetServerTime = GetServerTime
 local S = ns.QoLSettings
 local ScalePin = ns.Shared.ScalePin
 local SameMap = ns.Shared.Places.SameMap
@@ -25,10 +26,19 @@ local ICON_FOLDER = "\\Icons\\"
 local FULL_LOW, FULL_HIGH = 0, 1
 local HINT = ns.QoLConstants.HINT_RGB
 local EMPTY = {}
+local STOP_MARK = ":"
 local MINI_SCALE = 0.9
 local MINI_INTERVAL = 0.05
 local PIN_RANGE = ns.Shared.Style.PIN_SIZE_RANGE
 local TOWN_PIN_SCALE = 0.5625
+local TIME_SIZE = 12
+local TIME_EVERY = 1
+local TIME_SEPARATOR = " / "
+local TIME_UNTIMED = "-:--"
+local TIME_COLOR = "|cff%02x%02x%02x%s|r"
+local TIME_FORMAT = "%d:%02d"
+local SECONDS_PER_MINUTE = ns.QoLConstants.SECONDS_PER_MINUTE
+local COLOR_STEPS = 255
 local MINI_EVENTS = { "ZONE_CHANGED_NEW_AREA", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "PLAYER_ENTERING_WORLD" }
 local MOVE_EVENTS = { "PLAYER_STARTED_MOVING", "PLAYER_STOPPED_MOVING", "MINIMAP_UPDATE_ZOOM" }
 local AUDIT_EVENTS = { "GOSSIP_SHOW", "MERCHANT_SHOW", "TRAINER_SHOW", "TAXIMAP_OPENED",
@@ -211,6 +221,40 @@ local function SetTravelIcon(icon, label)
     TryArt(icon, TravelArt(label))
 end
 
+local function Tinted(text, color)
+    return TIME_COLOR:format(math.floor(color.r * COLOR_STEPS + ROUND), math.floor(color.g * COLOR_STEPS + ROUND),
+        math.floor(color.b * COLOR_STEPS + ROUND), text)
+end
+
+local function Countdown(key, now)
+    if not key or not ns.TransportTimer then return nil end
+    local seconds, color = ns.TransportTimer(key, now)
+    if seconds == nil then return nil end
+    if not seconds then return Tinted(TIME_UNTIMED, HINT), false end
+    local rounded = math.ceil(seconds)
+    return Tinted(TIME_FORMAT:format(math.floor(rounded / SECONDS_PER_MINUTE), rounded % SECONDS_PER_MINUTE), color),
+        true
+end
+
+local anyTimed = false
+
+local function ShowTime(pin, now)
+    local link = pin.link
+    local one, oneTimed = Countdown(link.stop, now)
+    local two, twoTimed = Countdown(link.rightStop, now)
+    if not (oneTimed or twoTimed) then
+        if pin.Time then pin.Time:Hide() end
+        return
+    end
+    if not pin.Time then
+        pin.Time = ns.Font(pin, TIME_SIZE, "OUTLINE")
+        pin.Time:SetPoint("TOP", pin, "BOTTOM")
+    end
+    pin.Time:SetText(one and two and one .. TIME_SEPARATOR .. two or one or two)
+    pin.Time:Show()
+    anyTimed = true
+end
+
 local function ScaleTownPin(pin)
     ScalePin(pin, TOWN_PIN_SCALE)
 end
@@ -284,6 +328,7 @@ function NaowhForeverZoneLinkPinMixin:OnAcquired(link)
     self.Icon:SetRotation(link.rotation or 0)
     self:SetPosition(link.position:GetXY())
     self:ApplyCurrentScale()
+    ShowTime(self, GetServerTime())
 end
 
 function NaowhForeverZoneLinkPinMixin:OnClick(button)
@@ -307,12 +352,39 @@ function NaowhForeverZoneLinkPinMixin:OnMouseEnter()
     elseif link.linkedUiMapID ~= self:GetMap():GetMapID() then
         GameTooltip:AddLine(TEXT_OPEN_ZONE, r, g, b)
     end
+    if link.stop and ns.TransportTimerTip then
+        ns.TransportTimerTip(GameTooltip, GetServerTime(), link.stop, link.rightStop)
+    end
     GameTooltip:Show()
 end
 
 function NaowhForeverZoneLinkPinMixin:OnMouseLeave() GameTooltip:Hide() end
 
 local provider = CreateFromMixins(MapCanvasDataProviderMixin)
+local clock
+
+local function OnClock(frame, delta)
+    frame.elapsed = frame.elapsed + delta
+    if frame.elapsed < TIME_EVERY then return end
+    frame.elapsed = 0
+    local now = GetServerTime()
+    for pin in frame.map:EnumeratePinsByTemplate(LINK_TEMPLATE) do
+        if pin.link.stop then
+            ShowTime(pin, now)
+            if GameTooltip:IsOwned(pin) then pin:OnMouseEnter() end
+        end
+    end
+end
+
+local function WatchClock(map)
+    if not anyTimed and not clock then return end
+    if not clock then
+        clock = CreateFrame("Frame", nil, map)
+        clock.map, clock.elapsed = map, 0
+        clock:SetScript("OnUpdate", OnClock)
+    end
+    clock:SetShown(anyTimed)
+end
 
 function provider:RemoveAllData()
     self:GetMap():RemoveAllPinsByTemplate(TEMPLATE)
@@ -332,7 +404,8 @@ local function AddDocks(map, mapID, faction)
         if dock[3]:find(faction, 1, true) then
             map:AcquirePin(LINK_TEMPLATE, { name = ns.L(dock[4]), atlasName = TravelArt(dock[4]),
                 position = CreateVector2D(dock[1] / PERCENT, dock[2] / PERCENT), linkedUiMapID = dock[5],
-                rightName = dock[6] and ns.L(dock[6]), rightUiMapID = dock[7] })
+                rightName = dock[6] and ns.L(dock[6]), rightUiMapID = dock[7],
+                stop = mapID .. STOP_MARK .. dock[4], rightStop = dock[6] and mapID .. STOP_MARK .. dock[6] })
         end
     end
 end
@@ -355,14 +428,16 @@ end
 
 function provider:RefreshAllData()
     self:RemoveAllData()
-    if not On() then return end
     local map = self:GetMap()
+    anyTimed = false
+    if not On() then return WatchClock(map) end
     local mapID = SameMap(map:GetMapID())
     local shops = not S.Get("townCapitalsOnly") or CAPITALS[mapID]
     if S.Get("townZoneLinks") then AddExits(map, mapID) end
     local faction = UnitFactionGroup("player") == "Horde" and "H" or "A"
     local _, class = UnitClass("player")
     if S.Get("townTravel") then AddDocks(map, mapID, faction) end
+    WatchClock(map)
     AddNPCs(map, ns.TownNPCs[mapID], faction, class, shops)
     if S.Get("townMail") then
         AddAll(map, ns.TownMailboxes[mapID])
@@ -590,7 +665,7 @@ mini:SetScript("OnEvent", OnMiniEvent)
 audit:SetScript("OnEvent", OnAuditEvent)
 
 hooksecurefunc(S, "Set", function(key)
-    if key == "enabled" or key:find("^town") then Apply() end
+    if key == "enabled" or key == "transportTimers" or key:find("^town") then Apply() end
 end)
 hooksecurefunc(ns, "Apply", Apply)
 
