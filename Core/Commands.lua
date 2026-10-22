@@ -92,6 +92,7 @@ _G["BINDING_NAME_CLICK NaowhForeverBlessNext:LeftButton"] = ns.L("Next Blessing"
 _G["BINDING_NAME_CLICK NaowhForeverBlessNextGreater:LeftButton"] = ns.L("Next Greater Blessing")
 _G["BINDING_NAME_CLICK NaowhForeverFoodBarFood:LeftButton"] = ns.L("Use Best Food")
 _G["BINDING_NAME_CLICK NaowhForeverFoodBarDrink:LeftButton"] = ns.L("Use Best Drink")
+_G["BINDING_NAME_CLICK NaowhForeverDisenchantAll:LeftButton"] = ns.L("Disenchant Next Item")
 
 local function SwitchedOff(name)
     return function() ns.Print(TEXT_SWITCHED_OFF:format(ns.L(name))) end

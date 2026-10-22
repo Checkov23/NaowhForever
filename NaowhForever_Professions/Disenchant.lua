@@ -16,7 +16,7 @@ local SLOT_KEY_SCALE = 1000
 local LAST_BAG = NUM_TOTAL_EQUIPPED_BAG_SLOTS or NUM_BAG_SLOTS
 local KEEP_KEY, COPY_KEY = "profDisenchantKeep", "profDisenchantKeepCopy"
 
-local records, failed = {}, {}
+local records, failed, misses = {}, {}, {}
 local count = 0
 
 local D = { SPELL = SPELL, ENCHANTING = ENCHANTING }
@@ -97,14 +97,25 @@ function D.MarkFailed(r)
     if r then failed[r.failureKey] = true end
 end
 
+function D.Miss(r)
+    if r then misses[r.failureKey] = (misses[r.failureKey] or 0) + 1 end
+end
+
+function D.Misses(r)
+    return misses[r.failureKey] or 0
+end
+
 function D.Ready(r)
     return not (r.locked or D.Kept(r) or D.Failed(r))
 end
 
 function D.Next()
+    local best
     for i = 1, count do
-        if D.Ready(records[i]) then return records[i] end
+        local r = records[i]
+        if D.Ready(r) and (not best or D.Misses(r) < D.Misses(best)) then best = r end
     end
+    return best
 end
 
 function D.Counts()

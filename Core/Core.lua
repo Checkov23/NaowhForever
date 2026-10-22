@@ -734,9 +734,9 @@ function ns.AllowOffscreen(frame)
     frame:HookScript("OnSizeChanged", ClampOffscreen)
 end
 
-function ns.Button(parent, text, w, h, onClick, template)
+function ns.Button(parent, text, w, h, onClick, template, name)
     local T = ns.THEME
-    local btn = CreateFrame("Button", nil, parent, template)
+    local btn = CreateFrame("Button", name, parent, template)
     btn:SetSize(w, h)
     local bg = ns.Solid(btn, "BACKGROUND", T.panel, BUTTON_REST_ALPHA)
     bg:SetAllPoints()

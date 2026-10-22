@@ -3,6 +3,7 @@
     <Binding name="CLICK NaowhForeverBlessNextGreater:LeftButton" category="BINDING_HEADER_NAOWHFOREVER"/>
     <Binding name="CLICK NaowhForeverFoodBarFood:LeftButton" category="BINDING_HEADER_NAOWHFOREVER"/>
     <Binding name="CLICK NaowhForeverFoodBarDrink:LeftButton" category="BINDING_HEADER_NAOWHFOREVER"/>
+    <Binding name="CLICK NaowhForeverDisenchantAll:LeftButton" category="BINDING_HEADER_NAOWHFOREVER"/>
     <Binding name="NAOWHFOREVER_BAGSPACE_PICKUP" category="BINDING_HEADER_NAOWHFOREVER">NaowhForever_BagSpacePickUp()</Binding>
     <Binding name="NAOWHFOREVER_JOURNAL" category="BINDING_HEADER_NAOWHFOREVER">NaowhForever_ToggleJournal()</Binding>
     <Binding name="NAOWHFOREVER_BIS" category="BINDING_HEADER_NAOWHFOREVER">NaowhForever_ToggleBis()</Binding>

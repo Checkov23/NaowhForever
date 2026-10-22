@@ -328,6 +328,11 @@ page:Card({
         .. "character, until you right-click it again. Disenchant All disenchants the rest one by one, one item "
         .. "per click, as the game asks a click for every disenchant. An item the game will not take (skill too low) is skipped until you reload. "
         .. "Closes when combat starts.",
+    rows = {
+        { label = "Disenchant Next Item", binding = "CLICK NaowhForeverDisenchantAll:LeftButton",
+          help = "Disenchants the next item in the Disenchant window while it is open, one item per press, like a "
+              .. "click on Disenchant All." },
+    },
 })
 
 page:Card({

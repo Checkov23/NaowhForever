@@ -380,6 +380,14 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   arrives synchronously during the secure click is remembered until PostClick, so it cannot leave the
   button waiting. Extra clicks while a disenchant resolves do nothing, and an eight-second fallback
   releases a missing event.
+- A failed cast, in the click or later from the server, or the fallback, counts a miss on the copy that
+  was clicked, and the next arm takes the ready copy with the fewest misses. A copy the game keeps
+  failing (an Enchanting skill too low for it) so goes to the back instead of being armed again on every
+  click, which stalled Disenchant All on it; a copy that only failed once (moving, mid-cast) is not lost.
+- The game's own refusal errors (`SPELL_FAILED_CANT_BE_DISENCHANTED` and `_SKILL`, read from the global
+  strings so every language matches) skip that copy until a reload, like the targeting cursor does.
+- The clicked copy is remembered in PreClick: an item lock during the click redraws the window and
+  arms the next copy before PostClick runs.
 - The window holds that secure button and so is protected: it opens out of combat only, and closes on
   PLAYER_REGEN_DISABLED, the last moment it still may.
 - Disenchant takes Uncommon to Epic weapons and armor; shirts and tabards never. The skill an item
