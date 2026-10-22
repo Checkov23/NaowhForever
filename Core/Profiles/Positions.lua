@@ -13,6 +13,7 @@ local POSITIONS = {
         "coTankPos", "coTankAnchor", "coTankX", "coTankY" },
     auraBuffs = { "buffsPos", "campPos", "lowHealthPos" },
     pvp = { "pos", "focusPos", "scoresPos", "timerPos", "flagButtonPos" },
+    raidDebuffs = { "pos" },
     swingTimer = { "swingPos" },
     threatMeter = { "threatPos", "width", "height" },
     damageMeter = { "meterPos", "meterPos2", "meterPos3", "width", "height", "width2", "height2", "width3", "height3" },

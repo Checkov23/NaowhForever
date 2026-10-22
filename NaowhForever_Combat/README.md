@@ -1,9 +1,9 @@
 # Combat
 
-One addon, `NaowhForever_Combat`, holding seven modules that used to ship as addons of their own:
-Consumable Bar, Gear & Trinkets, Blessings, AuraBuffs, Threat Meter, PvP and Swing Timer. Each keeps its
+One addon, `NaowhForever_Combat`, holding eight modules, seven of which used to ship as addons of their own:
+Consumable Bar, Gear & Trinkets, Blessings, AuraBuffs, Threat Meter, PvP, Swing Timer and Raid Debuffs. Each keeps its
 own folder, its own XML, its own settings store and its own switch under Settings > Modules; only the
-AddOns list shows one line for all seven.
+AddOns list shows one line for all eight.
 
 ## Layout
 
@@ -18,6 +18,7 @@ NaowhForever_Combat/
   ThreatMeter/              Threat Meter
   PvP/                      PvP
   SwingTimer/               Swing Timer
+  RaidDebuffs/              Raid Debuffs
   README.md                 this file
 ```
 
@@ -27,10 +28,10 @@ NaowhForever_Combat/
   `addon` and names this addon as its `host`. The old name is still the module's id in the
   per-character module list, the presets' `modulesOff` and shared profiles, so none of them change.
 - A module here is on when this addon is enabled and its switch is on. The core keeps this addon
-  enabled for a character while any of the seven is switched on and disables it once none is
-  (`ns.SetModuleState`, `ns.ReconcileModules`, the onboarding's Apply), so a player with all seven off
+  enabled for a character while any of the eight is switched on and disables it once none is
+  (`ns.SetModuleState`, `ns.ReconcileModules`, the onboarding's Apply), so a player with all eight off
   loads none of them.
-- Switching one of the seven on or off while this addon is loaded takes effect at once, with no
+- Switching one of the eight on or off while this addon is loaded takes effect at once, with no
   reload: each checks its own switch before it registers an event, hooks or builds a frame, and
   stops when it goes off. One that is off costs only its loaded code and a few idle frames.
 - This addon loads after `NaowhForever_Utilities` (`OptionalDeps`), so the Consumable Bar finds the

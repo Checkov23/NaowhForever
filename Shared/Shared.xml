@@ -23,6 +23,7 @@
     <Script file="UI\Hud.lua"/>
     <Script file="UI\Thresholds.lua"/>
     <Script file="UI\Timer.lua"/>
+    <Script file="UI\AuraIcon.lua"/>
     <Script file="UI\Share.lua"/>
     <Script file="UI\CopyCard.lua"/>
     <Script file="UI\CodeModal.lua"/>

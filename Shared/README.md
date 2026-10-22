@@ -64,6 +64,8 @@ Shared/
                    soft drop shadow (Parts.Shadow), and a progress line that holds still (Parts.ProgressLine)
   UI/Timer.lua     a timer line the client runs down by itself (Parts.TimerLine), its short time text
                    (Parts.ShortTime), and stopping any timer bar (Parts.StopTimer)
+  UI/AuraIcon.lua  an aura icon with its stacks and the game's own countdown, sized and coloured from a
+                   module's store and style (Shared.AuraIcon): PvP Auras and Raid Debuffs
   UI/Thresholds.lua a proportional four-band line with numeric boundaries and a clamped current-value marker
                    (Parts.ThresholdLine), composed from ProgressLine; an empty band has no label, close labels use extra rows
   UI/Share.lua     sharing a line in chat or on a copy card (Parts.ShareMenu), and a spot on the map with

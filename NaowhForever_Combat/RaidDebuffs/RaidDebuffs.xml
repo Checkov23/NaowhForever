@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- RaidDebuffs.xml: the Raid Debuffs module's files, in load order. -->
+    <Script file="Data\Spells.lua"/>
+    <Script file="RaidDebuffs.lua"/>
+    <Script file="View\Style.lua"/>
+    <Script file="UI\Bar.lua"/>
+    <Script file="UI\SettingsPage.lua"/>
+</Ui>

@@ -2,6 +2,20 @@
 local L = _G.NaowhForeverLocale or {}
 _G.NaowhForeverLocale = L
 
+L["Raid Debuffs"] = true
+L["The raid debuffs on your target, with the missing ones easy to spot."] = true
+L["The raid debuffs on your target."] = true
+L["Turn on Raid Debuffs"] = true
+L["%d debuffs, %s"] = true
+L["missing ones lit"] = true
+L["missing ones dimmed"] = true
+L["Debuff Bar"] = true
+L["Highlight Missing"] = true
+L["One icon per raid debuff on your target, dimmed while it is missing, and it keeps working in combat."] = true
+L["When the bar shows, while you target an enemy."] = true
+L["Light up the missing debuffs and fade the ones already on your target."] = true
+L["The time left turns yellow, then red near the end, so you see a debuff about to drop."] = true
+L["Which debuffs get an icon on the bar: every rank, from any caster."] = true
 L["Left-click: cast this player's blessing.\nRight-click: give them their own blessing, or back to the class default.\nCtrl-click: toggle Main Tank in a raid."] = true
 L["The size of the Blessings window. Dragging its corner changes it too."] = true
 L["Window Size"] = true

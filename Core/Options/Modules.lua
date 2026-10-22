@@ -179,6 +179,12 @@ local MODULES = {
       tabs = {
           { name = "Settings", reuse = true },
       } },
+    { name = "Raid Debuffs", group = "COMBAT", navIcon = "bell", settings = "RaidDebuffSettings",
+      addon = "NaowhForever_RaidDebuffs", host = "NaowhForever_Combat",
+      subtitle = "The raid debuffs on your target, with the missing ones easy to spot.",
+      tabs = {
+          { name = "Settings", reuse = true },
+      } },
     { name = "Racial and Class Tracking", navIcon = "search", settings = "TrackingReminderSettings",
       addon = "NaowhForever_TrackingReminder", host = "NaowhForever_Utilities",
       subtitle = "Shows an icon for each racial or class tracking you have not turned on.",

@@ -7,4 +7,5 @@
     <Include file="ThreatMeter\ThreatMeter.xml"/>
     <Include file="PvP\PvP.xml"/>
     <Include file="SwingTimer\SwingTimer.xml"/>
+    <Include file="RaidDebuffs\RaidDebuffs.xml"/>
 </Ui>

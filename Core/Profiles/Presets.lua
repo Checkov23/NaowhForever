@@ -8,7 +8,7 @@ ns.PRESETS = {
         name = "Recommended",
         about = "A streamlined setup with the essentials enabled and nothing that spoils the game. You can add more modules whenever you like. Perfect if you're a Classic player and don't want to use a lot of addons.",
         source = "Minimalist by Naowh, 2026-10-10",
-        modulesOff = { "NaowhForever_InstanceTracker", "NaowhForever_Training", "NaowhForever_Journeys", "NaowhForever_Discovery", "NaowhForever_GearSets", "NaowhForever_Blessings", "NaowhForever_Professions", "NaowhForever_Macros", "NaowhForever_ConsumableBar", "NaowhForever_ActionBars", "NaowhForever_AuraBuffs", "NaowhForever_ThreatMeter", "NaowhForever_GroupInspect", "NaowhForever_PvP", "NaowhForever_SwingTimer", "NaowhForever_TrackingReminder" },
+        modulesOff = { "NaowhForever_InstanceTracker", "NaowhForever_Training", "NaowhForever_Journeys", "NaowhForever_Discovery", "NaowhForever_GearSets", "NaowhForever_Blessings", "NaowhForever_Professions", "NaowhForever_Macros", "NaowhForever_ConsumableBar", "NaowhForever_ActionBars", "NaowhForever_AuraBuffs", "NaowhForever_ThreatMeter", "NaowhForever_GroupInspect", "NaowhForever_PvP", "NaowhForever_SwingTimer", "NaowhForever_TrackingReminder", "NaowhForever_RaidDebuffs" },
         profile = {
             actionBars = {
                 enabled = false,
@@ -238,6 +238,9 @@ ns.PRESETS = {
                     x = -979.49820035206051,
                     y = 525.30465545813081,
                 },
+            },
+            raidDebuffs = {
+                enabled = false,
             },
             statWeights = {
                 enabled = false,
@@ -556,6 +559,9 @@ ns.PRESETS = {
                     x = -979.49820035206051,
                     y = 525.30465545813081,
                 },
+            },
+            raidDebuffs = {
+                enabled = true,
             },
             statWeights = {
                 enabled = true,
