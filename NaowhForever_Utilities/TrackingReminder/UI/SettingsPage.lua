@@ -12,7 +12,7 @@ local Group = Settings.Group
 
 local ICON_RANGE = { 20, 64, 1 }
 local TEXT_RANGE = ns.Shared.Style.HUD_TEXT_RANGE
-local ORDER_TRACKING = 10
+local ORDER_TRACKING = 45
 local STAGE_H = 120
 local STATES = {
     { key = "untracked", label = "Not Tracking", tip = "What shows while you know a tracking but have not turned it on." },
@@ -137,10 +137,8 @@ local function Rows()
     return rows
 end
 
-local page = Settings.Page(TR.PAGE, S)
-
-page:Card({
-    id = "tracking", name = "Racial and Class Tracking", order = ORDER_TRACKING, switch = "enabled",
+Settings.Page(TR.PAGE):Card({
+    id = "tracking", name = "Racial and Class Tracking", order = ORDER_TRACKING, switch = "enabled", store = S,
     help = TEXT_HELP,
     summary = Summary,
     studio = { height = STAGE_H, states = STATES, new = NewPreview, paint = PaintPreview },

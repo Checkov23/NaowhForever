@@ -237,7 +237,8 @@ do
     check("TrackingReminder module table exists", TR ~= nil)
     check("TrackingReminder.Enabled() is false", TR.Enabled() == false)
     check("TrackingReminder.On() is false", TR.On() == false)
-    check("settings page is Racial and Class Tracking/Settings", world.pageKey == "Racial and Class Tracking/Settings")
+    check("settings card is on QoL/Interface", world.pageKey == "QoL/Interface")
+    check("the card keeps its own store", world.card.store == world.S)
     check("Find Treasure ID is 2481", TR.Data.FIND_TREASURE == FIND_TREASURE)
     check("RACIAL contains Dwarf Find Treasure", #TR.Data.RACIAL == 1 and TR.Data.RACIAL[1].spell == FIND_TREASURE
         and TR.Data.RACIAL[1].race == "Dwarf")

@@ -20,7 +20,7 @@ ns.TrackingReminderSettings = S
 
 local TR = {
     Settings = S,
-    PAGE = "Racial and Class Tracking/Settings",
+    PAGE = "QoL/Interface",
 }
 ns.TrackingReminder = TR
 
