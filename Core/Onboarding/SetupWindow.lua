@@ -5,7 +5,7 @@ local Parts = ns.Shared.Parts
 local St = ns.Shared.Style
 local Setup = ns.Setup
 
-local WIDTH, HEIGHT = 960, 660
+local WIDTH, HEIGHT = 960, 720
 local INSET, EDGE, HEADER = St.CONTENT_INSET, St.WINDOW_PAD, St.WINDOW_HEADER
 local BUTTON_H, NAV_W, APPLY_W, START_W, START_H = 26, 110, 150, 170, 32
 local FOOT_H = BUTTON_H + EDGE * 2

@@ -8,7 +8,7 @@ local function check(label, ok) assert(ok, label); checks = checks + 1 end
 local World = dofile("Tools/regression/setup_world.lua")
 local TRAINING, PROF, JOURNAL = "NaowhForever_Training", "NaowhForever_Professions", "NaowhForever_DungeonJournal"
 local GEAR, COMBAT = "NaowhForever_GearSets", "NaowhForever_Combat"
-local COMBAT_IDS = { "consumableBar", "gearSets", "blessings", "auraBuffs", "threatMeter", "pvp", "swingTimer", "raidDebuffs" }
+local COMBAT_IDS = { "consumableBar", "gearSets", "blessings", "auraBuffs", "threatMeter", "pvp", "swingTimer", "raidDebuffs", "druidMana" }
 local MACROS, UTILITIES = "NaowhForever_Macros", "NaowhForever_Utilities"
 local UTILITY_IDS = { "instanceTracker", "journeys", "macros", "groupInspect", "actionBars" }
 local BIS, DISC = "NaowhForever_BiS", "NaowhForever_Discovery"
@@ -110,7 +110,7 @@ do
         and w.On("swingTimer"))
     for _, id in ipairs(COMBAT_IDS) do w.ns.SetModuleState(w.Item(id).addon, false) end
     local last = Writes(w)[#Writes(w)]
-    check("all eight off: the Combat addon goes off for this character", not w.enabled[COMBAT]
+    check("all nine off: the Combat addon goes off for this character", not w.enabled[COMBAT]
         and last.name == "DisableAddOn" and last.addon == COMBAT and w.ForMe(last) and w.root.pvp.enabled == false)
     w.ns.SetModuleState(GEAR, true)
     check("one back on brings the Combat addon back", w.enabled[COMBAT] and w.On("gearSets") and not w.On("pvp"))

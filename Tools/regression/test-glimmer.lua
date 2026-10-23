@@ -468,16 +468,23 @@ log.Fire("PLAYER_ENTERING_WORLD")
 
 -- The quest sparkle: saved, set, and put back after a graphics preset.
 log.Set("questSparkle", true)
-check("sparkle on: outline off, loot effect on", cv.graphicsOutlineMode == "0"
-    and cv.outlineModeShowLootEffectWhenDisabled == "1")
-check("sparkle on: the old values are saved", log.account.glimmerSparkleCVars.graphicsOutlineMode == "2")
-cv.graphicsOutlineMode = "2"
+check("sparkle on: loot effect on, outlines left alone", cv.outlineModeShowLootEffectWhenDisabled == "1"
+    and cv.graphicsOutlineMode == "2" and cv.raidGraphicsOutlineMode == "2")
+check("sparkle on: the old value is saved", log.account.glimmerSparkleCVars.outlineModeShowLootEffectWhenDisabled == "0"
+    and log.account.glimmerSparkleCVars.graphicsOutlineMode == nil)
+cv.outlineModeShowLootEffectWhenDisabled = "0"
 log.Fire("CVAR_UPDATE", "graphicsQuality", "5")
-check("a preset is undone only after it has finished", cv.graphicsOutlineMode == "2")
+check("a preset is undone only after it has finished", cv.outlineModeShowLootEffectWhenDisabled == "0")
 log.RunTimers()
-check("then the sparkle is back", cv.graphicsOutlineMode == "0")
+check("then the sparkle is back", cv.outlineModeShowLootEffectWhenDisabled == "1")
+cv.graphicsOutlineMode = "1"
+log.Fire("CVAR_UPDATE", "graphicsOutlineMode", "1")
+log.RunTimers()
+check("an outline change is the player's own", cv.graphicsOutlineMode == "1")
+cv.graphicsOutlineMode = "2"
 log.Set("questSparkle", false)
-check("sparkle off: the old values come back", cv.graphicsOutlineMode == "2" and log.account.glimmerSparkleCVars == nil)
+check("sparkle off: the old value comes back", cv.outlineModeShowLootEffectWhenDisabled == "0"
+    and log.account.glimmerSparkleCVars == nil)
 
 -- Off again: everything put back, nothing listening.
 log.Set("enabled", false)
@@ -491,10 +498,12 @@ check("off: no event left", Registered(log) == 0)
 do
     local r = Session({ enabled = true, questSparkle = true })
     r.Login()
-    check("restore: both sets were changed", r.cvars.SoftTargetInteract == "3" and r.cvars.graphicsOutlineMode == "0")
+    check("restore: both sets were changed", r.cvars.SoftTargetInteract == "3"
+        and r.cvars.outlineModeShowLootEffectWhenDisabled == "1")
     r.ns.Glimmer.CVars.RestoreAll()
     r.RunTimers()
-    check("restore: both sets put back", r.cvars.SoftTargetInteract == "1" and r.cvars.graphicsOutlineMode == "2")
+    check("restore: both sets put back", r.cvars.SoftTargetInteract == "1"
+        and r.cvars.outlineModeShowLootEffectWhenDisabled == "0")
     check("restore: Glimmer and the sparkle off", r.S.Get("enabled") == false and r.S.Get("questSparkle") == false)
 end
 
@@ -660,10 +669,27 @@ end
 do
     local q = Session({ enabled = true, questSparkle = true })
     q.Login()
-    q.cvars.graphicsOutlineMode = "2"
-    q.Fire("CVAR_UPDATE", "graphicsoutlinemode", "2")
+    q.cvars.outlineModeShowLootEffectWhenDisabled = "0"
+    q.Fire("CVAR_UPDATE", "outlinemodeshowlooteffectwhendisabled", "0")
     q.RunTimers()
-    check("a lower-case name still puts the sparkle back", q.cvars.graphicsOutlineMode == "0")
+    check("a lower-case name still puts the sparkle back", q.cvars.outlineModeShowLootEffectWhenDisabled == "1")
+end
+
+-- The outlines an older version turned off for the sparkle come back, and the sparkle stays.
+do
+    local o = Session({ enabled = true, questSparkle = true })
+    o.cvars.graphicsOutlineMode, o.cvars.OutlineEngineMode = "0", "0"
+    o.cvars.raidGraphicsOutlineMode, o.cvars.RAIDOutlineEngineMode = "0", "0"
+    o.cvars.outlineModeShowLootEffectWhenDisabled = "1"
+    o.account.glimmerSparkleCVars = { outlineModeShowLootEffectWhenDisabled = "0", graphicsOutlineMode = "2",
+        OutlineEngineMode = "2", raidGraphicsOutlineMode = "1", RAIDOutlineEngineMode = "1" }
+    o.Login()
+    check("old outlines: put back", o.cvars.graphicsOutlineMode == "2" and o.cvars.OutlineEngineMode == "2"
+        and o.cvars.raidGraphicsOutlineMode == "1" and o.cvars.RAIDOutlineEngineMode == "1")
+    local saved = o.account.glimmerSparkleCVars
+    check("old outlines: forgotten, the loot effect still saved", saved.graphicsOutlineMode == nil
+        and saved.raidGraphicsOutlineMode == nil and saved.outlineModeShowLootEffectWhenDisabled == "0")
+    check("old outlines: the sparkle stays on", o.cvars.outlineModeShowLootEffectWhenDisabled == "1")
 end
 
 -- With the addon turned off, the core puts Glimmer's saved game settings back at login.

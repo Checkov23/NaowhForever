@@ -56,6 +56,8 @@ Setup.ITEMS = {
         blurb = ns.L("Your target's short buffs and crowd control.") },
     swingTimer = { addon = "NaowhForever_SwingTimer", db = "swingTimer", key = "enabled",
         blurb = ns.L("Your swings, with marks to time around them.") },
+    druidMana = { addon = "NaowhForever_DruidMana", db = "druidMana", key = "enabled",
+        blurb = ns.L("A druid's mana while shapeshifted.") },
     raidDebuffs = { addon = "NaowhForever_RaidDebuffs", db = "raidDebuffs", key = "enabled",
         blurb = ns.L("The raid debuffs on your target.") },
     trackingReminder = { addon = "NaowhForever_TrackingReminder", db = "trackingReminder", key = "enabled",

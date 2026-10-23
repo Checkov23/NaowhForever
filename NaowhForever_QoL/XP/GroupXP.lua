@@ -225,7 +225,7 @@ local function Refresh()
     local list = shown
     if unlocked then
         Look.Sample(list, true)
-    elseif On() and IsInGroup() then
+    elseif On() and IsInGroup() and (S.Get("groupXPRaid") or not IsInRaid()) then
         for _, m in ipairs(Roster()) do
             if m.unit ~= "player" or S.Get("groupXPShowSelf") then AddEntry(list, m) end
         end
@@ -395,6 +395,8 @@ Settings.Page("QoL/XP", S):Card({
     rows = {
         { key = "groupXPShowSelf", label = "Show Yourself", toggle = true,
           help = "Your own bar among the group's." },
+        { key = "groupXPRaid", label = "Show in Raids", toggle = true,
+          help = "Also shows the bars while you are in a raid." },
         Settings.Group("Size"),
         { key = "groupXPWidth", label = "Width", slider = WIDTH_RANGE },
         Settings.Look("groupXP", { text = true, size = TEXT_RANGE, bar = "Naowh Gradient", background = "alpha" }),

@@ -249,6 +249,11 @@ ns.FEATURES = {
         castClip = false,
         targetSwing = false,
     },
+    druidMana = {
+        enabled = false,
+        fiveSecond = true,
+        powershift = true,
+    },
     raidDebuffs = {
         enabled = false,
     },

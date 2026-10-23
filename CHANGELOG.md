@@ -2,6 +2,43 @@
 
 ## Unreleased
 
+## 1.1.43
+
+### Added
+- Druid Mana: a bar of your mana while shapeshifted, with the five second rule, the cost of a
+  powershift and the shifts left. Turn it on under Settings > Modules.
+
+### Changed
+- Group XP: the bars no longer show in raids; turn on Show in Raids in the Group XP card to keep
+  them.
+
+### Fixed
+- Flight Timer: the bar no longer shows on top of the world map and other windows opened during a
+  flight.
+- Glimmer: Quest Item Sparkle no longer turns off the game's outlines, so Self Highlight's outline
+  works again; outlines it turned off before come back.
+
+## 1.1.42
+
+### Added
+- Professions: Minimap Node Icons (off by default, Professions > Settings, English clients): herbs
+  and veins tracked on the minimap show what they give, ringed red when your skill is too low; hover
+  one to see the skill it needs. With Glimmer's Minimap Icons on too, a node that is up shows only
+  its Node Icons picture.
+- Professions: New Herbs and Ores (off by default, Professions > Settings, English clients): when
+  your Herbalism or Mining grows enough to gather a new herb or vein, a toast names them for 20
+  seconds.
+- Boat and Zeppelin Timers: the world map's Boats & Zeppelins dock pins show when each ship arrives
+  and leaves, under the pin and in its tooltip.
+- Boat and Zeppelin Timers: a ship one player in your group or guild has timed is timed for you too;
+  Share Timings on its card stops sending yours.
+- Boat and Zeppelin Timers: the Horde zeppelins between Orgrimmar, Undercity and Grom'gol count down
+  without riding them first, for about a day after their built-in timing.
+
+### Fixed
+- Glimmer: a Herbalism or Mining bonus from gear, an enchant or your race now counts toward the
+  skill a herb or vein needs.
+
 ## 1.1.41
 
 ### Added

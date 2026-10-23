@@ -185,6 +185,12 @@ local MODULES = {
       tabs = {
           { name = "Settings", reuse = true },
       } },
+    { name = "Druid Mana", group = "COMBAT", navIcon = "bars", settings = "DruidManaSettings",
+      addon = "NaowhForever_DruidMana", host = "NaowhForever_Combat",
+      subtitle = "A druid's mana while shapeshifted, with the five second rule and shifts left.",
+      tabs = {
+          { name = "Settings", reuse = true },
+      } },
     { name = "Racial and Class Tracking", navIcon = "search", settings = "TrackingReminderSettings",
       addon = "NaowhForever_TrackingReminder", host = "NaowhForever_Utilities",
       subtitle = "Shows an icon for each racial or class tracking you have not turned on.",

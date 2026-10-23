@@ -39,6 +39,7 @@ and a lot of quality of life, all in one window.
 | **Group Inspect** | Everyone in your party or raid in one window: their Naowh Score, item level, gear, talents and stats, and who runs Naowh Forever. Also on a party or raid member's right-click menu. |
 | **PvP** | What your target is doing in a fight: their short buffs and the crowd control on them, and battleground displays. |
 | **Swing Timer** | Your swings from the game's own timer, with marks for timing around them. |
+| **Druid Mana** | A druid's mana while shapeshifted, with the five second rule, the cost of shifting back and how many shifts you have left. |
 | **Raid Debuffs** | The raid debuffs you pick on your target, Sunder Armor to the warlock curses, with the missing ones easy to spot, in combat too. |
 | **Quality of Life** | Questing, loot and bag space, alerts, casting, tooltips, trainer ranks, flight and camp, mail and more, and the Top Bar: friends, guild, the clock and your addon buttons across the top of the screen. |
 | **Supporter Badges** | The Naowh Forever N next to the name of Naowh, the devs, the mods and our Legendary and Epic patrons. See [Supporter badges](#supporter-badges). |
