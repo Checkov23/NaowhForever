@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Discovery Data
 ## Notes: The Quest List's quests and rares, loaded when the Quest List first needs them.
 ## Author: Naowh
-## Version: 1.1.43
+## Version: 1.1.44
 ## Dependencies: NaowhForever, NaowhForever_Discovery
 ## LoadOnDemand: 1
 ## Group: NaowhForever

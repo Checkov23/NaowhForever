@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Dungeon Journal
 ## Notes: Every dungeon's bosses, loot and quests.
 ## Author: Naowh
-## Version: 1.1.43
+## Version: 1.1.44
 ## Dependencies: NaowhForever
 ## OptionalDeps: NaowhForever_BiS
 ## Group: NaowhForever
