@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Search Index
 ## Notes: Every module's settings, so the options window's search finds the ones of a module that is turned off.
 ## Author: Naowh
-## Version: 1.1.44
+## Version: 1.1.45
 ## Dependencies: NaowhForever
 ## LoadOnDemand: 1
 ## Group: NaowhForever

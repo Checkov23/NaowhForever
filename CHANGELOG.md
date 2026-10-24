@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.45
 
 ### Changed
 - Naowh Score: refitted to the latest Forever items.
