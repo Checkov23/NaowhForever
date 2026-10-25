@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 1.1.46
+
+### Fixed
+- Macros: a Smart Macro the game can't find after making it is no longer made again and again until
+  General macros are full.
 
 ## 1.1.45
 
