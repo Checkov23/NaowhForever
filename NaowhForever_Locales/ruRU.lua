@@ -2054,6 +2054,7 @@ L["Gear set equips when combat ends."] = "Комплект экипировки 
 L["Gear Sets"] = "Комплекты экипировки"
 L["Gear You Can't Wear"] = "Экипировка, которую нельзя надеть"
 L["General macros are full, so %s could not be made. Delete one and it will be added."] = "Общие макросы заполнены, поэтому %s не создан. Удалите один, и он будет добавлен."
+L["%s was made, but the game could not find it by name, so it will not be made again until you reload."] = "%s создан, но игра не может найти его по имени, поэтому он не будет создаваться снова до перезагрузки интерфейса."
 L["Give the set a name first."] = "Сначала назовите набор."
 L["Give them the class blessing"] = "Дать им классовое благословение"
 L["Global Copy"] = "Глобальное копирование"

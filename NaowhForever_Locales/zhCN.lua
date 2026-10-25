@@ -2054,6 +2054,7 @@ L["Gear set equips when combat ends."] = "装备方案将在战斗结束后装�
 L["Gear Sets"] = "装备方案"
 L["Gear You Can't Wear"] = "无法穿戴的装备"
 L["General macros are full, so %s could not be made. Delete one and it will be added."] = "账号通用宏已满，无法创建%s。删除一个后它会被添加。"
+L["%s was made, but the game could not find it by name, so it will not be made again until you reload."] = "已创建%s，但游戏无法按名称找到它，因此在重载界面前不会再次创建。"
 L["Give the set a name first."] = "请先为方案命名。"
 L["Give them the class blessing"] = "给他们职业祝福"
 L["Global Copy"] = "全局复制"

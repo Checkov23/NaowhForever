@@ -2054,6 +2054,7 @@ L["Gear set equips when combat ends."] = "裝備組合會在戰鬥結束時裝�
 L["Gear Sets"] = "裝備組合"
 L["Gear You Can't Wear"] = "你無法穿戴的裝備"
 L["General macros are full, so %s could not be made. Delete one and it will be added."] = "一般巨集已滿，因此無法建立 %s。刪除一個後就會加入。"
+L["%s was made, but the game could not find it by name, so it will not be made again until you reload."] = "已建立 %s，但遊戲無法依名稱找到它，因此在重新載入前不會再次建立。"
 L["Give the set a name first."] = "請先為組合命名。"
 L["Give them the class blessing"] = "給予他們職業祝福"
 L["Global Copy"] = "全域複製"
