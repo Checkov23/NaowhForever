@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## 1.1.47
+
+### Changed
+- Daily Word #12 is out (QoL > Travel, or /nf word).
 
 ## 1.1.46
 
