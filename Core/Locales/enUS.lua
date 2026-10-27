@@ -2636,6 +2636,7 @@ L["Gear set equips when combat ends."] = true
 L["Gear Sets"] = true
 L["Gear You Can't Wear"] = true
 L["General macros are full, so %s could not be made. Delete one and it will be added."] = true
+L["%s was made, but the game could not find it by name, so it will not be made again until you reload."] = true
 L["Give the set a name first."] = true
 L["Give them the class blessing"] = true
 L["Global Copy"] = true

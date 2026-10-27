@@ -2054,6 +2054,7 @@ L["Gear set equips when combat ends."] = "전투가 끝나면 장비 세트를 �
 L["Gear Sets"] = "장비 세트"
 L["Gear You Can't Wear"] = "착용 불가 장비"
 L["General macros are full, so %s could not be made. Delete one and it will be added."] = "일반 매크로가 가득 차서 %s(을)를 만들 수 없습니다. 하나를 삭제하면 추가됩니다."
+L["%s was made, but the game could not find it by name, so it will not be made again until you reload."] = "%s(을)를 만들었지만 게임에서 이름으로 찾을 수 없어, 다시 불러오기 전까지는 다시 만들지 않습니다."
 L["Give the set a name first."] = "먼저 세트 이름을 정하세요."
 L["Give them the class blessing"] = "직업 축복 주기"
 L["Global Copy"] = "전역 복사"

@@ -2054,6 +2054,7 @@ L["Gear set equips when combat ends."] = "O conjunto é equipado quando o combat
 L["Gear Sets"] = "Conjuntos de equipamento"
 L["Gear You Can't Wear"] = "Equipamento que você não pode usar"
 L["General macros are full, so %s could not be made. Delete one and it will be added."] = "As macros gerais estão cheias, então %s não pôde ser criada. Exclua uma e ela será adicionada."
+L["%s was made, but the game could not find it by name, so it will not be made again until you reload."] = "%s foi criada, mas o jogo não conseguiu encontrá-la pelo nome, então ela não será criada de novo até você recarregar."
 L["Give the set a name first."] = "Dê um nome ao conjunto primeiro."
 L["Give them the class blessing"] = "Dar a eles a bênção da classe"
 L["Global Copy"] = "Cópia global"

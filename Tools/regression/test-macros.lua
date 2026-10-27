@@ -172,7 +172,7 @@ local function Fixture(opts)
         },
         C_Spell = { GetSpellName = function(id) return id == 433 and FOOD or DRINK end },
         PickupMacro = function(index) assert(index > 0) end,
-        GetMacroIndexByName = Find,
+        GetMacroIndexByName = function(name) return opts.lookupMisses and 0 or Find(name) end,
         GetMacroBody = function(i) return macros[i].body end,
         GetNumMacros = function()
             local numAccount, numCharacter = 0, 0
@@ -602,6 +602,15 @@ do
     t.SetMax(2)
     t.Fire("UPDATE_MACROS")
     Check("made after a macro is deleted", t.Body("NF Trinket 1"), "#showtooltip 13\n/use 13")
+end
+
+-- A client whose name lookup misses new macros: made once and warned, not again on every UPDATE_MACROS.
+do
+    local t = Fixture({ settings = { healthPotion = true, mana = true }, lookupMisses = true })
+    t.Fire("PLAYER_ENTERING_WORLD")
+    for _ = 1, 5 do t.Fire("UPDATE_MACROS") end
+    Check("each lost macro made once", #t.macros, 2)
+    Check("each lost macro warned once", #t.printed, 2)
 end
 
 do

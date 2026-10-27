@@ -33,3 +33,4 @@ ignore:
   - Tools
   - RELEASE_NOTES.md
   - NaowhForever_DamageMeter
+  - PRODUCT.md

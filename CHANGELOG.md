@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+## 1.1.47
+
+### Changed
+- Daily Word #12 is out (QoL > Travel, or /nf word).
+
+## 1.1.46
+
+### Fixed
+- Macros: a Smart Macro the game can't find after making it is no longer made again and again until
+  General macros are full.
+
+## 1.1.45
+
+### Changed
+- Naowh Score: refitted to the latest Forever items.
+
+## 1.1.44
+
+### Changed
+- Daily Word #9 is out (QoL > Travel, or /nf word).
+
 ## 1.1.43
 
 ### Added

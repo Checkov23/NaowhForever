@@ -10,6 +10,7 @@ local QUESTION = C.QUESTION
 local TRINKET_TOP, TRINKET_BOTTOM = 13, 14
 
 local TEXT_FULL_GENERAL = ns.L("General macros are full, so %s could not be made. Delete one and it will be added.")
+local TEXT_NOT_FOUND = ns.L("%s was made, but the game could not find it by name, so it will not be made again until you reload.")
 local TEXT_IN_COMBAT = ns.L("Move macros outside combat.")
 local TEXT_ENABLE_FIRST = ns.L("Enable Macros first.")
 local TEXT_NO_ROOM = ns.L("Make room in General macros first.")
@@ -44,6 +45,7 @@ local LINE_BREAK = "\\n"
 
 local ready, pending
 local warnedFull
+local lost = {}
 local warnedLong, warnedScript = {}, {}
 local refresh = {}
 local toDelete = {}
@@ -177,6 +179,7 @@ local function WarnFull(m)
 end
 
 local function Write(m, body)
+    if lost[m.name] then return end
     local index = GetMacroIndexByName(m.name)
     if index > 0 then
         if GetMacroBody(index) ~= body then EditMacro(index, m.name, QUESTION, body) end
@@ -187,6 +190,10 @@ local function Write(m, body)
         return
     end
     CreateMacro(m.name, m.icon or QUESTION, body, false)
+    if GetMacroIndexByName(m.name) == 0 then
+        lost[m.name] = true
+        ns.Print(TEXT_NOT_FOUND:format(m.name))
+    end
 end
 
 local function Wanted()

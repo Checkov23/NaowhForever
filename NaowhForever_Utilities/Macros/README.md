@@ -66,6 +66,9 @@ Each layer uses only the ones above it. `M.Forge` holds the tabs' shared state (
   gets a message once per text. A change to them, or to Food Only, rewrites the macro at once, even
   when it holds a placeholder or an item it would otherwise keep. The Smart Macros page lists what
   the generated lines use (`Smart.Body`), so an item named in the extras is not shown as the macro's.
+- After `CreateMacro`, `Write` looks the name up again. On the China Forever beta that lookup missed
+  new macros, so every `UPDATE_MACROS` made another copy until General was full; a macro the lookup
+  cannot find is now made once, the player is told, and it is left alone until a reload.
 - NF Health picks from the core's healing lists (`ns.HEALTHSTONES`, `ns.HEALING_POTIONS`, in
   `Shared/Game/Consumables.lua`), never Aura Buffs', so it works with Aura Buffs off. NF Mana's list
   (`ns.MANA_POTIONS`) is there too, so the Consumable Bar can tell mana potions apart without Macros.
