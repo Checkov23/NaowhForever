@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 1.1.48
+
+### Added
+- Supporter Badges: Basic patrons on Patreon now wear a rare blue badge in chat, on tooltips and in
+  the group banner.
 
 ## 1.1.47
 
