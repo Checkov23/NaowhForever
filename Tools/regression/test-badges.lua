@@ -108,7 +108,8 @@ local function fixture(withChatUtil, settings, flag)
         InCombatLockdown = function() return state.combat end,
         PlaySound = function(kit) state.sounds = state.sounds + 1; state.lastSound = kit end,
         SOUNDKIT = { UI_LEGENDARY_LOOT_TOAST = 63971, UI_EPICLOOT_TOAST = 31578, UI_72_ARTIFACT_FORGE_ACTIVATE_FINAL_TIER = 83681,
-            UI_72_ARTIFACT_FORGE_FINAL_TRAIT_UNLOCKED = 83682, UI_PVP_HONOR_PRESTIGE_RANK_UP = 77003 },
+            UI_72_ARTIFACT_FORGE_FINAL_TRAIT_UNLOCKED = 83682, UI_PVP_HONOR_PRESTIGE_RANK_UP = 77003,
+            UI_RAID_LOOT_TOAST_LESSER_ITEM_WON = 51402 },
         Ambiguate = function(name) return (name:gsub("%-.*", "")) end,
         issecretvalue = function(v) return v == SECRET end,
         date = function() return "2026-09" end,
@@ -226,6 +227,7 @@ do  -- chat, card, tooltip
     s.staff("Player-1-DEV", { tier = "developer", title = "Lead Developer" })
     s.patron("Player-1-LEG", "2026-03")
     s.patron("Player-1-EPIC", "2026-05", nil, "epic")
+    s.patron("Player-1-BASIC", "2026-10", nil, "basic")
     s.patron("Player-1-ODD", nil, nil, "mythic")
     s.staff("Player-1-OLD", "developer")
     s.staff("Player-1-BAD", "no-such-tier")
@@ -244,6 +246,8 @@ do  -- chat, card, tooltip
         say(filter, "Odd", 9, "Player-1-ODD"):find("BadgeLegendaryChat.tga", 1, true))
     check("the moderator is red now, epic purple is the Epic patrons'",
         s.api.TIERS.moderator.hex == "ffe0383e" and s.api.TIERS.epic.hex == "ffa335ee")
+    check("basic badge, in rare blue", say(filter, "Basic", 10, "Player-1-BASIC"):find("BadgeBasicChat.tga", 1, true)
+        and s.api.TIERS.basic.hex == "ff0070dd")
     check("plain tier string still works", say(filter, "Old", 6, "Player-1-OLD"):find("BadgeDeveloper", 1, true))
     check("unknown tier: name unchanged", say(filter, "Bad", 7, "Player-1-BAD") == "Bad")
     check("no roster entry: name unchanged", say(filter, "Someone", 3, "Player-1-NOBODY") == "Someone")
@@ -266,6 +270,10 @@ do  -- chat, card, tooltip
     enter.fn(enter.owner, {}, "player:Epic-Realm:8:SAY", "[Epic]")
     check("epic card: its title and since", card.title.text == "Epic Patron"
         and card.since.text == "Supporter since May 2026")
+    s.callbacks["ChatFrame.OnHyperlinkLeave"].fn(enter.owner, {})
+    enter.fn(enter.owner, {}, "player:Basic-Realm:10:SAY", "[Basic]")
+    check("basic card: its title and since", card.title.text == "Basic Patron"
+        and card.since.text == "Supporter since October 2026")
     s.callbacks["ChatFrame.OnHyperlinkLeave"].fn(enter.owner, {})
     enter.fn(enter.owner, {}, "player:Someone-Realm:3:SAY", "[Someone]")
     check("no card for a plain name", not card.visible)
@@ -402,7 +410,7 @@ do  -- chat, card, tooltip
     check("id shows your GUID with its region and name", s.box.text == "3:Player-1-SELF=Me_Myself")
     s.ns.BadgesCommand("nope")
     local usage = s.printed[#s.printed]
-    check("the help names both patron tiers, its pipes escaped", usage:find("[legendary||epic||moderator||", 1, true)
+    check("the help names every patron tier, its pipes escaped", usage:find("[legendary||epic||basic||moderator||", 1, true)
         and not usage:gsub("||", ""):find("|", 1, true))
 end
 
@@ -449,6 +457,13 @@ do  -- group toast
     toast.life.scripts.OnFinished(toast.life)
     check("an Epic patron joining: their title and the epic loot sound", toast.visible
         and toast.title.text == "Epic Patron" and s.lastSound == 31578)
+    s.patron("Player-1-BASIC", "2026-10", nil, "basic")
+    s.names["Player-1-BASIC"] = "Basic"
+    s.group = { "Player-1-OTHER", "Player-1-LEG", "Player-1-DEV", "Player-1-BASIC" }
+    s.fire("GROUP_ROSTER_UPDATE")
+    toast.life.scripts.OnFinished(toast.life)
+    check("a Basic patron joining: their title and the lesser loot sound", toast.visible
+        and toast.title.text == "Basic Patron" and s.lastSound == 51402)
 
     s.group = { SECRET }
     s.fire("GROUP_ROSTER_UPDATE")
@@ -981,7 +996,7 @@ do  -- ns.FEATURE_BADGES = 0: the team's badges only, on the defaults, with no s
     check("flag 0: a moderator's badge in chat", say(filter, "Mod", 2, "Player-1-MOD"):find("BadgeModerator", 1, true))
     check("flag 0: Naowh's badge in chat", say(filter, "Naowh", 3, "Player-1-NAOWH"):find("BadgeNaowh", 1, true))
     check("flag 0: a patron's name is plain", say(filter, "Patron", 4, "Player-1-LEG") == "Patron")
-    check("flag 0: no epic tier either", ns.BADGE_TIERS.epic == nil)
+    check("flag 0: no epic or basic tier either", ns.BADGE_TIERS.epic == nil and ns.BADGE_TIERS.basic == nil)
     check("flag 0: no patron tier for anyone", ns.BadgeOf("Player-1-LEG") == nil and ns.BADGE_TIERS.legendary == nil
         and ns.BadgeOf("Player-1-DEV") == ns.BADGE_TIERS.developer)
     s.callbacks["ChatFrame.OnHyperlinkEnter"].fn(nil, {}, "player:Glyalith-Realm:1:SAY", "[Glyalith]")

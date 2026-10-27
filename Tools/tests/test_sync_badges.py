@@ -40,15 +40,17 @@ class SyncBadges(unittest.TestCase):
         ))
         self.assertNotIn("\n", text.replace("\r\n", ""))
 
-    def test_an_epic_patron_keeps_the_tier_and_a_legendary_one_needs_none(self):
+    def test_epic_and_basic_patrons_keep_the_tier_and_a_legendary_one_needs_none(self):
         text = sync_badges.render(sync_badges.validated({"patrons": {"90": {
             "Player-4613-006EB819": {"since": "2026-09", "tier": "epic"},
             "Player-4618-0000AAAA": {"tier": "epic"},
             "Player-4620-0000BBBB": {"since": "2026-10", "tier": "legendary"},
+            "Player-4620-0000CCCC": {"since": "2026-10", "tier": "basic"},
         }}}))
         self.assertIn('["Player-4613-006EB819"] = { since = "2026-09", tier = "epic" },\r\n', text)
         self.assertIn('["Player-4618-0000AAAA"] = { tier = "epic" },\r\n', text)
         self.assertIn('["Player-4620-0000BBBB"] = { since = "2026-10" },\r\n', text)
+        self.assertIn('["Player-4620-0000CCCC"] = { since = "2026-10", tier = "basic" },\r\n', text)
 
     def test_the_claim_hash_is_kept(self):
         text = sync_badges.render(sync_badges.validated({"patrons": {"90": {
