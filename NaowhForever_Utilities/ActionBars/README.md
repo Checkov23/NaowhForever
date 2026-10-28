@@ -193,8 +193,9 @@ table (the frame, `Show` and `Redraw`) when it builds them.
 - The bar check reads the keyboard slots only. A lower rank kept for downranking is left alone once the
   player picks Leave as Is (`barSetRankKeep`, by spell ID); Hide These does the same for spells on no bar
   (`barSetSpellsHidden`, by name, so a new rank of a hidden spell stays hidden). A spell named in a macro
-  on the bars counts as on the bars. Class spells come from the Training Planner's data, so without it
-  loaded the check lists ranks only.
+  on the bars, in any letter case, counts as on the bars, and so does the spell a macro shows, which still
+  counts when the macro cannot be found by its name. Class spells come from the Training Planner's data,
+  so without it loaded the check lists ranks only.
 - Load on Its Own keeps its rules per class (`autoLoad`) and makes and registers its events only while a rule names
   a set that exists. The instance it is in, the set it loaded and that set's backup are kept per character
   (`barSetAutoLoad`), so a reload inside changes nothing and logging in outside puts the bars back. In

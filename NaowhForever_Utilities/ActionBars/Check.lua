@@ -48,15 +48,16 @@ end
 local function OnBars()
     local names, bodies = {}, {}
     for slot = 1, C.KEYBOARD_SLOTS do
-        local kind, id = GetActionInfo(slot)
-        if kind == "spell" then
+        local kind, id, subType = GetActionInfo(slot)
+        if kind == "spell" or (kind == "macro" and subType == "spell") then
             names[C_Spell.GetSpellName(id) or ""] = true
-        elseif kind == "macro" then
+        end
+        if kind == "macro" then
             local _, _, body = GetMacroInfo(GetMacroIndexByName(C_ActionBar.GetActionText(slot) or ""))
             if body then bodies[#bodies + 1] = body end
         end
     end
-    return names, table.concat(bodies, "\n")
+    return names, table.concat(bodies, "\n"):lower()
 end
 
 local function ByName(a, b) return a.name < b.name end
@@ -67,7 +68,7 @@ local function Missing()
     local names, macros = OnBars()
     local hidden, list = ns.Shared.CharacterData(HIDE_STORE, true), {}
     for name, id in pairs(Capture.Ranks().best) do
-        if catalog[id] and not names[name] and not hidden[name] and not macros:find(name, 1, true) then
+        if catalog[id] and not names[name] and not hidden[name] and not macros:find(name:lower(), 1, true) then
             list[#list + 1] = { id = id, name = name }
         end
     end
