@@ -332,7 +332,7 @@ class ReleaseTest(unittest.TestCase):
         self.assertEqual(embed["description"],
                          "**Added**\n- Healer Mana: a cup by anyone drinking.\n- Chat Zones.\n\n**Fixed**\n- Co-Tank.")
         self.assertEqual(embed["color"], 10181046)
-        self.assertEqual(posts[0]["content"], "@everyone")
+        self.assertEqual(posts, [{"embeds": [embed]}])
 
         # Past the limit: split at a heading, numbered, nothing lost or reordered.
         posts = release.discord_payloads(changelog, "1.0.7", limit=70)
@@ -342,7 +342,7 @@ class ReleaseTest(unittest.TestCase):
         self.assertTrue(all(len(text) <= 70 for text in texts))
         self.assertEqual(texts[1], "**Fixed**\n- Co-Tank.")
         self.assertEqual("\n\n".join(texts), embed["description"])
-        self.assertNotIn("content", posts[1])
+        self.assertFalse(any("content" in p or "allowed_mentions" in p for p in posts))
 
         # One heading's list too long for a post: split between its lines, under its heading again.
         posts = release.discord_payloads(changelog, "1.0.7", limit=55)
