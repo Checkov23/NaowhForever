@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Utilities
 ## Notes: Instance Tracker, Journeys, Macros, Group Inspect, Action Bars, and Racial and Class Tracking, each with its own switch under Settings > Modules.
 ## Author: Naowh
-## Version: 1.1.50
+## Version: 1.1.51
 ## Dependencies: NaowhForever
 ## OptionalDeps: NaowhForever_BiS
 ## Group: NaowhForever

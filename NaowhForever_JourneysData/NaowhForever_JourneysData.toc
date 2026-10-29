@@ -2,7 +2,7 @@
 ## Title: |cff0091edNaowh|r Forever: Journeys Data
 ## Notes: The walking maps and quest spots Journeys loads when a journey needs them.
 ## Author: Naowh
-## Version: 1.1.50
+## Version: 1.1.51
 ## Dependencies: NaowhForever
 ## LoadOnDemand: 1
 ## Group: NaowhForever

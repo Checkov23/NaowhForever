@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## 1.1.51
+
+### Fixed
+- Action Bars: the bar check no longer lists spells you have on your bars through a macro.
 
 ## 1.1.50
 
