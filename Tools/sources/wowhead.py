@@ -1,7 +1,9 @@
 """Reading Wowhead's Forever pages, shared by the tools that do: fetching a page politely, a
-listview's rows, a dungeon guide's loot, and writing what they read as Lua.
+listview's rows, the talent calculator's trees, a dungeon guide's loot, and writing what they read
+as Lua.
 
-Used by Tools/build/journal.py, build/factions.py, release/watch_build.py and sources/wowsrc.py.
+Used by Tools/build/journal.py, build/factions.py, build/training.py, build/training_builds.py,
+release/watch_build.py and sources/wowsrc.py.
 """
 import json
 import re
@@ -12,6 +14,7 @@ import urllib.parse
 import urllib.request
 
 WOWHEAD = "https://www.wowhead.com/forever"
+CALCULATOR = "https://nether.wowhead.com/forever/data/talents-classic"
 # Named, as wago.py and wowsrc.py name us, so Wowhead can tell the tools apart and allow them.
 AGENT = "NaowhForever-tools (+https://github.com/naowh-gaming/NaowhForever)"
 # Wowhead inventory types that go in a gear slot: no shirt (4), bag (18), tabard (19),
@@ -42,6 +45,15 @@ def listview(page, lv_id):
         return []
     data = re.compile(r"data:\s*").search(page, start)
     return json.JSONDecoder().raw_decode(page[data.end():])[0]
+
+
+def talent_calculator():
+    """Wowhead Forever's talent calculator data: "talents" (tree ID -> talent ID -> its row, col,
+    rank spells and the talents it requires) and "trees" (tree ID -> its description, as
+    "MageFire"). It has the beta's hotfixes before the game's own talent tables do."""
+    page = fetch(CALCULATOR)
+    start = page.index("{", page.index('WH.setPageData("wow.talentCalcClassic.classicplus.data",'))
+    return json.JSONDecoder().raw_decode(page, start)[0]
 
 
 def keep(item):

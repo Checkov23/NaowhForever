@@ -2,7 +2,8 @@
 
 Each class's list (wowhead.com/forever/spells/abilities/<class>) gives every spell with its
 level, rank, where it comes from (source 6 is a trainer, 4 a quest) and the trainer's base
-price in copper. Kept: the spells a trainer sells, and the ones a quest teaches above level 1.
+price in copper. Kept: the spells a trainer sells, and the ones a quest teaches above level 1, with
+the few a class quest teaches beside its reward, which Wowhead lists with no source (QUEST_TAUGHT).
 Left out: talents (no trainer), runes and engravings, the level 60 book ranks, and the hunter's
 pet training (rows with no skill line: the pet learns those, not the hunter).
 
@@ -13,9 +14,9 @@ rune poisons are not). Their price comes from the trainer window. Pick Lock, Par
 Wield and the armor skills are left out: Wowhead gives them level 1 for every class, which
 the trainers do not.
 
-From the game's own tables (Tools/sources/wago.py): each later rank's talent, when its first rank is a
-talent (Talent: the talent's first rank, by class and spell name), so the addon can list those
-ranks once the talent is known. On Forever some talents are sold by the trainer too (Aimed
+From the game's own tables (Tools/sources/wago.py) and Wowhead's talent calculator: each later rank's
+talent, when its first rank is a talent (the talent's first rank, by class and spell name), so the
+addon can list those ranks once the talent is known. On Forever some talents are sold by the trainer too (Aimed
 Shot, Holy Shock); then nothing waits on the talent.
 
 Wowhead's answers are kept in Tools/data/training_cache.json; delete a class's entry to ask again.
@@ -33,7 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402
 import wago  # noqa: E402
-from wowhead import WOWHEAD, fetch  # noqa: E402
+from wowhead import WOWHEAD, fetch, talent_calculator  # noqa: E402
 from journal import ROOT, write  # noqa: E402
 
 OUT = ROOT / "NaowhForever_Training" / "Data" / "TrainingData.lua"
@@ -42,6 +43,10 @@ CACHE = paths.DATA / "training_cache.json"
 CLASSES = {1: "warrior", 2: "paladin", 3: "hunter", 4: "rogue", 5: "priest", 7: "shaman", 8: "mage",
            9: "warlock", 11: "druid"}
 TRAINER, QUEST = 6, 4    # Wowhead's sources
+# What a class quest teaches beside its reward, which Wowhead lists with no source: Taunt and Sunder
+# Armor (Defensive Stance), Intercept (Berserker Stance), Growl and Maul (Bear Form), and Call,
+# Dismiss, Feed and Revive Pet (Tame Beast).
+QUEST_TAUGHT = {355, 7386, 20252, 6795, 6807, 883, 2641, 6991, 982}
 KEEP = ("id", "name", "rank", "level", "source", "trainingcost", "reqrace", "skill")
 ROGUE = 4
 POISONS = 40              # the game's Poisons skill line
@@ -81,8 +86,10 @@ def poison_spells(build_id, cache):
 
 
 def talents_by_name(build_id):
-    """Class ID -> spell name -> the spell ID of that talent's first rank. Forever's Talent rows
-    have no class; their tree's does (TalentTab ClassMask, bit n-1 for class n)."""
+    """Class ID -> spell name -> the spell ID of that talent's first rank, from the game's Talent
+    rows and Wowhead's talent calculator, which also has Forever's new talents (Lava Burst, Penance,
+    Mutilate) that the Talent rows lack. Forever's Talent rows have no class; their tree's does
+    (TalentTab ClassMask, bit n-1 for class n)."""
     names = {r["ID"]: r["Name_lang"] for r in wago.table("SpellName", build_id)}
     tree_classes = {r["ID"]: int(r["ClassMask"] or 0) for r in wago.table("TalentTab", build_id)}
     out = {}
@@ -93,6 +100,14 @@ def talents_by_name(build_id):
         mask = tree_classes.get(row["TabID"], 0)
         for class_id in CLASSES:
             if mask >> (class_id - 1) & 1:
+                out.setdefault(class_id, {})[names[spell]] = int(spell)
+    calculator = talent_calculator()
+    for tree_id, talents in calculator["talents"].items():
+        tree = calculator["trees"][tree_id]["description"].lower()
+        class_id = next(c for c, slug in CLASSES.items() if tree.startswith(slug))
+        for talent in talents.values():
+            spell = str(talent["ranks"][0])
+            if names.get(spell):
                 out.setdefault(class_id, {})[names[spell]] = int(spell)
     return out
 
@@ -113,7 +128,7 @@ def entries(rows, talents):
             continue
         if TRAINER in source and (row.get("trainingcost") or row["skill"] == [POISONS]):
             kept.append({"quest": False, "cost": row.get("trainingcost") or 0})
-        elif QUEST in source and level > 1:
+        elif (QUEST in source and level > 1) or row["id"] in QUEST_TAUGHT:
             kept.append({"quest": True, "cost": 0})
         else:
             continue
