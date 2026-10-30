@@ -1,6 +1,24 @@
 # Changelog
 
-## Unreleased
+## 1.1.52
+
+### Fixed
+- Training Planner: talent trees match Forever's current trees. Mage no longer shows Piercing Ice
+  and Arcane Focus, and its talent ranks and places are current.
+- Training Planner: spell levels, ranks and trainer prices match Forever's trainers, among them
+  Berserker Rage at 30, Righteous Fury at 10, Shred at 20, and the Lava Burst and Mana Tide Totem
+  ranks.
+- Training Planner: lists Frost Blast, Arcane Wrath, Primal Bite, and rank 4 of Lava Burst and Mana
+  Tide Totem.
+- Training Planner: lists the spells a class quest teaches alongside it: Taunt, Sunder Armor,
+  Intercept, Growl, Maul, and the hunter's pet spells.
+- Training Planner: a talent's later ranks (Lava Burst, Penance, Mutilate and more) wait for the
+  talent instead of showing for everyone.
+- Training Planner: Sense Undead is gone, as it is from Forever.
+- Training Planner: lists Teleport: Moonglade, Teleport: Dalaran, Revoke, Lightwell rank 1 and the
+  hunter's Lacerate. Their price shows once you open your trainer.
+- Training Planner: Penance and Mutilate ranks 2-4 can be trained once you have the talent.
+- Training Planner: Lightwell ranks 2 and 3 no longer wait for a talent Forever removed.
 
 ## 1.1.51
 
