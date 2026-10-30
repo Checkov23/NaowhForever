@@ -51,7 +51,8 @@ view files and the window share.
   `ns.FEATURES.training`; the Trainer Popup card's switch belongs to the QoL store, and QoL's `Questing/Trainer.lua` declares
   that card on this page, so it goes when QoL is off.
 - TrainingData rows are `{ level, spellID, cost, flags }` in level order; cost is the trainer's base
-  price in copper. Flags: `quest` (taught by a quest), `needs` (the rank to learn first), `talent`
+  price in copper, or 0 when Wowhead has none (the rogue's poisons and a few new spells), which reads
+  "At the trainer". Flags: `quest` (taught by a quest), `needs` (the rank to learn first), `talent`
   (the talent it needs), `races` (the races that learn it). The trainer window updates a price to
   what it actually asked, kept account-wide.
 - Weapon skills are not in TrainingData: Wowhead lists them at level 0 with no price and no trainer, and
