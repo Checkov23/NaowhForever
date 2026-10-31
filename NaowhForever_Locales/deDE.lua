@@ -7365,3 +7365,7 @@ L["Below a shift, the mana you still need shows in red after your mana."] = "Rei
 L["%d shifts left"] = "%d Wechsel übrig"
 L["1 shift left"] = "1 Wechsel übrig"
 L["Also shows the bars while you are in a raid."] = "Zeigt die Leisten auch, solange du in einem Raid bist."
+L["Basic Patron"] = "Basis-Unterstützer"
+L["Basic Supporters"] = "Basis-Unterstützer"
+L["Everyone wearing the Basic badge: you keep Naowh Forever going too."] = "Alle mit dem Basis-Abzeichen: Auch ihr haltet Naowh Forever am Laufen."
+L["Supports Naowh at the Basic tier on Patreon."] = "Unterstützt Naowh auf der Basis-Stufe bei Patreon."
