@@ -43,7 +43,7 @@ local TEXT_PREVIEW_NONE = ns.L("Preview on: you wear no badge until you reload, 
 local TEXT_PREVIEW_ON = ns.L("Preview on: your name wears the %s badge until you reload. Say something to see it.")
 local TEXT_PREVIEW_OFF = ns.L("Preview off.")
 local TEXT_USAGE = "/nf badges id || status || claim CODE || preview [%smoderator||developer||ellesmere||naowh||none] || preview off || toast"
-local TEXT_USAGE_PATRON = "legendary||epic||"
+local TEXT_USAGE_PATRON = "legendary||epic||basic||"
 local TEXT_SUMMARY = ns.L("%d of %d on")
 local TEXT_STATUS_NONE = ns.L("No badge on this character")
 local TEXT_STATUS_CONFIRMED = ns.L("%s, your claim matches naowh.gg")
@@ -120,9 +120,18 @@ local TIERS = {
         sound = "UI_EPICLOOT_TOAST",
         showsSince = true,
     },
+    basic = {
+        title = "Basic Patron",
+        about = ns.L("Supports Naowh at the Basic tier on Patreon."),
+        color = { r = 0x00 / 255, g = 0x70 / 255, b = 0xdd / 255 },
+        chat = MEDIA .. "BadgeBasicChat.tga",
+        large = MEDIA .. "BadgeBasicLarge.tga",
+        sound = "UI_RAID_LOOT_TOAST_LESSER_ITEM_WON",
+        showsSince = true,
+    },
 }
-local PATRON_TIER, DEFAULT_PATRON_TIER = { legendary = true, epic = true }, "legendary"
-if not PATRONS then TIERS.legendary, TIERS.epic = nil, nil end
+local PATRON_TIER, DEFAULT_PATRON_TIER = { legendary = true, epic = true, basic = true }, "legendary"
+if not PATRONS then TIERS.legendary, TIERS.epic, TIERS.basic = nil, nil, nil end
 if PATRONS then ns.LINKS[#ns.LINKS + 1] = PATREON_LINK end
 local BADGE_DROP = 1
 

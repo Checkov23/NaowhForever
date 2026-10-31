@@ -666,7 +666,7 @@
   },
   {
    "id": 5221,
-   "level": 22,
+   "level": 20,
    "name": "Shred",
    "rank": "Rank 1",
    "skill": [
@@ -3115,7 +3115,11 @@
    "rank": "Rank 2",
    "skill": [
     134
-   ]
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 8000
   },
   {
    "id": 1238070,
@@ -3124,7 +3128,11 @@
    "rank": "Rank 3",
    "skill": [
     134
-   ]
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 17000
   },
   {
    "id": 1238073,
@@ -3133,7 +3141,11 @@
    "rank": "Rank 4",
    "skill": [
     134
-   ]
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 28000
   },
   {
    "id": 1238214,
@@ -6263,7 +6275,7 @@
    "source": [
     6
    ],
-   "trainingcost": 36000
+   "trainingcost": 31578
   },
   {
    "id": 1299447,
@@ -6276,7 +6288,7 @@
    "source": [
     6
    ],
-   "trainingcost": 48000
+   "trainingcost": 41052
   },
   {
    "id": 1310725,
@@ -6297,7 +6309,7 @@
    "source": [
     6
    ],
-   "trainingcost": 14000
+   "trainingcost": 30526
   },
   {
    "id": 1310786,
@@ -6310,7 +6322,7 @@
    "source": [
     6
    ],
-   "trainingcost": 24000
+   "trainingcost": 41052
   }
  ],
  "mage": [
@@ -8053,6 +8065,22 @@
    "trainingcost": 36000
   },
   {
+   "id": 11151,
+   "level": 1,
+   "name": "Piercing Ice",
+   "skill": [
+    6
+   ]
+  },
+  {
+   "id": 11222,
+   "level": 1,
+   "name": "Arcane Focus",
+   "skill": [
+    237
+   ]
+  },
+  {
    "id": 11416,
    "level": 40,
    "name": "Portal: Ironforge",
@@ -9066,6 +9094,84 @@
    "skill": [
     237
    ]
+  },
+  {
+   "id": 1326053,
+   "level": 24,
+   "name": "Frost Blast",
+   "rank": "Rank 1",
+   "skill": [
+    6
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 4526
+  },
+  {
+   "id": 1326054,
+   "level": 36,
+   "name": "Frost Blast",
+   "rank": "Rank 2",
+   "skill": [
+    6
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 11578
+  },
+  {
+   "id": 1326055,
+   "level": 48,
+   "name": "Frost Blast",
+   "rank": "Rank 3",
+   "skill": [
+    6
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 23157
+  },
+  {
+   "id": 1326080,
+   "level": 36,
+   "name": "Arcane Wrath",
+   "rank": "Rank 2",
+   "skill": [
+    237
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 11578
+  },
+  {
+   "id": 1326081,
+   "level": 48,
+   "name": "Arcane Wrath",
+   "rank": "Rank 3",
+   "skill": [
+    237
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 23157
+  },
+  {
+   "id": 1326082,
+   "level": 60,
+   "name": "Arcane Wrath",
+   "rank": "Rank 4",
+   "skill": [
+    237
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 32631
   }
  ],
  "paladin": [
@@ -9293,7 +9399,7 @@
   {
    "id": 1038,
    "level": 26,
-   "name": "Blessing of Salvation",
+   "name": "Salvation",
    "skill": [
     267
    ],
@@ -9431,7 +9537,7 @@
   },
   {
    "id": 5502,
-   "level": 20,
+   "level": 0,
    "name": "Sense Undead",
    "skill": [
     594
@@ -10395,7 +10501,7 @@
   },
   {
    "id": 20163,
-   "level": 25,
+   "level": 26,
    "name": "Seal of Fury",
    "rank": "Rank 3",
    "skill": [
@@ -11153,7 +11259,7 @@
   },
   {
    "id": 25780,
-   "level": 16,
+   "level": 10,
    "name": "Righteous Fury",
    "skill": [
     267
@@ -11204,7 +11310,7 @@
   {
    "id": 25895,
    "level": 60,
-   "name": "Greater Blessing of Salvation",
+   "name": "Mass Salvation",
    "skill": [
     267
    ],
@@ -11835,6 +11941,14 @@
    "name": "Holy Light",
    "skill": [
     594
+   ]
+  },
+  {
+   "id": 1325499,
+   "level": 26,
+   "name": "Revoke",
+   "skill": [
+    267
    ]
   }
  ],
@@ -13653,6 +13767,22 @@
    ]
   },
   {
+   "id": 15274,
+   "level": 0,
+   "name": "Improved Fade",
+   "skill": [
+    78
+   ]
+  },
+  {
+   "id": 15318,
+   "level": 0,
+   "name": "Shadow Affinity",
+   "skill": [
+    78
+   ]
+  },
+  {
    "id": 15323,
    "level": 0,
    "name": "Blackout",
@@ -15410,7 +15540,7 @@
    "source": [
     6
    ],
-   "trainingcost": 150
+   "trainingcost": 157
   },
   {
    "id": 1277638,
@@ -15424,7 +15554,7 @@
    "source": [
     6
    ],
-   "trainingcost": 500
+   "trainingcost": 526
   },
   {
    "id": 1277639,
@@ -15438,7 +15568,7 @@
    "source": [
     6
    ],
-   "trainingcost": 900
+   "trainingcost": 947
   },
   {
    "id": 1277640,
@@ -15452,7 +15582,7 @@
    "source": [
     6
    ],
-   "trainingcost": 1500
+   "trainingcost": 1578
   },
   {
    "id": 1309595,
@@ -18918,6 +19048,14 @@
    "trainingcost": 30000
   },
   {
+   "id": 16120,
+   "level": 0,
+   "name": "Call of Thunder",
+   "skill": [
+    375
+   ]
+  },
+  {
    "id": 16180,
    "level": 0,
    "name": "Nature's Guidance",
@@ -19165,7 +19303,7 @@
   },
   {
    "id": 17354,
-   "level": 48,
+   "level": 38,
    "name": "Mana Tide Totem",
    "rank": "Rank 2",
    "skill": [
@@ -19178,7 +19316,7 @@
   },
   {
    "id": 17359,
-   "level": 58,
+   "level": 48,
    "name": "Mana Tide Totem",
    "rank": "Rank 3",
    "skill": [
@@ -19999,7 +20137,7 @@
   },
   {
    "id": 1238299,
-   "level": 50,
+   "level": 40,
    "name": "Lava Burst",
    "rank": "Rank 2",
    "skill": [
@@ -20012,7 +20150,7 @@
   },
   {
    "id": 1238300,
-   "level": 60,
+   "level": 50,
    "name": "Lava Burst",
    "rank": "Rank 3",
    "skill": [
@@ -20064,6 +20202,32 @@
     6
    ],
    "trainingcost": 1600
+  },
+  {
+   "id": 1325256,
+   "level": 58,
+   "name": "Mana Tide Totem",
+   "rank": "Rank 4",
+   "skill": [
+    374
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 2105
+  },
+  {
+   "id": 1326047,
+   "level": 60,
+   "name": "Lava Burst",
+   "rank": "Rank 4",
+   "skill": [
+    375
+   ],
+   "source": [
+    6
+   ],
+   "trainingcost": 35789
   }
  ],
  "warlock": [
@@ -21817,7 +21981,7 @@
    "source": [
     6
    ],
-   "trainingcost": 500
+   "trainingcost": 526
   },
   {
    "id": 18096,
@@ -21876,14 +22040,6 @@
    "level": 0,
    "name": "Improved Curse of Weakness",
    "rank": "Rank 3",
-   "skill": [
-    355
-   ]
-  },
-  {
-   "id": 18218,
-   "level": 0,
-   "name": "Grim Reach",
    "skill": [
     355
    ]
@@ -22755,7 +22911,7 @@
    "source": [
     6
    ],
-   "trainingcost": 2000
+   "trainingcost": 2105
   },
   {
    "id": 440922,
@@ -22834,7 +22990,7 @@
    "source": [
     6
    ],
-   "trainingcost": 900
+   "trainingcost": 947
   },
   {
    "id": 1293813,
@@ -22847,7 +23003,7 @@
    "source": [
     6
    ],
-   "trainingcost": 1100
+   "trainingcost": 1157
   },
   {
    "id": 1293818,
@@ -22860,7 +23016,7 @@
    "source": [
     6
    ],
-   "trainingcost": 300
+   "trainingcost": 315
   },
   {
    "id": 1311676,
@@ -22873,7 +23029,7 @@
    "source": [
     6
    ],
-   "trainingcost": 6000
+   "trainingcost": 6315
   },
   {
    "id": 1311677,
@@ -22886,7 +23042,7 @@
    "source": [
     6
    ],
-   "trainingcost": 11000
+   "trainingcost": 11578
   },
   {
    "id": 1311680,
@@ -22899,7 +23055,7 @@
    "source": [
     6
    ],
-   "trainingcost": 15000
+   "trainingcost": 15789
   }
  ],
  "warrior": [
@@ -23174,6 +23330,9 @@
    "name": "Berserker Stance",
    "skill": [
     256
+   ],
+   "source": [
+    4
    ]
   },
   {
@@ -23949,6 +24108,14 @@
    ]
   },
   {
+   "id": 12299,
+   "level": 1,
+   "name": "Toughness",
+   "skill": [
+    257
+   ]
+  },
+  {
    "id": 12302,
    "level": 1,
    "name": "Improved Taunt",
@@ -23980,6 +24147,14 @@
    "level": 1,
    "name": "Improved Demoralizing Shout",
    "rank": "Rank 1",
+   "skill": [
+    256
+   ]
+  },
+  {
+   "id": 12329,
+   "level": 1,
+   "name": "Improved Cleave",
    "skill": [
     256
    ]
@@ -24120,7 +24295,7 @@
   },
   {
    "id": 18499,
-   "level": 32,
+   "level": 30,
    "name": "Berserker Rage",
    "skill": [
     256

@@ -32,6 +32,7 @@ local THANKS = {
     { tier = "moderator", name = ns.L("Moderators"), role = "Community", line = ns.L("Every moderator keeping the Naowh community running.") },
     { tier = "legendary", badges = true, name = ns.L("Legendary Supporters"), role = "Supporters", line = ns.L("Everyone wearing the Legendary badge: you keep Naowh Forever going.") },
     { tier = "epic", badges = true, name = ns.L("Epic Supporters"), role = "Supporters", line = ns.L("Everyone wearing the Epic badge: you keep Naowh Forever going too.") },
+    { tier = "basic", badges = true, name = ns.L("Basic Supporters"), role = "Supporters", line = ns.L("Everyone wearing the Basic badge: you keep Naowh Forever going too.") },
     { icon = "checklist", color = T.accentSoft, name = ns.L("Beta Testers"), role = "Community", line = ns.L("Every bug report and screenshot made it better.") },
 }
 

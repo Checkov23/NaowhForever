@@ -206,7 +206,7 @@ state.class, state.className = "PRIEST", "Priest"
 
 local function ActionInfo(slot)
     local a = state.bars[slot]
-    if a then return a.kind, a.id end
+    if a then return a.kind, a.id, a.subType end
 end
 
 local env = setmetatable({
@@ -605,6 +605,18 @@ RunTimers()
 check("Undo puts the alt's own bars back", state.bars[2].kind == "item" and state.bars[7].id == 585 and state.bars[1] == nil)
 check("and the banner goes", not Shown("undo"))
 check("putting a backup back is itself backed up", #AllShown("restore") == 2)
+
+state.bars = { [1] = { kind = "macro", id = 585, subType = "spell", name = "Gone" } }
+RunTimers()
+ns.UI.RefreshPage()
+RunTimers()
+check("the spell a macro shows is on the bars, though no macro is found by its name", not Shown("icons"))
+state.macros = { { name = "Holy", icon = 1, body = "#showtooltip\n/cast smite" } }
+state.bars = { [1] = { kind = "macro", id = 0, name = "Holy" } }
+RunTimers()
+ns.UI.RefreshPage()
+RunTimers()
+check("a spell named in a macro on the bars counts in any letter case", not Shown("icons"))
 
 state.bars = {}
 RunTimers()

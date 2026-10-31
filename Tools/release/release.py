@@ -433,12 +433,9 @@ def discord_payloads(changelog, tag, limit=DISCORD_LIMIT):
     posts.append(post)
 
     title = f"Naowh Forever {tag}"
-    payloads = [{"embeds": [{"title": title if len(posts) == 1 else f"{title} ({i}/{len(posts)})",
-                             "description": "\n".join(post), "color": DISCORD_COLOR}]}
-                for i, post in enumerate(posts, 1)]
-    payloads[0]["content"] = "@everyone"
-    payloads[0]["allowed_mentions"] = {"parse": ["everyone"]}
-    return payloads
+    return [{"embeds": [{"title": title if len(posts) == 1 else f"{title} ({i}/{len(posts)})",
+                         "description": "\n".join(post), "color": DISCORD_COLOR}]}
+            for i, post in enumerate(posts, 1)]
 
 
 def pending(root, fetch_body=pr_body):
