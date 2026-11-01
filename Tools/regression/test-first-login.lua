@@ -4,8 +4,8 @@
 -- never during a loading screen, and waits for combat to end; once seen it never opens by itself
 -- again; a new character gets its page in the onboarding window (its name, its main and the main's
 -- profile), out of combat, again after a reload or relog until it is answered, changing nothing
--- itself; /nf welcome and /nf setup open the onboarding. What the page's answers do is in
--- test-setup-window.lua.
+-- itself; with NaowhUI loaded neither opens by itself; /nf welcome and /nf setup open the
+-- onboarding. What the page's answers do is in test-setup-window.lua.
 local checks = 0
 local function check(label, value) assert(value, label); checks = checks + 1 end
 
@@ -32,7 +32,7 @@ function Frame:UnregisterAllEvents() self.events = {} end
 local ME = "Die Dudu"
 
 local function Setup(account)
-    local s = { account = account or {}, made = {}, timers = {}, combat = false, onboarding = 0, opened = {},
+    local s = { account = account or {}, made = {}, timers = {}, combat = false, onboarding = 0, opened = {}, loaded = {},
         profiles = { Default = {}, Raid = {} }, mainProfile = "Raid",
         charActive = { [ME] = "Default", ["Die Man"] = "Raid", ["Die Pri"] = "Default" } }
     local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
@@ -70,6 +70,7 @@ local function Setup(account)
         NaowhForever = ns,
         CreateFrame = function() return NewFrame(s.made) end,
         InCombatLockdown = function() return s.combat end,
+        C_AddOns = { IsAddOnLoaded = function(name) return s.loaded[name] == true end },
         UnitName = function() return "Die Dudu" end,
         C_Timer = { NewTimer = function(delay, fn)
             local t = { delay = delay, fn = fn }
@@ -273,6 +274,24 @@ do
 end
 
 -------------------------------------------------------------------------------
+--  NaowhUI loaded: its installer sets Naowh Forever up, so neither opens by itself
+-------------------------------------------------------------------------------
+do
+    local s = Setup()
+    s.loaded.NaowhUI = true
+    Event(s, "PLAYER_ENTERING_WORLD", true, false)
+    check("NaowhUI loaded: the first login starts no timer and stops listening", #s.timers == 0
+        and next(s.login.events) == nil and s.onboarding == 0)
+    check("the login is still noted", s.marked == 1)
+end
+do
+    local s = Setup({ onboardingSeen = true, welcomeSeen = true })
+    s.loaded.NaowhUI = true
+    s.candidate = "Die Man-Forever"
+    check("NaowhUI loaded: a new character is not asked either", Asked(s) == nil and #s.timers == 0)
+end
+
+-------------------------------------------------------------------------------
 --  /nf welcome and /nf setup
 -------------------------------------------------------------------------------
 do
@@ -286,8 +305,9 @@ do
     setfenv(handler, env)
     handler = handler()
     s.ns.ToggleOptionsWindow = function() s.toggled = true end
+    s.loaded.NaowhUI = true
     handler("setup")
-    check("/nf setup opens the onboarding, seen or not", s.onboarding == 1 and not s.toggled)
+    check("/nf setup opens the onboarding, seen or not, NaowhUI or not", s.onboarding == 1 and not s.toggled)
     check("for every character, as before", s.opened[1] == false)
     handler(" Welcome ")
     check("/nf welcome too, as it did before the onboarding", s.onboarding == 2 and not s.toggled)

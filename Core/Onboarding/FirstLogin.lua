@@ -1,7 +1,8 @@
--- FirstLogin.lua: opens the onboarding on an account's first login, and a new character's page until it is answered.
+-- FirstLogin.lua: opens the onboarding on an account's first login, and a new character's page until it is answered, unless NaowhUI is loaded.
 local ns = _G.NaowhForever
 
 local SHOW_DELAY = 5
+local INSTALLER_ADDON = "NaowhUI"
 
 local timer, armed
 local login = CreateFrame("Frame")
@@ -13,6 +14,7 @@ local function Stop()
 end
 
 local function Wanted()
+    if C_AddOns.IsAddOnLoaded(INSTALLER_ADDON) then return false end
     return not ns.AccountSettings().onboardingSeen or ns.ImportCandidate() ~= nil
 end
 

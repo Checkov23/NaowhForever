@@ -444,6 +444,9 @@ Onboarding
 - The onboarding opens once per account, a few seconds into the first login and out of combat;
   nothing is made until then. Closing it any way marks it seen (`onboardingSeen`); hiding the whole
   UI is not a close. It has its own flag so players who saw the old welcome window get it once too.
+- With NaowhUI loaded, neither the onboarding nor a new character's page opens by itself: NaowhUI's
+  installer imports Naowh's profile and offers it to new characters. `/nf setup` and the Setups card
+  still open it. Nothing is saved, so it opens as usual once NaowhUI is gone.
 - Closing it also sets `welcomeSeen`, which the Character Panel reads to tell a player new to the
   addon from anyone else; players who saw the old welcome window already have it, so they are not
   treated as new.
