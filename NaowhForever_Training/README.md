@@ -64,6 +64,13 @@ view files and the window share.
   No price is known, so they read "At the trainer".
 - A talent node is `{ spell, ranks, row, column, slot in the row, the node it needs at full rank }`; a
   build's points are nodes, one per point from level 10, 51 in all, 5 in a column for each row above.
+- Blizzard reuses a node for a new talent when it reworks a tree (the 30 October 2026 hotfix put Primal Bite
+  in Berserk's node), so a node in an old build can name another talent now. Each class tree has a revision
+  (`rev`) and `replaced`, the revision at which each node came in or took another talent; a saved build
+  carries the revision it was made on. The first time a build made on an older tree is read, its points in
+  replaced nodes go, then every other point that no longer fits the tree, keeping the rest in order, so
+  following it never buys a talent the player did not pick. An imported string carries no revision and is
+  read against today's tree.
 - A talent's spell shows its full rank's text, so its tooltip reads the text of its rank and the next from
   the node's trait entry (GetTraitEntry), as the game's talent frame does. Another class's nodes are not in
   your talent config, so their tooltip shows the spell.

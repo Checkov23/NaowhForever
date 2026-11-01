@@ -5,8 +5,16 @@ level, rank, where it comes from (source 6 is a trainer, 4 a quest) and the trai
 price in copper. Kept: the spells a trainer sells, and the ones a quest teaches above level 1, with
 the few a class quest teaches beside its reward, which Wowhead lists with no source (QUEST_TAUGHT),
 and the few new class abilities it lists with no source or price (TRAINER_TAUGHT).
-Left out: talents (no trainer), runes and engravings, the level 60 book ranks, and the hunter's
-pet training (rows with no skill line: the pet learns those, not the hunter).
+Left out: talents (no trainer), runes and engravings, the level 60 book ranks, the hunter's
+pet training (rows with no skill line: the pet learns those, not the hunter), any spell the
+build's skill lines (SkillLineAbility) no longer have, which Wowhead can still list after a hotfix
+takes it away (Frost Blast, 30 October 2026), and what a hotfix took away that the build's tables
+still have (UNTRAINABLE).
+
+Wowhead's lists can lag a hotfix, so each spell's rank and level are the build's own (Spell,
+SpellLevels), and a rank before a listed one (SkillLineAbility's SupercedesSpell) that Wowhead lacks
+is added at the game's level, unless it is the talent. An added rank has no price: the trainer
+window gives it.
 
 Rogue poisons are not in the rogue's list: they are the game's Poisons skill line
 (SkillLineAbility), each with its level from its own Wowhead page, kept when that page lists
@@ -49,9 +57,16 @@ TRAINER, QUEST = 6, 4    # Wowhead's sources
 # Dismiss, Feed and Revive Pet (Tame Beast).
 QUEST_TAUGHT = {355, 7386, 20252, 6795, 6807, 883, 2641, 6991, 982}
 # Class abilities in Wowhead's talent calculator that its class lists have no source or price for:
-# Teleport: Moonglade, Teleport: Dalaran, Revoke, the hunter's Lacerate, and Lightwell's first rank,
-# which Forever took out of the talent tree. Kept as trainer spells; the trainer window gives their price.
-TRAINER_TAUGHT = {18960, 1297659, 1325499, 24118, 24119, 24120, 1299332, 724}
+# Teleport: Moonglade, Teleport: Dalaran, the hunter's Lacerate, and Lightwell's first rank, which
+# Forever took out of the talent tree. Kept as trainer spells; the trainer window gives their price.
+TRAINER_TAUGHT = {18960, 1297659, 24118, 24119, 24120, 1299332, 724}
+# What no trainer teaches any more though Wowhead and the build's tables on wago.tools still have it:
+# wago applies a hotfix's new and changed rows, not the ones it removes. The 30 October 2026 hotfix
+# removed Blessing of Light, Greater Blessing of Light, Salvation, Mass Salvation and Revoke (their Spell
+# rows) and Primal Bite's fourth rank (its SkillLineAbility row), and replaced the talent that was Binding
+# Heal's first rank with Holy Binding, which leaves its later ranks out of reach.
+UNTRAINABLE = {19977, 19978, 19979, 25890, 1038, 25895, 1325499, 1238073,
+               1240770, 1240771, 1240772, 1240773, 1240774}
 KEEP = ("id", "name", "rank", "level", "source", "trainingcost", "reqrace", "skill")
 ROGUE = 4
 POISONS = 40              # the game's Poisons skill line
@@ -107,21 +122,56 @@ def talents_by_name(build_id):
     return out
 
 
+def game_spells(build_id):
+    """Spell ID -> {name, rank, level, replaces} from the build's tables: level 0 when the game gives
+    none, replaces the rank before it (SkillLineAbility's SupercedesSpell), 0 for none."""
+    levels = {r["SpellID"]: int(r["BaseLevel"] or 0) for r in wago.table("SpellLevels", build_id)}
+    replaces = {r["Spell"]: int(r["SupercedesSpell"]) for r in wago.table("SkillLineAbility", build_id)
+                if int(r["SupercedesSpell"] or 0)}
+    ranks = {r["ID"]: r["NameSubtext_lang"] for r in wago.table("Spell", build_id)}
+    return {int(r["ID"]): {"name": r["Name_lang"], "rank": ranks.get(r["ID"], ""), "level": levels.get(r["ID"], 0),
+                           "replaces": replaces.get(r["ID"], 0)} for r in wago.table("SpellName", build_id)}
+
+
+def caught_up(rows, talents, game):
+    """Wowhead's rows as the build has them: each spell's rank and level from the game, and the rank
+    before a listed one that Wowhead lacks, unless that rank is the talent or has no level."""
+    listed = {row["id"] for row in rows}
+    out = []
+    for row in rows:
+        spell = game.get(row["id"])
+        out.append(dict(row, rank=spell["rank"], level=spell["level"] or row.get("level")) if spell else row)
+    # out grows as ranks are added, so an added rank's own rank before is looked at too.
+    for row in out:
+        before = game.get(row["id"], {}).get("replaces")
+        spell = game.get(before)
+        if not spell or before in listed or not spell["level"] or talents.get(spell["name"]) == before:
+            continue
+        listed.add(before)
+        added = dict(row, id=before, name=spell["name"], rank=spell["rank"], level=spell["level"],
+                     source=[TRAINER], added=True)
+        added.pop("trainingcost", None)
+        out.append(added)
+    return out
+
+
 def races(mask):
     """The race IDs in Wowhead's race mask (bit n-1 for race n)."""
     return [n + 1 for n in range(64) if int(mask) >> n & 1]
 
 
-def entries(rows, talents):
+def entries(rows, talents, learnable):
     """The class's kept spells in level order, each {spell, level, name, rank, cost, quest,
-    talent, races, needs}: needs is the rank before it, which the trainer asks for first."""
+    talent, races, needs}: needs is the rank before it, which the trainer asks for first. Only the
+    spells in learnable (the build's skill lines) are kept."""
     kept = []
     for row in rows:
         source = row.get("source") or []
         level = row.get("level") or 0
-        if not row.get("skill"):
+        if not row.get("skill") or row["id"] not in learnable or row["id"] in UNTRAINABLE:
             continue
-        if TRAINER in source and (row.get("trainingcost") or row["skill"] == [POISONS]) or row["id"] in TRAINER_TAUGHT:
+        if TRAINER in source and (row.get("trainingcost") or row["skill"] == [POISONS] or row.get("added")) \
+                or row["id"] in TRAINER_TAUGHT:
             kept.append({"quest": False, "cost": row.get("trainingcost") or 0})
         elif (QUEST in source and level > 1) or row["id"] in QUEST_TAUGHT:
             kept.append({"quest": True, "cost": 0})
@@ -168,6 +218,8 @@ def build(build_id):
     poisons = poison_spells(build_id, cache)
     CACHE.write_text(json.dumps(cache, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     talents = talents_by_name(build_id)
+    learnable = {int(r["Spell"]) for r in wago.table("SkillLineAbility", build_id)}
+    game = game_spells(build_id)
 
     out = [f"-- TrainingData.lua: every spell each class learns as it levels, built from game build {build_id}.",
            "local ns = _G.NaowhForever",
@@ -175,8 +227,8 @@ def build(build_id):
            "ns.TrainingData = {"]
     counts = []
     for class_id, slug in CLASSES.items():
-        rows = cache[slug] + (poisons if class_id == ROGUE else [])
-        spells = entries(rows, talents.get(class_id, {}))
+        rows = caught_up(cache[slug], talents.get(class_id, {}), game) + (poisons if class_id == ROGUE else [])
+        spells = entries(rows, talents.get(class_id, {}), learnable)
         counts.append(f"{slug} {len(spells)}")
         out.append(f"    [{class_id}] = {{")
         for e in spells:

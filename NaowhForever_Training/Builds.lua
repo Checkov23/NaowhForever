@@ -49,16 +49,21 @@ local function Saved(classID)
     if tree and not pruned[classID] then
         pruned[classID] = true
         for _, build in ipairs(list) do
-            local points, kept = build.points, 0
-            for i = 1, #points do
-                if tree.talents[points[i]] then
-                    kept = kept + 1
-                    points[kept] = points[i]
+            local made = build.rev or 0
+            if made < tree.rev then
+                local points, kept = build.points, {}
+                for _, node in ipairs(points) do
+                    if tree.talents[node] and (tree.replaced[node] or 0) <= made then
+                        kept[#kept + 1] = node
+                        if Training.CheckBuild(tree, kept) then kept[#kept] = nil end
+                    end
                 end
-            end
-            if kept < #points then
-                for i = #points, kept + 1, -1 do points[i] = nil end
-                build.spec = MainSpec(tree, points)
+                if #kept < #points then
+                    wipe(points)
+                    for i, node in ipairs(kept) do points[i] = node end
+                    build.spec = MainSpec(tree, points)
+                end
+                build.rev = tree.rev
             end
         end
     end
@@ -218,7 +223,7 @@ local function DecodeBuild(text)
     end
     if #points == 0 or Training.CheckBuild(tree, points) then return end
     return data.class, { name = BuildName(data.name, TEXT_IMPORTED_BUILD),
-        spec = BuildName(data.spec, TEXT_IMPORTED_SPEC), points = points, saved = true,
+        spec = BuildName(data.spec, TEXT_IMPORTED_SPEC), points = points, saved = true, rev = tree.rev,
         skip = Training.CleanSkips(data.class, data.skip) }
 end
 
@@ -263,7 +268,7 @@ function Training.SaveMyTalents(name)
     end
     local saved = Saved(classID)
     saved[#saved + 1] = { name = BuildName(name, TEXT_MY_TALENTS), spec = TEXT_YOUR_TALENTS, points = points,
-        saved = true }
+        saved = true, rev = tree.rev }
     Changed()
     return classID, #tree + #saved
 end
@@ -278,7 +283,7 @@ function Training.NewBuild(classID, name, from)
         skip[spell] = true
     end
     saved[#saved + 1] = { name = BuildName(name, TEXT_NEW_BUILD), spec = from and from.spec or TEXT_NO_POINTS_YET,
-        points = points, saved = true, skip = skip }
+        points = points, saved = true, skip = skip, rev = ns.TrainingBuilds[classID].rev }
     Changed()
     return #(ns.TrainingBuilds[classID]) + #saved
 end

@@ -1,6 +1,6 @@
 """Tests for Tools/build/training_builds.py: where it puts each talent and which talent it needs,
-from Wowhead Forever's talent calculator data. Offline: Wowhead is never asked; the talents are made
-up here. From the repo root:
+from Wowhead Forever's talent calculator data, and each tree's revision and replaced nodes. Offline:
+Wowhead is never asked; the talents are made up here. From the repo root:
 
     python -m unittest discover -s Tools/tests
 """
@@ -55,6 +55,40 @@ class Trees(unittest.TestCase):
                 tb.class_trees({"81": {}, "41": {}})
         finally:
             tb.TREES = saved
+
+
+class Revisions(unittest.TestCase):
+    FILE = "\n".join([
+        "ns.TrainingBuilds = {",
+        "    [8] = {",
+        '        specs = { "Arcane", "Fire", "Frost" },',
+        "        rev = 2,",
+        "        replaced = { [3] = 2, [9] = 1 },",
+        "        talents = {",
+        "            [1] = { 5001, 3, 1, 1, 1 },",
+        "            [3] = { 5003, 1, 2, 1, 1, 1 },",
+        "        },",
+        "    },",
+        "}",
+    ])
+
+    def test_reads_the_last_file(self):
+        self.assertEqual(tb.previous(self.FILE),
+                         {8: (2, {3: 2, 9: 1}, {1: [5001, 3, 1, 1, 1], 3: [5003, 1, 2, 1, 1, 1]})})
+
+    def test_an_unchanged_tree_keeps_its_revision(self):
+        old = tb.previous(self.FILE)
+        self.assertEqual(tb.revisions(old, {8: old[8][2]}), {8: (2, {3: 2, 9: 1})})
+
+    def test_a_node_with_another_talent_or_new_is_replaced_at_the_next_revision(self):
+        old = tb.previous(self.FILE)
+        trees = {8: {1: [5001, 2, 1, 1, 1], 3: [6003, 1, 2, 1, 1, 1], 4: [5004, 1, 3, 1, 1]}}
+        self.assertEqual(tb.revisions(old, trees), {8: (3, {3: 3, 4: 3})}, "node 9 is gone, rank changes replace nothing")
+
+    def test_a_file_from_before_revisions_starts_every_class_at_one(self):
+        old = {8: (0, {}, {1: [5001, 3, 1, 1, 1]})}
+        self.assertEqual(tb.revisions(old, {8: {1: [5001, 3, 1, 1, 1]}, 1: {2: [7002, 1, 1, 1, 1]}}),
+                         {8: (1, {}), 1: (1, {2: 1})})
 
 
 if __name__ == "__main__":

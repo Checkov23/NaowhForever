@@ -26,7 +26,7 @@ local function Fixture(o)
     local known = o.known or {}
     local frames = {}
     local S = { Get = function() return true end, OnChange = function() end }
-    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TrainingData = DATA, TrainingBuilds = { [8] = {} }, AccountSettings = function() return account end,
+    local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower, TrainingData = DATA, TrainingBuilds = { [8] = { rev = 1, replaced = {}, talents = {} } }, AccountSettings = function() return account end,
         UI = { ModuleSettings = function() return S end, RefreshPage = function() refreshes = refreshes + 1 end } }
     local env = {
         NaowhForever = ns,

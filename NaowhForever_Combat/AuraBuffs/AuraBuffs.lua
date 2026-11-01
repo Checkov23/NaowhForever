@@ -13,7 +13,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     personalBuffsWorld = true, personalBuffsDungeon = true, personalBuffsRaid = true,
     raidBuffs = F.raidBuffs, raidBuffsOwn = true, raidBuffRange = F.raidBuffRange, raidBuffRangeHide = F.raidBuffRangeHide,
     hideBlessingsOnPaladin = F.hideBlessingsOnPaladin,
-    raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false, salvation = false },
+    raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
     personalBuffs = F.personalBuffs, personalBuffPicks = {}, weaponEnhancements = F.weaponEnhancements,
     buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 }, buffGlowLines = 8,
     buffGlowThickness = 2, buffGlowSpeed = 5,

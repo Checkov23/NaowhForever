@@ -9,12 +9,16 @@ one full-rank need.
 The talent IDs are the game's TraitNode IDs, which C_Traits buys ranks in and which the Naowh site's
 build strings carry (naowh.gg/talents/forever). Run it again when a patch or hotfix changes a tree.
 
-Writes NaowhForever_Training/Data/TrainingBuilds.lua: per class, its trees' names and
-[node] = { first rank's spell, ranks, row, tree, column[, the node it needs] }.
+Writes NaowhForever_Training/Data/TrainingBuilds.lua: per class, its trees' names, its revision,
+replaced and [node] = { first rank's spell, ranks, row, tree, column[, the node it needs] }. The
+revision goes up by one each time the class's tree changes; replaced lists each node that came in or
+took another talent then, with the revision it did. Saved builds carry the revision they were made
+on, and the addon drops their points in nodes replaced since (Blizzard reuses a node for a new talent).
 
 Usage: python Tools/build/training_builds.py
 """
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -66,14 +70,52 @@ def class_trees(talents):
     return out
 
 
+def previous(text):
+    """What the last TrainingBuilds.lua held: class ID -> (revision, replaced, node -> its fields)."""
+    out, class_id = {}, None
+    for line in text.splitlines():
+        if m := re.match(r"    \[(\d+)\] = \{$", line):
+            class_id = int(m.group(1))
+            out[class_id] = (0, {}, {})
+        elif m := re.match(r"        rev = (\d+),$", line):
+            out[class_id] = (int(m.group(1)), out[class_id][1], out[class_id][2])
+        elif m := re.match(r"        replaced = \{(.*)\},$", line):
+            out[class_id][1].update({int(n): int(r) for n, r in re.findall(r"\[(\d+)\] = (\d+)", m.group(1))})
+        elif m := re.match(r"            \[(\d+)\] = \{ ([\d, ]+) \},$", line):
+            out[class_id][2][int(m.group(1))] = [int(v) for v in m.group(2).split(", ")]
+    return out
+
+
+def revisions(old, trees):
+    """Class ID -> (revision, replaced): the same as before while a class's tree is unchanged, else one
+    up, with each node that is new or holds another talent replaced at it."""
+    out = {}
+    for class_id, talents in trees.items():
+        rev, replaced, before = old.get(class_id, (0, {}, {}))
+        if rev and talents == before:
+            out[class_id] = (rev, replaced)
+            continue
+        rev += 1
+        replaced = {node: r for node, r in replaced.items() if node in talents}
+        for node, talent in talents.items():
+            if node not in before or before[node][0] != talent[0]:
+                replaced[node] = rev
+        out[class_id] = (rev, replaced)
+    return out
+
+
 def build():
     trees = class_trees(talent_calculator()["talents"])
+    revs = revisions(previous(OUT.read_text(encoding="ascii")) if OUT.exists() else {}, trees)
     out = header("TrainingBuilds.lua", "each class's talent tree, from Wowhead Forever's talent calculator")
     out.append("ns.TrainingBuilds = {")
     counts = []
     for class_id, talents in trees.items():
         names = ", ".join(f'"{n}"' for n in TREES[class_id][1])
-        out += [f"    [{class_id}] = {{", f"        specs = {{ {names} }},", "        talents = {"]
+        rev, replaced = revs[class_id]
+        moved = ", ".join(f"[{node}] = {r}" for node, r in sorted(replaced.items()))
+        out += [f"    [{class_id}] = {{", f"        specs = {{ {names} }},", f"        rev = {rev},",
+                f"        replaced = {{ {moved} }}," if moved else "        replaced = {},", "        talents = {"]
         for node_id in sorted(talents):
             out.append(f"            [{node_id}] = {{ {', '.join(str(v) for v in talents[node_id])} }},")
         out += ["        },", "    },"]

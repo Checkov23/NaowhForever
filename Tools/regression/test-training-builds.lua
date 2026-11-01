@@ -3,16 +3,19 @@
 local DIR = arg[1] or "NaowhForever_Training"
 local Load = dofile("Tools/regression/load_files.lua")
 
--- A mage tree: two rows of Arcane, one talent in Fire, and one Naowh build.
+-- A mage tree: two rows of Arcane, one talent in Fire, and one Naowh build. It is the tree's second
+-- revision, which gave node 15 its talent.
 -- node = { spell, ranks, row, column, slot, the node it needs at full rank }.
 local TREE = { [8] = {
     specs = { "Arcane", "Fire", "Frost" },
+    rev = 2,
+    replaced = { [15] = 2 },
     talents = { [11] = { 1001, 3, 2, 1, 1, 12 }, [12] = { 1002, 1, 1, 1, 1 }, [13] = { 1003, 5, 1, 1, 2 },
         [14] = { 1004, 2, 2, 1, 2 }, [15] = { 1005, 5, 1, 2, 1 } },
     { name = "Arcane Leveling", spec = "Arcane", points = { 13, 13, 13, 13, 12, 11 } },
 } }
 -- A warrior tree, so a mage node in a warrior build can be caught.
-TREE[1] = { specs = { "Arms", "Fury", "Protection" }, talents = { [21] = { 2001, 5, 1, 1, 1 } } }
+TREE[1] = { specs = { "Arms", "Fury", "Protection" }, rev = 1, replaced = {}, talents = { [21] = { 2001, 5, 1, 1, 1 } } }
 
 -- The mage's trainer spells: two ranks of Fireball, Blink, and a quest spell that no trainer sells.
 local SPELLS = { [8] = { { 1, 133, 0 }, { 6, 143, 100 }, { 12, 145, 600 }, { 20, 1953, 2000 },
@@ -347,16 +350,38 @@ end)
 
 Case("a saved build drops the talents the game took out of the tree, the rest kept in order", function()
     local t = Fixture({ account = { trainingBuilds = { [8] = {
-        { name = "Old", spec = "Fire", points = { 13, 99, 13, 15, 98 }, saved = true },
-        { name = "Gone", spec = "Fire", points = { 99 }, saved = true },
-        { name = "Fine", spec = "Fire", points = { 15 }, saved = true },
+        { name = "Old", spec = "Fire", points = { 13, 99, 13, 15, 98 }, saved = true, rev = 2 },
+        { name = "Gone", spec = "Fire", points = { 99 }, saved = true, rev = 1 },
+        { name = "Fine", spec = "Fire", points = { 15 }, saved = true, rev = 2 },
     } } } })
     assert(#t.T.Builds(8) == 4, "Naowh's and the three saved")
     local old, gone, fine = t.Saved(8)[1], t.Saved(8)[2], t.Saved(8)[3]
-    assert(table.concat(old.points, " ") == "13 13 15" and old.spec == "Arcane", table.concat(old.points, " "))
-    assert(#gone.points == 0 and gone.spec == "No points yet", "nothing left")
+    assert(table.concat(old.points, " ") == "13 99 13 15 98", "a build made on this tree is not touched")
+    assert(#gone.points == 0 and gone.spec == "No points yet" and gone.rev == 2, "nothing left")
     assert(fine.points[1] == 15 and fine.spec == "Fire", "a build that fits is left alone")
-    assert(t.T.CheckBuild(TREE[8], old.points) == nil, "what is left still passes")
+end)
+
+Case("a build made on an older tree loses its points in replaced nodes and the ones that no longer fit", function()
+    local t = Fixture({ account = { trainingBuilds = { [8] = {
+        { name = "Before", spec = "Fire", points = { 13, 13, 13, 13, 13, 13, 99, 15, 12, 11 }, saved = true },
+        { name = "Since", spec = "Fire", points = { 15 }, saved = true, rev = 2 },
+    } } } })
+    assert(#t.T.Builds(8) == 3, "Naowh's and the two saved")
+    local before, since = t.Saved(8)[1], t.Saved(8)[2]
+    assert(table.concat(before.points, " ") == "13 13 13 13 13 12 11", table.concat(before.points, " "))
+    assert(before.spec == "Arcane" and before.rev == 2, "spec and revision")
+    assert(t.T.CheckBuild(TREE[8], before.points) == nil, "what is left still passes")
+    assert(since.points[1] == 15, "a point given on the tree that replaced the node stays")
+end)
+
+Case("a build saved, made or imported now carries the tree's revision", function()
+    local t = Fixture({ config = 1, ranks = { [13] = 2 } })
+    t.T.SaveMyTalents("Mine")
+    t.T.NewBuild(8, "Blank")
+    Import(t, t.T.ExportBuild(8, TREE[8][1]))
+    local saved = t.Saved(8)
+    assert(#saved == 3, #saved)
+    for _, build in ipairs(saved) do assert(build.rev == 2, build.name) end
 end)
 
 Case("every class has its tree, and any build that ships passes the rules", function()
@@ -366,6 +391,10 @@ Case("every class has its tree, and any build that ships passes the rules", func
     local t, classes = Fixture(), 0
     for class, tree in pairs(ns.TrainingBuilds) do
         assert(#tree.specs == 3 and next(tree.talents), "specs and talents " .. class)
+        assert(tree.rev >= 1, "a revision " .. class)
+        for node, rev in pairs(tree.replaced) do
+            assert(tree.talents[node] and rev >= 1 and rev <= tree.rev, "replaced in the tree " .. class .. " " .. node)
+        end
         for node, talent in pairs(tree.talents) do
             local where = class .. " " .. node
             assert(talent[1] > 0 and talent[2] >= 1 and talent[2] <= 5, "spell and ranks " .. where)

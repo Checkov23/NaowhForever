@@ -146,11 +146,16 @@ local function Planning(parent, y)
     return y - h
 end
 
-local function Columns()
+local function Columns(rows)
     local columns = {}
     for _, class in ipairs(B.CLASSES) do columns[#columns + 1] = class end
     columns[#columns + 1] = AURA_COLUMN
-    columns[#columns + 1] = SALV_COLUMN
+    for _, row in ipairs(rows) do
+        if row.can and row.can(B.SALVATION) then
+            columns[#columns + 1] = SALV_COLUMN
+            break
+        end
+    end
     return columns
 end
 
@@ -302,10 +307,10 @@ function ns.BuildBlessingAssignmentsPage(parent, y)
     _, h = W:SectionHeader(parent, "ASSIGNMENTS", y)
     y = y - h
     local left = UI.CONTENT_PAD
-    local columns = Columns()
-    y = Headers(parent, y, left, columns)
     local roster = B.Roster()
     local rows = Rows(roster)
+    local columns = Columns(rows)
+    y = Headers(parent, y, left, columns)
     if #rows == 0 then
         _, h = W:Note(parent, TEXT_NO_GROUP_PALADINS, y)
         return y - h

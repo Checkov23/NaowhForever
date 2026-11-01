@@ -919,58 +919,36 @@ do
     Check("own and not picked: nothing", t.Shown(), "")
 end
 
--- Salvation is its own raid buff, separate from the blessings, off until picked, and never asked of a tank.
+-- Salvation left the game with the 30 October 2026 hotfix, so it is no raid buff to remind of, even for a
+-- player whose saved picks still have it on.
 do
     local t = Fixture({ settings = { raidBuffs = true, raidBuffsOwn = false },
         group = "party", units = { player = "MAGE", party1 = "PALADIN", party2 = "WARRIOR", party3 = "DRUID" },
         auras = { player = {}, party1 = {}, party2 = {}, party3 = {} } })
     t.Login()
-    Check("salvation is off until picked", t.Shown(), "spell:10157x3 spell:9885x4")
     t.Set("raidBuffPicks", { intellect = false, stamina = false, spirit = false, wild = false, blessing = false,
         salvation = true })
-    Check("salvation picked: everyone is missing it", t.Shown(), "spell:1038x4")
-    t.state.roles.party2 = "TANK"
-    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
-    Check("a tank is not asked to have it", t.Shown(), "spell:1038x3")
-    t.state.roles.party2 = nil
-    t.state.mainTanks.party2 = true
-    t.Fire("UNIT_AURA", "party1"); t.Advance(0.5)
-    Check("a player flagged main tank is not asked either", t.Shown(), "spell:1038x3")
-    t.state.auras.party3 = { { 1038 } }
-    t.Fire("UNIT_AURA", "party3"); t.Advance(0.5)
-    Check("one who has it is not missing it", t.Shown(), "spell:1038x2")
-    t.state.auras.party3 = { { 25895 } }
-    t.Fire("UNIT_AURA", "party3"); t.Advance(0.5)
-    Check("the Greater one counts too", t.Shown(), "spell:1038x2")
-    t.Set("raidBuffPicks", { intellect = false, stamina = false, spirit = false, wild = false, blessing = true,
-        salvation = false })
-    Check("Salvation does not stand in for a blessing", t.Shown(), "spell:25291x4")
-    t.state.auras.party3 = { { 19740 } }
-    t.Fire("UNIT_AURA", "party3"); t.Advance(0.5)
-    t.Set("raidBuffPicks", { intellect = false, stamina = false, spirit = false, wild = false, blessing = true,
-        salvation = true })
-    Check("and a blessing does not stand in for Salvation", t.Shown(), "spell:25291x3 spell:1038x3")
+    Check("no Salvation reminder", t.Shown(), "")
 end
 
 -- Grouped paladins can leave blessing reminders to their own tab without losing their saved picks.
 do
-    local picks = { intellect = true, stamina = false, spirit = false, wild = false, blessing = true, salvation = true }
+    local picks = { intellect = true, stamina = false, spirit = false, wild = false, blessing = true }
     local t = Fixture({ settings = { raidBuffs = true, raidBuffsOwn = true, raidBuffPicks = picks },
         group = "party", units = { player = "PALADIN", party1 = "MAGE" },
-        known = { [19740] = true, [1038] = true }, auras = { player = {}, party1 = {} } })
+        known = { [19740] = true }, auras = { player = {}, party1 = {} } })
     t.Login()
-    Check("paladin default: selected blessings remain shown", t.Shown(), "spell:25291x2 spell:1038x2")
+    Check("paladin default: selected blessings remain shown", t.Shown(), "spell:25291x2")
     t.Set("hideBlessingsOnPaladin", true)
-    Check("grouped paladin: both blessing reminders hide immediately", t.Shown(), "")
+    Check("grouped paladin: the blessing reminder hides immediately", t.Shown(), "")
     Check("grouped paladin: preview hides the blessings too", t.ns.AuraBuffs.Buffs.RaidSample(), nil)
     Check("hiding keeps the blessing pick", t.Get("raidBuffPicks").blessing, true)
-    Check("hiding keeps the Salvation pick", t.Get("raidBuffPicks").salvation, true)
     t.Set("hideBlessingsOnPaladin", false)
-    Check("switch off: both reminders return", t.Shown(), "spell:25291x2 spell:1038x2")
+    Check("switch off: the reminder returns", t.Shown(), "spell:25291x2")
     t.Set("hideBlessingsOnPaladin", true)
     t.state.group = nil
     t.Fire("GROUP_ROSTER_UPDATE"); t.Advance(0.5)
-    Check("leaving the group restores solo reminders", t.Shown(), "spell:25291 spell:1038")
+    Check("leaving the group restores solo reminders", t.Shown(), "spell:25291")
     t.state.group = "party"
     t.Fire("GROUP_ROSTER_UPDATE"); t.Advance(0.5)
     Check("joining the group hides them again", t.Shown(), "")
@@ -978,7 +956,7 @@ do
     t.state.units.party1 = "PALADIN"
     t.state.known = { [1460] = true }
     t.Set("raidBuffsOwn", false)
-    Check("another class keeps all selected reminders", t.Shown(), "spell:10157x2 spell:25291x2 spell:1038x2")
+    Check("another class keeps all selected reminders", t.Shown(), "spell:10157x2 spell:25291x2")
     local p = Fixture({ page = true, units = { player = "PALADIN" } })
     local rows = p.ns.Shared.Settings.pages["AuraBuffs/Settings"].cards.buffs.rows
     local option
