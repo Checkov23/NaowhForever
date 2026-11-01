@@ -1,6 +1,17 @@
 # Changelog
 
-## Unreleased
+## 1.1.54
+
+### Fixed
+- Training Planner: the Paladin and Druid talent trees, Holy Binding, Arcane Resilience and the
+  Hunter talents match the 30 October hotfix.
+- Training Planner: a saved build from before the hotfix drops the talents Blizzard moved or
+  replaced instead of buying the wrong ones.
+- Training Planner: the trainer list follows the hotfix: Holy Shield and Primal Bite ranks moved,
+  new Ferocious Bite and Lacerate ranks, and Blessing of Light, Salvation, Revoke, Binding Heal,
+  Frost Blast and Primal Bite rank 4 are gone.
+- Buff Reminders: no Salvation reminder, as the hotfix removed it.
+- Blessings: the assignments grid only shows the Salvation column when a paladin can give it.
 
 ## 1.1.53
 
