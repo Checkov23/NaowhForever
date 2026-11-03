@@ -12,6 +12,11 @@ stands in, marked in D.Dungeon. The class quests and the instance quests the Jou
 from completo_elsewhere.json (Tools/build/elsewhere_quests.py), marked in D.Elsewhere or D.Dungeon,
 and the battleground ones among those in D.Battleground too.
 
+Which quests Forever gives, and where their givers stand, come from foreverchanges_quests.json
+(Tools/build/foreverchanges_quests.py): a quest it does not list is left out, one it lists that
+nothing above has is added, a quest goes in the zone it files it under, and its giver's spot comes
+before any other.
+
 Answers are cached, so a run that dies on Wowhead's rate limit resumes where it stopped:
 completo_zones.json (each zone's quest rows) and completo_quests.json (each quest's
 { chain, start }). Delete an entry to fetch it again. --offline writes from the caches only.
@@ -40,6 +45,7 @@ REQUIRES = paths.DATA / "completo_requires.json"
 DUNGEON = paths.DATA / "completo_dungeon.json"
 ELSEWHERE = paths.DATA / "completo_elsewhere.json"
 CATALOG = paths.DATA / "quest_entity_catalog.json"
+LISTED = paths.DATA / "foreverchanges_quests.json"
 # Wowhead answers 403 after ~125 pages at 1.5s apart; 5s ran clean.
 GAP = 4
 
@@ -388,18 +394,50 @@ def main():
             save(ITEMS, items)
             time.sleep(GAP)
 
-    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}), load(CATALOG))
+    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}), load(CATALOG),
+          load(LISTED))
     for line in failed:
         print("FAILED", line, file=sys.stderr)
 
 
 # Quests the game has records for but never gives: "<UNUSED>", "(UNUSED) The Rusty Gadget",
-# "<NYI> <TXT> Course of Action" (not yet implemented). Left out everywhere.
-PLACEHOLDER = re.compile(r"^\s*[<(]|unused|\bnyi\b", re.I)
+# "<NYI> <TXT> Course of Action" (not yet implemented), "Violent Winds (Temp Disabled)". Left out
+# everywhere.
+PLACEHOLDER = re.compile(r"^\s*[<(]|unused|\bnyi\b|\bdisabled\b", re.I)
 
 
-def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None):
+# ForeverChanges has no Ironforge map and puts the city's givers on Dun Morogh's. Ironforge's map
+# also takes in the city's gates, which are Dun Morogh's. Both maps' world bounds (minX, minY,
+# maxX, maxY), from Forever 1.60.1.70532's UiMapAssignment.
+DUN_MOROGH, IRONFORGE = 1426, 1455
+CITY_BOUNDS = ((-7160.417, -3122.917, -3877.083, 1802.083), (-5096.846, -1504.216, -4569.241, -713.591))
+
+
+def listed_maps(map_id, x, y):
+    """[(uiMapID, x, y)]: a listed spot on each map it is on, Ironforge's first for one in the city."""
+    if map_id != DUN_MOROGH:
+        return [(map_id, x, y)]
+    (dx0, dy0, dx1, dy1), (ix0, iy0, ix1, iy1) = CITY_BOUNDS
+    world_y = dy1 - x / 100 * (dy1 - dy0)
+    world_x = dx1 - y / 100 * (dx1 - dx0)
+    cx, cy = (iy1 - world_y) / (iy1 - iy0) * 100, (ix1 - world_x) / (ix1 - ix0) * 100
+    city = [(IRONFORGE, cx, cy)] if 0 <= cx <= 100 and 0 <= cy <= 100 else []
+    return city + [(map_id, x, y)]
+
+
+def listed_spot(starts, zone_map):
+    """(uiMapID, x, y, giver): the listed giver on the quest's zone map, else its first, or None.
+    A giver at Ironforge's gates is on both maps, so a Dun Morogh quest keeps it on Dun Morogh's.
+    On the maps Forever redrew ForeverChanges often gives Classic's position unconverted (High
+    Sorcerer Andromath, Bolvar Fordragon), so a giver there is not taken from it."""
+    spots = [(*s, giver) for m, x, y, giver in starts or []
+             if m in ZONE_MAP.values() and m not in REDRAWN_BOUNDS for s in listed_maps(m, x, y)]
+    return min(spots, key=lambda s: s[0] != zone_map) if spots else None
+
+
+def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, listed=None):
     catalog = catalog or {}
+    listed = listed or {}
     zones = {k: {**z, "quests": list(z["quests"])} for k, z in zones.items()}
     for z in zones.values():
         z["quests"] = [q for q in z["quests"] if not PLACEHOLDER.search(q["name"])]
@@ -425,6 +463,25 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None):
         zone = zones.setdefault(str(quest["zone"]), {"name": quest["zone_name"], "quests": []})
         zone["quests"].append(dict(quest, id=qid))
         existing.add(qid)
+    if listed.get("quests"):
+        filed = {int(k): str(q["category"][1]) for k, q in listed["quests"].items()
+                 if q["category"] and q["category"][0] == "zone" and str(q["category"][1]) in zones}
+        moved = [q for area, z in zones.items() for q in z["quests"] if filed.get(q["id"], area) != area]
+        for area, z in zones.items():
+            z["quests"] = [q for q in z["quests"] if str(q["id"]) in listed["quests"] and filed.get(q["id"], area) == area]
+        for q in moved:
+            zones[filed[q["id"]]]["quests"].append(q)
+        # One filed under no category is not one the game gives: the iCoke vouchers, test quests.
+        for key, quest in listed["quests"].items():
+            qid = int(key)
+            if qid in existing or not quest["category"] or PLACEHOLDER.search(quest["name"]):
+                continue
+            spot = listed_spot(listed["starts"].get(key), None)
+            area = filed.get(qid) or str(area_of.get(spot[0]) if spot else 0)
+            zone = zones.get(area) or zones.setdefault("0", {"name": "Unsorted Quests", "quests": []})
+            zone["quests"].append({k: v for k, v in quest.items() if k != "category"} | {"id": qid})
+            existing.add(qid)
+        spots = {q: d for q, d in spots.items() if str(q) in listed["quests"]}
     rows = {q["id"]: (int(area), q) for area, z in zones.items() for q in z["quests"]}
     before = prerequisites(quests, requires, rows)
     chains = chains_of(quests, before, rows)
@@ -454,7 +511,11 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None):
         if not (start and start.get("coord") and start.get("zone") in ZONE_MAP):
             start = (catalog.get(str(qid)) or {}).get("start")
         spot = "nil, nil, nil, nil"
-        if qid in spots:
+        given = listed_spot(listed.get("starts", {}).get(str(qid)), ZONE_MAP.get(area))
+        if given:
+            m, x, y, giver = given
+            spot = f"{m}, {x:.1f}, {y:.1f}, {lua_string(giver)}"
+        elif qid in spots:
             d = spots[qid]
             giver = lua_string(d["giver"]) if d["giver"] else "nil"
             spot = f"{d['map']}, {d['x']:.1f}, {d['y']:.1f}, {giver}"

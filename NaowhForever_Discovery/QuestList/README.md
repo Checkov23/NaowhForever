@@ -64,6 +64,16 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   class mask, start uiMapID, x, y (percent), quest giver, item. A quest an item begins has the mob
   that drops it as its giver, and the item. Spots on the maps Forever redrew are moved from
   Wowhead's classic ones onto Forever's.
+- Which quests there are, and where their givers stand, follow ForeverChanges' quest list and
+  pages (`Tools/build/foreverchanges_quests.py`): a quest it does not list is left out, one only it
+  lists is added (Unsorted Quests when it names no zone or giver), a quest goes in the zone it files
+  it under, and its giver's spot, on Forever's own map, comes before Wowhead's. A quest with several givers is pinned at the one in its zone.
+  ForeverChanges has no Ironforge map, so a giver it puts on Dun Morogh's inside the city's
+  rectangle is on Ironforge's too (`listed_maps`). That rectangle takes in the city's gates, which
+  are Dun Morogh's, so the quest's zone picks: a Dun Morogh quest keeps Dun Morogh's map.
+  On the maps Forever redrew (Stormwind, Mulgore, Redridge, the Eastern Plaguelands) many of
+  its spots are Classic's positions unconverted (Bolvar Fordragon at 78, 18), so a giver there
+  is never taken from it: those quests keep Wowhead's spot.
 - `D.Repeatable[questID] = true`: quests you can do again and again (Wowhead's repeatable flag).
 - `D.Dungeon[questID] = true`: dungeon, raid and battleground quests, listed in the zone their quest
   giver stands in. Wowhead files them under the instance, so no zone page has them: they come from
