@@ -99,7 +99,7 @@ function Anchor.Edit(spec, stashed)
     local bar = spec.frame()
     if not ItemBar.Anchored(spec.store, spec.prefix) then return end
     if not (bar and spec.on()) then
-        ns.Print(TEXT_SWITCH_ON:format(spec.name))
+        ns.Print(TEXT_SWITCH_ON:format(ns.L(spec.name)))
         return
     end
     if not editor then BuildEditor() end
@@ -151,7 +151,7 @@ local function Choose(name)
     local bar = spec.frame()
     ns.UI.DropAnchor(bar and bar.mover)
     spec.store.Set(spec.prefix .. "Anchor", name)
-    ns.Print(TEXT_ANCHORED:format(spec.name, name))
+    ns.Print(TEXT_ANCHORED:format(ns.L(spec.name), name))
     Anchor.Edit(spec, StopPicking(true))
 end
 
@@ -225,7 +225,7 @@ function Anchor.Pick(spec)
     Declare(spec)
     if not picker then BuildPicker() end
     picker.spec = spec
-    picker.title:SetText(TEXT_PICKER:format(spec.name))
+    picker.title:SetText(TEXT_PICKER:format(ns.L(spec.name)))
     picker.stashed = ns.StashOptionsWindow() or picker.stashed
     picker.target, picker.name = nil, nil
     picker.down = IsMouseButtonDown("LeftButton")
@@ -241,7 +241,7 @@ end
 function Anchor.Follow(spec)
     local bar = spec.frame()
     if not (bar and spec.on()) then
-        ns.Print(TEXT_SWITCH_ON:format(spec.name))
+        ns.Print(TEXT_SWITCH_ON:format(ns.L(spec.name)))
         return
     end
     if ItemBar.Anchored(spec.store, spec.prefix) then spec.store.Set(spec.prefix .. "Anchor", SCREEN) end
@@ -251,7 +251,7 @@ end
 
 function Anchor.Unanchor(spec)
     spec.store.Set(spec.prefix .. "Anchor", SCREEN)
-    ns.Print(TEXT_BACK:format(spec.name))
+    ns.Print(TEXT_BACK:format(ns.L(spec.name)))
 end
 
 function Anchor.Rows(spec)
