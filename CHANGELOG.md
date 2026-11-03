@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased
+## 1.2.0
+
+### Added
+- Professions: estimated skill-up percentage beneath the current-skill marker when Skill-up
+  Thresholds is enabled.
+- German: Raid Debuffs, Druid Mana, boat and zeppelin times, Minimap Node Icons and the other new
+  parts up to 1.1.52 now show in German on German clients.
+
+### Changed
+- Professions: made the threshold bar's current-skill marker slightly taller.
+
+### Fixed
+- German: the anchor texts name the bar in German too (Blessing Bar, Consumable Bar, Druid Mana).
 
 ## 1.1.59
 
