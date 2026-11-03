@@ -20,6 +20,7 @@ L["Left-click: cast this player's blessing.\nRight-click: give them their own bl
 L["The size of the Blessings window. Dragging its corner changes it too."] = true
 L["Window Size"] = true
 L["How solid the bar's background is."] = true
+L["How solid the card behind the name and distance is; at 0% only the text shows."] = true
 L["A texture behind the whole bar."] = true
 L["Bar Background"] = true
 L["The edge of every button."] = true

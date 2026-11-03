@@ -292,8 +292,8 @@ local S = UI.ModuleSettings("qol", {
     aimSoundKey = "game:click", aimShare = true,
     dailyWord = F.dailyWord,
     waypoints = F.waypoints, waypointShape = "hex", waypointScale = 1, waypointCard = true,
-    waypointTime = true, waypointBeam = true, waypointFadeNear = 40, waypointArrive = 5, waypointEdge = true,
-    waypointNav = true, waypointSound = "none", waypointHideGame = true,
+    waypointCardAlpha = 0.85, waypointTime = true, waypointBeam = true, waypointFadeNear = 40, waypointArrive = 5,
+    waypointEdge = true, waypointNav = true, waypointSound = "none", waypointHideGame = true,
     waypointRestedXP = F.waypointRestedXP, waypointObjectives = F.waypointObjectives,
     waypointDownArrows = F.waypointDownArrows,
 })

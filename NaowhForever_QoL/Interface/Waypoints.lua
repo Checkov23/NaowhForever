@@ -50,7 +50,7 @@ local DOWN = -math.pi / 2
 local NO_TIME = -1
 local STAGE_H = 190
 local SCALE_RANGE, FADE_NEAR_RANGE, ARRIVE_RANGE = St.SCALE_RANGE, { 0, 100, 5 }, { 5, 100, 5 }
-local PERCENT_SCALE = St.PERCENT_SCALE
+local PERCENT_SCALE, ALPHA_RANGE = St.PERCENT_SCALE, St.ALPHA_RANGE
 local GAME_PARTS = { "Icon", "Arrow", "DistanceText", "IconBorder" }
 local SHAPE_CHOICES = { { hex = "Hex", diamond = "Diamond", dot = "Dot" }, { "hex", "diamond", "dot" } }
 local SAMPLE = { name = ns.L("Mage Trainer"), yards = 312, seconds = 45 }
@@ -105,7 +105,7 @@ local Look = {}
 local function Card(parent, width)
     local card = CreateFrame("Frame", nil, parent)
     card:SetSize(width, CARD_H)
-    Parts.HudBackdrop(card)
+    card.backdrop = Parts.HudBackdrop(card)
     return card
 end
 
@@ -213,6 +213,8 @@ function Look.PaintPin(pin, o)
     end
     card:SetShown(o.card)
     if not o.card then return end
+    card.backdrop.fill:SetColorTexture(T.bg.r, T.bg.g, T.bg.b, o.cardAlpha)
+    card.backdrop.border._frame:SetShown(o.cardAlpha > 0)
     card.icon:SetShown(o.icon ~= nil)
     if o.icon then card.icon:SetTexture(o.icon) end
     card.name:ClearAllPoints()
@@ -576,6 +578,7 @@ local function Retitle()
     shown.guide = details and details.guide == true
     shown.ground = shown.user or kind == types.Corpse
     shown.card, shown.beam = S.Get("waypointCard"), S.Get("waypointBeam") and shown.ground
+    shown.cardAlpha = S.Get("waypointCardAlpha")
     pin.onNav = false
 end
 
@@ -783,6 +786,7 @@ local function PaintPreview(preview, state)
     o.name, o.yards = SAMPLE.name, SAMPLE.yards
     o.seconds = S.Get("waypointTime") and SAMPLE.seconds or nil
     o.shape, o.card, o.beam = S.Get("waypointShape"), S.Get("waypointCard"), S.Get("waypointBeam")
+    o.cardAlpha = S.Get("waypointCardAlpha")
     o.mode, o.angle = state, 0
     o.down = S.Get("waypointDownArrows")
     o.objectives = S.Get("waypointObjectives") and ns.L("0/10 Highlands Bandit slain\n0/1 Badwind Bennic slain") or nil
@@ -817,6 +821,9 @@ Settings.Page("QoL/Interface", S):Card({
         { key = "waypointScale", label = "Pin Size", slider = SCALE_RANGE, unit = "%", scale = PERCENT_SCALE },
         { key = "waypointCard", label = "Name and Distance", toggle = true,
           help = "A card over the pin with what it is and how far." },
+        { key = "waypointCardAlpha", label = "Background Opacity", slider = ALPHA_RANGE, unit = "%",
+          scale = PERCENT_SCALE, needs = "waypointCard",
+          help = "How solid the card behind the name and distance is; at 0% only the text shows." },
         { key = "waypointTime", label = "Walking Time", toggle = true, needs = "waypointCard",
           help = "How long it takes to get there at your speed." },
         { key = "waypointBeam", label = "Line to the Ground", toggle = true,

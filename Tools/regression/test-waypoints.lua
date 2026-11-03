@@ -47,6 +47,7 @@ function Frame:GetStringWidth() return #(self.text or "") * GLYPH_W end
 function Frame:SetJustifyH(j) self.justify = j end
 function Frame:SetRotation(r) self.rotation = r end
 function Frame:SetTexture(t) self.texture = t end
+function Frame:SetColorTexture(r, g, b, a) self.color = { r, g, b, a } end
 function Frame:SetHeight(h) self.height = h end
 function Frame:CreateTexture() return NewFrame("Texture", self) end
 function Frame:CreateFontString() return NewFrame("FontString", self) end
@@ -58,8 +59,8 @@ function UIParent:GetCenter() return W / 2, H / 2 end
 
 local settings = {}
 local defaults = { enabled = true, waypoints = false, waypointShape = "hex", waypointScale = 1, waypointCard = true,
-    waypointTime = true, waypointBeam = true, waypointFadeNear = 40, waypointArrive = 5, waypointEdge = true, waypointNav = true,
-    waypointSound = "none", waypointHideGame = true }
+    waypointCardAlpha = 0.85, waypointTime = true, waypointBeam = true, waypointFadeNear = 40, waypointArrive = 5, waypointEdge = true,
+    waypointNav = true, waypointSound = "none", waypointHideGame = true }
 local S = {}
 function S.Get(k) if settings[k] ~= nil then return settings[k] end return defaults[k] end
 function S.Set(k, v) settings[k] = v end
@@ -107,7 +108,9 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
         Style = setmetatable({ ROUND = "round", PLACE_DOT = " . " },
             { __index = dofile("Tools/regression/shared_style.lua") }),
         Parts = {
-            HudBackdrop = NOOP,
+            HudBackdrop = function(frame)
+                return { fill = NewFrame("Texture", frame), border = { _frame = NewFrame("Frame", frame) } }
+            end,
             HudText = function(fs) return fs end,
             IconButton = function(parent, onClick)
                 local b = NewFrame("Button", parent)
@@ -304,6 +307,13 @@ Check(math.abs((px / (W * 0.3)) ^ 2 + (py / (H * 0.3)) ^ 2 - 1) < 0.001, "toward
 Check(W / 2 - px > EDGE_ROOM and H / 2 - py > EDGE_ROOM,
     "and stays " .. EDGE_ROOM .. " px clear of both edges, off the minimap")
 S.Set("waypointScale", nil)
+S.Set("waypointCardAlpha", 0)
+driver.scripts.OnUpdate(driver, 0)
+Check(pin.card.backdrop.fill.color[4] == 0 and not pin.card.backdrop.border._frame.shown and pin.card.dist.shown ~= false,
+    "at 0% opacity only the card's text shows")
+S.Set("waypointCardAlpha", nil)
+driver.scripts.OnUpdate(driver, 0)
+Check(pin.card.backdrop.fill.color[4] == 0.85 and pin.card.backdrop.border._frame.shown, "by default the card keeps its backdrop")
 -- Off the bottom edge, but not behind: the card goes above the pin, on screen.
 nav.x, nav.y = 960 + 1000 * math.cos(math.rad(-50)), 540 + 1000 * math.sin(math.rad(-50))
 driver.scripts.OnUpdate(driver, 0)
