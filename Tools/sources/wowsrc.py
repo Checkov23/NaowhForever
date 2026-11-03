@@ -9,6 +9,7 @@ Tools/data/wowsrc_pages/ (not committed: delete a file to fetch it again, or pas
 they say is written to Tools/data/wowsrc_loot.json:
   { dungeon slug: { "name", "updated", "bosses": [ { "name", "items": [ { "name", "quality",
     "level", "slot", "type", "chance" (percent or null), "new" } ] } ] } }
+A chance a page no longer shows is kept from the file's last read (kept_chances).
 The pages give no item IDs, so items are matched by name: Tools/data/item_names.json maps each name
 to its ID, filled from what we already have (the dungeon loot list, the game's item tables)
 and, for the rest, by --resolve, which asks Wowhead's Classic search (names and IDs are the
@@ -189,6 +190,21 @@ def read_all(fresh=False):
     return loot
 
 
+def kept_chances(old, new):
+    """new, with the chance old had for the same item of the same boss where new shows none.
+    Since 3 November 2026 wowsrc's pages show no chances at all, and without them the Journal
+    falls back on Wowhead's counts: most of the chances wowsrc gave would read unknown, and the
+    Lost Dwarves' shared loot reads past 100% (Eric "The Swift"'s Worn Running Boots, 145%)."""
+    before = {(slug, boss["name"], item["name"]): item["chance"]
+              for slug, page in old.items() for boss in page["bosses"] for item in boss["items"]}
+    for slug, page in new.items():
+        for boss in page["bosses"]:
+            for item in boss["items"]:
+                if item["chance"] is None:
+                    item["chance"] = before.get((slug, boss["name"], item["name"]))
+    return new
+
+
 def game_ids(keys):
     """name_key -> item ID for the names given, from the game's own item table (ItemSparse, for
     the builds the data is read from), where one Forever item has the name; {} when wago.tools
@@ -366,7 +382,7 @@ def main():
         def value(flag):
             return args[args.index(flag) + 1] if flag in args else None
         return check(value("--report"), value("--github-output"))
-    loot = read_all("--fresh" in sys.argv)
+    loot = kept_chances(json.loads(OUT.read_text(encoding="utf-8")), read_all("--fresh" in sys.argv))
     OUT.write_text(json.dumps(loot, indent=1, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     print(f"{len(loot)} loot pages -> {OUT.name}", file=sys.stderr)
 

@@ -1,5 +1,6 @@
 """Tests for Tools/sources/wowsrc.py's daily check: what wowsrc's pages say now that wowsrc_loot.json
-(what the Journal was built from) does not. Offline, made-up pages. From the repo root:
+(what the Journal was built from) does not, and the chances it keeps from that file. Offline,
+made-up pages. From the repo root:
 
     python -m unittest discover -s Tools/tests
 """
@@ -68,6 +69,27 @@ class Check(unittest.TestCase):
         text = "\n".join(wowsrc.changes(OLD, new))
         self.assertIn("Shadowfang Keep / Sever: The Axe of Severing", text)
         self.assertIn("- Ruins of Lordaeron", text)
+
+
+class KeptChances(unittest.TestCase):
+    def read(self, springvale, trash):
+        return {"shadowfang-keep": {"name": "Shadowfang Keep", "updated": None, "bosses": [
+            {"name": "Commander Springvale", "items": springvale}, {"name": "Trash", "items": trash}]}}
+
+    def chances(self, loot):
+        return [[i["chance"] for i in b["items"]] for b in loot["shadowfang-keep"]["bosses"]]
+
+    def test_a_chance_the_page_no_longer_shows_is_kept(self):
+        new = self.read([item("Arced War Axe"), item("Eerie Stable Lantern")], [item("Shadowfang")])
+        self.assertEqual(self.chances(wowsrc.kept_chances(OLD, new)), [[35.7, None], [None]])
+
+    def test_a_chance_the_page_shows_wins(self):
+        new = self.read([item("Arced War Axe", chance=36.1)], [item("Shadowfang", chance=0.4)])
+        self.assertEqual(self.chances(wowsrc.kept_chances(OLD, new)), [[36.1], [0.4]])
+
+    def test_another_boss_s_chance_is_not_borrowed(self):
+        new = self.read([], [item("Arced War Axe")])
+        self.assertEqual(self.chances(wowsrc.kept_chances(OLD, new)), [[], [None]])
 
 
 class Links(unittest.TestCase):
