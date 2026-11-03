@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## 1.1.59
 
 ### Changed
