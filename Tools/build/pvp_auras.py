@@ -43,7 +43,7 @@ CROWD_CONTROL = [
     ("shieldBashSilence", "Warrior", "Shield Bash Silence", [18498]),
     ("hammerOfJustice", "Paladin", "Hammer of Justice", ["Hammer of Justice"]),
     ("repentance", "Paladin", "Repentance", ["Repentance"]),
-    ("freezingTrap", "Hunter", "Freezing Trap", ["Freezing Trap Effect"]),
+    ("freezingTrap", "Hunter", "Freezing Trap", ["Freezing Trap"]),
     ("scatterShot", "Hunter", "Scatter Shot", ["Scatter Shot"]),
     ("wyvernSting", "Hunter", "Wyvern Sting", ["Wyvern Sting"]),
     ("intimidation", "Hunter", "Intimidation", ["Intimidation"]),
