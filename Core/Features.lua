@@ -262,6 +262,9 @@ ns.FEATURES = {
         trackRacial = true,
         trackClass = true,
     },
+    groupFinder = {
+        enabled = false,
+    },
     account = {
         gameMenuButton = true,
         rxpThemes = false,

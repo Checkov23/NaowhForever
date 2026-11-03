@@ -4,6 +4,7 @@
     <Include file="Journeys\Journeys.xml"/>
     <Include file="Macros\Macros.xml"/>
     <Include file="GroupInspect\GroupInspect.xml"/>
+    <Include file="GroupFinder\GroupFinder.xml"/>
     <Include file="ActionBars\ActionBars.xml"/>
     <Include file="TrackingReminder\TrackingReminder.xml"/>
 </Ui>

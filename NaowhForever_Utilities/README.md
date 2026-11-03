@@ -1,9 +1,9 @@
 # Utilities
 
-One addon, `NaowhForever_Utilities`, holding six modules. Instance Tracker, Journeys, Macros, Group
-Inspect, and Action Bars used to ship as addons of their own. Racial and Class Tracking ships here
-from the start. Each keeps its own folder, its own XML, its own settings store and its own switch
-under Settings > Modules; only the AddOns list shows one line for all six. It works as
+One addon, `NaowhForever_Utilities`, holding seven modules. Instance Tracker, Journeys, Macros, Group
+Inspect, and Action Bars used to ship as addons of their own. Racial and Class Tracking and Group
+Finder ship here from the start. Each keeps its own folder, its own XML, its own settings store and
+its own switch under Settings > Modules; only the AddOns list shows one line for all seven. It works as
 `NaowhForever_Combat` does (its README has the module switches, the AddOns list entry and the old
 folders); this file has what differs.
 
@@ -17,6 +17,7 @@ NaowhForever_Utilities/
   Journeys/                    Journeys, with its route icons in Journeys/Media
   Macros/                      Macros
   GroupInspect/                Group Inspect
+  GroupFinder/                 Group Finder
   ActionBars/                  Action Bars
   TrackingReminder/            Racial and Class Tracking
   README.md                    this file
@@ -24,12 +25,14 @@ NaowhForever_Utilities/
 
 ## Why
 
-- Group Inspect needs the BiS List, but this addon does not depend on it, so the other five load for
+- Group Inspect needs the BiS List, but this addon does not depend on it, so the others load for
   a player with the BiS List off. `OptionalDeps` loads `NaowhForever_BiS` first when it is on. When it
   is not loaded, `GroupInspect.lua` returns before making `ns.GroupInspect` and every other Group
   Inspect file returns when there is none, so nothing is made, listened to or hooked. Settings > Modules
   counts a module as loaded only while what it `needs` is loaded too, so Group Inspect turns on through
-  the reload prompt, bringing the BiS List with it.
+  the reload prompt, bringing the BiS List with it. Group Finder needs the BiS List the same way: its
+  settings store is made first, so its switch keeps its saved value, then `GroupFinder.lua` returns
+  before making `ns.GroupFinder`.
 - Journeys' walking maps stay in `NaowhForever_JourneysData`, an addon of their own that Journeys
   loads by name (`C_AddOns.LoadAddOn`) on the first journey, so a player who never plans one never
   loads them.

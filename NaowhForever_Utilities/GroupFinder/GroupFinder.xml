@@ -1,0 +1,19 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- GroupFinder.xml: the Group Finder's files, in load order. -->
+    <Script file="GroupFinder.lua"/>
+    <Script file="Card.lua"/>
+    <Script file="Comms.lua"/>
+    <Script file="Listings.lua"/>
+    <Script file="Search.lua"/>
+    <Script file="Group.lua"/>
+    <Script file="Browse.lua"/>
+    <Script file="Probe.lua"/>
+    <Script file="View\Style.lua"/>
+    <Script file="View\Row.lua"/>
+    <Script file="View\Applicant.lua"/>
+    <Script file="UI\YourGroup.lua"/>
+    <Script file="UI\Create.lua"/>
+    <Script file="UI\BrowseBar.lua"/>
+    <Script file="UI\Window.lua"/>
+    <Script file="UI\SettingsPage.lua"/>
+</Ui>

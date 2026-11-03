@@ -150,6 +150,8 @@ SlashCmdList["NAOWHFOREVER"] = function(msg)
         ns.JournalItemProbe()
     elseif (cmd == "mappins" or cmd == "mapcheck") and ns.DungeonMapCommand then
         ns.DungeonMapCommand(cmd)
+    elseif cmd == "groupfinder" and ns.GroupFinderCommand then
+        ns.GroupFinderCommand(strtrim(msg):match("^%S+%s*(.-)$"))
     elseif cmd == "badges" and ns.BadgesCommand then
         ns.BadgesCommand(arg)
     elseif cmd == "disenchant" and ns.ToggleDisenchant then
