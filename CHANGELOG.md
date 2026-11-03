@@ -1,6 +1,30 @@
 # Changelog
 
-## Unreleased
+## 1.1.57
+
+### Added
+- Waypoint Pin: a Background Opacity slider for the name and distance card; at 0% only the text
+  shows.
+- Group Finder (Utilities, off by default): a window (/nflfg) to browse Forever's group finder by
+  dungeon or for your level, filtered and sorted, with the Naowh Score, boss kills and dungeon
+  quests of leaders who run Naowh Forever, list your own group with a minimum score and the roles
+  you need, and invite or decline the Naowh Forever players who apply.
+
+### Changed
+- Supporter Badges: every Naowh badge has new art, a larger N with an infinity loop, in the same
+  colors.
+- Profiles: Keep My Positions is gone from the Setups card and the Import dialog. Setups and imports
+  now bring their frame positions; save a HUD Editor layout first to get yours back.
+
+### Fixed
+- Profiles: importing a profile without Also Import keeps Junk Marker on and has it ask before
+  selling, instead of turning it off.
+- Training Planner: the Rogue talent trees and the Warrior's Fury and Arms talents match the 3
+  November rework, with Death Mark, Boot Knife, Flash of Steel, Reckless Swings and the rest.
+- Training Planner: a saved Rogue or Warrior build drops the talents the rework moved or replaced
+  instead of buying the wrong ones.
+- Training Planner: Mutilate comes with its talent, so the trainer list no longer sells its first
+  rank at 40, and Lava Burst ranks 2-4 are gone from it.
 
 ## 1.1.56
 
