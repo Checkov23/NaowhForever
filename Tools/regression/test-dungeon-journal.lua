@@ -1391,7 +1391,7 @@ do
     check("none for you, none to count", select(2, Progress({ quests = {} })) == 0 and select(2, Progress(nil)) == 0)
     -- Shadowfang Keep has none for an Alliance mage: says whose they are.
     local why = ns.Journal.Quests.NoneWhy(ns.Journal.Get("ShadowfangKeep").quests)
-    check("a dungeon with none for you says whose they are", why == "None for you here. The rest: 3 Horde, 1 Warlock, 1 Paladin.")
+    check("a dungeon with none for you says whose they are", why == "None for you here. The rest: 3 Horde, 1 Warlock, 2 Paladin.")
     check("a dungeon with no quests says nothing", ns.Journal.Quests.NoneWhy(nil) == nil)
     -- A switch changing draws the page again, now with every quest handed in.
     ns.Journal.Settings.Set("showCosmetic", false)

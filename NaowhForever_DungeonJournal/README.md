@@ -276,7 +276,10 @@ the game's own tables, and what they can't settle is listed in the pull request 
   Positions on Stormwind, Mulgore, Redridge and the Eastern Plaguelands are converted to
   Forever's redrawn maps. The new dungeons' quests and all nine new dungeons' `levels` are by
   hand; the classic dungeons carry the classic ranges, which Forever's quest levels still match.
-  City of Dalaran's quests are by hand too, from their Wowhead Forever pages (2026-10-05).
+  City of Dalaran's quests are by hand too, from their Wowhead Forever pages (2026-10-05). The
+  quests ForeverChanges' dungeon quest guide has that Wowhead's lacked (Destruction in Deadmines,
+  the Excavation Site's breadcrumbs, the Horde paladin's A Moon-Kissed Blade) are by hand from its
+  quest pages (2026-11-03); its Return of the Ring and second Sparklematic quest are `steps`.
 - Scarlet Monastery's four wings share one instance (189), each its own dungeon with classic's
   ranges. A quest goes under the wing it is done in: Hearts of Zeal (hearts from any wing) under
   the first, the two that kill Loksey, Herod, Mograine and Whitemane under the Cathedral.
