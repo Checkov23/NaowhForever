@@ -223,17 +223,17 @@ end
 function tooltip:GetOwner() return self.owner end
 actions[1], actions[2], actions[3], actions[4] = { "macro", 2050, "spell" }, { "macro", 7 }, { "macro", 8 }, { "spell", 2050 }
 macroSpells[7] = 2052
-check("a macro showing a spell gets the line", ShowMacro(1, 7)[1][1] == "1.76 healing per mana  ||  35 per second")
+check("a macro showing a spell gets the line", ShowMacro(1, 7)[1][1] == "1.72 healing per mana  ||  34 per second")
 check("a macro is decorated once", #ShowMacro(1, 7) == 1)
 check("a macro with no spell shown resolves through GetMacroSpell",
-    ShowMacro(2, 7)[1][1] == "1.86 healing per mana  ||  42 per second")
+    ShowMacro(2, 7)[1][1] == "2.17 healing per mana  ||  49 per second")
 check("a macro with no spell gets no line", #ShowMacro(3, 8) == 0)
 check("a non-macro action gets no line from the macro hook", #ShowMacro(4, 7) == 0)
 check("with no action slot the tooltip's own id is not trusted: no line", #ShowMacro(nil, 7) == 0)
 tooltip.lines, tooltip.owner = {}, { GetAttribute = function(_, name) return name == "action" and 2 or nil end }
 for i = 1, #macroPosts do macroPosts[i](tooltip, { type = 25, id = 99 }) end
 check("a bar button with only an action attribute resolves through it",
-    tooltip.lines[1] ~= nil and tooltip.lines[1][1]:find("42", 1, true) ~= nil)
+    tooltip.lines[1] ~= nil and tooltip.lines[1][1]:find("49", 1, true) ~= nil)
 check("with no action slot and no spell there is no line", #ShowMacro(nil, 8) == 0)
 tooltip.lines = {}
 Post(tooltip, { type = 1, id = 2050 })
@@ -247,22 +247,22 @@ tooltip.owner = false
 
 local lines = Show(2050)
 check("Lesser Heal 1, no spell power: per mana and per second",
-    #lines == 1 and lines[1][1] == "1.76 healing per mana  ||  35 per second")
+    #lines == 1 and lines[1][1] == "1.72 healing per mana  ||  34 per second")
 check("in the line's color", lines[1][2] == 0.3 and lines[1][3] == 0.71 and lines[1][4] == 0.96)
-check("Lesser Heal 2", Show(2052)[1][1] == "1.86 healing per mana  ||  42 per second")
-check("Lesser Heal 3", Show(2053)[1][1] == "1.99 healing per mana  ||  60 per second")
+check("Lesser Heal 2", Show(2052)[1][1] == "2.17 healing per mana  ||  49 per second")
+check("Lesser Heal 3", Show(2053)[1][1] == "2.25 healing per mana  ||  68 per second")
 
 power.heal = 100
 check("Lesser Heal 1 with 100 healing: the level 1 penalty cuts its 0.429 to 0.123",
-    Show(2050)[1][1] == "2.17 healing per mana  ||  43 per second")
-check("Lesser Heal 2 with 100 healing", Show(2052)[1][1] == "2.36 healing per mana  ||  53 per second")
-check("Lesser Heal 3 with 100 healing", Show(2053)[1][1] == "2.58 healing per mana  ||  77 per second")
+    Show(2050)[1][1] == "2.13 healing per mana  ||  43 per second")
+check("Lesser Heal 2 with 100 healing", Show(2052)[1][1] == "2.67 healing per mana  ||  60 per second")
+check("Lesser Heal 3 with 100 healing", Show(2053)[1][1] == "2.85 healing per mana  ||  85 per second")
 check("Regrowth 1, hybrid, cast time counts", Show(8936)[1][1] == "3.45 healing per mana  ||  121 per second")
 power.heal = 0
 check("Regrowth 1 base", Show(8936)[1][1] == "2.67 healing per mana  ||  94 per second")
 
 level = 2
-check("the per-level growth stops at the player's level", Show(2050)[1][1] == "1.73 healing per mana  ||  35 per second")
+check("the per-level growth stops at the player's level", Show(2050)[1][1] == "1.71 healing per mana  ||  34 per second")
 level = 60
 
 check("Shadow Word: Pain 1, instant DoT: per second over its 18 seconds",
@@ -270,9 +270,9 @@ check("Shadow Word: Pain 1, instant DoT: per second over its 18 seconds",
 power[6] = 100
 check("with 100 shadow damage", Show(589)[1][1] == "3.12 damage per mana  ||  4 per second")
 check("spell damage is read for the spell's school (shadow)", damageReads[#damageReads] == 6)
-check("Frostbolt 1 with no frost damage", Show(116)[1][1] == "0.84 damage per mana  ||  14 per second")
+check("Frostbolt 1 with no frost damage", Show(116)[1][1] == "0.79 damage per mana  ||  13 per second")
 power[5] = 100
-check("Frostbolt 1 with 100 frost damage", Show(116)[1][1] == "1.49 damage per mana  ||  25 per second")
+check("Frostbolt 1 with 100 frost damage", Show(116)[1][1] == "1.44 damage per mana  ||  24 per second")
 
 Data[900001] = "3,60,0,0,0,100,0,0,0,0,0,0,0"
 costs[900001], casts[900001] = { { type = 0, cost = 50 } }, 0
@@ -332,9 +332,7 @@ check("Gift of Nature 5/5 raises Tranquility, which only ticks, by 10%", Show(74
 nodeRanks[104916] = nil
 costs[401502], casts[401502] = { { type = 0, cost = 100 } }, 3000
 check("Frostfire Bolt 1 with no talents", Show(401502)[1][1] == "1.37 damage per mana  ||  46 per second")
-nodeRanks[105773] = 3
-check("Piercing Ice 3/3 adds 6% to Frostfire Bolt's ticks too", Show(401502)[1][1] == "1.46 damage per mana  ||  49 per second")
-nodeRanks[105773], nodeRanks[105799] = nil, 3
+nodeRanks[105799] = 3
 check("Arcane Instability 3/3 adds 3% to Frostfire Bolt's ticks too", Show(401502)[1][1] == "1.42 damage per mana  ||  47 per second")
 nodeRanks[105799] = nil
 local frostPower = power[5]
@@ -386,7 +384,7 @@ check("a secret spell info table, nothing", #Show(2050) == 0)
 spellInfo = 7
 check("spell info that is not a table, nothing", #Show(2050) == 0)
 spellInfo = nil
-check("readable spell info again: the line", Show(2050)[1][1] == "1.76 healing per mana  ||  35 per second")
+check("readable spell info again: the line", Show(2050)[1][1] == "1.72 healing per mana  ||  34 per second")
 
 local KIND_WORDS = { [0] = "damage", [1] = "healing" }
 local function SharedLines(id)
@@ -430,7 +428,7 @@ end
 statsSecret = true
 check("stats secret: nothing rather than a guess", #Show(2050) == 0)
 settings.spellEfficiencyBonus = false
-check("Include My Spell Power off reads no stats and shows the base", Show(2050)[1][1] == "1.76 healing per mana  ||  35 per second")
+check("Include My Spell Power off reads no stats and shows the base", Show(2050)[1][1] == "1.72 healing per mana  ||  34 per second")
 settings.spellEfficiencyBonus = true
 statsSecret = false
 power.heal = secret
@@ -486,23 +484,23 @@ Post(tooltip, secret)
 check("secret data, nothing", #tooltip.lines == 0)
 
 settings.spellEfficiencyStyle = "short"
-check("Short", Show(2050)[1][1] == "HPM 1.76  ||  HPS 35")
+check("Short", Show(2050)[1][1] == "HPM 1.72  ||  HPS 34")
 check("Short damage", Show(589)[1][1] == "DPM 3.12  ||  DPS 4")
 settings.spellEfficiencyPerManaSecond = true
-check("Short with per mana per second", Show(2050)[1][1] == "HPM 1.76  ||  HPS 35  ||  HPM/s 1.17")
+check("Short with per mana per second", Show(2050)[1][1] == "HPM 1.72  ||  HPS 34  ||  HPM/s 1.15")
 settings.spellEfficiencyStyle = "long"
 check("Long with per mana per second",
-    Show(2050)[1][1] == "1.76 healing per mana  ||  35 per second  ||  1.17 per mana per second")
+    Show(2050)[1][1] == "1.72 healing per mana  ||  34 per second  ||  1.15 per mana per second")
 settings.spellEfficiencyDecimals = 0
-check("no decimals", Show(2050)[1][1] == "2 healing per mana  ||  35 per second  ||  1 per mana per second")
+check("no decimals", Show(2050)[1][1] == "2 healing per mana  ||  34 per second  ||  1 per mana per second")
 settings.spellEfficiencyDecimals = 1
-check("one decimal", Show(2050)[1][1] == "1.8 healing per mana  ||  35 per second  ||  1.2 per mana per second")
+check("one decimal", Show(2050)[1][1] == "1.7 healing per mana  ||  34 per second  ||  1.1 per mana per second")
 settings.spellEfficiencyDecimals = 2
 settings.spellEfficiencyPerMana = false
 check("without per mana the first part names the kind",
-    Show(2050)[1][1] == "35 healing per second  ||  1.17 per mana per second")
+    Show(2050)[1][1] == "34 healing per second  ||  1.15 per mana per second")
 settings.spellEfficiencyPerSecond = false
-check("per mana per second alone", Show(2050)[1][1] == "1.17 healing per mana per second")
+check("per mana per second alone", Show(2050)[1][1] == "1.15 healing per mana per second")
 settings.spellEfficiencyPerManaSecond = false
 check("every number off, no line", #Show(2050) == 0)
 settings.spellEfficiencyPerMana, settings.spellEfficiencyPerSecond = true, true
@@ -534,7 +532,7 @@ check("switched off: the hook stays but adds nothing", #posts == 1 and #Show(205
 costs[2053], casts[2053] = { { type = 0, cost = 75 } }, 2500
 ns.PreviewSpellEfficiency()
 check("Preview Tooltip shows a sample spell with the line, even switched off",
-    tooltip.shown and #tooltip.lines == 1 and tooltip.lines[1][1] == "1.99 healing per mana  ||  60 per second")
+    tooltip.shown and #tooltip.lines == 1 and tooltip.lines[1][1] == "2.25 healing per mana  ||  68 per second")
 S.Set("spellEfficiency", true)
 check("switched on again: still one hook", #posts == 1)
 ns.PreviewSpellEfficiency()

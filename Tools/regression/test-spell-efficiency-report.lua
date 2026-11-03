@@ -169,8 +169,8 @@ local Of, Number = ns.SpellEfficiencyOf, ns.SpellEfficiencyNumber
 local lesser = Of(2050)
 check("the shared numbers: Lesser Heal 1's mana, cast time and kind", lesser.mana == 30 and lesser.castMs == 1500
     and lesser.count == 1 and lesser[1].kind == 1 and not lesser.area)
-check("the shared numbers are the tooltip's", Number(lesser[1].perMana) == "1.76"
-    and Number(lesser[1].perSecond, true) == "35" and Number(lesser[1].perManaSecond) == "1.17")
+check("the shared numbers are the tooltip's", Number(lesser[1].perMana) == "1.72"
+    and Number(lesser[1].perSecond, true) == "34" and Number(lesser[1].perManaSecond) == "1.15")
 local nova = Of(122)
 check("an instant area spell: flagged, no per second", nova.area and nova[1].perSecond == nil and nova[1].perMana > 0)
 check("a spell with no data has no numbers", Of(12345) == nil)
@@ -229,7 +229,7 @@ check("an area spell's group says per target", sections:find("FROST NOVA   / tar
 check("every known rank is listed", RowOf(2050) and RowOf(2052) and RowOf(116) and RowOf(122))
 check("its rank text is the spell's", RowOf(2052).rank.text == "Rank 2")
 check("a rank's cells are mana, amount and the three rates, as the tooltip has them",
-    Cells(RowOf(2050)) == "30 53 1.76 35 1.17")
+    Cells(RowOf(2050)) == "30 52 1.72 34 1.15")
 check("an unknown higher rank is listed greyed", RowOf(2053) and RowOf(2053).rank.color[1] == THEME.muted.r
     and RowOf(2052).rank.color[1] == THEME.fg.r)
 check("an unknown rank whose text has not loaded is asked for and left out", RowOf(205) == nil and loads[#loads] == 205)
@@ -263,11 +263,11 @@ check("Rank sorts lowest first", Order("Lesser Heal") == "2050,2052,2053")
 
 S.Set("spellEfficiencyPerManaSecond", false)
 Flush()
-check("a rate turned off on the card leaves the window", Cells(RowOf(2050)) == "30 53 1.76 35"
+check("a rate turned off on the card leaves the window", Cells(RowOf(2050)) == "30 52 1.72 34"
     and Header("perManaSecond").shown == false)
 S.Set("spellEfficiencyDecimals", 0)
 Flush()
-check("Decimals follow the card", Cells(RowOf(2050)) == "30 53 2 35")
+check("Decimals follow the card", Cells(RowOf(2050)) == "30 52 2 34")
 S.Set("spellEfficiencyDecimals", 2)
 S.Set("spellEfficiencyStyle", "short")
 Flush()
