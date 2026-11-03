@@ -196,7 +196,10 @@ for _, id in ipairs({ 5821, 263435, 263436, 270039, 270046, 272996, 276727, 2772
     282653, 282710, 284459,
     -- wowsrc's lists of 11 Oct 2026 (the daily watch's #379): no source on wowsrc, nor on
     -- Wowhead's item pages (build/bis_data.py, 12 Oct).
-    274955, 274957, 274963, 286987, 286988, 286989 }) do UNSOURCED[id] = true end
+    274955, 274957, 274963, 286987, 286988, 286989,
+    -- wowsrc's lists of 3 Nov 2026 (the daily watch's #814): no source on wowsrc, nor on
+    -- Wowhead's item pages (build/bis_data.py, 3 Nov).
+    286982, 286983, 286984, 286985, 286993, 286995, 286996, 287068, 287069 }) do UNSOURCED[id] = true end
 
 Case("every ranked item has a source, from the Journal's dungeons or wowsrc", function()
     local dungeons = {}
