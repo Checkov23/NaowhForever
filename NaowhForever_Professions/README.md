@@ -162,8 +162,9 @@ Each layer uses only the ones above it, or reads a later one's table at call tim
   which is 1 for nearly every recipe. A recipe learned past its yellow is yellow from the start, so
   yellow and green are at least the learn skill. Green is the rounded-down midpoint of yellow and grey.
   A positive live `maxTrivialLevel` replaces the bundled grey, and green is recalculated with it.
-  A grey at or below yellow or the learn skill draws no line. These are difficulty ranges, not
-  measured skill-up probabilities. The recipe name's colour still comes from the game's
+  A grey at or below yellow or the learn skill draws no line. The marker's percentage estimates
+  skill-up chance as `(grey - skill) / (grey - yellow)`, clamped to 0-100% and rounded to a whole
+  percent. This is a formula-based estimate, not a measured probability. The recipe name's colour still comes from the game's
   `relativeDifficulty`.
 - The line is drawn below the icon, with the description and reagents beneath it. Its current-skill
   marker adds the profession's `skillModifier`. Linked professions have no marker or range: their

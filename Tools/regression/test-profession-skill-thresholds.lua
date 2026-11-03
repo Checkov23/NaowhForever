@@ -3,13 +3,14 @@ local checks = 0
 local function Check(label, condition) assert(condition, label); checks = checks + 1 end
 local settings = { enabled = true, skillThresholds = false }
 local builds = 0
+local currentSkill, modifier = 125, 5
 local ns = {
     Shared = { Parts = {} },
     THEME = { fg = { r = 1, g = 1, b = 1 } },
     Professions = {
         Settings = { Get = function(key) return settings[key] end }, State = {},
         Style = { SKILL_BAR_GAP = 8, PANE_INNER_W = 372, DIFFICULTY_RGB = {} },
-        Recipes = { Profession = function() return { skill = 125, modifier = 5 } end },
+        Recipes = { Profession = function() return { skill = currentSkill, modifier = modifier } end },
     },
     RecipeData = {
         [197] = { recipes = {
@@ -44,12 +45,29 @@ ns.Shared.Parts.ThresholdLine = function()
     builds = builds + 1
     return {
         SetPoint = function() end, SetWidth = function() end,
-        Fill = function(self, first, yellow, green, grey, skill) self.bounds = { first, yellow, green, grey, skill } end,
+        Fill = function(self, first, yellow, green, grey, skill, _, text)
+            self.bounds = { first, yellow, green, grey, skill }; self.chance = text
+        end,
         Show = function(self) self.shown = true end, Hide = function(self) self.shown = false end,
     }
 end
 local line = ranges.Render(parent, { recipeID = 10 })
 Check("current skill includes the racial modifier", line.bounds[5] == 130)
+Check("grey recipes have zero chance", line.chance == "0%")
+currentSkill, modifier = 85, 0
+ranges.Render(parent, { recipeID = 10 })
+Check("orange chance is capped at one hundred", line.chance == "100%")
+currentSkill = 95
+ranges.Render(parent, { recipeID = 10 })
+Check("yellow boundary has one hundred percent chance", line.chance == "100%")
+currentSkill = 112
+ranges.Render(parent, { recipeID = 10 })
+Check("chance uses the requested formula and rounds", line.chance == "51%")
+ranges.Render(parent, { recipeID = 10, maxTrivialLevel = 140 })
+Check("chance uses the live grey threshold", line.chance == "62%")
+currentSkill = 150
+ranges.Render(parent, { recipeID = 10 })
+Check("chance never becomes negative", line.chance == "0%")
 Check("line is built once and shown", builds == 1 and line.shown)
 settings.skillThresholds = false
 Check("turning off hides the line", ranges.Render(parent, { recipeID = 10 }) == nil and not line.shown)
@@ -90,17 +108,26 @@ Check("the line has all four bands", #bar.bands == 4)
 Check("numeric boundaries stay in order", bar.labels[1].text == "1" and bar.labels[4].text == "130")
 Check("ordinary ranges use one compact label row", bar.height == ns.Shared.Style.THRESHOLD_HEIGHT)
 Check("the skill marker lies inside the bar", bar.marker.point[4] > 0 and bar.marker.point[4] < bar:GetWidth())
+bar:Fill(1, 95, 112, 130, 125, colors, "14%")
+Check("chance label is visible", bar.markerLabel.shown and bar.markerLabel.text == "14%")
+Check("chance label reserves its own row", bar.height == ns.Shared.Style.THRESHOLD_HEIGHT + ns.Shared.Style.THRESHOLD_LABEL_HEIGHT)
+Check("chance label is below boundary labels", bar.markerLabel.point[5] < bar.labels[4].point[5])
+Check("marker is taller than the track", bar.marker.height == ns.Shared.Style.THRESHOLD_BAR_HEIGHT + 10)
 bar:Fill(1, 95, 112, 130, 0, colors)
 Check("low skill marker is clamped", bar.marker.point[4] == 0)
+Check("omitting optional text restores compact layout", not bar.markerLabel.shown and bar.height == ns.Shared.Style.THRESHOLD_HEIGHT)
 bar:Fill(1, 95, 112, 130, 300, colors)
 Check("high skill marker is clamped", bar.marker.point[4] == bar:GetWidth())
 bar:Fill(1, 95, 112, 130, nil, colors)
 Check("missing skill hides only the marker", not bar.marker.shown)
+bar:Fill(1, 95, 112, 130, nil, colors, "50%")
+Check("missing skill hides the chance", not bar.markerLabel.shown)
 bar:Fill(1, 1, 2, 3, 1, colors)
 Check("a missing orange band occupies no room", not bar.bands[1].shown)
 Check("an empty band shows no label of its own", not bar.labels[1].shown and bar.labels[2].shown)
 bar:SetWidth(180)
-bar:Fill(1, 145, 147, 150, 149, colors)
+bar:Fill(1, 145, 147, 150, 149, colors, "20%")
+Check("chance stays inside narrow bars", bar.markerLabel.point[4] >= 0 and bar.markerLabel.point[4] + bar.markerLabel:GetStringWidth() <= bar:GetWidth())
 for i = 1, #bar.labels do
     local label = bar.labels[i]
     Check("close thresholds all remain visible", label.shown)

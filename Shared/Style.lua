@@ -14,7 +14,7 @@ Shared.Style = {
     THRESHOLD_LABEL_ROWS = 3,
     THRESHOLD_GREY_SHARE = 0.12,
     THRESHOLD_MARKER_WIDTH = 2,
-    THRESHOLD_MARKER_OUT = 3,
+    THRESHOLD_MARKER_OUT = 5,
     BORDER_RGB = { r = 0, g = 0, b = 0 },
     BACKDROP_ALPHA = 0.97,
     HUD_SHADOW_RGB = { r = 0, g = 0, b = 0 },

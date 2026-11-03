@@ -45,6 +45,15 @@ local function Layout(line)
         end
     end
     local height = St.THRESHOLD_HEIGHT + (usedRows - 1) * St.THRESHOLD_LABEL_HEIGHT
+    line.markerLabel:SetShown(line.skill ~= nil and line.markerText ~= nil)
+    if line.skill and line.markerText then
+        local x = Clamp((line.skill - values[1]) / span, 0, 1) * width
+        local labelWidth = line.markerLabel:GetStringWidth()
+        local left = Clamp(x - labelWidth * HALF, 0, math.max(0, width - labelWidth))
+        line.markerLabel:ClearAllPoints()
+        line.markerLabel:SetPoint("TOPLEFT", line, "TOPLEFT", left, -height)
+        height = height + St.THRESHOLD_LABEL_HEIGHT
+    end
     if line.drawnHeight ~= height then
         line.drawnHeight = height
         line:SetHeight(height)
@@ -57,9 +66,11 @@ local function Layout(line)
     end
 end
 
-local function Fill(line, first, yellow, green, grey, skill, colors)
+local function Fill(line, first, yellow, green, grey, skill, colors, markerText)
     line.values[1], line.values[2], line.values[3], line.values[4] = first, yellow, green, grey
     line.skill = skill
+    line.markerText = markerText
+    line.markerLabel:SetText(markerText or "")
     for i = 1, BANDS do
         line.labels[i]:SetText(tostring(line.values[i]))
         line.bands[i]:Paint(colors[i - 1])
@@ -88,6 +99,8 @@ function Parts.ThresholdLine(parent)
     line.marker:SetSize(St.THRESHOLD_MARKER_WIDTH, St.THRESHOLD_BAR_HEIGHT + St.THRESHOLD_MARKER_OUT * 2)
     line.marker:SetFrameLevel(line.bands[BANDS].fill:GetFrameLevel() + 1)
     ns.Solid(line.marker, "OVERLAY", T.fg, 1):SetAllPoints()
+    line.markerLabel = ns.Font(line, St.THRESHOLD_FONT_SIZE)
+    line.markerLabel:SetJustifyH("LEFT")
     line.Fill = Fill
     line:SetScript("OnSizeChanged", Layout)
     return line

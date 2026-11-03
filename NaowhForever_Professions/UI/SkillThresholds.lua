@@ -9,6 +9,8 @@ local Parts = ns.Shared.Parts
 local Style = P.Style
 
 local HALF = 0.5
+local PERCENT = 100
+local TEXT_CHANCE = "%d%%"
 
 local Thresholds = {}
 P.SkillThresholds = Thresholds
@@ -49,7 +51,10 @@ function Thresholds.Render(parent, info)
         line:SetWidth(Style.PANE_INNER_W)
         parent.skillThresholds = line
     end
-    line:Fill(first, yellow, green, grey, Skill(), Style.DIFFICULTY_RGB)
+    local skill = Skill()
+    local chance = skill and math.max(0, math.min(1, (grey - skill) / (grey - yellow)))
+    local text = chance and TEXT_CHANCE:format(math.floor(chance * PERCENT + HALF))
+    line:Fill(first, yellow, green, grey, skill, Style.DIFFICULTY_RGB, text)
     line:Show()
     return line
 end
