@@ -1,12 +1,27 @@
 # Changelog
 
-## Unreleased
+## 1.1.58
+
+### Added
+- Dungeon Journal: Destruction in Deadmines, the Excavation Site's Dragonmaw Rumors, Seeking Caitlin
+  and Fallen in the Fen, and the paladin quests Seeking the Kor Gem and A Moon-Kissed Blade, with
+  Return of the Ring and the second Sparklematic 5200! as follow-ups.
+- BiS List: every item ForeverChanges' level 30 PvE, tank and healer lists recommend can now be
+  picked for its spec, after wowsrc's ranking, so no current BiS changes.
 
 ### Changed
 - Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70755.
 - Naowh Score: refitted to the latest Forever items.
 - Dungeon Journal: boss loot updated from the latest Forever loot lists.
 - BiS List: picks updated from wowsrc.com's latest lists.
+
+### Fixed
+- Discovery: the Quest List leaves out the quests Forever does not give and adds the ones it was
+  missing, such as Waking Naralex and Attunement to the Core.
+- Discovery: Quest List map pins stand at the quest givers: 204 more quests have one, and givers
+  that were in the wrong zone, such as Candles of Beckoning's and the Bubbling Cauldron's, are in
+  the right one.
+- Dungeon Journal: A Frightened Request is picked up in Silverpine Forest, not Undercity.
 
 ## 1.1.57
 
