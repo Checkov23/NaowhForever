@@ -839,6 +839,32 @@ Case("settings that act for you are named, and stay off unless asked for", funct
         "a profile that acts for nobody names nothing")
 end)
 
+Case("a Junk Marker that sells comes along asking first, unless Also Import is ticked", function()
+    local w = World()
+    w.db.profiles.Default.qol.scrapMarker = true
+    local payload = assert(w.ns.DecodeProfile((w.ns.ExportProfile())))
+    assert(w.ns.ProfileActing(payload)[1] == "Junk Marker selling without asking")
+    w.ns.ImportProfile(payload, ALL)
+    local landed = w.db.profiles[w.switched].qol
+    assert(landed.scrapMarker == true and landed.scrapMarkerVendor == "ask", "the marker stays on and asks")
+    local all = { acting = true }
+    for k, v in pairs(ALL) do all[k] = v end
+    w.active = "Default"
+    w.ns.ImportProfile(payload, all)
+    landed = w.db.profiles[w.switched].qol
+    assert(landed.scrapMarker == true and landed.scrapMarkerVendor == nil, "ticked, it sells as it did")
+    w = World()
+    w.db.profiles.Default.qol.scrapMarker, w.db.profiles.Default.qol.scrapMarkerVendor = true, "ask"
+    payload = assert(w.ns.DecodeProfile((w.ns.ExportProfile())))
+    assert(#w.ns.ProfileActing(payload) == 0, "a marker that asks acts for nobody")
+    w = World()
+    w.db.profiles.Default.qol.scrapMarker, w.db.profiles.Default.qol.scrapMarkerVendor = true, true
+    payload = assert(w.ns.DecodeProfile((w.ns.ExportProfile())))
+    assert(#w.ns.ProfileActing(payload) == 1, "a vendor mode that is not a mode sells, so it is named")
+    w.ns.ImportProfile(payload, ALL)
+    assert(w.db.profiles[w.switched].qol.scrapMarkerVendor == "ask", "and it lands asking")
+end)
+
 -- The Profiles page on stub frames and a small stand-in for the row engine.
 Case("the page: the profile in use, the others with Use, a switch per part, a paste box with Import", function()
     local w = World()

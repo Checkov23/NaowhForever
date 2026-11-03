@@ -460,7 +460,8 @@ function ns.ProfileStringParts(payload)
 end
 
 local function SellsScrap(values)
-    return (values.scrapMarkerVendor or "sell") == "sell"
+    local mode = values.scrapMarkerVendor
+    return mode ~= "ask" and mode ~= "none"
 end
 
 local ACTING = {
@@ -471,7 +472,8 @@ local ACTING = {
     { module = "qol", key = "sellJunk", label = "Auto Sell Junk" },
     { module = "qol", key = "restockBuy", label = "Buy at Vendors" },
     { module = "qol", key = "lootConfirm", label = "Skip Loot Confirmations" },
-    { module = "qol", key = "scrapMarker", label = "Junk Marker, which sells what it marks", when = SellsScrap },
+    { module = "qol", key = "scrapMarker", label = "Junk Marker selling without asking", when = SellsScrap,
+        calm = function(values) values.scrapMarkerVendor = "ask" end },
     { module = "journal", key = "acceptShared", label = "Accept Shared Dungeon Quests" },
 }
 
@@ -810,7 +812,7 @@ local function ImportSettings(root, settings, wanted)
     for _, item in ipairs(ACTING) do
         local values = root[item.module]
         if type(values) == "table" and ActingOn(settings, item) then
-            values[item.key] = nil
+            if item.calm then item.calm(values) else values[item.key] = nil end
         end
     end
 end
