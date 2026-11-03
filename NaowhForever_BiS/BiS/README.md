@@ -1,8 +1,9 @@
 # BiS List
 
 Your best-in-slot picks for every gear slot, ranked: your BiS (an orange star), your second
-pick (a silver one), then the rest. Picks come from wowsrc.com's ranking for your spec, from
-every dungeon drop your class can use, or from Alt+Shift-clicking any item. The list has its
+pick (a silver one), then the rest. Picks come from wowsrc.com's ranking for your spec, then
+ForeverChanges' picks for it that wowsrc does not rank, from every dungeon drop your class can
+use, or from Alt+Shift-clicking any item. The list has its
 own window (`/nfbis`, a key binding, or the BiS stat in the Dungeon Journal): your paperdoll
 on the left, a card per slot with its picks on the right, where to run next (a waypoint on
 whoever has your BiS out in the world) and the best enchant for what you wear; and a Quests
@@ -26,7 +27,7 @@ BiS/
   BiS.lua             settings, a list's shape, change listeners (ns.BiS)
   Constants.lua       the numbers several files share: the hand slots, a list name's length (B.C)
   Data/               generated, no logic
-    BiS.lua           wowsrc.com's ranking per spec and item sources (Tools/build/bis_data.py)
+    BiS.lua           wowsrc.com's ranking per spec, then ForeverChanges', and item sources (Tools/build/bis_data.py)
     Spots.lua         where the NPC with a BiS stands out in the world (Tools/build/bis_spots.py)
     Enchants.lua      every enchant, what it gives and goes on, the skill it needs (Tools/build/enchants.py)
   Rankings.lua        rankings, dungeon drops, sources, Run Next (B.Rankings)
@@ -76,7 +77,7 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
 | --- | --- |
 | A colour, a size, a font size, an icon | `View/Style.lua`, or `Shared/Style.lua` for the house look (the stars) |
 | What a class can wear or wield | `Rankings.lua` |
-| A spec's ranking | `python Tools/build/bis_data.py` (daily in CI) |
+| A spec's ranking | `python Tools/build/bis_data.py` (daily in CI); ForeverChanges' picks after it, `python Tools/build/foreverchanges_bis.py`, then `bis_data.py` |
 | Where an item drops | A dungeon drop: the Dungeon Journal's data (`Tools/build/journal.py`), which the BiS List reads; anything else: `Tools/data/bis_sources.json`, then rebuild |
 | What a list keeps, or an old format | `Lists.lua` (saved lists) and `Sharing.lua` (strings) |
 | Which enchant or upgrade wins for a spec | the spec's weights in `StatWeights/Data/Defaults.lua` (players change their own in the module's page); a proc's worth in `PROCS` in `Tools/build/enchants.py` |

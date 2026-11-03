@@ -15,6 +15,11 @@ that crafts it, the vendor that sells it or the container it comes in, in that o
 or World drop when many NPCs drop it. Answers are cached in bis_sources.json, where
 an entry can be edited by hand the same way.
 
+After wowsrc's picks, each slot has ForeverChanges' for the spec that wowsrc does not rank, in
+their order (Tools/data/foreverchanges_bis.json, from Tools/build/foreverchanges_bis.py), so
+every item either site recommends can be picked. A pick with no source from wowsrc or Wowhead
+gets the one ForeverChanges gives under it.
+
 --check is the daily check (.github/workflows/daily-watch.yml): it reads the spec pages again
 and says, slot by slot, where they differ from NaowhForever_BiS/BiS/Data/BiS.lua: a new #1, items
 added to a slot or taken off it, a new spec page. The rest of the order is left out. It
@@ -47,6 +52,7 @@ ROOT = paths.ROOT
 OUT = ROOT / "NaowhForever_BiS" / "BiS" / "Data" / "BiS.lua"
 CACHE = paths.DATA / "bis_item_ids.json"
 SOURCES = paths.DATA / "bis_sources.json"
+LISTED = paths.DATA / "foreverchanges_bis.json"
 WOWHEAD = "https://www.wowhead.com/forever"
 SEP = " \u00b7 "
 
@@ -239,11 +245,21 @@ def wowhead_source(item_id, cache):
     return source
 
 
+def listed():
+    """ForeverChanges' picks and sources: {"specs": {slug: {"slot": [IDs]}}, "sources": {"ID": source}}."""
+    return json.loads(LISTED.read_text(encoding="utf-8")) if LISTED.exists() else {"specs": {}, "sources": {}}
+
+
 def fill_sources(sources, ranked):
-    """Adds a Wowhead source for every ranked item wowsrc gave none; returns the ones still without."""
+    """Adds a source for every ranked item wowsrc gave none: Wowhead's, else ForeverChanges' when
+    Wowhead has none or was not asked yet, else Wowhead's asked now; returns the ones still without."""
     cache = json.loads(SOURCES.read_text(encoding="utf-8")) if SOURCES.exists() else {}
+    theirs = listed()["sources"]
     missing = []
     for item_id in sorted(ranked - sources.keys()):
+        if not cache.get(f"item={item_id}") and str(item_id) in theirs:
+            sources[item_id] = theirs[str(item_id)]
+            continue
         if OFFLINE and f"item={item_id}" not in cache:
             missing.append(item_id)
             continue
@@ -288,6 +304,16 @@ def lua_string(s):
     return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
+def with_listed(slots, picks):
+    """A spec's {inventory slot: [item IDs]} with ForeverChanges' picks ({"slot": [IDs]}) after
+    wowsrc's, each item once."""
+    out = {}
+    for _, inv in SLOTS:
+        ids = list(slots.get(inv, []))
+        out[inv] = ids + [i for i in picks.get(str(inv), []) if i not in ids]
+    return out
+
+
 def main():
     if "--check" in sys.argv:
         args = sys.argv[1:]
@@ -299,6 +325,7 @@ def main():
         report_missing(refill_sources())
         return
     cache = json.loads(CACHE.read_text(encoding="utf-8")) if CACHE.exists() else {}
+    picks = listed()["specs"]
     specs, sources, candidates, left_out = [], {}, {}, set()
 
     for cls, slug in spec_slugs():
@@ -323,11 +350,11 @@ def main():
                     if item["source"]:
                         sources[item_id] = item["source"]
             resolved[inv] = ids
-        specs.append((cls, slug, title, updated, resolved))
+        specs.append((cls, slug, title, updated, with_listed(resolved, picks.get(slug, {}))))
         CACHE.write_text(json.dumps(cache, indent=1, sort_keys=True), encoding="utf-8", newline="\r\n")
 
     lines = [
-        "-- BiS.lua: ranked best-in-slot candidates per spec and item sources, from wowsrc.com (Tools/build/bis_data.py).",
+        "-- BiS.lua: ranked best-in-slot candidates per spec and item sources, from wowsrc.com and ForeverChanges (Tools/build/bis_data.py).",
         "local ns = _G.NaowhForever",
         "",
         "ns.BiSData = {",
@@ -389,11 +416,13 @@ def settler(cache):
     return find
 
 
-def bis_changes(ours, theirs, cache, find=None):
+def bis_changes(ours, theirs, cache, find=None, picks=None):
     """What theirs ({slug: (title, {inv: [items]})}, read now) says that ours (current_specs)
     does not, as Markdown lines; [] when nothing. find(item) -> its ID (settler's), else the
-    cache alone. No "#1": GitHub links "#" and a number to that pull request."""
+    cache alone. ForeverChanges' picks ({slug: {"slot": [IDs]}}) are not taken off by wowsrc.
+    No "#1": GitHub links "#" and a number to that pull request."""
     find = find or (lambda item: cache.get(item_key(item)))
+    picks = picks or {}
     names = {item_id: key.split("|", 1)[0] for key, item_id in cache.items() if item_id}
     slot_names = {inv: key.replace("-", " ") for key, inv in SLOTS}
     lines = []
@@ -410,7 +439,8 @@ def bis_changes(ours, theirs, cache, find=None):
                 said.append(f"top pick is now {items[0]['name']} (was {names.get(before[0], before[0])})")
             added = [i["name"] + ("" if item_id else " (not in the game's tables yet)")
                      for i, item_id in zip(items, now) if item_id not in before]
-            gone = [names.get(i, str(i)) for i in before if i not in now]
+            kept = now + picks.get(slug, {}).get(str(inv), [])
+            gone = [names.get(i, str(i)) for i in before if i not in kept]
             if added:
                 said.append("added " + ", ".join(added))
             if gone:
@@ -427,7 +457,7 @@ def check(report_path=None, github_output=None):
     for _, slug in spec_slugs():
         theirs[slug] = parse_spec(slug)[:2]
         time.sleep(1)   # one page at a time, gently
-    found = bis_changes(current_specs(), theirs, cache, settler(cache))
+    found = bis_changes(current_specs(), theirs, cache, settler(cache), listed()["specs"])
     if not found:
         head = ["## BiS lists from wowsrc.com", "",
                 "Their spec pages match `NaowhForever_BiS/BiS/Data/BiS.lua`: nothing new."]

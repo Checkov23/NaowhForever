@@ -1,0 +1,3423 @@
+{
+ "sources": {
+  "10332": "Trash drop \u00b7 Scarlet Monastery Graveyard",
+  "10358": "Dungeon quest: Power Stones \u00b7 Quest",
+  "10403": "Captain Greenskin \u00b7 The Deadmines",
+  "10502": "Engineering \u00b7 Crafted",
+  "10518": "Engineering \u00b7 Crafted",
+  "10542": "Engineering \u00b7 Crafted",
+  "10545": "Engineering \u00b7 Crafted",
+  "1121": "World drop",
+  "11263": "Mage's Wand \u00b7 Quest",
+  "11970": "World drop",
+  "11985": "World drop",
+  "12019": "World drop",
+  "12029": "World drop",
+  "12984": "World drop",
+  "12998": "World drop",
+  "13011": "World drop",
+  "13012": "World drop",
+  "13031": "World drop",
+  "13033": "World drop",
+  "13037": "World drop",
+  "13045": "World drop",
+  "13048": "World drop",
+  "13062": "World drop",
+  "13063": "World drop",
+  "13079": "World drop",
+  "13084": "World drop",
+  "13087": "World drop",
+  "13097": "World drop",
+  "13106": "World drop",
+  "13108": "World drop",
+  "13114": "World drop",
+  "13124": "World drop",
+  "13127": "World drop",
+  "13131": "World drop",
+  "13137": "World drop",
+  "14200": "World drop",
+  "14201": "World drop",
+  "14203": "World drop",
+  "14211": "World drop",
+  "14573": "World drop",
+  "14584": "World drop",
+  "14590": "World drop",
+  "14593": "World drop",
+  "14608": "World drop",
+  "14751": "World drop",
+  "14753": "World drop",
+  "14763": "World drop",
+  "14764": "World drop",
+  "1486": "Trash drop \u00b7 Blackfathom Deeps",
+  "1488": "Trash drop \u00b7 Razorfen Kraul",
+  "15140": "World drop",
+  "15142": "World drop",
+  "15357": "World drop",
+  "15358": "World drop",
+  "15550": "World drop",
+  "15551": "World drop",
+  "15553": "World drop",
+  "15566": "World drop",
+  "15697": "Kodo Roundup \u00b7 Quest",
+  "15698": "Kodo Roundup \u00b7 Quest",
+  "15892": "World drop",
+  "15962": "World drop",
+  "16791": "Book of the Ancients \u00b7 Quest",
+  "17686": "Big Game Hunter \u00b7 Quest",
+  "17687": "Big Game Hunter \u00b7 Quest",
+  "18948": "Leatherworking \u00b7 Crafted",
+  "1974": "Trash drop \u00b7 Shadowfang Keep",
+  "1975": "Trash drop \u00b7 Razorfen Kraul",
+  "1978": "Trash drop \u00b7 Razorfen Kraul",
+  "2039": "Trash drop \u00b7 Razorfen Kraul",
+  "2098": "World drop",
+  "2264": "Trash drop \u00b7 Razorfen Kraul",
+  "2278": "World drop",
+  "2292": "Trash drop \u00b7 Shadowfang Keep",
+  "249392": "Enchanting \u00b7 Crafted",
+  "249393": "Enchanting \u00b7 Crafted",
+  "249394": "Enchanting \u00b7 Crafted",
+  "249395": "Enchanting \u00b7 Crafted",
+  "249396": "Enchanting \u00b7 Crafted",
+  "249397": "Enchanting \u00b7 Crafted",
+  "249398": "Enchanting \u00b7 Crafted",
+  "250486": "Blacksmithing \u00b7 Crafted",
+  "250507": "Blacksmithing \u00b7 Crafted",
+  "250511": "Blacksmithing \u00b7 Crafted",
+  "250518": "Blacksmithing \u00b7 Crafted",
+  "250519": "Blacksmithing \u00b7 Crafted",
+  "250520": "Blacksmithing \u00b7 Crafted",
+  "250522": "Blacksmithing \u00b7 Crafted",
+  "250523": "Blacksmithing \u00b7 Crafted",
+  "250524": "Blacksmithing \u00b7 Crafted",
+  "250525": "Blacksmithing \u00b7 Crafted",
+  "250526": "Blacksmithing \u00b7 Crafted",
+  "250527": "Blacksmithing \u00b7 Crafted",
+  "250528": "Blacksmithing \u00b7 Crafted",
+  "250533": "Blacksmithing \u00b7 Crafted",
+  "250534": "Blacksmithing \u00b7 Crafted",
+  "250556": "Blacksmithing \u00b7 Crafted",
+  "250557": "Blacksmithing \u00b7 Crafted",
+  "250558": "Blacksmithing \u00b7 Crafted",
+  "250559": "Blacksmithing \u00b7 Crafted",
+  "250560": "Blacksmithing \u00b7 Crafted",
+  "252439": "Leatherworking \u00b7 Crafted",
+  "252441": "Leatherworking \u00b7 Crafted",
+  "252442": "Leatherworking \u00b7 Crafted",
+  "252443": "Leatherworking \u00b7 Crafted",
+  "252444": "Leatherworking \u00b7 Crafted",
+  "252448": "Leatherworking \u00b7 Crafted",
+  "252450": "Leatherworking \u00b7 Crafted",
+  "252451": "Leatherworking \u00b7 Crafted",
+  "252455": "Gelihast \u00b7 Blackfathom Deeps",
+  "252456": "Gelihast \u00b7 Blackfathom Deeps",
+  "252457": "Leatherworking \u00b7 Crafted",
+  "252458": "Leatherworking \u00b7 Crafted",
+  "252459": "Leatherworking \u00b7 Crafted",
+  "252460": "Leatherworking \u00b7 Crafted",
+  "252461": "Leatherworking \u00b7 Crafted",
+  "252497": "Leatherworking \u00b7 Crafted",
+  "252504": "Leatherworking \u00b7 Crafted",
+  "252508": "Leatherworking \u00b7 Crafted",
+  "252510": "Leatherworking \u00b7 Crafted",
+  "252511": "Leatherworking \u00b7 Crafted",
+  "252512": "Gelihast \u00b7 Blackfathom Deeps",
+  "252513": "Gelihast \u00b7 Blackfathom Deeps",
+  "252514": "Gelihast \u00b7 Blackfathom Deeps",
+  "252515": "Gelihast \u00b7 Blackfathom Deeps",
+  "252516": "Leatherworking \u00b7 Crafted",
+  "252519": "Leatherworking \u00b7 Crafted",
+  "252520": "Leatherworking \u00b7 Crafted",
+  "252521": "Leatherworking \u00b7 Crafted",
+  "252522": "Leatherworking \u00b7 Crafted",
+  "252523": "Leatherworking \u00b7 Crafted",
+  "253891": "Tailoring \u00b7 Crafted",
+  "253893": "Tailoring \u00b7 Crafted",
+  "253897": "Tailoring \u00b7 Crafted",
+  "253913": "Tailoring \u00b7 Crafted",
+  "253915": "Tailoring \u00b7 Crafted",
+  "253917": "Tailoring \u00b7 Crafted",
+  "253919": "Tailoring \u00b7 Crafted",
+  "253921": "Tailoring \u00b7 Crafted",
+  "253925": "Tailoring \u00b7 Crafted",
+  "253927": "Tailoring \u00b7 Crafted",
+  "253929": "Tailoring \u00b7 Crafted",
+  "253931": "Tailoring \u00b7 Crafted",
+  "253937": "Tailoring \u00b7 Crafted",
+  "253939": "Tailoring \u00b7 Crafted",
+  "253941": "Tailoring \u00b7 Crafted",
+  "253945": "Tailoring \u00b7 Crafted",
+  "253951": "Tailoring \u00b7 Crafted",
+  "253953": "Tailoring \u00b7 Crafted",
+  "253955": "Tailoring \u00b7 Crafted",
+  "253957": "Tailoring \u00b7 Crafted",
+  "253961": "Tailoring \u00b7 Crafted",
+  "253963": "Tailoring \u00b7 Crafted",
+  "253965": "Tailoring \u00b7 Crafted",
+  "253967": "Tailoring \u00b7 Crafted",
+  "253969": "Tailoring \u00b7 Crafted",
+  "253975": "Tailoring \u00b7 Crafted",
+  "253977": "Tailoring \u00b7 Crafted",
+  "253979": "Tailoring \u00b7 Crafted",
+  "253981": "Tailoring \u00b7 Crafted",
+  "253983": "Tailoring \u00b7 Crafted",
+  "253987": "Tailoring \u00b7 Crafted",
+  "253989": "Tailoring \u00b7 Crafted",
+  "253991": "Tailoring \u00b7 Crafted",
+  "253993": "Tailoring \u00b7 Crafted",
+  "253995": "Tailoring \u00b7 Crafted",
+  "254001": "Tailoring \u00b7 Crafted",
+  "254003": "Tailoring \u00b7 Crafted",
+  "254005": "Tailoring \u00b7 Crafted",
+  "254007": "Tailoring \u00b7 Crafted",
+  "254009": "Tailoring \u00b7 Crafted",
+  "254011": "Tailoring \u00b7 Crafted",
+  "2549": "Trash drop \u00b7 Razorfen Kraul",
+  "2565": "World drop",
+  "2567": "Trash drop \u00b7 Blackfathom Deeps",
+  "263411": "Aquatic Form \u00b7 Quest",
+  "270031": "Dungeon quest: Blackfathom Villainy \u00b7 Quest",
+  "270032": "Dungeon quest: Blackfathom Villainy \u00b7 Quest",
+  "270042": "Dungeon quest: A Fine Mess \u00b7 Quest",
+  "270052": "Jarl Needs a Blade \u00b7 Quest",
+  "270074": "Dungeon quest: Solution to Doom \u00b7 Quest",
+  "270084": "Big Game Hunter, after Nesingwary's three Mastery chains, Stranglethorn Vale \u00b7 Quest",
+  "270090": "Four quests for \"Sea Wolf\" MacKinley, Booty Bay \u00b7 Quest",
+  "270091": "Four quests for \"Sea Wolf\" MacKinley, Booty Bay \u00b7 Quest",
+  "271202": "Witherfang \u00b7 Ruins of Lordaeron",
+  "271214": "Rath'mael \u00b7 Ruins of Lordaeron",
+  "2721": "World drop",
+  "273022": "Saltspine \u00b7 Excavation Site: Wetlands",
+  "273024": "Saltspine \u00b7 Excavation Site: Wetlands",
+  "273025": "Shadetooth \u00b7 Excavation Site: Wetlands",
+  "273026": "Shadetooth \u00b7 Excavation Site: Wetlands",
+  "273027": "Shadetooth \u00b7 Excavation Site: Wetlands",
+  "273028": "Relic Guardian \u00b7 Excavation Site: Wetlands",
+  "273029": "Relic Guardian \u00b7 Excavation Site: Wetlands",
+  "273030": "Relic Guardian \u00b7 Excavation Site: Wetlands",
+  "273031": "Arcane Anomaly \u00b7 City of Dalaran",
+  "273033": "Atrexis the Grave Knight \u00b7 City of Dalaran",
+  "273034": "Arcane Anomaly \u00b7 City of Dalaran",
+  "273035": "Arcane Anomaly \u00b7 City of Dalaran",
+  "273036": "Atrexis the Grave Knight \u00b7 City of Dalaran",
+  "273037": "Fel Ancient \u00b7 City of Dalaran",
+  "273038": "Fel Ancient \u00b7 City of Dalaran",
+  "273039": "Fel Ancient \u00b7 City of Dalaran",
+  "273040": "Mana Devourer \u00b7 City of Dalaran",
+  "273041": "Mana Devourer \u00b7 City of Dalaran",
+  "273042": "Mana Devourer \u00b7 City of Dalaran",
+  "273043": "Arcanic Enigma \u00b7 City of Dalaran",
+  "273044": "Arcanic Enigma \u00b7 City of Dalaran",
+  "273045": "Arcanic Enigma \u00b7 City of Dalaran",
+  "273047": "Unstable Sentinel \u00b7 City of Dalaran",
+  "273048": "Unstable Sentinel \u00b7 City of Dalaran",
+  "273049": "Shade of the Archmage \u00b7 City of Dalaran",
+  "273052": "Shade of the Archmage \u00b7 City of Dalaran",
+  "273053": "Lyn the Ignored \u00b7 City of Dalaran",
+  "273054": "Lyn the Ignored \u00b7 City of Dalaran",
+  "273298": "Cookie \u00b7 The Deadmines",
+  "273643": "Commander Springvale \u00b7 Shadowfang Keep",
+  "273647": "Wolf Master Nandos \u00b7 Shadowfang Keep",
+  "273840": "Gelihast \u00b7 Blackfathom Deeps",
+  "273843": "Lorgus Jett \u00b7 Blackfathom Deeps",
+  "274042": "Grubbis \u00b7 Gnomeregan",
+  "274043": "Grubbis \u00b7 Gnomeregan",
+  "274068": "Crowd Pummeler 9-60 \u00b7 Gnomeregan",
+  "274149": "Roogug \u00b7 Razorfen Kraul",
+  "274152": "Roogug \u00b7 Razorfen Kraul",
+  "274158": "Aggem Thorncurse \u00b7 Razorfen Kraul",
+  "274159": "Aggem Thorncurse \u00b7 Razorfen Kraul",
+  "274161": "Overlord Ramtusk \u00b7 Razorfen Kraul",
+  "274290": "Interrogator Vishas \u00b7 Scarlet Monastery Graveyard",
+  "274743": "Winklespark \u00b7 Ratchet",
+  "274746": "Gezzy Gunkgear \u00b7 Booty Bay",
+  "274748": "Gezzy Gunkgear \u00b7 Booty Bay",
+  "274749": "Gezzy Gunkgear \u00b7 Booty Bay",
+  "277040": "Blacksmithing \u00b7 Crafted",
+  "277042": "Leatherworking \u00b7 Crafted",
+  "277043": "Leatherworking \u00b7 Crafted",
+  "277050": "Leatherworking \u00b7 Crafted",
+  "277051": "Leatherworking \u00b7 Crafted",
+  "277206": "Strahnbrad Mystery, a quest of Alterac Mountains \u00b7 Quest",
+  "277208": "Quest No Honor Among Thieves, Stranglethorn Vale \u00b7 Quest",
+  "277213": "Dro'zem the Blasphemous \u00b7 the Redridge Mountains",
+  "277223": "Quest No Honor Among Thieves, Stranglethorn Vale \u00b7 Quest",
+  "277246": "Rogue quest The Eye of Bhossca, Silverpine Forest, level 35 \u00b7 Quest",
+  "280306": "Engineering \u00b7 Crafted",
+  "280307": "Engineering \u00b7 Crafted",
+  "280308": "Engineering \u00b7 Crafted",
+  "280604": "The Tempest's Weapons \u00b7 Quest",
+  "280605": "The Tempest's Weapons \u00b7 Quest",
+  "280607": "The Tempest's Weapons \u00b7 Quest",
+  "280696": "The Tempest's Weapons \u00b7 Quest",
+  "281318": "Bloom of the Heavens \u00b7 Quest",
+  "2816": "Death Speaker Jargba \u00b7 Razorfen Kraul",
+  "284401": "Sorrow Wing \u00b7 Stonetalon Mountains",
+  "285190": "Heartrazor \u00b7 Thousand Needles",
+  "285331": "Humar the Pridelord \u00b7 the Barrens",
+  "285338": "Brontus \u00b7 the Barrens",
+  "285344": "Captain Gerogg Hammertoe \u00b7 Bael Modan",
+  "286983": "Trash drop \u00b7 Excavation Site: Wetlands",
+  "286987": "Trash drop \u00b7 City of Dalaran",
+  "286988": "Trash drop \u00b7 City of Dalaran",
+  "286989": "Trash drop \u00b7 City of Dalaran",
+  "286991": "Trash drop \u00b7 City of Dalaran",
+  "286992": "Trash drop \u00b7 City of Dalaran",
+  "286994": "Trash drop \u00b7 City of Dalaran",
+  "286995": "Trash drop \u00b7 City of Dalaran",
+  "2870": "Blacksmithing \u00b7 Crafted",
+  "287068": "Trash drop \u00b7 Excavation Site: Wetlands",
+  "2879": "World drop",
+  "2912": "World drop",
+  "3020": "World drop",
+  "3197": "World drop",
+  "3230": "Fenrus the Devourer \u00b7 Shadowfang Keep",
+  "3341": "Boulderfist ogres \u00b7 Arathi Highlands",
+  "3414": "Trash drop \u00b7 Blackfathom Deeps",
+  "3415": "Trash drop \u00b7 Blackfathom Deeps",
+  "3456": "Houndmaster Loksey \u00b7 Scarlet Monastery Library",
+  "3719": "Leatherworking \u00b7 Crafted",
+  "4039": "World drop",
+  "4055": "World drop",
+  "4076": "World drop",
+  "4086": "Pearl Diving \u00b7 Quest",
+  "4107": "Tiger Mastery \u00b7 Quest",
+  "4108": "Panther Mastery \u00b7 Quest",
+  "4119": "Raptor Mastery \u00b7 Quest",
+  "4128": "Venture Company Mining \u00b7 Quest",
+  "4129": "Cracking Maury's Foot \u00b7 Quest",
+  "4197": "Dungeon quest: A Vengeful Fate \u00b7 Quest",
+  "4253": "Leatherworking \u00b7 Crafted",
+  "4255": "Leatherworking \u00b7 Crafted",
+  "4257": "Leatherworking \u00b7 Crafted",
+  "4319": "Tailoring \u00b7 Crafted",
+  "4320": "Tailoring \u00b7 Crafted",
+  "4322": "Tailoring \u00b7 Crafted",
+  "4331": "Tailoring \u00b7 Crafted",
+  "4381": "Engineering \u00b7 Crafted",
+  "4396": "Engineering \u00b7 Crafted",
+  "4438": "Trash drop \u00b7 Razorfen Kraul",
+  "4454": "World drop",
+  "4455": "Leatherworking \u00b7 Crafted",
+  "4462": "World drop",
+  "4464": "World drop",
+  "4746": "Dungeon quest: Solution to Doom \u00b7 Quest",
+  "5003": "World drop",
+  "5194": "Sneed \u00b7 The Deadmines",
+  "5200": "Captain Greenskin \u00b7 The Deadmines",
+  "5213": "World drop",
+  "5214": "World drop",
+  "5248": "Pearl Diving \u00b7 Quest",
+  "5253": "Venture Company Mining \u00b7 Quest",
+  "5819": "Trash drop \u00b7 Scarlet Monastery Graveyard",
+  "5964": "Leatherworking \u00b7 Crafted",
+  "5970": "Lord Serpentis \u00b7 Wailing Caverns",
+  "6198": "World drop",
+  "6199": "World drop",
+  "6204": "World drop",
+  "6318": "Odo the Blindwatcher \u00b7 Shadowfang Keep",
+  "6341": "Fel Steed / Shadow Charger \u00b7 Shadowfang Keep",
+  "6392": "Archmage Arugal \u00b7 Shadowfang Keep",
+  "6407": "World drop",
+  "6408": "World drop",
+  "6410": "World drop",
+  "6630": "Verdan the Everliving \u00b7 Wailing Caverns",
+  "6641": "Lordaeron Captain \u00b7 Ruins of Lordaeron",
+  "6679": "Razorfen Spearhide \u00b7 Razorfen Kraul",
+  "6681": "Aggem Thorncurse \u00b7 Razorfen Kraul",
+  "6682": "Death Speaker Jargba \u00b7 Razorfen Kraul",
+  "6685": "Death Speaker Jargba \u00b7 Razorfen Kraul",
+  "6686": "Overlord Ramtusk \u00b7 Razorfen Kraul",
+  "6687": "Overlord Ramtusk \u00b7 Razorfen Kraul",
+  "6689": "Earthcaller Halmgar \u00b7 Razorfen Kraul",
+  "6690": "Agathelos the Raging \u00b7 Razorfen Kraul",
+  "6691": "Agathelos the Raging \u00b7 Razorfen Kraul",
+  "6692": "Charlga Razorflank \u00b7 Razorfen Kraul",
+  "6694": "Charlga Razorflank \u00b7 Razorfen Kraul",
+  "6695": "Blind Hunter \u00b7 Razorfen Kraul",
+  "6697": "Blind Hunter \u00b7 Razorfen Kraul",
+  "6725": "Dungeon quest: A Vengeful Fate \u00b7 Quest",
+  "6726": "Safety First \u00b7 Quest",
+  "6727": "Safety First \u00b7 Quest",
+  "6729": "News for Fizzle \u00b7 Quest",
+  "6732": "News for Fizzle \u00b7 Quest",
+  "6742": "Dungeon quest: A Vengeful Fate \u00b7 Quest",
+  "6750": "Dungeon quest: Willix the Importer \u00b7 Quest",
+  "6898": "The Orb of Soran'ruk \u00b7 Quest",
+  "6901": "Old Serra'kis \u00b7 Blackfathom Deeps",
+  "6903": "Twilight Lord Kelris \u00b7 Blackfathom Deeps",
+  "6906": "Gelihast \u00b7 Blackfathom Deeps",
+  "6908": "Ghamoo-ra \u00b7 Blackfathom Deeps",
+  "6911": "Aku'mai \u00b7 Blackfathom Deeps",
+  "6975": "Whirlwind Weapon \u00b7 Quest",
+  "6976": "Whirlwind Weapon \u00b7 Quest",
+  "6977": "Whirlwind Weapon \u00b7 Quest",
+  "7001": "Dungeon quest: Blackfathom Villainy \u00b7 Quest",
+  "7027": "Tailoring \u00b7 Crafted",
+  "7047": "Tailoring \u00b7 Crafted",
+  "7048": "Tailoring \u00b7 Crafted",
+  "7049": "Tailoring \u00b7 Crafted",
+  "7050": "Tailoring \u00b7 Crafted",
+  "7053": "Tailoring \u00b7 Crafted",
+  "7055": "Tailoring \u00b7 Crafted",
+  "7065": "Tailoring \u00b7 Crafted",
+  "7330": "World drop",
+  "7353": "World drop",
+  "7373": "Leatherworking \u00b7 Crafted",
+  "7374": "Leatherworking \u00b7 Crafted",
+  "7407": "World drop",
+  "7413": "World drop",
+  "7414": "World drop",
+  "7417": "World drop",
+  "7418": "World drop",
+  "7436": "World drop",
+  "7513": "Mage's Wand \u00b7 Quest",
+  "7514": "Mage's Wand \u00b7 Quest",
+  "7609": "World drop",
+  "7683": "Interrogator Vishas \u00b7 Scarlet Monastery Graveyard",
+  "7684": "Bloodmage Thalnos \u00b7 Scarlet Monastery Graveyard",
+  "7686": "Ironspine \u00b7 Scarlet Monastery Graveyard",
+  "7687": "Ironspine \u00b7 Scarlet Monastery Graveyard",
+  "7688": "Ironspine \u00b7 Scarlet Monastery Graveyard",
+  "7690": "Fallen Champion \u00b7 Scarlet Monastery Graveyard",
+  "7691": "Fallen Champion \u00b7 Scarlet Monastery Graveyard",
+  "7708": "Azshir the Sleepless \u00b7 Scarlet Monastery Graveyard",
+  "7709": "Azshir the Sleepless \u00b7 Scarlet Monastery Graveyard",
+  "7727": "Trash drop \u00b7 Scarlet Monastery Graveyard",
+  "7728": "Trash drop \u00b7 Scarlet Monastery Graveyard",
+  "7729": "Trash drop \u00b7 Scarlet Monastery Graveyard",
+  "7731": "Azshir the Sleepless \u00b7 Scarlet Monastery Graveyard",
+  "7752": "Trash drop \u00b7 Scarlet Monastery Graveyard",
+  "7754": "Trash drop \u00b7 Scarlet Monastery Graveyard",
+  "776": "Trash drop \u00b7 Razorfen Kraul",
+  "9395": "World drop",
+  "9405": "World drop",
+  "9406": "Trash drop \u00b7 Uldaman",
+  "9428": "Trash drop \u00b7 Uldaman",
+  "9447": "Electrocutioner 6000 \u00b7 Gnomeregan",
+  "9448": "Electrocutioner 6000 \u00b7 Gnomeregan",
+  "9449": "Crowd Pummeler 9-60 \u00b7 Gnomeregan",
+  "9450": "Crowd Pummeler 9-60 \u00b7 Gnomeregan",
+  "9452": "Viscous Fallout \u00b7 Gnomeregan",
+  "9453": "Viscous Fallout \u00b7 Gnomeregan",
+  "9454": "Viscous Fallout \u00b7 Gnomeregan",
+  "9456": "Dark Iron Ambassador \u00b7 Gnomeregan",
+  "9457": "Dark Iron Ambassador \u00b7 Gnomeregan",
+  "9491": "Trash drop \u00b7 Gnomeregan",
+  "9509": "Trash drop \u00b7 Gnomeregan",
+  "9510": "Trash drop \u00b7 Gnomeregan",
+  "9622": "Jarl Needs a Blade \u00b7 Quest",
+  "9623": "Dungeon quest: Rig Wars \u00b7 Quest",
+  "9624": "Dungeon quest: Rig Wars \u00b7 Quest",
+  "9625": "Dungeon quest: Rig Wars \u00b7 Quest",
+  "9845": "World drop",
+  "9846": "World drop",
+  "9855": "World drop",
+  "9861": "World drop",
+  "9868": "World drop"
+ },
+ "specs": {
+  "affliction-warlock": {
+   "1": [
+    10502,
+    14200,
+    253981,
+    2721,
+    7050,
+    253955
+   ],
+   "10": [
+    14211,
+    273034,
+    7047,
+    5970,
+    253919
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    274149,
+    277206,
+    3719
+   ],
+   "16": [
+    273040,
+    9452,
+    249392,
+    249393,
+    274158,
+    6691,
+    273053,
+    2567
+   ],
+   "17": [
+    6898,
+    7609,
+    273027,
+    249394,
+    13031
+   ],
+   "18": [
+    270084,
+    13062,
+    5214,
+    7001
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685,
+    6697
+   ],
+   "5": [
+    7353,
+    1486,
+    2292,
+    277213
+   ],
+   "6": [
+    280306,
+    6392,
+    6908,
+    273039
+   ],
+   "7": [
+    7709,
+    14203,
+    270090,
+    286988,
+    6903,
+    253993
+   ],
+   "8": [
+    254007,
+    9845,
+    4320,
+    273024
+   ],
+   "9": [
+    9448,
+    9846,
+    273036
+   ]
+  },
+  "arcane-mage": {
+   "1": [
+    10502,
+    14200,
+    253983,
+    253957,
+    2721,
+    4322
+   ],
+   "10": [
+    14211,
+    273034,
+    286989,
+    253921,
+    5970
+   ],
+   "11": [
+    281635,
+    6750,
+    9622,
+    273030
+   ],
+   "12": [
+    281635,
+    6750,
+    9622,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    277206,
+    274149,
+    286994,
+    3719
+   ],
+   "16": [
+    249392,
+    273040,
+    9452,
+    249393,
+    274158,
+    6691,
+    273053,
+    276631
+   ],
+   "17": [
+    7609,
+    273027,
+    249394,
+    273052
+   ],
+   "18": [
+    11263,
+    13063,
+    270084,
+    12984,
+    13062
+   ],
+   "2": [
+    286995,
+    12029,
+    6695,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685,
+    6697,
+    12998
+   ],
+   "5": [
+    7353,
+    253969,
+    284697,
+    273044,
+    277213,
+    7065
+   ],
+   "6": [
+    280306,
+    273039,
+    6392,
+    7055
+   ],
+   "7": [
+    14203,
+    286988,
+    253995,
+    270090,
+    253945
+   ],
+   "8": [
+    254009,
+    9845,
+    4320,
+    9454,
+    253897
+   ],
+   "9": [
+    9846,
+    9448,
+    273036
+   ]
+  },
+  "arms-warrior": {
+   "1": [
+    7413,
+    6686,
+    252455,
+    14753,
+    250528,
+    277040
+   ],
+   "10": [
+    4107,
+    286992,
+    9861,
+    6408,
+    3341
+   ],
+   "11": [
+    285190,
+    7686,
+    13097,
+    11970,
+    270052
+   ],
+   "12": [
+    285190,
+    7686,
+    13097,
+    11970,
+    270052
+   ],
+   "13": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    14593,
+    7436,
+    271720,
+    282658,
+    273045
+   ],
+   "16": [
+    6975,
+    6976,
+    6977,
+    6687
+   ],
+   "18": [
+    287068,
+    17687,
+    273033,
+    9456,
+    2098,
+    274748
+   ],
+   "2": [
+    7731,
+    286984,
+    12019,
+    13084,
+    273049,
+    274068
+   ],
+   "3": [
+    2278,
+    15140,
+    15698,
+    5964
+   ],
+   "5": [
+    1488,
+    7407,
+    250518,
+    2870,
+    14751,
+    273035
+   ],
+   "6": [
+    250556,
+    252459,
+    252520,
+    9405,
+    280307,
+    252460
+   ],
+   "7": [
+    250523,
+    9624,
+    7414,
+    252516,
+    270074
+   ],
+   "8": [
+    4464,
+    7417,
+    273042,
+    1121
+   ],
+   "9": [
+    9428,
+    14590,
+    13012,
+    4438
+   ]
+  },
+  "assassination-rogue": {
+   "1": [
+    7413,
+    252512,
+    277219,
+    10545,
+    252504
+   ],
+   "10": [
+    4107,
+    9861,
+    274159,
+    6408
+   ],
+   "11": [
+    285190,
+    7686,
+    270052,
+    11985,
+    13097
+   ],
+   "12": [
+    285190,
+    7686,
+    270052,
+    11985,
+    13097
+   ],
+   "13": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    7436,
+    14593,
+    10518,
+    13108,
+    273045
+   ],
+   "16": [
+    9453,
+    2912,
+    6681,
+    776
+   ],
+   "17": [
+    9453,
+    2912,
+    6681,
+    4454
+   ],
+   "18": [
+    273033,
+    9456,
+    287068,
+    17687,
+    273029,
+    17686
+   ],
+   "2": [
+    7731,
+    286984,
+    12029,
+    273049,
+    13084,
+    274068
+   ],
+   "3": [
+    2278,
+    15140,
+    2264,
+    273047,
+    5964,
+    14573
+   ],
+   "5": [
+    7407,
+    7374,
+    252508
+   ],
+   "6": [
+    252520,
+    280307,
+    252459,
+    10403,
+    274042
+   ],
+   "7": [
+    9624,
+    15358,
+    6690,
+    9509,
+    13114
+   ],
+   "8": [
+    15142,
+    1121,
+    252439,
+    4055
+   ],
+   "9": [
+    9428,
+    14590,
+    270091,
+    6198,
+    18948
+   ]
+  },
+  "balance-druid": {
+   "1": [
+    10502,
+    14200,
+    252456,
+    2721,
+    252448
+   ],
+   "10": [
+    277223,
+    9861,
+    5970
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    274149,
+    284383,
+    277206,
+    3719
+   ],
+   "16": [
+    273040,
+    9452,
+    249392,
+    249393,
+    274158,
+    6691,
+    273053,
+    3414
+   ],
+   "17": [
+    7609,
+    273027,
+    249394,
+    273052,
+    249395
+   ],
+   "18": [
+    249396,
+    263411
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685
+   ],
+   "5": [
+    7407,
+    1486,
+    277213,
+    252510
+   ],
+   "6": [
+    6911,
+    280306,
+    252522,
+    6392
+   ],
+   "7": [
+    15358,
+    270031,
+    270090,
+    286988,
+    6903,
+    285338
+   ],
+   "8": [
+    9845,
+    254001,
+    4320,
+    273024,
+    252443
+   ],
+   "9": [
+    9428,
+    9448,
+    271202,
+    273036
+   ]
+  },
+  "beast-mastery-hunter": {
+   "1": [
+    7413,
+    6204,
+    252512,
+    277219,
+    10545
+   ],
+   "10": [
+    9861,
+    273054,
+    286989,
+    4107,
+    6727
+   ],
+   "11": [
+    285190,
+    7686,
+    11985,
+    270052,
+    281634
+   ],
+   "12": [
+    285190,
+    7686,
+    11985,
+    270052,
+    281634
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    10518,
+    7436,
+    13108,
+    14593
+   ],
+   "16": [
+    273037,
+    3197,
+    5200,
+    6679
+   ],
+   "18": [
+    17687,
+    274084,
+    17686,
+    9456,
+    274748,
+    13037
+   ],
+   "2": [
+    273049,
+    286984,
+    12029,
+    7731,
+    282653,
+    13084
+   ],
+   "3": [
+    2278,
+    2264,
+    15140,
+    273047,
+    6697,
+    277043
+   ],
+   "5": [
+    273026,
+    273038,
+    7374,
+    7407,
+    4255
+   ],
+   "6": [
+    252521,
+    280307,
+    252520,
+    273041,
+    4257
+   ],
+   "7": [
+    9624,
+    6690,
+    9509,
+    13114,
+    15358,
+    7373
+   ],
+   "8": [
+    15142,
+    4055,
+    1121
+   ],
+   "9": [
+    9428,
+    270091,
+    6198,
+    6410,
+    14590
+   ]
+  },
+  "combat-rogue": {
+   "1": [
+    7413,
+    252512,
+    277219,
+    10545,
+    252504
+   ],
+   "10": [
+    4107,
+    9861,
+    274159,
+    6408
+   ],
+   "11": [
+    285190,
+    7686,
+    270052,
+    11985,
+    13097
+   ],
+   "12": [
+    285190,
+    7686,
+    270052,
+    11985,
+    13097
+   ],
+   "13": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    7436,
+    14593,
+    10518,
+    13108,
+    273045
+   ],
+   "16": [
+    277246,
+    13033,
+    6692,
+    286996
+   ],
+   "17": [
+    7683,
+    776,
+    9453,
+    6681
+   ],
+   "18": [
+    273033,
+    9456,
+    287068,
+    17687,
+    273029,
+    17686
+   ],
+   "2": [
+    7731,
+    286984,
+    12029,
+    273049,
+    13084,
+    274068
+   ],
+   "3": [
+    2278,
+    15140,
+    2264,
+    273047,
+    5964,
+    14573
+   ],
+   "5": [
+    7407,
+    7374,
+    252508
+   ],
+   "6": [
+    252520,
+    280307,
+    252459,
+    10403,
+    274042
+   ],
+   "7": [
+    9624,
+    15358,
+    6690,
+    9509,
+    13114
+   ],
+   "8": [
+    15142,
+    1121,
+    252439,
+    4055
+   ],
+   "9": [
+    9428,
+    14590,
+    270091,
+    6198,
+    18948
+   ]
+  },
+  "demonology-warlock": {
+   "1": [
+    10502,
+    14200,
+    253981,
+    2721,
+    7050,
+    253955
+   ],
+   "10": [
+    14211,
+    273034,
+    7047,
+    5970,
+    253919
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    274149,
+    277206,
+    3719
+   ],
+   "16": [
+    273040,
+    9452,
+    249392,
+    249393,
+    274158,
+    6691,
+    273053,
+    2567
+   ],
+   "17": [
+    6898,
+    7609,
+    273027,
+    249394,
+    13031
+   ],
+   "18": [
+    270084,
+    13062,
+    5214,
+    7001
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685,
+    6697
+   ],
+   "5": [
+    7353,
+    1486,
+    2292,
+    277213
+   ],
+   "6": [
+    280306,
+    6392,
+    6908,
+    273039
+   ],
+   "7": [
+    7709,
+    14203,
+    270090,
+    286988,
+    6903,
+    253993
+   ],
+   "8": [
+    254007,
+    9845,
+    4320,
+    273024
+   ],
+   "9": [
+    9448,
+    9846,
+    273036
+   ]
+  },
+  "destruction-warlock": {
+   "1": [
+    10502,
+    14200,
+    253981,
+    2721,
+    7050,
+    253955
+   ],
+   "10": [
+    14211,
+    273034,
+    7047,
+    5970,
+    253919
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    274149,
+    277206,
+    3719
+   ],
+   "16": [
+    273040,
+    9452,
+    249392,
+    249393,
+    274158,
+    6691,
+    273053,
+    2567
+   ],
+   "17": [
+    6898,
+    7609,
+    273027,
+    249394,
+    13031
+   ],
+   "18": [
+    270084,
+    13062,
+    5214,
+    7001
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685,
+    6697
+   ],
+   "5": [
+    7353,
+    1486,
+    2292,
+    277213
+   ],
+   "6": [
+    280306,
+    6392,
+    6908,
+    273039
+   ],
+   "7": [
+    7709,
+    14203,
+    270090,
+    286988,
+    6903,
+    253993
+   ],
+   "8": [
+    254007,
+    9845,
+    4320,
+    273024
+   ],
+   "9": [
+    9448,
+    9846,
+    273036
+   ]
+  },
+  "elemental-shaman": {
+   "1": [
+    10502,
+    14200,
+    252456,
+    2721,
+    252448
+   ],
+   "10": [
+    277223,
+    9861,
+    5970
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    274149,
+    277206,
+    3719
+   ],
+   "16": [
+    273040,
+    9452,
+    249392,
+    249393,
+    274158,
+    280607,
+    6691,
+    273053,
+    3414
+   ],
+   "17": [
+    7330,
+    274043,
+    6630,
+    274290
+   ],
+   "18": [
+    249398
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685
+   ],
+   "5": [
+    7353,
+    1486,
+    277213,
+    252510
+   ],
+   "6": [
+    6911,
+    280306,
+    252522,
+    6392
+   ],
+   "7": [
+    14203,
+    270031,
+    270090,
+    286988,
+    6903,
+    285338
+   ],
+   "8": [
+    9845,
+    254001,
+    4320,
+    273024,
+    252443
+   ],
+   "9": [
+    9428,
+    9448,
+    271202,
+    273036
+   ]
+  },
+  "enhancement-shaman": {
+   "1": [
+    7413,
+    14584,
+    252455,
+    253979,
+    6204,
+    277042
+   ],
+   "10": [
+    277223,
+    6732,
+    9861,
+    4107
+   ],
+   "11": [
+    285190,
+    13097,
+    11970,
+    7686,
+    270052
+   ],
+   "12": [
+    285190,
+    13097,
+    11970,
+    7686,
+    270052
+   ],
+   "13": [
+    273840,
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    273840,
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    271720,
+    282658,
+    14593
+   ],
+   "16": [
+    280604,
+    6687,
+    280607,
+    7687,
+    6692,
+    7683,
+    7752
+   ],
+   "17": [
+    7330,
+    6725,
+    15892,
+    13079,
+    285344
+   ],
+   "18": [
+    249398
+   ],
+   "2": [
+    273049,
+    286984,
+    13084,
+    285331,
+    12019,
+    7731
+   ],
+   "3": [
+    6697,
+    15140,
+    2278,
+    5964,
+    14573
+   ],
+   "5": [
+    252451,
+    273026,
+    9406,
+    7407,
+    273038,
+    4255
+   ],
+   "6": [
+    252461,
+    252459,
+    280307,
+    252520
+   ],
+   "7": [
+    6690,
+    270074,
+    252458,
+    7414,
+    9624
+   ],
+   "8": [
+    15142,
+    252442,
+    252439,
+    1121
+   ],
+   "9": [
+    9428,
+    273036,
+    13106,
+    14590,
+    270042
+   ]
+  },
+  "feral-dps-druid": {
+   "1": [
+    7413,
+    252455,
+    252512,
+    277042,
+    277050
+   ],
+   "10": [
+    4107,
+    9861,
+    6408,
+    4253
+   ],
+   "11": [
+    7686,
+    285190,
+    13097,
+    11970
+   ],
+   "12": [
+    7686,
+    285190,
+    13097,
+    11970
+   ],
+   "13": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    14593,
+    7436,
+    271720,
+    10518,
+    13108
+   ],
+   "16": [
+    13045,
+    9449,
+    273037,
+    7687,
+    7683,
+    7752
+   ],
+   "17": [
+    7609,
+    15962,
+    2565,
+    249394,
+    249395
+   ],
+   "18": [
+    263411,
+    249396
+   ],
+   "2": [
+    12019,
+    286984,
+    7731,
+    13084,
+    273049,
+    282653
+   ],
+   "3": [
+    2278,
+    15140,
+    5964,
+    2264,
+    14573,
+    273047
+   ],
+   "5": [
+    7407,
+    252508,
+    7374,
+    252450
+   ],
+   "6": [
+    252459,
+    252520,
+    280307,
+    252460,
+    252461,
+    9855
+   ],
+   "7": [
+    9624,
+    7414,
+    252516,
+    273647
+   ],
+   "8": [
+    15142,
+    1121,
+    252439,
+    4055
+   ],
+   "9": [
+    9428,
+    14590,
+    18948,
+    6198,
+    270091
+   ]
+  },
+  "feral-tank-druid": {
+   "1": [
+    252512,
+    252455,
+    252456,
+    252513,
+    252514,
+    252515
+   ],
+   "10": [
+    6727,
+    7690,
+    9861,
+    1978
+   ],
+   "11": [
+    281634,
+    277208
+   ],
+   "12": [
+    281634,
+    277208
+   ],
+   "13": [
+    4381,
+    274152,
+    273298
+   ],
+   "14": [
+    4381,
+    274152,
+    273298
+   ],
+   "15": [
+    13108,
+    14763,
+    7436
+   ],
+   "16": [
+    13045,
+    271766,
+    13048,
+    7687,
+    7683
+   ],
+   "17": [
+    7609,
+    273027,
+    281318,
+    285192,
+    6341
+   ],
+   "18": [
+    263411,
+    249396,
+    263435
+   ],
+   "2": [
+    274749,
+    7731,
+    13087,
+    286995,
+    12029
+   ],
+   "3": [
+    7727,
+    273047,
+    277043,
+    277051,
+    15357,
+    5964
+   ],
+   "5": [
+    4119,
+    252450,
+    7407,
+    9406,
+    4455,
+    273038
+   ],
+   "6": [
+    252460,
+    252520,
+    252459,
+    252521,
+    273041
+   ],
+   "7": [
+    252457,
+    4108,
+    9624,
+    273022,
+    15358,
+    9509
+   ],
+   "8": [
+    9450,
+    7754,
+    15142,
+    252441
+   ],
+   "9": [
+    3230,
+    9428,
+    270091,
+    286985,
+    18948,
+    270032
+   ]
+  },
+  "fire-mage": {
+   "1": [
+    10502,
+    14200,
+    253979,
+    253953,
+    2721,
+    7050
+   ],
+   "10": [
+    14211,
+    286989,
+    4331,
+    253917,
+    5970
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    274149,
+    277206,
+    286994,
+    3719
+   ],
+   "16": [
+    273040,
+    9452,
+    249392,
+    249393,
+    274158,
+    6691,
+    273053,
+    276631
+   ],
+   "17": [
+    2565,
+    7609,
+    273027,
+    249394,
+    2879
+   ],
+   "18": [
+    7513,
+    270084,
+    5213,
+    13062,
+    5214
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685,
+    6697
+   ],
+   "5": [
+    7353,
+    253965,
+    1486,
+    277213
+   ],
+   "6": [
+    280306,
+    6392,
+    273039,
+    6908,
+    253929
+   ],
+   "7": [
+    14203,
+    253991,
+    286988,
+    270090,
+    6903,
+    253941
+   ],
+   "8": [
+    254005,
+    9845,
+    4320,
+    273024,
+    253893
+   ],
+   "9": [
+    9846,
+    9448,
+    273036
+   ]
+  },
+  "frost-mage": {
+   "1": [
+    10502,
+    14200,
+    253977,
+    2721,
+    253951,
+    7048
+   ],
+   "10": [
+    14211,
+    4319,
+    253915,
+    5970,
+    286989
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7053,
+    7436,
+    274149,
+    277206,
+    3719
+   ],
+   "16": [
+    273040,
+    9452,
+    249392,
+    249393,
+    274158,
+    6691,
+    273053,
+    276631
+   ],
+   "17": [
+    7609,
+    273027,
+    249394,
+    2879,
+    273052
+   ],
+   "18": [
+    7514,
+    270084,
+    13062,
+    5214
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685,
+    6697
+   ],
+   "5": [
+    7353,
+    253963,
+    1486,
+    277213
+   ],
+   "6": [
+    280306,
+    6392,
+    6908,
+    273039,
+    253927
+   ],
+   "7": [
+    14203,
+    253989,
+    270090,
+    286988,
+    6903,
+    253939
+   ],
+   "8": [
+    254003,
+    9845,
+    4320,
+    273024,
+    253891
+   ],
+   "9": [
+    9846,
+    9448,
+    273036,
+    281926
+   ]
+  },
+  "fury-warrior": {
+   "1": [
+    7413,
+    6686,
+    252455,
+    14753,
+    250528,
+    277040
+   ],
+   "10": [
+    4107,
+    286992,
+    9861,
+    6408,
+    3341
+   ],
+   "11": [
+    285190,
+    7686,
+    13097,
+    11970,
+    270052
+   ],
+   "12": [
+    285190,
+    7686,
+    13097,
+    11970,
+    270052
+   ],
+   "13": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    273840,
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    14593,
+    7436,
+    271720,
+    282658,
+    273045
+   ],
+   "16": [
+    6975,
+    6976,
+    6977,
+    6687
+   ],
+   "18": [
+    287068,
+    17687,
+    273033,
+    9456,
+    2098,
+    274748
+   ],
+   "2": [
+    7731,
+    286984,
+    12019,
+    13084,
+    273049,
+    274068
+   ],
+   "3": [
+    2278,
+    15140,
+    15698,
+    5964
+   ],
+   "5": [
+    1488,
+    7407,
+    250518,
+    2870,
+    14751,
+    273035
+   ],
+   "6": [
+    250556,
+    252459,
+    252520,
+    9405,
+    280307,
+    252460
+   ],
+   "7": [
+    250523,
+    9624,
+    7414,
+    252516,
+    270074
+   ],
+   "8": [
+    4464,
+    7417,
+    273042,
+    1121
+   ],
+   "9": [
+    9428,
+    14590,
+    13012,
+    4438
+   ]
+  },
+  "holy-paladin": {
+   "1": [
+    3020,
+    14200,
+    2721,
+    4039,
+    7691
+   ],
+   "10": [
+    9861,
+    9491,
+    9395,
+    286989,
+    250511
+   ],
+   "11": [
+    281635,
+    11985,
+    6750,
+    6199
+   ],
+   "12": [
+    281635,
+    11985,
+    6750,
+    6199
+   ],
+   "13": [
+    4381,
+    274152,
+    273643
+   ],
+   "14": [
+    4381,
+    274152,
+    273643
+   ],
+   "15": [
+    7436,
+    286994,
+    4462,
+    277206
+   ],
+   "16": [
+    5194,
+    3197,
+    6641,
+    1975,
+    267369,
+    9457,
+    2816,
+    3414
+   ],
+   "17": [
+    7330,
+    6630,
+    6694,
+    274290,
+    14608
+   ],
+   "18": [
+    249397
+   ],
+   "2": [
+    12029,
+    273049,
+    13084,
+    5003,
+    285331
+   ],
+   "3": [
+    6685,
+    6697,
+    4197,
+    7684,
+    14201,
+    12998
+   ],
+   "5": [
+    6682,
+    7728,
+    273044,
+    7065,
+    253961
+   ],
+   "6": [
+    252523,
+    250559,
+    273039,
+    6726,
+    252522
+   ],
+   "7": [
+    286988,
+    252519,
+    250526,
+    253987,
+    14203
+   ],
+   "8": [
+    254001,
+    9454,
+    7417,
+    286987,
+    15697
+   ],
+   "9": [
+    1974,
+    9428,
+    13106,
+    9448,
+    6407
+   ]
+  },
+  "holy-priest": {
+   "1": [
+    2721,
+    14200,
+    7691,
+    284401,
+    253975,
+    4322
+   ],
+   "10": [
+    14211,
+    7049,
+    253913,
+    9491,
+    9395
+   ],
+   "11": [
+    274746,
+    281635,
+    11985,
+    6750
+   ],
+   "12": [
+    274746,
+    281635,
+    11985,
+    6750
+   ],
+   "13": [
+    4381,
+    274152,
+    273643
+   ],
+   "14": [
+    4381,
+    274152,
+    273643
+   ],
+   "15": [
+    7436,
+    277206,
+    286994,
+    4462
+   ],
+   "16": [
+    6689,
+    271767,
+    3415,
+    6318,
+    9457,
+    2816,
+    6691
+   ],
+   "17": [
+    273052,
+    7609,
+    249394,
+    249395,
+    273027
+   ],
+   "18": [
+    273043,
+    7708,
+    6729,
+    5248,
+    5253
+   ],
+   "2": [
+    12029,
+    273049,
+    13084,
+    5003,
+    285331,
+    286995
+   ],
+   "3": [
+    6685,
+    6697,
+    7684,
+    4197,
+    14201,
+    12998
+   ],
+   "5": [
+    6682,
+    253961,
+    9623,
+    273044,
+    7728,
+    7353
+   ],
+   "6": [
+    273039,
+    280306,
+    6726,
+    253925,
+    7055
+   ],
+   "7": [
+    253987,
+    286988,
+    14203,
+    253937
+   ],
+   "8": [
+    254001,
+    9845,
+    9454,
+    286987,
+    15697,
+    271214
+   ],
+   "9": [
+    9846,
+    9448,
+    1974,
+    13106,
+    6407
+   ]
+  },
+  "marksmanship-hunter": {
+   "1": [
+    7413,
+    6204,
+    252512,
+    277219,
+    10545
+   ],
+   "10": [
+    9861,
+    273054,
+    286989,
+    4107,
+    6727
+   ],
+   "11": [
+    285190,
+    7686,
+    11985,
+    270052,
+    281634
+   ],
+   "12": [
+    285190,
+    7686,
+    11985,
+    270052,
+    281634
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    10518,
+    7436,
+    13108,
+    14593
+   ],
+   "16": [
+    273037,
+    3197,
+    5200,
+    6679
+   ],
+   "18": [
+    17687,
+    274084,
+    17686,
+    9456,
+    274748,
+    13037
+   ],
+   "2": [
+    273049,
+    286984,
+    12029,
+    7731,
+    282653,
+    13084
+   ],
+   "3": [
+    2278,
+    2264,
+    15140,
+    273047,
+    6697,
+    277043
+   ],
+   "5": [
+    273026,
+    273038,
+    7374,
+    7407,
+    4255
+   ],
+   "6": [
+    252521,
+    280307,
+    252520,
+    273041,
+    4257
+   ],
+   "7": [
+    9624,
+    6690,
+    9509,
+    13114,
+    15358,
+    7373
+   ],
+   "8": [
+    15142,
+    4055,
+    1121
+   ],
+   "9": [
+    9428,
+    270091,
+    6198,
+    6410,
+    14590
+   ]
+  },
+  "protection-paladin": {
+   "1": [
+    252456,
+    252513,
+    13127,
+    15550,
+    10542,
+    5819
+   ],
+   "10": [
+    9868,
+    6727,
+    9491,
+    7690
+   ],
+   "11": [
+    2039
+   ],
+   "12": [
+    2039
+   ],
+   "13": [
+    4381,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    273643,
+    274152
+   ],
+   "15": [
+    277206,
+    13108,
+    7436,
+    14763
+   ],
+   "16": [
+    3414,
+    9457,
+    286996
+   ],
+   "17": [
+    4129,
+    6694,
+    6725
+   ],
+   "18": [
+    249397
+   ],
+   "2": [
+    274749,
+    286995,
+    7731,
+    13087,
+    13084
+   ],
+   "3": [
+    273028,
+    15553,
+    4197,
+    13131
+   ],
+   "5": [
+    7688,
+    9406,
+    250520,
+    7418,
+    273038,
+    250522
+   ],
+   "6": [
+    250558,
+    286993,
+    252522,
+    252461,
+    252521,
+    280308
+   ],
+   "7": [
+    250525,
+    274161,
+    250526,
+    250527,
+    250524,
+    15551
+   ],
+   "8": [
+    254011,
+    10332,
+    273025,
+    9510
+   ],
+   "9": [
+    15566,
+    10358
+   ]
+  },
+  "protection-warrior": {
+   "1": [
+    13127,
+    6686,
+    10542,
+    15550,
+    252455,
+    250528
+   ],
+   "10": [
+    286992,
+    9868,
+    14764,
+    6906,
+    7690
+   ],
+   "11": [
+    281634,
+    285190
+   ],
+   "12": [
+    281634,
+    285190
+   ],
+   "13": [
+    4381,
+    274152,
+    273298
+   ],
+   "14": [
+    4381,
+    274152,
+    273298
+   ],
+   "15": [
+    13108,
+    271720,
+    7436,
+    14763
+   ],
+   "16": [
+    7687,
+    286996,
+    6692,
+    13048
+   ],
+   "17": [
+    4129,
+    6725
+   ],
+   "18": [
+    7729,
+    13137,
+    4086,
+    273843
+   ],
+   "2": [
+    274749,
+    13087,
+    7731,
+    12029,
+    13084
+   ],
+   "3": [
+    273028,
+    15698
+   ],
+   "5": [
+    7688,
+    250519,
+    273035,
+    250518
+   ],
+   "6": [
+    250557,
+    6742,
+    252460,
+    280308,
+    252459,
+    252520
+   ],
+   "7": [
+    250524,
+    9625,
+    250523,
+    250525,
+    15551,
+    252457
+   ],
+   "8": [
+    10332,
+    9510,
+    13124,
+    273025,
+    7417,
+    4076
+   ],
+   "9": [
+    13012,
+    15566
+   ]
+  },
+  "restoration-druid": {
+   "1": [
+    3020,
+    14200,
+    7691,
+    4039,
+    2721
+   ],
+   "10": [
+    9395,
+    9861,
+    9491,
+    286989
+   ],
+   "11": [
+    11985,
+    281635,
+    273031,
+    9447
+   ],
+   "12": [
+    11985,
+    281635,
+    273031,
+    9447
+   ],
+   "13": [
+    4381,
+    274152,
+    273643
+   ],
+   "14": [
+    4381,
+    274152,
+    273643
+   ],
+   "15": [
+    7436,
+    286994,
+    4462
+   ],
+   "16": [
+    6689,
+    271767,
+    3415,
+    6318,
+    9457,
+    2816,
+    6691
+   ],
+   "17": [
+    273052,
+    7609,
+    274743,
+    249394,
+    249395
+   ],
+   "18": [
+    249396,
+    263411
+   ],
+   "2": [
+    12029,
+    13084,
+    273049,
+    5003
+   ],
+   "3": [
+    6685,
+    6697,
+    4197,
+    7684,
+    14201
+   ],
+   "5": [
+    7728,
+    273044,
+    6682,
+    7353,
+    4746
+   ],
+   "6": [
+    252523,
+    273039,
+    6726,
+    280306,
+    252522,
+    13011
+   ],
+   "7": [
+    286988,
+    252519,
+    253987,
+    14203,
+    253937
+   ],
+   "8": [
+    254001,
+    9454,
+    9845,
+    15697,
+    286987
+   ],
+   "9": [
+    1974,
+    9428,
+    13106,
+    6407,
+    9448,
+    16791
+   ]
+  },
+  "restoration-shaman": {
+   "1": [
+    2721,
+    3020,
+    7691,
+    14200,
+    284401
+   ],
+   "10": [
+    9861,
+    7049,
+    9395,
+    9491
+   ],
+   "11": [
+    281635,
+    11985,
+    274746,
+    273031
+   ],
+   "12": [
+    281635,
+    11985,
+    274746,
+    273031
+   ],
+   "13": [
+    4381,
+    274152,
+    273643
+   ],
+   "14": [
+    4381,
+    274152,
+    273643
+   ],
+   "15": [
+    7436,
+    277206,
+    6901,
+    286994
+   ],
+   "16": [
+    6689,
+    271767,
+    3415,
+    6318,
+    280605,
+    9457,
+    2816,
+    280607,
+    6691
+   ],
+   "17": [
+    280696,
+    7330,
+    6694,
+    6630
+   ],
+   "18": [
+    249398
+   ],
+   "2": [
+    12029,
+    13084,
+    273049,
+    5003,
+    285331
+   ],
+   "3": [
+    6685,
+    6697,
+    7684,
+    4197,
+    14201,
+    12998
+   ],
+   "5": [
+    6682,
+    7728,
+    9623,
+    253961,
+    273044,
+    252511
+   ],
+   "6": [
+    252523,
+    273039,
+    252522,
+    280306,
+    6726
+   ],
+   "7": [
+    252519,
+    286988,
+    253987,
+    14203,
+    253937
+   ],
+   "8": [
+    254001,
+    9845,
+    9454,
+    286991,
+    252444
+   ],
+   "9": [
+    9428,
+    9448,
+    1974,
+    13106,
+    6407,
+    16791
+   ]
+  },
+  "retribution-paladin": {
+   "1": [
+    6686,
+    252455,
+    14753,
+    250528,
+    277040,
+    277042
+   ],
+   "10": [
+    277223,
+    286992,
+    5970,
+    3341,
+    4107,
+    252497
+   ],
+   "11": [
+    285190,
+    13097,
+    11985,
+    7686
+   ],
+   "12": [
+    285190,
+    13097,
+    11985,
+    7686
+   ],
+   "13": [
+    273840,
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    273840,
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    271720,
+    282658,
+    14593,
+    273045
+   ],
+   "16": [
+    6687,
+    286983,
+    4128
+   ],
+   "18": [
+    249397
+   ],
+   "2": [
+    7731,
+    286984,
+    12029,
+    273049,
+    13084,
+    285331
+   ],
+   "3": [
+    2278,
+    15698,
+    250486
+   ],
+   "5": [
+    250522,
+    250533,
+    252451,
+    1488,
+    2870,
+    250518
+   ],
+   "6": [
+    250560,
+    252461,
+    9405,
+    252459,
+    252520
+   ],
+   "7": [
+    250527,
+    252458,
+    250523,
+    6690,
+    270074,
+    273048
+   ],
+   "8": [
+    250534,
+    252442,
+    250507,
+    4464
+   ],
+   "9": [
+    9428,
+    273036,
+    282716,
+    4438
+   ]
+  },
+  "shadow-priest": {
+   "1": [
+    10502,
+    14200,
+    253981,
+    253955,
+    2721,
+    7050
+   ],
+   "10": [
+    14211,
+    273034,
+    7047,
+    253919,
+    5970
+   ],
+   "11": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "12": [
+    281635,
+    9622,
+    6750,
+    273030
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    273643,
+    274152
+   ],
+   "15": [
+    7436,
+    274149,
+    277206,
+    3719
+   ],
+   "16": [
+    2549,
+    273040,
+    9452,
+    249392,
+    249393,
+    6691,
+    273053,
+    3414
+   ],
+   "17": [
+    7609,
+    273027,
+    249394,
+    13031,
+    273052
+   ],
+   "18": [
+    270084,
+    7001,
+    13062,
+    5214
+   ],
+   "2": [
+    286995,
+    6695,
+    12029,
+    273049,
+    285331,
+    5003
+   ],
+   "3": [
+    14201,
+    7684,
+    4197,
+    6685,
+    6697
+   ],
+   "5": [
+    7353,
+    2292,
+    253967,
+    1486,
+    277213
+   ],
+   "6": [
+    280306,
+    6392,
+    6908,
+    273039,
+    253931
+   ],
+   "7": [
+    7709,
+    14203,
+    253993,
+    270090,
+    286988,
+    6903
+   ],
+   "8": [
+    254007,
+    9845,
+    4320,
+    273024,
+    7027
+   ],
+   "9": [
+    9846,
+    9448,
+    273036
+   ]
+  },
+  "survival-hunter": {
+   "1": [
+    7413,
+    6204,
+    252512,
+    277219,
+    10545
+   ],
+   "10": [
+    9861,
+    273054,
+    286989,
+    4107,
+    6727
+   ],
+   "11": [
+    285190,
+    7686,
+    11985,
+    270052,
+    281634
+   ],
+   "12": [
+    285190,
+    7686,
+    11985,
+    270052,
+    281634
+   ],
+   "13": [
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "14": [
+    4381,
+    3456,
+    4396,
+    274152,
+    273298
+   ],
+   "15": [
+    10518,
+    7436,
+    13108,
+    14593
+   ],
+   "16": [
+    273037,
+    3197,
+    5200,
+    6679
+   ],
+   "18": [
+    17687,
+    274084,
+    17686,
+    9456,
+    274748,
+    13037
+   ],
+   "2": [
+    273049,
+    286984,
+    12029,
+    7731,
+    282653,
+    13084
+   ],
+   "3": [
+    2278,
+    2264,
+    15140,
+    273047,
+    6697,
+    277043
+   ],
+   "5": [
+    273026,
+    273038,
+    7374,
+    7407,
+    4255
+   ],
+   "6": [
+    252521,
+    280307,
+    252520,
+    273041,
+    4257
+   ],
+   "7": [
+    9624,
+    6690,
+    9509,
+    13114,
+    15358,
+    7373
+   ],
+   "8": [
+    15142,
+    4055,
+    1121
+   ],
+   "9": [
+    9428,
+    270091,
+    6198,
+    6410,
+    14590
+   ]
+  }
+ }
+}
