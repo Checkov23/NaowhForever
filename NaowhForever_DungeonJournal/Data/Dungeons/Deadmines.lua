@@ -16,7 +16,7 @@ ns.Journal.AddDungeon("Deadmines", {
             { npc = 639, name = "Edwin VanCleef", model = 2029, encounters = { 2747 }, loot = { 5202, 5193, 5191, 10399 }, chance = { 24, 23, 16, 16 } },
             { npc = 645, name = "Cookie", model = 1305, encounters = { 2746 }, loot = { 5197, 5198, 273298, 273102 }, chance = { 55, 34, 0, 0 } },
             { npc = 3586, name = "Miner Johnson", model = 556, rare = true, encounters = { 3676 }, loot = { 5444, 5443 }, chance = { 55, 41 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 1925, 1945, 1943, 1951, 1929, 1936, 1934, 1944, 10400, 10401, 10402, 1930 }, chance = { 7, 6, 6, 6, 6, 6, 6, 5, 3, 3, 3, 2 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 1945, 1943, 1951, 1929, 1936, 1934, 1944, 10400, 10401, 10402, 1930 }, chance = { 6, 6, 6, 6, 6, 6, 5, 3, 3, 3, 2 } },
         } },
     },
 })

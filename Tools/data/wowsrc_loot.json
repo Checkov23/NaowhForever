@@ -25,7 +25,7 @@
       "chance": null,
       "level": 27,
       "name": "Spiked Shell Band",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "finger",
       "type": null
@@ -89,7 +89,7 @@
       "chance": null,
       "level": 29,
       "name": "Cursed Murloc Eye",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "trinket",
       "type": null
@@ -121,7 +121,7 @@
       "chance": null,
       "level": 30,
       "name": "Twilight Lord Girdle",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "waist",
       "type": "mail"
@@ -312,7 +312,7 @@
       "chance": null,
       "level": 28,
       "name": "Treacherous Treads",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "feet",
       "type": "mail"
@@ -321,7 +321,7 @@
       "chance": null,
       "level": 28,
       "name": "Fallenroot Longbow",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "ranged",
       "type": "bow"
@@ -330,7 +330,7 @@
       "chance": null,
       "level": 28,
       "name": "Twilight Maul",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "two-hand",
       "type": "mace"
@@ -463,6 +463,15 @@
       "quality": null,
       "slot": "ranged",
       "type": "gun"
+     },
+     {
+      "chance": null,
+      "level": 55,
+      "name": "Crusader's Armor",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "mail"
      }
     ],
     "name": "Houndmaster Grebmar"
@@ -1240,15 +1249,6 @@
    {
     "items": [
      {
-      "chance": 26.7,
-      "level": null,
-      "name": "Deathdealer Breastplate",
-      "new": false,
-      "quality": null,
-      "slot": "chest",
-      "type": "mail"
-     },
-     {
       "chance": 46.7,
       "level": null,
       "name": "Legplates of the Eternal Guardian",
@@ -1270,15 +1270,6 @@
       "quality": null,
       "slot": "head",
       "type": "leather"
-     },
-     {
-      "chance": 50.0,
-      "level": null,
-      "name": "Haunting Specter Leggings",
-      "new": false,
-      "quality": null,
-      "slot": "legs",
-      "type": "cloth"
      }
     ],
     "name": "Anger'rel"
@@ -1320,6 +1311,15 @@
       "quality": null,
       "slot": "relic",
       "type": "libram"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Golem Skull Helm",
+      "new": false,
+      "quality": null,
+      "slot": "head",
+      "type": "plate"
      }
     ],
     "name": "Magmus"
@@ -1472,15 +1472,6 @@
    {
     "items": [
      {
-      "chance": 11.9,
-      "level": null,
-      "name": "Golem Skull Helm",
-      "new": false,
-      "quality": null,
-      "slot": "head",
-      "type": "plate"
-     },
-     {
       "chance": 28.3,
       "level": null,
       "name": "Wraith Scythe",
@@ -1631,6 +1622,96 @@
       "new": false,
       "quality": null,
       "slot": "shoulder",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "The Hammer of Grace",
+      "new": false,
+      "quality": null,
+      "slot": "main hand",
+      "type": "mace"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Deathdealer Breastplate",
+      "new": false,
+      "quality": null,
+      "slot": "chest",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Haunting Specter Leggings",
+      "new": false,
+      "quality": null,
+      "slot": "legs",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Black Steel Bindings",
+      "new": false,
+      "quality": null,
+      "slot": "wrist",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Wand of Eternal Light",
+      "new": false,
+      "quality": null,
+      "slot": "ranged",
+      "type": "wand"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Magma Forged Band",
+      "new": false,
+      "quality": null,
+      "slot": "finger",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Mana Shaping Handwraps",
+      "new": false,
+      "quality": null,
+      "slot": "hands",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Lefty's Brass Knuckle",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "fist weapon"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Malgen's Long Bow",
+      "new": false,
+      "quality": null,
+      "slot": "ranged",
+      "type": "bow"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Shroud of Arcane Mastery",
+      "new": false,
+      "quality": null,
+      "slot": "back",
       "type": "cloth"
      }
     ],
@@ -2412,6 +2493,24 @@
       "quality": null,
       "slot": "feet",
       "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 59,
+      "name": "Wildheart Gloves",
+      "new": false,
+      "quality": "rare",
+      "slot": "hands",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 58,
+      "name": "Father Flame",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "held in off-hand",
+      "type": null
      }
     ],
     "name": "Trash"
@@ -3179,6 +3278,24 @@
       "quality": null,
       "slot": "feet",
       "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 59,
+      "name": "Wildheart Gloves",
+      "new": false,
+      "quality": "rare",
+      "slot": "hands",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 58,
+      "name": "Father Flame",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "held in off-hand",
+      "type": null
      }
     ],
     "name": "Trash"
@@ -3839,87 +3956,6 @@
       "type": "leather"
      },
      {
-      "chance": 24.3,
-      "level": null,
-      "name": "Pimgib's Collar",
-      "new": false,
-      "quality": null,
-      "slot": "trinket",
-      "type": null
-     },
-     {
-      "chance": 9.9,
-      "level": null,
-      "name": "Robe of Combustion",
-      "new": false,
-      "quality": null,
-      "slot": "chest",
-      "type": "cloth"
-     },
-     {
-      "chance": 9.1,
-      "level": null,
-      "name": "Hyena Hide Belt",
-      "new": false,
-      "quality": null,
-      "slot": "waist",
-      "type": "leather"
-     },
-     {
-      "chance": 9.0,
-      "level": null,
-      "name": "Modest Armguards",
-      "new": false,
-      "quality": null,
-      "slot": "wrist",
-      "type": "mail"
-     },
-     {
-      "chance": 9.6,
-      "level": null,
-      "name": "Gallant's Wristguards",
-      "new": false,
-      "quality": null,
-      "slot": "wrist",
-      "type": "plate"
-     },
-     {
-      "chance": 9.4,
-      "level": null,
-      "name": "Unsophisticated Hand Cannon",
-      "new": false,
-      "quality": null,
-      "slot": "ranged",
-      "type": "gun"
-     },
-     {
-      "chance": 9.2,
-      "level": null,
-      "name": "Jagged Bone Fist",
-      "new": false,
-      "quality": null,
-      "slot": "one-hand",
-      "type": "fist weapon"
-     },
-     {
-      "chance": 9.1,
-      "level": null,
-      "name": "Ogre Pocket Knife",
-      "new": false,
-      "quality": null,
-      "slot": "one-hand",
-      "type": "sword"
-     },
-     {
-      "chance": 9.4,
-      "level": null,
-      "name": "Gordok Nose Ring",
-      "new": false,
-      "quality": null,
-      "slot": "finger",
-      "type": null
-     },
-     {
       "chance": 6.0,
       "level": null,
       "name": "Bulky Iron Spaulders",
@@ -3963,6 +3999,60 @@
       "quality": null,
       "slot": "one-hand",
       "type": "axe"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Oddly Magical Belt",
+      "new": false,
+      "quality": null,
+      "slot": "waist",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Shaggy Leggings",
+      "new": false,
+      "quality": null,
+      "slot": "legs",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Carrion Scorpid Helm",
+      "new": false,
+      "quality": null,
+      "slot": "head",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Cyclone Spaulders",
+      "new": false,
+      "quality": null,
+      "slot": "shoulder",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Ogre Forged Hauberk",
+      "new": false,
+      "quality": null,
+      "slot": "chest",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gordok Bracers of Power",
+      "new": false,
+      "quality": null,
+      "slot": "wrist",
+      "type": "plate"
      }
     ],
     "name": "Trash (East)"
@@ -4487,87 +4577,6 @@
       "type": "leather"
      },
      {
-      "chance": 24.3,
-      "level": null,
-      "name": "Pimgib's Collar",
-      "new": false,
-      "quality": null,
-      "slot": "trinket",
-      "type": null
-     },
-     {
-      "chance": 9.9,
-      "level": null,
-      "name": "Robe of Combustion",
-      "new": false,
-      "quality": null,
-      "slot": "chest",
-      "type": "cloth"
-     },
-     {
-      "chance": 9.1,
-      "level": null,
-      "name": "Hyena Hide Belt",
-      "new": false,
-      "quality": null,
-      "slot": "waist",
-      "type": "leather"
-     },
-     {
-      "chance": 9.0,
-      "level": null,
-      "name": "Modest Armguards",
-      "new": false,
-      "quality": null,
-      "slot": "wrist",
-      "type": "mail"
-     },
-     {
-      "chance": 9.6,
-      "level": null,
-      "name": "Gallant's Wristguards",
-      "new": false,
-      "quality": null,
-      "slot": "wrist",
-      "type": "plate"
-     },
-     {
-      "chance": 9.4,
-      "level": null,
-      "name": "Unsophisticated Hand Cannon",
-      "new": false,
-      "quality": null,
-      "slot": "ranged",
-      "type": "gun"
-     },
-     {
-      "chance": 9.2,
-      "level": null,
-      "name": "Jagged Bone Fist",
-      "new": false,
-      "quality": null,
-      "slot": "one-hand",
-      "type": "fist weapon"
-     },
-     {
-      "chance": 9.1,
-      "level": null,
-      "name": "Ogre Pocket Knife",
-      "new": false,
-      "quality": null,
-      "slot": "one-hand",
-      "type": "sword"
-     },
-     {
-      "chance": 9.4,
-      "level": null,
-      "name": "Gordok Nose Ring",
-      "new": false,
-      "quality": null,
-      "slot": "finger",
-      "type": null
-     },
-     {
       "chance": 6.0,
       "level": null,
       "name": "Bulky Iron Spaulders",
@@ -4611,6 +4620,60 @@
       "quality": null,
       "slot": "one-hand",
       "type": "axe"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Oddly Magical Belt",
+      "new": false,
+      "quality": null,
+      "slot": "waist",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Shaggy Leggings",
+      "new": false,
+      "quality": null,
+      "slot": "legs",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Carrion Scorpid Helm",
+      "new": false,
+      "quality": null,
+      "slot": "head",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Cyclone Spaulders",
+      "new": false,
+      "quality": null,
+      "slot": "shoulder",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Ogre Forged Hauberk",
+      "new": false,
+      "quality": null,
+      "slot": "chest",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gordok Bracers of Power",
+      "new": false,
+      "quality": null,
+      "slot": "wrist",
+      "type": "plate"
      }
     ],
     "name": "Trash (West)"
@@ -4791,30 +4854,12 @@
    {
     "items": [
      {
-      "chance": 3.4,
-      "level": null,
-      "name": "Oddly Magical Belt",
-      "new": false,
-      "quality": null,
-      "slot": "waist",
-      "type": "cloth"
-     },
-     {
       "chance": 1.5,
       "level": null,
       "name": "Mud Stained Boots",
       "new": false,
       "quality": null,
       "slot": "feet",
-      "type": "leather"
-     },
-     {
-      "chance": 2.8,
-      "level": null,
-      "name": "Shaggy Leggings",
-      "new": false,
-      "quality": null,
-      "slot": "legs",
       "type": "leather"
      },
      {
@@ -4825,15 +4870,6 @@
       "quality": null,
       "slot": "chest",
       "type": "leather"
-     },
-     {
-      "chance": 2.8,
-      "level": null,
-      "name": "Carrion Scorpid Helm",
-      "new": false,
-      "quality": null,
-      "slot": "head",
-      "type": "mail"
      },
      {
       "chance": 2.4,
@@ -4890,15 +4926,6 @@
       "type": null
      },
      {
-      "chance": 3.2,
-      "level": null,
-      "name": "Cyclone Spaulders",
-      "new": false,
-      "quality": null,
-      "slot": "shoulder",
-      "type": "leather"
-     },
-     {
       "chance": 2.4,
       "level": null,
       "name": "Elemental Plate Girdle",
@@ -4906,15 +4933,6 @@
       "quality": null,
       "slot": "waist",
       "type": "plate"
-     },
-     {
-      "chance": 1.3,
-      "level": null,
-      "name": "Ogre Forged Hauberk",
-      "new": false,
-      "quality": null,
-      "slot": "chest",
-      "type": "mail"
      },
      {
       "chance": 1.8,
@@ -4933,15 +4951,6 @@
       "quality": null,
       "slot": "chest",
       "type": "cloth"
-     },
-     {
-      "chance": 2.3,
-      "level": null,
-      "name": "Gordok Bracers of Power",
-      "new": false,
-      "quality": null,
-      "slot": "wrist",
-      "type": "plate"
      },
      {
       "chance": 1.6,
@@ -5057,87 +5066,6 @@
       "type": "leather"
      },
      {
-      "chance": 24.3,
-      "level": null,
-      "name": "Pimgib's Collar",
-      "new": false,
-      "quality": null,
-      "slot": "trinket",
-      "type": null
-     },
-     {
-      "chance": 9.9,
-      "level": null,
-      "name": "Robe of Combustion",
-      "new": false,
-      "quality": null,
-      "slot": "chest",
-      "type": "cloth"
-     },
-     {
-      "chance": 9.1,
-      "level": null,
-      "name": "Hyena Hide Belt",
-      "new": false,
-      "quality": null,
-      "slot": "waist",
-      "type": "leather"
-     },
-     {
-      "chance": 9.0,
-      "level": null,
-      "name": "Modest Armguards",
-      "new": false,
-      "quality": null,
-      "slot": "wrist",
-      "type": "mail"
-     },
-     {
-      "chance": 9.6,
-      "level": null,
-      "name": "Gallant's Wristguards",
-      "new": false,
-      "quality": null,
-      "slot": "wrist",
-      "type": "plate"
-     },
-     {
-      "chance": 9.4,
-      "level": null,
-      "name": "Unsophisticated Hand Cannon",
-      "new": false,
-      "quality": null,
-      "slot": "ranged",
-      "type": "gun"
-     },
-     {
-      "chance": 9.2,
-      "level": null,
-      "name": "Jagged Bone Fist",
-      "new": false,
-      "quality": null,
-      "slot": "one-hand",
-      "type": "fist weapon"
-     },
-     {
-      "chance": 9.1,
-      "level": null,
-      "name": "Ogre Pocket Knife",
-      "new": false,
-      "quality": null,
-      "slot": "one-hand",
-      "type": "sword"
-     },
-     {
-      "chance": 9.4,
-      "level": null,
-      "name": "Gordok Nose Ring",
-      "new": false,
-      "quality": null,
-      "slot": "finger",
-      "type": null
-     },
-     {
       "chance": 6.0,
       "level": null,
       "name": "Bulky Iron Spaulders",
@@ -5181,9 +5109,154 @@
       "quality": null,
       "slot": "one-hand",
       "type": "axe"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Oddly Magical Belt",
+      "new": false,
+      "quality": null,
+      "slot": "waist",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Shaggy Leggings",
+      "new": false,
+      "quality": null,
+      "slot": "legs",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Carrion Scorpid Helm",
+      "new": false,
+      "quality": null,
+      "slot": "head",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Cyclone Spaulders",
+      "new": false,
+      "quality": null,
+      "slot": "shoulder",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Ogre Forged Hauberk",
+      "new": false,
+      "quality": null,
+      "slot": "chest",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gordok Bracers of Power",
+      "new": false,
+      "quality": null,
+      "slot": "wrist",
+      "type": "plate"
      }
     ],
     "name": "Trash (North)"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": null,
+      "name": "Pimgib's Collar",
+      "new": false,
+      "quality": null,
+      "slot": "trinket",
+      "type": null
+     }
+    ],
+    "name": "Pimgib (East)"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": null,
+      "name": "Robe of Combustion",
+      "new": false,
+      "quality": null,
+      "slot": "chest",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Hyena Hide Belt",
+      "new": false,
+      "quality": null,
+      "slot": "waist",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Modest Armguards",
+      "new": false,
+      "quality": null,
+      "slot": "wrist",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gallant's Wristguards",
+      "new": false,
+      "quality": null,
+      "slot": "wrist",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Unsophisticated Hand Cannon",
+      "new": false,
+      "quality": null,
+      "slot": "ranged",
+      "type": "gun"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Jagged Bone Fist",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "fist weapon"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Ogre Pocket Knife",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gordok Nose Ring",
+      "new": false,
+      "quality": null,
+      "slot": "finger",
+      "type": null
+     }
+    ],
+    "name": "Guard Fengus (North)"
    }
   ],
   "name": "Dire Maul",
@@ -5308,8 +5381,44 @@
       "chance": null,
       "level": 34,
       "name": "Irradiated Shield",
-      "new": true,
+      "new": false,
       "quality": "rare",
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": 34,
+      "name": "Skullduggery Belt",
+      "new": false,
+      "quality": "rare",
+      "slot": "waist",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 33,
+      "name": "Nightsky Wristbands",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 33,
+      "name": "Tundra Necklace",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "neck",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": 31,
+      "name": "Glimmering Shield",
+      "new": false,
+      "quality": "uncommon",
       "slot": "off hand",
       "type": "shield"
      }
@@ -5344,6 +5453,24 @@
       "quality": "rare",
       "slot": "feet",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 33,
+      "name": "Infiltrator Buckler",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": 30,
+      "name": "Glimmering Mail Pauldrons",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "shoulder",
+      "type": "mail"
      }
     ],
     "name": "Viscous Fallout"
@@ -5376,6 +5503,24 @@
       "quality": "rare",
       "slot": "wrist",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 33,
+      "name": "Infiltrator Buckler",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": 31,
+      "name": "Glimmering Mail Greaves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "mail"
      }
     ],
     "name": "Electrocutioner 6000"
@@ -5404,9 +5549,45 @@
       "chance": null,
       "level": 34,
       "name": "Thermaplugg Medal of Honor",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "neck",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": 34,
+      "name": "Durable Tunic",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 32,
+      "name": "Emblazoned Chestpiece",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 32,
+      "name": "Banded Helm",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "head",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 31,
+      "name": "Band of Thorns",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "finger",
       "type": null
      }
     ],
@@ -5481,6 +5662,15 @@
       "quality": "rare",
       "slot": "head",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 34,
+      "name": "Mail Combat Belt",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "waist",
+      "type": "mail"
      }
     ],
     "name": "Mekgineer Thermaplugg"
@@ -5576,6 +5766,24 @@
       "quality": "rare",
       "slot": "feet",
       "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 31,
+      "name": "Gnomeregan Amulet",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "neck",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": 30,
+      "name": "Gnomeregan Band",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "finger",
+      "type": null
      }
     ],
     "name": "Trash"
@@ -5853,6 +6061,15 @@
       "quality": null,
       "slot": "head",
       "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 52,
+      "name": "Highborne Bracelets",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "cloth"
      }
     ],
     "name": "Celebras the Cursed"
@@ -5894,6 +6111,42 @@
       "quality": null,
       "slot": "main hand",
       "type": "mace"
+     },
+     {
+      "chance": null,
+      "level": 52,
+      "name": "Ironhide Greaves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 51,
+      "name": "Keeper's Gloves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "hands",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 51,
+      "name": "High Chief's Belt",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "waist",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": 50,
+      "name": "Protector Ankleguards",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "mail"
      }
     ],
     "name": "Landslide"
@@ -5958,6 +6211,24 @@
       "quality": null,
       "slot": "shoulder",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 51,
+      "name": "Bloodforged Chestpiece",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": 51,
+      "name": "Formidable Legguards",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "legs",
+      "type": "mail"
      }
     ],
     "name": "Rotgrip"
@@ -6035,6 +6306,24 @@
       "quality": null,
       "slot": "main hand",
       "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": 53,
+      "name": "Lofty Sabatons",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": 50,
+      "name": "Brutish Breastplate",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "plate"
      }
     ],
     "name": "Princess Theradras"
@@ -6147,7 +6436,7 @@
       "chance": null,
       "level": 18,
       "name": "Searing Dagger",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "dagger"
@@ -6156,7 +6445,7 @@
       "chance": null,
       "level": 18,
       "name": "Chasm Walkers",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "feet",
       "type": "leather"
@@ -6165,7 +6454,7 @@
       "chance": null,
       "level": 18,
       "name": "Satyrskin Cloak",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "back",
       "type": "cloth"
@@ -6179,7 +6468,7 @@
       "chance": null,
       "level": 18,
       "name": "Trogg Scepter",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "mace"
@@ -6188,7 +6477,7 @@
       "chance": null,
       "level": 18,
       "name": "Bone Knuckles",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "fist weapon"
@@ -6197,7 +6486,7 @@
       "chance": null,
       "level": 18,
       "name": "Barbaric Crossbow",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "ranged",
       "type": "crossbow"
@@ -6265,10 +6554,10 @@
      },
      {
       "chance": 32.0,
-      "level": null,
+      "level": 41,
       "name": "Deathmage Sash",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "waist",
       "type": "cloth"
      }
@@ -6490,6 +6779,42 @@
       "quality": null,
       "slot": "chest",
       "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 37,
+      "name": "Ebony Boneclub",
+      "new": false,
+      "quality": "rare",
+      "slot": "one-hand",
+      "type": "mace"
+     },
+     {
+      "chance": null,
+      "level": 37,
+      "name": "Boneslasher",
+      "new": false,
+      "quality": "rare",
+      "slot": "two-hand",
+      "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": 36,
+      "name": "Briar Tredders",
+      "new": false,
+      "quality": "rare",
+      "slot": "feet",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 36,
+      "name": "Stormgale Fists",
+      "new": false,
+      "quality": "rare",
+      "slot": "hands",
+      "type": "mail"
      }
     ],
     "name": "Trash"
@@ -6556,7 +6881,7 @@
       "chance": null,
       "level": 34,
       "name": "Quillord Mail Leggings",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "legs",
       "type": "mail"
@@ -6588,7 +6913,7 @@
       "chance": null,
       "level": 36,
       "name": "Quilrager Throwing Axe",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "thrown",
       "type": "thrown"
@@ -6802,7 +7127,7 @@
       "chance": null,
       "level": 30,
       "name": "Roogug's Severed Head",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "trinket",
       "type": null
@@ -6811,7 +7136,7 @@
       "chance": null,
       "level": 30,
       "name": "Thornweaver Drape",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "back",
       "type": "cloth"
@@ -6820,7 +7145,7 @@
       "chance": null,
       "level": 30,
       "name": "Geomancer Headdress",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "head",
       "type": "leather"
@@ -6834,7 +7159,7 @@
       "chance": null,
       "level": 33,
       "name": "Thorncursed Grips",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "hands",
       "type": "leather"
@@ -6852,7 +7177,7 @@
       "chance": null,
       "level": 31,
       "name": "Death Prophet Spine",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "two-hand",
       "type": "staff"
@@ -7108,10 +7433,10 @@
      },
      {
       "chance": 32.9,
-      "level": null,
+      "level": 42,
       "name": "Herod's Shoulder",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "mail"
      },
@@ -7346,15 +7671,6 @@
       "type": "mail"
      },
      {
-      "chance": 13.9,
-      "level": 44,
-      "name": "Scarlet Leggings",
-      "new": false,
-      "quality": "rare",
-      "slot": "legs",
-      "type": "mail"
-     },
-     {
       "chance": 2.1,
       "level": 38,
       "name": "Scarlet Gauntlets",
@@ -7394,10 +7710,10 @@
     "items": [
      {
       "chance": 34.1,
-      "level": null,
+      "level": 42,
       "name": "Inquisitor's Shawl",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "cloth"
      },
@@ -7444,11 +7760,20 @@
      },
      {
       "chance": 19.9,
-      "level": null,
+      "level": 44,
       "name": "Gauntlets of Divinity",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "hands",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 44,
+      "name": "Scarlet Leggings",
+      "new": false,
+      "quality": "rare",
+      "slot": "legs",
       "type": "mail"
      }
     ],
@@ -7467,10 +7792,10 @@
      },
      {
       "chance": 18.8,
-      "level": null,
+      "level": 44,
       "name": "Hand of Righteousness",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "main hand",
       "type": "mace"
      },
@@ -7482,6 +7807,24 @@
       "quality": null,
       "slot": "neck",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 44,
+      "name": "Captain's Buckler",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": 42,
+      "name": "Jouster's Chestplate",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "plate"
      }
     ],
     "name": "High Inquisitor Whitemane"
@@ -7705,15 +8048,6 @@
       "type": "mail"
      },
      {
-      "chance": 13.9,
-      "level": 44,
-      "name": "Scarlet Leggings",
-      "new": false,
-      "quality": "rare",
-      "slot": "legs",
-      "type": "mail"
-     },
-     {
       "chance": 2.1,
       "level": 38,
       "name": "Scarlet Gauntlets",
@@ -7773,7 +8107,7 @@
       "chance": null,
       "level": 34,
       "name": "Painwalker Buckler",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "off hand",
       "type": "shield"
@@ -8160,15 +8494,6 @@
       "type": "mail"
      },
      {
-      "chance": 13.9,
-      "level": 44,
-      "name": "Scarlet Leggings",
-      "new": false,
-      "quality": "rare",
-      "slot": "legs",
-      "type": "mail"
-     },
-     {
       "chance": 2.1,
       "level": 38,
       "name": "Scarlet Gauntlets",
@@ -8278,7 +8603,7 @@
       "chance": null,
       "level": 39,
       "name": "Spellsever Crossbow",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "ranged",
       "type": "crossbow"
@@ -8502,15 +8827,6 @@
       "new": false,
       "quality": "rare",
       "slot": "waist",
-      "type": "mail"
-     },
-     {
-      "chance": 13.9,
-      "level": 44,
-      "name": "Scarlet Leggings",
-      "new": false,
-      "quality": "rare",
-      "slot": "legs",
       "type": "mail"
      },
      {
@@ -9597,7 +9913,7 @@
       "chance": null,
       "level": 22,
       "name": "Sorcerer Collar",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "neck",
       "type": null
@@ -9606,10 +9922,19 @@
       "chance": null,
       "level": 22,
       "name": "Cell Keeper's Claws",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "fist weapon"
+     },
+     {
+      "chance": null,
+      "level": 21,
+      "name": "Inscribed Leather Breastplate",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "leather"
      }
     ],
     "name": "Rethilgore"
@@ -9670,10 +9995,19 @@
       "chance": null,
       "level": 26,
       "name": "Blade of Silverlaine",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": 26,
+      "name": "Lambent Scale Bracers",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "mail"
      }
     ],
     "name": "Baron Silverlaine"
@@ -9702,10 +10036,28 @@
       "chance": null,
       "level": 26,
       "name": "Worgenbane Talisman",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "trinket",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 26,
+      "name": "Lambent Scale Bracers",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 26,
+      "name": "Lambent Scale Girdle",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "waist",
+      "type": "mail"
      }
     ],
     "name": "Commander Springvale"
@@ -9734,10 +10086,28 @@
       "chance": null,
       "level": 26,
       "name": "Blindwatcher's Sight",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "head",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 26,
+      "name": "Bright Pants",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "legs",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 25,
+      "name": "Shimmering Armor",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "cloth"
      }
     ],
     "name": "Odo the Blindwatcher"
@@ -9757,7 +10127,7 @@
       "chance": null,
       "level": 27,
       "name": "Fenrus' Hide",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "back",
       "type": "cloth"
@@ -9766,10 +10136,28 @@
       "chance": null,
       "level": 27,
       "name": "Half-Eaten Boots",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "feet",
       "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 30,
+      "name": "Emblazoned Buckler",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": 26,
+      "name": "Superior Buckler",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "off hand",
+      "type": "shield"
      }
     ],
     "name": "Fenrus the Devourer"
@@ -9798,10 +10186,19 @@
       "chance": null,
       "level": 26,
       "name": "Worgpelt Leggings",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "legs",
       "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 26,
+      "name": "Lambent Scale Bracers",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "mail"
      }
     ],
     "name": "Wolf Master Nandos"
@@ -9834,6 +10231,33 @@
       "quality": "rare",
       "slot": "waist",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 29,
+      "name": "Scaled Leather Bracers",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 28,
+      "name": "Dervish Gloves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "hands",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 28,
+      "name": "Superior Tunic",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
+      "type": "leather"
      }
     ],
     "name": "Archmage Arugal"
@@ -9912,15 +10336,6 @@
       "quality": "rare",
       "slot": "chest",
       "type": "cloth"
-     },
-     {
-      "chance": 2.4,
-      "level": 25,
-      "name": "Rift Bracers",
-      "new": false,
-      "quality": "uncommon",
-      "slot": "wrist",
-      "type": "mail"
      },
      {
       "chance": null,
@@ -10090,6 +10505,15 @@
       "quality": null,
       "slot": "waist",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 59,
+      "name": "Lightforge Gauntlets",
+      "new": false,
+      "quality": "rare",
+      "slot": "hands",
+      "type": "plate"
      }
     ],
     "name": "Timmy the Cruel"
@@ -10241,15 +10665,6 @@
    },
    {
     "items": [
-     {
-      "chance": 1.8,
-      "level": null,
-      "name": "Book of the Dead",
-      "new": false,
-      "quality": null,
-      "slot": "held in off-hand",
-      "type": null
-     },
      {
       "chance": 2.0,
       "level": null,
@@ -11049,15 +11464,6 @@
    {
     "items": [
      {
-      "chance": 14.2,
-      "level": 59,
-      "name": "Lightforge Boots",
-      "new": false,
-      "quality": "rare",
-      "slot": "feet",
-      "type": "plate"
-     },
-     {
       "chance": 2.1,
       "level": 58,
       "name": "Lightforge Belt",
@@ -11076,93 +11482,12 @@
       "type": "cloth"
      },
      {
-      "chance": 15.6,
-      "level": null,
-      "name": "Star of Mystaria",
-      "new": false,
-      "quality": null,
-      "slot": "neck",
-      "type": null
-     },
-     {
-      "chance": 15.6,
-      "level": null,
-      "name": "Demonshear",
-      "new": false,
-      "quality": null,
-      "slot": "two-hand",
-      "type": "sword"
-     },
-     {
-      "chance": 13.6,
-      "level": null,
-      "name": "Wyrmtongue Shoulders",
-      "new": false,
-      "quality": null,
-      "slot": "shoulder",
-      "type": "leather"
-     },
-     {
-      "chance": 15.5,
-      "level": null,
-      "name": "Crown of Tyranny",
-      "new": false,
-      "quality": null,
-      "slot": "head",
-      "type": "mail"
-     },
-     {
-      "chance": 14.6,
-      "level": null,
-      "name": "Gift of the Elven Magi",
-      "new": false,
-      "quality": null,
-      "slot": "main hand",
-      "type": "dagger"
-     },
-     {
-      "chance": 16.0,
-      "level": null,
-      "name": "Fire Striders",
-      "new": false,
-      "quality": null,
-      "slot": "feet",
-      "type": "cloth"
-     },
-     {
       "chance": null,
       "level": null,
       "name": "Juno's Shadow",
       "new": false,
       "quality": null,
       "slot": "back",
-      "type": "cloth"
-     },
-     {
-      "chance": 14.1,
-      "level": null,
-      "name": "Hammer of the Grand Crusader",
-      "new": false,
-      "quality": null,
-      "slot": "two-hand",
-      "type": "mace"
-     },
-     {
-      "chance": 12.0,
-      "level": null,
-      "name": "Grand Crusader's Helm",
-      "new": false,
-      "quality": null,
-      "slot": "head",
-      "type": "plate"
-     },
-     {
-      "chance": 11.8,
-      "level": null,
-      "name": "Shroud of the Nathrezim",
-      "new": false,
-      "quality": null,
-      "slot": "shoulder",
       "type": "cloth"
      },
      {
@@ -11218,9 +11543,167 @@
       "quality": null,
       "slot": "legs",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 58,
+      "name": "Magister's Belt",
+      "new": false,
+      "quality": "rare",
+      "slot": "waist",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 58,
+      "name": "Dreadmist Belt",
+      "new": false,
+      "quality": "rare",
+      "slot": "waist",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 58,
+      "name": "Belt of Valor",
+      "new": false,
+      "quality": "rare",
+      "slot": "waist",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": 57,
+      "name": "Bindings of Elements",
+      "new": false,
+      "quality": "rare",
+      "slot": "wrist",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 57,
+      "name": "Beaststalker's Bindings",
+      "new": false,
+      "quality": "rare",
+      "slot": "wrist",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 57,
+      "name": "Wildheart Bracers",
+      "new": false,
+      "quality": "rare",
+      "slot": "wrist",
+      "type": "leather"
      }
     ],
     "name": "Trash"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": 59,
+      "name": "Lightforge Boots",
+      "new": false,
+      "quality": "rare",
+      "slot": "feet",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Star of Mystaria",
+      "new": false,
+      "quality": null,
+      "slot": "neck",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Demonshear",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Book of the Dead",
+      "new": false,
+      "quality": null,
+      "slot": "held in off-hand",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Wyrmtongue Shoulders",
+      "new": false,
+      "quality": null,
+      "slot": "shoulder",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Crown of Tyranny",
+      "new": false,
+      "quality": null,
+      "slot": "head",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gift of the Elven Magi",
+      "new": false,
+      "quality": null,
+      "slot": "main hand",
+      "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Fire Striders",
+      "new": false,
+      "quality": null,
+      "slot": "feet",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Hammer of the Grand Crusader",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "mace"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Grand Crusader's Helm",
+      "new": false,
+      "quality": null,
+      "slot": "head",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Shroud of the Nathrezim",
+      "new": false,
+      "quality": null,
+      "slot": "shoulder",
+      "type": "cloth"
+     }
+    ],
+    "name": "Balnazzar"
    }
   ],
   "name": "Stratholme",
@@ -11243,7 +11726,7 @@
       "chance": null,
       "level": 22,
       "name": "Ogre Loincloth",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "legs",
       "type": "cloth"
@@ -11307,7 +11790,7 @@
       "chance": null,
       "level": 21,
       "name": "Dull Sawblade",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "thrown",
       "type": "thrown"
@@ -11339,7 +11822,7 @@
       "chance": null,
       "level": 21,
       "name": "Bandsaw Wristbands",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "wrist",
       "type": "mail"
@@ -11353,7 +11836,7 @@
       "chance": null,
       "level": 23,
       "name": "Goblin Hammer",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "mace"
@@ -11403,7 +11886,7 @@
       "chance": null,
       "level": 22,
       "name": "First Mate Band",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "finger",
       "type": null
@@ -11426,7 +11909,7 @@
       "chance": null,
       "level": 23,
       "name": "Lookie's Spyglass",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "trinket",
       "type": null
@@ -11448,6 +11931,15 @@
       "quality": "rare",
       "slot": "one-hand",
       "type": "mace"
+     },
+     {
+      "chance": null,
+      "level": 23,
+      "name": "Viridian Band",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "finger",
+      "type": null
      }
     ],
     "name": "Cookie"
@@ -11625,15 +12117,6 @@
       "quality": "uncommon",
       "slot": "hands",
       "type": "leather"
-     },
-     {
-      "chance": 6.6,
-      "level": 16,
-      "name": "Defias Rapier",
-      "new": false,
-      "quality": "uncommon",
-      "slot": "main hand",
-      "type": "sword"
      }
     ],
     "name": "Trash"
@@ -11659,7 +12142,7 @@
       "chance": null,
       "level": 29,
       "name": "Bridgebreaker Bindings",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "wrist",
       "type": "cloth"
@@ -11668,7 +12151,7 @@
       "chance": null,
       "level": 29,
       "name": "Demolition Girdle",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "waist",
       "type": "leather"
@@ -11714,7 +12197,7 @@
       "chance": null,
       "level": 26,
       "name": "Sharpened Cutlery",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "thrown",
       "type": "thrown"
@@ -11723,7 +12206,7 @@
       "chance": null,
       "level": 26,
       "name": "Defias Renegade Ring",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "finger",
       "type": null
@@ -11737,7 +12220,7 @@
       "chance": null,
       "level": 26,
       "name": "Executioner Mantle",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "shoulder",
       "type": "leather"
@@ -11746,7 +12229,7 @@
       "chance": null,
       "level": 26,
       "name": "Dark Horde Band",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "finger",
       "type": null
@@ -11755,7 +12238,7 @@
       "chance": null,
       "level": 26,
       "name": "Blackrock Harness",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "chest",
       "type": "leather"
@@ -11769,7 +12252,7 @@
       "chance": null,
       "level": 31,
       "name": "Debt Collector",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "sword"
@@ -11778,7 +12261,7 @@
       "chance": null,
       "level": 31,
       "name": "Defias Jailbreakers",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "hands",
       "type": "leather"
@@ -11787,7 +12270,7 @@
       "chance": null,
       "level": 31,
       "name": "Red Wool Cloak",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "back",
       "type": "cloth"
@@ -11796,7 +12279,7 @@
       "chance": null,
       "level": 31,
       "name": "Concealed Hand Crossbow",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "ranged",
       "type": "crossbow"
@@ -11810,7 +12293,7 @@
       "chance": null,
       "level": 30,
       "name": "Hamhock's Cleaver",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "main hand",
       "type": "axe"
@@ -11819,7 +12302,7 @@
       "chance": null,
       "level": 30,
       "name": "Ogre Grips",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "hands",
       "type": "mail"
@@ -11828,7 +12311,7 @@
       "chance": null,
       "level": 30,
       "name": "Repurposed Rack",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "off hand",
       "type": "shield"
@@ -11842,7 +12325,7 @@
       "chance": null,
       "level": 28,
       "name": "Graverobber's Shovel",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "two-hand",
       "type": "mace"
@@ -11851,7 +12334,7 @@
       "chance": null,
       "level": 28,
       "name": "Boneslicer",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "two-hand",
       "type": "polearm"
@@ -11860,7 +12343,7 @@
       "chance": null,
       "level": 28,
       "name": "Nightskulker Ring",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "finger",
       "type": null
@@ -11957,6 +12440,15 @@
       "quality": null,
       "slot": "hands",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 55,
+      "name": "Wanderer's Gloves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "hands",
+      "type": "leather"
      }
     ],
     "name": "Jammal'an the Prophet"
@@ -12071,6 +12563,24 @@
       "quality": null,
       "slot": "one-hand",
       "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": 55,
+      "name": "Wanderer's Gloves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "hands",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 55,
+      "name": "Templar Boots",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "plate"
      }
     ],
     "name": "Shade of Eranikus"
@@ -12328,6 +12838,69 @@
       "quality": null,
       "slot": "waist",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Winter's Bite",
+      "new": false,
+      "quality": null,
+      "slot": "main hand",
+      "type": "axe"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Bludgeon of the Grinning Dog",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "staff"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Deathblow",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Mindseye Circle",
+      "new": false,
+      "quality": null,
+      "slot": "finger",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Mark of Hakkar",
+      "new": false,
+      "quality": null,
+      "slot": "finger",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Hakkari Breastplate",
+      "new": false,
+      "quality": null,
+      "slot": "chest",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Hakkari Shroud",
+      "new": false,
+      "quality": null,
+      "slot": "head",
+      "type": "cloth"
      }
     ],
     "name": "Trash"
@@ -12383,12 +12956,21 @@
     "items": [
      {
       "chance": 9.4,
-      "level": null,
+      "level": 43,
       "name": "Nordic Longshank",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "one-hand",
       "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": 43,
+      "name": "Baelog's Shortbow",
+      "new": false,
+      "quality": "rare",
+      "slot": "ranged",
+      "type": "bow"
      }
     ],
     "name": "Baelog"
@@ -12397,10 +12979,10 @@
     "items": [
      {
       "chance": 8.0,
-      "level": null,
+      "level": 42,
       "name": "Horned Viking Helmet",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "head",
       "type": "plate"
      },
@@ -12426,6 +13008,15 @@
       "quality": null,
       "slot": "off hand",
       "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": 42,
+      "name": "Battered Viking Shield",
+      "new": false,
+      "quality": "rare",
+      "slot": "off hand",
+      "type": "shield"
      }
     ],
     "name": "Olaf"
@@ -12443,10 +13034,10 @@
      },
      {
       "chance": 20.4,
-      "level": null,
+      "level": 42,
       "name": "Ironshod Bludgeon",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "two-hand",
       "type": "staff"
      },
@@ -12458,6 +13049,33 @@
       "quality": "rare",
       "slot": "wrist",
       "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 42,
+      "name": "Embossed Plate Boots",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": 40,
+      "name": "Twilight Orb",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "held in off-hand",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": 39,
+      "name": "Jet Chain",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "neck",
+      "type": null
      }
     ],
     "name": "Ironaya"
@@ -12466,10 +13084,10 @@
     "items": [
      {
       "chance": 47.7,
-      "level": null,
+      "level": 46,
       "name": "Cragfists",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "hands",
       "type": "plate"
      },
@@ -12507,10 +13125,10 @@
      },
      {
       "chance": 19.6,
-      "level": null,
+      "level": 47,
       "name": "Flameseer Mantle",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "shoulder",
       "type": "cloth"
      },
@@ -12522,6 +13140,15 @@
       "quality": null,
       "slot": "back",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 45,
+      "name": "Imperial Leather Pants",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "legs",
+      "type": "leather"
      }
     ],
     "name": "Galgann Firehammer"
@@ -12530,19 +13157,19 @@
     "items": [
      {
       "chance": 29.6,
-      "level": null,
+      "level": 47,
       "name": "Oilskin Leggings",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "legs",
       "type": "leather"
      },
      {
       "chance": 39.8,
-      "level": null,
+      "level": 47,
       "name": "Grimlok's Tribal Vestments",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "chest",
       "type": "cloth"
      },
@@ -12554,6 +13181,15 @@
       "quality": null,
       "slot": "two-hand",
       "type": "polearm"
+     },
+     {
+      "chance": null,
+      "level": 45,
+      "name": "Chromite Pauldrons",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "shoulder",
+      "type": "plate"
      }
     ],
     "name": "Grimlok"
@@ -12580,10 +13216,10 @@
      },
      {
       "chance": 62.3,
-      "level": null,
+      "level": 47,
       "name": "Archaedic Stone",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "finger",
       "type": null
      }
@@ -12684,10 +13320,10 @@
      },
      {
       "chance": null,
-      "level": null,
+      "level": 43,
       "name": "Papal Fez",
       "new": false,
-      "quality": null,
+      "quality": "rare",
       "slot": "head",
       "type": "cloth"
      },
@@ -12708,6 +13344,114 @@
       "quality": null,
       "slot": "one-hand",
       "type": "axe"
+     },
+     {
+      "chance": null,
+      "level": 47,
+      "name": "Cabalist Spaulders",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "shoulder",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 46,
+      "name": "Champion's Greaves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 39,
+      "name": "Legguards of the Vault",
+      "new": false,
+      "quality": "rare",
+      "slot": "legs",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 39,
+      "name": "Energy Cloak",
+      "new": false,
+      "quality": "rare",
+      "slot": "back",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 38,
+      "name": "Earthen Rod",
+      "new": false,
+      "quality": "rare",
+      "slot": "ranged",
+      "type": "wand"
+     },
+     {
+      "chance": null,
+      "level": 38,
+      "name": "Beacon of Hope",
+      "new": false,
+      "quality": "rare",
+      "slot": "held in off-hand",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": 37,
+      "name": "The Shoveler",
+      "new": false,
+      "quality": "rare",
+      "slot": "two-hand",
+      "type": "mace"
+     },
+     {
+      "chance": null,
+      "level": 37,
+      "name": "Adventurer's Pith Helmet",
+      "new": false,
+      "quality": "rare",
+      "slot": "head",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 36,
+      "name": "Stonevault Shiv",
+      "new": false,
+      "quality": "rare",
+      "slot": "one-hand",
+      "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": 36,
+      "name": "Excavator's Brand",
+      "new": false,
+      "quality": "rare",
+      "slot": "one-hand",
+      "type": "mace"
+     },
+     {
+      "chance": null,
+      "level": 35,
+      "name": "Spirewind Fetter",
+      "new": false,
+      "quality": "rare",
+      "slot": "chest",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 35,
+      "name": "Unearthed Bands",
+      "new": false,
+      "quality": "rare",
+      "slot": "wrist",
+      "type": "leather"
      }
     ],
     "name": "Trash"
@@ -12733,7 +13477,7 @@
       "chance": null,
       "level": 22,
       "name": "Snake Eye Kaleidoscope",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "neck",
       "type": null
@@ -12745,6 +13489,24 @@
       "new": false,
       "quality": "rare",
       "slot": "waist",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 23,
+      "name": "Searing Blade",
+      "new": false,
+      "quality": "rare",
+      "slot": "two-hand",
+      "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": 23,
+      "name": "Bristlebark Boots",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
       "type": "leather"
      }
     ],
@@ -12806,9 +13568,18 @@
       "chance": null,
       "level": 22,
       "name": "Cloak of Hermitic Bliss",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "back",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 23,
+      "name": "Mystic's Robe",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "chest",
       "type": "cloth"
      }
     ],
@@ -12838,10 +13609,19 @@
       "chance": null,
       "level": 22,
       "name": "Slither Cord",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "waist",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 20,
+      "name": "Stormbringer Belt",
+      "new": false,
+      "quality": "rare",
+      "slot": "waist",
+      "type": "mail"
      }
     ],
     "name": "Lord Pythas"
@@ -12861,7 +13641,7 @@
       "chance": null,
       "level": 22,
       "name": "Skum's Bucket",
-      "new": true,
+      "new": false,
       "quality": "rare",
       "slot": "held in off-hand",
       "type": null
@@ -12874,6 +13654,15 @@
       "quality": "rare",
       "slot": "one-hand",
       "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": 22,
+      "name": "Hulking Bands",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "mail"
      }
     ],
     "name": "Skum"
@@ -12915,6 +13704,15 @@
       "quality": "rare",
       "slot": "feet",
       "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 19,
+      "name": "Feral Buckler",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "off hand",
+      "type": "shield"
      }
     ],
     "name": "Lord Serpentis"
@@ -12947,6 +13745,33 @@
       "quality": "rare",
       "slot": "back",
       "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 24,
+      "name": "Sanguine Sandals",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "feet",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 24,
+      "name": "Wrangler's Belt",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "waist",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 20,
+      "name": "Lead Band",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "finger",
+      "type": null
      }
     ],
     "name": "Verdan the Everliving"
@@ -12979,6 +13804,33 @@
       "quality": "rare",
       "slot": "chest",
       "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 22,
+      "name": "Wrangler's Cloak",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "back",
+      "type": "cloth"
+     },
+     {
+      "chance": null,
+      "level": 21,
+      "name": "Volcanic Rock Ring",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "finger",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": 21,
+      "name": "Prospector's Woolies",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "legs",
+      "type": "leather"
      }
     ],
     "name": "Mutanus the Devourer"
@@ -13016,6 +13868,24 @@
       "quality": "rare",
       "slot": "hands",
       "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 22,
+      "name": "Gargoyle's Bite",
+      "new": false,
+      "quality": "rare",
+      "slot": "two-hand",
+      "type": "polearm"
+     },
+     {
+      "chance": null,
+      "level": 17,
+      "name": "War Paint Bindings",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "wrist",
+      "type": "mail"
      }
     ],
     "name": "Trash"
@@ -13063,6 +13933,15 @@
       "quality": null,
       "slot": "neck",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 47,
+      "name": "Tyrant's Legplates",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "legs",
+      "type": "plate"
      }
     ],
     "name": "Antu'sul"
@@ -13109,6 +13988,24 @@
       "quality": null,
       "slot": "chest",
       "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 47,
+      "name": "Khan's Mantle",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "shoulder",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": 45,
+      "name": "Gaea's Cloak",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "back",
+      "type": "cloth"
      }
     ],
     "name": "Gahz'rilla"
@@ -13123,6 +14020,15 @@
       "quality": null,
       "slot": "one-hand",
       "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Witch Doctor's Cane",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "staff"
      }
     ],
     "name": "Sergeant Bly"
@@ -13214,6 +14120,15 @@
       "quality": null,
       "slot": "main hand",
       "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": 48,
+      "name": "Bloodwoven Mask",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "head",
+      "type": "cloth"
      }
     ],
     "name": "Chief Ukorz Sandscalp"
@@ -13242,6 +14157,33 @@
       "quality": null,
       "slot": "feet",
       "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Troll Protector",
+      "new": false,
+      "quality": null,
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Brainlash",
+      "new": false,
+      "quality": null,
+      "slot": "finger",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Blackmetal Cape",
+      "new": false,
+      "quality": null,
+      "slot": "back",
+      "type": "cloth"
      }
     ],
     "name": "Zerillis"
@@ -13256,9 +14198,299 @@
       "quality": null,
       "slot": "neck",
       "type": null
+     },
+     {
+      "chance": null,
+      "level": 46,
+      "name": "Lodestone Hoop",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "finger",
+      "type": null
      }
     ],
     "name": "Trash"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": 47,
+      "name": "Scorpashi Shoulder Pads",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "shoulder",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 47,
+      "name": "Wolf Rider's Headgear",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "head",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 45,
+      "name": "Imposing Gloves",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "hands",
+      "type": "leather"
+     },
+     {
+      "chance": null,
+      "level": 44,
+      "name": "Silksand Star",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "held in off-hand",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Troll Protector",
+      "new": false,
+      "quality": null,
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gutwrencher",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Eyegouger",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "polearm"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Witch Doctor's Cane",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "staff"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Flaming Incinerator",
+      "new": false,
+      "quality": null,
+      "slot": "ranged",
+      "type": "wand"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Bloodletter Scalpel",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Blackmetal Cape",
+      "new": false,
+      "quality": null,
+      "slot": "back",
+      "type": "cloth"
+     }
+    ],
+    "name": "Theka the Martyr"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": 48,
+      "name": "Brutish Helmet",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "head",
+      "type": "plate"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Eyegouger",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "polearm"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Witch Doctor's Cane",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "staff"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Bloodletter Scalpel",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "sword"
+     }
+    ],
+    "name": "Nekrum Gutchewer"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": 46,
+      "name": "Bonelink Legplates",
+      "new": false,
+      "quality": "uncommon",
+      "slot": "legs",
+      "type": "mail"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Troll Protector",
+      "new": false,
+      "quality": null,
+      "slot": "off hand",
+      "type": "shield"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gutwrencher",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Brainlash",
+      "new": false,
+      "quality": null,
+      "slot": "finger",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Eyegouger",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "polearm"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Witch Doctor's Cane",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "staff"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Flaming Incinerator",
+      "new": false,
+      "quality": null,
+      "slot": "ranged",
+      "type": "wand"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Bloodletter Scalpel",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "sword"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Blackmetal Cape",
+      "new": false,
+      "quality": null,
+      "slot": "back",
+      "type": "cloth"
+     }
+    ],
+    "name": "Sandfury Executioner"
+   },
+   {
+    "items": [
+     {
+      "chance": null,
+      "level": 46,
+      "name": "Ring of Saviors",
+      "new": false,
+      "quality": "epic",
+      "slot": "finger",
+      "type": null
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Gutwrencher",
+      "new": false,
+      "quality": null,
+      "slot": "one-hand",
+      "type": "dagger"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "The Minotaur",
+      "new": false,
+      "quality": null,
+      "slot": "two-hand",
+      "type": "axe"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Flaming Incinerator",
+      "new": false,
+      "quality": null,
+      "slot": "ranged",
+      "type": "wand"
+     },
+     {
+      "chance": null,
+      "level": null,
+      "name": "Blackmetal Cape",
+      "new": false,
+      "quality": null,
+      "slot": "back",
+      "type": "cloth"
+     }
+    ],
+    "name": "Hydromancer Velratha"
    }
   ],
   "name": "Zul'Farrak",

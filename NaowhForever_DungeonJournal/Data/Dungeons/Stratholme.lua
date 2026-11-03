@@ -8,16 +8,16 @@ ns.Journal.AddDungeon("Stratholme", {
     entrance = { map = 1423, x = 26.9, y = 11.8 },
     wings = {
         { name = "Main Gate", bosses = {
-            { npc = 10808, name = "Timmy the Cruel", model = 571, encounters = { 474 }, loot = { 13400, 13402, 13401, 13403 }, chance = { 20, 19, 19, 18 } },
+            { npc = 10808, name = "Timmy the Cruel", model = 571, encounters = { 474 }, loot = { 13400, 13402, 13401, 13403, 16724 }, chance = { 20, 19, 19, 18, 13 } },
             { npc = 10516, name = "The Unforgiven", model = 10771, encounters = { 472 }, loot = { 13408, 13404, 13405, 13409 }, chance = { 16, 16, 16, 15 } },
             { npc = 10558, name = "Hearthsinger Forresten", model = 10482, encounters = { 473 }, loot = { 13378, 16682, 13384, 13383 }, chance = { 15, 14, 14, 14 } },
             { npc = 10997, name = "Cannon Master Willey", model = 10674, encounters = { 475 }, loot = { 22403, 22407, 13380, 18721, 22405, 13382, 13381, 16708, 22404, 22406, 12839 }, chance = { 23, 22, 19, 19, 19, 18, 18, 16, 11, 9, 0 } },
             { npc = 10811, name = "Archivist Galford", model = 10544, encounters = { 477 }, loot = { 13386, 13387, 18716, 16692, 13385 }, chance = { 21, 21, 21, 18, 14 } },
-            { npc = 10813, name = "Balnazzar", model = 10691, encounters = { 478 }, loot = { 16725, 18720 } },
+            { npc = 10813, name = "Balnazzar", model = 10691, encounters = { 478 }, loot = { 13353, 12103, 13348, 13358, 13359, 13360, 13369, 16725, 18717, 18718, 18720 } },
             { npc = 10393, name = "Skul", model = 2606, rare = true, encounters = { 2799 }, loot = { 13394, 13396, 13395 }, chance = { 27, 27, 26 } },
             { npc = 10809, name = "Stonespine", model = 7856, rare = true, encounters = { 2800 }, loot = { 13399, 13397, 13954 }, chance = { 34, 31, 30 } },
             { npc = 11143, name = "Postmaster Malown", model = 10669, optional = true, encounters = { 2798 }, loot = { 13388, 13392, 13393, 13391, 13389, 13390 }, chance = { 23, 18, 17, 15, 13, 6 } },
-            { npc = 10812, name = "Grand Crusader Dathrohan", model = 10545, optional = true, loot = { 22334, 13353 }, chance = { 2, 2 } },
+            { npc = 10812, name = "Grand Crusader Dathrohan", model = 10545, optional = true, loot = { 22334 }, chance = { 2 } },
             { npc = 14684, name = "Balzaphon", model = 7919, optional = true, loot = { 23126, 23124, 23125 }, chance = { 32, 29, 0 } },
         } },
         { name = "Service Entrance", bosses = {
@@ -27,7 +27,7 @@ ns.Journal.AddDungeon("Stratholme", {
             { npc = 10438, name = "Maleki the Pallid", model = 10546, encounters = { 481 }, loot = { 18737, 16691, 18734, 13524, 18735, 13526, 13527, 13525, 13528, 12833 }, chance = { 18, 18, 18, 18, 18, 11, 11, 11, 11, 0 } },
             { npc = 10439, name = "Ramstein the Gorger", model = 12818, encounters = { 483 }, loot = { 16737, 13515, 13374, 13375, 13373, 13372, 18723 }, chance = { 17, 12, 12, 12, 12, 12, 12 } },
             { npc = 10440, name = "Baron Rivendare", model = 10729, encounters = { 484 }, loot = { 22408, 22409, 22412, 22410, 22411, 13349, 13340, 13344, 13346, 13345, 16687, 16709, 16699, 16694, 16678, 16732, 16719, 13368, 16728, 13361, 16668, 13505 }, chance = { 18, 18, 17, 16, 16, 15, 15, 14, 14, 14, 11, 11, 11, 10, 10, 10, 10, 7, 7, 7, 6, 0 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 13369, 12103, 13348, 13359, 13360, 16725, 18717, 13358, 18718, 18720, 16723, 16697, 17061, 18736, 18741, 18742, 18743, 18744, 18745 }, chance = { 16, 16, 16, 16, 15, 14, 14, 14, 12, 12, 2, 1, 0, 0, 0, 0, 0, 0, 0 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 16723, 16697, 16671, 16681, 16685, 16702, 16714, 16736, 17061, 18736, 18741, 18742, 18743, 18744, 18745 }, chance = { 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
         } },
     },
 })

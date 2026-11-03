@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Changed
+- Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70755.
+- Naowh Score: refitted to the latest Forever items.
+- Dungeon Journal: boss loot updated from the latest Forever loot lists.
+- BiS List: picks updated from wowsrc.com's latest lists.
+
 ## 1.1.57
 
 ### Added

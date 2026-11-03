@@ -25,7 +25,7 @@ ns.Journal.AddDungeon("LowerBlackrockSpire", {
             { npc = 9718, name = "Ghok Bashguud", model = 11809, rare = true, loot = { 13203, 13204, 13198 }, chance = { 38, 34, 23 } },
             { npc = 10263, name = "Burning Felguard", model = 5047, rare = true, loot = { 13181, 13182 }, chance = { 29, 29 } },
             { npc = 16080, name = "Mor Grayhoof", model = 15997, optional = true, loot = { 22306, 22322, 22319, 22325, 22398 }, chance = { 22, 22, 20, 18, 17 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 16683, 16680, 16696, 16703, 16673, 16735, 16713, 13260 }, chance = { 3, 3, 3, 3, 3, 3, 3, 0 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 16683, 16680, 16696, 16703, 16673, 16735, 16713, 13260, 16717, 13371 }, chance = { 3, 3, 3, 3, 3, 3, 3, 0, 0, 0 } },
         } },
     },
 })

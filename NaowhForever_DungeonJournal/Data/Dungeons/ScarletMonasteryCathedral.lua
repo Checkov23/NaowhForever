@@ -8,9 +8,9 @@ ns.Journal.AddDungeon("ScarletMonasteryCathedral", {
     wings = {
         { bosses = {
             { npc = 4542, name = "High Inquisitor Fairbanks", model = 2605, encounters = { 449 }, loot = { 19507, 19508, 19509 }, chance = { 34, 32, 32 } },
-            { npc = 3976, name = "Scarlet Commander Mograine", model = 2042, loot = { 7726, 7724, 7723 }, chance = { 42, 20, 19 } },
-            { npc = 3977, name = "High Inquisitor Whitemane", model = 2043, encounters = { 450 }, loot = { 7722, 7720, 7721 }, chance = { 37, 37, 19 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 10330, 10329, 10333, 10331, 10328, 1992, 2262, 5756, 5819, 7727, 7728, 7729, 7730, 7736, 7752, 7753, 7754, 7755, 7757, 7758, 7759, 7760, 7761, 7786, 7787, 8225, 8226, 10332 }, chance = { 14, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+            { npc = 3976, name = "Scarlet Commander Mograine", model = 2042, loot = { 7726, 7724, 7723, 10330 }, chance = { 42, 20, 19, 14 } },
+            { npc = 3977, name = "High Inquisitor Whitemane", model = 2043, encounters = { 450 }, loot = { 7722, 7720, 7721, 7495, 8157 }, chance = { 37, 37, 19, 0, 0 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 10329, 10333, 10331, 10328, 1992, 2262, 5756, 5819, 7727, 7728, 7729, 7730, 7736, 7752, 7753, 7754, 7755, 7757, 7758, 7759, 7760, 7761, 7786, 7787, 8225, 8226, 10332 }, chance = { 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
         } },
     },
 })

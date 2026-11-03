@@ -17,7 +17,7 @@ ns.Journal.AddDungeon("UpperBlackrockSpire", {
             { npc = 10363, name = "General Drakkisath", model = 10115, encounters = { 3069 }, loot = { 13141, 22253, 22267, 13098, 13142, 12602, 22269, 16700, 16730, 16706, 16674, 16688, 16690, 16721, 22268, 16726, 16666, 12592, 15730 }, chance = { 28, 26, 24, 23, 22, 22, 21, 12, 12, 12, 11, 11, 11, 10, 8, 7, 6, 2, 0 } },
             { npc = 10509, name = "Jed Runewatcher", model = 9686, rare = true, loot = { 12605, 12604, 12930 }, chance = { 33, 33, 30 } },
             { npc = 16042, name = "Lord Valthalak", model = 14308, optional = true, encounters = { 3070 }, loot = { 22335, 22337, 22343, 22339, 22336, 22340, 22302, 22342 }, chance = { 26, 26, 25, 24, 23, 23, 22, 22 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 16683, 16680, 16696, 16703, 16673, 16735, 16713, 13260 }, chance = { 3, 3, 3, 3, 3, 3, 3, 0 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 16683, 16680, 16696, 16703, 16673, 16735, 16713, 13260, 16717, 13371 }, chance = { 3, 3, 3, 3, 3, 3, 3, 0, 0, 0 } },
         } },
     },
 })

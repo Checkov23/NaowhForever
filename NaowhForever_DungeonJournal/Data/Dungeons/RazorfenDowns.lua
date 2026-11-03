@@ -15,7 +15,7 @@ ns.Journal.AddDungeon("RazorfenDowns", {
             { npc = 7354, name = "Ragglesnout", model = 11382, rare = true, encounters = { 2783 }, loot = { 10767, 10768, 10758 }, chance = { 40, 38, 20 } },
             { npc = 7356, name = "Plaguemaw the Rotting", model = 6124, rare = true, encounters = { 2781 }, loot = { 10760, 10766 }, chance = { 63, 33 } },
             { npc = 14686, name = "Lady Falther'ess", model = 10698, optional = true, loot = { 23177, 23178 }, chance = { 54, 42 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 10567, 10570, 10572, 10574, 10578, 10581, 10583 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 10567, 10570, 10571, 10572, 10573, 10574, 10578, 10581, 10582, 10583, 10584 } },
         } },
     },
 })

@@ -10,7 +10,7 @@ ns.Journal.AddDungeon("BlackrockDepths", {
         { name = "Detention Block", bosses = {
             { npc = 9018, name = "High Interrogator Gerstahn", model = 8761, encounters = { 227 }, loot = { 11624, 11625, 22240, 11626 }, chance = { 22, 19, 18, 17 } },
             { npc = 9025, name = "Lord Roccor", model = 5781, encounters = { 228 }, loot = { 11632, 11631, 22397, 22234, 11813 }, chance = { 23, 23, 22, 22, 0 } },
-            { npc = 9319, name = "Houndmaster Grebmar", model = 9212, encounters = { 229 }, loot = { 11627, 11623, 11629, 11628 }, chance = { 34, 30, 13, 13 } },
+            { npc = 9319, name = "Houndmaster Grebmar", model = 9212, encounters = { 229 }, loot = { 11627, 11623, 11629, 11628, 10193 }, chance = { 34, 30, 13, 13, 0 } },
         } },
         { name = "Ring of Law", bosses = {
             { npc = 9031, name = "Anub'shiah", model = 3004, loot = { 11675, 11677, 11678, 11731 }, chance = { 33, 31, 19, 12 } },
@@ -34,13 +34,13 @@ ns.Journal.AddDungeon("BlackrockDepths", {
             { npc = 9543, name = "Ribbly Screwspigot", model = 8667, encounters = { 240 }, loot = { 11612, 227901 } },
             { npc = 9499, name = "Plugger Spazzring", model = 8652, encounters = { 241 }, loot = { 12793, 12791, 18653 }, chance = { 30, 10, 0 } },
             { npc = 9156, name = "Ambassador Flamelash", model = 8329, encounters = { 242 }, loot = { 11812, 11814, 11809, 11832, 11808 }, chance = { 38, 37, 11, 10, 1 } },
-            { npc = 9938, name = "Magmus", model = 12162, encounters = { 244 }, loot = { 22208, 11935, 22400, 22395 }, chance = { 22, 21, 15, 12 } },
+            { npc = 9938, name = "Magmus", model = 12162, encounters = { 244 }, loot = { 22208, 11935, 11746, 22400, 22395 }, chance = { 22, 21, 21, 15, 12 } },
             { npc = 9019, name = "Emperor Dagran Thaurissan", model = 8807, encounters = { 2790 }, loot = { 11930, 11924, 22204, 11928, 11934, 11932, 11931, 22207, 11933, 11815, 11684 }, chance = { 19, 19, 18, 18, 18, 18, 18, 18, 17, 15, 1 } },
             { npc = 8923, name = "Panzor the Invincible", model = 8270, rare = true, loot = { 11787, 11786, 11785, 22245 }, chance = { 29, 24, 23, 20 } },
             { npc = 8929, name = "Princess Moira Bronzebeard", model = 8705, optional = true, encounters = { 2789 }, loot = { 12554, 12553, 12557, 12556 }, chance = { 23, 23, 23, 22 } },
             { npc = nil, name = "Secret Safe", chest = 161495, loot = { 22205, 22254, 22256, 22255, 11920, 11929, 11926 }, chance = { 19, 18, 16, 13, 7, 7, 6 } },
-            { npc = nil, name = "Chest of The Seven", chest = 169243, loot = { 11929, 11927, 11926, 11925 }, chance = { 50, 47, 27, 25 } },
-            { npc = nil, name = "Trash", trash = true, loot = { 22305, 11920, 11921, 11922, 11746, 12527, 12528, 12531, 12532, 12535, 12542, 12546, 12547, 12549, 12550, 12551, 12552, 12555 }, chance = { 100, 28, 26, 22, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+            { npc = nil, name = "Chest of The Seven", chest = 169243, loot = { 11927, 11925 }, chance = { 47, 25 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 22305, 11920, 11921, 11922, 11926, 11929, 12527, 12528, 12531, 12532, 12535, 12542, 12546, 12547, 12549, 12550, 12551, 12552, 12555 }, chance = { 100, 28, 26, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
         } },
     },
 })
