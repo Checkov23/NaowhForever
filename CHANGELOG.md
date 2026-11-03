@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## 1.1.59
+
+### Changed
+- Mana Efficiency: healing and damage per mana follow Forever's current spells and talents.
+
+### Fixed
+- PvP Auras: Freezing Trap, Counterspell, Fear and Mortal Strike follow Forever's current spells.
+- Training Planner: the Shaman tree follows the launch changes: Call of Thunder takes Lava Burst's
+  place, and Improved Lightning Shield and Improved Ghost Wolf moved.
 
 ## 1.1.58
 
