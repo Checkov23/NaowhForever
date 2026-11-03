@@ -80,18 +80,16 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
     end } },
 }
 local env = setmetatable({ _G = { NaowhForever = ns }, CopyTable = Copy }, { __index = _G })
-for _, path in ipairs({ "Core/Profiles/Positions.lua", "Core/Profiles/Setups.lua", "Core/Profiles/SetupsCard.lua" }) do
+for _, path in ipairs({ "Core/Profiles/Setups.lua", "Core/Profiles/SetupsCard.lua" }) do
     local chunk = assert(loadfile(path))
     setfenv(chunk, env)
     chunk()
 end
 
 local row = card and card.rows[1]
-check("the card sits on the Profiles page with the Setup dropdown first", card.page == "Profiles/Setups" and #card.rows == 4
+check("the card sits on the Profiles page with the Setup dropdown first", card.page == "Profiles/Setups" and #card.rows == 3
     and row.label == "Setup" and row.always == true and row.choice[2] == PRESETS.order)
-local keep, tailor, before = card.rows[2], card.rows[3], card.rows[4]
-check("then Keep My Positions, a switch saved for the account and on to start", keep.label == "Keep My Positions"
-    and keep.toggle == true and keep.key == nil and keep.get() == true)
+local tailor, before = card.rows[2], card.rows[3]
 check("then Onboarding, which opens the onboarding", tailor.label == "Onboarding" and tailor.buttonText == "Start")
 local opened = false
 ns.ShowSetup = function() opened = true end
@@ -118,7 +116,6 @@ root.qol.questRewards, root.qol.bagSpaceIgnore = rewards, ignore
 root.auraBuffs = root.auraBuffs or {}
 root.auraBuffs.campHiddenBonuses = { [1] = true }
 root.unlockMode = { layouts = { Raid = {} }, hidden = { Loot = true } }
-keep.set(false)
 row.set("minimalist")
 check("picking one asks first, naming it", asked and asked:find("Minimalist", 1, true)
     and asked:find("Cannot be undone", 1, true) and asked:find("saved picks stay", 1, true))
@@ -134,14 +131,6 @@ check("what you answered about EllesmereUI's windows kept", root.qol.characterPa
     and root.qol.characterPanelTookOver == true)
 check("the character panel told it changed, the inspect panel not", #sets == 1 and sets[1] == "characterPanel=false")
 check("a reload offered", reload and reload:find("Minimalist", 1, true))
-asked = nil
-keep.set(true)
-root.qol.lootFeedPos, root.unlockMode.hidden = { point = "TOP", x = 1, y = 2 }, { Loot = true }
-row.set("minimalist")
-check("with Keep My Positions on, the ask says your positions stay", asked and asked:find("Your positions", 1, true))
-check("and your frames and HUD Editor state stay where they were", root.qol.lootFeedPos.point == "TOP"
-    and root.unlockMode.hidden.Loot == true and root.unlockMode.layouts.Raid ~= nil)
-keep.set(false)
 check("the dropdown and the card now read Minimalist", row.get() == "minimalist" and card.summary() == "Minimalist")
 check("and the hover leaves out the one you have", not row.tip():find("Minimalist", 1, true)
     and row.tip():find("Recommended turns on: Loot Feed, Character Panel", 1, true) == nil

@@ -855,7 +855,6 @@ end
 
 function ns.ImportProfile(payload, wanted, name, overwrite)
     local parts = payload.parts
-    local kept = wanted.keepPositions and ns.KeepPositions(ns.SettingsRoot())
     local root
     name, root = ImportTarget(payload, name, overwrite)
     if wanted.settings and type(parts.settings) == "table" then ImportSettings(root, parts.settings, wanted) end
@@ -871,7 +870,6 @@ function ns.ImportProfile(payload, wanted, name, overwrite)
     end
     if wanted.builds and ns.Training and type(parts.builds) == "table" then added.builds = AddBuilds(parts.builds) end
     if wanted.look and type(parts.look) == "table" then ImportLook(parts.look) end
-    if kept then ns.PutPositionsBack(root, kept) end
 
     ns.SwitchProfile(name)
     if ns.RefreshRuntime then ns.RefreshRuntime() end

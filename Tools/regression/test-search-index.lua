@@ -253,7 +253,7 @@ do
             "'" .. query .. "' is found on the Profiles page, in the Setups card")
     end
     local card, n = Hit("setups")
-    Check(card.isCard and card.trail == "" and n == 5, "the card itself is a target, named by its page, then its four settings")
+    Check(card.isCard and card.trail == "" and n == 4, "the card itself is a target, named by its page, then its three settings")
     local row = Hit("skin")
     Check(row.label == "Onboarding" and not row.isCard and row.trail == "Setups", "a row names its card")
     local f = UI.Search.Build(carried, "skin")

@@ -30,8 +30,6 @@ local HANDOFFS = {
 }
 local ACTING_LINE = ns.L("It also turns on settings that act for you: %s; they stay off unless you tick Also Import.")
 local ACTING_HELP = ns.L("Turns those settings on in the new profile")
-local TEXT_KEEP_POSITIONS = ns.L("Keep My Positions")
-local KEEP_POSITIONS_HELP = ns.L("Your frames stay where you put them")
 local TEXT_EXPORT_TITLE, TEXT_IMPORT_TITLE = ns.L("Export Profile"), ns.L("Import")
 local TEXT_PROFILE = ns.L("Profile: %s. %s.")
 local TEXT_EXPORTED = ns.L("%d characters. Click the text, then Ctrl+A and Ctrl+C.")
@@ -188,7 +186,6 @@ local function ShowPayload(payload)
     local y = math.min(-(PASTE_Y + PASTE_H + PREVIEW_MIN_ROOM),
         -(PASTE_Y + PASTE_H + PREVIEW_TOP_GAP + import.preview:GetStringHeight() + PREVIEW_GAP))
     local list = ns.ProfileStringParts(payload)
-    list[#list + 1] = { key = "keepPositions", label = TEXT_KEEP_POSITIONS, help = KEEP_POSITIONS_HELP }
     if #acting > 0 then
         list[#list + 1] = { key = "acting", label = TEXT_ALSO_IMPORT, help = ACTING_HELP, off = true }
     end
