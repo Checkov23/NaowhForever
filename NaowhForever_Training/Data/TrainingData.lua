@@ -1,4 +1,4 @@
--- TrainingData.lua: every spell each class learns as it levels, built from game build 1.60.1.70707.
+-- TrainingData.lua: every spell each class learns as it levels, built from game build 1.60.1.70755.
 local ns = _G.NaowhForever
 
 ns.TrainingData = {
