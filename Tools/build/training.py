@@ -23,10 +23,10 @@ rune poisons are not). Their price comes from the trainer window. Pick Lock, Par
 Wield and the armor skills are left out: Wowhead gives them level 1 for every class, which
 the trainers do not.
 
-From Wowhead's talent calculator: each later rank's talent, when its first rank is a talent (the
-talent's first rank, by class and spell name), so the addon can list those ranks once the talent is
-known; such a rank needs nothing else. On Forever some talents are sold by the trainer too (Aimed
-Shot, Holy Shock); then nothing waits on the talent.
+From the build's talent trees (training_builds.py): each later rank's talent, when its first rank
+is a talent (the talent's first rank, by class and spell name), so the addon can list those ranks
+once the talent is known; such a rank needs nothing else. On Forever some talents are sold by the
+trainer too (Aimed Shot, Holy Shock); then nothing waits on the talent.
 
 Wowhead's answers are kept in Tools/data/training_cache.json; delete a class's entry to ask again.
 
@@ -43,14 +43,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402
 import wago  # noqa: E402
-from wowhead import WOWHEAD, fetch, talent_calculator  # noqa: E402
+from wowhead import WOWHEAD, fetch  # noqa: E402
 from journal import ROOT, write  # noqa: E402
+from training_builds import CLASSES, class_trees  # noqa: E402
 
 OUT = ROOT / "NaowhForever_Training" / "Data" / "TrainingData.lua"
 CACHE = paths.DATA / "training_cache.json"
-# The game's class IDs and Wowhead's names for them.
-CLASSES = {1: "warrior", 2: "paladin", 3: "hunter", 4: "rogue", 5: "priest", 7: "shaman", 8: "mage",
-           9: "warlock", 11: "druid"}
 TRAINER, QUEST = 6, 4    # Wowhead's sources
 # What a class quest teaches beside its reward, which Wowhead lists with no source: Taunt and Sunder
 # Armor (Defensive Stance), Intercept (Berserker Stance), Growl and Maul (Bear Form), and Call,
@@ -64,9 +62,10 @@ TRAINER_TAUGHT = {18960, 1297659, 24118, 24119, 24120, 1299332, 724}
 # wago applies a hotfix's new and changed rows, not the ones it removes. The 30 October 2026 hotfix
 # removed Blessing of Light, Greater Blessing of Light, Salvation, Mass Salvation and Revoke (their Spell
 # rows) and Primal Bite's fourth rank (its SkillLineAbility row), and replaced the talent that was Binding
-# Heal's first rank with Holy Binding, which leaves its later ranks out of reach.
+# Heal's first rank with Holy Binding, which leaves its later ranks out of reach. The 3 November 2026
+# hotfix made the Mutilate talent the rank the trainer sold at 40, which it now gives.
 UNTRAINABLE = {19977, 19978, 19979, 25890, 1038, 25895, 1325499, 1238073,
-               1240770, 1240771, 1240772, 1240773, 1240774}
+               1240770, 1240771, 1240772, 1240773, 1240774, 399956}
 KEEP = ("id", "name", "rank", "level", "source", "trainingcost", "reqrace", "skill")
 ROGUE = 4
 POISONS = 40              # the game's Poisons skill line
@@ -106,19 +105,16 @@ def poison_spells(build_id, cache):
 
 
 def talents_by_name(build_id):
-    """Class ID -> spell name -> the spell ID of that talent's first rank, from Wowhead's talent
-    calculator, as the trees are. The game's Talent rows lag behind: they lack Forever's new talents
-    (Lava Burst, Penance, Mutilate) and still have Lightwell, which is no longer a talent."""
+    """Class ID -> spell name -> the spell ID of that talent's first rank, from the build's talent
+    trees. The game's Talent rows lag behind: they lack Forever's new talents (Lava Burst, Penance,
+    Mutilate) and still have Lightwell, which is no longer a talent."""
     names = {r["ID"]: r["Name_lang"] for r in wago.table("SpellName", build_id)}
+    trees, _ = class_trees(build_id)
     out = {}
-    calculator = talent_calculator()
-    for tree_id, talents in calculator["talents"].items():
-        tree = calculator["trees"][tree_id]["description"].lower()
-        class_id = next(c for c, slug in CLASSES.items() if tree.startswith(slug))
-        for talent in talents.values():
-            spell = str(talent["ranks"][0])
-            if names.get(spell):
-                out.setdefault(class_id, {})[names[spell]] = int(spell)
+    for class_id, talents in trees.items():
+        for spell, *_ in talents.values():
+            if names.get(str(spell)):
+                out.setdefault(class_id, {})[names[str(spell)]] = spell
     return out
 
 
