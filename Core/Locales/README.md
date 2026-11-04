@@ -42,7 +42,7 @@ NaowhForever_Locales/        load on demand, one addon for every language
   with a single `LoadAddOn`, and only when the language is not English, so an English client parses
   none of it (EllesmereUI's locales addon works the same way). Every file in the TOC runs, but each
   starts with a `NaowhForever.LOCALE` check and returns at once unless it is the language in use, so
-  only that catalog is built. Each file is about 430 KB of source, and ten of them are compiled
+  only that catalog is built. Each file is about 600 KB of source, and ten of them are compiled
   whenever the player is not on English; that cost is accepted, as EllesmereUI accepts it. They used
   to be one addon per language, which put ten entries in the AddOn list.
 - Korean and Chinese text needs the game's own fonts (`ns.LocaleFont`): no font the addon ships
