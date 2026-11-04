@@ -12,7 +12,10 @@ here before anything else.
   pins marked start are its givers. A quest an item begins has none. A page read is cached and
   not read again: delete its entry, or the file, to read it again.
 
-Usage: python Tools/build/foreverchanges_quests.py [--offline]
+--report FILE writes what the list gained, lost and changed since the last run, in Markdown, for
+the daily watch (.github/workflows/daily-watch.yml).
+
+Usage: python Tools/build/foreverchanges_quests.py [--offline] [--report FILE]
 """
 import json
 import re
@@ -34,6 +37,7 @@ SIDES = {"a": 1, "h": 2}
 # The page's data comes as React Server Component chunks, JSON strings pushed in order.
 PUSH = re.compile(r'self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)')
 ZONES = '"zones":['
+REPORT_ROWS = 50   # quests named per list in the report; the rest are counted
 
 
 def fetch(url):
@@ -58,9 +62,28 @@ def parse_starts(page):
     return [[z["id"], pin["x"], pin["y"], pin["name"]] for z in zones for pin in z["pins"] if pin.get("start")]
 
 
+def report(before, after):
+    """The quests the list gained, lost and changed (level, side, class or category), in Markdown."""
+    sections = (("New", [q for q in after if q not in before], after),
+                ("Gone", [q for q in before if q not in after], before),
+                ("Changed", [q for q in after if q in before and before[q] != after[q]], after))
+    counts = ", ".join(f"{len(ids)} {title.lower()}" for title, ids, _ in sections)
+    lines = ["### Quests", "", f"{SITE}/quests lists {len(after)} quests: {counts}."]
+    for title, ids, quests in sections:
+        if not ids:
+            continue
+        lines += ["", f"**{title}:**", ""]
+        lines += [f"- {quests[q]['name']} ({q}), level {quests[q]['level']}" for q in ids[:REPORT_ROWS]]
+        if len(ids) > REPORT_ROWS:
+            lines.append(f"- and {len(ids) - REPORT_ROWS} more")
+    return "\n".join(lines) + "\n"
+
+
 def main():
     offline = "--offline" in sys.argv
+    report_to = sys.argv[sys.argv.index("--report") + 1] if "--report" in sys.argv else None
     data = load(OUT) or {"quests": {}, "starts": {}}
+    before = data["quests"]
     if not offline:
         rows = json.loads(fetch(f"{SITE}/quests/list.json"))
         data["quests"] = {str(row["i"]): quest_row(row) for row in rows}
@@ -79,6 +102,8 @@ def main():
             print(f"  {n}/{len(todo)}")
         time.sleep(GAP)
     save(OUT, data)
+    if report_to:
+        Path(report_to).write_text(report(before, data["quests"]), encoding="utf-8")
     for line in failed:
         print("FAILED", line, file=sys.stderr)
 

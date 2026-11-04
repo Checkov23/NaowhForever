@@ -309,7 +309,7 @@ are not included. Classic baseline values remain unverified for Forever.
 | Tool | What it does | Why |
 | --- | --- | --- |
 | `completo_quests.py` | Builds `NaowhForever_DiscoveryData/Quests.lua`: every quest of every zone, its chain and where its quest giver stands, from Wowhead Forever's zone and quest pages. Cached in `data/completo_zones.json`, `data/completo_quests.json`, `data/completo_requires.json` and `data/completo_items.json`; `--offline` writes from the caches only. | A zone's quests and what to do first. |
-| `foreverchanges_quests.py` | Builds `data/foreverchanges_quests.json`, which `completo_quests.py` reads: every quest ForeverChanges lists for Forever (`/quests/list.json`, read every run) and its givers' spots on Forever's maps (each quest's page, read once, one a second). `--offline` reads nothing. | Which quests Forever gives, and where their givers stand. |
+| `foreverchanges_quests.py` | Builds `data/foreverchanges_quests.json`, which `completo_quests.py` reads: every quest ForeverChanges lists for Forever (`/quests/list.json`, read every run) and its givers' spots on Forever's maps (each quest's page, read once, one a second). `--offline` reads nothing; `--report FILE` writes the quests the list gained, lost and changed, for the daily watch. | Which quests Forever gives, and where their givers stand. |
 | `elsewhere_quests.py` | Builds `data/completo_elsewhere.json`, which `completo_quests.py` reads: the class, dungeon and battleground quests no zone page lists, from CMaNGOS's quests that Forever's client has, placed from Wowhead's quest pages or, failing those, where the game client puts the giver's spawn (`dev/QuestPositions/`, kept in `data/completo_positions.json`). `--offline` fetches nothing; `--positions` writes the spawns for the dev addon to resolve; `--resolved <file>` reads its answers. | The quests Wowhead files under a class or an instance, on the map too. |
 | `completo_rares.py` | Builds `NaowhForever_DiscoveryData/Rares.lua`: every rare of every zone, where it spawns and its special drops. Cached in `data/completo_rares.json`; `--offline` writes from the caches only. | The rares worth hunting, on the map. |
 
@@ -390,8 +390,11 @@ are not included. Classic baseline values remain unverified for Forever.
 
 - **Every PR** (`checks.yml`, and `pr-title.yml` for the PR rules and title): luacheck and
   pre-commit, the Lua regression tests, the Python tests, PR rules, the title, and a package check.
-- **Daily** (`daily-watch.yml`), four checks, one after another on one branch, each on what
-  the one before changed. Whatever they change goes in **one** pull request, as one commit (we
+- **Daily** (`daily-watch.yml`), its checks one after another on one branch, each on what
+  the one before changed. naowh.gg also starts it, for one check (`checks`), within five minutes
+  of wago.tools listing a newer Forever build (`watch`) or ForeverChanges' quest list changing
+  (`quests`). Data it merges to main is released at once; a release with nothing else in it
+  posts nothing to Discord. Whatever they change goes in **one** pull request, as one commit (we
   squash merge): its title says what is in it (`chore(data): WoW Forever build 1.60.1.70205,
   boss loot and BiS lists`), its description lists the changes, their lines for players under
   `## Changelog` (labelled `no changelog` when there are none; CHANGELOG.md is left to the
@@ -409,20 +412,23 @@ are not included. Classic baseline values remain unverified for Forever.
     `Formula.lua` changes when the constants move enough, with a changelog line (every
     player's score moves), and the report gets a "Naowh Score" section (old against new, the
     fit's quality, its gates). A manual run reports it too; a failed fit only says so.
+  - `quests`: `build/foreverchanges_quests.py --report`. If ForeverChanges' quest list gained,
+    lost or changed a quest, it rebuilds the Quest List with `build/completo_quests.py --offline`.
   - `loot`: `sources/wowsrc.py --check`. If wowsrc's loot pages changed (a boss gained or lost
     items, a new boss or page), it rebuilds the Journal with `build/journal.py --offline`.
   - `drops`: `build/journal.py --refresh-drops`. Every boss's and chest's drops read again from
     Wowhead Forever, so the chances follow today's kill counts. A change only when a chance
-    moved a whole percent, or an item came or went.
+    moved a whole percent, or an item came or went. Only when a run asks for it: it has failed
+    every run since 17 October.
   - `bis`: `build/bis_data.py --check`, the same for wowsrc's BiS lists, then
     `build/bis_data.py --sources-only` for a new pick's source from Wowhead.
 
   `--offline` asks Wowhead nothing: a new item's facts come from the game's own tables, and
   what they can't settle (an old classic item) is listed in the PR for a run on our machines.
 - **Daily** (`badges.yml`): `release/sync_badges.py`.
-- **Wowhead in CI:** only the daily `drops` check and the BiS sources, one page at a time at
-  `wowhead.fetch`'s pace (a second apart, backing off on a 403). GitHub's runners can read it
-  (checked on 11 Oct 2026). Everything else that reads Wowhead stays off CI and runs on our
+- **Wowhead in CI:** only the `drops` check, when asked for, and the BiS sources, one page at a
+  time at `wowhead.fetch`'s pace (a second apart, backing off on a 403). GitHub's runners could
+  read it on 11 Oct 2026; the `drops` check has failed every run since 17 October. Everything else that reads Wowhead stays off CI and runs on our
   machines, by hand: `build/quest_chains.py`,
   `build/bis_spots.py`, `build/enchants.py`, `build/bis_quests.py`, `build/abilities.py`,
   `build/boss_quests.py`, the Completo and town map builders that read Wowhead, and

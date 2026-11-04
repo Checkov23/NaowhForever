@@ -158,7 +158,8 @@ squash() {
 # Straight to main with RELEASE_DEPLOY_KEY (Protect main's bypass), its changelog lines in
 # CHANGELOG.md since there is no pull request for the release to read them from; the open pull
 # request is closed. Held, or main moved in a way it does not rebase onto: the pull request
-# instead. Writes merged=true to GITHUB_OUTPUT when it went in.
+# instead. Writes merged=true to GITHUB_OUTPUT when it went in, and changelog=true when it brought
+# lines for players (the workflow then releases it).
 merge() {
   local branch="$1"
   if [ ! -s "$notes/list" ] || [ -s "$notes/hold.md" ]; then
@@ -192,6 +193,7 @@ merge() {
   commit="$(git rev-parse HEAD)"
   echo "Merged to main: $commit ($title)"
   echo "merged=true" >> "$GITHUB_OUTPUT"
+  if [ -s "$notes/changelog" ]; then echo "changelog=true" >> "$GITHUB_OUTPUT"; fi
   stuck_issue
   local pr
   pr="$(gh pr list --head "$branch" --state open --json url --jq '.[0].url // empty')"

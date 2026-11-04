@@ -204,19 +204,23 @@ jobs:
           # packager adds when Forever is the only game in the TOCs.
           args: ${{ env.TAG != '' && '-p 1721187 -n {package-name}-{project-version}:{project-version}' || '-n {package-name}-{project-version}:{project-version}' }}
 
-      # A quiet day's release, only the day's Daily Word, posts nothing to Discord or the website.
-      - name: Daily Word only
+      # A quiet day's release, only the day's Daily Word, posts nothing to Discord or the website;
+      # nor does a release of the daily watch's data alone. Its lines were all on main before the
+      # release commit, which adds a merged pull request's.
+      - name: Daily Word or data only
         id: kind
         if: env.TAG != ''
         run: |
           lines=$(awk -v heading="## $TAG" '$0 == heading { on = 1; next } /^## / { on = 0 } on' CHANGELOG.md \
             | grep -v -e '^[[:space:]]*$' -e '^### ' || true)
           if [ "$(printf '%s\n' "$lines" | wc -l)" -eq 1 ] && printf '%s' "$lines" | grep -q '^- Daily Word #'; then
-            echo "word_only=true" >> "$GITHUB_OUTPUT"
+            echo "quiet=true" >> "$GITHUB_OUTPUT"
+          elif ! git diff "$TAG^" "$TAG" -- CHANGELOG.md | grep -q '^+- '; then
+            echo "quiet=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Post changelog to Discord
-        if: env.TAG != '' && !contains(env.TAG, '-beta.') && steps.kind.outputs.word_only != 'true'
+        if: env.TAG != '' && !contains(env.TAG, '-beta.') && steps.kind.outputs.quiet != 'true'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}
         run: |
@@ -231,7 +235,7 @@ jobs:
           done < discord.jsonl
 
       - name: Update the website
-        if: env.TAG != '' && !contains(env.TAG, '-beta.') && steps.kind.outputs.word_only != 'true'
+        if: env.TAG != '' && !contains(env.TAG, '-beta.') && steps.kind.outputs.quiet != 'true'
         # Without the token, or if it fails, the site picks the notes up on its next scheduled rebuild.
         continue-on-error: true
         env:

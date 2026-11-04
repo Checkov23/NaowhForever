@@ -20,15 +20,23 @@ name: daily-watch
 # that changes Formula.lua gets its own changelog line: every player's score moves.
 # The loot job: whether wowsrc.com's Forever loot pages list something the Journal was not
 # built from (Tools/data/wowsrc_loot.json): items a boss gained or lost, new bosses and pages.
-# If so, the Journal is rebuilt from them and a pull request says what. The drops job: every
+# If so, the Journal is rebuilt from them and a pull request says what. The quests job: whether
+# ForeverChanges' quest list (Tools/build/foreverchanges_quests.py, with their permission) gained,
+# lost or changed a quest; if so, the Quest List is rebuilt from it and the caches
+# (Tools/build/completo_quests.py --offline), a new quest's giver from its ForeverChanges page.
+# The drops job: every
 # boss's drops read again from Wowhead Forever (Tools/build/journal.py --refresh-drops), so the
 # Journal's chances follow today's kill counts; it adds a change only when a chance moved a
-# whole percent (or an item came or went). The bis job: the same as loot for wowsrc's BiS
+# whole percent (or an item came or went). It runs only when a run asks for it (checks): it has
+# failed every run since 17 October. The bis job: the same as loot for wowsrc's BiS
 # lists and the BiS List's data, then Wowhead for a new pick's source. The loot and bis
 # rebuilds ask Wowhead nothing (--offline): a new item's facts come from the game's own tables,
 # and the drops job's full build settles what those cannot. wowsrc allows crawling, and gave
 # us permission; Wowhead is read one page at a time at fetch's pace (Tools/README.md).
-# The four run one after another on one branch, each on what the one before changed, and
+# A run started by hand, or by naowh.gg, can name the checks it wants (checks). naowh.gg's data
+# watch (lib/forever-data-watch.js there) looks every five minutes and asks for watch when
+# wago.tools lists a newer Forever build, and quests when ForeverChanges' quest list changes.
+# They run one after another on one branch, each on what the one before changed, and
 # whatever they change goes in one pull request, one commit (it is squash merged): a title
 # saying what is in it, a short list, and each check's report folded away in its description
 # (Tools/hooks/daily-pull-request.sh). The checks' lines for players go under "## Changelog" in
@@ -37,8 +45,8 @@ name: daily-watch
 # workflows may not open one. A check that fails leaves out only its own change.
 # The scheduled run goes further: when the change passes the checks a pull request would run
 # (tests, pre-commit), it is pushed straight to main with its changelog lines in CHANGELOG.md,
-# and that night's beta ships it (release.yml). Held for a run on our machines, or failing a
-# check: the pull request, as above.
+# and released at once (release.yml; a release whose lines all came with the data posts nothing
+# to Discord). Held for a run on our machines, or failing a check: the pull request, as above.
 on:
   schedule:
     # New builds and hotfixes come with the US realms' weekly maintenance (Tuesday mornings,
@@ -68,6 +76,10 @@ on:
         description: "Merge to main when the checks pass, as the scheduled run does (untick: a pull request)"
         type: boolean
         default: false
+      checks:
+        description: "The checks to run, by name: watch, quests, loot, drops, bis (empty: all but drops)"
+        required: false
+        type: string
 
 permissions: {}
 
@@ -85,11 +97,14 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
+      # Starts release.yml once the data is on main.
+      actions: write
     env:
       # A scheduled run always opens the pull request; a manual one when asked.
       OPEN_PR: ${{ github.event_name == 'schedule' || inputs.open_pr }}
       # A scheduled run merges what passes its checks; a manual one when asked.
       MERGE: ${{ github.event_name == 'schedule' || inputs.merge }}
+      CHECKS: ${{ inputs.checks || 'watch quests loot bis' }}
       PR: bash Tools/hooks/daily-pull-request.sh
     steps:
       - name: Checkout
@@ -112,6 +127,7 @@ jobs:
 
       - name: Compare with the newest Forever build
         id: watch
+        if: contains(env.CHECKS, 'watch')
         continue-on-error: true
         env:
           BUILD: ${{ inputs.build }}
@@ -169,9 +185,41 @@ jobs:
           $PR add watch "${TITLE#chore(data): }" "$RUNNER_TEMP/watch.md" "$CHANGELOG" \
             Tools/sources/wago.py NaowhForever_DungeonJournal/Data NaowhForever_BiS/NaowhScore/Data Shared/Data
 
+      # The list is read every run; a quest page only for a quest new to it, a second apart.
+      - name: Compare ForeverChanges' quests with ours
+        id: quests
+        if: ${{ !cancelled() && contains(env.CHECKS, 'quests') }}
+        continue-on-error: true
+        run: |
+          git reset -q --hard HEAD && git clean -fdq -- Tools NaowhForever_DungeonJournal NaowhForever_BiS Shared
+          python Tools/build/foreverchanges_quests.py --report "$RUNNER_TEMP/quests.md" > "$RUNNER_TEMP/quests-build.txt" 2>&1
+          python Tools/build/completo_quests.py --offline >> "$RUNNER_TEMP/quests-build.txt" 2>&1
+          cat "$RUNNER_TEMP/quests.md" >> "$GITHUB_STEP_SUMMARY"
+          if git diff --quiet -- NaowhForever_DiscoveryData; then
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+            echo "The Quest List is unchanged." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+          {
+            echo
+            echo "### What the build said"
+            echo
+            echo '```'
+            tail -n 40 "$RUNNER_TEMP/quests-build.txt"
+            echo '```'
+          } >> "$RUNNER_TEMP/quests.md"
+
+      - name: Add the quests
+        if: steps.quests.outcome == 'success' && steps.quests.outputs.changes == 'true'
+        run: |
+          $PR add quests "quests" "$RUNNER_TEMP/quests.md" \
+            "Changed: Quest List: quests updated from the latest Forever quest lists." \
+            Tools/data/foreverchanges_quests.json NaowhForever_DiscoveryData
+
       - name: Compare wowsrc.com's loot pages with ours
         id: loot
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && contains(env.CHECKS, 'loot') }}
         continue-on-error: true
         run: |
           git reset -q --hard HEAD && git clean -fdq -- Tools NaowhForever_DungeonJournal NaowhForever_BiS Shared
@@ -201,10 +249,10 @@ jobs:
             Tools/data/wowsrc_loot.json Tools/data/item_names.json Tools/data/journal_cache.json NaowhForever_DungeonJournal/Data Shared/Data
       # Every boss's and chest's drops, read again from Wowhead Forever: one page each, at
       # fetch's pace (a 403 waits and tries again). Added only when the Journal's data moved:
-      # a count that changes no whole percent is not worth a pull request.
+      # a count that changes no whole percent is not worth a pull request. Only when asked (checks).
       - name: Refresh the drop chances from Wowhead
         id: drops
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && contains(env.CHECKS, 'drops') }}
         continue-on-error: true
         timeout-minutes: 40
         run: |
@@ -245,7 +293,7 @@ jobs:
 
       - name: Compare wowsrc.com's BiS lists with ours
         id: bis
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && contains(env.CHECKS, 'bis') }}
         continue-on-error: true
         run: |
           git reset -q --hard HEAD && git clean -fdq -- Tools NaowhForever_DungeonJournal NaowhForever_BiS Shared
@@ -347,6 +395,14 @@ jobs:
           git reset -q --hard HEAD
           $PR merge daily-data
 
+      # Players get the data now, not with the next day's release.
+      - name: Release
+        if: ${{ !cancelled() && steps.merge.outputs.changelog == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run release.yml --ref main -f bump=patch
+
       - name: Open the pull request
         if: ${{ !cancelled() && env.OPEN_PR == 'true' && steps.merge.outcome != 'success' }}
         env:
@@ -358,12 +414,13 @@ jobs:
 
       # The run says a check failed, after the others' changes went in.
       - name: Fail if a check failed
-        if: ${{ !cancelled() && (steps.watch.outcome == 'failure' || steps.loot.outcome == 'failure' || steps.drops.outcome == 'failure' || steps.bis.outcome == 'failure') }}
+        if: ${{ !cancelled() && (steps.watch.outcome == 'failure' || steps.quests.outcome == 'failure' || steps.loot.outcome == 'failure' || steps.drops.outcome == 'failure' || steps.bis.outcome == 'failure') }}
         env:
           WATCH: ${{ steps.watch.outcome }}
+          QUESTS: ${{ steps.quests.outcome }}
           LOOT: ${{ steps.loot.outcome }}
           DROPS: ${{ steps.drops.outcome }}
           BIS: ${{ steps.bis.outcome }}
         run: |
-          echo "::error::A check failed (watch: $WATCH, loot: $LOOT, drops: $DROPS, bis: $BIS); the others' changes are in the pull request."
+          echo "::error::A check failed (watch: $WATCH, quests: $QUESTS, loot: $LOOT, drops: $DROPS, bis: $BIS); the others' changes are in the pull request."
           exit 1

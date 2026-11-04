@@ -115,5 +115,26 @@ class Write(unittest.TestCase):
         self.assertIn('[8] = { "Kept", 2, 1, 1, 0, 0, nil, nil, nil, nil }', self.write(zones, {}, None))
 
 
+class Report(unittest.TestCase):
+    def quest(self, name, level):
+        return {"name": name, "level": level, "reqlevel": 1, "side": 3, "reqclass": 0, "category": ["zone", 12]}
+
+    def test_new_gone_and_changed_quests(self):
+        before = {"1": self.quest("Kept", 5), "2": self.quest("Dropped", 8), "3": self.quest("Moved", 10)}
+        after = {"1": self.quest("Kept", 5), "3": self.quest("Moved", 12), "4": self.quest("Arrived", 20)}
+        self.assertEqual(foreverchanges_quests.report(before, after).splitlines(), [
+            "### Quests", "",
+            "https://foreverchanges.pro/quests lists 3 quests: 1 new, 1 gone, 1 changed.",
+            "", "**New:**", "", "- Arrived (4), level 20",
+            "", "**Gone:**", "", "- Dropped (2), level 8",
+            "", "**Changed:**", "", "- Moved (3), level 12"])
+
+    def test_long_lists_are_counted(self):
+        after = {str(i): self.quest(f"Quest {i}", 1) for i in range(foreverchanges_quests.REPORT_ROWS + 3)}
+        lines = foreverchanges_quests.report({}, after).splitlines()
+        self.assertEqual(lines[-1], "- and 3 more")
+        self.assertEqual(sum(line.startswith("- Quest") for line in lines), foreverchanges_quests.REPORT_ROWS)
+
+
 if __name__ == "__main__":
     unittest.main()
