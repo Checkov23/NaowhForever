@@ -248,7 +248,7 @@ function HANDLERS.QUEST_PROGRESS()
 end
 
 function HANDLERS.QUEST_COMPLETE()
-    if not On("questTurnIn") then return end
+    if not On("questTurnIn") or (GetQuestMoneyToGet() or 0) > 0 then return end
     local choices = GetNumQuestChoices()
     local pick = choices > 1 and PickedChoice()
     if choices <= 1 or pick then GetQuestReward(pick or choices) end

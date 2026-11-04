@@ -133,6 +133,7 @@ local env = setmetatable({
     GetQuestLogItemLink = NOTHING,
     GetTitleText = NOTHING,
     GetQuestReward = function(i) rewarded[#rewarded + 1] = i end,
+    GetQuestMoneyToGet = function() return 0 end,
     CreateColor = function() return Frame() end,
     UIParent = Frame(),
 }, { __index = _G })
