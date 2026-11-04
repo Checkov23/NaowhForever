@@ -1237,6 +1237,9 @@ NaowhForever_QoL/
 - "Objective Complete." (`ERR_QUEST_UNKNOWN_COMPLETE`) is left out: it does not say which objective.
 - Raids are left alone: party chat there reaches only your subgroup.
 - Nothing is said while `C_ChatInfo.InChatMessagingLockdown()` is true.
+- The type and the line are checked with `issecretvalue` before anything reads them: `GetGameMessageInfo`
+  and `SendChatMessage` refuse a secret from addon code. The API docs do not mark the event secret, but the
+  Journal's quest sharing guards the same event.
 
 ### Invite Buttons
 - The list is in `ns.PROFILE_OWN`: a shared profile never carries your friends' BattleTags.

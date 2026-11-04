@@ -1,8 +1,9 @@
 -- Run with Lua 5.1 from the repository root: Announce Quest Progress.
 -- Off it listens to nothing; on, the game's own quest objective messages are said in party chat, or
 -- instance chat in an instance group, word for word. Other info messages, "Objective Complete.", a
--- raid, no group and locked chat say nothing.
+-- raid, no group and locked chat say nothing, and a secret type or line is never read.
 local NOTHING = function() end
+local SECRET = {}
 local frames = {}
 local grouped, raid, instance, locked = false, false, false, false
 local sent = {}
@@ -46,10 +47,17 @@ local env = setmetatable({
         return grouped
     end,
     IsInRaid = function() return raid end,
-    GetGameMessageInfo = function(i) return TYPES[i] end,
+    issecretvalue = function(v) return v == SECRET end,
+    GetGameMessageInfo = function(i)
+        assert(i ~= SECRET, "a secret type reached GetGameMessageInfo")
+        return TYPES[i]
+    end,
     C_ChatInfo = {
         InChatMessagingLockdown = function() return locked end,
-        SendChatMessage = function(text, channel) sent[#sent + 1] = { text = text, channel = channel } end,
+        SendChatMessage = function(text, channel)
+            assert(text ~= SECRET, "a secret line reached SendChatMessage")
+            sent[#sent + 1] = { text = text, channel = channel }
+        end,
     },
     hooksecurefunc = function(t, name, fn)
         if t == S then setHooks[#setHooks + 1] = fn elseif name == "Apply" then applyHooks[#applyHooks + 1] = fn end
@@ -137,6 +145,12 @@ Case("chat locked: nothing said", function()
     Say(KILL, "Mottled Boar slain: 10/10")
     assert(#sent == 0)
     locked = false
+end)
+
+Case("a secret type or line: never read, nothing said", function()
+    Say(SECRET, "Mottled Boar slain: 10/10")
+    Say(KILL, SECRET)
+    assert(#sent == 0)
 end)
 
 Case("switched off: events dropped", function()

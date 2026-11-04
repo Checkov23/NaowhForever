@@ -19,6 +19,7 @@ local function On()
 end
 
 local function OnInfoMessage(_, _, messageType, message)
+    if issecretvalue(messageType) or issecretvalue(message) then return end
     if not PROGRESS[GetGameMessageInfo(messageType)] then return end
     if not IsInGroup() or IsInRaid() or C_ChatInfo.InChatMessagingLockdown() then return end
     C_ChatInfo.SendChatMessage(message, Parts.PartyChat())
