@@ -129,7 +129,7 @@ NaowhForever_QoL/
     TransportTimes.lua  saved per-realm server-clock sightings and ride timings (ns.TransportTimes)
     TransportRide.lua   times a ship as the player rides past one of its trigger points (ns.TransportRide)
     TransportShare.lua  ride timings sent to and kept from your group and guild
-    Transport.lua       Boat and Zeppelin Timers: its minimap pins, their tooltips, the world map's dock times and Travel settings
+    Transport.lua       Boat and Zeppelin Timers: its minimap pins, their tooltips, the world map's dock times, the Zone Timer and Travel settings
     AimTrainer.lua      the Aim Trainer (/nfaim, ns.AimRules, ns.AimPlay, ns.AimOffer)
     AimBoard.lua        the Aim Trainer's leaderboard (ns.AimBoard)
     QuizData.lua        the quiz questions (ns.QUIZ_QUESTIONS)
@@ -999,6 +999,22 @@ NaowhForever_QoL/
   answered after a random wait of up to `ANSWER_SPREAD` (3 s), leaving out each ship someone else
   answered with as fresh a timing in the meantime, and the guild at most once every
   `GUILD_ANSWER_GAP` (30 s), so a big guild does not all answer at once.
+- The Zone Timer (`transportZone`) lists every stop of your side in the zone you are in, each with
+  the same countdown and colors as the world map's tooltip. It is off by default: an always-shown
+  timer window was replaced by the minimap pins, so the list on screen is for players who want it.
+- Orgrimmar, Thunder Bluff, Darnassus and Undercity have no stop of their own, so they list the
+  zone their docks are in (`CITY_ZONES`): Durotar, Mulgore, Teldrassil and Tirisfal Glades.
+- A stop the three-stop Southshore boat calls at names every place it sails on to, split by ` / `.
+- Its stops are listed on the zone events the pins already use. Its times are redrawn every
+  `UPDATE_EVERY` (1 s) by its own OnUpdate, which runs only while it is shown: in a zone with a
+  stop, or in Unlock Mode, where a zone without one shows a sample line so it can be placed.
+- The redraw only ever widens the card: the digits are not all one width, and resizing it each
+  second would twitch it and queue an Unlock Mode size update every time. A zone change or a Look
+  change fits it again.
+- A profile switch reapplies one frame later (`ns.QueueReapply`), so a redraw that lands in that
+  frame with the timers off in the new profile draws nothing.
+- It is built the first time the Zone Timer is on, so its mover is there when Unlock Mode opens.
+  Its default place, `transportZonePos`, is where the old timer window sat.
 
 ### Mail
 - Quick Attach puts in one stack at a time, from a scan made at the click: each is checked in its bag slot and on the cursor before it goes in, and the next goes only once the last has landed (MAIL_SEND_INFO_UPDATE).

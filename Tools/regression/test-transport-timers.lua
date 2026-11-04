@@ -2,8 +2,9 @@
 local checks = 0
 local function Check(ok, why) assert(ok, why); checks = checks + 1 end
 local now = 100
-local ns = { Shared = { Parts = {}, Settings = {}, Places = dofile("Tools/regression/shared_places.lua") }, THEME = { accent = { r = 0, g = 0.5, b = 1 } }, UI = {},
-    QoLConstants = { PERCENT = 100, SECONDS_PER_MINUTE = 60, SECONDS_PER_DAY = 86400,
+local ns = { Shared = { Parts = {}, Settings = {}, Places = dofile("Tools/regression/shared_places.lua"),
+    Style = dofile("Tools/regression/shared_style.lua") }, THEME = { accent = { r = 0, g = 0.5, b = 1 } }, UI = {},
+    QoLConstants = { PERCENT = 100, SECONDS_PER_MINUTE = 60, SECONDS_PER_DAY = 86400, ROUND = 0.5,
         HINT_RGB = { r = 0.3, g = 0.71, b = 0.96 }, WHITE_RGB = { r = 1, g = 1, b = 1 } } }
 _G.NaowhForever = ns
 ns.L = function(text) return text end
@@ -207,12 +208,21 @@ local function Widget(kind)
     function w:GetWidth() return 140 end
     function w:GetHeight() return 140 end
     function w:CreateTexture() return Widget("Texture") end
+    function w:SetShown(shown) self.shown = shown == true end
+    function w:SetMovable() end
+    function w:SetClampedToScreen() end
+    function w:SetJustifyH() end
+    function w:SetTextColor() end
+    function w:SetText(text) self.text = text end
+    function w:GetStringWidth() return #self.text end
+    function w:GetStringHeight() return 12 end
     widgets[#widgets + 1] = w
     return w
 end
 _G.wipe = function(t) for k in pairs(t) do t[k] = nil end return t end
 _G.CreateFrame = function(kind) made = made + 1; return Widget(kind) end
 _G.Minimap = Widget("Minimap")
+_G.UIParent = Widget("UIParent")
 widgets = {}
 local tip = { lines = {} }
 _G.GameTooltip = {
@@ -266,6 +276,17 @@ _G.hooksecurefunc = function(target, key, fn)
     target[key] = function(...) original(...); fn(...) end
 end
 ns.Apply = function() end
+ns.ShowUnlockMode, ns.HideUnlockMode = function() end, function() end
+ns.Font = function() return Widget("FontString") end
+local fonts, zoneTimers = {}, {}
+ns.Shared.Parts.HudBackdrop = function() return { SetMode = function(_, mode) return mode end } end
+ns.Shared.Parts.HudFont = function(fs, font, size, outline, mode) fonts[fs] = { font, size, outline, mode } end
+ns.UI.AttachMover = function(frame, label, save, page, feature)
+    local mover = Widget("Mover")
+    mover.label, mover.save, mover.page, mover.feature, mover.shown = label, save, page, feature, false
+    zoneTimers[#zoneTimers + 1] = frame
+    return mover
+end
 dofile("Shared/UI/MinimapPins.lua")
 local layers = 0
 local MinimapLayer = ns.Shared.Parts.MinimapLayer
@@ -276,7 +297,10 @@ local card
 ns.Shared.Settings.Page = function()
     return { Card = function(_, spec) card = spec end }
 end
-local settings = { enabled = true, transportTimers = false }
+ns.Shared.Settings.Look = function(prefix, opts) return { prefix = prefix, needs = opts.needs } end
+local ZONE_POS = { point = "TOP", relPoint = "TOP", x = 274, y = -77 }
+local settings = { enabled = true, transportTimers = false, transportZoneFont = "", transportZoneFontSize = 12,
+    transportZoneOutline = "", transportZoneBackground = "card", transportZonePos = ZONE_POS }
 ns.QoLSettings = {
     Get = function(key) return settings[key] end,
     OnChange = function(fn) listeners[#listeners + 1] = fn end,
@@ -289,8 +313,10 @@ dofile("NaowhForever_QoL/Travel/TransportRide.lua")
 dofile("NaowhForever_QoL/Travel/Transport.lua")
 Check(made == 0 and mapReads == 0 and layers == 0 and #tickers == 0,
     "default off builds no frames, reads no maps and watches no rides")
-Check(card.switch == "transportTimers" and #card.rows == 1 and card.rows[1].key == "transportShare",
-    "the settings card is the switch and its sharing toggle")
+Check(card.switch == "transportTimers" and #card.rows == 3 and card.rows[1].key == "transportShare"
+    and card.rows[2].key == "transportZone" and card.rows[3].prefix == "transportZone"
+    and card.rows[3].needs == "transportZone",
+    "the settings card is the switch, its sharing toggle, the Zone Timer and the Zone Timer's look")
 ns.QoLSettings.Set("unrelated", true)
 Check(made == 0, "an unrelated setting builds nothing")
 
@@ -459,4 +485,98 @@ Check(account.transportRides.Realm[SHIP].at == timedAt, "the same ride is not ti
 playerMap = 1429
 Event("ZONE_CHANGED_NEW_AREA")
 Check(tickers[#tickers].cancelled, "leaving the docks' zones stops the ride watch")
+
+-- The Zone Timer: your side's stops in the zone you are in; a capital lists the zone its docks are in.
+local function Lines(text)
+    local out = {}
+    for line in (text .. "\n"):gmatch("(.-)\n") do out[#out + 1] = line end
+    return out
+end
+local function ShipTime(seconds, kind)
+    local rounded = math.ceil(seconds)
+    return (kind == "arrival" and "Arrives in %d:%02d" or "Departs in %d:%02d"):format(math.floor(rounded / 60),
+        rounded % 60)
+end
+local UNTIMED = "|cff4db5f5Not timed yet|r"
+Check(#zoneTimers == 0, "the Zone Timer is not built while it is off")
+playerMap = 1454
+ns.QoLSettings.Set("transportZone", true)
+local zone = zoneTimers[1]
+Check(#zoneTimers == 1 and zone.mover.label == "Boat and Zeppelin Timers" and zone.mover.page == "QoL/Travel"
+    and zone.mover.feature == "QoL/Travel:transportTimers", "turning it on builds it, with its own Unlock Mode mover")
+Check(zone.point.relative == UIParent and zone.point.x == ZONE_POS.x and zone.point.y == ZONE_POS.y,
+    "it sits at its saved place")
+Check(fonts[zone.names][2] == 12 and fonts[zone.times][3] == "" and fonts[zone.times][4] == "card", "drawn in its Look")
+Check(zone.shown and zone.names.text == "Zeppelin to Grom'gol\nZeppelin to Undercity" and #Pins() == 0,
+    "in Orgrimmar it lists Durotar's two zeppelins, with no minimap pins: " .. tostring(zone.names.text))
+local seconds, kind = Times.Dock(SHIP, 1, now)
+local shown = Lines(zone.times.text)
+Check(#shown == 2 and shown[1] == UNTIMED, "a ship nobody has timed says so: " .. shown[1])
+Check(shown[2]:find(ShipTime(seconds, kind), 1, true) and shown[2]:find("^|cff%x%x%x%x%x%x"),
+    "a timed ship counts down in its color: " .. shown[2])
+Check(not zone.mover.shown, "no mover outside Unlock Mode")
+local drawn = zone.times.text
+now = now + 5
+zone.scripts.OnUpdate(zone, 0.5)
+Check(zone.times.text == drawn, "it redraws once a second, not every frame")
+zone.scripts.OnUpdate(zone, 0.5)
+seconds, kind = Times.Dock(SHIP, 1, now)
+Check(Lines(zone.times.text)[2]:find(ShipTime(seconds, kind), 1, true), "a second on, the countdown has moved")
+function zone:GetWidth() return self.size end
+zone.size = 1000
+zone.scripts.OnUpdate(zone, 1)
+Check(zone.size == 1000, "a tick never narrows it, so it does not twitch as the digits change")
+Event("ZONE_CHANGED_NEW_AREA")
+Check(zone.size < 1000, "a zone change fits it again")
+drawn = zone.times.text
+settings.transportTimers = false
+now = now + 5
+zone.scripts.OnUpdate(zone, 1)
+Check(zone.times.text == drawn, "in the frame before a profile switch reapplies, a tick with the timers off draws nothing")
+settings.transportTimers = true
+playerMap = 1458
+Event("ZONE_CHANGED_NEW_AREA")
+Check(zone.names.text == "Zeppelin to Grom'gol\nZeppelin to Orgrimmar", "in Undercity, Tirisfal Glades' zeppelins")
+playerMap = 1456
+Event("ZONE_CHANGED_NEW_AREA")
+Check(zone.names.text == "Zeppelin to Zephras Isle" and zone.times.text == UNTIMED, "in Thunder Bluff, Mulgore's")
+playerMap = 1411
+Event("ZONE_CHANGED_NEW_AREA")
+Check(zone.shown and zone.names.text == "Zeppelin to Grom'gol\nZeppelin to Undercity", "in Durotar itself, its own")
+faction, playerMap = "Alliance", 1454
+Event("ZONE_CHANGED_NEW_AREA")
+Check(not zone.shown, "the other side's ships are not listed")
+playerMap = 1437
+Event("ZONE_CHANGED_NEW_AREA")
+Check(zone.names.text == "Boat to Southshore / Boat to Auberdine\nBoat to Theramore",
+    "a boat that sails on names every place it goes: " .. zone.names.text)
+faction, playerMap = "Horde", 1429
+Event("ZONE_CHANGED_NEW_AREA")
+Check(not zone.shown, "hidden in a zone without a stop")
+
+ns.ShowUnlockMode()
+Check(zone.shown and zone.mover.shown and zone.names.text == "Boat to Booty Bay"
+    and zone.times.text:find("Departs in 0:42", 1, true), "Unlock Mode shows a sample line where there is no stop")
+zone.mover.save({ point = "CENTER", relPoint = "CENTER", x = 10, y = 20 })
+Check(settings.transportZonePos.x == 10, "the mover saves its place")
+ns.HideUnlockMode()
+Check(not zone.shown, "and it goes when Unlock Mode closes")
+ns.QoLSettings.Set("transportZoneFontSize", 16)
+Check(fonts[zone.names][2] == 16 and fonts[zone.times][2] == 16 and zone.point.x == 10,
+    "a Look change redraws it at its saved place")
+
+playerMap = 1454
+Event("ZONE_CHANGED_NEW_AREA")
+ns.QoLSettings.Set("transportZone", false)
+Check(not zone.shown, "off hides it")
+ns.QoLSettings.Set("transportZone", true)
+Check(zone.shown and #zoneTimers == 1, "on again shows the same one")
+ns.ShowUnlockMode()
+Check(zone.shown and zone.mover.shown, "in Unlock Mode at a dock, the real list with its mover")
+ns.QoLSettings.Set("transportTimers", false)
+Check(not zone.shown and not zone.mover.shown, "turning the timers off hides it and its mover, so Unlock Mode drops it")
+ns.HideUnlockMode()
+ns.ShowUnlockMode()
+Check(not zone.shown, "and Unlock Mode does not show it while they are off")
+ns.HideUnlockMode()
 print("transport timers: " .. checks .. " checks passed")

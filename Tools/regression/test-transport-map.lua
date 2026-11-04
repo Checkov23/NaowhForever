@@ -124,6 +124,7 @@ _G.Enum = { UIMapType = { Continent = 2 } }
 _G.CreateVector2D = function(x, y) return { x = x, y = y, GetXY = function(v) return v.x, v.y end } end
 local card
 ns.Shared.Settings.Page = function() return { Card = function(_, spec) card = spec end } end
+ns.Shared.Settings.Look = function() return {} end
 ns.Shared.Parts.MinimapLayer = function() return { Set = function() end } end
 ns.TownTravelIcon = function() end
 dofile("NaowhForever_QoL/Travel/TransportRide.lua")
