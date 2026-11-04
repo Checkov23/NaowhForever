@@ -199,7 +199,7 @@ local function SpellClick(self, button)
 end
 
 local function PriceText(entry)
-    local price = Training.Price(entry)
+    local price = Training.Price(entry, Training.Prices())
     if price > 0 then return Training.Coins(price) end
     if entry.quest then return ns.Color("muted", TEXT_QUEST) end
     return ns.Color("muted", TEXT_AT_TRAINER)

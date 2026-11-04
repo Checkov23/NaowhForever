@@ -5,6 +5,7 @@ local Training = ns.Training
 local Ignored = Training.Ignored
 local ClassSpells = Training.ClassSpells
 local Price = Training.Price
+local Prices = Training.Prices
 local Changed = Training.Changed
 
 local SOON = Training.SOON
@@ -32,8 +33,10 @@ end
 local function Known(mine, after)
     local known = {}
     for i = #mine, 1, -1 do
-        local spell = mine[i][SPELL]
-        known[spell] = C_SpellBook.IsSpellKnown(spell) or known[after[spell]] or false
+        local entry = mine[i]
+        local spell = entry[SPELL]
+        known[spell] = C_SpellBook.IsSpellKnown(spell) or known[after[spell]]
+            or entry.replacedBy and C_SpellBook.IsSpellKnown(entry.replacedBy) or false
     end
     return known
 end
@@ -102,8 +105,8 @@ function Training.Weapons()
 end
 
 function Training.Total(entries)
-    local total = 0
-    for _, entry in ipairs(entries) do total = total + Price(entry) end
+    local prices, total = Prices(), 0
+    for _, entry in ipairs(entries) do total = total + Price(entry, prices) end
     return total
 end
 

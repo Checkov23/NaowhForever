@@ -783,7 +783,9 @@ NaowhForever_QoL/
 - Paging and slot events arrive before the buttons pick up their new action, so the glow waits a frame, and a burst of events costs one pass.
 - An uncached spell has no subtext yet; read as rank 0 it would pass for a downrank, so it is skipped.
 - A lower rank beside the highest one on your bars stays, for downranking (a healer's Rank 1 heal next to the main one); only the highest copy is swapped. Kept spells are still listed, flagged.
-- New abilities stay lit per character in the account store, so a reload does not drop the glow.
+- New abilities stay lit per character in the account store, so a reload does not drop the glow. Forever
+  reports "Unknown" for the player's name early in loading; until the name is known, new abilities are
+  kept in a table that is never saved, since an `Unknown-<realm>` entry would be shared by every character.
 - The popup never opens in combat (rank swaps cannot happen there); it waits for combat to end and keeps the list it had.
 - Away from a trainer (a tome, a quest reward) the popup opens `SHOW_DELAY` (2 s) after the last new ability, instead of waiting for TRAINER_CLOSED.
 - Casts and bar changes are listened to only while a new ability is waiting to be used or still lit.

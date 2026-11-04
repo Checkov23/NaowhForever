@@ -12,9 +12,16 @@ takes it away (Frost Blast, 30 October 2026), and what a hotfix took away that t
 still have (UNTRAINABLE).
 
 Wowhead's lists can lag a hotfix, so each spell's rank and level are the build's own (Spell,
-SpellLevels), and a rank before a listed one (SkillLineAbility's SupercedesSpell) that Wowhead lacks
-is added at the game's level, unless it is the talent. An added rank has no price: the trainer
-window gives it.
+SpellLevels: BaseLevel, else SpellLevel, the only level Forever's new spells have), and a rank before
+a listed one (SkillLineAbility's SupercedesSpell) that Wowhead lacks is added at the game's level,
+unless it is the talent. So are the few new spells no listed rank leads to (UNLISTED), and the ranks
+after a talent or an UNLISTED spell, which the lists can lack entirely (Death Mark's, Shank's). Only
+those are followed forward: after any other spell, a later rank Wowhead lacks could be a level 60
+book's, which no trainer sells. An added rank has no price: the trainer window gives it.
+
+A kept rank that a rank Wowhead lists but no trainer sells replaces (the level 60 book ranks) names
+it as replacedBy, so the addon counts the kept rank as learned once the book is read; not when a
+hotfix took that rank away (UNTRAINABLE).
 
 Rogue poisons are not in the rogue's list: they are the game's Poisons skill line
 (SkillLineAbility), each with its level from its own Wowhead page, kept when that page lists
@@ -66,6 +73,11 @@ TRAINER_TAUGHT = {18960, 1297659, 24118, 24119, 24120, 1299332, 724}
 # hotfix made the Mutilate talent the rank the trainer sold at 40, which it now gives.
 UNTRAINABLE = {19977, 19978, 19979, 25890, 1038, 25895, 1325499, 1238073,
                1240770, 1240771, 1240772, 1240773, 1240774, 399956}
+# New class spells Wowhead's class lists lack, which no listed rank or talent leads to: Shank and Poised
+# (rogue), Poised (druid), and Holy Shield's fourth rank, whose ranks the game does not chain by
+# SupercedesSpell. Read from the build's tables as trainer spells without a price; Shank's second rank
+# follows its first.
+UNLISTED = {"rogue": (1329283, 1328825), "druid": (1328829,), "paladin": (1239570,)}
 KEEP = ("id", "name", "rank", "level", "source", "trainingcost", "reqrace", "skill")
 ROGUE = 4
 POISONS = 40              # the game's Poisons skill line
@@ -119,14 +131,28 @@ def talents_by_name(build_id):
 
 
 def game_spells(build_id):
-    """Spell ID -> {name, rank, level, replaces} from the build's tables: level 0 when the game gives
-    none, replaces the rank before it (SkillLineAbility's SupercedesSpell), 0 for none."""
-    levels = {r["SpellID"]: int(r["BaseLevel"] or 0) for r in wago.table("SpellLevels", build_id)}
-    replaces = {r["Spell"]: int(r["SupercedesSpell"]) for r in wago.table("SkillLineAbility", build_id)
-                if int(r["SupercedesSpell"] or 0)}
+    """Spell ID -> {name, rank, level, replaces, after, skill} from the build's tables: level its
+    BaseLevel, else its SpellLevel, 0 when the game gives neither, replaces the rank before it
+    (SkillLineAbility's SupercedesSpell), 0 for none, after the ranks that replace it, and skill its
+    skill line, 0 for none."""
+    levels = {r["SpellID"]: int(r["BaseLevel"] or 0) or int(r["SpellLevel"] or 0)
+              for r in wago.table("SpellLevels", build_id)}
+    abilities = wago.table("SkillLineAbility", build_id)
+    replaces = {r["Spell"]: int(r["SupercedesSpell"]) for r in abilities if int(r["SupercedesSpell"] or 0)}
+    after = {}
+    for spell, before in replaces.items():
+        after.setdefault(before, []).append(int(spell))
+    skills = {r["Spell"]: int(r["SkillLine"]) for r in abilities}
     ranks = {r["ID"]: r["NameSubtext_lang"] for r in wago.table("Spell", build_id)}
     return {int(r["ID"]): {"name": r["Name_lang"], "rank": ranks.get(r["ID"], ""), "level": levels.get(r["ID"], 0),
-                           "replaces": replaces.get(r["ID"], 0)} for r in wago.table("SpellName", build_id)}
+                           "replaces": replaces.get(r["ID"], 0), "after": sorted(after.get(int(r["ID"]), [])),
+                           "skill": skills.get(r["ID"], 0)} for r in wago.table("SpellName", build_id)}
+
+
+def game_row(spell, game):
+    """A spell Wowhead does not list, as a row like its list's, from the build's tables."""
+    return {"id": spell, "name": game[spell]["name"], "rank": game[spell]["rank"], "level": game[spell]["level"],
+            "source": [TRAINER], "skill": [game[spell]["skill"]], "added": True}
 
 
 def caught_up(rows, talents, game):
@@ -148,6 +174,44 @@ def caught_up(rows, talents, game):
                      source=[TRAINER], added=True)
         added.pop("trainingcost", None)
         out.append(added)
+    return out
+
+
+def later_ranks(rows, starts, game):
+    """The ranks after the start spells (the class's talents and UNLISTED spells), followed on through
+    SupercedesSpell, that rows lack and the game gives a level, added like caught_up's ranks. Each carries
+    the rank it replaces as before, which entries takes as what it needs when there is no rank text to
+    match (Shank's)."""
+    by_id = {row["id"]: row for row in rows}
+    out, todo = [], sorted(starts)
+    while todo:
+        before = todo.pop(0)
+        for spell in game.get(before, {}).get("after", []):
+            if spell in by_id or not game.get(spell, {}).get("level"):
+                continue
+            base = by_id.get(before) or game_row(spell, game)
+            added = dict(base, id=spell, name=game[spell]["name"], rank=game[spell]["rank"],
+                         level=game[spell]["level"], source=[TRAINER], added=True, before=before)
+            added.pop("trainingcost", None)
+            by_id[spell] = added
+            out.append(added)
+            todo.append(spell)
+    return out
+
+
+def replaced_by(spells, rows, game):
+    """Kept spell -> the rank the class's list has that replaces it but no trainer sells, when no kept
+    rank replaces it: the level 60 book ranks (Battle Shout 25289 replaces 11551). A rank a hotfix took
+    away (UNTRAINABLE) is not one. Swipe's fourth rank is also replaced by Swipe (Cat), another spell,
+    but the trainer's fifth rank follows it."""
+    kept = {e["spell"] for e in spells}
+    listed = {row["id"] for row in rows}
+    out = {}
+    for spell in kept:
+        later = game.get(spell, {}).get("after", [])
+        books = [s for s in later if s in listed and s not in UNTRAINABLE]
+        if books and not kept.intersection(later):
+            out[spell] = books[0]
     return out
 
 
@@ -175,7 +239,7 @@ def entries(rows, talents, learnable):
             continue
         kept[-1].update(spell=row["id"], level=level, name=row["name"], rank=row.get("rank") or "",
                         races=races(row["reqrace"]) if row.get("reqrace") else [],
-                        talent=talents.get(row["name"]))
+                        talent=talents.get(row["name"]), before=row.get("before"))
     sold = {e["spell"] for e in kept}
     for e in kept:
         if e["talent"] in sold:
@@ -191,7 +255,7 @@ def entries(rows, talents, learnable):
             ranks.setdefault(key, row["id"])
     for e in kept:
         number = rank_number(e["rank"])
-        e["needs"] = number and ranks.get((e["name"], tuple(e["races"]), number - 1))
+        e["needs"] = number and ranks.get((e["name"], tuple(e["races"]), number - 1)) or e["before"]
         # The talent is the first rank: Wowhead's "Rank 1" of Penance and Mutilate is a hidden half of
         # the spell, which the game never reports as known.
         if e["talent"] and e["needs"] not in sold:
@@ -223,8 +287,12 @@ def build(build_id):
            "ns.TrainingData = {"]
     counts = []
     for class_id, slug in CLASSES.items():
-        rows = caught_up(cache[slug], talents.get(class_id, {}), game) + (poisons if class_id == ROGUE else [])
-        spells = entries(rows, talents.get(class_id, {}), learnable)
+        mine = talents.get(class_id, {})
+        listed = cache[slug] + [game_row(spell, game) for spell in UNLISTED.get(slug, ())]
+        rows = caught_up(listed, mine, game) + (poisons if class_id == ROGUE else [])
+        rows += later_ranks(rows, set(mine.values()) | set(UNLISTED.get(slug, ())), game)
+        spells = entries(rows, mine, learnable)
+        books = replaced_by(spells, rows, game)
         counts.append(f"{slug} {len(spells)}")
         out.append(f"    [{class_id}] = {{")
         for e in spells:
@@ -237,6 +305,8 @@ def build(build_id):
                 flags.append(f"talent = {e['talent']}")
             if e["races"]:
                 flags.append("races = { " + ", ".join(map(str, e["races"])) + " }")
+            if e["spell"] in books:
+                flags.append(f"replacedBy = {books[e['spell']]}")
             extra = (", " + ", ".join(flags)) if flags else ""
             out.append(f"        {{ {e['level']}, {e['spell']}, {e['cost']}{extra} }},")
         out.append("    },")

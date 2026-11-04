@@ -18,6 +18,7 @@ local DATA = { [8] = {
 -- The module's own files are loaded; the scan runs as the trainer window's event starts it.
 local function Fixture(o)
     local name = o.name or "Me"
+    local guid = o.guid ~= false and "Player-1-" .. name or nil
     local refreshes, account = 0, o.account or { trainingIgnored = { [name .. "-Realm"] = o.ignored or {} } }
     if o.skip then
         account.trainingBuilds = { [8] = { { name = "Leveling", spec = "Arcane", points = {}, saved = true, id = 1, skip = o.skip } } }
@@ -47,6 +48,8 @@ local function Fixture(o)
         UnitRace = function() return "Human", "Human", o.race or 1 end,
         UnitLevel = function() return o.level or 1 end,
         UnitName = function() return name end,
+        UnitGUID = function() return guid end,
+        UNKNOWNOBJECT = "Unknown",
         GetRealmName = function() return "Realm" end,
         C_SpellBook = { IsSpellKnown = function(id) return known[id] == true end },
         C_Spell = { GetSpellName = function(id) return NAMES[id] end },
@@ -61,10 +64,11 @@ local function Fixture(o)
         GetTrainerServiceCost = function(i) return o.services[i][3], false end,
     }
     env._G = env
-    Load({ "Core/Features.lua", DIR .. "/Training.lua", DIR .. "/Constants.lua", DIR .. "/Plan.lua",
+    Load({ "Core/Features.lua", "Shared/Shared.lua", DIR .. "/Training.lua", DIR .. "/Constants.lua", DIR .. "/Plan.lua",
         DIR .. "/Builds.lua", DIR .. "/Trainer.lua" }, setmetatable(env, { __index = _G }))
     local Training = ns.Training
     local plan = Training.Plan
+    local boot = frames[#frames]
     Training.Apply()
     local trainerEvents = frames[#frames]
     local function scan() trainerEvents.scripts.OnEvent(trainerEvents, "TRAINER_SHOW") end
@@ -84,7 +88,18 @@ local function Fixture(o)
         Skipped = function(id) return Training.Skipped(id) end,
         Scan = function() scan() end,
         Fire = function(event) trainerEvents.scripts.OnEvent(trainerEvents, event) end,
-        Prices = function() return account.trainingPrices or {} end,
+        Prices = function() return account.trainingCharPrices and account.trainingCharPrices[guid] or {} end,
+        Price = function(id)
+            for _, e in ipairs(DATA[8]) do
+                if e[2] == id then return Training.Price(e, Training.Prices()) end
+            end
+        end,
+        ToSixty = function() return Training.ToSixty(plan()) end,
+        CharKey = function() return Training.CharKey() end,
+        Rename = function(to) name = to end,
+        Login = function() boot.scripts.OnEvent(boot, "PLAYER_LOGIN") end,
+        Ignore = function(id) Training.SetIgnored(id, false, true) end,
+        Follow = function() Training.Follow(8, Training.Builds(8)[1]) end,
         Refreshes = function() return refreshes end,
     }
 end
@@ -204,6 +219,56 @@ Case("buying at a trainer: the new prices and the learned spell refresh the page
     local i = 1
     while timers[i] do timers[i](); i = i + 1 end
     assert(t.Prices()[143] == 95 and t.Refreshes() == 1, "one refresh, " .. t.Refreshes())
+end)
+Case("a rank a book's rank replaces counts as learned once the book is read, and so do the ranks before it", function()
+    local missiles = DATA[8][5]
+    missiles.replacedBy = 5145
+    local unread = Fixture({ level = 20, known = { [145] = true } })
+    local read = Fixture({ level = 20, known = { [145] = true, [5145] = true } })
+    local plans, sixty = { unread.Plan(), read.Plan() }, { unread.ToSixty(), read.ToSixty() }
+    missiles.replacedBy = nil
+    assert(plans[1] == "now: 5143 1953 3561; rank: 5144; later: 10151 25306; talent: 12505", plans[1])
+    assert(plans[2] == "now: 1953 3561; later: 10151 25306; talent: 12505", plans[2])
+    assert(sixty[1] - sixty[2] == 200 + 1500, "left out of the totals")
+end)
+Case("trainer prices are kept per character; the account-wide ones saved before are cleared at login", function()
+    local account = { trainingIgnored = {}, trainingPrices = { [143] = 90, [145] = 560 } }
+    local me = Fixture({ account = account, services = { { "Fireball", 6, 95 } } })
+    assert(me.Price(143) == 100 and me.Price(145) == 600, "the account-wide prices are not read")
+    me.Login()
+    assert(account.trainingPrices == nil, "cleared at login")
+    local sixty = me.ToSixty()
+    me.Scan()
+    assert(me.Price(143) == 95 and me.Price(145) == 600, "its own price, else the data's")
+    assert(me.ToSixty() == sixty - 5, "the totals use it")
+    local alt = Fixture({ account = account, name = "Alt" })
+    assert(alt.Price(143) == 100, "another character does not see it")
+    local early = Fixture({ account = account, guid = false })
+    assert(early.Price(143) == 100, "nor does anyone before the game knows who they are")
+end)
+Case("the character's key waits for its name: Unknown early in loading is never kept", function()
+    local account = { trainingIgnored = {}, trainingFollow = { ["Me-Realm"] = { class = 8, key = 1 } } }
+    local t = Fixture({ name = "Unknown", account = account, skip = { [1953] = true } })
+    assert(t.CharKey() == "Unknown-Realm" and not t.Skipped(1953), "nothing followed yet")
+    t.Rename("Me")
+    assert(t.CharKey() == "Me-Realm" and t.Skipped(1953), "the followed build once the name is known")
+    t.Rename("Unknown")
+    assert(t.CharKey() == "Me-Realm", "kept from then on")
+end)
+Case("while the name is Unknown, skips and the followed build are not saved under an Unknown key, nor read from one", function()
+    local old = { class = 8, key = 1 }
+    local account = { trainingIgnored = {}, trainingFollow = { ["Unknown-Realm"] = old } }
+    local t = Fixture({ name = "Unknown", account = account, skip = { [1953] = true } })
+    assert(not t.Skipped(1953), "an Unknown entry an older version saved is not read")
+    t.Ignore(3561)
+    t.Follow()
+    assert(t.Skipped(3561) and t.Skipped(1953), "kept while the name is Unknown")
+    assert(next(account.trainingIgnored) == nil and account.trainingFollow["Unknown-Realm"] == old, "but nothing saved")
+    t.Rename("Me")
+    assert(not t.Skipped(3561) and not t.Skipped(1953), "nor carried over to the character")
+    t.Ignore(3561)
+    assert(account.trainingIgnored["Me-Realm"][3561] and account.trainingIgnored["Unknown-Realm"] == nil,
+        "saved under the character once the name is known")
 end)
 
 -- What a rank adds, from two ranks' descriptions as the client writes them.

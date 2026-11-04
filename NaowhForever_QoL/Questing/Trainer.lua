@@ -60,6 +60,7 @@ local popup
 local glowing = {}
 local glowQueued = false
 local charKey
+local unnamed = {}
 local events = CreateFrame("Frame")
 local WatchGlow, Render
 
@@ -74,8 +75,12 @@ local function Account(key)
 end
 
 local function NewSpells()
+    if not charKey then
+        local name = UnitName("player")
+        if name == UNKNOWNOBJECT then return unnamed end
+        charKey = name .. "-" .. GetRealmName()
+    end
     local all = Account("trainerNew")
-    charKey = charKey or UnitName("player") .. "-" .. GetRealmName()
     all[charKey] = all[charKey] or {}
     return all[charKey]
 end

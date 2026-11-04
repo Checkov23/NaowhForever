@@ -72,7 +72,7 @@ local gamepad = false
 local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.upper, Lower = string.lower,
     GamepadStandDown = function() return gamepad end,
     MEDIA = dofile("Tools/regression/core_media.lua"),
-    Shared = { Style = dofile("Tools/regression/shared_style.lua") },
+    Shared = { Style = dofile("Tools/regression/shared_style.lua"), CharacterData = NOTHING },
     THEME = setmetatable({}, { __index = function() return WHITE end }),
     UI = UI,
     Color = function(_, text) return tostring(text) end,

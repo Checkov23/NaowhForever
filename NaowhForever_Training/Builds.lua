@@ -5,6 +5,7 @@ local Training = ns.Training
 local C = Training.C
 local Account = Training.Account
 local CharKey = Training.CharKey
+local Characters = Training.Characters
 local Changed = Training.Changed
 
 local BUILD_PREFIX = "!NFB1!"
@@ -370,7 +371,7 @@ local function BuildKey(classID, build)
 end
 
 function Training.Followed()
-    local followed = Account("trainingFollow")[CharKey()]
+    local followed = Characters("trainingFollow")[CharKey()]
     if not followed then return nil end
     for _, build in ipairs(Training.Builds(followed.class)) do
         if BuildKey(followed.class, build) == followed.key then return build, followed.class end
@@ -378,7 +379,7 @@ function Training.Followed()
 end
 
 function Training.Follow(classID, build)
-    Account("trainingFollow")[CharKey()] = build and { class = classID, key = BuildKey(classID, build) } or nil
+    Characters("trainingFollow")[CharKey()] = build and { class = classID, key = BuildKey(classID, build) } or nil
     Training.Apply()
     Changed()
 end
@@ -403,7 +404,7 @@ end
 function Training.LearnFollowed()
     local build, classID = Training.Followed()
     if not build or asking or not ns.TrainingBuilds[classID] then return end
-    local followed = Account("trainingFollow")[CharKey()]
+    local followed = Characters("trainingFollow")[CharKey()]
     local now, before = Spent(classID), followed.spent
     if now then followed.spent = now end
     if now and before and now < before then

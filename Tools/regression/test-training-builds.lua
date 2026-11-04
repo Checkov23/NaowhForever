@@ -85,6 +85,7 @@ local function Fixture(o)
         Apply = function() end,
         CharKey = function() return "Me-Realm" end,
     }
+    env.ns.Training.Characters = env.ns.Training.Account
     env.NaowhForever = env.ns
     Load({ DIR .. "/Constants.lua", DIR .. "/Builds.lua" }, env)
     local training = env.ns.Training

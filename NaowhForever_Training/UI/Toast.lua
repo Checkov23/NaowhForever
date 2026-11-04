@@ -102,9 +102,9 @@ local function Build()
 end
 
 local function Affordable(plan)
-    local afford, budget = 0, GetMoney()
+    local afford, budget, prices = 0, GetMoney(), Training.Prices()
     for _, entry in ipairs(plan.now) do
-        local price = Training.Price(entry)
+        local price = Training.Price(entry, prices)
         if price <= budget then
             afford = afford + 1
             budget = budget - price

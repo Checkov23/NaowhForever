@@ -57,7 +57,7 @@ end
 local function ScanTrainer()
     if IsTradeskillTrainer() then return end
     local byKey = SpellsByService()
-    local prices, changed = Prices(), false
+    local prices, changed = Prices(true), false
     for i = 1, GetNumTrainerServices() do
         local spell = ServiceSpell(byKey, i)
         local cost = spell and GetTrainerServiceCost(i)
@@ -116,6 +116,7 @@ end
 
 local function OnLogin(self)
     self:UnregisterAllEvents()
+    ns.AccountSettings().trainingPrices = nil
     Apply()
 end
 

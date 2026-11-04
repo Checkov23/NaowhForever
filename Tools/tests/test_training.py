@@ -6,10 +6,12 @@ Offline: the rows are made up here. From the repo root:
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402,F401
 import training as tr  # noqa: E402
+import wago  # noqa: E402
 
 SKILL = [613]
 
@@ -91,6 +93,91 @@ class CaughtUp(unittest.TestCase):
         game[20928] = {"name": "Holy Shield", "rank": "Rank 3", "level": 50, "replaces": 1239570}
         rows = tr.caught_up([row(20928, "Holy Shield", "Rank 3", 60, [tr.TRAINER], 2300)], {}, game)
         self.assertEqual([r["id"] for r in rows], [20928])
+
+
+class GameSpells(unittest.TestCase):
+    # Shank as the game's tables have it: no BaseLevel, its level in SpellLevel, no rank text.
+    TABLES = {
+        "SpellLevels": [{"SpellID": "1329283", "BaseLevel": "0", "SpellLevel": "24"},
+                        {"SpellID": "1329549", "BaseLevel": "0", "SpellLevel": "44"},
+                        {"SpellID": "11551", "BaseLevel": "52", "SpellLevel": "50"}],
+        "SkillLineAbility": [{"Spell": "1329283", "SupercedesSpell": "0", "SkillLine": "38"},
+                             {"Spell": "1329549", "SupercedesSpell": "1329283", "SkillLine": "38"},
+                             {"Spell": "11551", "SupercedesSpell": "0", "SkillLine": "256"}],
+        "Spell": [{"ID": "1329283", "NameSubtext_lang": ""}, {"ID": "1329549", "NameSubtext_lang": ""},
+                  {"ID": "11551", "NameSubtext_lang": "Rank 6"}],
+        "SpellName": [{"ID": "1329283", "Name_lang": "Shank"}, {"ID": "1329549", "Name_lang": "Shank"},
+                      {"ID": "11551", "Name_lang": "Battle Shout"}],
+    }
+
+    def test_a_spell_without_a_base_level_has_its_spell_level(self):
+        saved = wago.table
+        wago.table = lambda name, build=None: self.TABLES[name]
+        try:
+            game = tr.game_spells("test")
+        finally:
+            wago.table = saved
+        self.assertEqual((game[1329283]["level"], game[1329549]["level"], game[11551]["level"]), (24, 44, 52))
+        self.assertEqual((game[1329283]["after"], game[1329549]["replaces"]), ([1329549], 1329283))
+        self.assertEqual(game[1329283]["skill"], 38)
+
+
+class LaterRanks(unittest.TestCase):
+    # Death Mark: a talent whose later ranks Wowhead's list lacks. Shank: a new spell with no rank text.
+    # Battle Shout's seventh rank and Swipe (Cat): ranks Wowhead lists that no trainer sells.
+    GAME = {
+        1316709: {"name": "Death Mark", "rank": "Rank 1", "level": 40, "after": [1325756], "skill": 39},
+        1325756: {"name": "Death Mark", "rank": "Rank 2", "level": 48, "after": [1325757, 1325759], "skill": 39},
+        1325757: {"name": "Death Mark", "rank": "Rank 3", "level": 56, "after": [], "skill": 39},
+        1325759: {"name": "Death Mark", "rank": "Rank 3", "level": 0, "after": [], "skill": 39},
+        1329283: {"name": "Shank", "rank": "", "level": 24, "after": [1329549], "skill": 38},
+        1329549: {"name": "Shank", "rank": "", "level": 44, "after": [], "skill": 38},
+        11551: {"name": "Battle Shout", "rank": "Rank 6", "level": 52, "after": [25289], "skill": 256},
+        25289: {"name": "Battle Shout", "rank": "Rank 7", "level": 60, "after": [], "skill": 256},
+        9754: {"name": "Swipe", "rank": "Rank 4", "level": 44, "after": [9908, 411128], "skill": 134},
+        9908: {"name": "Swipe", "rank": "Rank 5", "level": 54, "after": [], "skill": 134},
+        411128: {"name": "Swipe", "rank": "Cat", "level": 1, "after": [], "skill": 134},
+    }
+    TALENTS = {"Death Mark": 1316709}
+
+    def kept(self, rows):
+        return {e["spell"]: e for e in tr.entries(rows, self.TALENTS, set(self.GAME))}
+
+    def test_a_talents_later_ranks_are_added_and_need_only_the_talent(self):
+        rows = tr.later_ranks([], {1316709}, self.GAME)
+        self.assertEqual([r["id"] for r in rows], [1325756, 1325757])
+        kept = self.kept(rows)
+        self.assertEqual((kept[1325756]["level"], kept[1325756]["cost"], kept[1325756]["talent"],
+                          kept[1325756]["needs"]), (48, 0, 1316709, None))
+        self.assertEqual(kept[1325757]["needs"], 1325756)
+
+    def test_a_rank_without_rank_text_needs_the_rank_it_replaces(self):
+        rows = [tr.game_row(1329283, self.GAME)]
+        rows += tr.later_ranks(rows, set(self.kept(rows)), self.GAME)
+        kept = self.kept(rows)
+        self.assertEqual((kept[1329283]["level"], kept[1329283]["cost"], kept[1329283]["needs"]), (24, 0, None))
+        self.assertEqual((kept[1329549]["level"], kept[1329549]["needs"]), (44, 1329283))
+
+    def test_a_book_rank_is_not_added_but_names_the_rank_it_replaces(self):
+        rows = [row(11551, "Battle Shout", "Rank 6", 52, [tr.TRAINER], 54000),
+                row(25289, "Battle Shout", "Rank 7", 60, [2])]
+        self.assertEqual(tr.later_ranks(rows, {11551}, self.GAME), [])
+        spells = tr.entries(rows, {}, {11551, 25289})
+        self.assertEqual([e["spell"] for e in spells], [11551])
+        self.assertEqual(tr.replaced_by(spells, rows, self.GAME), {11551: 25289})
+
+    def test_no_book_link_to_a_rank_a_hotfix_took_away(self):
+        rows = [row(11551, "Battle Shout", "Rank 6", 52, [tr.TRAINER], 54000),
+                row(25289, "Battle Shout", "Rank 7", 60, [2])]
+        spells = tr.entries(rows, {}, {11551, 25289})
+        with mock.patch.object(tr, "UNTRAINABLE", tr.UNTRAINABLE | {25289}):
+            self.assertEqual(tr.replaced_by(spells, rows, self.GAME), {})
+
+    def test_no_book_link_when_a_trainer_rank_follows(self):
+        rows = [row(9754, "Swipe", "Rank 4", 44, [tr.TRAINER], 18000),
+                row(9908, "Swipe", "Rank 5", 54, [tr.TRAINER], 28000), row(411128, "Swipe", "Cat", 1)]
+        spells = tr.entries(rows, {}, {9754, 9908, 411128})
+        self.assertEqual(tr.replaced_by(spells, rows, self.GAME), {})
 
 
 if __name__ == "__main__":

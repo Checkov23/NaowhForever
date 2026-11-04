@@ -171,6 +171,7 @@ local env = setmetatable({
     CreateVector2D = function() end,
     C_Map = { GetBestMapForUnit = function() end, GetWorldPosFromMapPos = function() end },
     UnitName = function() return "Me" end,
+    UnitGUID = function() return "Player-1-Me" end,
     GetRealmName = function() return "Realm" end,
     GetMoney = function() return 12345 end,
     GetClassInfo = function(id) return "Class " .. id, "MAGE" end,
