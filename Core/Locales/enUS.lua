@@ -558,6 +558,7 @@ L["Auras"] = true
 L["Back"] = true
 L["Back (slot)"] = "Back"
 L["Refresh (camp)"] = "Refresh"
+L["Apply (group)"] = "Apply"
 L["Battlegrounds"] = true
 L["BiS List"] = true
 L["Blessings"] = true
