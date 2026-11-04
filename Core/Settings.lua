@@ -33,6 +33,7 @@ local S = UI.ModuleSettings("qol", {
     groupButtonsTarget = true, groupButtonsInviteAll = false, groupInvites = {},
     freeForAll = F.freeForAll,
     layerSwap = F.layerSwap,
+    questProgress = F.questProgress,
     questShare = F.questShare,
     combatTimer = F.combatTimer, combatTimerInstanceOnly = false, combatTimerChat = true,
     combatTimerSticky = false, combatTimerHidePrefix = false, combatTimerBackground = "none",

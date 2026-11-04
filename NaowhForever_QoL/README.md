@@ -89,6 +89,7 @@ NaowhForever_QoL/
     GroupButtons.lua    On-Screen Buttons (Invite, your invite buttons, Invite All, Disband)
     FreeForAll.lua      Always Free for All, the party loot method while you lead
     LayerSwap.lua       Auto-Accept Layer Swap, confirming the game's layer swap prompt on joining a group
+    QuestProgress.lua   Announce Quest Progress, your quest objective updates said in party chat
     FinderRoles.lua     Group Finder Roles, the role buttons on the Group Finder
     TalentPoints.lua    the unspent talent points reminder
     QuestAutomation.lua accept, hand in and share quests, saved reward picks (ns.QuestRewards)
@@ -1229,6 +1230,13 @@ NaowhForever_QoL/
 - The method is set again whenever it changes, so a leader who wants another one turns the switch off.
 - `C_PartyInfo.SetLootMethod` is marked HasRestrictions in the Forever API docs; it is called only out
   of combat, from an event handler, never from a secure path.
+
+### Announce Quest Progress
+- The line said is the game's own objective message (`UI_INFO_MESSAGE`), in your client's language. Its
+  type is matched by name through `GetGameMessageInfo` (`PROGRESS`), never by its text.
+- "Objective Complete." (`ERR_QUEST_UNKNOWN_COMPLETE`) is left out: it does not say which objective.
+- Raids are left alone: party chat there reaches only your subgroup.
+- Nothing is said while `C_ChatInfo.InChatMessagingLockdown()` is true.
 
 ### Invite Buttons
 - The list is in `ns.PROFILE_OWN`: a shared profile never carries your friends' BattleTags.

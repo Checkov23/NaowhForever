@@ -26,6 +26,7 @@ ns.FEATURES = {
         groupButtons = false,
         freeForAll = false,
         layerSwap = false,
+        questProgress = false,
         combatTimer = false,
         damageMeterSkin = false,
         damageMeterFree = false,

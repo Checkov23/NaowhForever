@@ -79,7 +79,7 @@ read_globals = {
     "GetCurrentArenaSeason", "GetCurrentKeyBoardFocus", "GetCurrentRegion", "GetText", "UnitSex",
     "GetCursorInfo", "GetCursorPosition", "GetCVar",
     "PVP_RANK_0_NAME", "PVP_RANK_REWARDS_VENDOR_ALLIANCE", "ITEM_SPELL_KNOWN",
-    "GetFileIDFromPath", "GetFonts", "GetFramerate", "GetGuildInfo", "GetGuildRosterInfo",
+    "GetFileIDFromPath", "GetFonts", "GetFramerate", "GetGameMessageInfo", "GetGuildInfo", "GetGuildRosterInfo",
     "GetInstanceInfo", "GetInventoryItemDurability", "GetInventoryItemID",
     "GetInventoryItemLink", "GetInventoryItemQuality", "GetInventoryItemTexture",
     "GetLootRollItemLink", "GetLootSlotInfo", "GetLootSlotLink", "GetLootSourceInfo", "GetLootThreshold",
