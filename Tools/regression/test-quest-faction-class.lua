@@ -25,7 +25,9 @@ local function Env(ns, who)
         UnitRace = function() return who.race, who.race, who.raceID end,
         UnitClass = function() return who.class, who.class, who.classID end,
         UnitLevel = function() return 60 end,
-        C_QuestLog = { GetAllCompletedQuestIDs = function() return {} end },
+        GetProfessions = function() end,
+        C_SpellBook = { IsSpellKnown = function() return false end },
+        C_QuestLog = { GetAllCompletedQuestIDs = function() return {} end, GetNumQuestLogEntries = function() return 0 end },
     }, { __index = _G })
 end
 

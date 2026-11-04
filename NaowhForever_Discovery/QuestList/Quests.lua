@@ -9,14 +9,16 @@ local NAME, LEVEL, REQ_LEVEL, SIDE, RACES, CLASSES, MAP, X, Y, GIVER, ITEM = 1, 
 local ALLIANCE, HORDE = 1, 2
 local RACE_BITS = { [1] = 0, [2] = 1, [3] = 2, [4] = 3, [5] = 4, [6] = 5, [7] = 6, [8] = 7, [95] = 32, [96] = 33 }
 local UNIT_ID = 3
+local SKILL_LINE = 7
 local MAX_UNDER = 10
 local CLASSIC_GREEN_RANGE = 8
 local NOT_OFFERED_STORE, TURN_INS_STORE = "completoNotOffered", "completoTurnIns"
-local OPENED_STORE, MINE_STORE = "completoOpened", "completoMine"
+local OPENED_STORE, MINE_STORE, REOPENED_STORE = "completoOpened", "completoMine", "completoReopened"
 local NONE = {}
 
-local mine, zoneOf, chains, chainOf
-local done = {}
+local mine, zoneOf, chains, chainOf, closers, recipes, needs, teaches
+local opened, reopened = {}, {}
+local done, logged, skills, known = {}, {}, {}, {}
 local byMap
 local zoneChains, zoneSingles, seenChain = {}, {}, {}
 local found, foundIn = {}, {}
@@ -69,6 +71,46 @@ local function CharStore(key)
     return account[key][char]
 end
 
+local function AddCloser(id, other)
+    if not mine[id] then return end
+    local list = closers[id]
+    if not list then
+        list = {}
+        closers[id] = list
+    end
+    list[#list + 1] = other
+end
+
+local function IndexClosers()
+    closers, recipes = {}, {}
+    needs, teaches = D.Profession or NONE, D.Recipe or NONE
+    local groupOf = {}
+    for _, group in ipairs(D.Exclusive or NONE) do
+        for _, id in ipairs(group) do
+            groupOf[id] = group
+            for _, other in ipairs(group) do
+                if other ~= id then AddCloser(id, other) end
+            end
+        end
+    end
+    for id, target in pairs(D.Breadcrumb or NONE) do
+        AddCloser(id, target)
+        for _, other in ipairs(groupOf[target] or NONE) do
+            if other ~= target then AddCloser(id, other) end
+        end
+    end
+    for id, elements in pairs(D.Requires) do
+        for _, element in ipairs(elements) do
+            if type(element) == "table" then
+                for _, before in ipairs(element) do AddCloser(before, id) end
+            else
+                AddCloser(element, id)
+            end
+        end
+    end
+    for _, spell in pairs(teaches) do recipes[spell] = true end
+end
+
 local function Prepare()
     if mine then return end
     mine, zoneOf, chains, chainOf = {}, {}, {}, {}
@@ -89,6 +131,48 @@ local function Prepare()
         local own = OwnSteps(steps)
         if #own > 1 then AddChain(own) end
     end
+    IndexClosers()
+end
+
+local function AddSkills(...)
+    for i = 1, select("#", ...) do
+        local index = select(i, ...)
+        if index then
+            local line = select(SKILL_LINE, GetProfessionInfo(index))
+            if line then skills[line] = true end
+        end
+    end
+end
+
+local function ReadKnown()
+    wipe(skills)
+    AddSkills(GetProfessions())
+    wipe(known)
+    for spell in pairs(recipes) do known[spell] = C_SpellBook.IsSpellKnown(spell) end
+    wipe(logged)
+    for i = 1, C_QuestLog.GetNumQuestLogEntries() do
+        local id = C_QuestLog.GetQuestIDForLogIndex(i)
+        if id then logged[id] = true end
+    end
+end
+
+local function Closed(id)
+    local state
+    local skill = needs[id]
+    if skill and not skills[skill] then
+        state = "skill"
+    elseif known[teaches[id]] then
+        state = "closed"
+    else
+        local list = closers[id] or NONE
+        for i = 1, #list do
+            if done[list[i]] or logged[list[i]] then
+                state = "closed"
+                break
+            end
+        end
+    end
+    if state and not reopened[id] then return state end
 end
 
 local function ZoneTurnIns(id)
@@ -191,6 +275,8 @@ end
 
 function Q.Refresh()
     Prepare()
+    opened, reopened = CharStore(OPENED_STORE), CharStore(REOPENED_STORE)
+    ReadKnown()
     wipe(done)
     local all = C_QuestLog.GetAllCompletedQuestIDs and C_QuestLog.GetAllCompletedQuestIDs()
     if all then
@@ -307,13 +393,17 @@ end
 
 function Q.Opened(id)
     for _, element in ipairs(D.Requires[id] or NONE) do
-        if not Met(element) then return CharStore(OPENED_STORE)[id] == true end
+        if not Met(element) then return opened[id] == true end
     end
     return true
 end
 
 function Q.SetOpened(id)
     CharStore(OPENED_STORE)[id] = true
+end
+
+function Q.SetReopened(id)
+    CharStore(REOPENED_STORE)[id] = true
 end
 
 function Q.Blocking(id)
@@ -343,6 +433,8 @@ end
 function Q.Expected(id)
     if done[id] then return "done" end
     if Q.InLog(id) then return "log" end
+    local closed = Closed(id)
+    if closed then return closed end
     if not Q.Opened(id) then return "later" end
     if UnitLevel("player") < Q.RequiredLevel(id) then return "low" end
     return "open"
@@ -351,7 +443,8 @@ end
 function Q.ZoneProgress(zone)
     local n, total, low, high = 0, 0, nil, nil
     for _, id in ipairs(zone.quests) do
-        if mine[id] and not Q.Repeatable(id) and not Q.Dungeon(id) and not Q.Elsewhere(id) then
+        if mine[id] and not Q.Repeatable(id) and not Q.Dungeon(id) and not Q.Elsewhere(id)
+            and (done[id] or not Closed(id) or Q.InLog(id)) then
             total = total + 1
             if done[id] then n = n + 1 end
             local level = QuestLevel(id)

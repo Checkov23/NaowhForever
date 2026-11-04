@@ -5,6 +5,11 @@
     "we may use: Wowhead Forever's quest pages, ForeverChanges' quest pages, or the game's tables.",
     "requires: per quest, add puts quests before it that the sources leave out, drop takes out ones",
     "they put there wrongly (a Series row lists side quests and lead-ins with the quest's own step).",
+    "exclusive: quests of which you take one; the camping quests of one name are such groups already.",
+    "breadcrumbs: a quest that only sends you to another's giver, and the quest it leads to.",
+    "professions: the skill line a quest needs (SkillLine), and for a Camping 101 quest the camp recipe",
+    "it teaches (the spell in that skill line's SkillLineAbility), which closes it once known. Only a",
+    "quest whose task needs the skill: one that introduces the profession is for those who lack it.",
     "A key starting with _ is a note. A fix naming a quest the data lacks is skipped, with a warning."
   ],
   "requires": {
@@ -23,5 +28,40 @@
     "92819": {"add": [92753], "why": "Toxic Soil, in order: the last step."},
     "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."},
     "95161": {"add": [92415], "why": "Wowhead's Series and ForeverChanges' storyline: 92415, then 95161."}
-  }
+  },
+  "exclusive": [
+    {"quests": [324, 526], "why": "The Lost Ingots (from the Waterlogged Chest) and Lightforge Ingots (from Glorin Steelbrow) are one task: gather 5 Lightforge Ingots for Glorin (ForeverChanges)."},
+    {"quests": [94484, 94493], "why": "Unnerving Silence sends you to Elegael Thornpaw; A Sacrifice in Vain is her greeting to one who came another way ('Thank goodness our message got to Lotheluum. Wait, where are the rest of the reinforcements?'). Both are 'speak with Elegael Thornpaw' (ForeverChanges)."},
+    {"quests": [1516, 1519, 92466], "why": "Call of Earth's first step, one per starting area (Canaga Earthcaller in Durotar, Seer Ravenfeather in Mulgore, Windshaper Boro on Zephras Isle, ForeverChanges): each heads its own Series, 1516 then 1517 and 1518, 1519 then 1520 and 1521, 92466 then 92467 (Wowhead)."}
+  ],
+  "breadcrumbs": {
+    "96627": {"to": 95998, "why": "96627 ends at Sam Sarsaparilla, who gives 95998 (ForeverChanges' givers)."},
+    "96628": {"to": 96608, "why": "96628 ends at Eric Brighthammer, who gives 96608 (ForeverChanges' givers)."},
+    "96630": {"to": 96606, "why": "96630 ends at Lyreena Duskblade, who gives 96606 (ForeverChanges' givers)."},
+    "96638": {"to": 96101, "why": "96638 ends at Raan Wildwind, who gives 96101 (ForeverChanges' givers)."},
+    "96652": {"to": 96604, "why": "96652 ends at Brakk, who gives 96604 (ForeverChanges' givers)."},
+    "96656": {"to": 96607, "why": "96656 ends at Eleanor Shackleton, who gives 96607 (ForeverChanges' givers)."},
+    "96659": {"to": 96605, "why": "96659 ends at Kaga Wildhoof, who gives 96605 (ForeverChanges' givers)."},
+    "96408": {"to": 96392, "why": "96408 ends at Earthseer Farsen, who gives 96392 (ForeverChanges' givers)."},
+    "97894": {"to": 982, "why": "97894 ends at Gorbold Steelhand, who gives 982 (ForeverChanges' givers)."},
+    "98391": {"to": 2519, "why": "98391 ends at Sister Aquinne, who gives 2519 (ForeverChanges' givers)."},
+    "99046": {"to": 99047, "why": "99046 ends at Sentinel Eralya Leafshadow, who gives 99047 (ForeverChanges' givers)."},
+    "99158": {"to": 99159, "why": "99158 ends at Father Gavin, who gives 99159 (ForeverChanges' givers)."}
+  },
+  "professions": [
+    {"skill": 171, "recipe": 1230564, "quests": [96045, 97899, 97915, 97927, 97938, 97951, 97963], "why": "Camping 101: its objective is 'Raise your alchemy skill to 20' (Wowhead and ForeverChanges); 1230564 is the Mana Well recipe it teaches (Wowhead's 'You will learn', in Alchemy's SkillLineAbility)."},
+    {"skill": 164, "recipe": 1230171, "quests": [96044, 97900, 97916, 97928, 97939, 97952, 97964], "why": "Camping 101: its objective is 'Raise your blacksmithing skill to 20' (Wowhead and ForeverChanges); 1230171 is the Sharpening Wheel recipe it teaches (Wowhead's 'You will learn', in Blacksmithing's SkillLineAbility). Wowhead's reward, 1255257, is the spell that teaches it (SpellEffect 36, Learn Spell)."},
+    {"skill": 333, "recipe": 1230643, "quests": [96059, 97901, 97917, 97929, 97940, 97953, 98284, 98286], "why": "Camping 101: its objective is 'Raise your enchanting skill to 20' (Wowhead and ForeverChanges); 1230643 is the Enchanted Lute recipe it teaches (Wowhead's 'You will learn', in Enchanting's SkillLineAbility)."},
+    {"skill": 202, "recipe": 1230656, "quests": [96058, 97902, 97918, 97930, 97941, 97954, 98285, 98287], "why": "Camping 101: its objective is 'Raise your engineering skill to 20' (Wowhead and ForeverChanges); 1230656 is the Reagent Bot recipe it teaches (Wowhead's 'You will learn', in Engineering's SkillLineAbility)."},
+    {"skill": 129, "recipe": 1230117, "quests": [96047, 97903, 97919, 97931, 97942, 97955, 97965], "why": "Camping 101: its objective is 'Raise your first aid skill to 20' (Wowhead and ForeverChanges); 1230117 is the First Aid Kit recipe it teaches (Wowhead's 'You will learn', in First Aid's SkillLineAbility)."},
+    {"skill": 356, "recipe": 1229745, "quests": [96050, 97904, 97920, 97932, 97943, 97956, 97967], "why": "Camping 101: its objective is 'Raise your fishing skill to 20' (Wowhead and ForeverChanges); 1229745 is the Fish Bowl recipe it teaches (Wowhead's 'You will learn', in Fishing's SkillLineAbility)."},
+    {"skill": 182, "recipe": 1229705, "quests": [96055, 97905, 97921, 97933, 97944, 97957, 97968], "why": "Camping 101: its objective is 'Raise your herbalism skill to 20' (Wowhead and ForeverChanges); 1229705 is the Incense Candle recipe it teaches (Wowhead's 'You will learn', in Herbalism's SkillLineAbility)."},
+    {"skill": 165, "recipe": 1229432, "quests": [96031, 97906, 97922, 97934, 97946, 97958, 97969], "why": "Camping 101: its objective is 'Raise your leatherworking skill to 20' (Wowhead and ForeverChanges); 1229432 is the Camp Tent recipe it teaches (Wowhead's 'You will learn', in Leatherworking's SkillLineAbility)."},
+    {"skill": 186, "recipe": 1230161, "quests": [96046, 97907, 97923, 97935, 97948, 97959, 97970], "why": "Camping 101: its objective is 'Raise your mining skill to 20' (Wowhead and ForeverChanges); 1230161 is the Lodestone recipe it teaches (Wowhead's 'You will learn', in Mining's SkillLineAbility)."},
+    {"skill": 393, "recipe": 1229517, "quests": [96056, 97908, 97924, 97936, 97949, 97960, 97971], "why": "Camping 101: its objective is 'Raise your skinning skill to 20' (Wowhead and ForeverChanges); 1229517 is the Camp Chair recipe it teaches (Wowhead's 'You will learn', in Skinning's SkillLineAbility)."},
+    {"skill": 197, "recipe": 1263425, "quests": [96057, 97925, 97950, 97973], "why": "Camping 101: its objective is 'Raise your tailoring skill to 20' (Wowhead and ForeverChanges); 1263425 is the Faction Banner recipe it teaches (Wowhead's 'You will learn', in Tailoring's SkillLineAbility). The Alliance's versions; its race masks are the Alliance's."},
+    {"skill": 197, "recipe": 1229504, "quests": [96102, 97937, 97961, 97972], "why": "Camping 101: its objective is 'Raise your tailoring skill to 20' (Wowhead and ForeverChanges); 1229504 is the Faction Banner recipe it teaches (Wowhead's 'You will learn', in Tailoring's SkillLineAbility). The Horde's versions; its race masks are the Horde's."},
+    {"skill": 393, "quests": [91751], "why": "Rough Wolf Pelts: 'Skin wolves around Elwynn Forest', 'Are you looking for an opportunity to practice skinning?' (ForeverChanges)."},
+    {"skill": 333, "quests": [91753, 96873], "why": "An Enchanting Lesson and A Pain in the Neck: the Luminous Residue comes from disenchanting, 'Practice your enchanting skills' (ForeverChanges)."}
+  ]
 }

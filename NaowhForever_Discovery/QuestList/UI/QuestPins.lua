@@ -11,7 +11,8 @@ local BANG_ATLAS, GREY_ATLAS, REPEAT_ATLAS = "QuestNormal", "TrivialQuests", "Qu
 local BANG_FILE = "Interface\\GossipFrame\\AvailableQuestIcon"
 local PERCENT = Completo.C.PERCENT
 local QUEST_PIN_SCALE = 0.5
-local EVENTS = { "QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED", "PLAYER_LEVEL_UP" }
+local EVENTS = { "QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED", "PLAYER_LEVEL_UP", "SKILL_LINES_CHANGED",
+    "LEARNED_SPELL_IN_SKILL_LINE" }
 local OWN_KEYS = { enabled = true, mapPins = true, mapGrey = true, mapChainsOnly = true, mapPinSize = true,
     mapDungeon = true, mapDungeonColor = true }
 local TEXT_GIVER = ns.L("Quest giver")

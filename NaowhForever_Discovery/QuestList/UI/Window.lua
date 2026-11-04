@@ -15,7 +15,8 @@ local ALL_ZONES = ns.L("All Zones")
 local CONTINENTS = { [0] = "Eastern Kingdoms", [1] = "Kalimdor" }
 local ELSEWHERE = ns.L("Elsewhere")
 local CONTINENT_ORDER = { CONTINENTS[0], CONTINENTS[1], ELSEWHERE }
-local EVENTS = { "QUEST_TURNED_IN", "QUEST_ACCEPTED", "QUEST_REMOVED", "PLAYER_LEVEL_UP" }
+local EVENTS = { "QUEST_TURNED_IN", "QUEST_ACCEPTED", "QUEST_REMOVED", "PLAYER_LEVEL_UP", "SKILL_LINES_CHANGED",
+    "LEARNED_SPELL_IN_SKILL_LINE" }
 local NO_EVENTS = {}
 local SEARCH_HINT = { quests = "Search quests or quest givers", rares = ns.L("Search rares") }
 local TEXT_ALL_ZONES = ns.L("All zones")

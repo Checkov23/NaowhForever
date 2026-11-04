@@ -1,9 +1,11 @@
 """Tests for Tools/build/completo_quests.py's hand-kept corrections (Tools/data/completo_fixes.json):
 a quest's add joins the quests before it, its drop leaves them and its explicit groups, a fix naming
 a quest the data lacks is skipped with a warning, an add or drop that changes nothing is warned of,
-and a key starting with _ is a note; and for how it mends the race masks: a quest for both sides
-that names only the High Order Skyborne is both Skyborne's, and other masks stay as given. Offline.
-From the repo root:
+and a key starting with _ is a note; how it mends the race masks: a quest for both sides that names
+only the High Order Skyborne is both Skyborne's, and other masks stay as given; and the gating it
+writes: the camping quests of one name and the hand-kept groups are exclusive, a quest in one group at
+most, and the breadcrumbs, professions and camp recipes come from the fixes, an entry naming a quest
+the data lacks skipped with a warning. Offline. From the repo root:
 
     python -m unittest discover -s Tools/tests
 """
@@ -11,8 +13,10 @@ import contextlib
 import io
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402
@@ -89,6 +93,63 @@ class Races(unittest.TestCase):
         self.assertEqual(completo_quests.races(0, 1), 0)
 
 
+class Gating(unittest.TestCase):
+    CAMP = {"category": ["sort", 666]}
+
+    def rows(self):
+        names = {95998: "The Great Outdoors", 96608: "The Great Outdoors", 96627: "The Adventurer",
+                 97915: "Camping 101: Alchemy", 96045: "Camping 101: Alchemy", 324: "The Lost Ingots",
+                 526: "Lightforge Ingots", 19: "Tharil'zun"}
+        return {q: (12, {"id": q, "name": n, "level": 6, "reqlevel": 4, "side": 1}) for q, n in names.items()}
+
+    def listed(self):
+        return {"quests": {str(q): dict(self.CAMP) for q in (95998, 96608, 96627, 97915, 96045)}}
+
+    def test_camping_quests_of_one_name_and_the_fixes(self):
+        groups = completo_quests.exclusive_groups(self.rows(), self.listed(), [{"quests": [526, 324]}])
+        self.assertEqual(groups, [[324, 526], [95998, 96608], [96045, 97915]])
+
+    def test_only_the_camping_sort(self):
+        listed = {"quests": {"95998": {"category": ["zone", 12]}, "96608": dict(self.CAMP)}}
+        self.assertEqual(completo_quests.exclusive_groups(self.rows(), listed, []), [])
+
+    def exclusive_groups(self, fixes):
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            groups = completo_quests.exclusive_groups(self.rows(), self.listed(), fixes)
+        return groups, err.getvalue()
+
+    def test_unknown_quest_warns_and_skips(self):
+        groups, warnings = self.exclusive_groups([{"quests": [1, 324]}, {"quests": [526, 324]}])
+        self.assertEqual(groups, [[324, 526], [95998, 96608], [96045, 97915]])
+        self.assertIn("exclusive [1, 324] names quest 1, which the data does not have; skipped", warnings)
+
+    def test_a_quest_in_two_groups_warns_and_skips(self):
+        groups, warnings = self.exclusive_groups([{"quests": [324, 526]}, {"quests": [526, 19]}, {"quests": [19, 95998]}])
+        self.assertEqual(groups, [[324, 526], [95998, 96608], [96045, 97915]])
+        self.assertIn("exclusive [19, 526] names quest 526, which is in a group already; skipped", warnings)
+        self.assertIn("exclusive [19, 95998] names quest 95998, which is in a group already; skipped", warnings)
+
+    def test_written(self):
+        zones = {"12": {"name": "Elwynn Forest", "quests": [q for _, q in self.rows().values()]}}
+        fixes = {"breadcrumbs": {"_note": "x", "96627": {"to": 95998}, "96628": {"to": 1}},
+                 "professions": [{"skill": 171, "recipe": 1230564, "quests": [97915, 96045]},
+                                 {"skill": 393, "quests": [19]}, {"skill": 164, "quests": [19, 2]}]}
+        err = io.StringIO()
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder) / "Quests.lua"
+            with mock.patch.object(completo_quests, "ROOT", Path(folder)), mock.patch.object(completo_quests, "OUT", out), \
+                    contextlib.redirect_stderr(err):
+                completo_quests.write(zones, {}, {}, {}, {}, {}, {}, None, fixes)
+            text = out.read_text()
+        self.assertIn("D.Breadcrumb = {\n    [96627] = 95998,\n}", text)
+        self.assertIn("    [97915] = 171,\n", text)
+        self.assertIn("    [19] = 393,\n", text)
+        self.assertIn("D.Recipe = {\n    [96045] = 1230564,\n    [97915] = 1230564,\n}", text)
+        self.assertIn("breadcrumbs 96628 names quest 96628, 1, which the data does not have; skipped", err.getvalue())
+        self.assertIn("professions 164 names quest 2, which the data does not have; skipped", err.getvalue())
+
+
 class FixesFile(unittest.TestCase):
     def test_every_fix_says_why(self):
         fixes = json.loads((paths.DATA / "completo_fixes.json").read_text(encoding="utf-8"))
@@ -97,6 +158,9 @@ class FixesFile(unittest.TestCase):
                 continue
             self.assertTrue(fix.get("why"), qid)
             self.assertTrue(fix.get("add") or fix.get("drop"), qid)
+        breadcrumbs = [b for k, b in fixes["breadcrumbs"].items() if not k.startswith("_")]
+        for entry in fixes["exclusive"] + breadcrumbs + fixes["professions"]:
+            self.assertTrue(entry.get("why"), entry)
 
 
 if __name__ == "__main__":

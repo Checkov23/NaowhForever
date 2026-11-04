@@ -19,7 +19,10 @@ local env = setmetatable({
     UnitRace = function() return "Human", "Human", 1 end,
     UnitClass = function() return "Warrior", "WARRIOR", 1 end,
     UnitLevel = function() return level end,
+    GetProfessions = function() end,
+    C_SpellBook = { IsSpellKnown = function() return false end },
     C_QuestLog = {
+        GetNumQuestLogEntries = function() return 0 end,
         GetAllCompletedQuestIDs = function()
             local ids = {}
             for id in pairs(completed) do ids[#ids + 1] = id end

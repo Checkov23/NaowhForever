@@ -104,8 +104,10 @@ local questEnv = setmetatable({
     UnitRace = function() return "Tauren", "Tauren", 6 end,
     UnitClass = function() return "DRUID", "DRUID", 11 end,
     UnitLevel = function() return 5 end,
+    GetProfessions = function() end,
+    C_SpellBook = { IsSpellKnown = function() return false end },
     C_QuestLog = { GetAllCompletedQuestIDs = function() return completed end,
-        GetLogIndexForQuestID = function() return nil end },
+        GetLogIndexForQuestID = function() return nil end, GetNumQuestLogEntries = function() return 0 end },
     C_Map = { GetBestMapForUnit = function() return best end, GetMapInfo = function() return nil end },
 }, { __index = _G })
 dofile("Tools/regression/load_files.lua")({ "NaowhForever_DiscoveryData/Quests.lua",
