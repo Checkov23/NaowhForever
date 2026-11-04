@@ -140,6 +140,7 @@ J.QuestData = {
         { 1049, "Compendium of the Fallen", 28, "H", true, "Thunder Bluff, First Rise - Sage Truthseeker Undead cannot pick up this quest (34.4, 46.9)", 1456, 34.4, 46.9 },
         { 1160, "Test of Lore", 25, "H", "pre", "Undercity, The Apothecarium - Parqual Fintallas Complete 6 quests in chain, starting with Test of Faith (57.8, 65.4)", 1458, 57.8, 65.4 },
         { 1050, "Mythology of the Titans", 28, "A", true, "Ironforge, Hall of Explorers - Librarian Mae Paledust (75, 12.5)", 1455, 75.0, 12.5 },
+        { 96800, "Past Due", 30, "A", true, "Alterac Mountains - Magus Olvek (9.8, 63)", 1416, 9.8, 63.0 },
         { 1951, "Rituals of Power", 30, "B", "pre", "Mage only - Thousand Needles, Shimmering Flats Raceway - Magus Tirth Complete 3 quests, starting with Journey to the Marsh (78.3, 75.7)", 1441, 78.3, 75.7, class = "MAGE" },
     } },
     { name = "Scarlet Monastery - Armory", map = 189, levels = { 32, 42 }, quests = {} },

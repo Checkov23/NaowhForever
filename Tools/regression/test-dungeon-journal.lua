@@ -765,7 +765,7 @@ do
     state.subzone = "Somewhere Forever names otherwise"
     check("a subzone not known: the first wing", J.Current()[1].key == "ScarletMonasteryGraveyard")
     state.subzone = nil
-    check("each wing's quests: the Library's books", #J.Get("ScarletMonasteryLibrary").quests.quests == 4
+    check("each wing's quests: the Library's books", #J.Get("ScarletMonasteryLibrary").quests.quests == 5
         and #J.Get("ScarletMonasteryArmory").quests.quests == 0)
     check("each wing has its own map", J.Maps.ScarletMonasteryCathedral.floors == 1
         and J.Maps.ScarletMonasteryGraveyard.pins[3983] ~= nil)
