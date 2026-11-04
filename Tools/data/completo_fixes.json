@@ -1,0 +1,27 @@
+{
+  "_about": [
+    "Corrections to the Quest List's data, kept by hand; Tools/build/completo_quests.py applies them over",
+    "what Wowhead's pages, ForeverChanges' list and the caches give. Every fix says why, from a source",
+    "we may use: Wowhead Forever's quest pages, ForeverChanges' quest pages, or the game's tables.",
+    "requires: per quest, add puts quests before it that the sources leave out, drop takes out ones",
+    "they put there wrongly (a Series row lists side quests and lead-ins with the quest's own step).",
+    "A key starting with _ is a note. A fix naming a quest the data lacks is skipped, with a warning."
+  ],
+  "requires": {
+    "19": {"drop": [98386], "why": "Tharil'zun and Blackrock Blockade are Marshal Marris's war on the Blackrock orcs; Alther's Mill is Foreman Oslow's spider job at the lumber mill (ForeverChanges' quest pages)."},
+    "92470": {"drop": [92469], "why": "Aetheen of the Gales (92471) ends at Aetheen, who gives Foul Matriarch; Return to Rorian ends at Rorian (ForeverChanges' givers)."},
+    "92644": {"drop": [98512], "why": "The Turncoat ends at the Dead Cultist, who gives Unfortunate News; Al'Aketh Assassins is Fendaal Windstone's quest for whoever passes (ForeverChanges' givers and text)."},
+    "92744": {"add": [92742], "why": "Toxic Soil, in order: the game's quest line 6026 (QuestLineXQuest), Wowhead's Storyline and ForeverChanges' storyline."},
+    "92745": {"add": [92744], "why": "Toxic Soil, in order; its text opens with 'The well samples you collected'."},
+    "92747": {"add": [92745], "why": "Toxic Soil, in order."},
+    "92748": {"add": [92747], "why": "Toxic Soil, in order."},
+    "92749": {"add": [92748], "why": "Toxic Soil, in order: Explosive Consultation sends you to Sprite Jumpsprocket, who gives it."},
+    "92750": {"add": [92749], "why": "Toxic Soil, in order."},
+    "92751": {"add": [92750], "why": "Toxic Soil, in order: Detonation at a Distance (92750) sends you to Stormwind Intelligence, where Jasper Fel gives it."},
+    "92752": {"add": [92751], "why": "Toxic Soil, in order: 'the bomb's ready to go! Careful with that detonator'."},
+    "92753": {"add": [92752], "why": "Toxic Soil, in order."},
+    "92819": {"add": [92753], "why": "Toxic Soil, in order: the last step."},
+    "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."},
+    "95161": {"add": [92415], "why": "Wowhead's Series and ForeverChanges' storyline: 92415, then 95161."}
+  }
+}

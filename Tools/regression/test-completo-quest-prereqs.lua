@@ -121,4 +121,18 @@ for _, zone in ipairs(D.Zones) do
 end
 Check(inStormwind, "a dungeon quest is listed in its giver's zone")
 
+local function Needs(id, ...)
+    local want, got = { ... }, D.Requires[id] or {}
+    if #got ~= #want then return false end
+    for i, element in ipairs(want) do
+        if got[i] ~= element then return false end
+    end
+    return true
+end
+Check(Needs(92744, 92742) and Needs(92745, 92744) and Needs(92750, 92749) and Needs(92752, 92751)
+    and Needs(92819, 92753), "Toxic Soil goes in its quest line's order")
+Check(Needs(92911, 92910) and Needs(95161, 92415), "a quest that follows another waits on it")
+Check(Needs(19, 20, 98387), "Tharil'zun waits on Marshal Marris's quests, not on Alther's Mill")
+Check(Needs(92470, 92471) and Needs(92644, 92643), "a side quest in the step before is no requirement")
+
 print(("test-completo-quest-prereqs: %d checks passed"):format(checks))

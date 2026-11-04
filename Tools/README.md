@@ -308,7 +308,7 @@ are not included. Classic baseline values remain unverified for Forever.
 
 | Tool | What it does | Why |
 | --- | --- | --- |
-| `completo_quests.py` | Builds `NaowhForever_DiscoveryData/Quests.lua`: every quest of every zone, its chain and where its quest giver stands, from Wowhead Forever's zone and quest pages. Cached in `data/completo_zones.json`, `data/completo_quests.json`, `data/completo_requires.json` and `data/completo_items.json`; `--offline` writes from the caches only. | A zone's quests and what to do first. |
+| `completo_quests.py` | Builds `NaowhForever_DiscoveryData/Quests.lua`: every quest of every zone, its chain and where its quest giver stands, from Wowhead Forever's zone and quest pages. Cached in `data/completo_zones.json`, `data/completo_quests.json`, `data/completo_requires.json` and `data/completo_items.json`; `--offline` writes from the caches only. `data/completo_fixes.json` corrects what the sources get wrong; a fix naming a quest the data lacks is skipped with a warning, so the build still runs. | A zone's quests and what to do first. |
 | `foreverchanges_quests.py` | Builds `data/foreverchanges_quests.json`, which `completo_quests.py` reads: every quest ForeverChanges lists for Forever (`/quests/list.json`, read every run) and its givers' spots on Forever's maps (each quest's page, read once, one a second). `--offline` reads nothing; `--report FILE` writes the quests the list gained, lost and changed, for the daily watch. | Which quests Forever gives, and where their givers stand. |
 | `elsewhere_quests.py` | Builds `data/completo_elsewhere.json`, which `completo_quests.py` reads: the class, dungeon and battleground quests no zone page lists, from CMaNGOS's quests that Forever's client has, placed from Wowhead's quest pages or, failing those, where the game client puts the giver's spawn (`dev/QuestPositions/`, kept in `data/completo_positions.json`). `--offline` fetches nothing; `--positions` writes the spawns for the dev addon to resolve; `--resolved <file>` reads its answers. | The quests Wowhead files under a class or an instance, on the map too. |
 | `completo_rares.py` | Builds `NaowhForever_DiscoveryData/Rares.lua`: every rare of every zone, where it spawns and its special drops. Cached in `data/completo_rares.json`; `--offline` writes from the caches only. | The rares worth hunting, on the map. |
@@ -359,6 +359,7 @@ are not included. Classic baseline values remain unverified for Forever.
 | --- | --- |
 | `journal_bosses.json` | The bosses per dungeon, in kill order, with rares, optional bosses, chests and hand fixes. Kept by hand: no source has the right list for Forever. |
 | `journal_factions.json` | The Journal's factions, with rewards added or removed by hand on top of the game's. |
+| `completo_fixes.json` | The Quest List's corrections, kept by hand: what a quest needs first where the sources are wrong, each with what shows it. |
 | `journal_cache.json`, `wowsrc_loot.json`, `item_names.json` | Every Wowhead answer the Journal's build used; wowsrc's pages as last read; their item names to IDs. Committed, so a rebuild (and CI) gives the same data without asking again. |
 | `preset_minimalist.lua`, `preset_recommended.lua` | Naowh's two setups, the input of `build/presets.lua`. |
 | Every other `*.json` | The cache of the builder that names it above. |
