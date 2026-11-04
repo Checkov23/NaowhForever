@@ -60,6 +60,7 @@ local S = UI.ModuleSettings("qol", {
     badgeChat = F.badgeChat, badgeCard = F.badgeCard, badgeTooltip = F.badgeTooltip,
     badgeBanner = F.badgeBanner, badgeBannerSkipGuild = true,
     tooltipDisplay = F.tooltipDisplay, tooltipSpellID = true, tooltipNPCID = true, tooltipItemID = true,
+    tooltipQuestID = false,
     tooltipRestricted = "hide", tooltipCopy = true, tooltipModifier = "CTRL-SHIFT", tooltipKey = "C",
     tooltipCopyFormat = "url", tooltipCopyHint = false,
     spellEfficiency = F.spellEfficiency, spellEfficiencyPerMana = true, spellEfficiencyPerSecond = true,

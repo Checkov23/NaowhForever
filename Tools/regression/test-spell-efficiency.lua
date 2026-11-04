@@ -108,7 +108,7 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
 local env = {
     _G = { NaowhForever = ns }, GameTooltip = tooltip, ItemRefTooltip = refTip, ShoppingTooltip1 = shopTip,
     UIParent = Frame(), CreateFrame = Frame,
-    Enum = { PowerType = { Mana = 0, Rage = 1 }, TooltipDataType = { Spell = 1, Item = 2, Unit = 3, Macro = 25 } },
+    Enum = { PowerType = { Mana = 0, Rage = 1 }, TooltipDataType = { Spell = 1, Item = 2, Unit = 3, Quest = 23, Macro = 25 } },
     TooltipDataProcessor = { AddTooltipPostCall = function(kind, fn)
         if kind == 1 then posts[#posts + 1] = fn elseif kind == 25 then macroPosts[#macroPosts + 1] = fn end
     end },

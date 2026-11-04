@@ -484,6 +484,11 @@ NaowhForever_QoL/
 - The tooltip ID line is added once per build: it is still there unless the game rebuilt the
   tooltip (a rebuild clears the lines but keeps the same info). It never hooks
   `OnTooltipCleared` for this (see the Badges plate).
+- A tooltip the game builds from quest data (a quest link) gets its Quest ID from the post-call, as
+  the other IDs do. The quest log builds its quest tooltip line by line, with no tooltip data, so no
+  post-call sees it: its ID is added from the game's own `QuestMapLogTitleButton.OnEnter` callback
+  (`EventRegistry`), registered only while Show Quest ID is on. The copy shortcut copies that quest
+  only while its button owns the tooltip and the Quest ID line is still on it.
 - The copy shortcut hint reads like the addon's other tooltip hints ("Ctrl-Shift-C: copy ID or
   Wowhead link") and is made once per key.
 - While a copy card is open its edit box owns the keyboard, even if combat starts; the keyboard
