@@ -12,7 +12,7 @@ local UNIT_ID = 3
 local MAX_UNDER = 10
 local CLASSIC_GREEN_RANGE = 8
 local NOT_OFFERED_STORE, TURN_INS_STORE = "completoNotOffered", "completoTurnIns"
-local OPENED_STORE = "completoOpened"
+local OPENED_STORE, MINE_STORE = "completoOpened", "completoMine"
 local NONE = {}
 
 local mine, zoneOf, chains, chainOf
@@ -61,6 +61,14 @@ local function AddChain(own)
     end
 end
 
+local function CharStore(key)
+    local account = ns.AccountSettings()
+    account[key] = account[key] or {}
+    local char = Completo.CharKey()
+    account[key][char] = account[key][char] or {}
+    return account[key][char]
+end
+
 local function Prepare()
     if mine then return end
     mine, zoneOf, chains, chainOf = {}, {}, {}, {}
@@ -71,6 +79,9 @@ local function Prepare()
     for id, quest in pairs(D.Quests) do
         if ForMe(quest, side, raceBit, classBit) then mine[id] = true end
     end
+    for id in pairs(CharStore(MINE_STORE)) do
+        if D.Quests[id] then mine[id] = true end
+    end
     for _, zone in ipairs(D.Zones) do
         for _, id in ipairs(zone.quests) do zoneOf[id] = zone end
     end
@@ -78,14 +89,6 @@ local function Prepare()
         local own = OwnSteps(steps)
         if #own > 1 then AddChain(own) end
     end
-end
-
-local function CharStore(key)
-    local account = ns.AccountSettings()
-    account[key] = account[key] or {}
-    local char = Completo.CharKey()
-    account[key][char] = account[key][char] or {}
-    return account[key][char]
 end
 
 local function ZoneTurnIns(id)
@@ -208,6 +211,20 @@ end
 function Q.Mine(id) return mine[id] == true end
 function Q.Name(id) return D.Quests[id][NAME] end
 function Q.Level(id) return QuestLevel(id) end
+
+function Q.SetMine(ids)
+    Prepare()
+    local store
+    for id in pairs(ids) do
+        if not mine[id] and D.Quests[id] then
+            store = store or CharStore(MINE_STORE)
+            store[id] = true
+        end
+    end
+    if not store then return end
+    mine, byMap = nil, nil
+    Prepare()
+end
 
 function Q.RequiredLevel(id)
     local quest = D.Quests[id]

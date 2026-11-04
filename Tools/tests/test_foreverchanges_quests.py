@@ -47,6 +47,12 @@ class ParseStarts(unittest.TestCase):
             "name": "A Difficult Path", "level": 1, "reqlevel": 1, "side": 2, "reqclass": 2,
             "category": ["sort", 141]})
 
+    def test_class_is_a_mask(self):
+        # Stalk With The Earthmother: hunters, shamans and druids.
+        row = {"i": 76240, "n": "Stalk With The Earthmother", "l": 11, "m": 4, "s": "h", "c": ["zone", 215],
+               "cl": 1092}
+        self.assertEqual(foreverchanges_quests.quest_row(row)["reqclass"], 1092)
+
 
 class ListedMaps(unittest.TestCase):
     def test_dun_morogh_spot_inside_ironforge_is_on_its_map_first(self):

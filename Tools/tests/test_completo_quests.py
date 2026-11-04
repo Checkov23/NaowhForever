@@ -1,7 +1,9 @@
 """Tests for Tools/build/completo_quests.py's hand-kept corrections (Tools/data/completo_fixes.json):
 a quest's add joins the quests before it, its drop leaves them and its explicit groups, a fix naming
 a quest the data lacks is skipped with a warning, an add or drop that changes nothing is warned of,
-and a key starting with _ is a note. Offline. From the repo root:
+and a key starting with _ is a note; and for how it mends the race masks: a quest for both sides
+that names only the High Order Skyborne is both Skyborne's, and other masks stay as given. Offline.
+From the repo root:
 
     python -m unittest discover -s Tools/tests
 """
@@ -71,6 +73,20 @@ class Corrected(unittest.TestCase):
         (after, _), warnings = self.corrected({19: [20, 98386]}, {}, {"_note": "x", "19": {"drop": [98386]}})
         self.assertEqual(after, {19: [20]})
         self.assertEqual(warnings, "")
+
+
+class Races(unittest.TestCase):
+    ALLIANCE_BUT_HUMAN, TAUREN = 4294967372, 1 << 5
+
+    def test_both_skyborne(self):
+        both = completo_quests.HIGH_ORDER | completo_quests.WINDSHAPER
+        self.assertEqual(completo_quests.races(completo_quests.HIGH_ORDER, 3), both)
+        self.assertEqual(completo_quests.races(completo_quests.HIGH_ORDER, 1), completo_quests.HIGH_ORDER)
+
+    def test_other_masks_stay_as_the_sources_give_them(self):
+        self.assertEqual(completo_quests.races(self.ALLIANCE_BUT_HUMAN, 1), self.ALLIANCE_BUT_HUMAN)
+        self.assertEqual(completo_quests.races(self.TAUREN, 2), self.TAUREN)
+        self.assertEqual(completo_quests.races(0, 1), 0)
 
 
 class FixesFile(unittest.TestCase):

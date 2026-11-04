@@ -6,8 +6,9 @@ addon's players meet them), each giver on Forever's own maps. completo_quests.py
 quests listed here, adds the ones Wowhead's zone pages lack, and places a quest at its giver from
 here before anything else.
 
-- The list (/quests/list.json): each quest's name, level, required level, side, class and the
-  zone or category it is filed under. Read every run, so a quest new to it comes in.
+- The list (/quests/list.json): each quest's name, level, required level, side, class mask (the
+  game's, as Wowhead's) and the zone or category it is filed under. Read every run, so a quest
+  new to it comes in.
 - Each quest's page (/quest/<id>): its map's zones, each a uiMapID with pins in map percent; the
   pins marked start are its givers. A quest an item begins has none. A page read is cached and
   not read again: delete its entry, or the file, to read it again.
@@ -49,7 +50,7 @@ def fetch(url):
 def quest_row(row):
     """A list row as completo_quests.py's zone rows have it, and the category it is filed under."""
     return {"name": row["n"], "level": row["l"], "reqlevel": row["m"], "side": SIDES.get(row["s"], 3),
-            "reqclass": 1 << (row["cl"] - 1) if row.get("cl") else 0, "category": row["c"]}
+            "reqclass": row.get("cl") or 0, "category": row["c"]}
 
 
 def parse_starts(page):

@@ -205,6 +205,19 @@ def forever_spot(map_id, x, y):
     return (fy1 - world_y) / (fy1 - fy0) * 100, (fx1 - world_x) / (fx1 - fx0) * 100
 
 
+# Wowhead's race masks use the game's bits (ChrRaces' PlayableRaceBit): Human 0, Orc 1, Dwarf 2,
+# Night Elf 3, Undead 4, Tauren 5, Gnome 6, Troll 7, High Order Skyborne 32, Windshaper Skyborne 33.
+HIGH_ORDER, WINDSHAPER = 1 << 32, 1 << 33
+
+
+def races(mask, side):
+    """The quest's race mask with the export's slip mended: a quest for both sides that names only
+    the High Order Skyborne is both Skyborne's, as Wowhead and ForeverChanges both call it."""
+    if side == 3 and mask == HIGH_ORDER:
+        return HIGH_ORDER | WINDSHAPER
+    return mask
+
+
 def lua_string(s):
     # ASCII only, as the addon files must be: an accented letter keeps its base letter.
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
@@ -573,7 +586,8 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, list
                 x, y = forever_spot(m, x, y)
                 spot = f"{m}, {x:.1f}, {y:.1f}, {lua_string(mob)}, {item}"
         lines.append(f"    [{qid}] = {{ {lua_string(q['name'])}, {q.get('level') or 0}, "
-                     f"{q.get('reqlevel') or 0}, {q.get('side') or 3}, {q.get('reqrace') or 0}, "
+                     f"{q.get('reqlevel') or 0}, {q.get('side') or 3}, "
+                     f"{races(q.get('reqrace') or 0, q.get('side') or 3)}, "
                      f"{q.get('reqclass') or 0}, {spot} }},")
     repeatable = sorted((set((items or {}).get("repeatable", [])) |
                          {int(k) for k, v in catalog.items() if v["repeatable"]}) & set(rows))

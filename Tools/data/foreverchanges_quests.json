@@ -18,7 +18,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -1272,7 +1272,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -4154,7 +4154,7 @@
    ],
    "level": 4,
    "name": "Earth Sapta",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4165,7 +4165,7 @@
    ],
    "level": 4,
    "name": "Earth Sapta",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4176,7 +4176,7 @@
    ],
    "level": 13,
    "name": "Fire Sapta",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -4253,7 +4253,7 @@
    ],
    "level": 3,
    "name": "Piercing the Veil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 2
   },
@@ -4264,7 +4264,7 @@
    ],
    "level": 10,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 2
   },
@@ -4275,7 +4275,7 @@
    ],
    "level": 20,
    "name": "Devourer of Souls",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4286,7 +4286,7 @@
    ],
    "level": 10,
    "name": "Creature of the Void",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 2
   },
@@ -4297,7 +4297,7 @@
    ],
    "level": 20,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4319,7 +4319,7 @@
    ],
    "level": 20,
    "name": "Hearts of the Pure",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4341,7 +4341,7 @@
    ],
    "level": 10,
    "name": "Halgar's Summons",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 2
   },
@@ -4429,7 +4429,7 @@
    ],
    "level": 4,
    "name": "Vile Familiars",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 2
   },
@@ -4539,7 +4539,7 @@
    ],
    "level": 4,
    "name": "Vile Familiars",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 2
   },
@@ -4583,7 +4583,7 @@
    ],
    "level": 11,
    "name": "Creature of the Void",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 2
   },
@@ -4616,7 +4616,7 @@
    ],
    "level": 11,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 2
   },
@@ -4638,7 +4638,7 @@
    ],
    "level": 10,
    "name": "Gan'rul's Summons",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 2
   },
@@ -4649,7 +4649,7 @@
    ],
    "level": 20,
    "name": "Devourer of Souls",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4660,7 +4660,7 @@
    ],
    "level": 20,
    "name": "Blind Cazul",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4671,7 +4671,7 @@
    ],
    "level": 20,
    "name": "News of Dogran",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4693,7 +4693,7 @@
    ],
    "level": 20,
    "name": "News of Dogran",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4704,7 +4704,7 @@
    ],
    "level": 20,
    "name": "Ken'zigla's Draught",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4715,7 +4715,7 @@
    ],
    "level": 20,
    "name": "Love's Gift",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4726,7 +4726,7 @@
    ],
    "level": 20,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4748,7 +4748,7 @@
    ],
    "level": 20,
    "name": "Dogran's Captivity",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -4759,7 +4759,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4770,7 +4770,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4781,7 +4781,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4792,7 +4792,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4814,7 +4814,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4825,7 +4825,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 2
   },
@@ -4836,7 +4836,7 @@
    ],
    "level": 10,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -4847,7 +4847,7 @@
    ],
    "level": 10,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -4858,7 +4858,7 @@
    ],
    "level": 11,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -4869,7 +4869,7 @@
    ],
    "level": 12,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -4880,7 +4880,7 @@
    ],
    "level": 13,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -4891,7 +4891,7 @@
    ],
    "level": 13,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -4902,7 +4902,7 @@
    ],
    "level": 20,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -4913,7 +4913,7 @@
    ],
    "level": 20,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -4935,7 +4935,7 @@
    ],
    "level": 22,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -4946,7 +4946,7 @@
    ],
    "level": 30,
    "name": "Call of Air",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 30,
    "side": 2
   },
@@ -4957,7 +4957,7 @@
    ],
    "level": 30,
    "name": "Call of Air",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 30,
    "side": 2
   },
@@ -4968,7 +4968,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -4979,7 +4979,7 @@
    ],
    "level": 22,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -4990,7 +4990,7 @@
    ],
    "level": 22,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -5155,7 +5155,7 @@
    ],
    "level": 4,
    "name": "The Stolen Tome",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 1
   },
@@ -5166,7 +5166,7 @@
    ],
    "level": 4,
    "name": "Beginnings",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 1
   },
@@ -5650,7 +5650,7 @@
    ],
    "level": 10,
    "name": "Gakin's Summons",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 1
   },
@@ -5683,7 +5683,7 @@
    ],
    "level": 10,
    "name": "Surena Caledon",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 1
   },
@@ -5694,7 +5694,7 @@
    ],
    "level": 10,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 1
   },
@@ -5980,7 +5980,7 @@
    ],
    "level": 10,
    "name": "The Slaughtered Lamb",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 10,
    "side": 1
   },
@@ -5991,7 +5991,7 @@
    ],
    "level": 20,
    "name": "Devourer of Souls",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 1
   },
@@ -6002,7 +6002,7 @@
    ],
    "level": 20,
    "name": "Gakin's Summons",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 1
   },
@@ -6057,7 +6057,7 @@
    ],
    "level": 20,
    "name": "Heartswood",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 1
   },
@@ -6068,7 +6068,7 @@
    ],
    "level": 20,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 1
   },
@@ -6090,7 +6090,7 @@
    ],
    "level": 25,
    "name": "The Orb of Soran'ruk",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 3
   },
@@ -6112,7 +6112,7 @@
    ],
    "level": 30,
    "name": "Tome of the Cabal",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 1
   },
@@ -6354,7 +6354,7 @@
    ],
    "level": 30,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 3
   },
@@ -6365,7 +6365,7 @@
    ],
    "level": 31,
    "name": "Components for the Enchanted Gold Bloodrobe",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 3
   },
@@ -6376,7 +6376,7 @@
    ],
    "level": 30,
    "name": "Seeking Strahad",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 1
   },
@@ -6387,7 +6387,7 @@
    ],
    "level": 40,
    "name": "Fragments of the Orb of Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 3
   },
@@ -6431,7 +6431,7 @@
    ],
    "level": 30,
    "name": "Tome of the Cabal",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 2
   },
@@ -6442,7 +6442,7 @@
    ],
    "level": 30,
    "name": "Tome of the Cabal",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 1
   },
@@ -6453,7 +6453,7 @@
    ],
    "level": 30,
    "name": "Tome of the Cabal",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 2
   },
@@ -6464,7 +6464,7 @@
    ],
    "level": 30,
    "name": "Tome of the Cabal",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 1
   },
@@ -6475,7 +6475,7 @@
    ],
    "level": 30,
    "name": "Tome of the Cabal",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 2
   },
@@ -6761,7 +6761,7 @@
    ],
    "level": 13,
    "name": "The Shattered Hand",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -6772,7 +6772,7 @@
    ],
    "level": 10,
    "name": "Therzok",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -6794,7 +6794,7 @@
    ],
    "level": 10,
    "name": "Speak with Jennea",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 1
   },
@@ -6805,7 +6805,7 @@
    ],
    "level": 10,
    "name": "Mirror Lake",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 1
   },
@@ -6838,7 +6838,7 @@
    ],
    "level": 10,
    "name": "Speak with Bink",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 1
   },
@@ -6860,7 +6860,7 @@
    ],
    "level": 10,
    "name": "Mage-tastic Gizmonitor",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 1
   },
@@ -6871,7 +6871,7 @@
    ],
    "level": 10,
    "name": "Speak with Anastasia",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 2
   },
@@ -6882,7 +6882,7 @@
    ],
    "level": 10,
    "name": "The Balnir Farmstead",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 2
   },
@@ -6893,7 +6893,7 @@
    ],
    "level": 10,
    "name": "Speak with Un'thuwa",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 2
   },
@@ -6904,7 +6904,7 @@
    ],
    "level": 10,
    "name": "Ju-Ju Heaps",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 2
   },
@@ -6915,7 +6915,7 @@
    ],
    "level": 10,
    "name": "Mennet Carkad",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -6926,7 +6926,7 @@
    ],
    "level": 13,
    "name": "The Deathstalkers",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -6948,7 +6948,7 @@
    ],
    "level": 13,
    "name": "The Deathstalkers",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -6959,7 +6959,7 @@
    ],
    "level": 13,
    "name": "The Deathstalkers",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -7014,7 +7014,7 @@
    ],
    "level": 15,
    "name": "Report to Jennea",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 1
   },
@@ -7036,7 +7036,7 @@
    ],
    "level": 16,
    "name": "Investigate the Blue Recluse",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 1
   },
@@ -7047,7 +7047,7 @@
    ],
    "level": 15,
    "name": "Gathering Materials",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 1
   },
@@ -7069,7 +7069,7 @@
    ],
    "level": 28,
    "name": "Ur's Treatise on Shadow Magic",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 1
   },
@@ -7080,7 +7080,7 @@
    ],
    "level": 26,
    "name": "High Sorcerer Andromath",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 1
   },
@@ -7102,7 +7102,7 @@
    ],
    "level": 26,
    "name": "Pristine Spider Silk",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 1
   },
@@ -7113,7 +7113,7 @@
    ],
    "level": 15,
    "name": "Manaweave Robe",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 1
   },
@@ -7124,7 +7124,7 @@
    ],
    "level": 26,
    "name": "Astral Knot Garment",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 1
   },
@@ -7135,7 +7135,7 @@
    ],
    "level": 26,
    "name": "Speak with Deino",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 2
   },
@@ -7146,7 +7146,7 @@
    ],
    "level": 26,
    "name": "Waters of Xavian",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 2
   },
@@ -7157,7 +7157,7 @@
    ],
    "level": 26,
    "name": "Laughing Sisters",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 2
   },
@@ -7168,7 +7168,7 @@
    ],
    "level": 26,
    "name": "Nether-lace Garment",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 26,
    "side": 2
   },
@@ -7179,7 +7179,7 @@
    ],
    "level": 38,
    "name": "Journey to the Marsh",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 30,
    "side": 3
   },
@@ -7190,7 +7190,7 @@
    ],
    "level": 40,
    "name": "Items of Power",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 30,
    "side": 3
   },
@@ -7201,7 +7201,7 @@
    ],
    "level": 38,
    "name": "Hidden Secrets",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 30,
    "side": 3
   },
@@ -7223,7 +7223,7 @@
    ],
    "level": 30,
    "name": "Get the Scoop",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 30,
    "side": 3
   },
@@ -7234,7 +7234,7 @@
    ],
    "level": 40,
    "name": "Rituals of Power",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 30,
    "side": 3
   },
@@ -7245,7 +7245,7 @@
    ],
    "level": 40,
    "name": "Mage's Wand",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 30,
    "side": 3
   },
@@ -7256,7 +7256,7 @@
    ],
    "level": 40,
    "name": "Return to the Marsh",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 35,
    "side": 3
   },
@@ -7267,7 +7267,7 @@
    ],
    "level": 40,
    "name": "The Infernal Orb",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 35,
    "side": 3
   },
@@ -7278,7 +7278,7 @@
    ],
    "level": 40,
    "name": "The Exorcism",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 35,
    "side": 3
   },
@@ -7289,7 +7289,7 @@
    ],
    "level": 40,
    "name": "Power in Uldaman",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 35,
    "side": 3
   },
@@ -7300,7 +7300,7 @@
    ],
    "level": 40,
    "name": "Mana Surges",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 35,
    "side": 3
   },
@@ -7311,7 +7311,7 @@
    ],
    "level": 40,
    "name": "Celestial Power",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 35,
    "side": 3
   },
@@ -7322,7 +7322,7 @@
    ],
    "level": 15,
    "name": "Report to Anastasia",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 2
   },
@@ -7344,7 +7344,7 @@
    ],
    "level": 16,
    "name": "Investigate the Alchemist Shop",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 2
   },
@@ -7355,7 +7355,7 @@
    ],
    "level": 15,
    "name": "Gathering Materials",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 2
   },
@@ -7366,7 +7366,7 @@
    ],
    "level": 15,
    "name": "Spellfire Robes",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 15,
    "side": 2
   },
@@ -7377,7 +7377,7 @@
    ],
    "level": 13,
    "name": "The Shattered Hand",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -7399,7 +7399,7 @@
    ],
    "level": 13,
    "name": "The Deathstalkers",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 2
   },
@@ -7432,7 +7432,7 @@
    ],
    "level": 16,
    "name": "Fenwick Thatros",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 2
   },
@@ -7443,7 +7443,7 @@
    ],
    "level": 20,
    "name": "Tools of the Trade",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 2
   },
@@ -7894,7 +7894,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -7960,7 +7960,7 @@
    ],
    "level": 10,
    "name": "Seek out SI: 7",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 1
   },
@@ -7971,7 +7971,7 @@
    ],
    "level": 10,
    "name": "Snatch and Grab",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 1
   },
@@ -7993,7 +7993,7 @@
    ],
    "level": 10,
    "name": "Road to Salvation",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 1
   },
@@ -8026,7 +8026,7 @@
    ],
    "level": 10,
    "name": "Simple Subterfugin'",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 1
   },
@@ -8037,7 +8037,7 @@
    ],
    "level": 10,
    "name": "Onin's Report",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 1
   },
@@ -8070,7 +8070,7 @@
    ],
    "level": 10,
    "name": "The Apple Falls",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 1
   },
@@ -8081,7 +8081,7 @@
    ],
    "level": 10,
    "name": "Destiny Calls",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 10,
    "side": 1
   },
@@ -8114,7 +8114,7 @@
    ],
    "level": 16,
    "name": "Erion Shadewhisper",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 1
   },
@@ -8136,7 +8136,7 @@
    ],
    "level": 16,
    "name": "Erion's Behest",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 1
   },
@@ -8202,7 +8202,7 @@
    ],
    "level": 16,
    "name": "Redridge Rendezvous",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 1
   },
@@ -8213,7 +8213,7 @@
    ],
    "level": 20,
    "name": "Alther's Mill",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 1
   },
@@ -8257,7 +8257,7 @@
    ],
    "level": 16,
    "name": "Kingly Shakedown",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 1
   },
@@ -8268,7 +8268,7 @@
    ],
    "level": 16,
    "name": "To Hulfdan!",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 1
   },
@@ -8301,7 +8301,7 @@
    ],
    "level": 16,
    "name": "SI:7",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 1
   },
@@ -8433,7 +8433,7 @@
    ],
    "level": 22,
    "name": "Horns of Nez'ra",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 3
   },
@@ -8444,7 +8444,7 @@
    ],
    "level": 24,
    "name": "Klaven's Tower",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 1
   },
@@ -8455,7 +8455,7 @@
    ],
    "level": 20,
    "name": "Mathias and the Defias",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 1
   },
@@ -8488,7 +8488,7 @@
    ],
    "level": 16,
    "name": "Find the Shattered Hand",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 2
   },
@@ -8499,7 +8499,7 @@
    ],
    "level": 16,
    "name": "Zando'zan",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 2
   },
@@ -8521,7 +8521,7 @@
    ],
    "level": 16,
    "name": "To Orgrimmar!",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 2
   },
@@ -8532,7 +8532,7 @@
    ],
    "level": 18,
    "name": "Plundering the Plunderers",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 2
   },
@@ -8543,7 +8543,7 @@
    ],
    "level": 16,
    "name": "Wrenix of Ratchet",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 16,
    "side": 2
   },
@@ -8697,7 +8697,7 @@
    ],
    "level": 20,
    "name": "Deep Cover",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 2
   },
@@ -8730,7 +8730,7 @@
    ],
    "level": 20,
    "name": "The Shattered Salute",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 2
   },
@@ -8752,7 +8752,7 @@
    ],
    "level": 24,
    "name": "Mission: Possible But Not Probable",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 2
   },
@@ -8763,7 +8763,7 @@
    ],
    "level": 26,
    "name": "Hinott's Assistance",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 2
   },
@@ -8785,7 +8785,7 @@
    ],
    "level": 20,
    "name": "Hinott's Assistance",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 2
   },
@@ -9115,7 +9115,7 @@
    ],
    "level": 16,
    "name": "A Lesson to Learn",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 2
   },
@@ -9192,7 +9192,7 @@
    ],
    "level": 20,
    "name": "The Touch of Zanzil",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 1
   },
@@ -9203,7 +9203,7 @@
    ],
    "level": 20,
    "name": "The Touch of Zanzil",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 1
   },
@@ -9214,7 +9214,7 @@
    ],
    "level": 20,
    "name": "The Touch of Zanzil",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 20,
    "side": 1
   },
@@ -9401,7 +9401,7 @@
    ],
    "level": 16,
    "name": "A Lesson to Learn",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 1
   },
@@ -9456,7 +9456,7 @@
    ],
    "level": 16,
    "name": "Trial of the Sea Lion",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 1
   },
@@ -9962,7 +9962,7 @@
    ],
    "level": 16,
    "name": "Trial of the Lake",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 2
   },
@@ -10567,7 +10567,7 @@
    ],
    "level": 16,
    "name": "Trial of the Lake",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 1
   },
@@ -11293,7 +11293,7 @@
    ],
    "level": 10,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -11304,7 +11304,7 @@
    ],
    "level": 10,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -11315,7 +11315,7 @@
    ],
    "level": 20,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -11326,7 +11326,7 @@
    ],
    "level": 20,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -11447,7 +11447,7 @@
    ],
    "level": 30,
    "name": "Seeking Strahad",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 2
   },
@@ -11491,7 +11491,7 @@
    ],
    "level": 16,
    "name": "Trial of the Sea Lion",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 2
   },
@@ -11513,7 +11513,7 @@
    ],
    "level": 30,
    "name": "Seeking Strahad",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 30,
    "side": 2
   },
@@ -11678,7 +11678,7 @@
    ],
    "level": 1,
    "name": "Etched Tablet",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 1,
    "side": 2
   },
@@ -11689,7 +11689,7 @@
    ],
    "level": 1,
    "name": "Encrypted Tablet",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 2
   },
@@ -11700,7 +11700,7 @@
    ],
    "level": 1,
    "name": "Rune-Inscribed Tablet",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 1,
    "side": 2
   },
@@ -11711,7 +11711,7 @@
    ],
    "level": 1,
    "name": "Hallowed Tablet",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 1,
    "side": 2
   },
@@ -11722,7 +11722,7 @@
    ],
    "level": 1,
    "name": "Glyphic Tablet",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 1,
    "side": 2
   },
@@ -11733,7 +11733,7 @@
    ],
    "level": 1,
    "name": "Etched Parchment",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 1,
    "side": 2
   },
@@ -11744,7 +11744,7 @@
    ],
    "level": 1,
    "name": "Encrypted Parchment",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 2
   },
@@ -11755,7 +11755,7 @@
    ],
    "level": 1,
    "name": "Rune-Inscribed Parchment",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 1,
    "side": 2
   },
@@ -11777,7 +11777,7 @@
    ],
    "level": 1,
    "name": "Tainted Parchment",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 2
   },
@@ -11799,7 +11799,7 @@
    ],
    "level": 1,
    "name": "Etched Note",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 1,
    "side": 2
   },
@@ -11810,7 +11810,7 @@
    ],
    "level": 1,
    "name": "Rune-Inscribed Note",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 1,
    "side": 2
   },
@@ -11821,7 +11821,7 @@
    ],
    "level": 1,
    "name": "Verdant Note",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 1,
    "side": 2
   },
@@ -11843,7 +11843,7 @@
    ],
    "level": 1,
    "name": "Encrypted Scroll",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 2
   },
@@ -11854,7 +11854,7 @@
    ],
    "level": 1,
    "name": "Hallowed Scroll",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 1,
    "side": 2
   },
@@ -11865,7 +11865,7 @@
    ],
    "level": 1,
    "name": "Glyphic Scroll",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 1,
    "side": 2
   },
@@ -11876,7 +11876,7 @@
    ],
    "level": 1,
    "name": "Tainted Scroll",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 2
   },
@@ -11887,7 +11887,7 @@
    ],
    "level": 16,
    "name": "Aquatic Form",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 2
   },
@@ -11931,7 +11931,7 @@
    ],
    "level": 1,
    "name": "Encrypted Letter",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 1
   },
@@ -11942,7 +11942,7 @@
    ],
    "level": 1,
    "name": "Hallowed Letter",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 1,
    "side": 1
   },
@@ -11953,7 +11953,7 @@
    ],
    "level": 1,
    "name": "Glyphic Letter",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 1,
    "side": 1
   },
@@ -11964,7 +11964,7 @@
    ],
    "level": 1,
    "name": "Tainted Letter",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 1
   },
@@ -11997,7 +11997,7 @@
    ],
    "level": 1,
    "name": "Etched Rune",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 1,
    "side": 1
   },
@@ -12008,7 +12008,7 @@
    ],
    "level": 1,
    "name": "Encrypted Rune",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 1
   },
@@ -12030,7 +12030,7 @@
    ],
    "level": 1,
    "name": "Hallowed Rune",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 1,
    "side": 1
   },
@@ -12052,7 +12052,7 @@
    ],
    "level": 1,
    "name": "Encrypted Memorandum",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 1
   },
@@ -12063,7 +12063,7 @@
    ],
    "level": 1,
    "name": "Glyphic Memorandum",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 1,
    "side": 1
   },
@@ -12074,7 +12074,7 @@
    ],
    "level": 1,
    "name": "Tainted Memorandum",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 1
   },
@@ -12096,7 +12096,7 @@
    ],
    "level": 1,
    "name": "Etched Sigil",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 1,
    "side": 1
   },
@@ -12107,7 +12107,7 @@
    ],
    "level": 1,
    "name": "Encrypted Sigil",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 1
   },
@@ -12118,7 +12118,7 @@
    ],
    "level": 1,
    "name": "Hallowed Sigil",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 1,
    "side": 1
   },
@@ -12140,7 +12140,7 @@
    ],
    "level": 1,
    "name": "Verdant Sigil",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 1,
    "side": 1
   },
@@ -13955,7 +13955,7 @@
    ],
    "level": 40,
    "name": "Summon Felsteed",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 40,
    "side": 2
   },
@@ -15220,7 +15220,7 @@
    ],
    "level": 30,
    "name": "You Have Served Us Well",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 25,
    "side": 1
   },
@@ -17431,7 +17431,7 @@
    ],
    "level": 40,
    "name": "Summon Felsteed",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 40,
    "side": 1
   },
@@ -17442,7 +17442,7 @@
    ],
    "level": 40,
    "name": "Summon Felsteed",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 40,
    "side": 1
   },
@@ -17453,7 +17453,7 @@
    ],
    "level": 40,
    "name": "Summon Felsteed",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 40,
    "side": 2
   },
@@ -17475,7 +17475,7 @@
    ],
    "level": 40,
    "name": "Summon Felsteed",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 40,
    "side": 3
   },
@@ -18322,7 +18322,7 @@
    ],
    "level": 31,
    "name": "In Search of Menara Voidrender",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 2
   },
@@ -18333,7 +18333,7 @@
    ],
    "level": 31,
    "name": "In Search of Menara Voidrender",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 1
   },
@@ -18344,7 +18344,7 @@
    ],
    "level": 31,
    "name": "In Search of Menara Voidrender",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 1
   },
@@ -18355,7 +18355,7 @@
    ],
    "level": 31,
    "name": "In Search of Menara Voidrender",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 2
   },
@@ -18586,7 +18586,7 @@
    ],
    "level": 34,
    "name": "Components for the Enchanted Gold Bloodrobe",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 3
   },
@@ -18597,7 +18597,7 @@
    ],
    "level": 34,
    "name": "Components for the Enchanted Gold Bloodrobe",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 3
   },
@@ -18608,7 +18608,7 @@
    ],
    "level": 37,
    "name": "Components for the Enchanted Gold Bloodrobe",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 3
   },
@@ -18619,7 +18619,7 @@
    ],
    "level": 37,
    "name": "Components for the Enchanted Gold Bloodrobe",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 3
   },
@@ -18630,7 +18630,7 @@
    ],
    "level": 37,
    "name": "Fine Gold Thread",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 3
   },
@@ -18641,7 +18641,7 @@
    ],
    "level": 38,
    "name": "The Completed Robe",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 31,
    "side": 3
   },
@@ -19279,7 +19279,7 @@
    ],
    "level": 40,
    "name": "Cleansing of the Orb of Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 3
   },
@@ -19290,7 +19290,7 @@
    ],
    "level": 40,
    "name": "Shard of a Felhound",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 3
   },
@@ -19301,7 +19301,7 @@
    ],
    "level": 40,
    "name": "Shard of an Infernal",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 3
   },
@@ -19312,7 +19312,7 @@
    ],
    "level": 40,
    "name": "The Completed Orb of Dar'Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 3
   },
@@ -19323,7 +19323,7 @@
    ],
    "level": 35,
    "name": "Knowledge of the Orb of Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 1
   },
@@ -19345,7 +19345,7 @@
    ],
    "level": 35,
    "name": "Knowledge of the Orb of Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 1
   },
@@ -19356,7 +19356,7 @@
    ],
    "level": 35,
    "name": "Knowledge of the Orb of Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 2
   },
@@ -19367,7 +19367,7 @@
    ],
    "level": 35,
    "name": "Knowledge of the Orb of Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 2
   },
@@ -19433,7 +19433,7 @@
    ],
    "level": 40,
    "name": "The Completed Orb of Noh'Orahil",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 3
   },
@@ -19444,7 +19444,7 @@
    ],
    "level": 40,
    "name": "Returning the Cleansed Orb",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 35,
    "side": 3
   },
@@ -19917,7 +19917,7 @@
    ],
    "level": 16,
    "name": "Aquatic Form",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 16,
    "side": 1
   },
@@ -22722,7 +22722,7 @@
    ],
    "level": 4,
    "name": "Garments of the Moon",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 1
   },
@@ -22733,7 +22733,7 @@
    ],
    "level": 4,
    "name": "In Favor of Elune",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 1
   },
@@ -22744,7 +22744,7 @@
    ],
    "level": 4,
    "name": "In Favor of the Light",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 1
   },
@@ -22755,7 +22755,7 @@
    ],
    "level": 4,
    "name": "Garments of the Light",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 1
   },
@@ -22766,7 +22766,7 @@
    ],
    "level": 4,
    "name": "Garments of the Light",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 1
   },
@@ -22777,7 +22777,7 @@
    ],
    "level": 4,
    "name": "In Favor of the Light",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 1
   },
@@ -22788,7 +22788,7 @@
    ],
    "level": 10,
    "name": "Stars of Elune",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22799,7 +22799,7 @@
    ],
    "level": 10,
    "name": "Returning Home",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22810,7 +22810,7 @@
    ],
    "level": 10,
    "name": "Returning Home",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22832,7 +22832,7 @@
    ],
    "level": 10,
    "name": "Returning Home",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22843,7 +22843,7 @@
    ],
    "level": 10,
    "name": "Returning Home",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22854,7 +22854,7 @@
    ],
    "level": 10,
    "name": "Returning Home",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22865,7 +22865,7 @@
    ],
    "level": 10,
    "name": "Returning Home",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22876,7 +22876,7 @@
    ],
    "level": 10,
    "name": "Desperate Prayer",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22887,7 +22887,7 @@
    ],
    "level": 10,
    "name": "Desperate Prayer",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22898,7 +22898,7 @@
    ],
    "level": 10,
    "name": "Desperate Prayer",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22909,7 +22909,7 @@
    ],
    "level": 10,
    "name": "Desperate Prayer",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22920,7 +22920,7 @@
    ],
    "level": 10,
    "name": "Desperate Prayer",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22931,7 +22931,7 @@
    ],
    "level": 10,
    "name": "Desperate Prayer",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22953,7 +22953,7 @@
    ],
    "level": 10,
    "name": "Desperate Prayer",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -22964,7 +22964,7 @@
    ],
    "level": 20,
    "name": "Chastise",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -22975,7 +22975,7 @@
    ],
    "level": 20,
    "name": "Shadowguard",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 2
   },
@@ -22986,7 +22986,7 @@
    ],
    "level": 20,
    "name": "Shadowguard",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 2
   },
@@ -22997,7 +22997,7 @@
    ],
    "level": 20,
    "name": "Dark Sacrifice",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 2
   },
@@ -23008,7 +23008,7 @@
    ],
    "level": 20,
    "name": "Chastise",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23019,7 +23019,7 @@
    ],
    "level": 20,
    "name": "Dark Sacrifice",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 2
   },
@@ -23030,7 +23030,7 @@
    ],
    "level": 20,
    "name": "Chastise",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23041,7 +23041,7 @@
    ],
    "level": 4,
    "name": "Garments of Spirituality",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 2
   },
@@ -23052,7 +23052,7 @@
    ],
    "level": 4,
    "name": "In Favor of Spirituality",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 2
   },
@@ -23074,7 +23074,7 @@
    ],
    "level": 4,
    "name": "Garments of Darkness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 2
   },
@@ -23085,7 +23085,7 @@
    ],
    "level": 4,
    "name": "In Favor of Darkness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 5,
    "side": 2
   },
@@ -23096,7 +23096,7 @@
    ],
    "level": 10,
    "name": "Hex of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23107,7 +23107,7 @@
    ],
    "level": 10,
    "name": "Hex of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23118,7 +23118,7 @@
    ],
    "level": 10,
    "name": "Hex of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23129,7 +23129,7 @@
    ],
    "level": 10,
    "name": "Hex of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23140,7 +23140,7 @@
    ],
    "level": 10,
    "name": "Hex of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23151,7 +23151,7 @@
    ],
    "level": 10,
    "name": "Touch of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23173,7 +23173,7 @@
    ],
    "level": 10,
    "name": "Touch of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23184,7 +23184,7 @@
    ],
    "level": 10,
    "name": "Touch of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23195,7 +23195,7 @@
    ],
    "level": 10,
    "name": "Touch of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23206,7 +23206,7 @@
    ],
    "level": 10,
    "name": "Touch of Weakness",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 2
   },
@@ -23228,7 +23228,7 @@
    ],
    "level": 20,
    "name": "Elune's Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23239,7 +23239,7 @@
    ],
    "level": 20,
    "name": "Elune's Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23250,7 +23250,7 @@
    ],
    "level": 20,
    "name": "Elune's Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23261,7 +23261,7 @@
    ],
    "level": 20,
    "name": "Elune's Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23272,7 +23272,7 @@
    ],
    "level": 20,
    "name": "Arcane Feedback",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23283,7 +23283,7 @@
    ],
    "level": 20,
    "name": "Arcane Feedback",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23294,7 +23294,7 @@
    ],
    "level": 20,
    "name": "Arcane Feedback",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -23305,7 +23305,7 @@
    ],
    "level": 20,
    "name": "Dark Sacrifice",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 2
   },
@@ -23327,7 +23327,7 @@
    ],
    "level": 20,
    "name": "Shadowguard",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 2
   },
@@ -24196,7 +24196,7 @@
    ],
    "level": 10,
    "name": "Moonglade",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -24207,7 +24207,7 @@
    ],
    "level": 10,
    "name": "Moonglade",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 2
   },
@@ -24218,7 +24218,7 @@
    ],
    "level": 10,
    "name": "Heeding the Call",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -24229,7 +24229,7 @@
    ],
    "level": 10,
    "name": "Heeding the Call",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -24240,7 +24240,7 @@
    ],
    "level": 10,
    "name": "Heeding the Call",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -24251,7 +24251,7 @@
    ],
    "level": 10,
    "name": "Heeding the Call",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 2
   },
@@ -24262,7 +24262,7 @@
    ],
    "level": 10,
    "name": "Heeding the Call",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 2
   },
@@ -24273,7 +24273,7 @@
    ],
    "level": 10,
    "name": "Heeding the Call",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 2
   },
@@ -24284,7 +24284,7 @@
    ],
    "level": 10,
    "name": "Great Bear Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -24306,7 +24306,7 @@
    ],
    "level": 10,
    "name": "Great Bear Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 2
   },
@@ -24317,7 +24317,7 @@
    ],
    "level": 10,
    "name": "Back to Darnassus",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -24328,7 +24328,7 @@
    ],
    "level": 10,
    "name": "Back to Thunder Bluff",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 2
   },
@@ -24504,7 +24504,7 @@
    ],
    "level": 10,
    "name": "Body and Heart",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -24515,7 +24515,7 @@
    ],
    "level": 10,
    "name": "Body and Heart",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 2
   },
@@ -24757,7 +24757,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24768,7 +24768,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24779,7 +24779,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24790,7 +24790,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24801,7 +24801,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24812,7 +24812,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24823,7 +24823,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24834,7 +24834,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24845,7 +24845,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24867,7 +24867,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24878,7 +24878,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24889,7 +24889,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24900,7 +24900,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24911,7 +24911,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24922,7 +24922,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24933,7 +24933,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24955,7 +24955,7 @@
    ],
    "level": 10,
    "name": "Training the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24966,7 +24966,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24977,7 +24977,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -24988,7 +24988,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -24999,7 +24999,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -25010,7 +25010,7 @@
    ],
    "level": 10,
    "name": "Training the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -25021,7 +25021,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -25032,7 +25032,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -25043,7 +25043,7 @@
    ],
    "level": 10,
    "name": "Training the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 2
   },
@@ -25087,7 +25087,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -25098,7 +25098,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -25109,7 +25109,7 @@
    ],
    "level": 10,
    "name": "Training the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -25131,7 +25131,7 @@
    ],
    "level": 14,
    "name": "Lessons Anew",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 1
   },
@@ -25142,7 +25142,7 @@
    ],
    "level": 14,
    "name": "The Principal Source",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 1
   },
@@ -25153,7 +25153,7 @@
    ],
    "level": 14,
    "name": "Gathering the Cure",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 1
   },
@@ -25164,7 +25164,7 @@
    ],
    "level": 14,
    "name": "Curing the Sick",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 1
   },
@@ -25175,7 +25175,7 @@
    ],
    "level": 14,
    "name": "Power over Poison",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 1
   },
@@ -25186,7 +25186,7 @@
    ],
    "level": 14,
    "name": "Lessons Anew",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 2
   },
@@ -25197,7 +25197,7 @@
    ],
    "level": 14,
    "name": "The Principal Source",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 2
   },
@@ -25208,7 +25208,7 @@
    ],
    "level": 14,
    "name": "Gathering the Cure",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 2
   },
@@ -25219,7 +25219,7 @@
    ],
    "level": 14,
    "name": "Curing the Sick",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 2
   },
@@ -25241,7 +25241,7 @@
    ],
    "level": 14,
    "name": "Power over Poison",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 14,
    "side": 2
   },
@@ -25780,7 +25780,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -26693,7 +26693,7 @@
    ],
    "level": 20,
    "name": "Hearts of the Lovers",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -26704,7 +26704,7 @@
    ],
    "level": 20,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -26726,7 +26726,7 @@
    ],
    "level": 20,
    "name": "Love Hurts",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -26737,7 +26737,7 @@
    ],
    "level": 20,
    "name": "What Is Love?",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 1
   },
@@ -26748,7 +26748,7 @@
    ],
    "level": 20,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 1
   },
@@ -26759,7 +26759,7 @@
    ],
    "level": 20,
    "name": "The Binding",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -26781,7 +26781,7 @@
    ],
    "level": 20,
    "name": "Wish You Were Here",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 20,
    "side": 2
   },
@@ -27419,7 +27419,7 @@
    ],
    "level": 24,
    "name": "The Manor, Ravenholdt",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -27463,7 +27463,7 @@
    ],
    "level": 60,
    "name": "Syndicate Emblems",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -27496,7 +27496,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -27507,7 +27507,7 @@
    ],
    "level": 10,
    "name": "The Hunter's Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -29649,7 +29649,7 @@
    ],
    "level": 60,
    "name": "Arcane Refreshment",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -29880,7 +29880,7 @@
    ],
    "level": 60,
    "name": "Garona: A Study on Stealth and Treachery",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 54,
    "side": 3
   },
@@ -29924,7 +29924,7 @@
    ],
    "level": 60,
    "name": "The Arcanist's Cookbook",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 54,
    "side": 3
   },
@@ -29946,7 +29946,7 @@
    ],
    "level": 60,
    "name": "Harnessing Shadows",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 54,
    "side": 3
   },
@@ -29957,7 +29957,7 @@
    ],
    "level": 60,
    "name": "The Greatest Race of Hunters",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 54,
    "side": 3
   },
@@ -29968,7 +29968,7 @@
    ],
    "level": 60,
    "name": "Holy Bologna: What the Light Won't Tell You",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 54,
    "side": 3
   },
@@ -29979,7 +29979,7 @@
    ],
    "level": 60,
    "name": "Frost Shock and You",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 54,
    "side": 3
   },
@@ -29990,7 +29990,7 @@
    ],
    "level": 60,
    "name": "The Emerald Dream...",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 54,
    "side": 3
   },
@@ -30111,7 +30111,7 @@
    ],
    "level": 58,
    "name": "Mor'zul Bloodbringer",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30122,7 +30122,7 @@
    ],
    "level": 58,
    "name": "Rage of Blood",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30133,7 +30133,7 @@
    ],
    "level": 58,
    "name": "Wildeyes",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30166,7 +30166,7 @@
    ],
    "level": 60,
    "name": "The Prison's Bindings",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30177,7 +30177,7 @@
    ],
    "level": 60,
    "name": "The Prison's Casing",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30188,7 +30188,7 @@
    ],
    "level": 60,
    "name": "Suppression",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30232,7 +30232,7 @@
    ],
    "level": 50,
    "name": "What Niby Commands",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 50,
    "side": 3
   },
@@ -30243,7 +30243,7 @@
    ],
    "level": 55,
    "name": "Flawless Fel Essence",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 50,
    "side": 3
   },
@@ -30254,7 +30254,7 @@
    ],
    "level": 55,
    "name": "Kroshius' Infernal Core",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 50,
    "side": 3
   },
@@ -30320,7 +30320,7 @@
    ],
    "level": 60,
    "name": "A Warning",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -30331,7 +30331,7 @@
    ],
    "level": 60,
    "name": "The Balance of Light and Shadow",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -30342,7 +30342,7 @@
    ],
    "level": 58,
    "name": "Lord Banehollow",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30353,7 +30353,7 @@
    ],
    "level": 58,
    "name": "Ulathek the Traitor",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30364,7 +30364,7 @@
    ],
    "level": 11,
    "name": "Stalk With The Earthmother",
-   "reqclass": 26529268145495817368698270085141929269599489197885635737275774799371349467856286107823031412514766781833160669831733170849685010826630722599913180357032477972433131834778106116763406531571642052278978829152779641626559444867441321393272043031646641368702655727187888642763445320447492427898726319213249332944267869040606548328448,
+   "reqclass": 1092,
    "reqlevel": 4,
    "side": 2
   },
@@ -30375,7 +30375,7 @@
    ],
    "level": 60,
    "name": "Xorothian Stardust",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30386,7 +30386,7 @@
    ],
    "level": 60,
    "name": "Bell of Dethmoora",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30397,7 +30397,7 @@
    ],
    "level": 60,
    "name": "Wheel of the Black March",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30408,7 +30408,7 @@
    ],
    "level": 60,
    "name": "Doomsday Candle",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30419,7 +30419,7 @@
    ],
    "level": 60,
    "name": "Imp Delivery",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30441,7 +30441,7 @@
    ],
    "level": 60,
    "name": "Arcanite",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30452,7 +30452,7 @@
    ],
    "level": 60,
    "name": "Dreadsteed of Xoroth",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -30463,7 +30463,7 @@
    ],
    "level": 60,
    "name": "The Ancient Leaf",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -30474,7 +30474,7 @@
    ],
    "level": 60,
    "name": "An Introduction",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -30485,7 +30485,7 @@
    ],
    "level": 60,
    "name": "Ancient Sinew Wrapped Lamina",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -30496,7 +30496,7 @@
    ],
    "level": 60,
    "name": "A Proper String",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -30507,7 +30507,7 @@
    ],
    "level": 60,
    "name": "Stave of the Ancients",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -30881,7 +30881,7 @@
    ],
    "level": 60,
    "name": "Material Assistance",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -30892,7 +30892,7 @@
    ],
    "level": 60,
    "name": "The Darkreaver Menace",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -30903,7 +30903,7 @@
    ],
    "level": 60,
    "name": "Again Into the Great Ossuary",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -32071,7 +32071,7 @@
    ],
    "level": 23,
    "name": "The Horn of Xelthos",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 3
   },
@@ -32093,7 +32093,7 @@
    ],
    "level": 23,
    "name": "Goblin Lockpicks",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 3
   },
@@ -32148,7 +32148,7 @@
    ],
    "level": 23,
    "name": "The Horn of Xelthos",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 1,
    "side": 3
   },
@@ -32489,7 +32489,7 @@
    ],
    "level": 35,
    "name": "The Eye of Bhossca",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 25,
    "side": 3
   },
@@ -33039,7 +33039,7 @@
    ],
    "level": 4,
    "name": "Vile Familiars",
-   "reqclass": 1211642775994771984629943073653160307860847358506487776213222224079492508861394633773276517369356493563673181221154635747822882403657243692798063462329716510479819205285657703151598497021662019015401534334254661948850107978511191772641905278949795790451153750218353330686038428105909331313593409942802833608243174641758729823247813094492647567400481885966866614845898085105664,
+   "reqclass": 1247,
    "reqlevel": 2,
    "side": 2
   },
@@ -33171,7 +33171,7 @@
    ],
    "level": 38,
    "name": "Storm, Earth, and Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 30,
    "side": 1
   },
@@ -33193,7 +33193,7 @@
    ],
    "level": 25,
    "name": "Grant's Shield",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 18,
    "side": 2
   },
@@ -33204,7 +33204,7 @@
    ],
    "level": 26,
    "name": "Silvia's Sword",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 18,
    "side": 2
   },
@@ -33402,7 +33402,7 @@
    ],
    "level": 35,
    "name": "The Troll Scroll",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 1,
    "side": 3
   },
@@ -33714,7 +33714,7 @@
    ],
    "level": 60,
    "name": "The Eye of Zuldazar",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -33736,7 +33736,7 @@
    ],
    "level": 60,
    "name": "The Eye of Zuldazar",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -33747,7 +33747,7 @@
    ],
    "level": 60,
    "name": "The Eye of Zuldazar",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -33758,7 +33758,7 @@
    ],
    "level": 60,
    "name": "The All-Seeing Eye of Zuldazar",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -33802,7 +33802,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Augur's Bracers",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 3
   },
@@ -33813,7 +33813,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Haruspex's Bracers",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -33835,7 +33835,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Demoniac's Wraps",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 3
   },
@@ -33857,7 +33857,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Illusionist's Wraps",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 3
   },
@@ -33868,7 +33868,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Confessor's Wraps",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -33879,7 +33879,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Predator's Bracers",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -33890,7 +33890,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Madcap's Bracers",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -33901,7 +33901,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Haruspex's Belt",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -33912,7 +33912,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Haruspex's Tunic",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -33923,7 +33923,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Predator's Belt",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -33934,7 +33934,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Predator's Mantle",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -33945,7 +33945,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Illusionist's Mantle",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 3
   },
@@ -33956,7 +33956,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Illusionist's Robes",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 3
   },
@@ -33967,7 +33967,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Confessor's Bindings",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -33978,7 +33978,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Confessor's Mantle",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -33989,7 +33989,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Madcap's Mantle",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -34000,7 +34000,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Madcap's Tunic",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -34011,7 +34011,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Augur's Belt",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 3
   },
@@ -34022,7 +34022,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Augur's Hauberk",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 3
   },
@@ -34033,7 +34033,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Demoniac's Mantle",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 3
   },
@@ -34044,7 +34044,7 @@
    ],
    "level": 60,
    "name": "Paragons of Power: The Demoniac's Robes",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 3
   },
@@ -34121,7 +34121,7 @@
    ],
    "level": 60,
    "name": "The Pebble of Kajaro",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 3
   },
@@ -34132,7 +34132,7 @@
    ],
    "level": 60,
    "name": "The Pebble of Kajaro",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 3
   },
@@ -34143,7 +34143,7 @@
    ],
    "level": 60,
    "name": "The Pebble of Kajaro",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 3
   },
@@ -34154,7 +34154,7 @@
    ],
    "level": 60,
    "name": "The Jewel of Kajaro",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 3
   },
@@ -34176,7 +34176,7 @@
    ],
    "level": 60,
    "name": "Kezan's Taint",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 3
   },
@@ -34187,7 +34187,7 @@
    ],
    "level": 60,
    "name": "Kezan's Taint",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 3
   },
@@ -34198,7 +34198,7 @@
    ],
    "level": 60,
    "name": "Kezan's Taint",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 3
   },
@@ -34209,7 +34209,7 @@
    ],
    "level": 60,
    "name": "Kezan's Unstoppable Taint",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 3
   },
@@ -34220,7 +34220,7 @@
    ],
    "level": 60,
    "name": "Enchanted South Seas Kelp",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -34231,7 +34231,7 @@
    ],
    "level": 60,
    "name": "Enchanted South Seas Kelp",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -34242,7 +34242,7 @@
    ],
    "level": 60,
    "name": "Enchanted South Seas Kelp",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -34253,7 +34253,7 @@
    ],
    "level": 60,
    "name": "Pristine Enchanted South Seas Kelp",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -34286,7 +34286,7 @@
    ],
    "level": 60,
    "name": "Vision of Voodress",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -34297,7 +34297,7 @@
    ],
    "level": 60,
    "name": "Vision of Voodress",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -34308,7 +34308,7 @@
    ],
    "level": 60,
    "name": "Vision of Voodress",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -34319,7 +34319,7 @@
    ],
    "level": 60,
    "name": "The Unmarred Vision of Voodress",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -34396,7 +34396,7 @@
    ],
    "level": 60,
    "name": "Zandalarian Shadow Talisman",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -34407,7 +34407,7 @@
    ],
    "level": 60,
    "name": "Zandalarian Shadow Talisman",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -34418,7 +34418,7 @@
    ],
    "level": 60,
    "name": "Zandalarian Shadow Talisman",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -34429,7 +34429,7 @@
    ],
    "level": 60,
    "name": "Zandalarian Shadow Mastery Talisman",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -34440,7 +34440,7 @@
    ],
    "level": 60,
    "name": "The Maelstrom's Tendril",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -34451,7 +34451,7 @@
    ],
    "level": 60,
    "name": "The Maelstrom's Tendril",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -34462,7 +34462,7 @@
    ],
    "level": 60,
    "name": "The Maelstrom's Tendril",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -34473,7 +34473,7 @@
    ],
    "level": 60,
    "name": "Maelstrom's Wrath",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -34517,7 +34517,7 @@
    ],
    "level": 52,
    "name": "The Hunter's Charm",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 50,
    "side": 3
   },
@@ -34528,7 +34528,7 @@
    ],
    "level": 52,
    "name": "Courser Antlers",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 50,
    "side": 3
   },
@@ -35111,7 +35111,7 @@
    ],
    "level": 52,
    "name": "Wavethrashing",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 50,
    "side": 3
   },
@@ -35122,7 +35122,7 @@
    ],
    "level": 52,
    "name": "The Green Drake",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 50,
    "side": 3
   },
@@ -35133,7 +35133,7 @@
    ],
    "level": 52,
    "name": "A Simple Request",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 50,
    "side": 3
   },
@@ -35144,7 +35144,7 @@
    ],
    "level": 52,
    "name": "Sealed Azure Bag",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 50,
    "side": 3
   },
@@ -35155,7 +35155,7 @@
    ],
    "level": 52,
    "name": "Encoded Fragments",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 50,
    "side": 3
   },
@@ -35166,7 +35166,7 @@
    ],
    "level": 52,
    "name": "The Azure Key",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 50,
    "side": 3
   },
@@ -35265,7 +35265,7 @@
    ],
    "level": 60,
    "name": "Junkboxes Needed",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 50,
    "side": 3
   },
@@ -35287,7 +35287,7 @@
    ],
    "level": 52,
    "name": "Magecraft",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 50,
    "side": 3
   },
@@ -35298,7 +35298,7 @@
    ],
    "level": 52,
    "name": "Magic Dust",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 50,
    "side": 3
   },
@@ -35309,7 +35309,7 @@
    ],
    "level": 52,
    "name": "The Siren's Coral",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 50,
    "side": 3
   },
@@ -35320,7 +35320,7 @@
    ],
    "level": 52,
    "name": "Destroy Morphaz",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 50,
    "side": 3
   },
@@ -35331,7 +35331,7 @@
    ],
    "level": 52,
    "name": "Cenarion Aid",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 50,
    "side": 3
   },
@@ -35342,7 +35342,7 @@
    ],
    "level": 52,
    "name": "Of Coursers We Know",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 50,
    "side": 3
   },
@@ -35353,7 +35353,7 @@
    ],
    "level": 52,
    "name": "The Ichor of Undeath",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 50,
    "side": 3
   },
@@ -35364,7 +35364,7 @@
    ],
    "level": 52,
    "name": "Blood of Morphaz",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 50,
    "side": 3
   },
@@ -35375,7 +35375,7 @@
    ],
    "level": 60,
    "name": "The Darkreaver Menace",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -35386,7 +35386,7 @@
    ],
    "level": 60,
    "name": "A More Fitting Reward",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -36519,7 +36519,7 @@
    ],
    "level": 60,
    "name": "Armaments of War",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 3
   },
@@ -36530,7 +36530,7 @@
    ],
    "level": 60,
    "name": "Armaments of War",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 3
   },
@@ -36541,7 +36541,7 @@
    ],
    "level": 60,
    "name": "Armaments of War",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 3
   },
@@ -36563,7 +36563,7 @@
    ],
    "level": 60,
    "name": "Armaments of War",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -36574,7 +36574,7 @@
    ],
    "level": 60,
    "name": "Armaments of War",
-   "reqclass": 19701003098197239606139520050071806902539869635232723333974146702122860885748605305707133127442457820403313995153408,
+   "reqclass": 384,
    "reqlevel": 58,
    "side": 3
   },
@@ -36585,7 +36585,7 @@
    ],
    "level": 60,
    "name": "Armaments of War",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 3
   },
@@ -36926,7 +36926,7 @@
    ],
    "level": 52,
    "name": "Elemental Mastery",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 50,
    "side": 2
   },
@@ -36937,7 +36937,7 @@
    ],
    "level": 52,
    "name": "Mastering the Elements",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 50,
    "side": 2
   },
@@ -36948,7 +36948,7 @@
    ],
    "level": 52,
    "name": "Spirit Totem",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 50,
    "side": 2
   },
@@ -36959,7 +36959,7 @@
    ],
    "level": 52,
    "name": "Da Voodoo",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 50,
    "side": 2
   },
@@ -37025,7 +37025,7 @@
    ],
    "level": 52,
    "name": "An Imp's Request",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 50,
    "side": 3
   },
@@ -37047,7 +37047,7 @@
    ],
    "level": 52,
    "name": "Hot and Itchy",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 50,
    "side": 3
   },
@@ -37058,7 +37058,7 @@
    ],
    "level": 52,
    "name": "The Wrong Stuff",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 50,
    "side": 3
   },
@@ -37069,7 +37069,7 @@
    ],
    "level": 52,
    "name": "Trolls of a Feather",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 50,
    "side": 3
   },
@@ -38785,7 +38785,7 @@
    ],
    "level": 60,
    "name": "Tiara of the Oracle",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -38796,7 +38796,7 @@
    ],
    "level": 60,
    "name": "Trousers of the Oracle",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -38807,7 +38807,7 @@
    ],
    "level": 60,
    "name": "Mantle of the Oracle",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -38829,7 +38829,7 @@
    ],
    "level": 60,
    "name": "Footwraps of the Oracle",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -38917,7 +38917,7 @@
    ],
    "level": 60,
    "name": "Stormcaller's Pauldrons",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -38928,7 +38928,7 @@
    ],
    "level": 60,
    "name": "Vestments of the Oracle",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -39137,7 +39137,7 @@
    ],
    "level": 60,
    "name": "Stormcaller's Footguards",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -39148,7 +39148,7 @@
    ],
    "level": 60,
    "name": "Stormcaller's Hauberk",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -39159,7 +39159,7 @@
    ],
    "level": 60,
    "name": "Stormcaller's Diadem",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -39170,7 +39170,7 @@
    ],
    "level": 60,
    "name": "Stormcaller's Leggings",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -39181,7 +39181,7 @@
    ],
    "level": 60,
    "name": "Enigma Shoulderpads",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -39192,7 +39192,7 @@
    ],
    "level": 60,
    "name": "Striker's Footguards",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -39258,7 +39258,7 @@
    ],
    "level": 60,
    "name": "Enigma Leggings",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -39269,7 +39269,7 @@
    ],
    "level": 60,
    "name": "Enigma Circlet",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -39280,7 +39280,7 @@
    ],
    "level": 60,
    "name": "Enigma Robes",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -39291,7 +39291,7 @@
    ],
    "level": 60,
    "name": "Enigma Boots",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -39324,7 +39324,7 @@
    ],
    "level": 60,
    "name": "Deathdealer's Boots",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -39335,7 +39335,7 @@
    ],
    "level": 60,
    "name": "Deathdealer's Vest",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -39346,7 +39346,7 @@
    ],
    "level": 60,
    "name": "Deathdealer's Helm",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -39368,7 +39368,7 @@
    ],
    "level": 60,
    "name": "Deathdealer's Leggings",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -39379,7 +39379,7 @@
    ],
    "level": 60,
    "name": "Deathdealer's Spaulders",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -39555,7 +39555,7 @@
    ],
    "level": 60,
    "name": "Striker's Hauberk",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -39566,7 +39566,7 @@
    ],
    "level": 60,
    "name": "Striker's Diadem",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -39599,7 +39599,7 @@
    ],
    "level": 60,
    "name": "Striker's Leggings",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -39621,7 +39621,7 @@
    ],
    "level": 60,
    "name": "Striker's Pauldrons",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -39643,7 +39643,7 @@
    ],
    "level": 60,
    "name": "Doomcaller's Footwraps",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -39654,7 +39654,7 @@
    ],
    "level": 60,
    "name": "Doomcaller's Robes",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -39687,7 +39687,7 @@
    ],
    "level": 60,
    "name": "Doomcaller's Circlet",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -39698,7 +39698,7 @@
    ],
    "level": 60,
    "name": "Doomcaller's Trousers",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -39709,7 +39709,7 @@
    ],
    "level": 60,
    "name": "Doomcaller's Mantle",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -39720,7 +39720,7 @@
    ],
    "level": 60,
    "name": "Genesis Boots",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -39731,7 +39731,7 @@
    ],
    "level": 60,
    "name": "Genesis Vest",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -39753,7 +39753,7 @@
    ],
    "level": 60,
    "name": "Genesis Helm",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -39764,7 +39764,7 @@
    ],
    "level": 60,
    "name": "Genesis Trousers",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -39775,7 +39775,7 @@
    ],
    "level": 60,
    "name": "Genesis Shoulderpads",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -40061,7 +40061,7 @@
    ],
    "level": 60,
    "name": "Shroud of Infinite Wisdom",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -40083,7 +40083,7 @@
    ],
    "level": 60,
    "name": "Cloak of the Gathering Storm",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -40094,7 +40094,7 @@
    ],
    "level": 60,
    "name": "Drape of Vaulted Secrets",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -40105,7 +40105,7 @@
    ],
    "level": 60,
    "name": "Cloak of Unending Life",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -40116,7 +40116,7 @@
    ],
    "level": 60,
    "name": "Cloak of Veiled Shadows",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -40127,7 +40127,7 @@
    ],
    "level": 60,
    "name": "Shroud of Unspoken Names",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -40149,7 +40149,7 @@
    ],
    "level": 60,
    "name": "Cloak of the Unseen Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -40160,7 +40160,7 @@
    ],
    "level": 60,
    "name": "Ring of Infinite Wisdom",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -40171,7 +40171,7 @@
    ],
    "level": 60,
    "name": "Ring of the Gathering Storm",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -40182,7 +40182,7 @@
    ],
    "level": 60,
    "name": "Band of Vaulted Secrets",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -40215,7 +40215,7 @@
    ],
    "level": 60,
    "name": "Band of Unending Life",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -40226,7 +40226,7 @@
    ],
    "level": 60,
    "name": "Band of Veiled Shadows",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -40237,7 +40237,7 @@
    ],
    "level": 60,
    "name": "Ring of Unspoken Names",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -40259,7 +40259,7 @@
    ],
    "level": 60,
    "name": "Signet of the Unseen Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -40270,7 +40270,7 @@
    ],
    "level": 60,
    "name": "Gavel of Infinite Wisdom",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -40281,7 +40281,7 @@
    ],
    "level": 60,
    "name": "Hammer of the Gathering Storm",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 2
   },
@@ -40292,7 +40292,7 @@
    ],
    "level": 60,
    "name": "Blade of Vaulted Secrets",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -40303,7 +40303,7 @@
    ],
    "level": 60,
    "name": "Mace of Unending Life",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -40314,7 +40314,7 @@
    ],
    "level": 60,
    "name": "Dagger of Veiled Shadows",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -40336,7 +40336,7 @@
    ],
    "level": 60,
    "name": "Kris of Unspoken Names",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -40358,7 +40358,7 @@
    ],
    "level": 60,
    "name": "Scythe of the Unseen Path",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -41051,7 +41051,7 @@
    ],
    "level": 1,
    "name": "A Gently Shaken Gift",
-   "reqclass": 4096,
+   "reqclass": 13,
    "reqlevel": 1,
    "side": 3
   },
@@ -41315,7 +41315,7 @@
    ],
    "level": 1,
    "name": "A Gently Shaken Gift",
-   "reqclass": 17126299858610370482240033183730887692150398379067787511755760754292462817657872169754434026652817022291577347068084725292624291475327128786216327596681982835883767815102098273675196636515362766863614347822333315161794657355930831311222470404938945627277857691284883952885375572930239431541069194280068688629860454207840745816712285514162477185213472721520851349303116844258785755396808268392827125000085475271254423281462003192571638439298688090112,
+   "reqclass": 1490,
    "reqlevel": 1,
    "side": 3
   },
@@ -42657,7 +42657,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 1
   },
@@ -42668,7 +42668,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 1
   },
@@ -42679,7 +42679,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 1
   },
@@ -42701,7 +42701,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 1
   },
@@ -42723,7 +42723,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 1
   },
@@ -42734,7 +42734,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 1
   },
@@ -42756,7 +42756,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 2
   },
@@ -42767,7 +42767,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 2
   },
@@ -42778,7 +42778,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 2
   },
@@ -42789,7 +42789,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 2
   },
@@ -42800,7 +42800,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 2
   },
@@ -42811,7 +42811,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -42822,7 +42822,7 @@
    ],
    "level": 60,
    "name": "An Earnest Proposition",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 2
   },
@@ -42910,7 +42910,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 1
   },
@@ -42921,7 +42921,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 2
   },
@@ -42976,7 +42976,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 1
   },
@@ -42987,7 +42987,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 1
   },
@@ -43009,7 +43009,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 1
   },
@@ -43020,7 +43020,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 1
   },
@@ -43031,7 +43031,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 1
   },
@@ -43053,7 +43053,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 2
   },
@@ -43064,7 +43064,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 2
   },
@@ -43086,7 +43086,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 2
   },
@@ -43097,7 +43097,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 2
   },
@@ -43108,7 +43108,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -43119,7 +43119,7 @@
    ],
    "level": 60,
    "name": "Just Compensation",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 2
   },
@@ -43218,7 +43218,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 1
   },
@@ -43229,7 +43229,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 1
   },
@@ -43240,7 +43240,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 1
   },
@@ -43262,7 +43262,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 1
   },
@@ -43273,7 +43273,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 1
   },
@@ -43284,7 +43284,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -43295,7 +43295,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 1
   },
@@ -43724,7 +43724,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 1
   },
@@ -43768,7 +43768,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 1
   },
@@ -43779,7 +43779,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 1
   },
@@ -43801,7 +43801,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 1
   },
@@ -43812,7 +43812,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 1
   },
@@ -43823,7 +43823,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 1
   },
@@ -43845,7 +43845,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 2
   },
@@ -43856,7 +43856,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 2
   },
@@ -43867,7 +43867,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 2
   },
@@ -43889,7 +43889,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 2
   },
@@ -43900,7 +43900,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 58,
    "side": 2
   },
@@ -43911,7 +43911,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 2
   },
@@ -43933,7 +43933,7 @@
    ],
    "level": 60,
    "name": "Saving the Best for Last",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 2
   },
@@ -43955,7 +43955,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 58,
    "side": 2
   },
@@ -43966,7 +43966,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 58,
    "side": 2
   },
@@ -43977,7 +43977,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 58,
    "side": 2
   },
@@ -43988,7 +43988,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 58,
    "side": 2
   },
@@ -44010,7 +44010,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 58,
    "side": 2
   },
@@ -44021,7 +44021,7 @@
    ],
    "level": 60,
    "name": "Anthion's Parting Words",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 58,
    "side": 2
   },
@@ -44340,7 +44340,7 @@
    ],
    "level": 52,
    "name": "Toxic Test",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 50,
    "side": 3
   },
@@ -44351,7 +44351,7 @@
    ],
    "level": 52,
    "name": "Bloodpetal Poison",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 50,
    "side": 3
   },
@@ -44362,7 +44362,7 @@
    ],
    "level": 52,
    "name": "A Better Ingredient",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 50,
    "side": 3
   },
@@ -44373,7 +44373,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Tunic",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44384,7 +44384,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Legguards",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44395,7 +44395,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Headpiece",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44406,7 +44406,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Spaulders",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44417,7 +44417,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Boots",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44428,7 +44428,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Handguards",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44450,7 +44450,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Girdle",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44461,7 +44461,7 @@
    ],
    "level": 60,
    "name": "Cryptstalker Wristguards",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 60,
    "side": 3
   },
@@ -44472,7 +44472,7 @@
    ],
    "level": 52,
    "name": "Torwa Pathfinder",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 50,
    "side": 3
   },
@@ -44483,7 +44483,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Tunic",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44494,7 +44494,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Legguards",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44516,7 +44516,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Headpiece",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44527,7 +44527,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Spaulders",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44538,7 +44538,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Boots",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44549,7 +44549,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Handguards",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44560,7 +44560,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Girdle",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44571,7 +44571,7 @@
    ],
    "level": 60,
    "name": "Earthshatter Wristguards",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 60,
    "side": 3
   },
@@ -44582,7 +44582,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Breastplate",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44593,7 +44593,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Legplates",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44604,7 +44604,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Helmet",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44626,7 +44626,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Pauldrons",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44637,7 +44637,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Sabatons",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44648,7 +44648,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Gauntlets",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44659,7 +44659,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Waistguard",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44670,7 +44670,7 @@
    ],
    "level": 60,
    "name": "Bonescythe Bracers",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 60,
    "side": 3
   },
@@ -44692,7 +44692,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Tunic",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44703,7 +44703,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Legguards",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44714,7 +44714,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Headpiece",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44725,7 +44725,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Spaulders",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44747,7 +44747,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Boots",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44769,7 +44769,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Handguards",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44780,7 +44780,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Girdle",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44791,7 +44791,7 @@
    ],
    "level": 60,
    "name": "Dreamwalker Wristguards",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -44813,7 +44813,7 @@
    ],
    "level": 60,
    "name": "Frostfire Robe",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44824,7 +44824,7 @@
    ],
    "level": 60,
    "name": "Frostfire Leggings",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44835,7 +44835,7 @@
    ],
    "level": 60,
    "name": "Frostfire Circlet",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44846,7 +44846,7 @@
    ],
    "level": 60,
    "name": "Frostfire Shoulderpads",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44857,7 +44857,7 @@
    ],
    "level": 60,
    "name": "Frostfire Sandals",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44890,7 +44890,7 @@
    ],
    "level": 60,
    "name": "Frostfire Gloves",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44901,7 +44901,7 @@
    ],
    "level": 60,
    "name": "Frostfire Belt",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44912,7 +44912,7 @@
    ],
    "level": 60,
    "name": "Frostfire Bindings",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -44923,7 +44923,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Robe",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -44934,7 +44934,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Leggings",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -44945,7 +44945,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Circlet",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -44956,7 +44956,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Shoulderpads",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -44967,7 +44967,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Sandals",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -44978,7 +44978,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Gloves",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -44989,7 +44989,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Belt",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -45011,7 +45011,7 @@
    ],
    "level": 60,
    "name": "Plagueheart Bindings",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -45022,7 +45022,7 @@
    ],
    "level": 60,
    "name": "Robe of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -45033,7 +45033,7 @@
    ],
    "level": 60,
    "name": "Leggings of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -45044,7 +45044,7 @@
    ],
    "level": 60,
    "name": "Circlet of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -45055,7 +45055,7 @@
    ],
    "level": 60,
    "name": "Shoulderpads of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -45066,7 +45066,7 @@
    ],
    "level": 60,
    "name": "Sandals of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -45077,7 +45077,7 @@
    ],
    "level": 60,
    "name": "Gloves of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -45088,7 +45088,7 @@
    ],
    "level": 60,
    "name": "Belt of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -45099,7 +45099,7 @@
    ],
    "level": 60,
    "name": "Bindings of Faith",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -46709,7 +46709,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 1658079259093488585543641880321370579349968074867852233579735924960709341741017881738939463282172923864572541864483323178105313176664420162494573772314529873277070739673631632297712908223227628267436176822048727601659965304215082587079502689477915085543915982949243040172715332527968276743670394950828083309016741815037909270528,
+   "reqclass": 1088,
    "reqlevel": 3,
    "side": 2
   },
@@ -46830,7 +46830,7 @@
    ],
    "level": 2,
    "name": "A Student of the Arcane",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 2,
    "side": 1
   },
@@ -46841,7 +46841,7 @@
    ],
    "level": 2,
    "name": "The Way of the Hunter",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 2,
    "side": 3
   },
@@ -46852,7 +46852,7 @@
    ],
    "level": 2,
    "name": "At Home in the Shadows",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 2,
    "side": 3
   },
@@ -46863,7 +46863,7 @@
    ],
    "level": 2,
    "name": "Embracing the Elements",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 2,
    "side": 2
   },
@@ -46874,7 +46874,7 @@
    ],
    "level": 2,
    "name": "A Student of Nature",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 2,
    "side": 3
   },
@@ -47080,7 +47080,7 @@
    ],
    "level": 60,
    "name": "Atiesh, Greatstaff of the Guardian",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 60,
    "side": 3
   },
@@ -47388,7 +47388,7 @@
    ],
    "level": 60,
    "name": "Atiesh, Greatstaff of the Guardian",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 60,
    "side": 3
   },
@@ -47443,7 +47443,7 @@
    ],
    "level": 60,
    "name": "Atiesh, Greatstaff of the Guardian",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -47531,7 +47531,7 @@
    ],
    "level": 60,
    "name": "Atiesh, Greatstaff of the Guardian",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 60,
    "side": 3
   },
@@ -48919,7 +48919,7 @@
    ],
    "level": 60,
    "name": "Warlord Krellian",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -48930,7 +48930,7 @@
    ],
    "level": 60,
    "name": "Fragmented Magic",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 60,
    "side": 3
   },
@@ -49084,7 +49084,7 @@
    ],
    "level": 10,
    "name": "Speak with Belann",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 1
   },
@@ -49095,7 +49095,7 @@
    ],
    "level": 10,
    "name": "Boughs in the Wind",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 10,
    "side": 1
   },
@@ -51094,7 +51094,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 1
   },
@@ -51105,7 +51105,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 1
   },
@@ -51116,7 +51116,7 @@
    ],
    "level": 4,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 1
   },
@@ -51248,7 +51248,7 @@
    ],
    "level": 10,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 1
   },
@@ -51259,7 +51259,7 @@
    ],
    "level": 11,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 1
   },
@@ -51270,7 +51270,7 @@
    ],
    "level": 14,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 1
   },
@@ -51281,7 +51281,7 @@
    ],
    "level": 14,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 1
   },
@@ -51292,7 +51292,7 @@
    ],
    "level": 14,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 1
   },
@@ -51303,7 +51303,7 @@
    ],
    "level": 4,
    "name": "Earth Sapta",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 4,
    "side": 1
   },
@@ -51314,7 +51314,7 @@
    ],
    "level": 13,
    "name": "Fire Sapta",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 1
   },
@@ -51424,7 +51424,7 @@
    ],
    "level": 20,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51435,7 +51435,7 @@
    ],
    "level": 22,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51446,7 +51446,7 @@
    ],
    "level": 22,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51457,7 +51457,7 @@
    ],
    "level": 22,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51479,7 +51479,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51490,7 +51490,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51501,7 +51501,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51512,7 +51512,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51523,7 +51523,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51545,7 +51545,7 @@
    ],
    "level": 20,
    "name": "Water Sapta",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 1
   },
@@ -51578,7 +51578,7 @@
    ],
    "level": 10,
    "name": "Divine Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51589,7 +51589,7 @@
    ],
    "level": 10,
    "name": "Divine Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51600,7 +51600,7 @@
    ],
    "level": 10,
    "name": "Divine Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51611,7 +51611,7 @@
    ],
    "level": 10,
    "name": "Divine Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51622,7 +51622,7 @@
    ],
    "level": 10,
    "name": "Divine Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51633,7 +51633,7 @@
    ],
    "level": 10,
    "name": "Divine Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51644,7 +51644,7 @@
    ],
    "level": 10,
    "name": "Divine Grace",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51655,7 +51655,7 @@
    ],
    "level": 30,
    "name": "Call of Air",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 30,
    "side": 1
   },
@@ -51666,7 +51666,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -51677,7 +51677,7 @@
    ],
    "level": 10,
    "name": "Training the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -51699,7 +51699,7 @@
    ],
    "level": 10,
    "name": "Confounding Flash",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51710,7 +51710,7 @@
    ],
    "level": 20,
    "name": "Contingency Plan",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -51721,7 +51721,7 @@
    ],
    "level": 20,
    "name": "Contingency Plan",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -51732,7 +51732,7 @@
    ],
    "level": 20,
    "name": "Contingency Plan",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 20,
    "side": 1
   },
@@ -51743,7 +51743,7 @@
    ],
    "level": 10,
    "name": "Confounding Flash",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51754,7 +51754,7 @@
    ],
    "level": 10,
    "name": "Confounding Flash",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51765,7 +51765,7 @@
    ],
    "level": 10,
    "name": "Confounding Flash",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51776,7 +51776,7 @@
    ],
    "level": 10,
    "name": "Confounding Flash",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51787,7 +51787,7 @@
    ],
    "level": 10,
    "name": "Confounding Flash",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51798,7 +51798,7 @@
    ],
    "level": 10,
    "name": "Confounding Flash",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 10,
    "side": 1
   },
@@ -51809,7 +51809,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -51820,7 +51820,7 @@
    ],
    "level": 10,
    "name": "Taming the Beast",
-   "reqclass": 8,
+   "reqclass": 4,
    "reqlevel": 10,
    "side": 1
   },
@@ -51930,7 +51930,7 @@
    ],
    "level": 10,
    "name": "Child of Nature",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -51952,7 +51952,7 @@
    ],
    "level": 10,
    "name": "Moonglade",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 10,
    "side": 1
   },
@@ -52238,7 +52238,7 @@
    ],
    "level": 10,
    "name": "The Quarry's Smith",
-   "reqclass": 73786976294838206464,
+   "reqclass": 67,
    "reqlevel": 7,
    "side": 1
   },
@@ -52768,7 +52768,7 @@
    ],
    "level": 23,
    "name": "Call of Water",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -52790,7 +52790,7 @@
    ],
    "level": 40,
    "name": "The Tempest's Weapons",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 30,
    "side": 1
   },
@@ -52889,7 +52889,7 @@
    ],
    "level": 6,
    "name": "Camping 101: Tailoring",
-   "reqclass": 1291124939043454294827959586001505937164852896414611756415329678270323811008420597314822676640068915717951585986373746688,
+   "reqclass": 400,
    "reqlevel": 4,
    "side": 1
   },
@@ -52944,7 +52944,7 @@
    ],
    "level": 6,
    "name": "Camping 101: Tailoring",
-   "reqclass": 1291124939043454294827959586001505937164852896414611756415329678270323811008420597314822676640068915717951585986373746688,
+   "reqclass": 400,
    "reqlevel": 4,
    "side": 2
   },
@@ -52966,7 +52966,7 @@
    ],
    "level": 40,
    "name": "Heed My Call",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 30,
    "side": 1
   },
@@ -53065,7 +53065,7 @@
    ],
    "level": 10,
    "name": "Call of Earth",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 1
   },
@@ -53109,7 +53109,7 @@
    ],
    "level": 33,
    "name": "Elemental Aid",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 30,
    "side": 1
   },
@@ -53546,7 +53546,7 @@
    ],
    "level": 24,
    "name": "Syndicate Sabotage",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -53557,7 +53557,7 @@
    ],
    "level": 36,
    "name": "What's the Big Idea?",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -53568,7 +53568,7 @@
    ],
    "level": 36,
    "name": "Covert Extraction",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -53579,7 +53579,7 @@
    ],
    "level": 34,
    "name": "A Way In",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -53590,7 +53590,7 @@
    ],
    "level": 34,
    "name": "Master of Disguise",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -53601,7 +53601,7 @@
    ],
    "level": 34,
    "name": "Ain't No Telling",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -53612,7 +53612,7 @@
    ],
    "level": 34,
    "name": "The Syndicate Sting",
-   "reqclass": 128,
+   "reqclass": 8,
    "reqlevel": 24,
    "side": 3
   },
@@ -53953,7 +53953,7 @@
    ],
    "level": 20,
    "name": "Water Sapta",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 20,
    "side": 2
   },
@@ -54063,7 +54063,7 @@
    ],
    "level": 10,
    "name": "Call of Fire",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 10,
    "side": 2
   },
@@ -54228,7 +54228,7 @@
    ],
    "level": 20,
    "name": "Research Access",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 1,
    "side": 3
   },
@@ -55020,7 +55020,7 @@
    ],
    "level": 6,
    "name": "Camping 101: Blacksmithing",
-   "reqclass": 1361129467683753853853498429727072845824,
+   "reqclass": 131,
    "reqlevel": 4,
    "side": 2
   },
@@ -55955,7 +55955,7 @@
    ],
    "level": 20,
    "name": "The Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 2
   },
@@ -55977,7 +55977,7 @@
    ],
    "level": 20,
    "name": "The Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 2
   },
@@ -55988,7 +55988,7 @@
    ],
    "level": 20,
    "name": "To Thunder Bluff",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 2
   },
@@ -56062,7 +56062,7 @@
    ],
    "level": 20,
    "name": "The Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 1
   },
@@ -56073,7 +56073,7 @@
    ],
    "level": 20,
    "name": "The Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 1
   },
@@ -56084,7 +56084,7 @@
    ],
    "level": 20,
    "name": "The Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 1
   },
@@ -56095,7 +56095,7 @@
    ],
    "level": 20,
    "name": "To Darnassus",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 1
   },
@@ -56150,7 +56150,7 @@
    ],
    "level": 20,
    "name": "The Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 2
   },
@@ -56348,7 +56348,7 @@
    ],
    "level": 1,
    "name": "Hallowed Memorandum",
-   "reqclass": 32768,
+   "reqclass": 16,
    "reqlevel": 1,
    "side": 1
   },
@@ -56359,7 +56359,7 @@
    ],
    "level": 1,
    "name": "Tainted Tablet",
-   "reqclass": 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+   "reqclass": 256,
    "reqlevel": 1,
    "side": 2
   },
@@ -56370,7 +56370,7 @@
    ],
    "level": 1,
    "name": "Glyphic Parchment",
-   "reqclass": 170141183460469231731687303715884105728,
+   "reqclass": 128,
    "reqlevel": 1,
    "side": 2
   },
@@ -56381,7 +56381,7 @@
    ],
    "level": 1,
    "name": "Archaic Rune",
-   "reqclass": 9223372036854775808,
+   "reqclass": 64,
    "reqlevel": 1,
    "side": 1
   },
@@ -56414,7 +56414,7 @@
    ],
    "level": 20,
    "name": "Blessings of the Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 1
   },
@@ -56436,7 +56436,7 @@
    ],
    "level": 20,
    "name": "Blessings of the Great Cat Spirit",
-   "reqclass": 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608,
+   "reqclass": 1024,
    "reqlevel": 20,
    "side": 2
   },
