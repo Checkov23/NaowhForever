@@ -1,6 +1,28 @@
 # Changelog
 
-## Unreleased
+## 1.2.2
+
+### Added
+- German: the Group Finder, the Zone Timer and the other new parts up to 1.2.0 now show in German on
+  German clients.
+- Chinese: about 1,080 more texts in Simplified and Traditional Chinese, across Macros, Action Bars,
+  Professions, QoL, the Group Finder and the Damage Meter.
+- Every language now translates the whole addon: German, Spanish, Mexican Spanish, French, Italian,
+  Korean, Portuguese, Russian and both Chinese.
+
+### Changed
+- Blessings: Blessing of Light and Salvation are gone from the bar, menus, settings and Blessings
+  window, since Blizzard removed both spells from the game; a class or player you had given either
+  is cleared.
+
+### Fixed
+- German: Apply on a Group Finder row says "Bewerben" instead of "Übernehmen".
+- Traditional Chinese: the Library's "Next" line no longer causes a Lua error, and the Naowh Score's
+  "of level" line shows its numbers the right way round.
+- Group Inspect, the Action Bars set preview, Dungeon Journal BiS tooltips and Naowh Score no longer
+  cause Lua errors in Spanish, Russian and Korean.
+- BiS place lines, macro descriptions, keybind messages, supporter badges, Library Books goals and
+  dates read correctly in French, Italian, Russian, Spanish, Korean and Chinese.
 
 ## 1.2.1
 
