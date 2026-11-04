@@ -1,6 +1,48 @@
 # Changelog
 
-## Unreleased
+## 1.2.3
+
+### Added
+- Dungeon Journal: Trash cards for City of Dalaran, Excavation Site: Wetlands and Ruins of
+  Lordaeron.
+- Dungeon Journal: Blueprint: Greenhouse on Shadetooth, Blueprint: Rock Garden on the Relic
+  Guardian, Blueprint: Field Guide on Lady Anacondra and Blueprint: Trapper's Workbench on
+  Houndmaster Loksey.
+- Training Planner: Forever's new Shank, Poised, Death Mark ranks 2 to 4 and Holy Shield rank 4,
+  priced "At the trainer" until you visit one.
+
+### Changed
+- Quest List: a quest a quest giver offers you counts as yours, even when the list thought it wasn't
+  for your race or class.
+
+### Fixed
+- Glimmer lights quest givers whose quest is repeatable, important or a meta quest.
+- Glimmer keeps lighting objects after the game's Interact Key Icons option (Accessibility) is set
+  to Default or None.
+- Hand In Quests no longer pays gold for you: a quest that asks for gold waits on its reward for you
+  to complete it.
+- Dungeon Journal: Herod drops Scarlet Leggings and Commander Springvale the Eerie Stable Lantern
+  again.
+- BiS List: Nightsky Wristbands, Infiltrator Buckler and Mail Combat Belt say World drop again
+  instead of naming a Gnomeregan boss.
+- Training Planner: reading a level 60 book (Battle Shout, Heroic Strike, Revenge, Backstab,
+  Eviscerate, Feint, Ferocious Bite) no longer lists the rank it replaced as trainable or counts it
+  in the totals.
+- Training Planner: trainer prices are kept for each character, so one character's reputation
+  discount no longer shows on another.
+- Training Planner and Trainer Popup: a login where the game is slow to give your name no longer
+  loses your followed build, skipped spells or lit new abilities for that session.
+- Quest List: Westfall's Toxic Soil chain, Harvesting the Harvesters and Remember That I Love You
+  now wait for the quest before them.
+- Quest List: Tharil'zun, Foul Matriarch and Unfortunate News no longer wait on a quest they don't
+  need.
+- Quest List: Windshaper Skyborne now see Zephras Isle's shared quests.
+- Quest List: A More Fitting Reward and The Troll Scroll show again for shamans and priests.
+- Quest List: quests you can no longer take, such as another zone's The Great Outdoors or Camping
+  101 and skipped breadcrumbs, show "Not offered any more", lose their ! on the map and no longer
+  hold back a zone's progress.
+- Quest List: profession quests show "Needs a profession" when you don't have it, and Camping 101
+  closes once you know its camp recipe.
 
 ## 1.2.2
 
