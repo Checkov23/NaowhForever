@@ -17,6 +17,8 @@ G.CVars = CVars
 local watched = {}
 for name in pairs(C.SPARKLE_RESETS) do watched[name] = true end
 for name in pairs(C.SPARKLE_CVARS) do watched[name:lower()] = true end
+local soft = {}
+for name in pairs(C.SOFT_CVARS) do soft[name:lower()] = name end
 
 local pending = {}
 local plateOpen
@@ -76,6 +78,13 @@ local function ApplySoft()
     end
 end
 
+local function KeepSoft(name)
+    local saved = ns.AccountSettings()[SOFT_SAVED]
+    if saved then saved[name] = GetCVar(name) end
+    if InCombatLockdown() then return Later(ApplySoft) end
+    Write(name, C.SOFT_CVARS[name])
+end
+
 -- Older versions of the sparkle also turned the outlines off, which took Self Highlight's outline with it.
 local function PutBackOutlines()
     local saved = ns.AccountSettings()[SPARKLE_SAVED]
@@ -116,7 +125,9 @@ local function OnEvent(_, event, name)
         for job in pairs(jobs) do job() end
     elseif event == "CVAR_UPDATE" then
         if writing or type(name) ~= "string" then return end
-        if watched[name:lower()] then SparkleAgain() end
+        name = name:lower()
+        if soft[name] then KeepSoft(soft[name]) end
+        if watched[name] and S.Get("questSparkle") then SparkleAgain() end
     end
 end
 
@@ -131,7 +142,7 @@ function CVars.Apply()
     Events()
     ApplySoft()
     ApplySparkle()
-    if G.On() and S.Get("questSparkle") then
+    if G.On() then
         events:RegisterEvent("CVAR_UPDATE")
     else
         events:UnregisterEvent("CVAR_UPDATE")

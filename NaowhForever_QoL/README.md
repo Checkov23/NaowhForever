@@ -1281,8 +1281,8 @@ NaowhForever_QoL/
   `ns.QoLSettings`: it was a module addon of its own (NaowhForever_Glimmer) before it moved into QoL,
   and the same table means every setting carried over with no migration.
 - Herbs and ore take the color of your chance of a skill-up and get a line under their name saying so; a
-  node your skill is too low for shows red with the skill it needs; a character without Herbalism or
-  Mining at all sees no herbs or ore lit, since they are not theirs to gather. Quest objects are
+  node your skill is too low for, or of a gathering profession you do not have, lights grey and dim
+  with the skill it needs, and On Nodes Your Skill Is Too Low For hides both. Quest objects are
   found three ways: the game marking them quest related, a quest objective in their tooltip, or the
   quest pick-up or turn-in cursor the game shows on them; that cursor is also what lights an NPC with a
   quest to pick up or hand in, the only NPCs Glimmer lights. Quest objects get the line of the
@@ -1311,6 +1311,11 @@ NaowhForever_QoL/
 - `SoftTargetIconGameObject` 1 is needed too: with it at 0 the game picks the object as the soft
   target but never makes its nameplate, so nothing lights up. A setting Glimmer adds later is saved
   into the old values the first time it is written, so turning Glimmer off puts it back as well.
+- The game's own Interact Key Icons option (Accessibility) writes `SoftTargetIconGameObject` 0 for
+  both Default and None, which would stop Glimmer with no word why. So while Glimmer is on,
+  `CVAR_UPDATE` on `SoftTargetIconGameObject` or `SoftTargetInteractOnlyInRange` keeps the player's
+  new value as the one to put back and writes Glimmer's again (after combat, if in it). Turning
+  Glimmer off then puts back the player's last choice; Enable Interact Key is never forced back.
 - The nameplate is only opened for an object Glimmer lights (`onlyHighlighted`), so NPCs, mailboxes
   and doors do not grow a nameplate. Whether to open it does not need the nameplate: the object is
   read from the unit token, then the nameplate arrives with `NAME_PLATE_UNIT_ADDED`.
@@ -1325,7 +1330,8 @@ NaowhForever_QoL/
 - The game gives an NPC's quest cursor only as a low priority one: `SetUnitCursorTexture` answers false for a
   quest giver unless its fourth argument, `includeLowPriority`, is true, so the giver check passes it and the
   object check does not. The texture comes back as a name (`Cursor Crosshair_QuestTurnIn_64`), matched by its
-  words like the other cursors.
+  words like the other cursors. Forever's quest cursors also come as Important, Recurring and Wrapper (each with
+  a turn-in and an Unable version, in its UiTextureAtlasMember table), so those words count as quest too.
 - Quest objects come from `C_QuestLog.UnitIsRelatedToActiveQuest`, and their line is the quest
   objective line of the object's own tooltip, as the game words it.
 - Gathering gives a point every time up to 25 skill over the node's (orange), usually up to 50
