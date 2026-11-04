@@ -69,10 +69,7 @@ local THEMED_GROUP = ns.L("Accent: missing the class blessing. Lighter: running 
 local NONE = "none"
 local WHY_THEMED = ns.L("Turn off Apply Theme to Status Colors")
 local TEXT_NONE = ns.L("None")
-local TEXT_CLASS_HELP = ns.L("Which blessing you give this class: Might, Wisdom, Kings or Light.")
-local TEXT_SALV_HELP = ns.L("Gives Salvation, on top of the class blessing, to everyone but tanks.")
-local TEXT_SALV_GIVE = ns.L("Everyone but tanks")
-local SALV_GIVE = "give"
+local TEXT_CLASS_HELP = ns.L("Which blessing you give this class: Might, Wisdom or Kings.")
 local TEXT_CLASS_SEARCH = ns.L("blessing blessings greater")
 
 local function On() return S.Get("blessings") == true end
@@ -102,20 +99,11 @@ local function ClassRow(class)
         set = function(key) B.SetOwn(class, key ~= NONE and key or nil) end }
 end
 
-local function SalvationRow()
-    return { label = B.SpellName(B.SALVATION.key), help = TEXT_SALV_HELP, search = TEXT_CLASS_SEARCH, needs = On,
-        why = BLESSINGS_OFF, hidden = function() return NotPaladin() or not B.Learned(B.SALVATION) end,
-        choice = function() return { [NONE] = TEXT_NONE, [SALV_GIVE] = TEXT_SALV_GIVE }, { SALV_GIVE, NONE } end,
-        get = function() return B.Store().salv and SALV_GIVE or NONE end,
-        set = function(key) B.SetOwn(B.SALV_COLUMN, key == SALV_GIVE and B.SALVATION.key or nil) end }
-end
-
 local function ClassRows()
     local header = Group("Blessings by Class")
     header.hidden = NotPaladin
     local rows = { header }
     for _, class in ipairs(B.CLASSES) do rows[#rows + 1] = ClassRow(class) end
-    rows[#rows + 1] = SalvationRow()
     return rows
 end
 

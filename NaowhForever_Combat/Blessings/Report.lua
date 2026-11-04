@@ -50,7 +50,6 @@ local function Given(plan)
     for _, key in ipairs(order) do
         parts[#parts + 1] = B.SpellName(key) .. " (" .. table.concat(byBlessing[key], ", ") .. ")"
     end
-    if plan.salv then parts[#parts + 1] = B.SpellName(B.SALVATION.key) end
     if plan.aura then parts[#parts + 1] = B.SpellName(plan.aura) end
     return #parts > 0 and table.concat(parts, ", ") or TEXT_NOTHING
 end

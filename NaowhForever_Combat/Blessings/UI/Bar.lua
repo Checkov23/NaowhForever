@@ -24,7 +24,6 @@ local RESCAN_DELAY = 1
 local LANDING_WINDOW = 1
 local TICK = 3
 local NOBODY = B.NOBODY
-local SALV = B.SALV_COLUMN
 local HiddenAuras, NoteCast = B.HiddenAuras, B.NoteCast
 local CARD = B.PAGE .. ":bar"
 local CELL_NAME = "NaowhForeverBless"
@@ -34,7 +33,6 @@ local TEXT_FURY = "Righteous Fury"
 local TEXT_TARGET = ns.L("Left-click: bless %s.\n")
 local TEXT_NEXT = ns.L("In combat each click blesses the next who needed it.\n")
 local TEXT_MENU = ns.L("Right-click: choose the blessing, the player list or assignments.")
-local TEXT_SALV_MENU = ns.L("Right-click: turn Salvation off or open assignments.")
 local TEXT_AUTO = ns.L("Auto Buff")
 local TEXT_SEAL = ns.L("Seal")
 local TEXT_SEAL_TIP = ns.L("Left-click: cast your seal.\nRight-click: choose it. Wheel: cycle through your seals.")
@@ -130,31 +128,18 @@ local function PrepareCell(cell)
     PaintCell(cell, Survey(cell.members), Store().classes[cell.class])
 end
 
-local function PrepareSalv(cell)
-    PaintCell(cell, B.SalvationSurvey(cell.members, cell.tankClass), B.SALVATION.key)
-end
-
-local function CellName(class)
-    return class == SALV and B.SpellName(B.SALVATION.key) or ClassName(class)
-end
-
-local function OpenMenu(owner, class)
-    if class == SALV then B.SalvMenu(owner) else B.ClassMenu(owner, class) end
-end
-
 local function CellTip(cell)
     local target = cell.target and Ambiguate(cell.target.who, "short")
     return (target and TEXT_TARGET:format(target) or "")
         .. ((cell.queued or 0) > 1 and TEXT_NEXT or "")
-        .. (cell.class == SALV and TEXT_SALV_MENU or TEXT_MENU)
+        .. TEXT_MENU
 end
 
 local function NewCell(class)
     local cell = CreateFrame("Frame", nil, bar)
     cell.class = class
-    if class == SALV then cell.labelIcon = B.SpellIcon(B.SALVATION.key) end
     Look.Icon(cell)
-    Look.Label(cell, class, CellName(class))
+    Look.Label(cell, class, ClassName(class))
     cell.header, cell.cast = B.Recipient(cell, CELL_NAME .. class)
     cell.cast:RegisterForClicks("AnyUp")
     cell.cast:SetAttribute("useOnKeyDown", false)
@@ -162,20 +147,20 @@ local function NewCell(class)
     cell.cast:SetScript("PreClick", function(_, button)
         if button == "LeftButton" and not InCombatLockdown()
             and not (C_Secrets.ShouldAurasBeSecret() and not HiddenAuras()) then
-            if class == SALV then PrepareSalv(cell) else PrepareCell(cell) end
+            PrepareCell(cell)
         end
     end)
     SecureHandlerWrapScript(cell.cast, "OnClick", secureHandler, CLASS_STEP)
     cell.cast:SetScript("PostClick", function(self, button, down)
-        if button == "RightButton" and not down then OpenMenu(self, class) end
+        if button == "RightButton" and not down then B.ClassMenu(self, class) end
         if button == "LeftButton" then NoteCast(self:GetAttribute("unit"), self:GetAttribute("spell1")) end
     end)
     local function Tip() return CellTip(cell) end
-    BarTip(cell.cast, CellName(class), Tip)
-    BarTip(cell, CellName(class), Tip)
+    BarTip(cell.cast, ClassName(class), Tip)
+    BarTip(cell, ClassName(class), Tip)
     cell:EnableMouse(true)
     cell:SetScript("OnMouseUp", function(self, button)
-        if button == "RightButton" then OpenMenu(self, class) end
+        if button == "RightButton" then B.ClassMenu(self, class) end
     end)
     return cell
 end
@@ -336,21 +321,6 @@ local function PlaceCells(byClass, x)
     return x
 end
 
-local function PlaceSalv(members, tankClass, x)
-    local cell = cells[SALV]
-    if members and #members > 0 then
-        cell = cell or NewCell(SALV)
-        cells[SALV] = cell
-        cell.members, cell.tankClass = members, tankClass
-        B.SizeRecipient(cell.header, cell.cast, Look.size)
-        x = Look.Place(cell, bar, x)
-        PrepareSalv(cell)
-    elseif cell then
-        HideCell(cell)
-    end
-    return x
-end
-
 local function FirstShift()
     local shift = -Look.TOWARD[Look.grow] * Look.size / 2
     if Look.vertical then return 0, shift end
@@ -439,11 +409,8 @@ function Refresh()
     else
         for _, cell in pairs(cells) do HideCell(cell) end
     end
-    local members, tankClass
-    if Store().salv and Learned(B.SALVATION) then members, tankClass = B.SalvationGroup(roster) end
-    x = PlaceSalv(members, tankClass, x)
     PlayerList.Arrange(roster)
-    Keys.Fill(byClass, members, tankClass)
+    Keys.Fill(byClass)
     PaintAuto()
     B.EndAuraMemo()
     Look.Fit(bar, x)

@@ -114,10 +114,7 @@ NaowhForever_Combat/Blessings/
   secret and refitting it raises. When the header points a player-list button at another unit mid
   fight, the display follows.
 - A plan travels as ten characters: a blessing code per class in `CLASSES` order, then the aura's,
-  "-" for none. Salvation travels beside it, so an older client still reads the plan: `s` in the list of
-  what a paladin knows, `Y` in the same list when they give it, and `V|name|1` or `V|name|0` when a leader
-  or assistant sets it for them. An older client's class Salvation (an `s` in the plan, or in a player's
-  choice) reads as Salvation given. Per-player choices travel as GUID=code pairs in batches; "P|1|" starts the list over,
+  "-" for none. Per-player choices travel as GUID=code pairs in batches; "P|1|" starts the list over,
   so an empty one clears what the others had, and at most `MAX_PLAYER_CHOICES` are kept per paladin.
 - Messages are parsed as data: only valid codes from a paladin in the group are kept, and only the
   leader or an assistant can set someone else's plan. Nothing is sent in combat: what would have
@@ -131,20 +128,11 @@ NaowhForever_Combat/Blessings/
   rescan already covers it, and in combat a refresh would only mark the bar dirty, so both skip the
   unit test. Range and time left change with nothing to announce them, so the bar rescans every
   `TICK` seconds out of combat.
-- Auto-Assign: each class's blessings, most wanted first. Salvation is not one of them: it stacks with the
-  class blessing, so it is a switch on the paladin's plan (`salv`), given to everyone but tanks. The first
-  paladin in the order below who knows it gets it, once for the group. Whoever knows least picks first, so a
-  paladin with few blessings is not left with none, and each wanted
-  blessing goes to the first paladin still free who knows it; one aura each. Another paladin's plan
+- Auto-Assign: each class's blessings, most wanted first. Whoever knows least picks first, so a
+  paladin with few blessings is not left with none, and each wanted blessing goes to the first paladin
+  still free who knows it; one aura each. Another paladin's plan
   is kept here until their broadcast confirms it, and sent to them; planning everyone's needs the
   leader or an assistant when another paladin is involved.
-- Salvation is its own cell on the bar, after the class buttons, shown while you give it (Give Salvation in a
-  class button's menu, the Salvation row of the settings card, or its column in the Blessings window). It is for
-  every member whose assigned role is not Tank; a secret role counts as not a tank, and `PLAYER_ROLES_ASSIGNED`
-  rescans. A class with a tank in it is blessed one player at a time. A class with no tank gets one Greater
-  Salvation when two or more of it need it and a Symbol of Kings is carried, a single one otherwise, so the
-  reagent is not spent on one player. The cell's queue is every class's, most urgent first, trimmed like a class
-  button's: those due, or the one with least left. The key bindings step through the same list.
 - Free Assignment is a flag on your plan (`X` in the known list, `free`): with it on, any paladin in the group
   may set your plan, not only the leader or an assistant (`MayPlan`); without it nothing changes. A paladin
   with it on shows as editable in everyone's Blessings window.
@@ -152,21 +140,21 @@ NaowhForever_Combat/Blessings/
   (`I|symbols|loh|di`, seconds, -1 for a spell they do not know) with the plan, and again when the Symbols change
   (checked every `TICK`) or one of those spells is cast. The window counts the time down from when it arrived; a
   cooldown the client hides reads as ready. The numbers are parsed as data and the Symbols clamped.
-- Report sends every paladin's plan as lines (`Name: Might (Warrior, Rogue), Kings (Mage), Salvation, Devotion
+- Report sends every paladin's plan as lines (`Name: Might (Warrior, Rogue), Kings (Mage), Devotion
   Aura`), split before the chat limit, to yourself, say, party, raid, an instance group or the guild, whichever you
-  are in. It is refused in combat. Clear empties your classes, aura, Salvation and own choices, and every paladin's
+  are in. It is refused in combat. Clear empties your classes, aura and own choices, and every paladin's
   plan you may set; Refresh asks the group for their plans again.
 - Rules, all off by default and all local to you (they are not shared in the plan): Smart Blessings leaves
   Wisdom out of the menus for warriors and rogues and Might out for priests, mages and warlocks (`UNSUITED`; a
   blessing already chosen stays listed); Respect Blessing Time trims the queue to those who are due, so a click
   never refreshes a blessing with time left (otherwise one click refreshes the player with least left); Wait for
   Players casts a Greater Blessing only when nobody alive and connected in the class is out of range
-  (`WaitedFor`, also for Salvation and the key bindings), a single one otherwise.
+  (`WaitedFor`, also for the key bindings), a single one otherwise.
 - Tanks Get and Main Assist Gets give those players a blessing of your choice in place of the class one, for
   warriors, druids and paladins only (`TANKING`), never over a player's own choice and only if you know it. They
   resolve in `Assigned`, so the class button casts singles for a class with a tank, since a Greater Blessing
   would give the tank the class one. A tank is the Tank role or a Main Tank mark (`IsTank`, also what skips tanks
-  for Salvation and in Aura Buff Reminders).
+  in Aura Buff Reminders).
 - The Auto Buff button (off by default) is a secure button with its own copy of the two key-binding queues
   (`countN` and `countG`, filled by `Keys.Fill`): a left click casts the next blessing and a right click the next
   Greater one, or the other way round with Auto Buff Greater First (`leftKind`). The secure `click` action cannot
@@ -176,7 +164,7 @@ NaowhForever_Combat/Blessings/
   `NaowhForeverBlessSeal`. The wheel on the aura button cycles through the auras you know, and on the seal button
   through your seals, out of combat. The Seal Button (off) casts the seal you picked by name, so it is always your
   highest rank; seals cannot be tracked in combat, so it shows no state. Class Buttons off hides every class
-  button, leaving the Auto Buff button, Salvation and the key bindings; Player List off removes the player list.
+  button, leaving the Auto Buff button and the key bindings; Player List off removes the player list.
   Ctrl-click on a player in the list toggles their Main Tank mark (the secure `maintank` action).
 - Use in Party and Use When Solo (both on) hide the bar in a party or alone; a raid always shows it. Hide the
   Bench (off) drops the raid members past `ceil(size / 5)` groups in a raid dungeon, from `GetInstanceInfo`'s
@@ -186,8 +174,10 @@ NaowhForever_Combat/Blessings/
   opacity. Show Tooltips off hides the tooltips on the bar's buttons by closing each as it opens. The Blessings
   window's size is a setting (Window Size) and a grip in its corner: drag it to scale the window, right-click to
   reset it.
-- Salvation used to be one of the five class blessings. A saved plan with it for a class or a player is read
-  once into "Salvation on" with that class or player cleared (`salvSplit`), and one turned off stays off.
+- Blessing of Light and Salvation are gone: Forever's 30 October 2026 hotfix (build 1.60.1.70707) removed their
+  spells. A saved plan that still gives either to a class or a player is cleared of it once (`lightSalvDropped`),
+  since every blessing in a plan is looked up by key. An older client's plan that still carries either code is
+  refused like any other bad plan.
 - The preset is one saved set of plans for the account, by paladin name. Loading it plans only the
   paladins in it who are here now, each keeping to what they have learned.
 - A class label too long for its slot under the bar (the button plus the gap after it) first shrinks,

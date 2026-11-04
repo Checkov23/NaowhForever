@@ -5,18 +5,17 @@ local B = ns.Blessings
 local CLASSES, BLESSINGS, AURAS = B.CLASSES, B.BLESSINGS, B.AURAS
 local others = B.others
 local IsPaladin, Learned, MyName, Store, CanAssign = B.IsPaladin, B.Learned, B.MyName, B.Store, B.CanAssign
-local SALVATION = B.SALVATION
 
 local WANTED = {
-    WARRIOR = { "might", "kings", "light" },
-    ROGUE = { "might", "kings", "light" },
-    HUNTER = { "might", "kings", "wisdom", "light" },
-    PALADIN = { "wisdom", "kings", "might", "light" },
-    PRIEST = { "wisdom", "kings", "light" },
-    MAGE = { "wisdom", "kings", "light" },
-    WARLOCK = { "wisdom", "kings", "light" },
-    SHAMAN = { "wisdom", "kings", "might", "light" },
-    DRUID = { "wisdom", "kings", "might", "light" },
+    WARRIOR = { "might", "kings" },
+    ROGUE = { "might", "kings" },
+    HUNTER = { "might", "kings", "wisdom" },
+    PALADIN = { "wisdom", "kings", "might" },
+    PRIEST = { "wisdom", "kings" },
+    MAGE = { "wisdom", "kings" },
+    WARLOCK = { "wisdom", "kings" },
+    SHAMAN = { "wisdom", "kings", "might" },
+    DRUID = { "wisdom", "kings", "might" },
 }
 local AURA_ORDER = { "devotion", "retribution", "concentration", "fire", "frost", "shadow", "sanctity" }
 
@@ -31,7 +30,6 @@ local function Paladins()
         local known = {}
         for _, entry in ipairs(BLESSINGS) do if Learned(entry) then known[entry.key] = true end end
         for _, entry in ipairs(AURAS) do if Learned(entry) then known[entry.key] = true end end
-        if Learned(SALVATION) then known[SALVATION.key] = true end
         list[1] = { who = MyName(), known = known, you = true }
     end
     for who, plan in pairs(others) do list[#list + 1] = { who = who, known = plan.known } end
@@ -64,9 +62,6 @@ local function AutoPlans()
     for _, class in ipairs(CLASSES) do
         Pick(paladins, WANTED[class], function(p, key) plans[p.who].classes[class] = key end)
     end
-    if not B.HiddenAuras() then
-        Pick(paladins, { SALVATION.key }, function(p) plans[p.who].salv = true end)
-    end
     Pick(paladins, AURA_ORDER, function(p, key) plans[p.who].aura = key end)
     return plans
 end
@@ -78,11 +73,9 @@ local function ApplyPlans(plans)
             store.classes = {}
             for class, key in pairs(plan.classes) do store.classes[class] = key end
             store.aura = plan.aura
-            store.salv = plan.salv
             B.BroadcastSoon()
         elseif others[who] then
             B.SendPlan(who, plan.classes, plan.aura)
-            B.SendSalv(who, plan.salv)
         end
     end
     B.Changed()
@@ -96,16 +89,10 @@ end
 
 local function SavedPlan(p, saved)
     local plan = { classes = {} }
-    local salv = saved.salv
     for class, key in pairs(saved.classes or {}) do
-        if key == SALVATION.key then
-            salv = true
-        elseif p.known[key] then
-            plan.classes[class] = key
-        end
+        if p.known[key] then plan.classes[class] = key end
     end
     plan.aura = saved.aura and p.known[saved.aura] and saved.aura or nil
-    plan.salv = salv and p.known[SALVATION.key] or nil
     return plan
 end
 
@@ -132,7 +119,7 @@ function B.SavePreset()
         local plan = p.you and Store() or others[p.who]
         local classes = {}
         for class, key in pairs(plan.classes) do classes[class] = key end
-        preset[p.who] = { classes = classes, aura = plan.aura, salv = plan.salv }
+        preset[p.who] = { classes = classes, aura = plan.aura }
     end
     ns.AccountSettings().blessingPreset = preset
     return true
@@ -159,7 +146,6 @@ end
 function B.SetFor(who, column, key)
     local plan = others[who]
     if not plan then return end
-    if column == B.SALV_COLUMN then return B.SendSalv(who, key ~= nil) end
     if column == "AURA" then plan.aura = key else plan.classes[column] = key end
     B.SendPlan(who, plan.classes, plan.aura)
 end

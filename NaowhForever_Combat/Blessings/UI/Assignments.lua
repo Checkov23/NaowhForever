@@ -12,7 +12,7 @@ local ICON_CROP = B.Look.ICON_CROP
 local EMPTY = 134400
 local ICON_BORDER = B.Look.ICON_BORDER
 local CLASS_ICON_PATH = B.Look.CLASS_ICON_PATH
-local AURA_COLUMN, SALV_COLUMN = B.AURA_COLUMN, B.SALV_COLUMN
+local AURA_COLUMN = B.AURA_COLUMN
 local AURA_ICON = "devotion"
 
 local TEXT_INTRO = ns.L("Every paladin in your group running Naowh Forever, and the blessing "
@@ -31,8 +31,6 @@ local TEXT_NO_GROUP_PALADINS = ns.L("No paladins in your group.")
 local TEXT_NO_ADDON = ns.L("No reply: Blessings off or not installed")
 local TEXT_YOU = ns.L("  (you)")
 local TEXT_AURA = ns.L("Aura")
-local TEXT_SALV = ns.L("Salvation")
-local TEXT_SALV_ON = ns.L("Gives Salvation to everyone but tanks")
 local TEXT_NOTHING = ns.L("Nothing assigned")
 local TEXT_CHANGE = ns.L("\nClick to change.")
 local TEXT_NONE = ns.L("None")
@@ -146,25 +144,19 @@ local function Planning(parent, y)
     return y - h
 end
 
-local function Columns(rows)
+local function Columns()
     local columns = {}
     for _, class in ipairs(B.CLASSES) do columns[#columns + 1] = class end
     columns[#columns + 1] = AURA_COLUMN
-    for _, row in ipairs(rows) do
-        if row.can and row.can(B.SALVATION) then
-            columns[#columns + 1] = SALV_COLUMN
-            break
-        end
-    end
     return columns
 end
 
 local function Headers(parent, y, left, columns)
     for i, column in ipairs(columns) do
-        local aura, salv = column == AURA_COLUMN, column == SALV_COLUMN
+        local aura = column == AURA_COLUMN
         Cell(parent, left + NAME_WIDTH + (i - 1) * (CELL + GAP), y,
-            aura and B.SpellIcon(AURA_ICON) or salv and B.SpellIcon(B.SALVATION.key) or CLASS_ICON_PATH .. column,
-            true, aura and TEXT_AURA or salv and TEXT_SALV or B.ClassName(column))
+            aura and B.SpellIcon(AURA_ICON) or CLASS_ICON_PATH .. column,
+            true, aura and TEXT_AURA or B.ClassName(column))
     end
     return y - CELL - ROW_GAP
 end
@@ -208,14 +200,6 @@ local function Own(roster, players, class)
     return #out > 0 and ("\n" .. table.concat(out, "\n")) or ""
 end
 
-local function SalvCell(parent, x, y, row)
-    local on = row.plan.salv == true
-    local can = row.set and row.can(B.SALVATION)
-    Cell(parent, x, y, B.SpellIcon(B.SALVATION.key), on, TEXT_SALV,
-        (on and TEXT_SALV_ON or TEXT_NOTHING) .. (can and TEXT_CHANGE or ""),
-        can and function() row.set(SALV_COLUMN, not on and B.SALVATION.key or nil) end)
-end
-
 local function PlanCell(parent, x, y, column, row, roster)
     local aura = column == AURA_COLUMN
     local key = aura and row.plan.aura or row.plan.classes[column]
@@ -236,12 +220,7 @@ end
 
 local function PlanCells(parent, y, left, columns, row, roster)
     for i, column in ipairs(columns) do
-        local x = left + NAME_WIDTH + (i - 1) * (CELL + GAP)
-        if column == SALV_COLUMN then
-            SalvCell(parent, x, y, row)
-        else
-            PlanCell(parent, x, y, column, row, roster)
-        end
+        PlanCell(parent, left + NAME_WIDTH + (i - 1) * (CELL + GAP), y, column, row, roster)
     end
 end
 
@@ -309,7 +288,7 @@ function ns.BuildBlessingAssignmentsPage(parent, y)
     local left = UI.CONTENT_PAD
     local roster = B.Roster()
     local rows = Rows(roster)
-    local columns = Columns(rows)
+    local columns = Columns()
     y = Headers(parent, y, left, columns)
     if #rows == 0 then
         _, h = W:Note(parent, TEXT_NO_GROUP_PALADINS, y)

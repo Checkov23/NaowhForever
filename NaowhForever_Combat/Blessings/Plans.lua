@@ -7,7 +7,7 @@ local BY_KEY, BY_CODE = B.BY_KEY, B.BY_CODE
 local others = B.others
 local Learned, Store, Roster, InGroup, CanAssign = B.Learned, B.Store, B.Roster, B.InGroup, B.CanAssign
 local MyName, IsPaladin = B.MyName, B.IsPaladin
-local SALVATION, SALV_FLAG, FREE_FLAG = B.SALVATION, B.SALV_FLAG, B.FREE_FLAG
+local FREE_FLAG = B.FREE_FLAG
 
 local PREFIX = "NaowhBless"
 local NONE = "-"
@@ -35,31 +35,26 @@ end
 
 local function DecodePlan(text)
     if #text ~= #CLASSES + 1 then return end
-    local classes, salv = {}, false
+    local classes = {}
     for i, class in ipairs(CLASSES) do
         local c = text:sub(i, i)
-        if c == SALVATION.code then
-            salv = true
-        elseif c ~= NONE then
+        if c ~= NONE then
             local entry = BY_CODE[c]
             if not (entry and entry.blessing) then return end
             classes[class] = entry.key
         end
     end
     local c = text:sub(-1)
-    if c == NONE then return classes, nil, salv end
+    if c == NONE then return classes, nil end
     local entry = BY_CODE[c]
-    if entry and not (entry.blessing or entry.salvation) then return classes, entry.key, salv end
+    if entry and not entry.blessing then return classes, entry.key end
 end
 
 local function KnownCodes()
     local codes = {}
     for _, entry in ipairs(BLESSINGS) do if Learned(entry) then codes[#codes + 1] = entry.code end end
-    if Learned(SALVATION) then codes[#codes + 1] = SALVATION.code end
     for _, entry in ipairs(AURAS) do if Learned(entry) then codes[#codes + 1] = entry.code end end
-    local store = Store()
-    if store.salv then codes[#codes + 1] = SALV_FLAG end
-    if store.free then codes[#codes + 1] = FREE_FLAG end
+    if Store().free then codes[#codes + 1] = FREE_FLAG end
     return table.concat(codes)
 end
 
@@ -130,7 +125,7 @@ end
 
 local function OnAssigned(who, target, plan)
     local from = InGroup(who)
-    local classes, aura, salv = DecodePlan(plan)
+    local classes, aura = DecodePlan(plan)
     if not (IsPaladin() and classes and MayPlan(from)
             and target == MyName() .. "-" .. GetNormalizedRealmName()) then
         return
@@ -141,19 +136,6 @@ local function OnAssigned(who, target, plan)
         if Learned(BY_KEY[key]) then store.classes[class] = key end
     end
     store.aura = aura and Learned(BY_KEY[aura]) and aura or nil
-    if salv then store.salv = Learned(SALVATION) and true or nil end
-    ns.Print(who .. TEXT_UPDATED)
-    BroadcastSoon()
-    B.Changed()
-end
-
-local function OnSalvAssigned(who, target, on)
-    local from = InGroup(who)
-    if not (IsPaladin() and MayPlan(from)
-            and target == MyName() .. "-" .. GetNormalizedRealmName()) then
-        return
-    end
-    Store().salv = on and Learned(SALVATION) and true or nil
     ns.Print(who .. TEXT_UPDATED)
     BroadcastSoon()
     B.Changed()
@@ -178,9 +160,7 @@ local function OnPlayers(who, part, list)
     for guid, code in list:gmatch("(Player%-[%w%-]+)=(%a)") do
         local entry = BY_CODE[code]
         local choices = from.choices or 0
-        if entry and entry.salvation then
-            from.salv = true
-        elseif entry and entry.blessing and (from.players[guid] or choices < MAX_PLAYER_CHOICES) then
+        if entry and entry.blessing and (from.players[guid] or choices < MAX_PLAYER_CHOICES) then
             if not from.players[guid] then from.choices = choices + 1 end
             from.players[guid] = entry.key
         end
@@ -191,16 +171,15 @@ end
 local function OnPlan(who, body, known)
     local member = body and InGroup(who)
     if not (member and member.class == "PALADIN") then return end
-    local classes, aura, salv = DecodePlan(body)
+    local classes, aura = DecodePlan(body)
     if not classes then return end
     local set, free = {}, nil
     for code in known:gmatch(".") do
         if BY_CODE[code] then set[BY_CODE[code].key] = true end
-        if code == SALV_FLAG then salv = true end
         if code == FREE_FLAG then free = true end
     end
     local was = others[who]
-    others[who] = { classes = classes, aura = aura, salv = salv or nil, free = free, known = set,
+    others[who] = { classes = classes, aura = aura, free = free, known = set,
         players = was and was.players or {}, choices = was and was.choices or 0, status = was and was.status }
     RefreshPage()
 end
@@ -225,8 +204,6 @@ function B.OnMessage(msg, sender)
     if msg == "R" then return BroadcastSoon() end
     local target, plan = msg:match("^S|([^|]+)|(%S+)$")
     if target then return OnAssigned(who, target, plan) end
-    local salvTarget, salvOn = msg:match("^V|([^|]+)|([01])$")
-    if salvTarget then return OnSalvAssigned(who, salvTarget, salvOn == "1") end
     local symbols, loh, di = msg:match("^I|(%d+)|(%-?%d+)|(%-?%d+)$")
     if symbols then return OnStatus(who, symbols, loh, di) end
     local part, list = msg:match("^P|(%d+)|(.*)$")
@@ -239,12 +216,6 @@ function B.SendPlan(who, classes, aura)
     others[who].classes, others[who].aura = classes, aura
     local full = who:find("-") and who or who .. "-" .. GetNormalizedRealmName()
     Send("S|" .. full .. "|" .. EncodePlan(classes, aura), "S|" .. full)
-end
-
-function B.SendSalv(who, on)
-    others[who].salv = on or nil
-    local full = who:find("-") and who or who .. "-" .. GetNormalizedRealmName()
-    Send("V|" .. full .. "|" .. (on and "1" or "0"), "V|" .. full)
 end
 
 function B.SyncSoon()

@@ -7,13 +7,12 @@ local function check(label, value) assert(value, label); checks = checks + 1 end
 local grouped, raid, instanceGroup, guild, combat = false, false, false, false, false
 local sent, printed = {}, {}
 local known, cooldown, symbols, now = {}, {}, 7, 1000
-local mine = { classes = { WARRIOR = "might", ROGUE = "might", MAGE = "kings" }, salv = true, aura = "devotion" }
+local mine = { classes = { WARRIOR = "might", ROGUE = "might", MAGE = "kings" }, aura = "devotion" }
 local others = {}
-local NAMES = { might = "Blessing of Might", kings = "Blessing of Kings", salvation = "Blessing of Salvation",
+local NAMES = { might = "Blessing of Might", kings = "Blessing of Kings",
     devotion = "Devotion Aura", wisdom = "Blessing of Wisdom" }
 local B = {
     CLASSES = { "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID" },
-    SALVATION = { key = "salvation" },
     SYMBOL_OF_KINGS = 21177,
     Secret = function(v) return v == "SECRET" end,
     IsPaladin = function() return true end,
@@ -63,9 +62,8 @@ check("in a raid, an instance group and a guild", Keys(B.ReportChannels()) == "S
 
 local lines = B.ReportLines()
 check("a header and a footer", lines[1] == "--- Paladin blessings ---" and lines[#lines] == "--- End of blessings ---")
-check("you: each blessing with its classes, Salvation and the aura",
-    lines[2] == "Glyadin: Blessing of Might (Warrior, Rogue), Blessing of Kings (Mage), Blessing of Salvation, "
-        .. "Devotion Aura")
+check("you: each blessing with its classes, then the aura",
+    lines[2] == "Glyadin: Blessing of Might (Warrior, Rogue), Blessing of Kings (Mage), Devotion Aura")
 others["Bram Hollow"] = { classes = { PRIEST = "wisdom" } }
 others["Alma Reed"] = { classes = {} }
 lines = B.ReportLines()

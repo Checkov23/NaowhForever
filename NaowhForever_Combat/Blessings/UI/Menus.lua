@@ -5,12 +5,11 @@ local B = ns.Blessings
 local BLESSINGS, AURAS = B.BLESSINGS, B.AURAS
 local Store, Learned, SpellName, ClassName, Roster = B.Store, B.Learned, B.SpellName, B.ClassName, B.Roster
 
-local AURA_COLUMN, SALV_COLUMN = B.AURA_COLUMN, B.SALV_COLUMN
+local AURA_COLUMN = B.AURA_COLUMN
 local TEXT_AURA, TEXT_DEFAULT, TEXT_NONE = ns.L("Aura"), ns.L("Default"), ns.L("None")
 local TEXT_PLAYERS, TEXT_ASSIGNMENTS = ns.L("Players"), ns.L("Assignments")
 local TEXT_OWN_ONE, TEXT_OWN_MANY = ns.L("1 player has their own blessing"), ns.L("%d players have their own blessing")
 local TEXT_CLEAR_OWN = ns.L("Give them the class blessing")
-local TEXT_SALV = ns.L("Give Salvation")
 local TEXT_SEAL = ns.L("Seal")
 
 local function OwnAura()
@@ -40,8 +39,6 @@ function B.SetOwn(column, key)
     local store = Store()
     if column == AURA_COLUMN then
         store.aura = key
-    elseif column == SALV_COLUMN then
-        store.salv = key and true or nil
     else
         store.classes[column] = key
     end
@@ -86,23 +83,6 @@ function B.SetFree(on)
     B.Changed()
 end
 
-local function SalvOn()
-    return Store().salv == true
-end
-
-local function ToggleSalv()
-    B.SetOwn(SALV_COLUMN, not SalvOn() and B.SALVATION.key or nil)
-end
-
-function B.SalvMenu(owner)
-    MenuUtil.CreateContextMenu(owner, function(_, root)
-        root:CreateTitle(SpellName(B.SALVATION.key))
-        root:CreateCheckbox(TEXT_SALV, SalvOn, ToggleSalv)
-        root:CreateDivider()
-        root:CreateButton(TEXT_ASSIGNMENTS, OpenWindow)
-    end)
-end
-
 function B.ClassMenu(owner, class, inSettings)
     MenuUtil.CreateContextMenu(owner, function(_, root)
         root:CreateTitle(ClassName(class))
@@ -121,7 +101,6 @@ function B.ClassMenu(owner, class, inSettings)
             root:CreateButton(TEXT_CLEAR_OWN, function() ClearOwn(own) end)
         end
         root:CreateDivider()
-        if Learned(B.SALVATION) then root:CreateCheckbox(TEXT_SALV, SalvOn, ToggleSalv) end
         if not inSettings and B.Settings.Get("blessPlayerList") then
             root:CreateCheckbox(TEXT_PLAYERS, function() return B.PlayerList.Showing() == class end,
                 function() B.PlayerList.Toggle(class) end)

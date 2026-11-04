@@ -289,25 +289,28 @@ do
     Send("P|1|Player-9-000001=k", "Stranger Danger")
     check("a sender with no plan is ignored", ns.Blessings.Others()["Stranger Danger"] == nil)
 
-    -- Salvation is no class blessing any more: an older client's class Salvation reads as Salvation given,
-    -- the flag in the known list says the same, and a Salvation code in the aura place is no plan at all.
-    Send("F|-s--------|msw")
+    -- Blessing of Light and Salvation are gone from the game. An older client's code for either is no blessing:
+    -- a plan carrying one is refused, and the code is dropped from what they know and from their own choices.
+    Send("F|m--------D|mwD")
+    Send("F|-s-------D|msw")
     local holy = ns.Blessings.Others()["Holy Man"]
-    check("an older client's class Salvation becomes Salvation given", holy.classes.PALADIN == nil and holy.salv == true)
-    check("and it is a spell they know", holy.known.salvation == true)
-    Send("F|----------|mw")
-    check("no code and no flag: no Salvation", ns.Blessings.Others()["Holy Man"].salv == nil)
-    Send("F|----------|mwsY")
-    check("the flag in the known list says Salvation is on", ns.Blessings.Others()["Holy Man"].salv == true)
+    check("a plan with an old class Salvation is refused, the last one kept", holy.classes.WARRIOR == "might"
+        and holy.classes.PALADIN == nil)
+    Send("F|---l-----D|mlw")
+    check("so is one with Light", ns.Blessings.Others()["Holy Man"].classes.ROGUE == nil
+        and ns.Blessings.Others()["Holy Man"].classes.WARRIOR == "might")
     Send("F|---------s|m")
-    check("Salvation in the aura place is refused, the plan left as it was",
-        ns.Blessings.Others()["Holy Man"].salv == true and ns.Blessings.Others()["Holy Man"].aura == nil)
-    Send("P|1|Player-9-000002=s")
+    check("and one with Salvation in the aura place", ns.Blessings.Others()["Holy Man"].aura == "devotion")
+    Send("F|m--------D|mwlsY")
+    holy = ns.Blessings.Others()["Holy Man"]
+    check("old codes in the known list are dropped", holy.known.might and holy.known.wisdom
+        and not holy.known.light and not holy.known.salvation)
+    Send("P|1|Player-9-000002=s,Player-9-000003=l")
     local own = 0
     for _ in pairs(ns.Blessings.Others()["Holy Man"].players) do own = own + 1 end
-    check("a player's own Salvation from an older client is not kept", own == 0)
+    check("a player's own Light or Salvation from an older client is not kept", own == 0)
     Send("V|Me Self-Forever|1")
-    check("a Salvation setting from a player who cannot assign is ignored", ns.Blessings.Others()["Holy Man"].salv == true)
+    check("an old Salvation message changes nothing", ns.Blessings.Others()["Holy Man"].classes.WARRIOR == "might")
 
     -- Symbols of Kings and cooldowns come as numbers and are clamped; Free Assignment is a flag.
     Send("I|12|600|-1")

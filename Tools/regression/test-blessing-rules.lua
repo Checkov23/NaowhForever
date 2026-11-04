@@ -7,14 +7,13 @@ local function check(label, value) assert(value, label); checks = checks + 1 end
 
 local settings = { blessTank = "none", blessAssist = "none", blessSmart = false, blessBench = false }
 local store = { players = {}, classes = { WARRIOR = "kings", DRUID = "wisdom", MAGE = "wisdom" } }
-local learned = { might = true, kings = true, wisdom = true, light = true }
+local learned = { might = true, kings = true, wisdom = true }
 local roles, marks, raid, instance = {}, {}, true, { "Dungeon", "raid", 14, 0, 40 }
 local B = {
     Secret = function(v) return v == "SECRET" end,
     Settings = { Get = function(key) return settings[key] end },
     Store = function() return store end,
-    BY_KEY = { might = { key = "might" }, kings = { key = "kings" }, wisdom = { key = "wisdom" },
-        light = { key = "light" }, salvation = { key = "salvation" } },
+    BY_KEY = { might = { key = "might" }, kings = { key = "kings" }, wisdom = { key = "wisdom" } },
     Learned = function(entry) return learned[entry.key] end,
 }
 local env = setmetatable({
@@ -51,8 +50,8 @@ roles.raid1 = "TANK"
 check("a tank gets it in place of the class blessing", B.Assigned(warrior) == "might")
 roles.raid3 = "TANK"
 check("but only a class that can tank", B.Assigned(mage) == "wisdom")
-store.players.raid1 = "light"
-check("and never over a player's own choice", B.Assigned(warrior) == "light")
+store.players.raid1 = "wisdom"
+check("and never over a player's own choice", B.Assigned(warrior) == "wisdom")
 store.players.raid1 = nil
 learned.might = false
 check("a blessing you have not learned is not given", B.Assigned(warrior) == "kings")

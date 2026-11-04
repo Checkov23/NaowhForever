@@ -14,8 +14,8 @@ for _, unit in ipairs({ "a", "b", "c", "me" }) do
 end
 local B = {
     Secret = function(v) return v == "SECRET" end,
-    BY_KEY = { kings = { blessing = true }, salvation = { salvation = true }, devotion = {} },
-    FAMILY = { [20217] = "kings", [25898] = "kings", [1038] = "salvation", [465] = "devotion" },
+    BY_KEY = { kings = { blessing = true }, might = { blessing = true }, devotion = {} },
+    FAMILY = { [20217] = "kings", [25898] = "kings", [19740] = "might", [465] = "devotion" },
     GREATER = { [25898] = true },
     Roster = function() return roster end,
 }
@@ -79,8 +79,8 @@ dead.a = false
 check("a death seen on a health update forgets it, though they are back up when asked",
     B.Remembered("a", "kings") == false)
 
-B.CastDone(Click("c", 1038))
-check("Salvation is remembered like a blessing", select(2, B.Remembered("c", "salvation")) == 3600)
+B.CastDone(Click("c", 19740))
+check("another blessing is remembered for an hour too", select(2, B.Remembered("c", "might")) == 3600)
 
 B.CastDone(Click("me", 465))
 has, left = B.Remembered("me", "devotion")
@@ -112,11 +112,11 @@ id = Click("b", 20217)
 B.CastDone(id)
 check("outside a battleground clicks are not noted", B.Remembered("b", "kings") == false)
 kind = "pvp"
-B.CastDone(Click("c", 1038))
+B.CastDone(Click("c", 19740))
 id = Click("a", 20217)
 B.ForgetCasts()
 B.CastDone(id)
-check("leaving forgets everything", B.Remembered("a", "kings") == false and B.Remembered("c", "salvation") == false)
+check("leaving forgets everything", B.Remembered("a", "kings") == false and B.Remembered("c", "might") == false)
 B.CastDone(Click("zzz", 20217))
 check("a unit that is not in the group is ignored", B.Remembered("zzz", "kings") == false)
 

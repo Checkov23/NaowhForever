@@ -14,7 +14,6 @@ local B = {
     CLASSES = CLASSES,
     PAGE = "Blessings/Settings",
     AURA_COLUMN = "AURA",
-    SALV_COLUMN = "SALV",
     NOBODY = "-",
     ROUND = 0.5,
     AURA_TIP = ns.L("Left-click: cast your aura.\nRight-click: choose it."),
@@ -50,15 +49,16 @@ end
 
 function B.Changed() end
 
-local function SplitSalvation(store)
-    if store.salvSplit then return end
-    store.salvSplit = true
+local function DropRemoved(store)
+    if store.lightSalvDropped then return end
+    store.lightSalvDropped = true
     for class, key in pairs(store.classes) do
-        if key == "salvation" then store.classes[class], store.salv = nil, true end
+        if not B.BY_KEY[key] then store.classes[class] = nil end
     end
     for guid, key in pairs(store.players) do
-        if key == "salvation" then store.players[guid], store.salv = nil, true end
+        if not B.BY_KEY[key] then store.players[guid] = nil end
     end
+    store.salv, store.salvSplit = nil, nil
 end
 
 function B.Store()
@@ -74,6 +74,6 @@ function B.Store()
         store = { classes = classes, players = {} }
         account.blessings[key] = store
     end
-    SplitSalvation(store)
+    DropRemoved(store)
     return store
 end

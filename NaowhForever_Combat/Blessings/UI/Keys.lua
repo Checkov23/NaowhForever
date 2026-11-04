@@ -64,21 +64,6 @@ local function Greater(members, shared, symbols)
     return best
 end
 
-local function Salvation(members, tankClass, single, greater, symbols)
-    local entry = B.SALVATION
-    local spell = HighestKnown(entry.ranks)
-    local byClass = {}
-    for _, member in ipairs(members) do
-        local rank, left = Due(member, entry.key, spell)
-        if rank then single[#single + 1] = { unit = member.unit, spell = spell, rank = rank, left = left } end
-        if not tankClass[member.class] then
-            byClass[member.class] = byClass[member.class] or {}
-            table.insert(byClass[member.class], member)
-        end
-    end
-    for _, list in pairs(byClass) do greater[#greater + 1] = Greater(list, entry.key, symbols) end
-end
-
 local Keys = {}
 B.Keys = Keys
 
@@ -105,7 +90,7 @@ function Keys.Clear()
     end
 end
 
-function Keys.Fill(byClass, salvMembers, tankClass)
+function Keys.Fill(byClass)
     local single, greater = {}, {}
     local symbols = C_Item.GetItemCount(SYMBOL_OF_KINGS) > 0
     for _, class in ipairs(CLASSES) do
@@ -115,7 +100,6 @@ function Keys.Fill(byClass, salvMembers, tankClass)
             greater[#greater + 1] = Greater(members, shared, symbols)
         end
     end
-    if salvMembers then Salvation(salvMembers, tankClass, single, greater, symbols) end
     SetQueue(keyNext, single)
     SetQueue(keyGreater, greater)
     if keyAuto then

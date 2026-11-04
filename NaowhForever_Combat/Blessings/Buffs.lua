@@ -96,7 +96,7 @@ local function ByUrgency(a, b)
     return a.left < b.left
 end
 
-local function Survey(members, fixed)
+local function Survey(members)
     local s = { missing = 0, reachable = false, missingNear = 0, expiringNear = 0, classDue = 0,
         classMissing = 0, queue = {} }
     local rank, left
@@ -104,9 +104,9 @@ local function Survey(members, fixed)
     local players = Store().players
     local spells = {}
     for _, member in ipairs(members) do
-        local key = fixed and fixed.key or Assigned(member)
+        local key = Assigned(member)
         if key and spells[key] == nil then
-            local cast = fixed and fixed.spell or CastSpell(key, members)
+            local cast = CastSpell(key, members)
             if cast and GREATER[cast] and not WaitedFor(members, cast) then cast = HighestKnown(BY_KEY[key].ranks) end
             spells[key] = cast or false
         end
@@ -125,7 +125,7 @@ local function Survey(members, fixed)
                 local r = not has and 0 or (remaining and remaining < EXPIRING and 1 or 2)
                 if range == true and r < 2 and member.targetable then
                     if r == 0 then s.missingNear = s.missingNear + 1 else s.expiringNear = s.expiringNear + 1 end
-                    if fixed or not players[member.guid] then
+                    if not players[member.guid] then
                         s.classDue = s.classDue + 1
                         if r == 0 then s.classMissing = s.classMissing + 1 end
                     end
@@ -151,60 +151,6 @@ local function Survey(members, fixed)
     return s
 end
 
-local function SalvationGroup(roster)
-    local members, tankClass = {}, {}
-    for _, member in ipairs(roster) do
-        if B.IsTank(member.unit) then
-            tankClass[member.class] = true
-        else
-            members[#members + 1] = member
-        end
-    end
-    return members, tankClass
-end
-
-local function SalvationSurvey(members, tankClass)
-    local entry = B.SALVATION
-    local single = HighestKnown(entry.ranks)
-    local symbols = C_Item.GetItemCount(SYMBOL_OF_KINGS) > 0
-    local byClass = {}
-    for _, member in ipairs(members) do
-        byClass[member.class] = byClass[member.class] or {}
-        table.insert(byClass[member.class], member)
-    end
-    local all = { missing = 0, reachable = false, missingNear = 0, expiringNear = 0, classDue = 0,
-        classMissing = 0, queue = {} }
-    for _, class in ipairs(B.CLASSES) do
-        local list = byClass[class]
-        if list then
-            local greater = not tankClass[class] and #list > 1 and symbols and HighestKnown(entry.greater)
-            if greater and not WaitedFor(list, greater) then greater = nil end
-            local s = Survey(list, { key = entry.key, spell = greater or single })
-            if greater and s.missingNear + s.expiringNear < 2 then
-                s = Survey(list, { key = entry.key, spell = single })
-            end
-            all.missing = all.missing + s.missing
-            all.reachable = all.reachable or s.reachable
-            all.missingNear = all.missingNear + s.missingNear
-            all.expiringNear = all.expiringNear + s.expiringNear
-            all.classDue = all.classDue + s.classDue
-            all.classMissing = all.classMissing + s.classMissing
-            if s.shortest and (not all.shortest or s.shortest < all.shortest) then all.shortest = s.shortest end
-            for _, queued in ipairs(s.queue) do table.insert(all.queue, queued) end
-            if s.target and (not all.target or s.rank < all.rank or (s.rank == all.rank and s.left < all.left)) then
-                all.target, all.spell, all.rank, all.left = s.target, s.spell, s.rank, s.left
-            end
-        end
-    end
-    table.sort(all.queue, ByUrgency)
-    local due = 0
-    for _, queued in ipairs(all.queue) do if queued.rank < 2 then due = due + 1 end end
-    local keep = B.Settings.Get("blessRespect") and 0 or 1
-    for i = #all.queue, math.max(due, keep) + 1, -1 do all.queue[i] = nil end
-    if due == 0 and keep == 0 then all.target = nil end
-    return all
-end
-
 local function Due(member, key, spell)
     if not (spell and UnitIsConnected(member.unit) and not UnitIsDeadOrGhost(member.unit)
         and UnitIsVisible(member.unit) and InRange(member, spell) ~= false) then return end
@@ -219,6 +165,4 @@ B.BuffState = BuffState
 B.ByUrgency = ByUrgency
 B.Survey = Survey
 B.WaitedFor = WaitedFor
-B.SalvationGroup = SalvationGroup
-B.SalvationSurvey = SalvationSurvey
 B.Due = Due

@@ -473,19 +473,13 @@ local classRows
 for _, row in ipairs(cards.bar.rows) do
     if row[1] and row[1].group == "Blessings by Class" then classRows = row end
 end
-check("the card has a Blessings by Class group, a row per class and Salvation",
-    classRows and #classRows == #B.CLASSES + 2)
-local salvRow = classRows[#classRows]
-check("the last row is Salvation, off to begin with", salvRow.get() == "none")
-salvRow.set("give")
-check("giving Salvation writes your plan", B.Store().salv == true and salvRow.get() == "give")
-salvRow.set("none")
-check("and None turns it off", B.Store().salv == nil)
+check("the card has a Blessings by Class group and a row per class",
+    classRows and #classRows == #B.CLASSES + 1)
 local warriorRow = classRows[2]
 check("each row is named for its class", warriorRow.label == "Warrior")
 check("its help names the blessings, so a search for one finds it",
     warriorRow.help:find("Kings", 1, true) and warriorRow.help:find("Might", 1, true)
-    and warriorRow.help:find("Wisdom", 1, true))
+    and warriorRow.help:find("Wisdom", 1, true) and not warriorRow.help:find("Light", 1, true))
 check("the row shows the plan", warriorRow.get() == "kings")
 local values, order = warriorRow.choice()
 check("its choices are the blessings, then None", values.kings == "Spell 20217" and order[#order] == "none"
@@ -508,30 +502,28 @@ check("the options search finds Kings on the Blessing Bar card, a row per class"
     #kings >= #B.CLASSES and kings[1].label == "Warrior" and kings[1].card == "Blessings/Settings:bar")
 check("and finds them by \"greater\"", #Search("greater") >= #B.CLASSES)
 
--- Saved plans from before Salvation was split off the class blessings: each Salvation becomes "Salvation on",
--- once, and the plan keeps its other blessings.
-account.blessings["Glyadin-Forever"] = { classes = { MAGE = "salvation", WARRIOR = "might" },
-    players = { me = "salvation", you = "kings" } }
+-- Saved plans from before the game removed Blessing of Light and Salvation: both are cleared, once, and the
+-- plan keeps its other blessings.
+account.blessings["Glyadin-Forever"] = { classes = { MAGE = "salvation", PRIEST = "light", WARRIOR = "might" },
+    players = { me = "salvation", them = "light", you = "kings" }, salv = true, salvSplit = true }
 local migrated = B.Store()
-check("an old class Salvation is cleared", migrated.classes.MAGE == nil and migrated.classes.WARRIOR == "might")
-check("an old player Salvation is cleared, the others kept", migrated.players.me == nil and migrated.players.you == "kings")
-check("and Salvation is on", migrated.salv == true)
-migrated.salv = nil
-check("it does not come back once turned off", B.Store().salv == nil)
+check("an old class Light or Salvation is cleared", migrated.classes.MAGE == nil and migrated.classes.PRIEST == nil
+    and migrated.classes.WARRIOR == "might")
+check("an old player Light or Salvation is cleared, the others kept", migrated.players.me == nil
+    and migrated.players.them == nil and migrated.players.you == "kings")
+check("and the old Salvation switch is gone", migrated.salv == nil and migrated.salvSplit == nil)
+migrated.classes.PRIEST = "kings"
+check("it runs once", B.Store().classes.PRIEST == "kings")
 
--- The preset keeps whether you give Salvation.
+-- The preset keeps your plan, and one saved before the removal loads without Light or Salvation.
 class = "PALADIN"
-B.Store().salv = true
 check("saving the preset", B.SavePreset())
-check("the preset keeps Salvation", account.blessingPreset["Glyadin"].salv == true)
-B.Store().salv = nil
-check("loading the preset gives it back", B.LoadPreset() and B.Store().salv == true)
-B.Store().salv = nil
-account.blessingPreset = { Glyadin = { classes = { MAGE = "salvation", WARRIOR = "might" } } }
-check("loading a preset from before the split", B.LoadPreset())
-check("turns its class Salvation into Salvation on",
-    B.Store().classes.MAGE == nil and B.Store().classes.WARRIOR == "might" and B.Store().salv == true)
-B.Store().salv = nil
+check("the preset keeps your plan", account.blessingPreset["Glyadin"].classes.WARRIOR == "might")
+account.blessingPreset = { Glyadin = { classes = { MAGE = "salvation", PRIEST = "light", WARRIOR = "might" },
+    salv = true } }
+check("loading a preset from before the removal", B.LoadPreset())
+check("keeps the blessings you know and drops Light and Salvation", B.Store().classes.WARRIOR == "might"
+    and B.Store().classes.MAGE == nil and B.Store().classes.PRIEST == nil and B.Store().salv == nil)
 
 -- The seal button: seals are looked up like the other spells, picked from a menu and kept in your plan.
 check("the seals are indexed by key and spell", B.BY_KEY.sealCommand.ranks[1] == 20375 and B.FAMILY[20375] == "sealCommand")
@@ -548,11 +540,11 @@ check("and Default clears it", B.Store().seal == nil)
 
 -- Clear empties your whole plan.
 local plan = B.Store()
-plan.classes.WARRIOR, plan.aura, plan.salv, plan.players.me = "might", "retribution", true, "kings"
+plan.classes.WARRIOR, plan.aura, plan.players.me = "might", "retribution", "kings"
 B.ClearAll()
 plan = B.Store()
-check("Clear empties your classes, aura, Salvation and own choices",
-    next(plan.classes) == nil and plan.aura == nil and plan.salv == nil and next(plan.players) == nil)
+check("Clear empties your classes, aura and own choices",
+    next(plan.classes) == nil and plan.aura == nil and next(plan.players) == nil)
 class = "WARRIOR"
 
 print(("test-blessing-preview: %d checks passed"):format(checks))

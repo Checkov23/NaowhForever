@@ -7,10 +7,7 @@ B.BLESSINGS = {
     { key = "might", code = "m", ranks = { 19740, 19834, 19835, 19836, 19837, 19838, 25291 }, greater = { 25782, 25916 } },
     { key = "wisdom", code = "w", ranks = { 19742, 19850, 19852, 19853, 19854, 25290 }, greater = { 25894, 25918 } },
     { key = "kings", code = "k", ranks = { 20217 }, greater = { 25898 } },
-    { key = "light", code = "l", ranks = { 19977, 19978, 19979 }, greater = { 25890 } },
 }
-
-B.SALVATION = { key = "salvation", code = "s", ranks = { 1038 }, greater = { 25895 }, salvation = true }
 
 B.AURAS = {
     { key = "devotion", code = "D", ranks = { 465, 10290, 643, 10291, 1032, 10292, 10293 } },
@@ -36,4 +33,4 @@ B.SEALS = {
 
 B.SYMBOL_OF_KINGS = 21177
 
-B.SALV_FLAG, B.FREE_FLAG = "Y", "X"
+B.FREE_FLAG = "X"

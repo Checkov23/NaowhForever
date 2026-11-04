@@ -19,8 +19,7 @@ function B.HiddenAuras()
 end
 
 local function Lasts(key)
-    local entry = BY_KEY[key]
-    return (entry.blessing or entry.salvation) and BLESSING_TIME or math.huge
+    return BY_KEY[key].blessing and BLESSING_TIME or math.huge
 end
 
 function B.Remembered(unit, key)

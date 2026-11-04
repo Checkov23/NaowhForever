@@ -61,7 +61,7 @@ local function ClassIcon(frame)
     icon = CreateFrame("Frame", nil, frame)
     icon.tex = icon:CreateTexture(nil, "ARTWORK")
     icon.tex:SetAllPoints()
-    icon.tex:SetTexture(frame.labelIcon or CLASS_ICON_PATH .. frame.class)
+    icon.tex:SetTexture(CLASS_ICON_PATH .. frame.class)
     icon.tex:SetTexCoord(ICON_CROP, 1 - ICON_CROP, ICON_CROP, 1 - ICON_CROP)
     ns.Border(icon, ICON_BORDER)
     frame.classIcon = icon
