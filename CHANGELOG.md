@@ -1,6 +1,17 @@
 # Changelog
 
-## Unreleased
+## 1.2.1
+
+### Added
+- Dungeon Journal: Past Due, the Alliance's new Scarlet Monastery Library quest from Magus Olvek in
+  Alterac Mountains.
+- Questing & Group: Announce Quest Progress says your quest objective progress in party chat, like
+  "Mottled Boar slain: 10/10". Off by default.
+- Boat and Zeppelin Timers (QoL > Travel): Zone Timer lists the boats and zeppelins of the zone you
+  are in, with their times, on screen. Orgrimmar, Undercity and Thunder Bluff show the Durotar,
+  Tirisfal and Mulgore ships.
+- Tooltips (QoL > Interface): Show Quest ID adds a quest's ID when you hover it in the quest log,
+  and the copy shortcut opens its Wowhead link.
 
 ### Changed
 - Dungeon Journal: its data is updated to WoW Forever build 1.60.1.70790.
