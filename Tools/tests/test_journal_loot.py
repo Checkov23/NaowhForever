@@ -108,6 +108,26 @@ class WowsrcMerge(unittest.TestCase):
         self.assertEqual(kept[0]["chance"], 35.7, "wowsrc's chance wins")
 
 
+class PutBack(unittest.TestCase):
+    """boss_entry: an item placed by hand after the wowsrc merge took it off the boss."""
+
+    def setUp(self):
+        self.saved = journal.npc_drops, journal.npc_model
+        journal.npc_drops = lambda npc: journal.choose([drop(7717, 1776, 12682), drop(10330, 1801, 12682)])
+        journal.npc_model = lambda npc: None
+
+    def tearDown(self):
+        journal.npc_drops, journal.npc_model = self.saved
+
+    def test_it_keeps_wowheads_chance_in_its_place(self):
+        listed = {"items": [{"id": 7717, "chance": None, "new": False}], "complete": True}
+        extra = {"herod": [drop(10330, 0, 0), drop(273100, 0, 0)]}
+        loot = journal.boss_entry("Herod", False, {"Herod": 3975}, extra, {}, [], listed)["loot"]
+        self.assertEqual([i["id"] for i in loot], [10330, 7717, 273100], "most likely first, unknown last")
+        self.assertAlmostEqual(loot[0]["chance"], 100 * 1801 / 12682, msg="Herod's Scarlet Leggings")
+        self.assertIsNone(loot[2]["chance"], "Wowhead does not count it on the boss")
+
+
 class InGame(unittest.TestCase):
     def setUp(self):
         self.saved = journal.game_items, journal.era_items, journal.sent, wago.table

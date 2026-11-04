@@ -64,8 +64,8 @@ COLUMNS = {
     "Map": ("ID", "MapName_lang", "InstanceType", "MaxPlayers"),
     "Faction": ("ID", "Name_lang"),
     "Item": ("ID", "ClassID", "SubclassID"),
-    "ItemSparse": ("ID", "MinFactionID", "MinReputation", "BuyPrice", "OverallQualityID", "ItemLevel",
-                   "RequiredLevel", "InventoryType"),
+    "ItemSparse": ("ID", "Display_lang", "MinFactionID", "MinReputation", "BuyPrice", "OverallQualityID",
+                   "ItemLevel", "RequiredLevel", "InventoryType"),
 }
 
 tables = {}   # (table, build, hotfixes) -> its rows, read once per run

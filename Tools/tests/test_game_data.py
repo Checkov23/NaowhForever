@@ -246,9 +246,9 @@ class Builds(unittest.TestCase):
         def fetch(url):
             if "/Map/" in url:
                 return "ID,Field_1_60_1_99999_000\n1,2\n"
-            return "ID,Name_lang,MapID,ClassID,SubclassID,MapName_lang,InstanceType,MaxPlayers," \
+            return "ID,Name_lang,MapID,ClassID,SubclassID,MapName_lang,InstanceType,MaxPlayers,Display_lang," \
                    "MinFactionID,MinReputation,BuyPrice,OverallQualityID,ItemLevel,RequiredLevel,InventoryType\n" \
-                   + "1," * 14 + "1\n"
+                   + "1," * 15 + "1\n"
         wago.fetch = fetch
         self.assertEqual(wago.unreadable("1.60.1.99999"), ["Map"])
 

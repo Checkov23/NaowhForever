@@ -7,7 +7,7 @@ ns.Journal.AddDungeon("ScarletMonasteryArmory", {
     entrance = { map = 1420, x = 83.9, y = 31.6 },
     wings = {
         { bosses = {
-            { npc = 3975, name = "Herod", model = 2041, encounters = { 448 }, loot = { 7718, 7719, 7717 }, chance = { 33, 32, 14 } },
+            { npc = 3975, name = "Herod", model = 2041, encounters = { 448 }, loot = { 7718, 7719, 10330, 7717 }, chance = { 33, 32, 14, 14 } },
             { npc = nil, name = "Trash", trash = true, loot = { 10329, 10333, 10331, 10328, 1992, 2262, 5756, 5819, 7727, 7728, 7729, 7730, 7736, 7752, 7753, 7754, 7755, 7757, 7758, 7759, 7760, 7761, 7786, 7787, 8225, 8226, 10332 }, chance = { 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
         } },
     },

@@ -181,7 +181,10 @@ The rules, in plain words:
   from. Its pages have no item IDs, so `Tools/sources/wowsrc.py` maps names to IDs once and keeps
   them in `Tools/data/item_names.json`.
 - **By hand** (`"add"`): items two other sources agree on that neither Wowhead nor wowsrc
-  places yet.
+  places yet, and an old item the wowsrc merge took off a boss where Wowhead's counts still give
+  it a real chance, which it keeps (Herod's Scarlet Leggings, 1,801 of 12,682 kills). The trash
+  cards of City of Dalaran, Excavation Site: Wetlands and Ruins of Lordaeron are by hand too, from
+  ForeverChanges' and Wowhead's item sources: wowsrc has no trash for them.
 - **Everything, and what is not in Forever yet marked.** Forever keeps a row in its Item table
   for every Classic item, but the server only sends the items in the game; asked for any other,
   the client shows "Item 10800" and its tooltip waits forever. An item is in the game when its

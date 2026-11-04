@@ -14,9 +14,11 @@ its chances are real; under 10 kills none is shown.
 
 Then wowsrc.com's Forever loot pages (Tools/sources/wowsrc.py, its own data file) say what each
 boss drops in Forever: their items are added, their chances win, and an old item they no
-longer list on that boss is dropped (moved, like Springvale's lantern, now trash's). Each
-wing's trash comes from them too. Last, the items placed by hand ("add") and the BiS
-sources in NaowhForever_BiS/BiS/Data/BiS.lua; those have no chance.
+longer list on that boss is dropped. Each wing's trash comes from them too. Last, the items
+placed by hand ("add", which also puts back an old item the merge took off a boss where
+Wowhead's counts still give it a real chance: Herod's Scarlet Leggings) and the BiS sources
+in NaowhForever_BiS/BiS/Data/BiS.lua; those have no chance, but an item put back keeps the
+chance Wowhead counts for it on that boss.
 
 Every item is listed, the ones not in Forever yet too, so the Journal is whole the day they
 come. An item is in the game (known) when the game's tables have it (wago.tools' ItemSparse,
@@ -446,9 +448,8 @@ def wowsrc_loot(dungeon, report):
 
 def merge_wowsrc(loot, listed):
     """A boss's loot with wowsrc's Forever list for it: its chances where it gives one (the
-    game's own), its items added, and an old item it does not list left out (moved in Forever:
-    Springvale's Eerie Stable Lantern is trash's now) when the list is complete. An item new
-    in Forever that Wowhead ties to the boss stays either way."""
+    game's own), its items added, and an old item it does not list left out when the list is
+    complete. An item new in Forever that Wowhead ties to the boss stays either way."""
     if not listed:
         return loot
     on_list = {i["id"]: i for i in listed["items"]}
@@ -522,12 +523,16 @@ def boss_entry(name, rare, pinned, extra, items, report, listed=None, kind=None,
             report.append(f"no loot: {name} (object {chest})")
         return {"npc": None, "name": name, "rare": False, "chest": chest, "loot": loot}
     npc = pinned.get(name) or find_npc(name)
-    loot = merge_wowsrc(npc_drops(npc) if npc else [], listed)
+    counted = npc_drops(npc) if npc else []
+    loot = merge_wowsrc(counted, listed)
     have = {i["id"] for i in loot}
+    # An item put back by hand after the merge took it off keeps Wowhead's chance for this boss.
+    chances = {i["id"]: i["chance"] for i in counted}
     for item in extra.get(name.lower(), []):
         if item["id"] not in have and keeps(item):
-            loot.append(dict(item, chance=None))
+            loot.append(dict(item, chance=chances.get(item["id"])))
             have.add(item["id"])
+    loot.sort(key=lambda i: (i["chance"] is None, -(i["chance"] or 0)))
     if not npc:
         report.append(f"no NPC found: {name}")
     elif not loot:

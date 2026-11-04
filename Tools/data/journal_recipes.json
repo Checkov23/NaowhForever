@@ -35,6 +35,14 @@
    18267
   ]
  },
+ "Excavation Site: Wetlands": {
+  "Relic Guardian": [
+   273097
+  ],
+  "Shadetooth": [
+   273106
+  ]
+ },
  "Gnomeregan": {
   "Crowd Pummeler 9-60": [
    274049
@@ -59,6 +67,9 @@
    252846,
    252847,
    252899
+  ],
+  "Houndmaster Loksey": [
+   273109
   ]
  },
  "Scholomance": {
@@ -108,6 +119,9 @@
   ]
  },
  "Wailing Caverns": {
+  "Lady Anacondra": [
+   273098
+  ],
   "Lord Serpentis": [
    273087
   ]

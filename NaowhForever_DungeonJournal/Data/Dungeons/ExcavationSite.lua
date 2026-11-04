@@ -9,9 +9,10 @@ ns.Journal.AddDungeon("ExcavationSite", {
     wings = {
         { bosses = {
             { npc = 260322, name = "Saltspine", model = 144209, encounters = { 3480 }, loot = { 273022, 273023, 273024 }, chance = { 35, 33, 31 } },
-            { npc = 260325, name = "Shadetooth", model = 144210, encounters = { 3481 }, loot = { 273027, 273026, 273025 }, chance = { 34, 32, 27 } },
+            { npc = 260325, name = "Shadetooth", model = 144210, encounters = { 3481 }, loot = { 273027, 273026, 273025, 273106 }, chance = { 34, 32, 27, 0 } },
             { npc = 260808, name = "Highland Horror", model = 9010, quest = true, encounters = { 3644 } },
-            { npc = 260326, name = "Relic Guardian", model = 144224, encounters = { 3482 }, loot = { 273028, 273029, 273030 }, chance = { 34, 31, 29 } },
+            { npc = 260326, name = "Relic Guardian", model = 144224, encounters = { 3482 }, loot = { 273028, 273029, 273030, 273097 }, chance = { 34, 31, 29, 0 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 286983, 287068 } },
         } },
     },
 })

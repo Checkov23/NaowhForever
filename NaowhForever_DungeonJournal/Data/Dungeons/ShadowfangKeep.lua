@@ -10,7 +10,7 @@ ns.Journal.AddDungeon("ShadowfangKeep", {
             { npc = 3914, name = "Rethilgore", model = 524, encounters = { 2748 }, loot = { 5254, 273456, 273457, 2985 }, chance = { 86, 0, 0, 0 } },
             { npc = 3886, name = "Razorclaw the Butcher", model = 524, encounters = { 2749 }, loot = { 6226, 6633, 1292, 273096 }, chance = { 42, 40, 9, 0 } },
             { npc = 3887, name = "Baron Silverlaine", model = 3222, encounters = { 2750 }, loot = { 6323, 6321, 273637, 3212 }, chance = { 38, 19, 0, 0 } },
-            { npc = 4278, name = "Commander Springvale", model = 3223, encounters = { 2751 }, loot = { 3191, 6320, 273643, 3212, 4707, 273105 }, chance = { 36, 30, 0, 0, 0, 0 } },
+            { npc = 4278, name = "Commander Springvale", model = 3223, encounters = { 2751 }, loot = { 3191, 6320, 6341, 273643, 3212, 4707, 273105 }, chance = { 36, 30, 9, 0, 0, 0, 0 } },
             { npc = 4279, name = "Odo the Blindwatcher", model = 522, encounters = { 2752 }, loot = { 6319, 6318, 273645, 3067, 6567 }, chance = { 58, 33, 0, 0, 0 } },
             { npc = 4274, name = "Fenrus the Devourer", model = 2352, encounters = { 2753 }, loot = { 6340, 3230, 273646, 4064, 9804 }, chance = { 71, 17, 0, 0, 0 } },
             { npc = 3927, name = "Wolf Master Nandos", model = 11179, encounters = { 2754 }, loot = { 3748, 6314, 273647, 3212 }, chance = { 57, 38, 0, 0 } },

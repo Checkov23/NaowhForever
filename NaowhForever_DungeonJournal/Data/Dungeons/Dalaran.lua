@@ -17,6 +17,7 @@ ns.Journal.AddDungeon("Dalaran", {
             { npc = 246931, name = "Mana Wraith", model = 130220, optional = true, encounters = { 3312 } },
             { npc = 246008, name = "Mana Devourer", model = 129895, optional = true, encounters = { 3300 }, loot = { 273042, 273041, 273040 }, chance = { 34, 34, 32 } },
             { npc = 246016, name = "Arcanic Enigma", model = 129900, optional = true, encounters = { 3301 }, loot = { 273045, 273043, 273044 }, chance = { 36, 34, 30 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 286987, 286988, 286989, 286991, 286992, 286994, 286995 } },
         } },
     },
 })

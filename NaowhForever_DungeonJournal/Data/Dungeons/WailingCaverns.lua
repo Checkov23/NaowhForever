@@ -7,7 +7,7 @@ ns.Journal.AddDungeon("WailingCaverns", {
     entrance = { map = 1413, x = 46.0, y = 36.3 },
     wings = {
         { bosses = {
-            { npc = 3671, name = "Lady Anacondra", model = 4313, encounters = { 585 }, loot = { 5404, 10412, 12992, 273088, 14568 }, chance = { 47, 10, 0, 0, 0 } },
+            { npc = 3671, name = "Lady Anacondra", model = 4313, encounters = { 585 }, loot = { 5404, 10412, 12992, 273088, 14568, 273098 }, chance = { 47, 10, 0, 0, 0, 0 } },
             { npc = 3669, name = "Lord Cobrahn", model = 4213, encounters = { 586 }, loot = { 6465, 6460, 10410 }, chance = { 55, 18, 18 } },
             { npc = 3653, name = "Kresh", model = 5126, encounters = { 587 }, loot = { 6447, 13245, 273084, 14371 }, chance = { 70, 13, 0, 0 } },
             { npc = 3670, name = "Lord Pythas", model = 4214, encounters = { 588 }, loot = { 6473, 6472, 12978, 273089 }, chance = { 55, 30, 0, 0 } },

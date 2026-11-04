@@ -121,6 +121,11 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   `Rankings.lua`, `Quests.lua` and `Sources.lua` read it the first time they are asked, never at load.
 - A boss's drop beats a trash drop of the same item (trash counts as a chance of -1), and the boss
   likeliest to drop it is the one named.
+- An item its source calls a World drop stays one when its likeliest place in the Journal is a boss
+  with no chance: its click goes to Wowhead and the picker leaves it out of the dungeon drops. wowsrc
+  lists some world-drop greens under bosses with no chance (Nightsky Wristbands on Grubbis), and
+  naming the boss sent players to farm it there. A trash card still names its dungeon: Spirewind
+  Fetter is Uldaman's trash.
 - `SOURCE_SEP` is the middle dot wowsrc puts between a boss and its place; each source is split once.
 - The picker lists only ranked items the running client knows: an unknown ID never finishes loading.
   Dungeon drops "near your level" are within `NEAR_LEVELS` (10) of yours.

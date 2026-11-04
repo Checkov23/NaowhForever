@@ -156,6 +156,19 @@ Case("the Journal's wording wins over wowsrc's; wowsrc's for what drops nowhere"
     assert(m.ns.BiSSource(100) == nil)
 end)
 
+Case("a world drop the Journal places on a boss with no chance stays a world drop, and no dungeon drop", function()
+    local m = Fixture("HUNTER", 40, { [1] = "World drop", [2] = "World drop", [20] = "World drop" })
+    local list = m.ns.Journal.Dungeons()
+    list[2].wings[1].bosses[1].chance = nil
+    list[15].wings[1].bosses[1].loot = { 1, 20 }
+    assert(m.ns.BiSSource(2) == "World drop" and m.R.DropDungeon(2) == nil, m.ns.BiSSource(2))
+    assert(m.ns.BiSSource(20) == "Trash drop" .. SEP .. "Trash Place" and m.R.DropDungeon(20) == list[15],
+        "a trash card is still where to go")
+    assert(m.ns.BiSSource(1) == "Boss 1" .. SEP .. "Place 1", "a boss with a chance is still where to go")
+    assert(m.ns.BiS.Sources.Of(2) == "wowhead")
+    assert(List(m.DungeonDrops(1, {}, false)) == "3,13", "the picker does not offer it as a dungeon drop")
+end)
+
 Case("an item not in Forever yet drops nowhere: no source, never offered", function()
     local m = Fixture("MAGE", 20, { [2] = "Boss 2" .. SEP .. "Old Name" })
     m.ns.Journal.NotYet = { [1] = FACTS[1], [2] = FACTS[2] }
