@@ -46,7 +46,6 @@ ns.Journal.NotYet = {
     [10633] = { 4, 4, 51, 46, 3, 134584, "Silvershell Leggings" },
     [10758] = { 2, 8, 42, 35, 3, 135355, "X'caliboar" },
     [10760] = { 4, 2, 39, 34, 2, 132957, "Swine Fists" },
-    [10766] = { 2, 19, 40, 35, 3, 135465, "Plaguerot Sprig" },
     [10767] = { 4, 6, 42, 37, 3, 134963, "Savage Boar's Guard" },
     [10783] = { 4, 2, 52, 47, 3, 135049, "Atal'ai Spaulders" },
     [10784] = { 4, 3, 52, 47, 3, 132627, "Atal'ai Breastplate" },
