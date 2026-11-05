@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased
+## 1.2.4
+
+### Fixed
+- Profiles: pasting an action bar code into Import adds it as a bar set instead of saying Action
+  Bars is off.
+- Spell Efficiency: Starfire's numbers match its launch damage.
+- Boat and Zeppelin Timers: the Mulgore and Zephras Isle zeppelin keeps time with the launch build.
+- Professions: First Aid Kit, Toxin Study, Lodestone and Rock Garden show their skill-up colours.
+- Character Panel: no more black background behind your character the first time you open it.
 
 ## 1.2.3
 
