@@ -123,11 +123,13 @@ local function Picked(key)
 end
 
 local function Build()
-    local panel, stats = CharacterFrame, CharacterStatsPaneScrollBox
-    switch = Parts.Tabs(panel, SWITCH_W, LABELS, Picked)
+    local stats = CharacterStatsPaneScrollBox
+    switch = Parts.Tabs(stats, SWITCH_W, LABELS, Picked)
+    switch:SetIgnoreParentAlpha(true)
     switch:SetPoint("BOTTOM", CharacterFrame.RightPaneHost, "BOTTOM", 0, GAP)
     switch:SetFrameLevel(stats:GetFrameLevel() + VIEW_LIFT)
-    view = CreateFrame("Frame", nil, panel)
+    view = CreateFrame("Frame", nil, stats)
+    view:SetIgnoreParentAlpha(true)
     view:SetAllPoints(stats)
     view:SetFrameLevel(stats:GetFrameLevel() + VIEW_LIFT)
     view:EnableMouse(true)

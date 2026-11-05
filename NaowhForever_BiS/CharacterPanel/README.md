@@ -113,6 +113,9 @@ the game's art comes back and ours hides.
   panel round it.
 - The score card is a child of the game's stats list (its fade ignored), so the game hides it with
   the list whenever its gear sets, titles or pet take that room, and it never sits over their rows.
+- Your spec's stats and their switch are children of the game's stats list too (its fade ignored),
+  so they show only while it does. As the panel's children, shown and hidden from the list's OnShow
+  and OnHide, they were left over the PvP tab.
 - `ROOM` is what the game leaves between your level and its list's top (the list's first title sits
   low in its own row): only what the score needs beyond it moves the list down.
 - The stats can go secret under the game's addon restrictions (combat, an encounter, some maps):

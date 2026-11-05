@@ -527,7 +527,7 @@ end
 -- The stats: your spec's first (the default), the game's list under it; the switch at the
 -- pane's bottom.
 local switch, spec
-for _, child in ipairs(character.children or {}) do
+for _, child in ipairs(statsList.children or {}) do
     if rawget(child, "buttons") then switch = child elseif rawget(child, "rows") then spec = child end
 end
 -- The switch keeps its picked side in .shown (the shared tabs' own field), so its showing is
@@ -663,6 +663,14 @@ statsList.shown = false
 statsList.hooks.OnHide(statsList)
 check("the game's titles or gear sets in its place: the switch and ours go", switch.visible == false
     and spec.shown == false)
+-- The game's list hidden without a hide of its own that we see (its OnHide came while it still
+-- said shown): ours goes with it all the same, not left over the PvP tab or any other.
+statsList.shown = true
+statsList.hooks.OnShow(statsList)
+statsList.hooks.OnHide(statsList)
+statsList.shown = false
+check("ours and the switch are the game's list's own, so never on screen without it", not OnScreen(spec)
+    and switch.parent == statsList and spec.ignoreParentAlpha and switch.ignoreParentAlpha)
 statsList.shown = true
 statsList.hooks.OnShow(statsList)
 S.Set("characterPanelStats", "all")
