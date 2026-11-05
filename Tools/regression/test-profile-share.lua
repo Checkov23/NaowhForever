@@ -792,6 +792,13 @@ Case("the dialogs: export shows the string, import ticks parts and lands what is
     assert(opened == "  !NFB1!abc\n", "a build goes to the Training Planner's import")
 
     ns.ImportActionBarString = function(t) opened = t end
+    w.off.NaowhForever_ActionBars = true
+    ns.ShowProfileImport()
+    paste.text = "!NFA1!abc"
+    paste.scripts.OnTextChanged(paste, true)
+    assert(import.shown == false, "no Add Bar Set while Action Bars is off")
+    assert(fonts.preview.text == "Turn on Action Bars under Settings > Modules to add this.", fonts.preview.text)
+    w.off.NaowhForever_ActionBars = nil
     ns.ShowProfileImport()
     paste.text = "!NFA1!abc"
     paste.scripts.OnTextChanged(paste, true)
