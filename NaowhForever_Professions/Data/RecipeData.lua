@@ -35,7 +35,7 @@ ns.RecipeData = {
         },
         recipes = {
             { spell = 1244431, item = 118, skill = 1, yellow = 55, grey = 95, source = "trainer", cost = 100 },
-            { spell = 1230117, item = 279968, skill = 20, source = "trainer", cost = 100, quest = "Camping 101: First Aid" },
+            { spell = 1230117, item = 279968, skill = 20, yellow = 20, grey = 25, source = "trainer", cost = 100, quest = "Camping 101: First Aid" },
             { spell = 3276, item = 2581, skill = 40, yellow = 50, grey = 100, source = "trainer", cost = 100 },
             { spell = 1244432, item = 858, skill = 55, yellow = 85, grey = 125, source = "trainer", cost = 150 },
             { spell = 3277, item = 3530, skill = 80, yellow = 80, grey = 150, source = "trainer", cost = 250 },
@@ -51,7 +51,7 @@ ns.RecipeData = {
                 { "Blood Seeker", 209, 23, 24, 3.12 },
             } },
             { spell = 1259343, item = 255717, skill = 140, yellow = 160, grey = 220, recipe = 255724, source = "unknown" },
-            { spell = 1262996, item = 279940, skill = 140, recipe = 273105, source = "unknown" },
+            { spell = 1262996, item = 279940, skill = 140, yellow = 140, grey = 145, recipe = 273105, source = "unknown" },
             { spell = 7928, item = 6450, skill = 150, yellow = 150, grey = 210, source = "trainer", cost = 5000 },
             { spell = 1244434, item = 1710, skill = 155, yellow = 175, grey = 215, recipe = 255723, source = "unknown" },
             { spell = 7929, item = 6451, skill = 180, yellow = 180, grey = 240, recipe = 16112, source = "vendor", vendors = {
@@ -262,7 +262,7 @@ ns.RecipeData = {
                 { 256729, "Nina Surefire", "-", 1433, 10.8, 72.4 },
             } },
             { spell = 3451, item = 3826, skill = 180, yellow = 200, grey = 240, recipe = 3831, source = "drop", world = 36 },
-            { spell = 1251750, item = 250952, skill = 180, yellow = 185, grey = 190, recipe = 250996, source = "vendor", vendors = {
+            { spell = 1251750, item = 250952, skill = 180, recipe = 250996, source = "vendor", vendors = {
                 { 248196, "Apothecary Durelle", "-", 1413, 49.8, 29.4 },
                 { 256729, "Nina Surefire", "-", 1433, 10.8, 72.4 },
             } },
@@ -4230,13 +4230,13 @@ ns.RecipeData = {
         },
         recipes = {
             { spell = 1235230, skill = 1, source = "unknown" },
-            { spell = 1230161, item = 279960, skill = 20, source = "trainer", cost = 100, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
+            { spell = 1230161, item = 279960, skill = 20, yellow = 20, grey = 25, source = "trainer", cost = 100, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
             { spell = 2657, item = 2840, skill = 25, yellow = 25, grey = 70, source = "unknown" },
             { spell = 2659, item = 2841, skill = 65, yellow = 65, grey = 115, source = "trainer", cost = 200, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
             { spell = 3304, item = 3576, skill = 65, yellow = 50, grey = 75, source = "trainer", cost = 50, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
             { spell = 2658, item = 2842, skill = 75, yellow = 100, grey = 125, source = "trainer", cost = 200, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
             { spell = 3307, item = 3575, skill = 125, yellow = 130, grey = 140, source = "trainer", cost = 500, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
-            { spell = 1262975, item = 279948, skill = 140, source = "unknown" },
+            { spell = 1262975, item = 279948, skill = 140, yellow = 140, grey = 145, source = "unknown" },
             { spell = 3569, item = 3859, skill = 165, source = "trainer", cost = 2500, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
             { spell = 3308, item = 3577, skill = 170, yellow = 170, grey = 185, source = "trainer", cost = 2500, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },
             { spell = 10097, item = 3860, skill = 175, source = "trainer", cost = 5000, t = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17 } },

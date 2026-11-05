@@ -4,7 +4,7 @@ local ns = _G.NaowhForever
 ns.TransportData = {
     ["1411:Zeppelin to Grom'gol"] = { map = 1411, continent = 1, x = 1360.9, y = -4631.3, side = "H", period = 322.250000, dwell = 60, routes = { "Zeppelin to Grom'gol" } },
     ["1411:Zeppelin to Undercity"] = { map = 1411, continent = 1, x = 1318.1, y = -4658.0, side = "H", period = 239.000000, dwell = 60, routes = { "Zeppelin to Undercity" } },
-    ["1412:Zeppelin to Zephras Isle"] = { map = 1412, continent = 1, x = -802.0, y = 366.5, side = "H", period = 390.450000, dwell = 60, routes = { "Zeppelin to Zephras Isle" } },
+    ["1412:Zeppelin to Zephras Isle"] = { map = 1412, continent = 1, x = -802.0, y = 366.5, side = "H", period = 390.150000, dwell = 60, routes = { "Zeppelin to Zephras Isle" } },
     ["1413:Boat to Booty Bay"] = { map = 1413, continent = 1, x = -1005.6, y = -3841.6, side = "AH", period = 463.058824, dwell = 60, routes = { "Boat to Booty Bay" } },
     ["1416:Zeppelin to Zephras Isle"] = { map = 1416, continent = 0, x = 544.8, y = 424.2, side = "A", period = 422.050000, dwell = 60, routes = { "Zeppelin to Zephras Isle" } },
     ["1420:Zeppelin to Grom'gol"] = { map = 1420, continent = 0, x = 2062.6, y = 235.3, side = "H", period = 315.000000, dwell = 60, routes = { "Zeppelin to Grom'gol" } },
@@ -25,6 +25,6 @@ ns.TransportData = {
     ["1446:Boat to Powderfuse Port"] = { map = 1446, continent = 1, x = -6932.6, y = -4950.8, side = "AH", period = 305.235294, dwell = 60, routes = { "Boat to Powderfuse Port" } },
     ["1453:Boat to Auberdine"] = { map = 1453, continent = 0, x = -8654.5, y = 1344.4, side = "A", period = 286.882353, dwell = 60, routes = { "Boat to Auberdine" } },
     ["2521:Zeppelin to Dalaran"] = { map = 2521, continent = 2991, x = 1848.3, y = 569.1, side = "A", period = 422.050000, dwell = 60, routes = { "Zeppelin to Dalaran" } },
-    ["2521:Zeppelin to Mulgore"] = { map = 2521, continent = 2991, x = 1952.5, y = 1019.1, side = "H", period = 390.450000, dwell = 30, routes = { "Zeppelin to Mulgore" } },
+    ["2521:Zeppelin to Mulgore"] = { map = 2521, continent = 2991, x = 1952.5, y = 1019.1, side = "H", period = 390.150000, dwell = 30, routes = { "Zeppelin to Mulgore" } },
     ["2548:Boat to Steamwheedle Port"] = { map = 2548, continent = 0, x = -8232.3, y = -5800.8, side = "AH", period = 305.235294, dwell = 60, routes = { "Boat to Steamwheedle Port" } },
 }

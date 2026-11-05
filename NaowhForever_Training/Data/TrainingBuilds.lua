@@ -1,4 +1,4 @@
--- TrainingBuilds.lua: each class's talent tree, built from game build 1.60.1.70755.
+-- TrainingBuilds.lua: each class's talent tree, built from game build 1.60.1.70790.
 local ns = _G.NaowhForever
 
 ns.TrainingBuilds = {
