@@ -13,6 +13,7 @@ ns.BADGE_STAFF = {
         ["Player-6937-001718DA"] = "staff",
         ["Player-6948-001E7F7E"] = "staff",
         ["Player-6951-002E00F6"] = "staff",
+        ["Player-6948-003D9C6A"] = "staff",
     },
     [90] = {
         ["Player-4618-0111FC51"] = "naowh",
