@@ -56,6 +56,17 @@ local function FadeAmmo()
     end
 end
 
+local function FadeModel()
+    local model = CharacterModelScene
+    if model then
+        for _, key in ipairs(MODEL_ART) do game.Fade(model[key]) end
+    end
+end
+
+local function PaperDollShown()
+    if CP.On() then FadeModel() end
+end
+
 local function FadeGame()
     local frame = CharacterFrame
     game.Fade(frame.NineSlice)
@@ -66,10 +77,7 @@ local function FadeGame()
     if right then
         for _, child in ipairs({ right:GetChildren() }) do game.Fade(child) end
     end
-    local model = CharacterModelScene
-    if model then
-        for _, key in ipairs(MODEL_ART) do game.Fade(model[key]) end
-    end
+    FadeModel()
     game.Fade(CharacterLevelTextBackground)
     game.FadeTree(PaperDollFrame and PaperDollFrame.TopBackgroundStripHost)
     game.FadeRegions(CharacterStatsPaneScrollBox)
@@ -119,6 +127,7 @@ end
 local function Install()
     installed = true
     Build()
+    if PaperDollFrame then PaperDollFrame:HookScript("OnShow", PaperDollShown) end
     local list = StatsList()
     if list and ScrollUtil and ScrollUtil.AddInitializedFrameCallback then
         ScrollUtil.AddInitializedFrameCallback(list, StatsLook.Style, chrome, true)
