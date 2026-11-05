@@ -9,6 +9,7 @@ local checks = 0
 local function check(label, value) assert(value, label); checks = checks + 1 end
 
 local HOGGER, BROKEN_TOOTH, RAGNAROS, RAZORMANE_MYSTIC, SPRINGVALE, BOAR = 448, 2850, 11502, 3271, 4278, 3098
+local VULDREN = 250868
 local PIERCE_ARMOR, HEAD_BUTT, MEATHOOK, DAZED = 6016, 6730, 403233, 1604
 local CAMP_BENEFITS, BOOSTED_REST = 1229741, 1229451
 local ARMOR, SCHOOLS_IMMUNE, MECHANICS_IMMUNE, FIRE_SCHOOL, STUN_BIT, FEAR_BIT = 1, 2, 3, 4, 12, 5
@@ -89,6 +90,7 @@ check(("many beasts can be tamed (%d)"):format(#tame[2]), #tame[2] >= MIN_TAMEAB
 check("Broken Tooth can be tamed", tameable[BROKEN_TOOTH])
 check("Hogger and Ragnaros cannot", not tameable[HOGGER] and not tameable[RAGNAROS])
 check("a boar can", tameable[BOAR])
+check("so can a beast Forever adds", tameable[VULDREN])
 
 local numbers = Unpack(ns.ScoutStatsPacked)
 check("the stats unpack to a creature ID and its numbers, pair by pair", type(numbers) == "table" and #numbers % 2 == 0)

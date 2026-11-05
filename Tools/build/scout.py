@@ -4,7 +4,8 @@ hunter can tame, for the creatures of every open-world zone and Dungeon Journal 
 The creatures come from the zone pages of Wowhead Forever (Tools/data/scout.json, "zones"): the ones
 some faction can attack, other than critters, and the bosses the Journal names by NPC ID (an
 instance Wowhead has no zone page for has only those), with the tameable beasts players have found that
-the zone pages leave out or the database calls untameable (Tools/data/scout_beasts.json). A zone's page is
+the zone pages leave out or the database calls untameable (Tools/data/scout_beasts.json), and the beasts
+ForeverChanges lists as tameable (Tools/data/foreverchanges_pets.json). A zone's page is
 read once and kept; --refresh-zones reads every zone's page again, for the creatures Wowhead has added
 since. Their stats come from the CMaNGOS classic database
 (github.com/cmangos/classic-db, GPL-3.0), downloaded each run (or --dump FILE):
@@ -12,7 +13,7 @@ since. Their stats come from the CMaNGOS classic database
     that are not a fight (it spawns, is out of combat, evades, reaches home, a quest or an emote), and
     its spell list;
   - Armor, the six Resistance columns, MechanicImmuneMask and SchoolImmuneMask;
-  - tameable: CreatureTypeFlags bit 1.
+  - tameable: CreatureTypeFlags bit 1, or a beast ForeverChanges or its Wowhead page calls tameable.
 A creature the database lacks (Forever's new ones) or whose spells are in the server's code (most
 instance bosses: ScriptName) takes what Wowhead's creature page says it casts, read by --fetch-gaps
 into the cache, one page at a time. With no cached page, reviewed Classic script casts from
@@ -64,6 +65,7 @@ SCRIPT_SPELLS = paths.DATA / "scout_script_spells.json"
 SUPPLEMENT = paths.DATA / "scout_ability_supplement.json"
 DUNGEONS = paths.DATA / "journal_bosses.json"
 BEASTS = paths.DATA / "scout_beasts.json"
+PETS = paths.DATA / "foreverchanges_pets.json"
 JOURNAL_LOOKUP = paths.DATA / "journal_cache.json"
 JOURNAL_ABILITIES = paths.DATA / "abilities_cache.json"
 INSTANCE_RECORDS = paths.DATA / "scout_instance_records.json"
@@ -127,6 +129,11 @@ def zones():
 def beasts():
     """{ npcID: name } of the beasts read from Wowhead whatever the zone pages and the database say."""
     return {int(npc): name for npc, name in json.loads(BEASTS.read_text(encoding="utf-8")).items()}
+
+
+def pets():
+    """{ npcID: name } of the beasts ForeverChanges lists as tameable."""
+    return {int(npc): name for npc, name in json.loads(PETS.read_text(encoding="utf-8")).items()}
 
 
 def attackable(row):
@@ -339,8 +346,8 @@ def main():
     cache = load()
     instance_records = json.loads(INSTANCE_RECORDS.read_text(encoding="utf-8"))["creatures"]
     names, first = creatures(cache, refresh=args.refresh_zones, offline=args.offline, extra=instance_records)
-    found = beasts()
-    for npc, name in found.items():
+    found, pet_list = beasts(), pets()
+    for npc, name in {**pet_list, **found}.items():
         names.setdefault(npc, name)
     sql = dump_text(args.dump)
     stats, casts, scripted = database(sql)
@@ -378,7 +385,7 @@ def main():
         if listed:
             abilities[npc] = listed
             common.update(listed)
-        if stats.get(npc, {}).get("tameable") or (page and page["tameable"]):
+        if stats.get(npc, {}).get("tameable") or npc in pet_list or (page and page["tameable"]):
             tameable.add(npc)
         if npc in stats and stat_row(stats[npc]):
             creature_stats[npc] = stat_row(stats[npc])
