@@ -43,6 +43,8 @@ add: "90:Player-4613-006EB819" goes under `[90]`. A staff entry wins over a patr
 | Player-6948-001E7F7E   | Snoozer  |
 | Player-6951-002E00F6   | WeepDang |
 | Player-6948-003D9C6A   | Ns       |
+| Player-6940-006C8853   | Grim     |
+| Player-6940-007D2D74   | Grim     |
 
 ## Why
 
