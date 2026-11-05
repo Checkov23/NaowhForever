@@ -100,6 +100,8 @@ view files and the window share.
   position (in an instance), one in your faction's capital, then a shared one.
 - An imported build is data, never run: its class must have a tree here, its points must pass the
   rules, and its name loses escape codes and line breaks and is cut to 40 letters.
+- The Import box takes at most 4,000 letters (`PASTE_MAX`): pasting a long string, such as a profile,
+  into an edit box hangs the game. The longest build code the addon can write is under 1,000.
 - A build is kept by a number of its own, given the first time it is asked for, or a built-in one by
   its place in the data: names repeat, so they cannot be keys. Committing talents fires the talent
   events that start a followed build's learning again, so learning is guarded while it runs.

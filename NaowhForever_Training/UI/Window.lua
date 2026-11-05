@@ -46,6 +46,7 @@ local LINK_GAP = 12
 local COST_GAP, COUNT_GAP, COUNT_LIFT = 10, 14, 4
 local BAR_GAP, NOTE_GAP = 14, 10
 local GOLD_GAP, SIXTY_GAP, SIXTY_TEXT_GAP = 10, 14, 6
+local PASTE_MAX = 4000
 local FONT_LABEL, FONT_COUNT, FONT_SIXTY, FONT_GOLD, FONT_COST = 12, 13, 16, 22, 30
 local FONT_TICK = 11
 local TEXT_TITLE = ns.L("Training Planner")
@@ -232,7 +233,7 @@ local function ShowBuild(classID, index)
 end
 
 local function Import()
-    ns.PromptText(TEXT_PASTE, "", 0, function(text) Training.ImportBuild(text, ShowBuild) end)
+    ns.PromptText(TEXT_PASTE, "", PASTE_MAX, function(text) Training.ImportBuild(text, ShowBuild) end)
 end
 
 local function SaveTalents()
