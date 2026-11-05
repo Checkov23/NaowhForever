@@ -165,6 +165,47 @@ S.Set("fastLoot", true)
 check("while Faster Auto Loot still does", LootWatched())
 S.Set("fastLoot", false)
 S.Set("hideLootWindow", false)
+
+local loot, bag, restore = {}, {}, nil
+env.LootFrame = { scale = 1, Open = function() end,
+    GetScale = function(self) return self.scale end, SetScale = function(self, s) self.scale = s end,
+    HideAnim = { HookScript = function(_, _, fn) restore = fn end } }
+env.IsShiftKeyDown = function() return false end
+env.IsInGroup = function() return false end
+env.LootSlot = function() end
+env.C_Timer = { After = function() end }
+env.NUM_BAG_SLOTS = 0
+env.GetNumLootItems = function() return #loot end
+env.GetLootSlotInfo = function(i) return "icon", "name", loot[i].count, nil, 1, false, false, nil, false, false end
+env.GetLootSlotLink = function(i) return loot[i].link end
+env.C_Container = { GetContainerNumFreeSlots = function() return 0 end,
+    GetContainerNumSlots = function() return #bag end,
+    GetContainerItemInfo = function(_, slot) return bag[slot] end }
+env.C_Item.GetItemMaxStackSizeByID = function() return 20 end
+env.C_Item.GetItemInfoInstant = function(link) return tonumber(link:match("item:(%d+)")) end
+ns.GamepadStandDown = function() return false end
+S.Set("hideLootWindow", true)
+
+local watch
+for _, f in ipairs(frames) do if f.events.LOOT_READY then watch = f end end
+local function Hidden(link, count)
+    loot = { { link = link, count = count } }
+    watch.scripts.OnEvent(watch, "LOOT_READY")
+    env.LootFrame:Open()
+    local hidden = env.LootFrame.scale < 1
+    watch.scripts.OnEvent(watch, "LOOT_CLOSED")
+    restore()
+    return hidden
+end
+
+bag = { { itemID = 2589, stackCount = 6 } }
+check("with full bags, loot that tops up a stack keeps the loot window hidden", Hidden(LINEN, 3))
+check("but loot with no stack to join brings the window back", not Hidden(WOOL, 1))
+check("and so does more than the stack has room for", not Hidden(LINEN, 15))
+bag = { { itemID = 2589, stackCount = 6 }, { itemID = 2589, stackCount = 15 } }
+check("room in every stack of the item counts", Hidden(LINEN, 15))
+check("the window gets its size back once the loot closes", env.LootFrame.scale == 1)
+S.Set("hideLootWindow", false)
 ns.GamepadStandDown = nil
 
 print(("test-loot-feed-items: %d checks passed"):format(checks))

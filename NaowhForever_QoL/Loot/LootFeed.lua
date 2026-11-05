@@ -464,15 +464,29 @@ local function HideWindowOn()
     return S.Get("hideLootWindow") and not ns.GamepadStandDown()
 end
 
+local function StackRoom(itemID)
+    local stack = C_Item.GetItemMaxStackSizeByID(itemID)
+    if not stack then return 0 end
+    local room = 0
+    for bag = 0, NUM_BAG_SLOTS do
+        for slot = 1, C_Container.GetContainerNumSlots(bag) do
+            local info = C_Container.GetContainerItemInfo(bag, slot)
+            if info and info.itemID == itemID then room = room + stack - info.stackCount end
+        end
+    end
+    return room
+end
+
 local function AllTakeable()
     local threshold = IsInGroup() and GetLootThreshold()
     local items = 0
     for i = 1, GetNumLootItems() do
-        local _, _, _, currencyID, quality, locked, _, _, _, isCoin = GetLootSlotInfo(i)
+        local _, _, quantity, currencyID, quality, locked, _, _, _, isCoin = GetLootSlotInfo(i)
         if locked then return false end
         if not (isCoin or currencyID) then
-            items = items + 1
             if threshold and quality and quality >= threshold then return false end
+            local link = GetLootSlotLink(i)
+            if not (link and quantity <= StackRoom(C_Item.GetItemInfoInstant(link))) then items = items + 1 end
         end
     end
     local free = 0
