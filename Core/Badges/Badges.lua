@@ -42,7 +42,7 @@ local TEXT_STAFF_ONLY = ns.L("Badge previews are for the Naowh Forever team.")
 local TEXT_PREVIEW_NONE = ns.L("Preview on: you wear no badge until you reload, as a player without one sees it.")
 local TEXT_PREVIEW_ON = ns.L("Preview on: your name wears the %s badge until you reload. Say something to see it.")
 local TEXT_PREVIEW_OFF = ns.L("Preview off.")
-local TEXT_USAGE = "/nf badges id || status || claim CODE || preview [%smoderator||developer||ellesmere||naowh||none] || preview off || toast"
+local TEXT_USAGE = "/nf badges id || status || claim CODE || preview [%smoderator||staff||developer||ellesmere||naowh||none] || preview off || toast"
 local TEXT_USAGE_PATRON = "legendary||epic||basic||"
 local TEXT_SUMMARY = ns.L("%d of %d on")
 local TEXT_STATUS_NONE = ns.L("No badge on this character")
@@ -92,6 +92,14 @@ local TIERS = {
         chat = MEDIA .. "BadgeModeratorChat.tga",
         large = MEDIA .. "BadgeModeratorLarge.tga",
         sound = "UI_PVP_HONOR_PRESTIGE_RANK_UP",
+    },
+    staff = {
+        title = "Staff Member",
+        about = ns.L("Part of the team behind Naowh."),
+        color = { r = 0xff / 255, g = 0x5c / 255, b = 0xcd / 255 },
+        chat = MEDIA .. "BadgeStaffChat.tga",
+        large = MEDIA .. "BadgeStaffLarge.tga",
+        sound = "UI_AZERITE_EMPOWERED_ITEM_LOOT_TOAST",
     },
     ellesmere = {
         title = "EllesmereUI Creator",

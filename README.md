@@ -105,6 +105,7 @@ banner starts off, and there's an option to skip the banner for your own guild.
 | Founder (gold) | Naowh |
 | Developer (blue) | The people building Naowh Forever |
 | Moderator (red) | The people keeping the community running |
+| Staff Member (rainbow) | The rest of the team behind Naowh |
 | Legendary Patron (orange) | Legendary tier on Naowh's Patreon |
 | Epic Patron (purple) | Epic tier on Naowh's Patreon |
 
@@ -120,7 +121,7 @@ once.
 4. Send it:
    - **Legendary and Epic patrons:** send it in a support request on
      [Discord](https://discord.com/invite/naowh) to be added.
-   - **Developers and moderators:** send it to Dieman or Glyalith.
+   - **Developers, moderators and staff:** send it to Dieman or Glyalith.
 
 Your badge shows up with the next release. Made a new alt? Log into it, run `/nf badges id`
 again and send the new code.
@@ -149,10 +150,10 @@ retail's 1 to 5, so always copy it from the code. For `90:Player-4613-006EB819`:
 },
 ```
 
-Tiers are `naowh`, `developer` and `moderator`; `title` is optional. Add one line per
+Tiers are `naowh`, `developer`, `moderator` and `staff`; `title` is optional. Add one line per
 character in the code. Don't edit `Core/Badges/Patrons.lua`: the patron sync
 writes it. Staff can check a badge with
-`/nf badges preview [naowh|developer|moderator|legendary|epic]` and `/nf badges toast`.
+`/nf badges preview [naowh|developer|moderator|staff|legendary|epic]` and `/nf badges toast`.
 
 ## Contributing
 

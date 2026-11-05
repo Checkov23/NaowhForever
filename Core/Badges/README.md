@@ -1,7 +1,7 @@
 # Badges
 
-The Naowh Forever badge next to the names of Naowh, the developers, the moderators, EllesmereUI's
-creator and Legendary, Epic and Basic patrons: in chat, on a card when you hover the name, on a plate over their
+The Naowh Forever badge next to the names of Naowh, the developers, the moderators, the staff,
+EllesmereUI's creator and Legendary, Epic and Basic patrons: in chat, on a card when you hover the name, on a plate over their
 player tooltip, after their name in the Guild & Communities list, and in a banner when one joins
 your group. Each part has its own switch in QoL > Interface (`ns.FEATURES.qol.badgeChat`,
 `badgeCard`, `badgeTooltip`, `badgeBanner`). Loads through `Badges.xml`, after the core, before
@@ -26,7 +26,7 @@ Core/Badges/
 ## Staff list
 
 Keyed by region (`GetCurrentRegion`), then character GUID. A tier is "naowh", "developer",
-"moderator" or "ellesmere", or a table with a personal title. `/nf badges id` gives the code to
+"moderator", "staff" or "ellesmere", or a table with a personal title. `/nf badges id` gives the code to
 add: "90:Player-4613-006EB819" goes under `[90]`. A staff entry wins over a patron one.
 
 | GUID                   | Who      |
@@ -34,6 +34,11 @@ add: "90:Player-4613-006EB819" goes under `[90]`. A staff entry wins over a patr
 | Player-4618-0111FC51   | Naowh    |
 | Player-4613-006EB819   | Dieman   |
 | Player-4620-0069A23D   | Glyalith |
+| Player-6796-006CA983   | Glyalith |
+| Player-6945-0018C72E   | Alloy    |
+| Player-6945-0018AD0A   | Alloy    |
+| Player-6945-00674392   | Alloy    |
+| Player-6950-005253BB   | WeepDang |
 
 ## Why
 
@@ -48,6 +53,9 @@ add: "90:Player-4613-006EB819" goes under `[90]`. A staff entry wins over a patr
   and Legendary when there is none (or one the addon doesn't know), so a list from before Epic still reads
   right. Epic wears epic purple, so the moderators moved to red. Basic wears rare blue, the next quality
   down, and its group banner plays the lesser loot toast.
+- The staff badge's glow runs through every colour, so it reads as the team's next to the single-colour
+  tiers; its text is pink, a colour no other tier uses. Its title is Staff Member because "Staff" is
+  already the weapon type in the locale catalog, and translated as one.
 - The chat badge goes after the name, so every name starts where it would without one. It is as
   tall as the chat text and sits one pixel lower (`BADGE_DROP`): the fonts leave room above their
   capitals. Blizzard skips the name filter when a name is secret, so restricted chat is untouched.

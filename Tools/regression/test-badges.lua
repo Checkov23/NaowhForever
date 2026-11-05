@@ -109,7 +109,7 @@ local function fixture(withChatUtil, settings, flag)
         PlaySound = function(kit) state.sounds = state.sounds + 1; state.lastSound = kit end,
         SOUNDKIT = { UI_LEGENDARY_LOOT_TOAST = 63971, UI_EPICLOOT_TOAST = 31578, UI_72_ARTIFACT_FORGE_ACTIVATE_FINAL_TIER = 83681,
             UI_72_ARTIFACT_FORGE_FINAL_TRAIT_UNLOCKED = 83682, UI_PVP_HONOR_PRESTIGE_RANK_UP = 77003,
-            UI_RAID_LOOT_TOAST_LESSER_ITEM_WON = 51402 },
+            UI_RAID_LOOT_TOAST_LESSER_ITEM_WON = 51402, UI_AZERITE_EMPOWERED_ITEM_LOOT_TOAST = 118238 },
         Ambiguate = function(name) return (name:gsub("%-.*", "")) end,
         issecretvalue = function(v) return v == SECRET end,
         date = function() return "2026-09" end,
@@ -389,6 +389,19 @@ do  -- chat, card, tooltip
     shown.life.scripts.OnFinished(shown.life)  -- let the Founder toast finish first
     s.ns.BadgesCommand("toast")
     check("moderator toast sound: PvP Prestige rank up", s.lastSound == 77003)
+    s.ns.BadgesCommand("preview staff")
+    check("staff badge in chat", say(filter, "Me", 907, "Player-1-SELF"):find("BadgeStaffChat.tga", 1, true))
+    enter.fn(enter.owner, {}, "player:Me-Realm:907:SAY", "[Me]")
+    check("staff card", card.title.text == "Staff Member" and card.about.text == "Part of the team behind Naowh."
+        and card.since.text == "")
+    lines = {}
+    s.postCalls[1](tooltip, { guid = "Player-1-SELF" })
+    check("staff tooltip line", lines[1] and lines[1]:find("Naowh Forever Staff Member", 1, true))
+    shown = s.api.Toast()
+    shown.life.scripts.OnFinished(shown.life)
+    s.ns.BadgesCommand("toast")
+    check("staff toast sound: Azerite loot toast", s.lastSound == 118238
+        and s.api.Toast().title.text == "Staff Member")
     s.ns.BadgesCommand("preview ellesmere")
     check("EllesmereUI creator badge in chat", say(filter, "Me", 906, "Player-1-SELF")
         :find("BadgeEllesmereChat.tga", 1, true))
@@ -634,7 +647,7 @@ do  -- the real staff and patron files load and make sense
         setfenv(chunk, setmetatable({ _G = { NaowhForever = ns } }, { __index = _G }))
         chunk()
     end
-    local staffTiers = { naowh = true, developer = true, moderator = true, ellesmere = true }
+    local staffTiers = { naowh = true, developer = true, moderator = true, staff = true, ellesmere = true }
     local ok = type(ns.BADGE_STAFF) == "table" and type(ns.BADGE_PATRONS) == "table"
     for region, list in pairs(ns.BADGE_STAFF) do
         for guid, entry in pairs(list) do

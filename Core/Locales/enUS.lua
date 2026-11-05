@@ -4086,6 +4086,7 @@ L["Paladins only"] = true
 L["Paladins only. The melee bars take the color of the seal you have up. In combat that is the last seal you cast until it runs out, as the game keeps your buffs from addons there; out of combat it is read from your buffs."] = true
 L["Panel at the Trainer"] = true
 L["Parry Haste"] = true
+L["Part of the team behind Naowh."] = true
 L["Particle Density"] = true
 L["parts bought"] = true
 L["Partway through a flight to Stormwind, 1:24 from landing."] = true
@@ -5089,6 +5090,7 @@ L["stacking stopped: put down what you are holding, and wait for combat to end."
 L["stacks"] = true
 L["Stacks Size"] = true
 L["Staff"] = true
+L["Staff Member"] = true
 L["Stamina"] = true
 L["Stand on it and cast Read Ley Line."] = true
 L["Standard Glow"] = true
