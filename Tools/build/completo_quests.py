@@ -15,7 +15,9 @@ and the battleground ones among those in D.Battleground too.
 Which quests Forever gives, and where their givers stand, come from foreverchanges_quests.json
 (Tools/build/foreverchanges_quests.py): a quest it does not list is left out, one it lists that
 nothing above has is added, a quest goes in the zone it files it under, and its giver's spot comes
-before any other.
+before any other. Its class, levels and side replace a quest's where quest_entity_catalog.json has
+the same: Wowhead's zone pages give some class quests no class (Anthion's Parting Words) and old
+levels. Neither alone is taken, since each has its own slips.
 
 Answers are cached, so a run that dies on Wowhead's rate limit resumes where it stopped:
 completo_zones.json (each zone's quest rows) and completo_quests.json (each quest's
@@ -524,6 +526,18 @@ def listed_spot(starts, zone_map):
     return min(spots, key=lambda s: s[0] != zone_map) if spots else None
 
 
+AGREED = ("reqclass", "reqlevel", "level", "side")
+
+
+def agreed(q, listed, catalog):
+    """The quest with ForeverChanges' class, levels and side wherever the catalog says the same."""
+    theirs, other = listed.get(str(q["id"])), catalog.get(str(q["id"]))
+    if not theirs or not other:
+        return q
+    changed = {k: theirs[k] for k in AGREED if theirs.get(k) is not None and theirs[k] == other.get(k) != q.get(k)}
+    return dict(q, **changed) if changed else q
+
+
 def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, listed=None, fixes=None):
     catalog = catalog or {}
     listed = listed or {}
@@ -572,6 +586,8 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, list
             zone["quests"].append({k: v for k, v in quest.items() if k != "category"} | {"id": qid})
             existing.add(qid)
         spots = {q: d for q, d in spots.items() if str(q) in listed["quests"]}
+        for z in zones.values():
+            z["quests"] = [agreed(q, listed["quests"], catalog) for q in z["quests"]]
     rows = {q["id"]: (int(area), q) for area, z in zones.items() for q in z["quests"]}
     before = prerequisites(quests, requires, rows)
     before, requires = corrected(before, requires, fixes.get("requires", {}), rows)

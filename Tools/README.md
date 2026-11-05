@@ -192,8 +192,9 @@ python Tools/build/journeys_quests.py --offline
 
 `data/quest_entity_catalog.json` retains every source quest, including its original named
 fields. The Quest List builder supplements its reviewed zone/dungeon/class records from
-this catalog without replacing existing quest names, levels or race/class restrictions.
-It first uses a supported source zone category, then a single supported starter zone.
+this catalog without replacing existing quest names, levels or race/class restrictions, except
+that a class, level or side the catalog and ForeverChanges both give replaces one they disagree
+with. It first uses a supported source zone category, then a single supported starter zone.
 Records without a supported zone stay searchable in Unsorted Quests, a list group with map
 ID 0; no waypoint is assigned to that group. A single unphased, unambiguous starter can
 supply a quest-giver position. Repeatable flags are retained. Existing source page caches

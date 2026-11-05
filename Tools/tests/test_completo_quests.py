@@ -93,6 +93,22 @@ class Races(unittest.TestCase):
         self.assertEqual(completo_quests.races(0, 1), 0)
 
 
+class Agreed(unittest.TestCase):
+    # Armaments of War, Warrior's: the zone page gives it no class.
+    OURS = {"id": 8316, "name": "Armaments of War", "level": 60, "reqlevel": 58, "side": 3, "reqclass": 0}
+
+    def test_what_both_say_is_taken(self):
+        listed = {"8316": {"level": 60, "reqlevel": 58, "side": 3, "reqclass": 1}}
+        catalog = {"8316": {"level": 60, "reqlevel": 58, "side": 3, "reqclass": 1}}
+        self.assertEqual(completo_quests.agreed(self.OURS, listed, catalog), dict(self.OURS, reqclass=1))
+
+    def test_one_source_alone_is_not(self):
+        listed = {"8316": {"level": 59, "reqlevel": 50, "side": 3, "reqclass": 1}}
+        catalog = {"8316": {"level": 60, "reqlevel": 55, "side": 3, "reqclass": 0}}
+        self.assertEqual(completo_quests.agreed(self.OURS, listed, catalog), self.OURS)
+        self.assertEqual(completo_quests.agreed(self.OURS, listed, {}), self.OURS)
+
+
 class Gating(unittest.TestCase):
     CAMP = {"category": ["sort", 666]}
 
