@@ -100,7 +100,7 @@ local TEXT_CHOICE = {
     sameDone = ns.L("%s now uses the same settings as %s."),
 }
 
-local window, step, picks, plan, modules, forCharacter
+local window, step, picks, plan, modules, forCharacter, repaintQueued
 local newCharacter = {}
 local Paint
 
@@ -914,6 +914,11 @@ end
 local PAINTERS = { [STEP.profile] = PaintProfile, [STEP.skin] = PaintSkin, [STEP.modules] = PaintModules,
     [STEP.summary] = PaintSummary }
 
+local function Repaint()
+    repaintQueued = false
+    if window:IsShown() then Paint() end
+end
+
 function Paint()
     local page = PageOf(step)
     if step ~= window.painted then
@@ -935,7 +940,12 @@ function Paint()
         window.subtitle:SetText(forCharacter and WELCOME_FOR:format(forCharacter) or WELCOME_SUB)
     else
         window.subtitle:SetText(STEP_OF:format(step, STEP.count))
+        local unmeasured = page.title:GetStringHeight() == 0
         PAINTERS[step]()
+        if unmeasured and not repaintQueued then
+            repaintQueued = true
+            C_Timer.After(0, Repaint)
+        end
     end
 end
 

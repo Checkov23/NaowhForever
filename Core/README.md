@@ -490,6 +490,11 @@ Onboarding
 - The modules step lists the modules that are on first and the ones off under a line, each group in
   the options' order; a flip moves its tile across at once, laid out again from the same tiles. Four
   tiles a row keep up to 21 modules above the footer, with both groups shown.
+- A step is laid out from its text's measured height. On a fresh login that text can measure 0 the
+  first time its step shows, which left the profile cards at their smallest, the description running
+  out of the card and the cards over the hint (two players, 2026-11-05). When a step's title measures
+  0 as the step is painted, the step is laid out again the next frame (`Repaint`), and every frame
+  after while it still does, as the page is still fading in.
 - A character new to the account gets its own page in the onboarding window, after the onboarding has
   been seen: two tiles, Same as its main or Set Up on its own, with the welcome's bottom row and no
   Back or Next. A new character starts on the account's profile, usually the main's, so the main no

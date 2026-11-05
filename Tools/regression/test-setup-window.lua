@@ -12,6 +12,7 @@ local St = dofile("Tools/regression/shared_style.lua")
 local function Noop() end
 local META = { __index = function(_, k) if type(k) == "string" and k:match("^%u") then return Noop end end }
 local made = {}
+local cold, timers = false, {}
 
 local function Frame()
     local f = setmetatable({ shown = true, scripts = {} }, META)
@@ -49,7 +50,7 @@ local function Frame()
     function f:SetWidth(w) self.w = w end
     function f:SetSize(w, h) self.w, self.h = w, h end
     function f:SetHeight(h) self.h = h end
-    function f:GetStringHeight() return 14 end
+    function f:GetStringHeight() return cold and 0 or 14 end
     function f:GetStringWidth() return 100 end
     function f:SetAlpha(a) self.alpha = a end
     function f:SetScale(v) self.scale = v end
@@ -209,7 +210,8 @@ local env = setmetatable({ _G = { NaowhForever = ns }, CreateFrame = function(_,
     end, InCombatLockdown = function() return s.combat end, UnitName = function() return ME end,
     CreateColor = function(r, g, b, a) return { r = r, g = g, b = b, a = a } end,
     wipe = function(t) for k in pairs(t) do t[k] = nil end return t end,
-    CopyTable = function(t) local out = {} for k, v in pairs(t) do out[k] = v end return out end },
+    CopyTable = function(t) local out = {} for k, v in pairs(t) do out[k] = v end return out end,
+    C_Timer = { After = function(_, fn) timers[#timers + 1] = fn end } },
     { __index = _G })
 local chunk = assert(loadfile("Core/Onboarding/SetupWindow.lua"))
 setfenv(chunk, env)
@@ -350,6 +352,24 @@ check("a long description grows every card to fit it, in one row", minimal.h > s
 minimal.blurb.GetStringHeight = blurbHeight
 Clicked(minimal)
 check("short descriptions keep the usual height", minimal.h == shortH and keep.h == shortH)
+cold = true
+minimal.blurb.GetStringHeight = function() return cold and 0 or 70 end
+Find("Back").Click()
+Find("Let's start").Click()
+check("on a cold login a step's text can measure 0 as it first shows: the cards come out short",
+    minimal.h == shortH and #timers == 1)
+Clicked(minimal)
+check("painted again in that frame, it is still laid out again only once", #timers == 1)
+table.remove(timers)()
+check("a frame later still 0: once more the frame after", minimal.h == shortH and #timers == 1)
+cold = false
+table.remove(timers)()
+check("then the cards fit their text", minimal.h > shortH and keep.h == minimal.h and #timers == 0)
+local retried = minimal.point[5]
+Clicked(minimal)
+check("under the hint, as any later paint lays them out", minimal.point[5] == retried and #timers == 0)
+minimal.blurb.GetStringHeight = blurbHeight
+Clicked(minimal)
 local skinPage = window.skin
 local fades = skinPage.fadeIn and skinPage.fadeIn.plays or 0
 Find("Next").Click()
