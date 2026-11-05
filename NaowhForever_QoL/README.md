@@ -27,7 +27,8 @@ NaowhForever_QoL/
     View/Style.lua                 its look: skill colors, effect sizes and timings (G.Style)
     View/Effects.lua               the five effects on a frame, over the world and on the previews (G.Effects)
     UI/Conflict.lua                the question when another addon changes the same game settings (G.CheckOthers)
-    UI/Highlight.lua               the effect and its line on the target's nameplate, and its events
+    UI/Highlight.lua               the effect and its line on the target's nameplate, the game's cog there
+                                   at one size, and its events
     UI/Minimap.lua                 where herbs and veins grow, as icons on the minimap
     UI/MapPins.xml                 the Gathered pin's template, and the file that fills it
     UI/MapPins.lua                 the herbs and veins you gathered on the world map, noted as you loot them
@@ -1319,6 +1320,12 @@ NaowhForever_QoL/
   `CVAR_UPDATE` on `SoftTargetIconGameObject` or `SoftTargetInteractOnlyInRange` keeps the player's
   new value as the one to put back and writes Glimmer's again (after combat, if in it). Turning
   Glimmer off then puts back the player's last choice; Enable Interact Key is never forced back.
+- With those settings the game puts its interact icon, the cog, on the soft target's nameplate
+  (`UnitFrame.SoftTargetFrame`, 24 wide in the nameplate's space), so its size follows each player's
+  nameplate scale: huge for some, small for others. On Forever `SoftTargetNameplateSize` only turns
+  it on or off. While Glimmer is on, the cog ignores its nameplate's scale and is drawn `COG_SIZE`
+  wide at the UI's scale, and is given back when the soft target or its nameplate changes or Glimmer
+  is turned off. A scale on an unprotected frame is allowed in combat, so it holds there too.
 - The nameplate is only opened for an object Glimmer lights (`onlyHighlighted`), so NPCs, mailboxes
   and doors do not grow a nameplate. Whether to open it does not need the nameplate: the object is
   read from the unit token, then the nameplate arrives with `NAME_PLATE_UNIT_ADDED`.

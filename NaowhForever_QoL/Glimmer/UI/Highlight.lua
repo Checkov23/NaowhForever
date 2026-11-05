@@ -1,4 +1,4 @@
--- Highlight.lua: the effect and its line on the soft interact target's nameplate, kept in step with the game.
+-- Highlight.lua: the effect, its line and the game's cog at one size on the soft interact target's nameplate.
 local ns = _G.NaowhForever
 
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
@@ -20,6 +20,7 @@ local EVENTS = {
 
 local events, watch, fx, line
 local plate, shown, barOwner
+local cog, cogPlate
 local wantReady, wantSince
 local read = {}
 local queued, fullQueued, cvarsQueued = false, false, false
@@ -53,6 +54,22 @@ local function Release()
     fx:SetParent(nil)
     watch:Hide()
     plate, shown = nil, nil
+end
+
+local function FreeCog()
+    if not cog then return end
+    cog:SetIgnoreParentScale(false)
+    cog:SetScale(1)
+    cog, cogPlate = nil, nil
+end
+
+local function SizeCog()
+    FreeCog()
+    local to = GetNamePlateForUnit(UNIT)
+    if not (to and Plain(to) and to.UnitFrame) then return end
+    cog, cogPlate = to.UnitFrame.SoftTargetFrame, to
+    cog:SetIgnoreParentScale(true)
+    cog:SetScale(UIParent:GetEffectiveScale() * St.COG_SIZE / cog:GetWidth())
 end
 
 local function Build()
@@ -156,10 +173,14 @@ local function OnEvent(_, event, unit)
         Release()
     elseif event == "NAME_PLATE_UNIT_ADDED" then
         local soft = UnitIsUnit(unit, UNIT)
+        if Plain(soft) and soft then SizeCog() end
         if not plate and not (Plain(soft) and not soft) then Evaluate() end
     elseif event == "NAME_PLATE_UNIT_REMOVED" then
-        if plate and GetNamePlateForUnit(unit) == plate then Release() end
+        local gone = GetNamePlateForUnit(unit)
+        if plate and gone == plate then Release() end
+        if cogPlate and gone == cogPlate then FreeCog() end
     elseif event == "PLAYER_SOFT_INTERACT_CHANGED" then
+        SizeCog()
         Release()
         Evaluate()
     elseif event == "QUEST_LOG_UPDATE" or event == "SKILL_LINES_CHANGED" then
@@ -174,6 +195,7 @@ local function Apply()
     if not G.On() then
         if events then events:UnregisterAllEvents() end
         Release()
+        FreeCog()
         return
     end
     Build()
@@ -183,6 +205,7 @@ local function Apply()
         watch:SetScript("OnUpdate", Watch)
     end
     for _, event in ipairs(EVENTS) do events:RegisterEvent(event) end
+    SizeCog()
     Release()
     Evaluate()
     G.CheckOthers()

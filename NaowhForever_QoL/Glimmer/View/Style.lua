@@ -18,6 +18,7 @@ ns.Glimmer.Style = setmetatable({
     PLATE_Y = -40,
     LINE_SIZE = 12,
     LINE_Y = -6,
+    COG_SIZE = 16,
     FAR_ALPHA = 0.5,
     LOCKED_ALPHA = 0.55,
     LOCKED_SPEED = 0.5,
