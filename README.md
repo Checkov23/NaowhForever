@@ -121,7 +121,7 @@ once.
 4. Send it:
    - **Legendary and Epic patrons:** send it in a support request on
      [Discord](https://discord.com/invite/naowh) to be added.
-   - **Developers, moderators and staff:** send it to Dieman or Glyalith.
+   - **Developers, moderators and staff:** send it to Glyalith.
 
 Your badge shows up with the next release. Made a new alt? Log into it, run `/nf badges id`
 again and send the new code.
