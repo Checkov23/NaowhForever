@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 1.2.5
+
+### Fixed
+- Training Planner: pasting a long string, such as a profile, into Import no longer freezes the
+  game.
 
 ## 1.2.4
 
