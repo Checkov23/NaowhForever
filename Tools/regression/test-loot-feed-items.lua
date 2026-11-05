@@ -47,6 +47,7 @@ local ns = { L = dofile("Tools/regression/locale_stub.lua").L, Upper = string.up
     QoLConstants = dofile("Tools/regression/qol_constants.lua"),
     QoLSettings = S, THEME = THEME,
     Apply = function() end, ShowUnlockMode = function() end, HideUnlockMode = function() end,
+    BankCount = function() return 0 end,
     Border = function(parent)
         local border = New("Border", parent)
         border._frame = New("Frame", parent)
@@ -140,6 +141,18 @@ check("the first item's line still takes its loot", #Lines() == 2 and row.name.t
 row.anim.scripts.OnFinished()
 Loot(WOOL)
 check("a faded line is not merged into", row.shown and row.name.text:find("x1", 1, true) ~= nil)
+
+local held, banked = { [2592] = 2 }, { [2592] = 5 }
+local function Id(link) return tonumber(link:match("item:(%d+)")) end
+env.C_Item.GetItemCount = function(link, bank) return bank and -1 or held[Id(link)] or 0 end
+env.C_Item.GetItemInfoInstant = Id
+ns.BankCount = function(id) return banked[id] or 0 end
+Loot(WOOL)
+check("Count Bank Items adds the saved bank to the bags", row.bags.text == 7)
+S.Set("lootFeedBank", false)
+events.scripts.OnEvent(events, "BAG_UPDATE_DELAYED")
+check("off, the number counts the bags only", row.bags.text == 2)
+S.Set("lootFeedBank", true)
 
 local function LootWatched()
     for _, f in ipairs(frames) do if f.events.LOOT_READY then return true end end

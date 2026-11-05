@@ -17,7 +17,8 @@ local TEXT_OWNED = ns.L("Total owned")
 local TEXT_FORGET_TITLE = ns.L("Forget a character")
 local TEXT_NONE = ns.L("No characters recorded yet.")
 local TEXT_FORGET = ns.L("Forget %s on %s? It comes back the next time you log in on it with a Mail & Alts option on.")
-local APPLY_KEYS = { enabled = true, altCounts = true, mailAlts = true, mailExpiry = true }
+local APPLY_KEYS = { enabled = true, altCounts = true, mailAlts = true, mailExpiry = true, lootFeed = true,
+    lootFeedBank = true }
 
 local realmKey, me, bankOpen, mailPending
 
@@ -27,6 +28,10 @@ end
 
 local function RosterOn()
     return S.Get("enabled") and (S.Get("altCounts") or S.Get("mailAlts") or S.Get("mailExpiry"))
+end
+
+local function BankOn()
+    return S.Get("enabled") and (S.Get("altCounts") or S.Get("lootFeed") and S.Get("lootFeedBank"))
 end
 
 function ns.AltRealm()
@@ -123,6 +128,11 @@ local function ScanBank()
     Count(Emptied(Me(), "bank"), Enum.BagIndex.CharacterBankTab_1, Enum.BagIndex.CharacterBankTab_9)
 end
 
+function ns.BankCount(itemID)
+    local c = ns.AltRealm()[ns.AltName()]
+    return c and c.bank and c.bank[itemID] or 0
+end
+
 local function CountAttachments(items, letter)
     for a = 1, MAIL_ATTACHMENTS do
         local _, itemID, _, count = GetInboxItem(letter, a)
@@ -149,7 +159,7 @@ end
 
 local function OnEvent(_, event, arg)
     if event == "BAG_UPDATE_DELAYED" then
-        ScanBags()
+        if CountsOn() then ScanBags() end
         if bankOpen then ScanBank() end
     elseif event == "BANKFRAME_OPENED" then
         bankOpen = true
@@ -173,13 +183,14 @@ events:SetScript("OnEvent", OnEvent)
 
 local function Apply()
     events:UnregisterAllEvents()
-    if not RosterOn() then return end
-    UpdateRoster()
-    events:RegisterEvent("PLAYER_MONEY")
-    events:RegisterEvent("PLAYER_LEVEL_UP")
-    events:RegisterEvent("MAIL_INBOX_UPDATE")
-    if CountsOn() then
-        ScanBags()
+    if RosterOn() then
+        UpdateRoster()
+        events:RegisterEvent("PLAYER_MONEY")
+        events:RegisterEvent("PLAYER_LEVEL_UP")
+        events:RegisterEvent("MAIL_INBOX_UPDATE")
+    end
+    if CountsOn() then ScanBags() end
+    if BankOn() then
         events:RegisterEvent("BAG_UPDATE_DELAYED")
         events:RegisterEvent("BANKFRAME_OPENED")
         events:RegisterEvent("BANKFRAME_CLOSED")

@@ -139,6 +139,26 @@ do
     ns.AccountSettings = function() return account end
 end
 
+values.lootFeed, values.lootFeedBank = true, true
+S.Set("altCounts", false)
+check("the Loot Feed's Count Bank Items watches the bank", events.events.BANKFRAME_OPENED == true
+    and events.events.PLAYER_MONEY == nil)
+BAGS[6] = { { itemID = 50, stackCount = 4 }, false, { itemID = 50, stackCount = 2 } }
+events.scripts.OnEvent(events, "BANKFRAME_OPENED")
+check("the bank is saved when it opens", you.bank[50] == 6 and you.bank[10] == nil)
+check("and handed to the Loot Feed", ns.BankCount(50) == 6 and ns.BankCount(40) == 0)
+BAGS[0][2] = false
+events.scripts.OnEvent(events, "BAG_UPDATE_DELAYED")
+check("without Alt Item Counts the bags are not scanned", you.bags[30] == 7)
+BAGS[0][2] = { itemID = 30, stackCount = 7 }
+BAGS[6][3] = false
+events.scripts.OnEvent(events, "BAG_UPDATE_DELAYED")
+check("the bank follows while it is open", ns.BankCount(50) == 4)
+events.scripts.OnEvent(events, "BANKFRAME_CLOSED")
+S.Set("lootFeedBank", false)
+check("with neither on, nothing is listened to", next(events.events) == nil)
+S.Set("altCounts", true)
+
 Measure("an item tooltip refresh", 0.05, function() tip.n, data.id = 0, 10; post(tip, data) end)
 Measure("a bag scan", 0.05, function() events.scripts.OnEvent(events, "BAG_UPDATE_DELAYED") end)
 

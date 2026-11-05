@@ -333,6 +333,12 @@ local function Push(icon, name, value, bags, link, copper)
     return row
 end
 
+local function Owned(link)
+    local count = C_Item.GetItemCount(link)
+    if S.Get("lootFeedBank") then count = count + ns.BankCount(C_Item.GetItemInfoInstant(link)) end
+    return count
+end
+
 local function OnItem(link, count)
     local item = Item:CreateFromItemLink(link)
     if item:IsItemEmpty() then return end
@@ -341,7 +347,7 @@ local function OnItem(link, count)
         if not quality or quality < S.Get("lootFeedQuality") then return end
         local worth = UnitPrice(link, sellPrice) * count
         AddSessionValue(worth)
-        local bags = C_Item.GetItemCount(link, S.Get("lootFeedBank"))
+        local bags = Owned(link)
         bags = bags > 0 and bags or nil
         local _, _, _, hex = C_Item.GetItemQualityColor(quality)
         local function Named(total)
@@ -371,7 +377,7 @@ end
 local function RefreshBags()
     for _, row in ipairs(rows) do
         if row.link then
-            local bags = C_Item.GetItemCount(row.link, S.Get("lootFeedBank"))
+            local bags = Owned(row.link)
             row.bags:SetText(bags > 0 and bags or "")
         end
     end
