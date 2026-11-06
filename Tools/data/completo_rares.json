@@ -43542,6 +43542,24 @@
     "specific": false
    }
   ],
+  "249226": [
+   {
+    "chance": 100.0,
+    "classs": 4,
+    "id": 10137,
+    "name": "High Councillor's Boots",
+    "quality": 2,
+    "specific": false
+   },
+   {
+    "chance": 100.0,
+    "classs": 12,
+    "id": 272973,
+    "name": "Drop of Stolen Life",
+    "quality": 1,
+    "specific": true
+   }
+  ],
   "250936": [
    {
     "chance": 18.2,
@@ -43690,6 +43708,16 @@
     "specific": false
    }
   ],
+  "255183": [
+   {
+    "chance": 0,
+    "classs": 12,
+    "id": 274949,
+    "name": "Scrap of Horde Heraldry",
+    "quality": 1,
+    "specific": true
+   }
+  ],
   "255887": [
    {
     "chance": 20.0,
@@ -43742,6 +43770,7 @@
     "specific": true
    }
   ],
+  "256410": [],
   "256492": [
    {
     "chance": 7.5,
@@ -45232,6 +45261,8 @@
     "specific": false
    }
   ],
+  "260823": [],
+  "266901": [],
   "271080": [
    {
     "chance": 15.0,
@@ -133436,6 +133467,14 @@
     ]
    ]
   },
+  "249226": {
+   "2482": [
+    [
+     23.6,
+     54.8
+    ]
+   ]
+  },
   "250936": {
    "2521": [
     [
@@ -133480,6 +133519,14 @@
     ]
    ]
   },
+  "255183": {
+   "2482": [
+    [
+     47.6,
+     32.4
+    ]
+   ]
+  },
   "255887": {
    "2521": [
     [
@@ -133517,6 +133564,14 @@
     [
      54,
      48
+    ]
+   ]
+  },
+  "256410": {
+   "2548": [
+    [
+     46.2,
+     82.2
     ]
    ]
   },
@@ -134317,6 +134372,26 @@
     [
      73.6,
      63.8
+    ]
+   ]
+  },
+  "260823": {
+   "2482": [
+    [
+     51,
+     73
+    ]
+   ]
+  },
+  "266901": {
+   "2482": [
+    [
+     58.8,
+     41.8
+    ],
+    [
+     59.6,
+     49.2
     ]
    ]
   },
@@ -176142,6 +176217,17 @@
    "name": "Arcanowisp Robes",
    "quality": 3
   },
+  "273051": {
+   "classs": 4,
+   "droppers": [
+    {
+     "chance": 32.8,
+     "npc": 246020
+    }
+   ],
+   "name": "Violet Sorcerer's Mantle",
+   "quality": 3
+  },
   "280450": {
    "classs": 4,
    "droppers": [],
@@ -178522,6 +178608,18 @@
    "name": "Darnassus",
    "rares": []
   },
+  "16591": {
+   "name": "Riverglades",
+   "rares": [
+    {
+     "classification": 4,
+     "id": 256410,
+     "name": "Reginald Holmsby",
+     "status": "new",
+     "type": 7
+    }
+   ]
+  },
   "16593": {
    "name": "Zephras Isle",
    "rares": [
@@ -178614,6 +178712,14 @@
      "type": 7
     }
    ]
+  },
+  "16606": {
+   "name": "Darkspear Islands",
+   "rares": []
+  },
+  "16651": {
+   "name": "Shen'dralas",
+   "rares": []
   },
   "17": {
    "name": "The Barrens",
@@ -182011,6 +182117,43 @@
      ],
      "status": "unchanged",
      "type": 7
+    }
+   ]
+  },
+  "616": {
+   "name": "Mount Hyjal",
+   "rares": [
+    {
+     "classification": 2,
+     "id": 249226,
+     "maxlevel": 61,
+     "minlevel": 61,
+     "name": "Death Wailer",
+     "status": "new",
+     "type": 6
+    },
+    {
+     "classification": 2,
+     "id": 255183,
+     "name": "Jezerelle the Swaying",
+     "status": "new",
+     "type": 3
+    },
+    {
+     "classification": 4,
+     "id": 260823,
+     "name": "Overseer Myoleth",
+     "status": "new",
+     "type": 7
+    },
+    {
+     "classification": 4,
+     "id": 266901,
+     "maxlevel": 60,
+     "minlevel": 60,
+     "name": "Pexmit",
+     "status": "new",
+     "type": 3
     }
    ]
   },
