@@ -1087,6 +1087,120 @@ do
     check("off: nothing listened to", next(state.events) == nil)
 end
 
+do
+    local state = Fixture({ enabled = true })
+    local GF = state.GF
+    local Comms, Group = GF.Comms, GF.Group
+    Comms.OnMessage("1 A 41 3 25 D - - - - - -", "Erin")
+    Group.Invite(Comms.applicants[1])
+    state.invited = nil
+    check("an invited applicant cannot be invited twice", Group.Invite(Comms.applicants[1]) == false
+        and state.invited == nil)
+    Comms.OnMessage("1 A 41 3 25 D - - - - - -", "Erin")
+    check("an application reusing an old ID after a reload starts uninvited", not Comms.applicants[1].invited
+        and Group.Invite(Comms.applicants[1]) == true and state.invited == "Erin")
+    Comms.OnMessage("1 A 44 3 25 D - - - - - -", "Erin")
+    check("so does a new application from the same player", not Comms.applicants[1].invited)
+    Comms.OnMessage("1 X 41", "Erin")
+    check("an old withdrawal cannot remove a newer application", #Comms.applicants == 1)
+    local old = Comms.applicants[1]
+    Comms.OnMessage("1 X 44", "Erin")
+    Comms.OnMessage("1 A 42 3 25 D - - - - - -", "Finn")
+    check("the next applicant gets a record of their own", Comms.applicants[1] ~= old
+        and not Comms.applicants[1].invited)
+    state.invited = nil
+    check("a row still showing a withdrawn applicant cannot invite the next one", Group.Invite(old) == false
+        and state.invited == nil)
+    check("or decline them", Group.Decline(old) == false and #Comms.applicants == 1)
+    local visible
+    GF.Listen("withdrawn", function() visible = #Comms.applicants end)
+    Comms.OnMessage("1 X 42", "Finn")
+    check("withdraw listeners see the updated applicant list", visible == 0)
+    Comms.OnMessage("1 A 43 3 25 D - - - - - -", "Gail")
+    GF.Listen("applicantExpired", function() visible = #Comms.applicants end)
+    state.Advance(Comms.APP_TTL)
+    check("expiry listeners see the updated applicant list", visible == 0)
+end
+
+do
+    local state = Fixture({ enabled = true })
+    local GF = state.GF
+    local Comms, Group = GF.Comms, GF.Group
+    state.listed, state.listOk = false, true
+    Group.activity, Group.style, Group.min = 2, 3, 120
+    Group.List()
+    Comms.OnMessage("1 A 51 3 25 D - - - - - -", "Erin")
+    local erin = Comms.applicants[1]
+    local before = #state.sent
+    state.inGroup, state.leader = true, false
+    local leaderChanged = state.Frame("PARTY_LEADER_CHANGED")
+    check("leader changes are observed", leaderChanged ~= nil)
+    leaderChanged:onEvent("PARTY_LEADER_CHANGED")
+    check("a former leader cannot invite an applicant", Group.Invite(erin) == false and state.invited == nil)
+    check("or decline one", Group.Decline(erin) == false and #Comms.applicants == 1)
+    Comms.OnMessage("1 Q 52 -", "Browser")
+    Comms.OnMessage("1 A 53 3 25 D - - - - - -", "Finn")
+    check("a group member does not answer for the leader", #state.sent == before and #Comms.applicants == 1)
+    state.leader = true
+    leaderChanged:onEvent("PARTY_LEADER_CHANGED")
+    check("leading again, the applicants are still there, as their games still have them",
+        Comms.HasApplicant(erin) and #state.sent == before)
+    check("and the listing Create made is told again", Group.Info() == Group and Group.listedAt ~= nil)
+    state.leader = false
+    state.Frame("GROUP_ROSTER_UPDATE"):onEvent("GROUP_ROSTER_UPDATE")
+    state.leader = true
+    check("a roster update while not the leader for a moment keeps the applicants", Comms.HasApplicant(erin))
+    state.listed = false
+    state.Frame("LFG_LIST_ACTIVE_ENTRY_UPDATE"):onEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
+    check("delisting keeps the applicants and whispers no one", Comms.HasApplicant(erin) and #state.sent == before)
+    check("rows cannot invite while delisted", Group.Invite(erin) == false and state.invited == nil)
+    check("or decline", Group.Decline(erin) == false and #state.sent == before)
+    state.listed = true
+    check("listed again, the applicant can be invited", Group.Invite(erin) == true and state.invited == "Erin")
+    state.Advance(Comms.APP_TTL)
+    check("and applicants still expire", #Comms.applicants == 0)
+end
+
+do
+    local state = Fixture({ enabled = true })
+    local Comms = state.GF.Comms
+    state.locked = true
+    local id = Comms.Apply("Leader", "Deadmines", 1, "")
+    check("the application is held during messaging lockdown", Comms.Queued() == 1)
+    check("a queued application can be withdrawn", Comms.Withdraw(id) and Comms.Queued() == 0)
+    state.locked = false
+    state.Advance(3)
+    check("a withdrawn queued application never reaches the leader", #state.sent == 0)
+    state.locked = true
+    Comms.Apply("Leader", "Deadmines", 1, "")
+    state.Advance(Comms.APP_TTL)
+    state.locked = false
+    state.Advance(3)
+    check("an expired queued application never reaches the leader", #state.sent == 0 and Comms.Queued() == 0)
+end
+
+do
+    local state = Fixture({ enabled = true })
+    local Comms, Group = state.GF.Comms, state.GF.Group
+    local id = Comms.Apply("Leader", "Deadmines", 1, "")
+    Comms.OnMessage("1 A 61 3 25 D - - - - - -", "Erin")
+    state.locked = true
+    for i = 1, Comms.QUEUE_MAX do Comms.Send("Other", "1 X " .. i) end
+    check("a full queue keeps a sent application until withdrawal can be sent",
+        not Comms.Withdraw(id) and #Comms.sent == 1)
+    local printed = #state.printed
+    check("a full queue keeps an applicant until decline can be sent",
+        Group.Decline(Comms.applicants[1]) == false and #Comms.applicants == 1)
+    check("and says to try Decline again", #state.printed == printed + 1
+        and state.printed[#state.printed]:find("Try Decline again", 1, true) ~= nil)
+    state.locked = false
+    state.Advance(Comms.QUEUE_MAX / Comms.RATE)
+    check("once the queue has room, Decline takes them off", Group.Decline(Comms.applicants[1]) == true
+        and #Comms.applicants == 0)
+    state.Advance(Comms.BURST / Comms.RATE)
+    check("and whispers D", state.sent[#state.sent].text == "1 D 61" and state.sent[#state.sent].target == "Erin")
+end
+
 print(("Listed answer: %d bytes."):format(SIZES.listed))
 print(("Message sizes: Q %d, C %d, A %d (with a note), K %d, the biggest A %d bytes of %d."):format(
     SIZES.ask, SIZES.reply, SIZES.apply, SIZES.K, SIZES.biggest, 255))

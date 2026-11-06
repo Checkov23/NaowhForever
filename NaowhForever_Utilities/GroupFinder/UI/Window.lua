@@ -5,7 +5,7 @@ local GF = ns.GroupFinder
 if not GF then return end
 local UI = GF.UI
 local S = GF.Settings
-local Comms, Listings, Search, Browse = GF.Comms, GF.Listings, GF.Search, GF.Browse
+local Comms, Listings, Search, Browse, Group = GF.Comms, GF.Listings, GF.Search, GF.Browse, GF.Group
 local Parts, View = ns.Shared.Parts, ns.Shared.View
 
 local St = UI.Style
@@ -77,7 +77,7 @@ local function DrawRows(v)
 end
 
 local function PaintTabs()
-    local count = #Comms.applicants
+    local count = Group.Answering() and #Comms.applicants or 0
     TABS[2].label = count > 0 and TEXT_YOUR_GROUP_COUNT:format(count) or TEXT_YOUR_GROUP
     Parts.SetTabs(window.tabs, TABS)
     Parts.PaintTabs(window.tabs, shown)

@@ -5773,6 +5773,7 @@ L["Only the pet bar's keys go in a set, never your pet's actions."] = "只有寵
 L["Only this button's keys come across."] = "只會帶入此按鈕的按鍵。"
 L["Only this button's keys go in the set."] = "只有此按鈕的按鍵會存入組合。"
 L["Only your group's leader can change its listing."] = "只有隊伍隊長可以更改刊登資訊。"
+L["Too many whispers are waiting to be sent. Try Decline again in a moment."] = "等待傳送的密語太多。請稍後再按一次拒絕。"
 L["Open Bar Sets"] = "開啟快捷列組合"
 L["Open First"] = "先開啟"
 L["Open Journal"] = "開啟手冊"

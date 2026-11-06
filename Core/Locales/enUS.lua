@@ -81,6 +81,7 @@ L["%d applied"] = true
 L["You have no listing. Make one on Create."] = true
 L["No one has applied yet. Naowh Forever players who apply show here."] = true
 L["Only your group's leader can change its listing."] = true
+L["Too many whispers are waiting to be sent. Try Decline again in a moment."] = true
 L["Delist"] = true
 L["%d bosses"] = true
 L["1 boss"] = true

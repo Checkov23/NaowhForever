@@ -156,6 +156,7 @@ local Group = { tanks = 1, healers = 1, damage = 3, min = 0, note = "", listed =
 GF.Group = Group
 function Group.Listed() return Group.listed end
 function Group.CanEdit() return Group.leader end
+function Group.Answering() return Group.listed and Group.leader end
 function Group.Ready() return Group.activity ~= nil and Group.style ~= nil end
 function Group.List()
     Group.lists = Group.lists + 1
@@ -614,6 +615,15 @@ Flush()
 check("then says so instead of Invite", not Row("Magus").invite:IsShown() and Row("Magus").invited.text == "Invited")
 Row("Erin").decline:Click()
 check("Decline declines them", Group.declines[1] == "Erin")
+Group.leader = false
+GF.Fire("group")
+Flush()
+check("no longer the leader: no applicants, no count", Row("Magus") == nil and Tab("group").label == "Your Group"
+    and not yours.info.text:find("applied", 1, true))
+Group.leader = true
+GF.Fire("group")
+Flush()
+check("leading again, they are back", Row("Magus") ~= nil and Tab("group").label == "Your Group (2)")
 yours.delist:Click()
 GF.Fire("group")
 Flush()

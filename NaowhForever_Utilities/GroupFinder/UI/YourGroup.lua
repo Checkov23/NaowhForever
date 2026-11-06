@@ -46,6 +46,10 @@ local function DrawApplicants(view)
         view:Fit(NO_EVENTS)
         return
     end
+    if not Group.CanEdit() then
+        view:Fit(NO_EVENTS)
+        return
+    end
     local order, list = view.order, Comms.applicants
     local n = #list
     for i = 1, n do order[i] = list[i] end
@@ -90,12 +94,12 @@ local function PaintHead()
         n = n + 1
         parts[n] = TEXT_LISTED:format(math.floor((GetTime() - Group.listedAt) / SECONDS_PER_MINUTE))
     end
-    if entry then
+    local leader = Group.CanEdit()
+    if entry and leader then
         n = n + 1
         parts[n] = TEXT_APPLIED:format(#Comms.applicants)
     end
     page.info:SetText(table.concat(parts, SEPARATOR, 1, n))
-    local leader = Group.CanEdit()
     page.delist:SetShown(entry ~= nil and leader)
     page.leaderOnly:SetText(entry and not leader and TEXT_LEADER_ONLY or "")
     PaintParty()

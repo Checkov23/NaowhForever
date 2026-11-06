@@ -62,7 +62,8 @@ Create. Opening it turns the module on.
 
 - The applicants, best Naowh Score first, their note on hover. Invite invites them by name, and the
   row then says Invited; Decline tells them, and they leave the list.
-- Without a listing it says so, and points to Create. Only your group's leader sees Delist.
+- Without a listing it says so, and points to Create. Only your group's leader sees Delist and the
+  applicants.
 
 ## Create
 
@@ -237,6 +238,24 @@ kills.
   finder, or one gone (`LFG_LIST_ACTIVE_ENTRY_UPDATE` with no active entry), has no group to tell.
 - Invite is `C_PartyInfo.InviteUnit` by the applicant's name; the game asks for confirmation itself when
   inviting would turn the party into a raid.
+- Only the current leader (or a solo player) answers card requests, takes applications, and sees and
+  acts on its applicants (`Group.Answering`), even when the game also gives party members the active
+  listing.
+- Applicants are kept through a delist and a change of leader, as the game's own Listing tab keeps its
+  state there (`Blizzard_LFGVanilla_Listing.lua` only repaints on `GROUP_ROSTER_UPDATE` and
+  `PARTY_LEADER_CHANGED`). The applicant's game keeps its application for `APP_TTL` too, so the two
+  agree when the listing or the lead comes back, and nobody is dropped without being told.
+- Applicant records are not pooled: a row still showing one who withdrew, expired or was declined can
+  never invite or decline whoever applied next, since Invite and Decline act only on a record still in
+  the list.
+- Every application starts uninvited, a repeated ID too: a player's IDs restart after a `/reload`, so a
+  matching ID is not the same application.
+- Withdrawals and expiry remove the record before notifying the window, so its count and rows describe
+  the updated list.
+- Withdrawing an unsent application removes it from the send queue. Expired applications and card
+  requests leave the queue too, so ending chat lockdown cannot send an already cancelled request.
+- A full queue keeps a sent application or an applicant: Withdraw returns false, and Decline says in
+  chat to try again.
 
 ## Settings
 
