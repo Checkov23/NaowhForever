@@ -210,6 +210,13 @@ class ChangeGate(unittest.TestCase):
         self.assertEqual([what for what, _, _, _ in moved], ["Green worth at item level 60"])
         self.assertAlmostEqual(moved[0][2] - moved[0][1], 0.5)
 
+    def test_a_shift_moving_low_levels(self):
+        new = copy(CURRENT)
+        new["SCALE"][3], new["SHIFT"][3] = 0.84, -4.0   # 46.4 at 60, was 46.3; 4.4 at 10, was 5.3
+        moved = fit.moves(CURRENT, new)
+        self.assertEqual([what for what, _, _, _ in moved], ["Blue worth at item level 10"])
+        self.assertAlmostEqual(moved[0][2] - moved[0][1], -0.9)
+
 
 class Lua(unittest.TestCase):
     INFO = {"n": 4304, "r2": 0.961, "median": 0.035}
@@ -226,6 +233,10 @@ class Lua(unittest.TestCase):
         self.assertIn("Score.SHIFT = { [0] = -3.2, [1] = -4.7, [2] = -5.3, [3] = -2.9, [4] = 0,", text)
         self.assertTrue(all(len(line) <= 100 for line in text.split("\r\n")))
         self.assertEqual(fit.read_formula(text), {k: {kk: float(v) for kk, v in t.items()} for k, t in CURRENT.items()})
+
+    def test_format_carried(self):
+        text = fit.render(CURRENT, "1.60.1.70790", self.INFO, "1.60.1.70532")
+        self.assertIn("from build 1.60.1.70790's item table and 1.60.1.70532's hotfixes (4,304 items).", text)
 
     def test_read_formula_incomplete(self):
         self.assertIsNone(fit.read_formula("Score.SLOTS = { [1] = 1 }"))
@@ -296,6 +307,26 @@ class Main(unittest.TestCase):
         text = self.main("--write")
         self.assertIn("> **Not refitted:** wago.tools cannot read ItemSparse for 1.60.1.99999 yet", text)
         self.assertFalse(fit.FORMULA.exists())
+
+
+class ItemRows(unittest.TestCase):
+    """The build's items, and the carried build's for the ones it lacks entirely."""
+
+    def setUp(self):
+        self.saved = fit.read_table
+        tables = {"new": [{"ID": "1", "ItemLevel": "42"}],
+                  "old": [{"ID": "1", "ItemLevel": "40"}, {"ID": "2", "ItemLevel": "30"}]}
+        fit.read_table = lambda name, build, cache=None: tables[build]
+
+    def tearDown(self):
+        fit.read_table = self.saved
+
+    def test_carried_fills_in_the_build_wins(self):
+        rows = fit.item_rows("new", "old")
+        self.assertEqual([(r["ID"], r["ItemLevel"]) for r in rows], [("1", "42"), ("2", "30")])
+
+    def test_nothing_carried(self):
+        self.assertEqual(fit.item_rows("new"), [{"ID": "1", "ItemLevel": "42"}])
 
 
 class ReadTable(unittest.TestCase):

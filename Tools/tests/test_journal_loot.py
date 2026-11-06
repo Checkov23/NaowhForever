@@ -183,6 +183,25 @@ class InGame(unittest.TestCase):
         self.assertIn("[3191] = { 2, 1, 26, 21, 3 },", shared)
         shared.encode("ascii")
 
+    def test_the_games_facts_win_over_a_cached_answer(self):
+        journal.game_items = {"10766": ({"ID": "10766", "ClassID": "2", "SubclassID": "19"},
+                                        {"ID": "10766", "ItemLevel": "42", "RequiredLevel": "37",
+                                         "OverallQualityID": "3", "InventoryType": "26"})}
+        saved = dict(journal.cache)
+        journal.cache["item:10766"] = {"id": 10766, "slot": 15, "class": 2, "subclass": 19, "level": 40,
+                                       "reqlevel": 35, "quality": 3}   # Classic's, from before Forever's change
+        try:
+            facts = journal.item_facts(10766)
+        finally:
+            journal.cache.clear()
+            journal.cache.update(saved)
+        self.assertEqual((facts["level"], facts["reqlevel"]), (42, 37), "Plaguerot Sprig")
+
+    def test_a_cloak_has_no_armor_type(self):
+        cloak = {"id": 9397, "slot": 16, "class": 4, "subclass": 1, "level": 39, "reqlevel": 34, "quality": 3}
+        shared = "\n".join(journal.item_facts_file({9397: cloak}))
+        self.assertIn("[9397] = { 4, 0, 39, 34, 3 },", shared, "the game files cloaks as cloth; every class wears one")
+
     def test_a_boss_lists_its_loot_with_no_count_left_out(self):
         boss = {"npc": 3975, "name": "Herod", "rare": False, "encounters": [448],
                 "loot": [dict(drop(7718, 4167, 12682), chance=33.0), dict(drop(7717, 1776, 12682), chance=14.0)]}

@@ -2,6 +2,11 @@
 item table, read through wago.tools. Run by .github/workflows/daily-watch.yml when the watch
 moves to a new build (and on manual runs, as a report), so the score follows the game.
 
+The items the build lacks entirely come from --carry-from's table (wago.CARRY_FROM: hotfixed
+items wago.tools has not recorded for the build yet), as the faction data reads them. Without
+them each new build moved the constants twice: to a fit on its table before wago.tools had its
+hotfixes (1.60.1.70532: 4,313 items), then to one with them (7,240 items).
+
 How the game gives an item its stats (the columns read, in COLUMNS):
 
 - ItemSparse: ItemLevel, OverallQualityID, InventoryType, Display_lang (to skip test items),
@@ -42,10 +47,11 @@ two-hander within 0.1 of a main and off hand); and at item level 20, 40 and 60 g
 < green < blue < epic.
 
 Change gate: Formula.lua is rewritten only when a slot weight moves 0.02 or more, or a
-quality's worth at item level 60 (60 x SCALE + SHIFT) moves 0.5 or more.
+quality's worth at item level 10, 20, 30 or 60 (level x SCALE + SHIFT) moves 0.5 or more: a
+levelling player's gear moves with SHIFT more than an item level 60's does.
 
-Usage: python Tools/build/fit_naowh_score.py [--build 1.60.1.12345] [--cache DIR] [--report score.md]
-                                       [--write] [--bootstrap 50]
+Usage: python Tools/build/fit_naowh_score.py [--build 1.60.1.12345] [--carry-from 1.60.1.12344] [--cache DIR]
+                                       [--report score.md] [--write] [--bootstrap 50]
 """
 import argparse
 import csv
@@ -129,6 +135,7 @@ GATE_LEVELS = (20, 40, 60)
 SLOT_MOVE = 0.02
 WORTH_MOVE = 0.5
 WORTH_LEVEL = 60
+WORTH_LEVELS = (10, 20, 30, WORTH_LEVEL)   # the change gate's item levels
 TOP = (1, 5, 7)            # head, chest, legs
 MIDDLE = (3, 6, 8, 10)     # shoulders, waist, feet, hands
 LOW = (2, 9, 11, 15)       # neck, wrists, rings, back
@@ -155,6 +162,15 @@ def read_table(name, build, cache=None):
     missing = [c for c in COLUMNS[name] if not rows or c not in rows[0]]
     if missing:
         raise Unreadable(f"wago.tools cannot read {name} for {build} yet (no {', '.join(missing[:3])})")
+    return rows
+
+
+def item_rows(build, carry=None, cache=None):
+    """ItemSparse's rows for the build, and carry's for the items the build lacks entirely."""
+    rows = read_table("ItemSparse", build, cache)
+    if carry:
+        have = {row["ID"] for row in rows}
+        rows = rows + [row for row in read_table("ItemSparse", carry, cache) if row["ID"] not in have]
     return rows
 
 
@@ -490,13 +506,14 @@ def moves(old, new):
         if before is None or abs(after - before) >= SLOT_MOVE - EPSILON:
             found.append((f"{SLOT_NAMES[slot]} (slot {slot}) weight", before, after, 2))
     for q in sorted(new["SCALE"]):
-        after = worth(new, q, WORTH_LEVEL)
         if q not in old["SCALE"] or q not in old["SHIFT"]:
-            found.append((f"{NAMES[q]} worth at item level {WORTH_LEVEL}", None, after, 1))
+            found.append((f"{NAMES[q]} worth at item level {WORTH_LEVEL}", None, worth(new, q, WORTH_LEVEL), 1))
             continue
-        before = worth(old, q, WORTH_LEVEL)
+        # The item level it moves most at.
+        level = max(WORTH_LEVELS, key=lambda lv: abs(worth(new, q, lv) - worth(old, q, lv)))
+        before, after = worth(old, q, level), worth(new, q, level)
         if abs(after - before) >= WORTH_MOVE - EPSILON:
-            found.append((f"{NAMES[q]} worth at item level {WORTH_LEVEL}", before, after, 1))
+            found.append((f"{NAMES[q]} worth at item level {level}", before, after, 1))
     return found
 
 
@@ -535,11 +552,12 @@ def wrap(items, indent="    ", width=96):
     return lines
 
 
-def render(constants, build, fit):
+def render(constants, build, fit, carry=None):
     """Formula.lua's text, CRLF."""
     qualities = sorted(constants["SCALE"])
+    source = f"{build}'s item table and {carry}'s hotfixes" if carry else f"{build}'s own item table"
     lines = [
-        f"-- Formula.lua: Naowh Score constants from build {build}'s own item table ({fit['n']:,} items).",
+        f"-- Formula.lua: Naowh Score constants from build {source} ({fit['n']:,} items).",
         "local ns = _G.NaowhForever",
         "",
         "local Score = {}",
@@ -628,7 +646,8 @@ def report(build, result, old, changed, wrote, note=None):
                    + "; ".join(f"{what} {show(a, n)} &rarr; {show(b, n)}" for what, a, b, n in changed) + ".")
     else:
         verdict = (f"> **No change:** the refit on {build} agrees with the constants in use (no slot moves "
-                   f"{SLOT_MOVE:g}, no quality's worth at item level {WORTH_LEVEL} moves {WORTH_MOVE:g}).")
+                   f"{SLOT_MOVE:g}, no quality's worth at item level {', '.join(map(str, WORTH_LEVELS[:-1]))} "
+                   f"or {WORTH_LEVELS[-1]} moves {WORTH_MOVE:g}).")
     by_q = fit["by_quality"]
     lines += [verdict, "",
               "| | |", "|---|---|",
@@ -670,6 +689,8 @@ def report(build, result, old, changed, wrote, note=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--build", default=wago.BUILD, help="the Forever build to fit (default: wago.BUILD)")
+    parser.add_argument("--carry-from", default=wago.CARRY_FROM,
+                        help="a build whose items fill in the ones --build lacks (default: wago.CARRY_FROM)")
     parser.add_argument("--cache", help="keep the tables here, and read them from here next time")
     parser.add_argument("--report", help="write the report here instead of to stdout")
     parser.add_argument("--write", action="store_true",
@@ -683,7 +704,8 @@ def main():
     old = read_formula(text)
     result, changed, wrote, note = None, [], False, None
     try:
-        tables = [read_table(name, args.build, args.cache) for name in ("ItemSparse", "RandPropPoints", "ItemDamageOneHand")]
+        tables = [item_rows(args.build, args.carry_from, args.cache)]
+        tables += [read_table(name, args.build, args.cache) for name in ("RandPropPoints", "ItemDamageOneHand")]
         result = run(*tables, samples=args.bootstrap)
     except Unreadable as e:
         note = str(e)
@@ -694,7 +716,7 @@ def main():
         changed = moves(old, result["constants"]) if old else [("Formula.lua", None, None, 0)]
         if args.write and passed and changed:
             FORMULA.parent.mkdir(parents=True, exist_ok=True)
-            FORMULA.write_bytes(render(result["constants"], args.build, result["fit"]).encode("ascii"))
+            FORMULA.write_bytes(render(result["constants"], args.build, result["fit"], args.carry_from).encode("ascii"))
             wrote = True
     lines = report(args.build, result, old, changed, wrote, note)
     out = "\n".join(lines) + "\n"

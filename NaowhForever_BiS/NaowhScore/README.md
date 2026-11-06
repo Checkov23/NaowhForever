@@ -7,8 +7,8 @@ player, whether or not they run Naowh Forever.
 ## The formula
 
 Each item counts as the item level of an epic with the same stats:
-`level x SCALE[quality] + SHIFT[quality]` (an epic its own level, a blue about 0.8 x, a green
-about 0.67 x - 5, never below 0). Each slot weighs that by how many stats it carries
+`level x SCALE[quality] + SHIFT[quality]` (an epic its own level, a blue about 0.8 x - 2, a
+green about 0.65 x - 5, never below 0). Each slot weighs that by how many stats it carries
 (`Score.SLOTS`, chest = 1: head and legs about 1, shoulders, hands, waist and feet about 0.75,
 neck, wrists, rings, cloak and off hand about 0.55, trinkets 0.7, main hand about 0.41, ranged
 about 0.31). The score is the weighted average over every gear slot (not the shirt or
@@ -18,7 +18,9 @@ level L epics scores L.
 ## Its constants
 
 `SLOTS`, `SCALE` and `SHIFT` live in `Data/Formula.lua`, which is generated: never edit it by
-hand. `Tools/build/fit_naowh_score.py` fits them to a Forever build's own item table (wago.tools):
+hand. `Tools/build/fit_naowh_score.py` fits them to a Forever build's own item table (wago.tools),
+with the items it lacks taken from the build it carries hotfixes over from (`wago.CARRY_FROM`),
+as the faction data does, so a new build's fit does not wait on wago.tools' hotfixes:
 each item's stat budget (its stats, each at a fitted cost, primary stats costing 1) against
 its slot, quality and level. Slot weights are the fitted slot multipliers; each quality's line
 is its budget in epic item levels. Grey and white items carry no stats, so they take the
@@ -33,14 +35,15 @@ in the same pull request that moves the data to it, with a "Naowh Score" section
 report: old against new, the fit's quality and its gates. `Formula.lua` is rewritten only when
 the fit passes its gates (a full epic set of level L scores L, R^2 at least 0.90, slots in a
 sensible order, grey < white < green < blue < epic) and something moves enough: a slot by
-0.02, or a quality's worth at item level 60 by 0.5. By hand:
+0.02, or a quality's worth at item level 10, 20, 30 or 60 by 0.5. By hand:
 
 ```sh
 python Tools/build/fit_naowh_score.py           # report only, for wago.BUILD
 python Tools/build/fit_naowh_score.py --write   # and rewrite Formula.lua when it should
 ```
 
-`--build` picks another build, `--cache DIR` keeps the tables it reads (outside the repo).
+`--build` picks another build, `--carry-from` the build whose items fill in its gaps (default
+`wago.CARRY_FROM`), `--cache DIR` keeps the tables it reads (outside the repo).
 
 ## Its colour
 

@@ -14,7 +14,7 @@ ns.Journal.AddDungeon("Gnomeregan", {
             { npc = 7800, name = "Mekgineer Thermaplugg", model = 6980, encounters = { 2772 }, loot = { 9461, 9458, 9459, 9492, 4717 }, chance = { 33, 32, 18, 10, 0 } },
             { npc = 6228, name = "Dark Iron Ambassador", model = 6669, rare = true, loot = { 9455, 9456, 9457 }, chance = { 43, 34, 20 } },
             { npc = 6231, name = "Techbot", model = 7288, optional = true },
-            { npc = nil, name = "Trash", trash = true, loot = { 9485, 9486, 9487, 9488, 9490, 9491, 9508, 9509, 9510, 9489, 10298, 10299 } },
+            { npc = nil, name = "Trash", trash = true, loot = { 9485, 9486, 9487, 9488, 9489, 9490, 9491, 9508, 9509, 9510, 10298, 10299 } },
         } },
     },
 })
