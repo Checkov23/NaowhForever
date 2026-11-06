@@ -7581,3 +7581,6 @@ L["Below a shift, the mana you still need shows in red after your mana."] = true
 L["%d shifts left"] = true
 L["1 shift left"] = true
 L["Also shows the bars while you are in a raid."] = true
+L["Campfire Bag"] = true
+L["Sleeping Bag Position"] = true
+L["Puts the Sleeping Bag back beside the campfire."] = true

@@ -153,11 +153,18 @@ local function SetGap(info, gap)
     else info.y = -gap end
 end
 
+local function Leader(label)
+    local info = AnchorOf(label)
+    if info then return info.target end
+    local item = placement.byLabel[label]
+    return item and item.follows and item.follows()
+end
+
 local function Follows(label, root)
-    local info, depth = AnchorOf(label), 0
-    while info and depth < MAX_DEPTH do
-        if info.target == root then return true end
-        info, depth = AnchorOf(info.target), depth + 1
+    local leader, depth = Leader(label), 0
+    while leader and depth < MAX_DEPTH do
+        if leader == root then return true end
+        leader, depth = Leader(leader), depth + 1
     end
     return false
 end

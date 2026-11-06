@@ -890,6 +890,40 @@ Fire(keys, "OnKeyDown", "ESCAPE")
 settings.anchoredTo = nil
 ns.HideUnlockMode()
 
+-- One its module keeps beside another (UI.SetMoverFollows, the Campfire Bag on the Campfire's
+-- bottom edge) counts as following it: a drag of that element does not snap to it, and a
+-- selection of both moves it once. Once it keeps its own spot it is a guide again.
+ns.ShowUnlockMode()
+local lead, leadMover = Display("Lead", 60, 60, 300, 100)
+local tail, tailMover, tailSaved = Display("Tail", 30, 30, 0, 0)
+local function Trail()
+    tail:ClearAllPoints()
+    tail:SetPoint("CENTER", UIParent, "BOTTOMLEFT", lead:GetRight() + 30, lead:GetBottom())
+end
+local leadSetPoint = lead.SetPoint
+lead.SetPoint = function(...) leadSetPoint(...); Trail() end
+local tailFollows = "Lead"
+UI.SetMoverFollows(tailMover, function() return tailFollows end)
+Trail()
+Flush()
+local leadBottom = lead:GetBottom()
+DragBy(leadMover, lead, 0, 3)
+Check(Near(lead:GetBottom(), leadBottom + 3) and Near(select(2, Center(tail)), lead:GetBottom()),
+    "a drag of the element it follows does not snap to it, and it comes along")
+UI.SelectMover(leadMover)
+ShiftClick(tailMover)
+local tailGap = tail:GetLeft() - lead:GetRight()
+Fire(keys, "OnKeyDown", "RIGHT")
+Check(Near(tail:GetLeft() - lead:GetRight(), tailGap) and #tailSaved == 0,
+    "selected with it, it moves once and is not saved in place")
+Fire(keys, "OnKeyDown", "ESCAPE")
+tailFollows = nil
+DragBy(leadMover, lead, 0, 3)
+Check(Near(lead:GetBottom(), leadBottom + 3), "once it keeps its own spot, a drag snaps to it again")
+leadMover:Hide()
+tailMover:Hide()
+ns.HideUnlockMode()
+
 -- Layouts: every spot and anchor kept under a name, loaded back as one change; a locked element
 -- stays where it is.
 local function Menu()

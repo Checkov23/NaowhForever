@@ -581,7 +581,7 @@ local function ShowCamp(event)
 end
 
 local function SyncBag()
-    CampBag.Sync(icon, not unlocked and not BarShown() and On() and Camp.InOpenWorld())
+    CampBag.Sync(icon, not BarShown() and On() and (unlocked or Camp.InOpenWorld()), unlocked)
 end
 
 local function Refresh(_, event)
@@ -642,7 +642,7 @@ end
 
 local function OnSet(key)
     if key == "campNearbyMinutes" then DisarmAlert() end
-    if key == "enabled" or (key:find("^camp") and key ~= "campPos") then Apply() end
+    if key == "enabled" or (key:find("^camp") and key ~= "campPos" and key ~= "campBagPos") then Apply() end
 end
 
 local function OnUnlock()

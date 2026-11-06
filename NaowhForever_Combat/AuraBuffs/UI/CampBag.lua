@@ -1,7 +1,8 @@
--- CampBag.lua: the Sleeping Bag beside the Round campfire icon while you carry it near a campfire, a secure button that uses it.
+-- CampBag.lua: the Sleeping Bag beside the Round campfire icon, or where it was moved, while you carry it near a campfire or in the HUD Editor, a secure button that uses it.
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
+local S = A.Settings
 local T = ns.THEME
 local St = A.Style
 local Parts = ns.Shared.Parts
@@ -14,6 +15,9 @@ local FALLBACK_ICON = St.CAMP_BAG_FALLBACK_ICON
 local NEARBY, SITTING, SITTING_CRAFT = D.CAMPFIRE_NEARBY, D.WELCOMING_CAMPFIRE, D.WELCOMING_CAMPFIRE_CRAFT
 local WELL_RESTED = D.WELL_RESTED
 local TEXT_USE = ns.L("Click to use your Sleeping Bag.")
+local TEXT_MOVER = "Campfire Bag"
+local FIRE_MOVER = "Campfire"
+local CARD = A.PAGE .. ":campfire"
 
 local bag, dirty
 local waiter
@@ -67,8 +71,18 @@ local function ShowCooldown()
     C_Timer.After(ends - GetTime() + WAKE_PAD, OnReady)
 end
 
+local function SavePos(pos)
+    S.Set("campBagPos", pos)
+    bag.pos, bag.x, bag.y = pos, nil, nil
+end
+
+local function Following()
+    if not S.Get("campBagPos") then return FIRE_MOVER end
+end
+
 local function Build()
     bag = CreateFrame("Button", nil, UIParent, "SecureActionButtonTemplate")
+    bag:SetMovable(true)
     bag:SetClampedToScreen(true)
     Look.NewBag(bag, FALLBACK_ICON)
     bag:RegisterForClicks("AnyUp", "AnyDown")
@@ -76,6 +90,8 @@ local function Build()
     bag:SetAttribute("item1", "item:" .. ITEM)
     bag:SetScript("OnEnter", OnEnter)
     bag:SetScript("OnLeave", OnLeave)
+    bag.mover = ns.UI.AttachMover(bag, TEXT_MOVER, SavePos, A.PAGE, CARD, true)
+    ns.UI.SetMoverFollows(bag.mover, Following)
     bag:Hide()
     dirty = true
 end
@@ -93,8 +109,8 @@ local function Near()
         or C_UnitAuras.GetPlayerAuraBySpellID(SITTING_CRAFT)
 end
 
-local function Wanted(icon, round)
-    return round and icon ~= nil and C_Item.GetItemCount(ITEM) > 0 and Near() ~= nil
+local function Wanted(icon, round, preview)
+    return round and icon ~= nil and C_Item.GetItemCount(ITEM) > 0 and (preview or Near() ~= nil)
 end
 
 local function Art()
@@ -110,34 +126,60 @@ local function Place(icon)
         Look.BagLayout(bag)
         dirty = false
     end
+    local pos = S.Get("campBagPos")
+    if pos then
+        if bag.pos ~= pos then
+            bag:ClearAllPoints()
+            bag:SetPoint(pos.point, UIParent, pos.relPoint, pos.x, pos.y)
+            bag.pos, bag.x, bag.y = pos, nil, nil
+        end
+        return true
+    end
     local x, y = Look.BagSpot(icon, bag)
     if not x then return false end
-    if bag.x ~= x or bag.y ~= y then
+    if bag.pos or bag.x ~= x or bag.y ~= y then
         bag:ClearAllPoints()
         bag:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x, y)
-        bag.x, bag.y = x, y
+        bag.pos, bag.x, bag.y = nil, x, y
     end
     return true
 end
 
-function CampBag.Layout()
-    dirty = true
-    if bag then bag.x, bag.y = nil, nil end
+local function Follow(icon)
+    if bag:IsShown() and not InCombatLockdown() then Place(icon) end
 end
 
-function CampBag.Sync(icon, round)
+function CampBag.Layout()
+    dirty = true
+    if bag then bag.pos, bag.x, bag.y = nil, nil, nil end
+end
+
+function CampBag.Sync(icon, round, preview)
+    if bag and not preview then bag.mover:Hide() end
     if InCombatLockdown() then
         if bag and bag:IsShown() then WaitForCombat() end
         return
     end
     if C_Secrets.ShouldAurasBeSecret() then return end
-    if not Wanted(icon, round) then
-        if bag then bag:Hide() end
+    if not Wanted(icon, round, preview) then
+        if bag then
+            bag:Hide()
+            bag.mover:Hide()
+        end
         return
     end
-    if not bag then Build() end
+    if not bag then
+        Build()
+        hooksecurefunc(icon, "SetPoint", Follow)
+    end
     Art()
     ShowCooldown()
     Look.BagRested(bag, Rested())
+    bag.mover:SetShown(preview == true)
     bag:SetShown(Place(icon))
+end
+
+function CampBag.ResetPosition()
+    S.Set("campBagPos", nil)
+    A.Camp.Refresh()
 end
