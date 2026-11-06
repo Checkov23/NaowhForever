@@ -94,14 +94,19 @@ local function Label(text)
     if button then button.label:SetText(text) end
 end
 
+local function Wait()
+    local house = House()
+    local last = house and math.max(house.time or 0, house.requested or 0)
+    return last and SCAN_COOLDOWN - (time() - last)
+end
+
 local function ShowAge()
     if not (button and button.age) then return end
     local house = House()
-    if not (house and house.time) then return button.age:SetText(TEXT_NO_SCAN_SHORT) end
-    local since = time() - house.time
-    local wait = SCAN_COOLDOWN - since
-    button.age:SetText(TEXT_AGE:format(Age(since),
-        wait > 0 and TEXT_NEXT:format(math.ceil(wait / SECONDS_PER_MINUTE)) or ""))
+    local wait = Wait()
+    local nextScan = wait and wait > 0 and TEXT_NEXT:format(math.ceil(wait / SECONDS_PER_MINUTE)) or ""
+    if not (house and house.time) then return button.age:SetText(TEXT_NO_SCAN_SHORT .. nextScan) end
+    button.age:SetText(TEXT_AGE:format(Age(time() - house.time), nextScan))
 end
 
 local events = CreateFrame("Frame")
@@ -134,6 +139,7 @@ end
 
 local function Read()
     events:UnregisterEvent("REPLICATE_ITEM_LIST_UPDATE")
+    scanGen = scanGen + 1
     local total = C_AuctionHouse.GetNumReplicateItems()
     if total == 0 then return Stop(TEXT_EMPTY) end
     local prices, index, gen = {}, 0, scanGen
@@ -152,13 +158,10 @@ local function Read()
     Step()
 end
 
-local function Wait()
-    local house = House()
-    return house and house.time and SCAN_COOLDOWN - (time() - house.time)
-end
-
 local function OnTimeout(gen)
-    if gen == scanGen and scanning then Stop(TEXT_TIMEOUT) end
+    if gen ~= scanGen or not scanning then return end
+    Stop(TEXT_TIMEOUT)
+    events:RegisterEvent("REPLICATE_ITEM_LIST_UPDATE")
 end
 
 local function Scan()
@@ -171,6 +174,7 @@ local function Scan()
     scanning, ownScan = true, true
     scanGen = scanGen + 1
     local gen = scanGen
+    House(true).requested = time()
     Label(TEXT_SCANNING)
     events:RegisterEvent("REPLICATE_ITEM_LIST_UPDATE")
     C_AuctionHouse.ReplicateItems()
@@ -182,6 +186,7 @@ local function OnReplicate()
     scanning = true
     scanGen = scanGen + 1
     local gen = scanGen
+    House(true).requested = time()
     events:RegisterEvent("REPLICATE_ITEM_LIST_UPDATE")
     C_Timer.After(TIMEOUT, function() OnTimeout(gen) end)
 end
@@ -235,7 +240,7 @@ end
 
 local function OnClosed()
     houseOpen = nil
-    if scanning then Stop(TEXT_CLOSED) end
+    Stop(scanning and TEXT_CLOSED)
     if ageTicker then
         ageTicker:Cancel()
         ageTicker = nil

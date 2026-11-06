@@ -463,6 +463,11 @@ NaowhForever_QoL/
   listings arrive all at once and are read 1000 a frame (`CHUNK`), so a large auction house does
   not stall; bid-only listings are skipped. The profession window's crafting profit reads these
   prices, so it is refreshed after a scan.
+- The game sends nothing back when it refuses a full scan, and there is no call that says whether
+  one is allowed. So the cooldown runs from the last request (`requested` on the house) as well as
+  the last finished scan: an unanswered click no longer leaves the button free to fail again
+  straight away. After `TIMEOUT` (60s) the "no answer" line prints, but the reader keeps listening
+  until the auction house closes, so an answer that arrives late is still read.
 - The GCD Tracker reads only the player's own casts, and those are never secret.
 - Forever has no dedicated global cooldown spell, so the GCD Tracker watches one baseline spell
   per class with no cooldown of its own (`GCD_SPELLS`): any cooldown it shows is the global
