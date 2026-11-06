@@ -128,6 +128,29 @@ class PutBack(unittest.TestCase):
         self.assertIsNone(loot[2]["chance"], "Wowhead does not count it on the boss")
 
 
+class Counts(unittest.TestCase):
+    """extra_loot and boss_entry: an item placed by hand takes its chance from the dungeon's counts."""
+
+    def setUp(self):
+        self.saved = journal.item_facts, journal.npc_drops, journal.npc_model
+        journal.item_facts = lambda item_id: {"id": item_id, "slot": 0, "class": journal.RECIPE, "subclass": 0,
+                                              "level": 25, "reqlevel": 0, "quality": 2}
+        journal.npc_drops = lambda npc: journal.choose([drop(273046, 175, 465, new=True)], npc_new=True)
+        journal.npc_model = lambda npc: None
+
+    def tearDown(self):
+        journal.item_facts, journal.npc_drops, journal.npc_model = self.saved
+
+    def test_counted_loot_gives_the_chance_wowhead_lacks(self):
+        dungeon = {"name": "Test Dungeon", "add": {"Unstable Sentinel": [273099, 273100]},
+                   "counts": {"Unstable Sentinel": {"273099": [14, 166]}}}
+        extra = journal.extra_loot(dungeon, {})
+        loot = journal.boss_entry("Unstable Sentinel", False, {"Unstable Sentinel": 246017}, extra, {}, [])["loot"]
+        self.assertEqual([i["id"] for i in loot], [273046, 273099, 273100])
+        self.assertAlmostEqual(loot[1]["chance"], 100 * 14 / 166, msg="Blueprint: Spinning Wheel, 14 of 166 kills")
+        self.assertIsNone(loot[2]["chance"], "no counts, no chance")
+
+
 class InGame(unittest.TestCase):
     def setUp(self):
         self.saved = journal.game_items, journal.era_items, journal.sent, wago.table
@@ -292,13 +315,13 @@ class NewBosses(unittest.TestCase):
 
 class SharedDrops(unittest.TestCase):
     def setUp(self):
-        self.cache = journal.cache
+        self.saved = journal.cache, journal.npc_drops, journal.npc_model
         helm = drop(252455, 2, 5377, new=True)
         journal.cache = {f"drops6:{npc}": {"new": False, "items": [helm]} for npc in (4829, 4842, 4543)}
         journal.cache["drops6:3983"] = {"new": False, "items": [drop(274290, 22, 13863, new=True)]}
 
     def tearDown(self):
-        journal.cache = self.cache
+        journal.cache, journal.npc_drops, journal.npc_model = self.saved
 
     def test_a_helm_from_many_bosses_is_left_out(self):
         helm = dict(drop(252455, 2, 5377, new=True), chance=None)
@@ -314,6 +337,15 @@ class SharedDrops(unittest.TestCase):
         boss = {"loot": [listed, by_hand]}
         journal.shared_drops([({}, [{"bosses": [boss]}])])
         self.assertEqual(len(boss["loot"]), 2)
+
+    def test_a_hand_list_keeps_it_where_wowhead_counts_it_too(self):
+        journal.npc_drops = lambda npc: journal.choose([drop(252455, 2, 5377, new=True), drop(273846, 30, 60, new=True)])
+        journal.npc_model = lambda npc: None
+        extra = {"twilight lord kelris": [{"id": 252455, "chance": None, "quality": 3, "slot": 1}]}
+        boss = journal.boss_entry("Twilight Lord Kelris", False, {"Twilight Lord Kelris": 4832}, extra, {}, [])
+        journal.shared_drops([({}, [{"bosses": [boss]}])])
+        self.assertEqual([i["id"] for i in boss["loot"]], [273846, 252455],
+                         "Defender's Leather Helm, placed by hand, after the boss's own drop")
 
 
 class OpenDungeons(unittest.TestCase):

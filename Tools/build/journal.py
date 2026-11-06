@@ -18,7 +18,8 @@ longer list on that boss is dropped. Each wing's trash comes from them too. Last
 placed by hand ("add", which also puts back an old item the merge took off a boss where
 Wowhead's counts still give it a real chance: Herod's Scarlet Leggings) and the BiS sources
 in NaowhForever_BiS/BiS/Data/BiS.lua; those have no chance, but an item put back keeps the
-chance Wowhead counts for it on that boss.
+chance Wowhead counts for it on that boss, and one Wowhead does not count there takes the one
+"counts" gives it (loot players counted in game: Dalaran's blueprints).
 
 Every item is listed, the ones not in Forever yet too, so the Journal is whole the day they
 come. An item is in the game (known) when the game's tables have it (wago.tools' ItemSparse,
@@ -28,7 +29,8 @@ Journal shows of it (its name, quality, levels, icon) from Classic Era's tables
 (CLASSIC_ERA), so the client never asks the server for it. One Classic Era does not have
 either is left out, and listed at the end.
 A new Forever item Wowhead ties to SHARED_DROP or more bosses, and wowsrc to none of them, is a
-shared random drop, not any one boss's: it is left out. On a boss new in Forever, an item
+shared random drop, not any one boss's: it is left out, but for the bosses it is placed on (the
+leather helms, by hand), where it comes after their own. On a boss new in Forever, an item
 Wowhead flags as a world drop is the boss's own when it drops from WORLD_DROP_BOSS percent of
 its kills or more (Spiritwraith Drape, Faldrim Anvilmar's).
 
@@ -530,13 +532,16 @@ def boss_entry(name, rare, pinned, extra, items, report, listed=None, kind=None,
         return {"npc": None, "name": name, "rare": False, "chest": chest, "loot": loot}
     npc = pinned.get(name) or find_npc(name)
     counted = npc_drops(npc) if npc else []
-    loot = merge_wowsrc(counted, listed)
+    placed = {i["id"] for i in extra.get(name.lower(), [])}
+    # An item placed on this boss stays on it though Wowhead finds it on many (shared_drops).
+    loot = [dict(i, placed=True) if i["id"] in placed else i for i in merge_wowsrc(counted, listed)]
     have = {i["id"] for i in loot}
-    # An item put back by hand after the merge took it off keeps Wowhead's chance for this boss.
+    # An item put back by hand after the merge took it off keeps Wowhead's chance for this boss;
+    # one Wowhead does not count here, the chance its "counts" give.
     chances = {i["id"]: i["chance"] for i in counted}
     for item in extra.get(name.lower(), []):
         if item["id"] not in have and keeps(item):
-            loot.append(dict(item, chance=chances.get(item["id"])))
+            loot.append(dict(item, chance=chances.get(item["id"], item.get("chance"))))
             have.add(item["id"])
     loot.sort(key=lambda i: (i["chance"] is None, -(i["chance"] or 0)))
     if not npc:
@@ -717,20 +722,23 @@ def item_facts_file(items):
 def extra_loot(dungeon, bis):
     """Boss name (lower case) -> the items the guide, the BiS sources, the recipes its item XML
     ties to it (Tools/sources/recipe_drops.py) and the dungeon's own "add" list (by hand: items
-    seen dropping that Wowhead has not tied to the boss yet) place on it."""
+    seen dropping that Wowhead has not tied to the boss yet) place on it, with the chance the
+    dungeon's "counts" give (else none)."""
     extra = guide_drops(dungeon["guide"]) if dungeon.get("guide") else {}
     placed = {}
     for source in (recipe_drops.get(dungeon["name"], {}), dungeon.get("add", {})):
         for boss, ids in source.items():
             mine = placed.setdefault(boss, [])
             mine += [i for i in ids if i not in mine]
+    counts = dungeon.get("counts", {})
     for boss, ids in placed.items():
         for item_id in ids:
             if not isinstance(item_id, int):
                 sys.exit(f"journal_bosses.json, {dungeon['name']}, {boss}: \"add\" takes item IDs, not {item_id!r}")
             facts = item_facts(item_id)
             if facts:
-                extra.setdefault(boss.lower(), []).append(dict(facts, chance=None))
+                drops, kills = counts.get(boss, {}).get(str(item_id), (0, 0))
+                extra.setdefault(boss.lower(), []).append(dict(facts, chance=100 * drops / kills if kills else None))
     here = plain(dungeon["name"])
     for (where, boss), ids in bis.items():
         # The BiS data names both of Blackrock Spire's halves after the whole spire.
@@ -752,7 +760,10 @@ def shared_drops(built):
     for _, wings in built:
         for boss in (b for w in wings for b in w["bosses"]):
             boss["loot"] = [item for item in boss["loot"]
-                            if item["id"] not in shared or item.get("listed") or "count" not in item]
+                            if item["id"] not in shared or item.get("listed") or item.get("placed")
+                            or "count" not in item]
+            # What many bosses drop goes after the boss's own, in ID order.
+            boss["loot"].sort(key=lambda item: item["id"] if item["id"] in shared else 0)
     return shared
 
 

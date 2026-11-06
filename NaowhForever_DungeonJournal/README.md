@@ -119,6 +119,7 @@ calls are on `ns`.
 | A dungeon's bosses, wings, kill order, entrance or zone | `Tools/data/journal_bosses.json`, then `python Tools/build/journal.py` |
 | A rare, an optional boss or a loot chest | `"rare"`, `"optional"` or `"chests": { "Name": objectID }` on its wing in `Tools/data/journal_bosses.json` |
 | An item a boss drops that no source has placed yet | `"add": { "Boss Name": [itemID] }` on the dungeon (`"Trash"` for its trash) |
+| The chance of an item placed by hand, where Wowhead has no count for it | `"counts": { "Boss Name": { "itemID": [drops, kills] } }` on the dungeon, from loot players counted in game |
 | A boss wowsrc names differently | `"wowsrcNames": { "Their Name": "Our Name" }` on the dungeon |
 | A boss's NPC ID the build cannot find | `"npcs": { "Name": ID }` on the dungeon in `Tools/data/journal_bosses.json` |
 | Whether a dungeon is open, where the game's tables say otherwise | `"open": true` or `false` on the dungeon in `Tools/data/journal_bosses.json` |
@@ -174,7 +175,7 @@ The rules, in plain words:
   twice, and shows no chance. A boss that's new in Forever has only Forever's kills, so its
   chances are real. Under 10 kills, no chance is shown, and a full build reads its page
   again. A new item Wowhead finds on three or more bosses is a random drop, not any one boss's,
-  and is left out unless wowsrc or a hand list places it.
+  and is left out unless wowsrc or a hand list places it; placed, it comes after the boss's own.
 - **wowsrc.com** lists what each boss drops in Forever (they gave us permission to use
   their site). It wins where it disagrees: its items go in, its chance is used, and an old
   item it lists somewhere else is taken off the boss. It's also where each Trash card comes
@@ -184,7 +185,16 @@ The rules, in plain words:
   places yet, and an old item the wowsrc merge took off a boss where Wowhead's counts still give
   it a real chance, which it keeps (Herod's Scarlet Leggings, 1,801 of 12,682 kills). The trash
   cards of City of Dalaran, Excavation Site: Wetlands and Ruins of Lordaeron are by hand too, from
-  ForeverChanges' and Wowhead's item sources: wowsrc has no trash for them.
+  ForeverChanges' and Wowhead's item sources: wowsrc has no trash for them. So are the drops
+  ForeverChanges' dungeon pages mark seen in game that neither places (read 6 Nov 2026): the six
+  leather helms and the Brawler's Leather Legguards and Defender's Leather Kilt patterns, on each
+  boss of Blackfathom Deeps, the Stockade, Razorfen Kraul, Scarlet Monastery and Gnomeregan the
+  pages list them on (Wowhead finds most of the helms there too, a few drops in thousands of
+  kills); Obsidian Sentinel's new wand, breastplate and two axes and Plans: Warder's Boots; the
+  Deadmines trash's Defias Rapier; Blueprint: Arcane Salvager on Charlga Razorflank and Rath'mael.
+  Dalaran's two blueprints take their chance from `"counts"`, the drops players counted there
+  (Spinning Wheel 14 of 166 Unstable Sentinel kills, Arcane Salvager 13 of 174 of the Shade's):
+  Wowhead's answers for those bosses predate the recipes, so it counts neither.
 - **Everything, and what is not in Forever yet marked.** Forever keeps a row in its Item table
   for every Classic item, but the server only sends the items in the game; asked for any other,
   the client shows "Item 10800" and its tooltip waits forever. An item is in the game when its
