@@ -19,6 +19,7 @@ local TEXT_KIND = ns.L("Kind")
 local TEXT_RARE = ns.L("Rare")
 local TEXT_ELITE = ns.L("Rare elite")
 local TEXT_LAST_KILLED = ns.L("Last killed")
+local TEXT_KILL_LAYER = ns.L("Last killed on layer")
 local TEXT_STATUS = ns.L("Status")
 local TEXT_BY_HAND = ns.L("Ticked off by hand")
 local TEXT_MOVES = ns.L("Moves")
@@ -52,6 +53,8 @@ local function AddRecord(npc, m)
     local record = R.Record(npc)
     if record and record.n > 0 then
         GameTooltip:AddDoubleLine(TEXT_LAST_KILLED, date(DATE_FORMAT, record.at), m.r, m.g, m.b, 1, 1, 1)
+        local layer = R.KillLayer(record)
+        if layer then GameTooltip:AddDoubleLine(TEXT_KILL_LAYER, layer, m.r, m.g, m.b, 1, 1, 1) end
     elseif record then
         GameTooltip:AddDoubleLine(TEXT_STATUS, TEXT_BY_HAND, m.r, m.g, m.b, 1, 1, 1)
     end

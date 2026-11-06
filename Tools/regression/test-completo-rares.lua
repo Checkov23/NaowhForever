@@ -371,7 +371,8 @@ local function Fixture(settings, units)
     env.worldMap = map
     env.NaowhForever = ns
     env._G = env
-    Load({ "NaowhForever_Discovery/QuestList/Constants.lua", "NaowhForever_Discovery/QuestList/Data/AlertSounds.lua",
+    env.issecretvalue = function() return false end
+    Load({ "Shared/Game/Layers.lua", "NaowhForever_Discovery/QuestList/Constants.lua", "NaowhForever_Discovery/QuestList/Data/AlertSounds.lua",
         "NaowhForever_Discovery/QuestList/Rares.lua", "NaowhForever_Discovery/QuestList/Kills.lua", "NaowhForever_Discovery/QuestList/Sounds.lua",
         "NaowhForever_Discovery/QuestList/View/Style.lua", "NaowhForever_Discovery/QuestList/View/AlertCard.lua",
         "NaowhForever_Discovery/QuestList/UI/RareAlert.lua", "NaowhForever_Discovery/QuestList/UI/RarePins.lua",
@@ -995,6 +996,45 @@ do
     Check(#PinsOf(10644) == 1 and PinsOf(10644)[1].Icon.desaturated, "with Show Killed Rares, a grey star")
     ns.CompletoSettings.Set("rarePins", false)
     Check(#env.worldMap.pins == 0, "switched off: the stars go")
+end
+
+-- Map Pins: the layer of a rare's last kill
+do
+    local ns, env = Fixture({ enabled = true, rarePins = false, rarePinsKilled = true, rarePinSize = 18 }, {})
+    local R = ns.Completo.Rares
+    ns.CompletoSettings.Set("rarePins", true)
+    local function Line(find)
+        for _, line in ipairs(env.tip) do
+            if tostring(line[1]):find(find, 1, true) then return line end
+        end
+    end
+    local function Hover(npc)
+        for _, pin in ipairs(env.worldMap.pins) do
+            if pin.npc == npc and pin.kind == nil then
+                pin:OnMouseEnter()
+                pin:OnMouseLeave()
+                return
+            end
+        end
+        error("no star for " .. npc)
+    end
+    Hover(10644)
+    Check(not Line("Last killed on layer"), "a rare not killed names no layer")
+    R.AddKill(10644, Guid(10644))
+    Hover(10644)
+    local line = Line("Last killed on layer")
+    Check(line and line[1] == "Last killed on layer 3" and line[3] == 0.66,
+        "a kill names the layer it was on, from its GUID, in the muted color")
+    ns.Layers = { Current = function() return "1-3", 3 end }
+    Hover(10644)
+    Check(Line("Last killed on layer 3, your layer"), "the layer you are on now is marked as yours")
+    ns.Layers = { Current = function() return "9-3", 3 end }
+    Hover(10644)
+    Check(Line("Last killed on layer")[1] == "Last killed on layer 3", "the same number on another server is not yours")
+    ns.Layers = nil
+    R.SetKilled(10647, true)
+    Hover(10647)
+    Check(not Line("Last killed on layer"), "a rare ticked off by hand names no layer")
 end
 
 print(("test-completo-rares: %d checks passed"):format(checks))

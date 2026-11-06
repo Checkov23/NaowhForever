@@ -24,6 +24,7 @@ local TEXT_RARE = ns.L("Rare")
 local TEXT_ELITE = ns.L("Rare elite")
 local TEXT_KIND_LEVEL = ns.L("%s, level %s")
 local TEXT_NOT_KILLED = ns.L("Not killed yet")
+local TEXT_KILL_LAYER = ns.L("Last killed on layer %s")
 local TEXT_PATROLS = ns.L("Patrols: the small stars are its way")
 local TEXT_SPAWNS = ns.L("Spawns at %d more spots, shown smaller")
 local TEXT_HINT = ns.L("Click for a waypoint (again to remove it), right-click to keep its spots shown.")
@@ -94,6 +95,8 @@ local function AddRecord(npc)
     if not record then return GameTooltip:AddLine(TEXT_NOT_KILLED, 1, 1, 1) end
     local have = Style.HAVE_RGB
     GameTooltip:AddLine(R.KilledText(record), have.r, have.g, have.b)
+    local layer = R.KillLayer(record)
+    if layer then GameTooltip:AddLine(TEXT_KILL_LAYER:format(layer), T.muted.r, T.muted.g, T.muted.b) end
 end
 
 local function ShowTip(pin)

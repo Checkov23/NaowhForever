@@ -856,6 +856,16 @@ Case("Announce Quest Progress speaks in party chat for you, so it is named and l
     assert(w.db.profiles[w.switched].qol.questProgress == nil, "left out")
 end)
 
+Case("Swap Layers With Others joins a public channel for you, so it is named and left off", function()
+    local w = World()
+    w.db.profiles.Default.qol.layerRequests = true
+    local payload = assert(w.ns.DecodeProfile((w.ns.ExportProfile())))
+    local acting = w.ns.ProfileActing(payload)
+    assert(#acting == 1 and acting[1] == "Swap Layers With Others", acting[1])
+    w.ns.ImportProfile(payload, ALL)
+    assert(w.db.profiles[w.switched].qol.layerRequests == nil, "left out")
+end)
+
 Case("a Junk Marker that sells comes along asking first, unless Also Import is ticked", function()
     local w = World()
     w.db.profiles.Default.qol.scrapMarker = true

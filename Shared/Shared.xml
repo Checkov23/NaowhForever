@@ -15,6 +15,7 @@
     <Script file="Game\ActionKeys.lua"/>
     <Script file="Game\Roster.lua"/>
     <Script file="Game\Places.lua"/>
+    <Script file="Game\Layers.lua"/>
     <Script file="Game\Towns.lua"/>
     <Script file="Game\Played.lua"/>
     <Script file="UI\Parts.lua"/>

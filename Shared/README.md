@@ -43,6 +43,8 @@ Shared/
   Game/Roster.lua  our part of a player's tooltip in the Guild & Communities and Friends lists (Badges, Naowh Score)
   Game/Places.lua  zones by name, the map whose data a map reads (Places.SameMap), and showing one on the
                    world map
+  Game/Layers.lua  the layer an NPC is on, from its GUID (Shared.LayerOf): QoL's Layer Tracker and
+                   Discovery's rare kills
   Game/Towns.lua   town service NPCs by world map (ns.TownNPCs) and the capitals (ns.TownCapitals), by hand:
                    QoL's town pins, the Training Planner's trainers and Professions' rank alerts read it
   Game/Played.lua  the character's /played time, asked for once with the chat print muted (XP Bar, XP per Hour)

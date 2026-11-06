@@ -202,6 +202,9 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   while it was yours (not tapped by someone else), or a corpse you loot. Each creature counts once,
   and the record keeps the last creature's GUID, so its corpse looted again after a reload is not
   a second kill. One killed before can be ticked off by hand (its count is 0).
+- A rare's tooltips name the layer of its last kill, read from the GUID the record keeps
+  (`Shared.LayerOf`, `R.KillLayer`), and mark it as yours when QoL's Layer Tracker reads the same layer
+  (`ns.Layers`, read only when it exists). A rare ticked off by hand has no GUID, so no layer.
 - A rare friendly to your faction is left out: you cannot kill it.
 - Every unit value read for rares (GUID, dead, tapped, classification, name, level,
   loot links and sources, minimap marks) can be a secret value: each is checked with

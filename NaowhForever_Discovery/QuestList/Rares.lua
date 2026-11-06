@@ -7,6 +7,7 @@ local C = Completo.C
 local St = ns.Shared.Style
 local SameMap = ns.Shared.Places.SameMap
 local D = ns.CompletoRareData
+local LayerOf = ns.Shared.LayerOf
 
 local NAME, LOW, HIGH, ELITE, REACT_A, REACT_H, MAP, SPOTS, TRAIL = 1, 2, 3, 4, 5, 6, 7, 8, 9
 local FRIENDLY = 1
@@ -22,6 +23,7 @@ local TEXT_MORE = ns.L("And %d more")
 local TEXT_UNKNOWN_LEVEL = "??"
 local TEXT_KILLED = ns.L("Killed")
 local TEXT_KILLED_TIMES = ns.L("Killed %d times")
+local TEXT_YOUR_LAYER = ns.L("%s, your layer")
 local NONE = {}
 
 local mine, kills, drops, byMap
@@ -139,6 +141,14 @@ end
 function R.KilledText(record)
     if record.n > 1 then return TEXT_KILLED_TIMES:format(record.n) end
     return TEXT_KILLED
+end
+
+function R.KillLayer(record)
+    local key, zone = LayerOf(record.guid)
+    if not key then return nil end
+    local Layers = ns.Layers
+    if Layers and Layers.Current() == key then return TEXT_YOUR_LAYER:format(zone) end
+    return tostring(zone)
 end
 
 function R.ChanceText(chance)

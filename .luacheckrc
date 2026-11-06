@@ -78,6 +78,7 @@ read_globals = {
     "GetBindingText", "GetBindLocation", "GetChannelList", "GetClassInfo", "GetCurrentBindingSet",
     "GetCurrentArenaSeason", "GetCurrentKeyBoardFocus", "GetCurrentRegion", "GetText", "UnitSex",
     "GetCursorInfo", "GetCursorPosition", "GetCVar",
+    "GetChannelName", "GetEvictionTimeRemaining", "JoinTemporaryChannel", "LeaveChannelByName",
     "PVP_RANK_0_NAME", "PVP_RANK_REWARDS_VENDOR_ALLIANCE", "ITEM_SPELL_KNOWN",
     "GetFileIDFromPath", "GetFonts", "GetFramerate", "GetGameMessageInfo", "GetGuildInfo", "GetGuildRosterInfo",
     "GetInstanceInfo", "GetInventoryItemDurability", "GetInventoryItemID",

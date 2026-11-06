@@ -469,6 +469,7 @@ local ACTING = {
     { module = "qol", key = "questTurnIn", label = "Hand In Quests" },
     { module = "qol", key = "questShare", label = "Share Quests With Group" },
     { module = "qol", key = "questProgress", label = "Announce Quest Progress" },
+    { module = "qol", key = "layerRequests", label = "Swap Layers With Others" },
     { module = "qol", key = "autoRepair", label = "Auto Repair" },
     { module = "qol", key = "sellJunk", label = "Auto Sell Junk" },
     { module = "qol", key = "restockBuy", label = "Buy at Vendors" },
