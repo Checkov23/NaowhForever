@@ -43,7 +43,7 @@ local ARCS = { { [0] = "Straight Ahead", [1] = "In Front", [2] = "All Around" },
 
 local CATEGORY_NAMES = {
     ore = "Ore", herb = "Herbs", quest = "Quest Objects", giver = "Quest Givers", chest = "Chests",
-    bobber = "Fishing Bobber",
+    bobber = "Fishing Bobber", corpse = "Corpses with Loot",
 }
 local CATEGORY_HELP = {
     ore = "Mining veins and deposits.",
@@ -52,6 +52,7 @@ local CATEGORY_HELP = {
     giver = "NPCs with a quest to pick up or hand in. Glimmer shows their nameplate to light them up.",
     chest = "Chests, strongboxes and footlockers out in the world.",
     bobber = "Your fishing bobber.",
+    corpse = "Corpses that still have loot for you, once the fight is over.",
 }
 
 local SAMPLES = {

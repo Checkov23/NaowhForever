@@ -40,7 +40,7 @@ read_globals = {
     "AcceptQuest", "ActionBarButtonEventsFrame", "ActionStatus", "AlertFrame", "Ambiguate",
     "AnchorUtil", "AuraContainerSortMethod", "AuraUtil", "BACKPACK_CONTAINER",
     "bit", "BNET_CLIENT_WOW", "BNGetInfo", "BNGetNumFriends", "BreakUpLargeNumbers", "BuyMerchantItem", "BuyTrainerService",
-    "canaccessallvalues", "canaccessvalue", "CanInspect", "CanMerchantRepair",
+    "canaccessallvalues", "canaccessvalue", "CanInspect", "CanLootUnit", "CanMerchantRepair",
     "ContainerFrameContainer", "ContainerFrameCombinedBags",
     "GameMenuFrame", "GAMEMENU_OPTIONS", "MainMenuFrameMixin", "CanAutoSetGamePadCursorControl", "InputUtil",
     "CharacterFrame", "CharacterFrameTitleText", "CharacterLevelText", "CharacterLevelTextBackground", "PaperDollFrame", "PaperDollLevelInfo", "PaperDollSidebarTabs", "CharacterHeadSlot",

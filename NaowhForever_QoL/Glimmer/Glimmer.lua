@@ -3,7 +3,7 @@ local ns = _G.NaowhForever
 
 local F = ns.FEATURES.glimmer
 
-local CATEGORIES = { "ore", "herb", "quest", "giver", "chest", "bobber" }
+local CATEGORIES = { "ore", "herb", "quest", "giver", "chest", "bobber", "corpse" }
 
 local S = ns.UI.ModuleSettings("glimmer", {
     enabled = F.enabled,
@@ -14,9 +14,9 @@ local S = ns.UI.ModuleSettings("glimmer", {
     skillColors = true, showLine = true,
     hideInstance = true, hideLocked = false,
     range = 15, arc = 2, onlyHighlighted = true,
-    ore = true, herb = true, quest = true, giver = true, chest = true, bobber = true,
+    ore = true, herb = true, quest = true, giver = true, chest = true, bobber = true, corpse = false,
     oreStyle = "same", herbStyle = "same", questStyle = "same", giverStyle = "same", chestStyle = "same",
-    bobberStyle = "same",
+    bobberStyle = "same", corpseStyle = "same",
     oreColor = { r = 0.88, g = 0.64, b = 0.35 },
     herbColor = { r = 0.49, g = 0.83, b = 0.54 },
     questColor = { r = 1, g = 0.84, b = 0.35 },
@@ -24,6 +24,7 @@ local S = ns.UI.ModuleSettings("glimmer", {
     giverHideBar = false, giverOffset = 0,
     chestColor = { r = 0.30, g = 0.71, b = 0.96 },
     bobberColor = { r = 1, g = 0.48, b = 0.42 },
+    corpseColor = { r = 0.74, g = 0.56, b = 1 },
 })
 ns.GlimmerSettings = S
 

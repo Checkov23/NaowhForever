@@ -2,6 +2,7 @@
 local ns = _G.NaowhForever
 
 local UnitGUID, UnitIsGameObject = UnitGUID, UnitIsGameObject
+local UnitIsDead, CanLootUnit = UnitIsDead, CanLootUnit
 local IsRelated = C_QuestLog.UnitIsRelatedToActiveQuest
 local GetTooltipUnit = C_TooltipInfo.GetUnit
 local InReach = UnitIsInInteractRange
@@ -110,6 +111,20 @@ function Target.Reach(unit)
     return near and true or false
 end
 
+local function Corpse(unit, info)
+    if not S.Get("corpse") then return end
+    local dead = UnitIsDead(unit)
+    if not (Plain(dead) and dead) then return end
+    local guid = UnitGUID(unit)
+    if not (guid and Plain(guid)) then return end
+    local hasLoot, canLoot = CanLootUnit(guid)
+    if not (Plain(hasLoot) and Plain(canLoot) and hasLoot and canLoot) then return end
+    wipe(info)
+    info.category, info.unable, info.locked = "corpse", false, false
+    info.ready = Target.Reach(unit)
+    return info
+end
+
 local function QuestGiver(unit, info)
     local category, unable = Cursor(unit, true)
     if category ~= "quest" then return end
@@ -123,7 +138,7 @@ end
 function Target.Read(unit, info)
     local object = UnitIsGameObject(unit)
     if not Plain(object) then return end
-    if not object then return QuestGiver(unit, info) end
+    if not object then return Corpse(unit, info) or QuestGiver(unit, info) end
     wipe(info)
     local id = ObjectID(unit)
     local node = id and G.NODES[id]

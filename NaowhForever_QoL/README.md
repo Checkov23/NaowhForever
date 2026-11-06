@@ -1286,7 +1286,7 @@ NaowhForever_QoL/
   removing one moves the bar, which waits for the fight to end, as the bar's other changes do.
 
 ### Glimmer
-- Herbs, ore, quest objects, chests and your fishing bobber light up as you walk up to them, in one of
+- Herbs, ore, quest objects, chests, your fishing bobber and corpses with loot light up as you walk up to them, in one of
   five effects: dim while out of reach, a flash and full brightness once you can use them. Its tab is
   QoL > Glimmer, its on/off the Glimmer card's switch there. It keeps its own settings store,
   `ns.GlimmerSettings` (the profile's `glimmer` table, defaults from `ns.FEATURES.glimmer`), not
@@ -1297,7 +1297,7 @@ NaowhForever_QoL/
   with the skill it needs, and On Nodes Your Skill Is Too Low For hides both. Quest objects are
   found three ways: the game marking them quest related, a quest objective in their tooltip, or the
   quest pick-up or turn-in cursor the game shows on them; that cursor is also what lights an NPC with a
-  quest to pick up or hand in, the only NPCs Glimmer lights. Quest objects get the line of the
+  quest to pick up or hand in, the only living NPCs Glimmer lights. Quest objects get the line of the
   quest objective they count for. Quest Item Sparkle keeps the game's loot sparkle on quest items
   through graphics presets. Minimap Icons shows every spot herbs and ore grow near you, ringed in their
   skill-up color, and Gathered on the Map every herb and vein you gather.
@@ -1367,6 +1367,22 @@ NaowhForever_QoL/
   when the effect is released. Effect Height (`giverOffset`, pixels, 0 by default) moves a giver's effect from the
   same anchor an object's uses, since a plate over a creature's head sits at a different height than one over an
   object. Both apply on the next frame, like the other settings.
+- Corpses with Loot (`corpse`, off by default) lights a corpse that still has loot for you: the soft target is
+  dead (`UnitIsDead`) and `CanLootUnit` on its GUID says it has loot and that you may take it. Loot that is
+  someone else's leaves it dark. With the option off, no unit is read as a corpse.
+- `CanLootUnit` takes a secret GUID only from untainted code, so a GUID that is not plain is passed over.
+  Glimmer rests in combat, so a corpse lights once the fight is over.
+- A dead creature's plate shows a 0% health bar and its level, which say nothing about the loot, so on a corpse
+  they are faded: the same three parts Hide Health Bar and Level fades on a quest giver. Glimmer leaves the
+  name, the game's elite or rare mark (`ClassificationFrame`) and any raid mark as the game shows them.
+- A corpse's loot can arrive after Glimmer reads it and go before the soft target moves (someone else loots it,
+  or you do and it stays the soft target). `UNIT_LOOT` names the unit whose loot changed; when it is the soft
+  target, Glimmer reads it again. It is registered only while Corpses with Loot is on. The game's own loot
+  tutorial uses the same event with `CanLootUnit`.
+- An object, a quest giver and a corpse each place the effect and the plate's bar their own way (`Placement`).
+  When the lit target changes between them on the same nameplate (a quest giver that dies with loot for you),
+  the effect is attached again so both follow. Any other change of category on the plate, such as a quest
+  object that is a plain chest once its quest is done, only repaints it, so the effect does not start over.
 - The effect is parented to the nameplate, one frame level under it so the game's name stays on
   top, and ignores the nameplate's alpha so it does not fade with it.
 - The game settings Glimmer changes are saved in the account settings before the first change and
