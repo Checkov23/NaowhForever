@@ -1,6 +1,48 @@
 # Changelog
 
-## Unreleased
+## 1.2.7
+
+### Changed
+- Naowh Score: refitted to the latest Forever items.
+- Dungeon Journal: Plaguerot Sprig is no longer marked as not in Forever yet.
+- Training Planner: every spell costs what Forever's class trainers ask since launch, so the gold to
+  60 is right before you visit a trainer.
+- RestedXP Naowh Window (V2): Set Up New Characters and the This Character Set Up button are gone.
+  Turn on Beta Features, then the V2 interface, in RestedXP's own settings (/rxp) to use the window.
+
+### Fixed
+- Loot Feed: with Count Bank Items on, the number on each line counts your bank too, from your first
+  visit to the bank.
+- Hide Blizzard Loot Window: with full bags, the loot window stays hidden when the loot stacks onto
+  items you already carry.
+- Scout: 36 more of Forever's new beasts, such as the Vuldren foxes, Coldrasp, Ghostfang and
+  Chakuyak, show as Tameable on the pet family line for hunters.
+- Quest List: class quests such as Anthion's Parting Words, Saving the Best for Last, Just
+  Compensation and Armaments of War show only for their own class.
+- Quest List: 16 quests show for the right faction, and 37 show the right level or the level you can
+  take them at.
+- Training Planner: Cat Form, Prowl, Claw and Rip come from the Cat Form quest at 20, and Teleport:
+  Moonglade and the rogue's Poisons from their quests, not the trainer.
+- Training Planner: Tiger's Fury is no longer listed, since Forever doesn't teach it.
+- Auction Prices: after "no answer from the auction house", Scan Prices now waits out Blizzard's
+  15-minute limit instead of failing again on every click, and a scan the auction house answers late
+  is still read.
+- Dungeon Journal: Plaguerot Sprig, Gyromatic Icemaker and Scholarly Robes show Forever's item level
+  and quality.
+- Dungeon Journal: Energy Cloak, Gaea's Cloak, Wrangler's Cloak, Tattered Kirin Tor Cloak and
+  Blindwatcher's Sight count as wearable by every class.
+- Quest List: once you take one of the three Argent Dawn Commissions, the other two show as not
+  offered any more.
+- Professions: the Recipe Finder's rank, trainer, vendor and drop lines show in your language, with
+  the right word for a free recipe.
+- Professions: the Recipe Finder no longer writes "Recipe:" in front of a recipe's name that already
+  starts with it.
+- Group Finder: Invite and Decline act only on the applicant their row shows, and someone who
+  applies again after a reload can be invited again.
+- Group Finder: only your group's leader answers for its listing and sees its applicants, who stay
+  through a delist or a lead change until their application runs out.
+- Group Finder: a withdrawn or expired application waiting to be sent is never sent, and Decline
+  says when it has to wait.
 
 ## 1.2.6
 
