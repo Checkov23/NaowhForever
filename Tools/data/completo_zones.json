@@ -10287,6 +10287,113 @@
    }
   ]
  },
+ "16591": {
+  "name": "Riverglades",
+  "quests": [
+   {
+    "category2": 0,
+    "id": 94532,
+    "level": 38,
+    "name": "Gnoll Infestation",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 94533,
+    "level": 40,
+    "name": "Snargl's Snout",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 94535,
+    "level": 38,
+    "name": "Bristle Hills Bandits",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 95059,
+    "level": 36,
+    "name": "Frazzlespark's Crate",
+    "reqlevel": 36,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 95062,
+    "level": 36,
+    "name": "Frazzlespark's Crate",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 95118,
+    "level": 41,
+    "name": "Saltwater Savages",
+    "reqlevel": 36
+   },
+   {
+    "category2": 0,
+    "id": 95120,
+    "level": 42,
+    "name": "WANTED: Old Rot-Chum",
+    "reqlevel": 36
+   },
+   {
+    "category2": 0,
+    "id": 95161,
+    "level": 22,
+    "name": "Remember That I Love You",
+    "reqlevel": 15,
+    "reqrace": 4294967372,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 95254,
+    "level": 42,
+    "name": "WANTED: Trapclaw",
+    "reqlevel": 36
+   },
+   {
+    "category2": 0,
+    "id": 95951,
+    "level": 38,
+    "name": "Fetch 'n' Fletch",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 95983,
+    "level": 38,
+    "name": "A Feast for Buzzards",
+    "reqlevel": 36,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 96103,
+    "level": 38,
+    "name": "A Feast for Buzzards",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 96107,
+    "level": 40,
+    "name": "Feathers for Fletching",
+    "reqlevel": 36,
+    "side": 2
+   }
+  ]
+ },
  "16593": {
   "name": "Zephras Isle",
   "quests": [

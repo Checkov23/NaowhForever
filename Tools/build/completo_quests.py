@@ -13,9 +13,9 @@ from completo_elsewhere.json (Tools/build/elsewhere_quests.py), marked in D.Else
 and the battleground ones among those in D.Battleground too.
 
 Which quests Forever gives, and where their givers stand, come from foreverchanges_quests.json
-(Tools/build/foreverchanges_quests.py): a quest it does not list is left out, one it lists that
-nothing above has is added, a quest goes in the zone it files it under, and its giver's spot comes
-before any other. Its class, levels and side replace a quest's where quest_entity_catalog.json has
+(Tools/build/foreverchanges_quests.py): a quest it does not list is left out unless completo_fixes.json
+names it, one it lists that nothing above has is added, a quest goes in the zone it files it under,
+and its giver's spot comes before any other. Its class, levels and side replace a quest's where quest_entity_catalog.json has
 the same: Wowhead's zone pages give some class quests no class (Anthion's Parting Words) and old
 levels. Neither alone is taken, since each has its own slips, nor what both write for a value they
 lack (side 3, level 0, class 0): agreeing on that says nothing. --report FILE adds to FILE the values
@@ -27,7 +27,7 @@ completo_zones.json (each zone's quest rows) and completo_quests.json (each ques
 
 completo_fixes.json, kept by hand, corrects what the sources get wrong and adds what they lack (the
 breadcrumbs, the quests of which you take one, the profession a quest needs and the camp recipe it
-teaches), each with what shows it.
+teaches, the quests the game has that ForeverChanges does not list yet), each with what shows it.
 
 Usage: python Tools/build/completo_quests.py [--offline] [--report FILE]
 """
@@ -607,8 +607,15 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, list
         filed = {int(k): str(q["category"][1]) for k, q in listed["quests"].items()
                  if q["category"] and q["category"][0] == "zone" and str(q["category"][1]) in zones}
         moved = [q for area, z in zones.items() for q in z["quests"] if filed.get(q["id"], area) != area]
+        unlisted = set()
+        for entry in fixes.get("unlisted", []):
+            if known_quests(entry["quests"], existing, f"unlisted {entry['quests']}"):
+                unlisted.update(entry["quests"])
+        for qid in sorted(q for q in unlisted if str(q) in listed["quests"]):
+            warn(f"unlisted names quest {qid}, which ForeverChanges lists already")
         for area, z in zones.items():
-            z["quests"] = [q for q in z["quests"] if str(q["id"]) in listed["quests"] and filed.get(q["id"], area) == area]
+            z["quests"] = [q for q in z["quests"] if (str(q["id"]) in listed["quests"] or q["id"] in unlisted)
+                           and filed.get(q["id"], area) == area]
         for q in moved:
             zones[filed[q["id"]]]["quests"].append(q)
         # One filed under no category is not one the game gives: the iCoke vouchers, test quests.

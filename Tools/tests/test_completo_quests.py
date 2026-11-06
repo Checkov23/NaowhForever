@@ -6,7 +6,8 @@ only the High Order Skyborne is both Skyborne's, and other masks stay as given; 
 and the catalog agree: a class, level or side both give is taken, one alone is not, nor what both
 write for a value they lack (side 3, level 0), and the build takes them for the quests ForeverChanges
 lists, in the zone it files them under, before it writes their rows, reporting the ones Quests.lua did
-not have yet; and the gating it writes: the camping quests of one name and the hand-kept groups are
+not have yet; a quest ForeverChanges does not list kept when the fixes name it, warned of once it lists
+it; and the gating it writes: the camping quests of one name and the hand-kept groups are
 exclusive, a quest in one group at most, and the breadcrumbs, professions and camp recipes come from
 the fixes, an entry naming a quest the data lacks skipped with a warning. Offline. From the repo root:
 
@@ -158,6 +159,29 @@ class AgreedWritten(unittest.TestCase):
         self.assertIn("- Armaments of War (8316): side 3 to 2", report)
 
 
+class Unlisted(unittest.TestCase):
+    def test_kept_though_the_list_leaves_it_out(self):
+        zones = {"16591": {"name": "Riverglades", "quests": [
+            {"id": 94532, "name": "Gnoll Infestation", "level": 38, "reqlevel": 36, "side": 2},
+            {"id": 95161, "name": "Remember That I Love You", "level": 22, "reqlevel": 15, "side": 1},
+            {"id": 8, "name": "Not Listed", "level": 2, "reqlevel": 1, "side": 1}]}}
+        listed = {"quests": {"95161": {"name": "Remember That I Love You", "level": 22, "reqlevel": 15, "side": 1,
+                                       "reqclass": 0, "category": ["zone", 16591]}}, "starts": {}}
+        fixes = {"unlisted": [{"quests": [94532, 95161]}, {"quests": [1]}]}
+        err = io.StringIO()
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder) / "Quests.lua"
+            with mock.patch.object(completo_quests, "ROOT", Path(folder)), mock.patch.object(completo_quests, "OUT", out), \
+                    contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+                completo_quests.write(zones, {}, {}, {}, {}, {}, {}, listed, fixes)
+            text = out.read_text()
+        self.assertIn('map = 2548, name = "Riverglades", continent = 0, quests = { 94532, 95161 }', text)
+        self.assertIn('    [94532] = { "Gnoll Infestation", 38, 36, 2, 0, 0, nil, nil, nil, nil },', text)
+        self.assertNotIn("Not Listed", text)
+        self.assertIn("unlisted [1] names quest 1, which the data does not have; skipped", err.getvalue())
+        self.assertIn("unlisted names quest 95161, which ForeverChanges lists already", err.getvalue())
+
+
 class Gating(unittest.TestCase):
     CAMP = {"category": ["sort", 666]}
 
@@ -224,7 +248,7 @@ class FixesFile(unittest.TestCase):
             self.assertTrue(fix.get("why"), qid)
             self.assertTrue(fix.get("add") or fix.get("drop"), qid)
         breadcrumbs = [b for k, b in fixes["breadcrumbs"].items() if not k.startswith("_")]
-        for entry in fixes["exclusive"] + breadcrumbs + fixes["professions"]:
+        for entry in fixes["exclusive"] + breadcrumbs + fixes["professions"] + fixes["unlisted"]:
             self.assertTrue(entry.get("why"), entry)
 
 

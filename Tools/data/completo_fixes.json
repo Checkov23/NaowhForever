@@ -10,6 +10,8 @@
     "professions: the skill line a quest needs (SkillLine), and for a Camping 101 quest the camp recipe",
     "it teaches (the spell in that skill line's SkillLineAbility), which closes it once known. Only a",
     "quest whose task needs the skill: one that introduces the profession is for those who lack it.",
+    "unlisted: quests the game has that ForeverChanges does not list yet, kept although its list leaves",
+    "them out; once it lists one, the build warns, and the quest can come off.",
     "A key starting with _ is a note. A fix naming a quest the data lacks is skipped, with a warning."
   ],
   "requires": {
@@ -26,8 +28,7 @@
     "92752": {"add": [92751], "why": "Toxic Soil, in order: 'the bomb's ready to go! Careful with that detonator'."},
     "92753": {"add": [92752], "why": "Toxic Soil, in order."},
     "92819": {"add": [92753], "why": "Toxic Soil, in order: the last step."},
-    "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."},
-    "95161": {"add": [92415], "why": "Wowhead's Series and ForeverChanges' storyline: 92415, then 95161."}
+    "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."}
   },
   "exclusive": [
     {"quests": [324, 526], "why": "The Lost Ingots (from the Waterlogged Chest) and Lightforge Ingots (from Glorin Steelbrow) are one task: gather 5 Lightforge Ingots for Glorin (ForeverChanges)."},
@@ -64,5 +65,8 @@
     {"skill": 197, "recipe": 1229504, "quests": [96102, 97937, 97961, 97972], "why": "Camping 101: its objective is 'Raise your tailoring skill to 20' (Wowhead and ForeverChanges); 1229504 is the Faction Banner recipe it teaches (Wowhead's 'You will learn', in Tailoring's SkillLineAbility). The Horde's versions; its race masks are the Horde's."},
     {"skill": 393, "quests": [91751], "why": "Rough Wolf Pelts: 'Skin wolves around Elwynn Forest', 'Are you looking for an opportunity to practice skinning?' (ForeverChanges)."},
     {"skill": 333, "quests": [91753, 96873], "why": "An Enchanting Lesson and A Pain in the Neck: the Luminous Residue comes from disenchanting, 'Practice your enchanting skills' (ForeverChanges)."}
+  ],
+  "unlisted": [
+    {"quests": [94532, 94533, 94535, 95059, 95062, 95118, 95120, 95254, 95951, 95983, 96103, 96107], "why": "Riverglades' quests, 'Added in patch 1.60.1.70790' (Wowhead Forever's quest pages): on Wowhead Forever's Riverglades page and in the game's QuestV2 for 1.60.1.70790, not yet on ForeverChanges' list (5 Nov 2026)."}
   ]
 }

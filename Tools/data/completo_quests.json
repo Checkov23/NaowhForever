@@ -64340,6 +64340,18 @@
    "zone": 148
   }
  },
+ "94532": {
+  "chain": null,
+  "start": null
+ },
+ "94533": {
+  "chain": null,
+  "start": null
+ },
+ "94535": {
+  "chain": null,
+  "start": null
+ },
  "94568": {
   "chain": {
    "chain": [
@@ -64740,6 +64752,14 @@
    "zone": 1537
   }
  },
+ "95059": {
+  "chain": null,
+  "start": null
+ },
+ "95062": {
+  "chain": null,
+  "start": null
+ },
  "95065": {
   "chain": null,
   "start": {
@@ -64762,6 +64782,39 @@
    "npc": "Onu",
    "npcId": 3616,
    "zone": 148
+  }
+ },
+ "95118": {
+  "chain": null,
+  "start": null
+ },
+ "95120": {
+  "chain": null,
+  "start": null
+ },
+ "95161": {
+  "chain": {
+   "chain": [
+    [
+     92415
+    ],
+    [
+     95161
+    ]
+   ],
+   "names": {
+    "92415": "Remember That I Love You",
+    "95161": "Remember That I Love You"
+   }
+  },
+  "start": {
+   "coord": [
+    47.2,
+    38.4
+   ],
+   "npc": "Orphan Matron Nightingale",
+   "npcId": 14450,
+   "zone": 1519
   }
  },
  "952": {
@@ -64840,6 +64893,10 @@
    "npcId": 1698,
    "zone": 1
   }
+ },
+ "95254": {
+  "chain": null,
+  "start": null
  },
  "953": {
   "chain": null,
@@ -65439,6 +65496,19 @@
    "zone": 130
   }
  },
+ "95951": {
+  "chain": {
+   "chain": [
+    [
+     95951
+    ]
+   ],
+   "names": {
+    "95951": "Fetch 'n' Fletch"
+   }
+  },
+  "start": null
+ },
  "95981": {
   "chain": {
    "chain": [
@@ -65482,6 +65552,19 @@
    "zone": 130
   }
  },
+ "95983": {
+  "chain": {
+   "chain": [
+    [
+     95983
+    ]
+   ],
+   "names": {
+    "95983": "A Feast for Buzzards"
+   }
+  },
+  "start": null
+ },
  "95999": {
   "chain": null,
   "start": {
@@ -65517,6 +65600,32 @@
    "npcId": 3616,
    "zone": 148
   }
+ },
+ "96103": {
+  "chain": {
+   "chain": [
+    [
+     96103
+    ]
+   ],
+   "names": {
+    "96103": "A Feast for Buzzards"
+   }
+  },
+  "start": null
+ },
+ "96107": {
+  "chain": {
+   "chain": [
+    [
+     96107
+    ]
+   ],
+   "names": {
+    "96107": "Feathers for Fletching"
+   }
+  },
+  "start": null
  },
  "96130": {
   "chain": null,

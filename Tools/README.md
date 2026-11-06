@@ -363,7 +363,7 @@ are not included. Classic baseline values remain unverified for Forever.
 | --- | --- |
 | `journal_bosses.json` | The bosses per dungeon, in kill order, with rares, optional bosses, chests and hand fixes. Kept by hand: no source has the right list for Forever. |
 | `journal_factions.json` | The Journal's factions, with rewards added or removed by hand on top of the game's. |
-| `completo_fixes.json` | The Quest List's corrections, kept by hand: what a quest needs first where the sources are wrong, the quests of which you take one, breadcrumbs, and the profession and camp recipe a quest needs, each with what shows it. |
+| `completo_fixes.json` | The Quest List's corrections, kept by hand: what a quest needs first where the sources are wrong, the quests of which you take one, breadcrumbs, the profession and camp recipe a quest needs, and the quests the game has that ForeverChanges does not list yet, each with what shows it. |
 | `journal_cache.json`, `wowsrc_loot.json`, `item_names.json` | Every Wowhead answer the Journal's build used; wowsrc's pages as last read; their item names to IDs. Committed, so a rebuild (and CI) gives the same data without asking again. |
 | `preset_minimalist.lua`, `preset_recommended.lua` | Naowh's two setups, the input of `build/presets.lua`. |
 | Every other `*.json` | The cache of the builder that names it above. |

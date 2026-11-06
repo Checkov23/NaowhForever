@@ -65,9 +65,10 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   that drops it as its giver, and the item. Spots on the maps Forever redrew are moved from
   Wowhead's classic ones onto Forever's.
 - Which quests there are, and where their givers stand, follow ForeverChanges' quest list and
-  pages (`Tools/build/foreverchanges_quests.py`): a quest it does not list is left out, one only it
-  lists is added (Unsorted Quests when it names no zone or giver), a quest goes in the zone it files
-  it under, and its giver's spot, on Forever's own map, comes before Wowhead's. A quest with several givers is pinned at the one in its zone.
+  pages (`Tools/build/foreverchanges_quests.py`): a quest it does not list is left out, unless
+  `completo_fixes.json`'s `unlisted` names it (one new in the game that the site has not listed
+  yet), one only it lists is added (Unsorted Quests when it names no zone or giver), a quest goes
+  in the zone it files it under, and its giver's spot, on Forever's own map, comes before Wowhead's. A quest with several givers is pinned at the one in its zone.
   ForeverChanges has no Ironforge map, so a giver it puts on Dun Morogh's inside the city's
   rectangle is on Ironforge's too (`listed_maps`). That rectangle takes in the city's gates, which
   are Dun Morogh's, so the quest's zone picks: a Dun Morogh quest keeps Dun Morogh's map.
