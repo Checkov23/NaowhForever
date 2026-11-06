@@ -15,6 +15,7 @@ local S = ns.UI.ModuleSettings("auraBuffs", {
     hideBlessingsOnPaladin = F.hideBlessingsOnPaladin,
     raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
     personalBuffs = F.personalBuffs, personalBuffPicks = {}, weaponEnhancements = F.weaponEnhancements,
+    sleepingBag = F.sleepingBag,
     buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 }, buffGlowLines = 8,
     buffGlowThickness = 2, buffGlowSpeed = 5,
     iconSize = 48, buffIconMode = "default", buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",

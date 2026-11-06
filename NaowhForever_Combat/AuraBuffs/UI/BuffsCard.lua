@@ -17,6 +17,7 @@ local ICON_MODES = { { default = "Default", last = "Last Used" }, { "default", "
 local ORDER_BUFFS = 10
 local PREVIEW = A.BuffPreview
 local RAID_SAMPLE = #PREVIEW
+local SLEEPING_BAG = ns.Shared.Items.SLEEPING_BAG
 local STATES = {
     { key = "raid", label = "In a Raid", tip = "In a raid, with each reminder you show in raids." },
     { key = "world", label = "Open World", tip = "Out in the world, with each reminder you show in the world." },
@@ -67,6 +68,7 @@ local function NewPreview(stage)
     shot.cells = {}
     for i = 1, #PREVIEW do shot.cells[i] = Cell.New(shot.row) end
     shot.personal = Cell.New(shot.row)
+    shot.bag = Cell.New(shot.row)
     shot.note = ns.Font(shot, NOTE_SIZE, nil, T.muted)
     shot.note:SetPoint("BOTTOM", 0, NOTE_Y)
     return shot
@@ -97,6 +99,7 @@ local function PaintPreview(shot, state)
     local consumables = state ~= "resting" and ShownIn("consumables", state)
     local raid = ShownIn("raidBuffs", state) and R.RaidSample()
     local personal = state ~= "resting" and ShownIn("personalBuffs", state) and PersonalSample()
+    local bag = state == "world" and S.Get("sleepingBag")
     local n = 0
     local function Put(cell, icon, count)
         n = n + 1
@@ -107,6 +110,8 @@ local function PaintPreview(shot, state)
         if consumables then Put(shot.cells[i], p.item and C_Item.GetItemIconByID(p.item) or C_Spell.GetSpellTexture(p.spell), p.count) end
         shot.cells[i]:SetShown(consumables)
     end
+    if bag then Put(shot.bag, C_Item.GetItemIconByID(SLEEPING_BAG)) end
+    shot.bag:SetShown(bag and true or false)
     if personal then Put(shot.personal, C_Spell.GetSpellTexture(personal)) end
     shot.personal:SetShown(personal and true or false)
     local raidCell = shot.cells[RAID_SAMPLE]
@@ -124,6 +129,7 @@ local function Summary(store)
     local parts = {}
     if store.Get("raidBuffs") then parts[#parts + 1] = ns.L("raid buffs") end
     if store.Get("personalBuffs") and #PERSONAL > 0 then parts[#parts + 1] = ns.L("personal buffs") end
+    if store.Get("sleepingBag") then parts[#parts + 1] = ns.L("Sleeping Bag") end
     return #parts > 0 and table.concat(parts, ", ") or nil
 end
 
@@ -185,6 +191,8 @@ local rows = {
       help = "A consumable or personal buff with less time than this left counts as missing." },
     { key = "weaponEnhancements", label = "Weapon Enhancement Reminder", toggle = true, needs = Enabled, why = OFF,
       help = "A reminder when a weapon has no sharpening stone, weightstone or oil on it." },
+    { key = "sleepingBag", label = "Sleeping Bag Reminder", toggle = true, needs = Enabled, why = OFF,
+      help = "Your Cozy Sleeping Bag out in the world, when it is ready and Well-Rested is missing." },
     { key = "hideResting", label = "Hide While Resting", toggle = true, needs = Enabled, why = OFF,
       help = "No consumable or personal buff reminders in cities and inns." },
     Group("Only If I Carry One"),

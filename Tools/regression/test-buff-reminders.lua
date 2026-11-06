@@ -12,7 +12,8 @@ end
 local MODULE = {}
 for i, path in ipairs({ "Core/Features.lua", "NaowhForever_Combat/AuraBuffs/AuraBuffs.lua",
     "NaowhForever_Combat/AuraBuffs/Constants.lua", "Shared/Game/Consumables.lua",
-        "NaowhForever_Combat/AuraBuffs/Data/BuffReminders.lua", "NaowhForever_Combat/AuraBuffs/BuffReminders.lua",
+        "NaowhForever_Combat/AuraBuffs/Data/BuffReminders.lua", "NaowhForever_Combat/AuraBuffs/Data/Campfire.lua",
+    "NaowhForever_Combat/AuraBuffs/BuffReminders.lua",
     "NaowhForever_Combat/AuraBuffs/View/Style.lua", "NaowhForever_Combat/AuraBuffs/View/Glow.lua",
     "NaowhForever_Combat/AuraBuffs/View/BuffCell.lua",
     "NaowhForever_Combat/AuraBuffs/UI/BuffMenu.lua", "NaowhForever_Combat/AuraBuffs/UI/BuffReminders.lua" }) do
@@ -62,6 +63,7 @@ local function Fixture(opts)
         presses = {},
         reads = 0,
         ranges = opts.ranges or {}, rangeReads = 0, tickers = {}, rangePaints = 0,
+        cooldowns = {},                             -- itemID -> { start, duration }, or SECRET
     }
     local timers, frames = {}, {}
 
@@ -110,7 +112,7 @@ local function Fixture(opts)
         raidBuffs = false, raidBuffsOwn = true, raidBuffRange = false, iconSize = 36, buffIconMode = "default",
         buffsFont = "", buffsFontSize = 14, buffsOutline = "OUTLINE",
         raidBuffPicks = { intellect = true, stamina = true, spirit = true, wild = true, blessing = false },
-        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false,
+        personalBuffs = true, personalBuffPicks = {}, weaponEnhancements = false, sleepingBag = false,
         buffGlow = false, buffGlowType = "standard", buffGlowColor = { r = 1, g = 0.82, b = 0.2 },
         buffGlowLines = 8, buffGlowThickness = 2, buffGlowSpeed = 5,
     }
@@ -147,7 +149,7 @@ local function Fixture(opts)
             return fs
         end,
         UI = { AttachMover = function() return NewFrame() end, ModuleSettings = function() return S end },
-        Shared = { Style = dofile("Tools/regression/shared_style.lua"),
+        Shared = { Style = dofile("Tools/regression/shared_style.lua"), Items = { SLEEPING_BAG = 211527 },
             ItemBar = { SetItem = function(button, itemID)
                 button.itemID, button.weaponSlot = itemID, nil
                 button:SetAttribute("type1", itemID and "item" or nil)
@@ -205,7 +207,7 @@ local function Fixture(opts)
         UnitClass = function(unit) return "x", state.units[unit] end,
         UnitLevel = function() return state.level end,
         UnitIsConnected = function() return true end,
-        UnitIsDeadOrGhost = function() return false end,
+        UnitIsDeadOrGhost = function(unit) return unit == "player" and state.dead == true end,
         UnitGroupRolesAssigned = function(unit) return state.roles[unit] or "NONE" end,
         GetPartyAssignment = function(_, unit) return state.mainTanks[unit] end,
         UnitIsVisible = function() return true end,
@@ -232,6 +234,12 @@ local function Fixture(opts)
         },
         C_Container = {
             GetContainerNumSlots = function() return #state.bags end,
+            GetItemCooldown = function(id)
+                local cd = state.cooldowns[id]
+                if cd == SECRET then return SECRET, SECRET, SECRET end
+                if cd then return cd[1], cd[2], 1 end
+                return 0, 0, 1
+            end,
             GetContainerItemID = function(_, slot)
                 state.slotReads = state.slotReads + 1
                 return state.bags[slot]
@@ -1640,6 +1648,111 @@ do
     t.state.combat = true
     t.Fire("UNIT_SPELLCAST_SUCCEEDED", "player", "cast1", 467)
     Check("Thorns may have gone on someone else, so it stays", t.Faded(), "")
+end
+
+-- The Sleeping Bag: out in the world, below 60, while you carry it, it is ready and Well-Rested is missing or
+-- under 15 minutes. Off by default; never while resting, in an instance, or with the bag on its cooldown.
+do
+    local BAG, RESTED = 211527, 429959
+    local ICON = "item:" .. BAG
+    local t = Fixture({ units = { player = "WARRIOR" }, bags = { BAG }, settings = { personalBuffs = false } })
+    t.state.level = 30
+    t.Login()
+    Check("off by default: no bag", t.Shown(), "")
+    Check("off: not listening for the bag's cooldown", t.Listening("BAG_UPDATE_COOLDOWN"), false)
+    t.Set("sleepingBag", true)
+    Check("on: the bag, ready and no Well-Rested", t.Shown(), ICON)
+    local cell
+    for _, f in ipairs(t.frames) do
+        if rawget(f, "icon") and f.shown and f.icon.texture == ICON then cell = f end
+    end
+    Check("a click uses the bag", cell and cell.attributes.type1 .. " " .. cell.attributes.item1, "item item:" .. BAG)
+    Check("and it listens for the bag's cooldown", t.Listening("BAG_UPDATE_COOLDOWN"), true)
+    Check("and for reaching level 60", t.Listening("PLAYER_LEVEL_UP"), true)
+    Check("and for dying and coming back", t.Listening("PLAYER_DEAD") and t.Listening("PLAYER_ALIVE")
+        and t.Listening("PLAYER_UNGHOST"), true)
+
+    local reads = t.state.reads
+    t.Fire("BAG_UPDATE_COOLDOWN")
+    t.Advance(0.5)
+    Check("a global cooldown with the bag ready does not refresh the row", t.state.reads, reads)
+    t.state.cooldowns[BAG] = { t.state.now, 3600 }
+    t.Fire("BAG_UPDATE_COOLDOWN")
+    t.Advance(0.5)
+    Check("used: gone while it cools down", t.Shown(), "")
+    reads = t.state.reads
+    t.Fire("BAG_UPDATE_COOLDOWN")
+    t.Advance(0.5)
+    Check("with the bag hidden, cooldown events do nothing", t.state.reads, reads)
+    t.Advance(3600)
+    Check("back once the cooldown ends, with no event", t.Shown(), ICON)
+
+    t.state.auras.player = { { RESTED, t.state.now - 1000 + 1800, 7200 } }
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("Well-Rested with 30 minutes left: no bag", t.Shown(), "")
+    t.Advance(15 * 60)
+    Check("under 15 minutes: the bag again, with the buff's time", t.Shown(), ICON .. "(t)")
+
+    t.state.auras.player = {}
+    t.state.cooldowns[BAG] = { t.state.now, 1.5 }
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("a global cooldown is not the bag's", t.Shown(), ICON)
+    t.state.cooldowns[BAG] = SECRET
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("a secret cooldown shows nothing", t.Shown(), "")
+    t.state.cooldowns[BAG] = nil
+
+    t.state.resting = true
+    t.Fire("PLAYER_UPDATE_RESTING")
+    t.Advance(0.5)
+    Check("resting in a town or inn: no bag", t.Shown(), "")
+    t.state.resting = false
+    t.Fire("PLAYER_UPDATE_RESTING")
+    t.Advance(0.5)
+    Check("out of town again: the bag", t.Shown(), ICON)
+
+    t.state.instance = "party"
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+    Check("in a dungeon: no bag", t.Shown(), "")
+    t.state.instance = "none"
+
+    t.state.dead = true
+    t.Fire("PLAYER_DEAD")
+    t.Advance(0.5)
+    Check("dead: no bag", t.Shown(), "")
+    t.state.dead = false
+    t.Fire("PLAYER_ALIVE")
+    t.Advance(0.5)
+    Check("alive again: the bag", t.Shown(), ICON)
+
+    t.Fire("PLAYER_LEVEL_UP", 60)
+    t.Advance(0.5)
+    Check("reaching level 60: gone at once", t.Shown(), "")
+    t.ns.AuraBuffs.Buffs.NoteLevel(nil)
+    t.Fire("PLAYER_ENTERING_WORLD")
+    t.Advance(0.5)
+
+    t.state.bags = {}
+    t.Fire("BAG_UPDATE_DELAYED")
+    t.Advance(0.5)
+    Check("not carried: no bag", t.Shown(), "")
+    t.state.bags = { BAG }
+    t.Fire("BAG_UPDATE_DELAYED")
+    t.Advance(0.5)
+    Check("carried again: the bag", t.Shown(), ICON)
+
+    t.state.combat = true
+    t.Fire("UNIT_AURA", "player")
+    t.Advance(0.5)
+    Check("in combat the row keeps what it showed", t.Shown(), ICON)
+    t.state.combat = false
+
+    t.Set("sleepingBag", false)
+    Check("switched off: gone", t.Shown(), "")
 end
 
 if failures > 0 then
