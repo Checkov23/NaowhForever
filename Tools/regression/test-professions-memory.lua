@@ -904,6 +904,11 @@ check("a vendor's recipe starts with the item's name, then its price",
 check("a vendor with no recorded price, behind a reputation",
     Learn({ source = "vendor", recipe = RECIPE_ITEM, rep = "Argent Dawn - Honored",
         vendors = { { 1, "Vendor", "A", 0, 0, 0 } } }) == recipeName .. "\nSold (needs Argent Dawn - Honored) by:")
+local sold = RF.Describe({ spell = 1, skill = 1, source = "vendor", recipe = RECIPE_ITEM,
+    sellers = { { "Seller", "AH", 1, 1500 }, { "Horde Seller", "H", 1 } } })
+check("a seller named by its zone only: its price, no waypoint, none of the other faction",
+    sold[1].text == recipeName .. "\nSold for <money 1500> by:" and sold[2].text == "Seller - Area"
+        and sold[2].npc == nil and sold[3] == nil)
 check("a recipe found only by fishing",
     Learn({ source = "drop", recipe = RECIPE_ITEM, fished = true }) == recipeName .. "\nFound through fishing.")
 check("a recipe its trainer teaches for nothing", Learn({ source = "trainer", cost = 0 }):find("Trainer: free.", 1, true) == 1)

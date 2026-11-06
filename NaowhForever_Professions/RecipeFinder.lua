@@ -17,6 +17,7 @@ local ENGLISH = "enUS"
 local NPC_NAME, NPC_FACTION, NPC_MAP, NPC_X, NPC_Y, NPC_PRICE = C.NPC_NAME, C.NPC_FACTION, C.NPC_MAP, C.NPC_X,
     C.NPC_Y, C.NPC_PRICE
 local DROP_MOB, DROP_AREA, DROP_MIN, DROP_MAX, DROP_CHANCE = 1, 2, 3, 4, 5
+local SELLER_NAME, SELLER_FACTION, SELLER_AREA, SELLER_PRICE = 1, 2, 3, 4
 local SOURCE_TAG = { trainer = ns.L("Trainer"), teacher = ns.L("Trainer"), vendor = ns.L("Vendor"), drop = ns.L("Drop"),
     quest = ns.L("Quest"), unknown = "?" }
 local DEFAULT_PROFESSION = ns.L("First Aid")
@@ -268,12 +269,17 @@ local function DescribeTeacher(out)
 end
 
 local function DescribeVendor(r, out)
-    local sellers = Nearest(r.vendors)
-    if #sellers == 0 then
+    local sellers = Nearest(r.vendors or EMPTY)
+    local unplaced = {}
+    for _, s in ipairs(r.sellers or EMPTY) do
+        if ForMe(s[SELLER_FACTION]) then unplaced[#unplaced + 1] = s end
+    end
+    if #sellers == 0 and #unplaced == 0 then
         Para(out, TEXT_VENDOR_OTHER:format(ItemName(r.recipe, TEXT_RECIPE)))
         return
     end
-    local name, price = ItemName(r.recipe, TEXT_RECIPE), sellers[1][NPC_PRICE]
+    local name = ItemName(r.recipe, TEXT_RECIPE)
+    local price = sellers[1] and sellers[1][NPC_PRICE] or unplaced[1] and unplaced[1][SELLER_PRICE]
     local needs = r.rep and TEXT_NEEDS:format(r.rep) or ""
     if price then
         Para(out, TEXT_SOLD_FOR:format(name, Money(price), needs))
@@ -281,6 +287,9 @@ local function DescribeVendor(r, out)
         Para(out, TEXT_SOLD:format(name, needs))
     end
     for i = 1, math.min(NEAREST, #sellers) do NpcLine(out, sellers[i]) end
+    for _, s in ipairs(unplaced) do
+        out[#out + 1] = { text = TEXT_BOSS:format(s[SELLER_NAME], C_Map.GetAreaInfo(s[SELLER_AREA]) or TEXT_UNKNOWN) }
+    end
 end
 
 local function DescribeBosses(r, out)
