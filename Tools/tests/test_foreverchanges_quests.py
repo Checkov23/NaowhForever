@@ -4,7 +4,8 @@ added to its zone, or to Unsorted Quests without a giver, one filed under no cat
 quest goes in the zone it is filed under, and
 its giver's spot, the one on the quest's zone map first, comes before Wowhead's, on Ironforge's map
 too for one ForeverChanges puts on Dun Morogh's inside the city, and never on a map Forever redrew.
-Offline. From the
+And for what bis_quests.py takes from the list: the quests that reward a ranked item, whether it is
+one to choose, and where each starts, the list's giver before Wowhead's page. Offline. From the
 repo root:
 
     python -m unittest discover -s Tools/tests
@@ -18,6 +19,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402,F401
+import bis_quests  # noqa: E402
 import completo_quests  # noqa: E402
 import foreverchanges_quests  # noqa: E402
 
@@ -42,16 +44,24 @@ class ParseStarts(unittest.TestCase):
         self.assertEqual(foreverchanges_quests.parse_starts("<html></html>"), [])
 
     def test_list_row(self):
-        row = {"i": 98601, "n": "A Difficult Path", "l": 1, "m": 1, "s": "h", "c": ["sort", 141], "cl": 2}
+        row = {"i": 98601, "n": "A Difficult Path", "l": 1, "m": 1, "s": "h", "c": ["sort", 141], "cl": 2,
+               "r": [], "k": []}
         self.assertEqual(foreverchanges_quests.quest_row(row), {
             "name": "A Difficult Path", "level": 1, "reqlevel": 1, "side": 2, "reqclass": 2,
-            "category": ["sort", 141]})
+            "category": ["sort", 141], "rewards": [], "choices": []})
 
     def test_class_is_a_mask(self):
         # Stalk With The Earthmother: hunters, shamans and druids.
         row = {"i": 76240, "n": "Stalk With The Earthmother", "l": 11, "m": 4, "s": "h", "c": ["zone", 215],
-               "cl": 1092}
+               "cl": 1092, "r": [], "k": []}
         self.assertEqual(foreverchanges_quests.quest_row(row)["reqclass"], 1092)
+
+    def test_rewards_and_choices(self):
+        row = {"i": 1101, "n": "The Crone of the Kraul", "l": 34, "m": 29, "s": "a", "c": ["dungeon", 1717],
+               "r": [[274084, "inv_weapon_rifle_05", 3]],
+               "k": [[4197, "inv_shoulder_05", 3], [6742, "inv_belt_35", 3], [6725, "inv_shield_10", 3]]}
+        q = foreverchanges_quests.quest_row(row)
+        self.assertEqual((q["rewards"], q["choices"]), ([274084], [4197, 6742, 6725]))
 
 
 class ListedMaps(unittest.TestCase):
@@ -119,6 +129,55 @@ class Write(unittest.TestCase):
     def test_without_the_list_nothing_changes(self):
         zones = {"12": {"name": "Elwynn Forest", "quests": [{"id": 8, "name": "Kept", "level": 2, "reqlevel": 1, "side": 1}]}}
         self.assertIn('[8] = { "Kept", 2, 1, 1, 0, 0, nil, nil, nil, nil }', self.write(zones, {}, None))
+
+
+class BiSQuests(unittest.TestCase):
+    ROW = {"level": 30, "reqlevel": 25, "side": 1, "reqclass": 0, "category": ["zone", 45],
+           "rewards": [], "choices": []}
+
+    def test_quests_that_reward_a_ranked_item(self):
+        listed = {"quests": {
+            "682": dict(self.ROW, name="Stromgarde Badges", rewards=[4741], choices=[4741, 270056, 270057]),
+            "5061": dict(self.ROW, name="Aquatic Form", rewards=[16608, 263411]),
+            "9": dict(self.ROW, name="The Killing Fields", choices=[3578, 1561, 276695])}}
+        quests = bis_quests.rewarding(listed, {270057, 270056, 263411, 99})
+        self.assertEqual({q: (given, choice) for q, (_, given, choice) in quests.items()},
+                         {682: ([270056, 270057], True), 5061: ([263411], False)})
+
+    def test_the_lists_giver_before_wowheads_page(self):
+        quests = {
+            682: (dict(self.ROW, name="Stromgarde Badges"), [270056], True),
+            # Filed under no zone: a giver ForeverChanges puts on Dun Morogh's map inside the city
+            # goes on Ironforge's.
+            1709: (dict(self.ROW, name="Klockmort's Creation", reqclass=1, category=["sort", 81]), [6974], False),
+            # Stormwind is redrawn: Wowhead's page names the giver, with no spot on the map.
+            1782: (dict(self.ROW, name="Furen's Armor", reqclass=1, category=["sort", 81]), [6973], False),
+            95140: (dict(self.ROW, name="Old Fire-Eye", side=2, reqclass=2), [267369], False),
+        }
+        starts = {"682": [[1417, 45.8, 47.6, "Captain Nials"]], "1709": [[1426, 63.1, 23, "Klockmort Spannerspan"]],
+                  "1782": [[1453, 64.6, 37.2, "Furen Longbeard"]], "95140": []}
+        pages = {"quest=682": {"start": {"zone": 45, "zoneName": "Arathi Highlands", "coord": [46, 47],
+                                         "npc": "Captain Nials"}, "shareable": True},
+                 "quest=1782": {"start": {"zone": 1519, "zoneName": "Stormwind City", "coord": [58, 16.8],
+                                          "npc": "Furen Longbeard"}, "shareable": True}}
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder) / "BiSQuests.lua"
+            with mock.patch.object(bis_quests, "OUT", out):
+                bis_quests.write(quests, starts, pages, {95140: 16},
+                                 {1417: "Arathi Highlands", 1455: "Ironforge", 1426: "Dun Morogh"})
+            text = out.read_text()
+        self.assertIn('{ 682, "Stromgarde Badges", 30, "A", true, "Arathi Highlands - Captain Nials (45.8, 47.6)", '
+                      '1417, 45.8, 47.6 },', text)
+        self.assertIn('{ 1709, "Klockmort\'s Creation", 30, "A", true, "Ironforge - Klockmort Spannerspan (74.9, 11.9)", '
+                      '1455, 74.9, 11.9, class = "WARRIOR" },', text)
+        self.assertIn('{ 1782, "Furen\'s Armor", 30, "A", true, "Stormwind City - Furen Longbeard (58, 16.8)", '
+                      'class = "WARRIOR" },', text)
+        self.assertIn('{ 95140, "Old Fire-Eye", 30, "H", true, "Where it starts is not known yet (Undead only)", '
+                      'class = "PALADIN", races = 16 },', text)
+        self.assertIn("[682] = { 270056 },", text)
+        self.assertIn("J.BiSQuestChoices = {\n    [682] = true,\n}", text)
+        self.assertIn('[1709] = "Ironforge",', text)
+        self.assertNotIn("[95140] = \"", text)
 
 
 class Report(unittest.TestCase):

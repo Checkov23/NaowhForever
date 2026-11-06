@@ -1,17 +1,20 @@
 """Build NaowhForever_DungeonJournal/Data/BiSQuests.lua: every quest that rewards an item a BiS ranking lists,
 for the BiS List's Quests page, as the Dungeon Journal's quest records.
 
-From Wowhead's Forever pages: each ranked item's "Reward from" quests (its level, the level
-it needs, its side, class and races, and whether the item is a choice), cached in
-bis_quests.json; then each of those quests' page for where it starts (its quest giver on the
-map, or the item that starts it) and whether it can be shared, cached in bis_quest_pages.json.
-Delete an entry to fetch it again. Every ranked item is looked up, not only the ones whose
-source says Quest: a source names one way to get an item, and a drop wins over a quest.
+Which quests reward a ranked item, and whether it is one to choose, come from ForeverChanges' quest
+list (foreverchanges_quests.json, from Tools/build/foreverchanges_quests.py), with each quest's name,
+levels, side and class. Every ranked item is looked up, not only the ones whose source says Quest: a
+source names one way to get an item, and a drop wins over a quest. A quest starts at its giver there,
+on Forever's own maps, picked as Tools/build/completo_quests.py picks it; without one, where its
+Wowhead Forever page maps its quest giver, or the item that starts it. That page also says whether
+the quest can be shared; pages are cached in bis_quest_pages.json (delete an entry to fetch it
+again), and --offline reads none. A quest's races are the ones Wowhead's item pages gave it, as
+bis_quests.json kept them (those pages are no longer read), else quest_entity_catalog.json's.
 
-Run Tools/build/quest_chains.py after it: it reads this file's quests too, for their chains,
-what to do first and the level they need.
+Run Tools/build/foreverchanges_quests.py before it, and Tools/build/quest_chains.py after it: that
+reads this file's quests too, for their chains, what to do first and the level they need.
 
-Usage: python Tools/build/bis_quests.py
+Usage: python Tools/build/bis_quests.py [--offline]
 """
 import json
 import re
@@ -22,13 +25,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402
-from bis_data import WOWHEAD, current_specs, fetch, listview, lua_string  # noqa: E402
+from bis_data import WOWHEAD, current_specs, fetch, lua_string  # noqa: E402
+from completo_quests import listed_spot  # noqa: E402
 from quest_chains import REDRAWN, ZONE_MAP  # noqa: E402
 
 ROOT = paths.ROOT
 OUT = ROOT / "NaowhForever_DungeonJournal" / "Data" / "BiSQuests.lua"
+LISTED = paths.DATA / "foreverchanges_quests.json"
 ITEMS = paths.DATA / "bis_quests.json"
 PAGES = paths.DATA / "bis_quest_pages.json"
+CATALOG = paths.DATA / "quest_entity_catalog.json"
+JOURNAL = paths.DATA / "journal_cache.json"   # its "zones": Wowhead's zone names
 
 SIDES = {1: "A", 2: "H"}
 CLASSES = {1: "WARRIOR", 2: "PALADIN", 4: "HUNTER", 8: "ROGUE", 16: "PRIEST", 64: "SHAMAN", 128: "MAGE",
@@ -58,22 +65,14 @@ def save(path, data):
     path.write_text(json.dumps(data, indent=1, sort_keys=True), encoding="utf-8")
 
 
-def rewarded_by(item_id):
-    """The quests that reward the item: [{id, name, level, reqlevel, side, reqclass, reqrace, choice}]."""
-    try:
-        page = fetch(f"{WOWHEAD}/item={item_id}")
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return []
-        raise
-    time.sleep(1)
-    out = []
-    for row in listview(page, "reward-from-q") or []:
-        given = [r[0] for r in row.get("itemrewards") or []]
-        out.append({"id": row["id"], "name": row.get("name", ""), "level": row.get("level") or 0,
-                    "reqlevel": row.get("reqlevel") or 0, "side": row.get("side") or 3,
-                    "reqclass": row.get("reqclass") or 0, "reqrace": row.get("reqrace") or 0,
-                    "choice": item_id not in given})
+def rewarding(listed, ranked):
+    """questID -> (its row in the list, the ranked items it rewards, whether those are a choice among
+    its rewards), for every quest the list has that rewards a ranked item."""
+    out = {}
+    for key, q in listed["quests"].items():
+        given = sorted(ranked.intersection(q["rewards"] + q["choices"]))
+        if given:
+            out[int(key)] = (q, given, bool(ranked.intersection(q["choices"])))
     return out
 
 
@@ -100,59 +99,34 @@ def bits(mask, names):
     return [name for bit, name in names.items() if mask & bit]
 
 
-def main():
-    items, pages = load(ITEMS), load(PAGES)
-    ranked = sorted({i for slots in current_specs().values() for ids in slots.values() for i in ids})
-    failed = []
-    for item_id in ranked:
-        key = f"item={item_id}"
-        if key in items:
-            continue
-        try:
-            items[key] = rewarded_by(item_id)
-        except urllib.error.HTTPError as e:
-            failed.append(f"{key}: {e}")
-            continue
-        save(ITEMS, items)
-
-    quests, rewards, choices = {}, {}, set()
-    for key, rows in items.items():
-        item_id = int(key.split("=")[1])
-        if item_id not in ranked:
-            continue
-        for row in rows:
-            quests.setdefault(row["id"], row)
-            if item_id not in rewards.setdefault(row["id"], []):
-                rewards[row["id"]].append(item_id)
-            if row["choice"]:
-                choices.add(row["id"])
-
-    for quest_id in sorted(quests):
-        key = f"quest={quest_id}"
-        if key in pages:
-            continue
-        try:
-            pages[key] = quest_page(quest_id)
-        except (urllib.error.HTTPError, ValueError) as e:
-            failed.append(f"{key}: {e}")
-            continue
-        save(PAGES, pages)
-
+def write(quests, starts, pages, races, zone_names):
+    """quests as rewarding gives them; starts, the list's givers by questID; pages, the Wowhead
+    pages; races, questID -> its race mask; zone_names, uiMapID -> its zone's name."""
     records, zones = [], {}
-    for quest_id, q in quests.items():
+    for quest_id, (q, _, _) in quests.items():
         page = pages.get(f"quest={quest_id}") or {}
         start = page.get("start")
         classes = bits(q["reqclass"], CLASSES)
         limits = []
         if len(classes) > 1:
             limits.append(", ".join(c.capitalize() for c in classes) + " only")
-        races = race_limit(q["reqrace"], q["side"])
-        if races:
-            limits.append(races)
+        reqrace = races.get(quest_id, 0)
+        limit = race_limit(reqrace, q["side"])
+        if limit:
+            limits.append(limit)
+        category = q["category"]
+        given = listed_spot(starts.get(str(quest_id)),
+                            ZONE_MAP.get(category[1]) if category and category[0] == "zone" else None)
         spot = None
         if start and len(start["coord"]) != 2:
             start = None   # a page that maps its quest giver with half a spot
-        if start:
+        if given:
+            map_id, x, y, giver = given
+            x, y = round(x, 1), round(y, 1)
+            where = f"{zone_names[map_id]} - {giver} ({x:g}, {y:g})"
+            spot = (map_id, x, y)
+            zones[quest_id] = zone_names[map_id]
+        elif start:
             x, y = start["coord"]
             where = f"{start['zoneName']} - {start['npc']} ({x:g}, {y:g})"
             map_id = ZONE_MAP.get(start["zone"])
@@ -166,7 +140,7 @@ def main():
         if limits:
             where += " (" + "; ".join(limits) + ")"
         records.append((q["level"] or q["reqlevel"], quest_id, q, page.get("shareable"), where, spot,
-                        classes[0] if len(classes) == 1 else None, q["reqrace"] if races else None))
+                        classes[0] if len(classes) == 1 else None, reqrace if limit else None))
     records.sort(key=lambda r: (r[0], r[1]))
 
     # BiSQuestData.quests: Data/Quests.lua's records, { questID, name, level, side, shareable,
@@ -181,25 +155,25 @@ def main():
         "",
         "J.BiSQuestData = { quests = {",
     ]
-    for level, quest_id, q, shareable, where, spot, cls, races in records:
+    for level, quest_id, q, shareable, where, spot, cls, reqrace in records:
         fields = [str(quest_id), lua_string(q["name"]), str(level), f'"{SIDES.get(q["side"], "B")}"',
                   "false" if shareable is False else "true", lua_string(where)]
         if spot:
             fields += [str(spot[0]), f"{spot[1]:g}", f"{spot[2]:g}"]
         if cls:
             fields.append(f'class = "{cls}"')
-        if races:
-            fields.append(f"races = {races}")
+        if reqrace:
+            fields.append(f"races = {reqrace}")
         lines.append("    { " + ", ".join(fields) + " },")
     lines.append("} }")
     lines.append("")
     lines.append("J.BiSQuestRewards = {")
-    for quest_id in sorted(rewards):
-        lines.append(f"    [{quest_id}] = {{ {', '.join(str(i) for i in sorted(rewards[quest_id]))} }},")
+    for quest_id in sorted(quests):
+        lines.append(f"    [{quest_id}] = {{ {', '.join(str(i) for i in quests[quest_id][1])} }},")
     lines.append("}")
     lines.append("")
     lines.append("J.BiSQuestChoices = {")
-    for quest_id in sorted(choices):
+    for quest_id in sorted(q for q, (_, _, choice) in quests.items() if choice):
         lines.append(f"    [{quest_id}] = true,")
     lines.append("}")
     lines.append("")
@@ -210,7 +184,31 @@ def main():
     text = "\r\n".join(lines) + "\r\n"
     text.encode("ascii")
     OUT.write_text(text, encoding="utf-8", newline="")
-    print(f"{len(ranked)} ranked items, {len(records)} quests reward {sum(len(r) for r in rewards.values())} of them,"
+    return zones
+
+
+def main():
+    offline = "--offline" in sys.argv
+    ranked = {i for slots in current_specs().values() for ids in slots.values() for i in ids}
+    listed, pages = load(LISTED), load(PAGES)
+    quests = rewarding(listed, ranked)
+    failed = []
+    for quest_id in [] if offline else sorted(quests):
+        key = f"quest={quest_id}"
+        if key in pages:
+            continue
+        try:
+            pages[key] = quest_page(quest_id)
+        except (urllib.error.HTTPError, ValueError) as e:
+            failed.append(f"{key}: {e}")
+            continue
+        save(PAGES, pages)
+
+    races = {int(k): q["reqrace"] for k, q in load(CATALOG).items()}
+    races.update({row["id"]: row["reqrace"] for rows in load(ITEMS).values() for row in rows})
+    zone_names = {ZONE_MAP[int(a)]: z[0] for a, z in load(JOURNAL)["zones"].items() if int(a) in ZONE_MAP}
+    zones = write(quests, listed["starts"], pages, races, zone_names)
+    print(f"{len(ranked)} ranked items, {len(quests)} quests reward {sum(len(q[1]) for q in quests.values())} of them,"
           f" {len(zones)} with a start -> {OUT.name}", file=sys.stderr)
     if failed:
         print(f"{len(failed)} could not be read; run again to retry:", file=sys.stderr)
