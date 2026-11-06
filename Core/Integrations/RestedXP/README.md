@@ -260,18 +260,12 @@ Core/Integrations/RestedXP/
   its icon is bigger by the bonus twice, as its text is bigger by it once; the column, the drop of the text
   and the row follow the icon's size of that row.
 - RestedXP keeps its settings by profile, which is a character's own unless the player shares one, so a
-  character it has not met has its defaults: the V2 interface off, which the window needs, and its own
-  theme. Set Up New Characters (off to start, the first thing in the window's (V2) fold) sets, the
-  first login of a character, `enableBetaFeatures`, `enableV2Interface` and the Naowh current theme in its
-  profile for what is wished for, and asks for a reload as the interface is read when RestedXP loads; what
-  the player changes after is theirs, as the characters done are kept (`rxpSetUp`, by GUID). The button
-  does it for the character played, seen or not. The Naowh themes are registered in RestedXP while the
-  window is on as well as with the theme (V1), so Set Up has the Naowh current theme to pick; one turned on
-  since the last load is registered by Set Up itself. A theme picked with RestedXP's live reload off waits
-  for a reload, so the button asks for one. RestedXP puts its waypoint arrow at the top of the screen
-  (`framePositions.arrowFrame`, by profile), and a character that is set up has an arrow that is still
-  there in the middle: in the profile, which is read at load, and on the frame, so that the position
-  RestedXP saves when the game closes is not the old one. One the player moved is left where it is.
+  character it has not met has the V2 interface off, which the window needs. The player turns it on in
+  RestedXP's own settings (Beta Features, then the V2 interface), which reload at once; the addon never
+  writes RestedXP's settings for them. A Set Up that did (the interface, the Naowh theme and the arrow's
+  place, then a reload prompt) was removed after a player's game froze on that reload; the `rxpSetup` and
+  `rxpSetUp` account keys it kept are no longer read. The Naowh themes are still registered while the
+  window is on, so one can be picked in RestedXP's theme list.
 - In the Forever skin (the addon is in it and the window's theme is the addon's, or the window's theme is Forever) the
   window is drawn in the skin's art where the client has it (`SkinParts`, `Skinned`): the bronze inset
   (`ForeverInset`) behind the step box with its border on and behind the window with its border on, in place

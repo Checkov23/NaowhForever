@@ -720,54 +720,25 @@ do
 end
 
 do
-    -- setting a character up: in the window's section (V2), when the window is wished for, off to start, and a
-    -- button for the one played
-    local function Cells(page)
-        local out = {}
-        for _, row in ipairs(page.rows) do
-            for _, cell in ipairs(row) do out[cell.text] = cell end
-        end
-        return out
-    end
-    local none = Cells(Page({}, true))
-    Check(none["Set Up New Characters"] == nil and none["This Character"] == nil,
-        "nothing wished for: no row of it")
-    local themed = Page({ rxpThemes = true }, true)
-    Check(Cells(themed)["Set Up New Characters"] == nil and Cells(themed)["This Character"] == nil,
-        "the theme (V1) wished for: none, it is the window's (V2)")
+    -- the window's section (V2): what it needs first, then its sliders, and nothing that sets RestedXP up for the player
     local s = Page({ rxpWindow = true }, true)
-    local cells = Cells(s)
-    local toggle, button = cells["Set Up New Characters"], cells["This Character"]
-    Check(toggle and toggle.type == "toggle" and toggle.getValue() == false, "with the window wished for: a switch, off to start")
-    local function Position(page, name)
+    local function Position(name)
         local at = 0
-        for _, row in ipairs(page.rows) do
+        for _, row in ipairs(s.rows) do
             for _, cell in ipairs(row) do
                 at = at + 1
                 if cell.text == name then return at end
             end
         end
     end
-    local switch, set, note = Position(s, "RestedXP Naowh Window (V2)"), Position(s, "Set Up New Characters"),
-        Position(s, "Turn on RestedXP's Beta Features and V2 interface.")
-    local steps, scale = Position(s, "Listed Steps"), Position(s, "Naowh Window Scale")
-    Check(switch and set and note and steps and scale and switch < set and set < note and note < steps
-        and steps < scale, "in the window's section it is the first thing: before what it needs and its sliders")
-    Check(Position(s, "This Character") == set + 1, "and the button for the character played is beside it")
+    local switch, note = Position("RestedXP Naowh Window (V2)"), Position("Turn on RestedXP's Beta Features and V2 interface.")
+    local steps, scale = Position("Listed Steps"), Position("Naowh Window Scale")
+    Check(switch and note and steps and scale and switch < note and note < steps and steps < scale,
+        "in the window's section what it needs comes first, then its sliders")
+    Check(Position("Set Up New Characters") == nil and Position("This Character") == nil,
+        "and no row turns RestedXP's interface on for the player")
     Check(("," .. table.concat(s.headers, ",") .. ","):find(",RESTEDXP,", 1, true) == nil,
         "and there is no section of shared rows for it")
-    Check(button and button.type == "button" and button.buttonText == "Set Up", "and a button for the character played")
-    toggle.setValue(true)
-    Check(s.account.rxpSetup == true and toggle.getValue() == true, "turned on, it is kept")
-    toggle.setValue(false)
-    Check(s.account.rxpSetup == nil, "and the default is not")
-    local refreshed = s.refreshes
-    s.ns.RXPSetUpCharacter = function() return "reload" end
-    button.onClick()
-    Check(s.refreshes == refreshed + 1, "the button draws the page again with its reload note")
-    s.ns.RXPSetUpCharacter = function() return nil end
-    button.onClick()
-    Check(s.refreshes == refreshed + 2, "and when nothing needed a reload")
 end
 
 do
@@ -878,9 +849,8 @@ do
         and theme["Style RestedXP's Arrow"] == "RestedXP Theme (V1)", "V1's switch and rows, under its title")
     Check(theme["RestedXP Naowh Window (V2)"] == "RestedXP Naowh Window (V2)", "and V2's switch, under its own")
     local window = Terms({ rxpWindow = true })
-    Check(window["Listed Steps"] == "RestedXP Naowh Window (V2)" and window["Set Up New Characters"]
-        == "RestedXP Naowh Window (V2)" and window["Title Color"] == nil and window["Window Look"] ~= nil,
-        "V2's rows, the set up and the look, under its title, and no colors with a theme")
+    Check(window["Listed Steps"] == "RestedXP Naowh Window (V2)" and window["Title Color"] == nil
+        and window["Window Look"] ~= nil, "V2's rows and the look, under its title, and no colors with a theme")
     Check(Terms({ rxpWindow = true, rxpWindowTheme = "custom" })["Title Color"] == "WINDOW LOOK",
         "and the colors with Custom, in the look's group")
     local none = Terms({})

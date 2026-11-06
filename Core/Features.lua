@@ -270,7 +270,6 @@ ns.FEATURES = {
         gameMenuButton = true,
         rxpThemes = false,
         rxpWindow = false,
-        rxpSetup = false,
         rxpArrowOn = false,
     },
 }
