@@ -194,7 +194,8 @@ python Tools/build/journeys_quests.py --offline
 fields. The Quest List builder supplements its reviewed zone/dungeon/class records from
 this catalog without replacing existing quest names, levels or race/class restrictions, except
 that a class, level or side the catalog and ForeverChanges both give replaces one they disagree
-with. It first uses a supported source zone category, then a single supported starter zone.
+with, unless it is what both write for a value they lack (side 3, level 0). It first uses a
+supported source zone category, then a single supported starter zone.
 Records without a supported zone stay searchable in Unsorted Quests, a list group with map
 ID 0; no waypoint is assigned to that group. A single unphased, unambiguous starter can
 supply a quest-giver position. Repeatable flags are retained. Existing source page caches
@@ -310,7 +311,7 @@ are not included. Classic baseline values remain unverified for Forever.
 
 | Tool | What it does | Why |
 | --- | --- | --- |
-| `completo_quests.py` | Builds `NaowhForever_DiscoveryData/Quests.lua`: every quest of every zone, its chain and where its quest giver stands, from Wowhead Forever's zone and quest pages. Cached in `data/completo_zones.json`, `data/completo_quests.json`, `data/completo_requires.json` and `data/completo_items.json`; `--offline` writes from the caches only. `data/completo_fixes.json` corrects what the sources get wrong; a fix naming a quest the data lacks is skipped with a warning, so the build still runs. | A zone's quests and what to do first. |
+| `completo_quests.py` | Builds `NaowhForever_DiscoveryData/Quests.lua`: every quest of every zone, its chain and where its quest giver stands, from Wowhead Forever's zone and quest pages. Cached in `data/completo_zones.json`, `data/completo_quests.json`, `data/completo_requires.json` and `data/completo_items.json`; `--offline` writes from the caches only; `--report FILE` adds the values taken where ForeverChanges and the catalog agree that the data did not have yet, for the daily watch. `data/completo_fixes.json` corrects what the sources get wrong; a fix naming a quest the data lacks is skipped with a warning, so the build still runs. | A zone's quests and what to do first. |
 | `foreverchanges_quests.py` | Builds `data/foreverchanges_quests.json`, which `completo_quests.py` reads: every quest ForeverChanges lists for Forever (`/quests/list.json`, read every run) and its givers' spots on Forever's maps (each quest's page, read once, one a second). `--offline` reads nothing; `--report FILE` writes the quests the list gained, lost and changed, for the daily watch. | Which quests Forever gives, and where their givers stand. |
 | `elsewhere_quests.py` | Builds `data/completo_elsewhere.json`, which `completo_quests.py` reads: the class, dungeon and battleground quests no zone page lists, from CMaNGOS's quests that Forever's client has, placed from Wowhead's quest pages or, failing those, where the game client puts the giver's spawn (`dev/QuestPositions/`, kept in `data/completo_positions.json`). `--offline` fetches nothing; `--positions` writes the spawns for the dev addon to resolve; `--resolved <file>` reads its answers. | The quests Wowhead files under a class or an instance, on the map too. |
 | `completo_rares.py` | Builds `NaowhForever_DiscoveryData/Rares.lua`: every rare of every zone, where it spawns and its special drops. Cached in `data/completo_rares.json`; `--offline` writes from the caches only. | The rares worth hunting, on the map. |
@@ -417,7 +418,9 @@ are not included. Classic baseline values remain unverified for Forever.
     player's score moves), and the report gets a "Naowh Score" section (old against new, the
     fit's quality, its gates). A manual run reports it too; a failed fit only says so.
   - `quests`: `build/foreverchanges_quests.py --report`. If ForeverChanges' quest list gained,
-    lost or changed a quest, it rebuilds the Quest List with `build/completo_quests.py --offline`.
+    lost or changed a quest, it rebuilds the Quest List with `build/completo_quests.py --offline`,
+    whose report names each class, level or side it newly takes where ForeverChanges and the
+    catalog agree.
   - `loot`: `sources/wowsrc.py --check`. If wowsrc's loot pages changed (a boss gained or lost
     items, a new boss or page), it rebuilds the Journal with `build/journal.py --offline`.
   - `drops`: `build/journal.py --refresh-drops`. Every boss's and chest's drops read again from

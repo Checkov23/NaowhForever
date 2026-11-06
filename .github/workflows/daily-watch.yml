@@ -193,7 +193,7 @@ jobs:
         run: |
           git reset -q --hard HEAD && git clean -fdq -- Tools NaowhForever_DungeonJournal NaowhForever_BiS Shared
           python Tools/build/foreverchanges_quests.py --report "$RUNNER_TEMP/quests.md" > "$RUNNER_TEMP/quests-build.txt" 2>&1
-          python Tools/build/completo_quests.py --offline >> "$RUNNER_TEMP/quests-build.txt" 2>&1
+          python Tools/build/completo_quests.py --offline --report "$RUNNER_TEMP/quests.md" >> "$RUNNER_TEMP/quests-build.txt" 2>&1
           cat "$RUNNER_TEMP/quests.md" >> "$GITHUB_STEP_SUMMARY"
           if git diff --quiet -- NaowhForever_DiscoveryData; then
             echo "changes=false" >> "$GITHUB_OUTPUT"

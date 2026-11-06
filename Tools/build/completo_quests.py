@@ -17,7 +17,9 @@ Which quests Forever gives, and where their givers stand, come from foreverchang
 nothing above has is added, a quest goes in the zone it files it under, and its giver's spot comes
 before any other. Its class, levels and side replace a quest's where quest_entity_catalog.json has
 the same: Wowhead's zone pages give some class quests no class (Anthion's Parting Words) and old
-levels. Neither alone is taken, since each has its own slips.
+levels. Neither alone is taken, since each has its own slips, nor what both write for a value they
+lack (side 3, level 0, class 0): agreeing on that says nothing. --report FILE adds to FILE the values
+this takes that Quests.lua did not have yet, for the daily watch (.github/workflows/daily-watch.yml).
 
 Answers are cached, so a run that dies on Wowhead's rate limit resumes where it stopped:
 completo_zones.json (each zone's quest rows) and completo_quests.json (each quest's
@@ -27,7 +29,7 @@ completo_fixes.json, kept by hand, corrects what the sources get wrong and adds 
 breadcrumbs, the quests of which you take one, the profession a quest needs and the camp recipe it
 teaches), each with what shows it.
 
-Usage: python Tools/build/completo_quests.py [--offline]
+Usage: python Tools/build/completo_quests.py [--offline] [--report FILE]
 """
 import html
 import json
@@ -55,6 +57,7 @@ LISTED = paths.DATA / "foreverchanges_quests.json"
 FIXES = paths.DATA / "completo_fixes.json"
 # Wowhead answers 403 after ~125 pages at 1.5s apart; 5s ran clean.
 GAP = 4
+REPORT_ROWS = 50   # values named in the report; the rest are counted
 
 
 def load(path):
@@ -401,6 +404,7 @@ def chains_of(quests, before, known):
 
 def main():
     offline = "--offline" in sys.argv
+    report_to = sys.argv[sys.argv.index("--report") + 1] if "--report" in sys.argv else None
     zones, quests, failed = load(ZONES), load(QUESTS), []
 
     for area in ZONE_MAP:
@@ -485,8 +489,12 @@ def main():
             save(ITEMS, items)
             time.sleep(GAP)
 
-    write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}), load(CATALOG),
-          load(LISTED), load(FIXES))
+    before = shipped(OUT)
+    taken = write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}),
+                  load(CATALOG), load(LISTED), load(FIXES))
+    if report_to:
+        with open(report_to, "a", encoding="utf-8") as f:
+            f.write(taken_report(taken, before))
     for line in failed:
         print("FAILED", line, file=sys.stderr)
 
@@ -526,22 +534,50 @@ def listed_spot(starts, zone_map):
     return min(spots, key=lambda s: s[0] != zone_map) if spots else None
 
 
-AGREED = ("reqclass", "reqlevel", "level", "side")
+# Each field taken where the two agree, with what both write for one they lack (ForeverChanges' side
+# for one not "a" or "h", the catalog's for a quest with no race mask), so agreeing on it says nothing.
+AGREED = {"reqclass": 0, "reqlevel": 0, "level": 0, "side": 3}
 
 
 def agreed(q, listed, catalog):
-    """The quest with ForeverChanges' class, levels and side wherever the catalog says the same."""
-    theirs, other = listed.get(str(q["id"])), catalog.get(str(q["id"]))
+    """The quest with ForeverChanges' class, levels and side wherever the catalog says the same, and
+    that is not what both write for a value they lack."""
+    theirs, other = listed["quests"].get(str(q["id"])), catalog.get(str(q["id"]))
     if not theirs or not other:
         return q
-    changed = {k: theirs[k] for k in AGREED if theirs.get(k) is not None and theirs[k] == other.get(k) != q.get(k)}
+    changed = {k: theirs[k] for k, missing in AGREED.items()
+               if theirs.get(k) not in (None, missing) and theirs[k] == other.get(k) != q.get(k)}
     return dict(q, **changed) if changed else q
+
+
+def shipped(path):
+    """{ questID: { level, reqlevel, side, reqclass } } as Quests.lua at path has them."""
+    row = re.compile(r'^    \[(\d+)\] = \{ "(?:[^"\\]|\\.)*", (\d+), (\d+), (\d+), \d+, (\d+),', re.M)
+    text = path.read_text(encoding="ascii") if path.exists() else ""
+    return {int(m.group(1)): dict(zip(("level", "reqlevel", "side", "reqclass"), map(int, m.groups()[1:])))
+            for m in row.finditer(text)}
+
+
+def taken_report(taken, before):
+    """The values taken where ForeverChanges and the catalog agree that Quests.lua did not have yet,
+    in Markdown, for the daily watch."""
+    new = [(qid, name, k, (before.get(qid) or {}).get(k, ours), v) for qid, name, k, ours, v in taken
+           if (before.get(qid) or {}).get(k) != v]
+    lines = ["", "### Where ForeverChanges and the catalog agree", "",
+             f"{len(taken)} values are theirs instead of ours, {len(new)} of them new."]
+    if new:
+        lines.append("")
+        lines += [f"- {name} ({qid}): {k} {was} to {v}" for qid, name, k, was, v in new[:REPORT_ROWS]]
+        if len(new) > REPORT_ROWS:
+            lines.append(f"- and {len(new) - REPORT_ROWS} more")
+    return "\n".join(lines) + "\n"
 
 
 def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, listed=None, fixes=None):
     catalog = catalog or {}
     listed = listed or {}
     fixes = fixes or {}
+    taken = []
     zones = {k: {**z, "quests": list(z["quests"])} for k, z in zones.items()}
     for z in zones.values():
         z["quests"] = [q for q in z["quests"] if not PLACEHOLDER.search(q["name"])]
@@ -587,7 +623,10 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, list
             existing.add(qid)
         spots = {q: d for q, d in spots.items() if str(q) in listed["quests"]}
         for z in zones.values():
-            z["quests"] = [agreed(q, listed["quests"], catalog) for q in z["quests"]]
+            theirs = [agreed(q, listed, catalog) for q in z["quests"]]
+            taken += [(q["id"], q["name"], k, q.get(k), t[k]) for q, t in zip(z["quests"], theirs)
+                      for k in AGREED if t.get(k) != q.get(k)]
+            z["quests"] = theirs
     rows = {q["id"]: (int(area), q) for area, z in zones.items() for q in z["quests"]}
     before = prerequisites(quests, requires, rows)
     before, requires = corrected(before, requires, fixes.get("requires", {}), rows)
@@ -732,6 +771,7 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, list
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_bytes(("\r\n".join(lines) + "\r\n").encode("ascii", "replace"))
     print(f"wrote {OUT.relative_to(ROOT)}: {len(rows)} quests, {len(chains)} chains")
+    return taken
 
 
 if __name__ == "__main__":

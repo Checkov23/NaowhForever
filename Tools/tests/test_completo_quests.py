@@ -2,10 +2,13 @@
 a quest's add joins the quests before it, its drop leaves them and its explicit groups, a fix naming
 a quest the data lacks is skipped with a warning, an add or drop that changes nothing is warned of,
 and a key starting with _ is a note; how it mends the race masks: a quest for both sides that names
-only the High Order Skyborne is both Skyborne's, and other masks stay as given; and the gating it
-writes: the camping quests of one name and the hand-kept groups are exclusive, a quest in one group at
-most, and the breadcrumbs, professions and camp recipes come from the fixes, an entry naming a quest
-the data lacks skipped with a warning. Offline. From the repo root:
+only the High Order Skyborne is both Skyborne's, and other masks stay as given; where ForeverChanges
+and the catalog agree: a class, level or side both give is taken, one alone is not, nor what both
+write for a value they lack (side 3, level 0), and the build takes them for the quests ForeverChanges
+lists, in the zone it files them under, before it writes their rows, reporting the ones Quests.lua did
+not have yet; and the gating it writes: the camping quests of one name and the hand-kept groups are
+exclusive, a quest in one group at most, and the breadcrumbs, professions and camp recipes come from
+the fixes, an entry naming a quest the data lacks skipped with a warning. Offline. From the repo root:
 
     python -m unittest discover -s Tools/tests
 """
@@ -98,15 +101,61 @@ class Agreed(unittest.TestCase):
     OURS = {"id": 8316, "name": "Armaments of War", "level": 60, "reqlevel": 58, "side": 3, "reqclass": 0}
 
     def test_what_both_say_is_taken(self):
-        listed = {"8316": {"level": 60, "reqlevel": 58, "side": 3, "reqclass": 1}}
+        listed = {"quests": {"8316": {"level": 60, "reqlevel": 58, "side": 3, "reqclass": 1}}}
         catalog = {"8316": {"level": 60, "reqlevel": 58, "side": 3, "reqclass": 1}}
         self.assertEqual(completo_quests.agreed(self.OURS, listed, catalog), dict(self.OURS, reqclass=1))
 
     def test_one_source_alone_is_not(self):
-        listed = {"8316": {"level": 59, "reqlevel": 50, "side": 3, "reqclass": 1}}
+        listed = {"quests": {"8316": {"level": 59, "reqlevel": 50, "side": 3, "reqclass": 1}}}
         catalog = {"8316": {"level": 60, "reqlevel": 55, "side": 3, "reqclass": 0}}
         self.assertEqual(completo_quests.agreed(self.OURS, listed, catalog), self.OURS)
         self.assertEqual(completo_quests.agreed(self.OURS, listed, {}), self.OURS)
+
+    def test_what_both_write_for_a_missing_value_is_not(self):
+        # Crocs of the Sky: the Alliance's giver, no race mask, so both sources say both sides.
+        ours = {"id": 98072, "name": "Crocs of the Sky", "level": 27, "reqlevel": 19, "side": 1, "reqclass": 4}
+        missing = {"level": 0, "reqlevel": 0, "side": 3, "reqclass": 0}
+        self.assertEqual(completo_quests.agreed(ours, {"quests": {"98072": missing}}, {"98072": missing}), ours)
+
+
+class AgreedWritten(unittest.TestCase):
+    def write(self):
+        quests = {
+            98072: {"name": "Crocs of the Sky", "level": 27, "reqlevel": 19, "side": 1, "reqclass": 0},
+            8316: {"name": "Armaments of War", "level": 60, "reqlevel": 58, "side": 3, "reqclass": 0},
+            1: {"name": "Not Listed", "level": 10, "reqlevel": 5, "side": 1, "reqclass": 0},
+        }
+        zones = {"11": {"name": "Wetlands", "quests": [dict(q, id=i) for i, q in quests.items()]},
+                 "40": {"name": "Westfall", "quests": []}}
+        listed = {"quests": {"98072": dict(quests[98072], side=3, category=["zone", 11]),
+                             "8316": dict(quests[8316], side=2, reqclass=1, category=["zone", 40])},
+                  "starts": {}}
+        catalog = {"98072": dict(quests[98072], side=3, zone=11, zone_name="Wetlands", start=None, repeatable=False),
+                   "8316": dict(quests[8316], side=2, reqclass=1, zone=11, zone_name="Wetlands", start=None,
+                                repeatable=False)}
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder) / "Quests.lua"
+            with mock.patch.object(completo_quests, "ROOT", Path(folder)), mock.patch.object(completo_quests, "OUT", out), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                taken = completo_quests.write(zones, {}, {}, {}, {}, {}, catalog, listed, {})
+            return taken, out.read_text(), completo_quests.shipped(out)
+
+    def test_taken_after_the_move_and_before_the_rows(self):
+        taken, text, rows = self.write()
+        self.assertIn('name = "Westfall", continent = 0, quests = { 8316 }', text)
+        self.assertIn('    [8316] = { "Armaments of War", 60, 58, 2, 0, 1,', text)
+        self.assertIn('    [98072] = { "Crocs of the Sky", 27, 19, 1, 0, 0,', text)
+        self.assertNotIn("Not Listed", text)
+        self.assertEqual(taken, [(8316, "Armaments of War", "reqclass", 0, 1), (8316, "Armaments of War", "side", 3, 2)])
+        self.assertEqual(rows[8316], {"level": 60, "reqlevel": 58, "side": 2, "reqclass": 1})
+
+    def test_report_names_what_is_new(self):
+        taken, _, rows = self.write()
+        self.assertIn("2 values are theirs instead of ours, 0 of them new.", completo_quests.taken_report(taken, rows))
+        before = {8316: dict(rows[8316], side=3)}
+        report = completo_quests.taken_report(taken, before)
+        self.assertIn("2 values are theirs instead of ours, 1 of them new.", report)
+        self.assertIn("- Armaments of War (8316): side 3 to 2", report)
 
 
 class Gating(unittest.TestCase):
