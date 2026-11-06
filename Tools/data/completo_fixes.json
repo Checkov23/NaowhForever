@@ -5,7 +5,8 @@
     "we may use: Wowhead Forever's quest pages, ForeverChanges' quest pages, or the game's tables.",
     "requires: per quest, add puts quests before it that the sources leave out, drop takes out ones",
     "they put there wrongly (a Series row lists side quests and lead-ins with the quest's own step).",
-    "exclusive: quests of which you take one; the camping quests of one name are such groups already.",
+    "exclusive: quests of which you take one; the camping quests of one name, and the quests of one name",
+    "the game counts as one (one completion bit, QuestV2's UniqueBitFlag), are such groups already.",
     "breadcrumbs: a quest that only sends you to another's giver, and the quest it leads to.",
     "professions: the skill line a quest needs (SkillLine), and for a Camping 101 quest the camp recipe",
     "it teaches (the spell in that skill line's SkillLineAbility), which closes it once known. Only a",
@@ -34,9 +35,7 @@
   },
   "exclusive": [
     {"quests": [324, 526], "why": "The Lost Ingots (from the Waterlogged Chest) and Lightforge Ingots (from Glorin Steelbrow) are one task: gather 5 Lightforge Ingots for Glorin (ForeverChanges)."},
-    {"quests": [94484, 94493], "why": "Unnerving Silence sends you to Elegael Thornpaw; A Sacrifice in Vain is her greeting to one who came another way ('Thank goodness our message got to Lotheluum. Wait, where are the rest of the reinforcements?'). Both are 'speak with Elegael Thornpaw' (ForeverChanges)."},
-    {"quests": [1516, 1519, 92466], "why": "Call of Earth's first step, one per starting area (Canaga Earthcaller in Durotar, Seer Ravenfeather in Mulgore, Windshaper Boro on Zephras Isle, ForeverChanges): each heads its own Series, 1516 then 1517 and 1518, 1519 then 1520 and 1521, 92466 then 92467 (Wowhead)."},
-    {"quests": [5401, 5405, 5503], "why": "Argent Dawn Commission, from Argent Officer Pureheart at Chillwind Camp, Argent Officer Garush at the Bulwark and Duke Nicholas Zverenhoff at Light's Hope Chapel: each names the other two in its exclusiveTo (quest_entity_catalog.json), so you take one."}
+    {"quests": [94484, 94493], "why": "Unnerving Silence sends you to Elegael Thornpaw; A Sacrifice in Vain is her greeting to one who came another way ('Thank goodness our message got to Lotheluum. Wait, where are the rest of the reinforcements?'). Both are 'speak with Elegael Thornpaw' (ForeverChanges)."}
   ],
   "breadcrumbs": {
     "96627": {"to": 95998, "why": "96627 ends at Sam Sarsaparilla, who gives 95998 (ForeverChanges' givers)."},

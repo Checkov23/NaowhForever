@@ -23,7 +23,9 @@ this takes that Quests.lua did not have yet, for the daily watch (.github/workfl
 
 Answers are cached, so a run that dies on Wowhead's rate limit resumes where it stopped:
 completo_zones.json (each zone's quest rows) and completo_quests.json (each quest's
-{ chain, start }). Delete an entry to fetch it again. --offline writes from the caches only.
+{ chain, start }). Delete an entry to fetch it again. quest_bits.json holds the game's completion
+bits that more than one quest shares (QuestV2's UniqueBitFlag, wago.BUILD), read again on every run
+that is not --offline. --offline writes from the caches only.
 
 completo_fixes.json, kept by hand, corrects what the sources get wrong and adds what they lack (the
 breadcrumbs, the quests of which you take one, the profession a quest needs and the camp recipe it
@@ -42,6 +44,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths  # noqa: E402
+import wago  # noqa: E402
 import wowhead  # noqa: E402
 from quest_chains import ZONE_MAP, parse, parse_start  # noqa: E402
 
@@ -55,6 +58,7 @@ ELSEWHERE = paths.DATA / "completo_elsewhere.json"
 CATALOG = paths.DATA / "quest_entity_catalog.json"
 LISTED = paths.DATA / "foreverchanges_quests.json"
 FIXES = paths.DATA / "completo_fixes.json"
+BITS = paths.DATA / "quest_bits.json"
 # Wowhead answers 403 after ~125 pages at 1.5s apart; 5s ran clean.
 GAP = 4
 REPORT_ROWS = 50   # values named in the report; the rest are counted
@@ -299,16 +303,34 @@ def known_quests(qids, known, where):
 CAMPING = ["sort", 666]
 
 
-def exclusive_groups(rows, listed, fixes):
-    """Groups of quests of which you take one: the camping quests of one name, each starting area's
-    version of The Great Outdoors, The Adventurer and each Camping 101, and completo_fixes.json's. The
-    addon keeps one group per quest, so a hand-kept group naming a quest already in one is skipped with
-    a warning."""
+def shared_bits(rows):
+    """{ bit: [questIDs] }: each completion bit (QuestV2's UniqueBitFlag) more than one quest has."""
+    by_bit = {}
+    for row in rows:
+        by_bit.setdefault(row["UniqueBitFlag"], []).append(int(row["ID"]))
+    return {bit: sorted(qids) for bit, qids in by_bit.items() if len(qids) > 1}
+
+
+def exclusive_groups(rows, listed, fixes, bits=None):
+    """Groups of quests of which you take one: the versions of one quest the game counts as one (quests
+    of one name sharing a completion bit: Divine Grace from each trainer, each side's Battle of Warsong
+    Gulch), the camping quests of one name, each starting area's version of The Great Outdoors, The
+    Adventurer and each Camping 101, and completo_fixes.json's. A bit's quests of different names are
+    not taken: The Last Element shares one with the orcs' first quest. The addon keeps one group per
+    quest, so a hand-kept group naming a quest already in one is skipped with a warning."""
+    groups = []
+    for qids in (bits or {}).values():
+        named = {}
+        for qid in qids:
+            if qid in rows:
+                named.setdefault(rows[qid][1]["name"], []).append(qid)
+        groups += [sorted(g) for g in named.values() if len(g) > 1]
+    grouped = {q for g in groups for q in g}
     named = {}
     for qid, (_, q) in rows.items():
-        if ((listed.get("quests") or {}).get(str(qid)) or {}).get("category") == CAMPING:
+        if qid not in grouped and ((listed.get("quests") or {}).get(str(qid)) or {}).get("category") == CAMPING:
             named.setdefault(q["name"], []).append(qid)
-    groups = [sorted(g) for g in named.values() if len(g) > 1]
+    groups += [sorted(g) for g in named.values() if len(g) > 1]
     grouped = {q for g in groups for q in g}
     for group in fixes:
         quests = sorted(group["quests"])
@@ -488,10 +510,11 @@ def main():
                 continue
             save(ITEMS, items)
             time.sleep(GAP)
+        save(BITS, shared_bits(wago.table("QuestV2")))
 
     before = shipped(OUT)
     taken = write(zones, quests, requires, items, load(DUNGEON).get("quests", {}), load(ELSEWHERE).get("quests", {}),
-                  load(CATALOG), load(LISTED), load(FIXES))
+                  load(CATALOG), load(LISTED), load(FIXES), load(BITS))
     if report_to:
         with open(report_to, "a", encoding="utf-8") as f:
             f.write(taken_report(taken, before))
@@ -573,7 +596,7 @@ def taken_report(taken, before):
     return "\n".join(lines) + "\n"
 
 
-def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, listed=None, fixes=None):
+def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, listed=None, fixes=None, bits=None):
     catalog = catalog or {}
     listed = listed or {}
     fixes = fixes or {}
@@ -741,7 +764,7 @@ def write(zones, quests, requires, items, dungeon, elsewhere, catalog=None, list
         "",
         "D.Exclusive = {",
     ]
-    for group in exclusive_groups(rows, listed, fixes.get("exclusive", [])):
+    for group in exclusive_groups(rows, listed, fixes.get("exclusive", []), bits):
         lines.append("    { " + ", ".join(map(str, group)) + " },")
     lines += [
         "}",

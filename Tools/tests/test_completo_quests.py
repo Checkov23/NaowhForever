@@ -7,8 +7,8 @@ and the catalog agree: a class, level or side both give is taken, one alone is n
 write for a value they lack (side 3, level 0), and the build takes them for the quests ForeverChanges
 lists, in the zone it files them under, before it writes their rows, reporting the ones Quests.lua did
 not have yet; a quest ForeverChanges does not list kept when the fixes name it, warned of once it lists
-it; and the gating it writes: the camping quests of one name and the hand-kept groups are
-exclusive, a quest in one group at most, and the breadcrumbs, professions and camp recipes come from
+it; and the gating it writes: a quest's versions the game counts as one (one name, one completion
+bit), the camping quests of one name and the hand-kept groups are exclusive, a quest in one group at most, and the breadcrumbs, professions and camp recipes come from
 the fixes, an entry naming a quest the data lacks skipped with a warning. Offline. From the repo root:
 
     python -m unittest discover -s Tools/tests
@@ -201,6 +201,22 @@ class Gating(unittest.TestCase):
     def test_only_the_camping_sort(self):
         listed = {"quests": {"95998": {"category": ["zone", 12]}, "96608": dict(self.CAMP)}}
         self.assertEqual(completo_quests.exclusive_groups(self.rows(), listed, []), [])
+
+    def test_versions_the_game_counts_as_one(self):
+        rows = {q: (12, {"id": q, "name": n}) for q, n in (
+            (94773, "Divine Grace"), (94774, "Divine Grace"), (94780, "Divine Grace"), (3911, "The Last Element"),
+            (4641, "Your Place in the World"), (95998, "The Great Outdoors"), (96608, "The Great Outdoors"))}
+        bits = {"68258": [94773, 94774, 94999], "1330": [3911, 4641], "999": [95998, 96608]}
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            groups = completo_quests.exclusive_groups(rows, self.listed(), [{"quests": [95998, 96608]}], bits)
+        self.assertEqual(groups, [[94773, 94774], [95998, 96608]])
+        self.assertIn("exclusive [95998, 96608] names quest 95998, 96608, which is in a group already; skipped",
+                      err.getvalue())
+
+    def test_shared_bits(self):
+        rows = [{"ID": "1", "UniqueBitFlag": "5"}, {"ID": "2", "UniqueBitFlag": "5"}, {"ID": "3", "UniqueBitFlag": "6"}]
+        self.assertEqual(completo_quests.shared_bits(rows), {"5": [1, 2]})
 
     def exclusive_groups(self, fixes):
         err = io.StringIO()

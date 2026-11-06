@@ -99,7 +99,11 @@ quest and creature pages. Do not edit them by hand: change the tool and run it a
   skipped with a warning, so the build still runs.
 - `D.Chains`: each chain's steps in order. A step with more than one quest has parallel quests,
   all of which finish it, or with `any = true` the faction or class versions of one quest.
-- `D.Exclusive`: groups of quests of which you take one. The camping quests of one name (each starting
+- `D.Exclusive`: groups of quests of which you take one. The versions of one quest the game counts as
+  one: quests of one name that share a completion bit (QuestV2's `UniqueBitFlag`, cached in
+  `Tools/data/quest_bits.json`), such as Divine Grace from each priest trainer or each level bracket's
+  Battle of Warsong Gulch. A bit's quests of different names are not grouped (The Last Element shares
+  one with the orcs' first quest). Then the camping quests of one name (each starting
   area's The Great Outdoors, The Adventurer and Camping 101 for each profession; ForeverChanges files
   them under the game's Camping quest sort, 666), and the pairs in `completo_fixes.json`. A quest is in
   one group at most: the build skips, with a warning, a hand-kept group naming a quest already in one.
