@@ -10292,6 +10292,30 @@
   "quests": [
    {
     "category2": 0,
+    "id": 93786,
+    "level": 36,
+    "name": "A Message in Blood",
+    "reqlevel": 35,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 93787,
+    "level": 36,
+    "name": "Food for the Taking",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 93788,
+    "level": 38,
+    "name": "Borrowed Blades",
+    "reqlevel": 36,
+    "side": 2
+   },
+   {
+    "category2": 0,
     "id": 94532,
     "level": 38,
     "name": "Gnoll Infestation",
@@ -10313,6 +10337,38 @@
     "name": "Bristle Hills Bandits",
     "reqlevel": 36,
     "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 94613,
+    "level": 38,
+    "name": "My Kingdom for a Horse",
+    "reqlevel": 36,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 94877,
+    "level": 40,
+    "name": "Saving Sunnyglade",
+    "reqlevel": 36,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 94879,
+    "level": 40,
+    "name": "Scraps of Knowledge",
+    "reqlevel": 36,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 94881,
+    "level": 38,
+    "name": "Curious Trinkets",
+    "reqlevel": 36,
+    "side": 1
    },
    {
     "category2": 0,
@@ -10339,10 +10395,32 @@
    },
    {
     "category2": 0,
+    "id": 95119,
+    "level": 43,
+    "name": "Unfriendly Competition",
+    "reqlevel": 38
+   },
+   {
+    "category2": 0,
     "id": 95120,
     "level": 42,
     "name": "WANTED: Old Rot-Chum",
     "reqlevel": 36
+   },
+   {
+    "category2": 0,
+    "id": 95121,
+    "level": 40,
+    "name": "A Taste of the Sea",
+    "reqlevel": 36
+   },
+   {
+    "category2": 0,
+    "id": 95156,
+    "level": 37,
+    "name": "Stuff 'Em and Stick 'Em",
+    "reqlevel": 36,
+    "side": 1
    },
    {
     "category2": 0,
@@ -10355,10 +10433,57 @@
    },
    {
     "category2": 0,
+    "id": 95219,
+    "level": 41,
+    "name": "From Port to Port",
+    "reqlevel": 40,
+    "side": 1
+   },
+   {
+    "category2": 0,
     "id": 95254,
     "level": 42,
     "name": "WANTED: Trapclaw",
     "reqlevel": 36
+   },
+   {
+    "category2": 0,
+    "id": 95260,
+    "level": 42,
+    "name": "Terrors From the Deep",
+    "reqlevel": 38
+   },
+   {
+    "category2": 0,
+    "id": 95330,
+    "level": 37,
+    "name": "Love Thy Neighbor",
+    "reqlevel": 36,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 95882,
+    "level": 43,
+    "name": "WANTED: Scoutmaster Vargas",
+    "reqlevel": 38,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 95912,
+    "level": 42,
+    "name": "WANTED: Blademaster Kaijo",
+    "reqlevel": 38,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 95943,
+    "level": 38,
+    "name": "Foreman's Plight",
+    "reqlevel": 36,
+    "side": 1
    },
    {
     "category2": 0,
@@ -10370,11 +10495,41 @@
    },
    {
     "category2": 0,
+    "id": 95982,
+    "level": 38,
+    "name": "Not My Circus",
+    "reqlevel": 36
+   },
+   {
+    "category2": 0,
     "id": 95983,
     "level": 38,
     "name": "A Feast for Buzzards",
     "reqlevel": 36,
     "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 95991,
+    "level": 42,
+    "name": "WANTED: Ghostmaw",
+    "reqlevel": 38,
+    "side": 1
+   },
+   {
+    "category2": 0,
+    "id": 95992,
+    "level": 42,
+    "name": "WANTED: Ghostmaw",
+    "reqlevel": 38,
+    "side": 2
+   },
+   {
+    "category2": 0,
+    "id": 96063,
+    "level": 38,
+    "name": "Gaseous Gold",
+    "reqlevel": 36
    },
    {
     "category2": 0,
@@ -11365,6 +11520,187 @@
     "reqlevel": 5,
     "reqrace": 4294967296,
     "side": 1
+   }
+  ]
+ },
+ "16651": {
+  "name": "Shen'dralas",
+  "quests": [
+   {
+    "category2": 1,
+    "id": 92841,
+    "level": 40,
+    "name": "Valley of Bones",
+    "reqlevel": 35,
+    "side": 1
+   },
+   {
+    "category2": 1,
+    "id": 92844,
+    "level": 42,
+    "name": "Mountain of Bones",
+    "reqlevel": 35,
+    "side": 1
+   },
+   {
+    "category2": 1,
+    "id": 92846,
+    "level": 40,
+    "name": "Outcast Necromancers",
+    "reqlevel": 35,
+    "side": 1
+   },
+   {
+    "category2": 1,
+    "id": 92847,
+    "level": 42,
+    "name": "Corrupting Tears",
+    "reqlevel": 35,
+    "side": 1
+   },
+   {
+    "category2": 1,
+    "id": 92873,
+    "level": 41,
+    "name": "Proof of Concept",
+    "reqlevel": 35,
+    "side": 1
+   },
+   {
+    "category2": 1,
+    "id": 92893,
+    "level": 42,
+    "name": "No Mercy for the Weak",
+    "reqlevel": 35,
+    "side": 1
+   },
+   {
+    "category2": 1,
+    "id": 92894,
+    "level": 40,
+    "name": "Bone Raising",
+    "reqlevel": 35,
+    "side": 1
+   },
+   {
+    "category2": 1,
+    "id": 92914,
+    "level": 43,
+    "name": "Strange Pylons",
+    "reqlevel": 35
+   },
+   {
+    "category2": 1,
+    "id": 93034,
+    "level": 38,
+    "name": "Valley of Bones",
+    "reqlevel": 35,
+    "side": 3
+   },
+   {
+    "category2": 1,
+    "id": 93035,
+    "level": 38,
+    "name": "Ravaging Ravagers",
+    "reqlevel": 35,
+    "side": 3
+   },
+   {
+    "category2": 1,
+    "id": 93037,
+    "level": 40,
+    "name": "Outing Outcasts",
+    "reqlevel": 35,
+    "side": 3
+   },
+   {
+    "category2": 1,
+    "id": 93041,
+    "level": 38,
+    "name": "Facing the Truth",
+    "reqlevel": 35,
+    "side": 3
+   },
+   {
+    "category2": 1,
+    "id": 93058,
+    "level": 42,
+    "name": "Saving Our Own",
+    "reqlevel": 35,
+    "side": 2
+   },
+   {
+    "category2": 1,
+    "id": 93062,
+    "level": 42,
+    "name": "Bone Burying",
+    "reqlevel": 35,
+    "side": 2
+   },
+   {
+    "category2": 1,
+    "id": 93066,
+    "level": 43,
+    "name": "Bristleback Retreat",
+    "reqlevel": 35,
+    "side": 3
+   },
+   {
+    "category2": 1,
+    "id": 93072,
+    "level": 43,
+    "name": "Long-Term Solutions",
+    "reqlevel": 35
+   },
+   {
+    "category2": 1,
+    "id": 93122,
+    "level": 43,
+    "name": "Checking Things Out",
+    "reqlevel": 35,
+    "side": 2
+   },
+   {
+    "category2": 1,
+    "id": 93125,
+    "level": 43,
+    "name": "Going Home",
+    "reqlevel": 35
+   },
+   {
+    "category2": 1,
+    "id": 93129,
+    "level": 43,
+    "name": "Threat of Starvation",
+    "reqlevel": 35
+   },
+   {
+    "category2": 1,
+    "id": 93188,
+    "level": 43,
+    "name": "Return to Orgrul",
+    "reqlevel": 35
+   },
+   {
+    "category2": 1,
+    "id": 93574,
+    "level": 45,
+    "name": "Corpsefeeder's Carapace",
+    "reqlevel": 35
+   },
+   {
+    "category2": 1,
+    "id": 93644,
+    "level": 45,
+    "name": "Tattered Journal",
+    "reqlevel": 35
+   },
+   {
+    "category2": 1,
+    "id": 96010,
+    "level": 41,
+    "name": "Fragments of the Pylons",
+    "reqlevel": 35
    }
   ]
  },
@@ -23198,6 +23534,16 @@
     "name": "Restoring Fiery Flux Supplies via Heavy Leather",
     "reqlevel": 45,
     "side": 3
+   }
+  ]
+ },
+ "616": {
+  "name": "Mount Hyjal",
+  "quests": [
+   {
+    "category2": 1,
+    "id": 92521,
+    "name": "The Demon Tower"
    }
   ]
  },

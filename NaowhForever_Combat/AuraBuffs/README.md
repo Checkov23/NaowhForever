@@ -6,7 +6,8 @@ defaults come from `ns.FEATURES.auraBuffs`.
 
 - **Buffs & Consumables:** a row of icons for missing food, flask, elixir and scroll buffs,
   class buffs missing in your group, and your own class buff (armor, Inner
-  Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing. Click one to use the item it
+  Fire, Battle Shout, poisons, a weapon imbue, a hunter's aspect) when it is missing, and the Cozy Sleeping Bag
+  out in the world when it is ready and Well-Rested is missing (Sleeping Bag Reminder, off by default). Click one to use the item it
   shows or cast the buff, or hover it to pick another carried item. Middle-click one to hide it until you
   reload. The worn gear and fishing pole reminders moved to QoL > Loot & Items > Gear Reminders
   (`NaowhForever_QoL/Loot/GearReminders.lua`).
@@ -20,7 +21,8 @@ defaults come from `ns.FEATURES.auraBuffs`.
   under the mouse. Camp Nearby's fire does the same. With Round, while you carry the Cozy Sleeping
   Bag and a campfire is in range (or you sit at one), a smaller round Sleeping Bag icon sits at the
   fire's lower right (lower left while the buffs show on the right); a click uses the bag. It stays
-  while the fire itself is hidden (Show Only Under, Show When Missing off). While the
+  while the fire itself is hidden (Show Only Under, Show When Missing off). The HUD Editor moves it
+  on its own (Campfire Bag); Sleeping Bag Position on the card puts it back. While the
   bag is on cooldown its icon is grey with a countdown. While its Well-Rested buff is on you, the
   bag wears the fire's ring, in the accent blue, running down with the buff's time left, the time
   in its middle and the stacks in its corner.
@@ -55,7 +57,7 @@ NaowhForever_Combat/AuraBuffs/
     LowHealthLook.lua          the Low Health icon and warning (A.LowHealthLook)
   UI/
     GlowRows.lua               the glow type, color and pixel look rows a card adds (A.GlowRows)
-    CampBag.lua                the Sleeping Bag beside the Round campfire, a secure button (A.CampBag)
+    CampBag.lua                the Sleeping Bag beside the Round campfire or where it was moved, a secure button (A.CampBag)
     Campfire.lua               the Campfire reminder and the Camp Nearby alert on screen
     CampfireCards.lua          the Campfire and Camp Nearby cards, with their editable previews
     LowHealth.lua              the Low Health icon on screen
@@ -187,6 +189,18 @@ NaowhForever_Combat/AuraBuffs/
   A weapon item saved as Last Used before that (the client's item icon) is turned into its classic icon the
   first time it is shown, or forgotten when no stone or oil has it. `ItemIcon` returns the classic icon for these
   items, and Last Used finds the carried item by it, so the row, the item a click uses and the menu agree.
+- Sleeping Bag Reminder (`sleepingBag`, off by default) is Robin's ask: the Campfire's bag shows only at a
+  campfire, but the bag works anywhere. It shows in the open world only (`zone == "none"`), never while
+  resting, dead or at level 60, while the bag is carried, its cooldown is over and Well-Rested (429959) is
+  missing or under `BAG_WARN_MINUTES` (15). It has its own switch, not the Consumables World/Dungeons/Raids
+  ones: consumables are off in the world by default, and the bag is only for the world. The Campfire's bag icon
+  stays as it is.
+- No event fires when the bag's hour-long cooldown ends or Well-Rested drops under 15 minutes, so both are a
+  wake (`Wake`). One of `GCD` (1.5 s) or less is the global cooldown, not the bag's; a secret cooldown shows
+  nothing. Using the bag starts its cooldown: `BAG_UPDATE_COOLDOWN` fires on every global cooldown, so it
+  refreshes the row only while the bag shows and is now on cooldown (`R.BagBusy`). Level 60
+  (`PLAYER_LEVEL_UP`, through `WatchesLevel`) and dying or coming back (`PLAYER_DEAD`, `PLAYER_ALIVE`,
+  `PLAYER_UNGHOST`) refresh it too, registered only while it is on.
 - With Only If I Carry One on (the default), Robin asked for reminders only while you have the item. So a kind
   shows when an item of its `D.DEFAULT_GROUPS` list is carried (buff food is any bag item whose use spell is in
   `D.FOOD_SPELLS`), with that list's auras counting as up. The item offered is the highest required level you can
@@ -289,6 +303,17 @@ NaowhForever_Combat/AuraBuffs/
   hidden and moved in places that can run in combat. So in combat the button is left as it was; a
   change that should hide it waits for `PLAYER_REGEN_ENABLED`, registered only then. Its size and
   font are applied on the next refresh out of combat after a setting change.
+- Moved in the HUD Editor, the bag keeps its own spot (`campBagPos`) and no longer follows the fire.
+  With none it is placed beside the fire again on each of the fire's `SetPoint`, so dragging the
+  Campfire in the HUD Editor carries it along. While it follows, it tells the HUD Editor so
+  (`UI.SetMoverFollows`): a Campfire drag would otherwise snap to the bag, which sits on the fire's
+  bottom edge. Like the Campfire it cannot be anchored there (`ownAnchor`): an anchor and the
+  follow would both move it. Its element is the Campfire Bag: the HUD Editor keys elements by name,
+  and Discovery's tracker is already the Sleeping Bag. The HUD Editor shows it whenever it is
+  carried, with or without a campfire in range; leaving it hides the bag's plate at once, even in
+  combat, as the plate is not a protected frame.
+- Undo, Revert and layouts never put the bag back beside the fire: they keep only elements placed
+  on the screen centre, and a following bag is placed from the fire. Sleeping Bag Position does.
 - `CAMP_BAG_SCALE` makes the bag about half the fire, as in Jason's mockup; `CAMP_BAG_FALLBACK_ICON`
   is the question mark, shown until the client has the bag's icon.
 - Well-Rested (429959, read in game 2026-10-20) is the bag's stacking buff: three stacks, two
@@ -340,7 +365,7 @@ NaowhForever_Combat/AuraBuffs/
 
 - `lua Tools/regression/test-buff-reminders.lua`: which reminders show, the item menu, the card.
 - `lua Tools/regression/test-campfire-simple.lua`: both Campfire looks, the reader, Camp Nearby,
-  the Sleeping Bag beside Round and the cards' previews.
+  the Sleeping Bag beside Round or moved in the HUD Editor, and the cards' previews.
 - `lua Tools/regression/test-icon-look.lua`: Low Health's text.
 - `lua Tools/regression/test-robin-final.lua`: the Round campfire.
 - `lua Tools/regression/test-combat-perf.lua`: the buff reminders' cost in a raid.

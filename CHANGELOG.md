@@ -2,6 +2,50 @@
 
 ## Unreleased
 
+## 1.2.10
+
+### Added
+- Buffs & Consumables: Sleeping Bag Reminder (off by default) shows your Cozy Sleeping Bag out in
+  the world when it is ready and Well-Rested is missing or about to run out; click it to use the
+  bag. Turn it on in Auras & Buffs > Buffs & Consumables.
+- Buffs & Consumables: the Campfire's Sleeping Bag moves on its own in the HUD Editor (Campfire
+  Bag), and Sleeping Bag Position on the Campfire card puts it back beside the fire.
+- Dungeon Journal: The Drowned City lists its two quests.
+- Quest List: 20 more Riverglades quests and 4 more Shen'dralas quests, new in Forever.
+- Discovery: the rares of Mount Hyjal (Death Wailer, Jezerelle the Swaying, Overseer Myoleth,
+  Pexmit) and Riverglades (Reginald Holmsby).
+- Dungeon Journal: the six leather helms and Pattern: Brawler's Leather Legguards and Pattern:
+  Defender's Leather Kilt on the bosses that drop them in Blackfathom Deeps, the Stockade, Razorfen
+  Kraul, Scarlet Monastery and Gnomeregan.
+- Dungeon Journal: Obsidian Sentinel's new wand, breastplate, two axes and Plans: Warder's Boots in
+  Uldaman, Defias Rapier on the Deadmines trash, and Blueprint: Arcane Salvager on Charlga
+  Razorflank and Rath'mael.
+
+### Changed
+- BiS List: the six leather helms name Gelihast in Blackfathom Deeps as their source instead of
+  Leatherworking.
+
+### Fixed
+- Training and town pins: Lotheluum Starbreeze on Zephras Isle shows as a Druid trainer, as she
+  trains druids since the 5 November hotfix.
+- Town pins: no Reagent Bot vendor in Darkshore; it was a player's summoned camp bot.
+- Dungeon Journal and Quest List: The Wrath of Rath'mael and The New Plague (Ruins of Lordaeron)
+  show the quests you now have to do first.
+- Quest List: once you have a quest the game counts as one with others, such as Divine Grace from
+  each priest trainer or a Battle of Warsong Gulch bracket, its other versions stop showing as
+  available.
+- Quest List: Shen'dralas quests need level 35, not 30.
+- Professions: the Recipe Finder now says where 138 more recipes come from, such as Happy Camper's
+  blueprints and Vayn Moongaze's and Lokhtos Darkbargainer's plans and patterns.
+- Dungeon Journal: City of Dalaran's Blueprint: Spinning Wheel and Blueprint: Arcane Salvager show
+  their drop chance.
+- BiS List: the Quests page lists the quests that reward your current picks, such as The Legend of
+  Stalvan and Colonel Kurzen, and no longer ones whose rewards left the lists.
+- BiS List: Trogg Scepter, Raptorclaw Shoulders, Farseer's Forgotten Shield, Wolfsbane, Replica
+  Crescent Necklace and Pelt Pants now say where they come from.
+- Dungeon Journal, BiS List and bags: the Forever mark shows on City of Dalaran's loot and quests,
+  Past Due and the other quests and items new in Forever since October.
+
 ## 1.2.9
 
 ### Added

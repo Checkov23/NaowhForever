@@ -82,7 +82,7 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
 | What a list keeps, or an old format | `Lists.lua` (saved lists) and `Sharing.lua` (strings) |
 | Which enchant or upgrade wins for a spec | the spec's weights in `StatWeights/Data/Defaults.lua` (players change their own in the module's page); a proc's worth in `PROCS` in `Tools/build/enchants.py` |
 | Where a zone's NPC stands | `python Tools/build/bis_spots.py` (on our machines: it reads Wowhead) |
-| The quests that reward a BiS | `python Tools/build/bis_quests.py`, then `python Tools/build/quest_chains.py` |
+| The quests that reward a BiS | `python Tools/build/foreverchanges_quests.py`, then `python Tools/build/bis_quests.py` (`--offline` without Wowhead), then `python Tools/build/quest_chains.py` |
 
 ## Why
 
@@ -138,8 +138,8 @@ Other modules call in through `ns`: `ns.IsBisItem` (the Journal, Bag Space, the 
   the Journal's rules know none; a race the mask does not know of is let through. `RACE_BITS` is your
   race's bit in a quest's races mask (`ChrRaces.PlayableRaceBit`): the classic eight, and Forever's
   Skyborne.
-- A quest starts where Wowhead maps its quest giver, else the map of the Journal's quest giver, else
-  the dungeon it starts inside.
+- A quest starts where ForeverChanges maps its quest giver, else Wowhead, else the map of the
+  Journal's quest giver, else the dungeon it starts inside.
 - Enchants: the game puts no level limit on any; the level is advice. `SKILL_LEVELS` follows the
   trainers, who teach up to 75 at level 5, 150 at 10, 225 at 20 and 300 at 35; Forever's recipes past
   300 come from its endgame (`ENDGAME_LEVEL`). Of two as good, the cheaper recipe wins. A special

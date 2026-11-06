@@ -10,7 +10,7 @@ ns.Journal.AddDungeon("Uldaman", {
         { bosses = {
             { npc = 6910, name = "Revelosh", model = 5945, encounters = { 547 }, loot = { 9389, 9387, 9390, 9388 }, chance = { 23, 23, 22, 21 } },
             { npc = 7228, name = "Ironaya", model = 6089, encounters = { 549 }, loot = { 9407, 9409, 9408, 7556, 9973, 12030 }, chance = { 38, 38, 20, 0, 0, 0 } },
-            { npc = 7023, name = "Obsidian Sentinel", model = 5285, encounters = { 1887 }, loot = { 9384 }, chance = { 3 } },
+            { npc = 7023, name = "Obsidian Sentinel", model = 5285, encounters = { 1887 }, loot = { 9384, 251400, 274425, 274428, 274430, 274485 }, chance = { 3, 0, 0, 0, 0, 0 } },
             { npc = 7206, name = "Ancient Stone Keeper", model = 10798, encounters = { 551 }, loot = { 9410, 9411 }, chance = { 48, 47 } },
             { npc = 7291, name = "Galgann Firehammer", model = 6059, encounters = { 552 }, loot = { 11311, 9419, 11310, 9412, 4062 }, chance = { 38, 20, 20, 18, 0 } },
             { npc = 4854, name = "Grimlok", model = 11165, encounters = { 553 }, loot = { 9415, 9414, 9416, 8144 }, chance = { 40, 30, 19, 0 } },

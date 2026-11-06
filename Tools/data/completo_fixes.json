@@ -5,7 +5,8 @@
     "we may use: Wowhead Forever's quest pages, ForeverChanges' quest pages, or the game's tables.",
     "requires: per quest, add puts quests before it that the sources leave out, drop takes out ones",
     "they put there wrongly (a Series row lists side quests and lead-ins with the quest's own step).",
-    "exclusive: quests of which you take one; the camping quests of one name are such groups already.",
+    "exclusive: quests of which you take one; the camping quests of one name, and the quests of one name",
+    "the game counts as one (one completion bit, QuestV2's UniqueBitFlag), are such groups already.",
     "breadcrumbs: a quest that only sends you to another's giver, and the quest it leads to.",
     "professions: the skill line a quest needs (SkillLine), and for a Camping 101 quest the camp recipe",
     "it teaches (the spell in that skill line's SkillLineAbility), which closes it once known. Only a",
@@ -16,6 +17,7 @@
   ],
   "requires": {
     "19": {"drop": [98386], "why": "Tharil'zun and Blackrock Blockade are Marshal Marris's war on the Blackrock orcs; Alther's Mill is Foreman Oslow's spider job at the lumber mill (ForeverChanges' quest pages)."},
+    "92422": {"add": [99156], "why": "The Wrath of Rath'mael is offered once Rear Guard Patrol (356, then 99156) is done on live servers, where Beta had no prerequisite: Wowhead's news (5 Nov 2026) and its Forever dungeon quest guide, which marks it Pre and links Rear Guard Patrol where it starts."},
     "92470": {"drop": [92469], "why": "Aetheen of the Gales (92471) ends at Aetheen, who gives Foul Matriarch; Return to Rorian ends at Rorian (ForeverChanges' givers)."},
     "92644": {"drop": [98512], "why": "The Turncoat ends at the Dead Cultist, who gives Unfortunate News; Al'Aketh Assassins is Fendaal Windstone's quest for whoever passes (ForeverChanges' givers and text)."},
     "92744": {"add": [92742], "why": "Toxic Soil, in order: the game's quest line 6026 (QuestLineXQuest), Wowhead's Storyline and ForeverChanges' storyline."},
@@ -28,13 +30,12 @@
     "92752": {"add": [92751], "why": "Toxic Soil, in order: 'the bomb's ready to go! Careful with that detonator'."},
     "92753": {"add": [92752], "why": "Toxic Soil, in order."},
     "92819": {"add": [92753], "why": "Toxic Soil, in order: the last step."},
-    "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."}
+    "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."},
+    "95216": {"add": [451], "why": "The New Plague is offered once A Recipe For Death (447, 450, then 451) is done on live servers, where Beta had no prerequisite: Wowhead's news (5 Nov 2026) and its Forever dungeon quest guide, which marks it Pre and links A Recipe For Death where it starts."}
   },
   "exclusive": [
     {"quests": [324, 526], "why": "The Lost Ingots (from the Waterlogged Chest) and Lightforge Ingots (from Glorin Steelbrow) are one task: gather 5 Lightforge Ingots for Glorin (ForeverChanges)."},
-    {"quests": [94484, 94493], "why": "Unnerving Silence sends you to Elegael Thornpaw; A Sacrifice in Vain is her greeting to one who came another way ('Thank goodness our message got to Lotheluum. Wait, where are the rest of the reinforcements?'). Both are 'speak with Elegael Thornpaw' (ForeverChanges)."},
-    {"quests": [1516, 1519, 92466], "why": "Call of Earth's first step, one per starting area (Canaga Earthcaller in Durotar, Seer Ravenfeather in Mulgore, Windshaper Boro on Zephras Isle, ForeverChanges): each heads its own Series, 1516 then 1517 and 1518, 1519 then 1520 and 1521, 92466 then 92467 (Wowhead)."},
-    {"quests": [5401, 5405, 5503], "why": "Argent Dawn Commission, from Argent Officer Pureheart at Chillwind Camp, Argent Officer Garush at the Bulwark and Duke Nicholas Zverenhoff at Light's Hope Chapel: each names the other two in its exclusiveTo (quest_entity_catalog.json), so you take one."}
+    {"quests": [94484, 94493], "why": "Unnerving Silence sends you to Elegael Thornpaw; A Sacrifice in Vain is her greeting to one who came another way ('Thank goodness our message got to Lotheluum. Wait, where are the rest of the reinforcements?'). Both are 'speak with Elegael Thornpaw' (ForeverChanges)."}
   ],
   "breadcrumbs": {
     "96627": {"to": 95998, "why": "96627 ends at Sam Sarsaparilla, who gives 95998 (ForeverChanges' givers)."},
@@ -67,6 +68,8 @@
     {"skill": 333, "quests": [91753, 96873], "why": "An Enchanting Lesson and A Pain in the Neck: the Luminous Residue comes from disenchanting, 'Practice your enchanting skills' (ForeverChanges)."}
   ],
   "unlisted": [
-    {"quests": [94532, 94533, 94535, 95059, 95062, 95118, 95120, 95254, 95951, 95983, 96103, 96107], "why": "Riverglades' quests, 'Added in patch 1.60.1.70790' (Wowhead Forever's quest pages): on Wowhead Forever's Riverglades page and in the game's QuestV2 for 1.60.1.70790, not yet on ForeverChanges' list (5 Nov 2026)."}
+    {"quests": [94532, 94533, 94535, 95059, 95062, 95118, 95120, 95254, 95951, 95983, 96103, 96107], "why": "Riverglades' quests, 'Added in patch 1.60.1.70790' (Wowhead Forever's quest pages): on Wowhead Forever's Riverglades page and in the game's QuestV2 for 1.60.1.70790, not yet on ForeverChanges' list (5 Nov 2026)."},
+    {"quests": [93786, 93787, 93788, 94613, 94877, 94879, 94881, 95119, 95121, 95156, 95219, 95260, 95330, 95882, 95912, 95943, 95982, 95991, 95992, 96063], "why": "Riverglades' quests added to Wowhead Forever's Riverglades page by 6 Nov 2026, all in the game's QuestV2 for 1.60.1.70790, not yet on ForeverChanges' list (6 Nov 2026)."},
+    {"quests": [92914, 93574, 93644, 96010], "why": "Shen'dralas quests on Wowhead Forever's Shen'dralas page that ForeverChanges does not list among its other quests there, all in the game's QuestV2 for 1.60.1.70790 (6 Nov 2026)."}
   ]
 }

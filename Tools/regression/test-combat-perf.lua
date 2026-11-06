@@ -247,7 +247,7 @@ do
         ThemeTint = function(_, literal) return literal end,
         Font = function(parent) return New("FontString", nil, parent) end,
         UI = { AttachMover = function() return New("Mover") end },
-        Shared = { Parts = { HudFont = function(fs, _, size, outline) fs:SetFont("font", size, outline) end,
+        Shared = { Items = { SLEEPING_BAG = 211527 }, Parts = { HudFont = function(fs, _, size, outline) fs:SetFont("font", size, outline) end,
             Press = function() end },
             ItemBar = { SetItem = function(button, itemID) button.itemID = itemID end } } }
     local lastAfter
@@ -283,7 +283,8 @@ do
     ns.UI.ModuleSettings = function() return ns.AuraBuffSettings end
     for _, file in ipairs({ "Core/Features.lua", "NaowhForever_Combat/AuraBuffs/AuraBuffs.lua",
         "NaowhForever_Combat/AuraBuffs/Constants.lua", "Shared/Game/Consumables.lua",
-        "NaowhForever_Combat/AuraBuffs/Data/BuffReminders.lua", "NaowhForever_Combat/AuraBuffs/BuffReminders.lua",
+        "NaowhForever_Combat/AuraBuffs/Data/BuffReminders.lua", "NaowhForever_Combat/AuraBuffs/Data/Campfire.lua",
+        "NaowhForever_Combat/AuraBuffs/BuffReminders.lua",
         "NaowhForever_Combat/AuraBuffs/View/Style.lua", "NaowhForever_Combat/AuraBuffs/View/Glow.lua",
         "NaowhForever_Combat/AuraBuffs/View/BuffCell.lua",
         "NaowhForever_Combat/AuraBuffs/UI/BuffMenu.lua", "NaowhForever_Combat/AuraBuffs/UI/BuffReminders.lua" }) do

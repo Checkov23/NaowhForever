@@ -428,6 +428,8 @@ campCard = page:Card({
           hidden = Simple },
         { key = "campBuffSide", label = "Buff Text Position", choice = SIDES, needs = Enabled, why = OFF,
           hidden = Simple },
+        { label = "Sleeping Bag Position", buttonText = "Reset", button = A.CampBag.ResetPosition,
+          needs = Enabled, why = OFF, hidden = Simple, help = "Puts the Sleeping Bag back beside the campfire." },
         Settings.Look("camp", { text = true, keys = { FontSize = false, Outline = false }, needs = Enabled, why = OFF }),
         { key = "campOutline", label = "Outline", choice = Parts.HUD_OUTLINES, needs = Enabled, why = OFF,
           hidden = Simple },

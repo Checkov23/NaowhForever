@@ -152,6 +152,10 @@ function UI.SetMoverChoices(mover, choices)
     mover._placement.choices = choices
 end
 
+function UI.SetMoverFollows(mover, follows)
+    mover._placement.follows = follows
+end
+
 function UI.SetMoverGrow(mover, grow)
     local item = mover._placement
     if item.grow == grow then return end

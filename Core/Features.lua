@@ -216,6 +216,7 @@ ns.FEATURES = {
         raidBuffRangeHide = false,
         personalBuffs = true,
         weaponEnhancements = false,
+        sleepingBag = false,
         campfire = true,
         campNearbyAlert = true,
         lowHealth = true,

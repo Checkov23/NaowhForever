@@ -7,11 +7,11 @@ ns.Journal.AddDungeon("ScarletMonasteryGraveyard", {
     entrance = { map = 1420, x = 83.9, y = 31.6 },
     wings = {
         { bosses = {
-            { npc = 3983, name = "Interrogator Vishas", model = 2044, encounters = { 444 }, loot = { 7683, 7682, 274290 }, chance = { 55, 6, 0 } },
-            { npc = 4543, name = "Bloodmage Thalnos", model = 11396, encounters = { 2779 }, loot = { 7685, 7684, 274291 }, chance = { 50, 48, 0 } },
-            { npc = 6490, name = "Azshir the Sleepless", model = 5534, rare = true, loot = { 7731, 7708, 7709 }, chance = { 34, 32, 31 } },
-            { npc = 6488, name = "Fallen Champion", model = 5230, rare = true, loot = { 7690, 7691, 7689 }, chance = { 40, 39, 18 } },
-            { npc = 6489, name = "Ironspine", model = 5231, rare = true, loot = { 7686, 7688, 7687 }, chance = { 40, 36, 20 } },
+            { npc = 3983, name = "Interrogator Vishas", model = 2044, encounters = { 444 }, loot = { 7683, 7682, 274290, 252820, 252822, 252455, 252456, 252513, 252514 }, chance = { 55, 6, 0, 0, 0, 0, 0, 0, 0 } },
+            { npc = 4543, name = "Bloodmage Thalnos", model = 11396, encounters = { 2779 }, loot = { 7685, 7684, 274291, 252822, 252455, 252513, 252514 }, chance = { 50, 48, 0, 0, 0, 0, 0 } },
+            { npc = 6490, name = "Azshir the Sleepless", model = 5534, rare = true, loot = { 7731, 7708, 7709, 252456, 252512 }, chance = { 34, 32, 31, 0, 0 } },
+            { npc = 6488, name = "Fallen Champion", model = 5230, rare = true, loot = { 7690, 7691, 7689, 252820, 252456, 252513 }, chance = { 40, 39, 18, 0, 0, 0 } },
+            { npc = 6489, name = "Ironspine", model = 5231, rare = true, loot = { 7686, 7688, 7687, 252820, 252512 }, chance = { 40, 36, 20, 0, 0 } },
             { npc = 14693, name = "Scorn", model = 16197, optional = true, loot = { 23169, 23168, 23170 }, chance = { 38, 32, 28 } },
             { npc = nil, name = "Trash", trash = true, loot = { 10329, 10333, 10331, 10328, 1992, 2262, 5756, 5819, 7727, 7728, 7729, 7730, 7736, 7752, 7753, 7754, 7755, 7757, 7758, 7759, 7760, 7761, 7786, 7787, 8225, 8226, 10332 }, chance = { 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
         } },

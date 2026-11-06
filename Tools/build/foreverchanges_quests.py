@@ -1,14 +1,15 @@
 """Build Tools/data/foreverchanges_quests.json: every quest ForeverChanges lists for Forever, and
-where its quest givers stand, for Tools/build/completo_quests.py.
+where its quest givers stand, for Tools/build/completo_quests.py and Tools/build/bis_quests.py.
 
 ForeverChanges lists the quests Forever gives (Classic's, and the ones new to Forever as its
 addon's players meet them), each giver on Forever's own maps. completo_quests.py keeps only the
 quests listed here, adds the ones Wowhead's zone pages lack, and places a quest at its giver from
-here before anything else.
+here before anything else. bis_quests.py takes the quests that reward a BiS from here.
 
 - The list (/quests/list.json): each quest's name, level, required level, side, class mask (the
-  game's, as Wowhead's) and the zone or category it is filed under. Read every run, so a quest
-  new to it comes in.
+  game's, as Wowhead's), the zone or category it is filed under, and the items it rewards: the
+  ones it gives (r) and the ones to choose from (k), each [itemID, icon, quality]. Read every
+  run, so a quest new to it comes in.
 - Each quest's page (/quest/<id>): its map's zones, each a uiMapID with pins in map percent; the
   pins marked start are its givers. A quest an item begins has none. A page read is cached and
   not read again: delete its entry, or the file, to read it again.
@@ -48,9 +49,11 @@ def fetch(url):
 
 
 def quest_row(row):
-    """A list row as completo_quests.py's zone rows have it, and the category it is filed under."""
+    """A list row as completo_quests.py's zone rows have it, the category it is filed under, and the
+    IDs of the items it rewards and of those to choose from."""
     return {"name": row["n"], "level": row["l"], "reqlevel": row["m"], "side": SIDES.get(row["s"], 3),
-            "reqclass": row.get("cl") or 0, "category": row["c"]}
+            "reqclass": row.get("cl") or 0, "category": row["c"],
+            "rewards": [item[0] for item in row["r"]], "choices": [item[0] for item in row["k"]]}
 
 
 def parse_starts(page):
@@ -64,7 +67,7 @@ def parse_starts(page):
 
 
 def report(before, after):
-    """The quests the list gained, lost and changed (level, side, class or category), in Markdown."""
+    """The quests the list gained, lost and changed (level, side, class, category or rewards), in Markdown."""
     sections = (("New", [q for q in after if q not in before], after),
                 ("Gone", [q for q in before if q not in after], before),
                 ("Changed", [q for q in after if q in before and before[q] != after[q]], after))

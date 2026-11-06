@@ -657,14 +657,14 @@ do
         end
     end
     check("the nine dungeons new in Forever are marked new", new == 9)
-    -- WoW Forever's mark: what Wowhead's Forever database has as new, and not what it has only
-    -- changed (Friend of the Library, 78150, is a classic quest reworked).
+    -- WoW Forever's mark: what Forever's tables have and Classic Era's do not, so not a quest
+    -- Forever reworked on its classic ID (Friend of the Library, 78150).
     local Parts = ns.Shared.Parts
     check("a boss of a dungeon new in Forever is Forever's", J.IsForeverBoss(J.Get("AlcazPrison").wings[1].bosses[1]))
     check("a classic boss is not", not J.IsForeverBoss(J.Get("RagefireChasm").wings[1].bosses[1]))
     check("a quest new in Forever is, a changed or classic one not", Parts.IsForever("quests", 95195)
         and not Parts.IsForever("quests", 78150) and not Parts.IsForever("quests", 1012))
-    check("an item new in Forever is, a classic one not", Parts.IsForever("items", 279868)
+    check("an item new in Forever is, a classic one not", Parts.IsForever("items", 273023)
         and not Parts.IsForever("items", 5813))
     check("nothing is without an ID", not Parts.IsForever("npcs", nil))
     check("the mark in text is made once per size", Parts.ForeverInline(12) == Parts.ForeverInline(12)

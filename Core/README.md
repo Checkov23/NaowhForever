@@ -291,6 +291,9 @@ HUD Editor
   anchor instead of its centre, along the target's side, so it widens away from where it was put.
   Changing the way it grows takes the offset again from where it is, so it does not move.
   `UI.SetAnchor` anchors an element from its own settings (Reset Position), `UI.HasAnchor` asks.
+- An element its module keeps beside another (the Campfire Bag beside the Campfire) names it
+  through `UI.SetMoverFollows` while it does, and counts as following it like an anchored one: a
+  drag of that element does not snap to it, and a selection of both moves it once.
 - Size and position changes are queued and handled once a frame.
 - Before each change by hand the editor keeps every element's spot and anchor (50 steps); a run of
   arrow nudges to one selection is one step. Loading a layout is a change like any other.

@@ -733,7 +733,6 @@ ns.TownNPCs = {
         { 37.0, 44.1, "inn", "Innkeeper Shaussiy", "Innkeeper", nil, "A" },
         { 37.4, 44.3, "stable", "Jaelysia", "Stable Master", nil, "A" },
         { 36.1, 44.9, "vendor", "Gubber Blump", "", nil, "A" },
-        { 42.2, 37.2, "reagents", "Reagent Bot", "", nil, "AH" },
     },
     [1440] = {
         { 18.0, 60.0, "profession", "Bolyun", "Pet Trainer", nil, "A" },
@@ -1659,6 +1658,7 @@ ns.TownNPCs = {
         { 44.7, 44.5, "profession", "Indari Sunseam", "Leatherworker", nil, "AH", 251993 },
         { 59.6, 76.0, "profession", "Ishlee Breezewhisper", "Skinner", nil, "AH", 257003 },
         { 43.5, 23.7, "repair", "Jolee Brightmeadows", "Cloth & Leather Armor", nil, "AH", 251365 },
+        { 64.0, 75.1, "class", "Lotheluum Starbreeze", "Druid Trainer", "DRUID", "AH", 252359 },
         { 43.3, 43.4, "profession", "Mendalass Tattermend", "Skinner", nil, "AH", 257024 },
         { 44.8, 44.5, "profession", "Messana Crestwind", "Miner", nil, "AH", 257022 },
         { 43.2, 43.3, "class", "Miriaan Mistblade", "Rogue Trainer", "ROGUE", "AH", 254087 },

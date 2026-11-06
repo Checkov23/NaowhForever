@@ -1,12 +1,14 @@
--- BuffReminders.lua: the Buffs & Consumables rules: which food, flask, elixir and class buffs are missing.
+-- BuffReminders.lua: the Buffs & Consumables rules: which food, flask, elixir and class buffs are missing, and when the Sleeping Bag is due.
 local ns = _G.NaowhForever
 
 local A = ns.AuraBuffs
 local S = A.Settings
 local D = ns.BuffReminderData
+local Camp = A.CampData
 
 local MAX_AURAS = 40
 local SECONDS = A.C.SECONDS
+local GCD = A.C.GCD
 local PARTY_UNITS = MAX_PARTY_MEMBERS or 4
 local RAID_UNITS_MAX = MAX_RAID_MEMBERS or 40
 local CATEGORY_ORDER = A.CATEGORY_ORDER
@@ -16,6 +18,8 @@ local REQUIRED_LEVEL = 5
 local ITEM_ICON = 10
 local ELITE = { elite = true, rareelite = true, worldboss = true }
 local MAX_LEVEL = 60
+local SLEEPING_BAG = ns.Shared.Items.SLEEPING_BAG
+local BAG_WARN_MINUTES = 15
 local WHERE = {
     consumables = { none = "consumablesWorld", party = "consumablesDungeon", raid = "consumablesRaid",
         atMax = "consumablesMaxHide" },
@@ -107,9 +111,13 @@ local function Left(aura)
     return expiry - GetTime()
 end
 
+local function Level()
+    return math.max(UnitLevel("player"), leveledTo or 0)
+end
+
 local function ShowsHere(kind, zone)
     local keys = WHERE[kind]
-    local level = math.max(UnitLevel("player"), leveledTo or 0)
+    local level = Level()
     if zone == "none" and S.Get(keys.atMax) and level >= MAX_LEVEL then return false end
     return S.Get(keys[zone] or keys.none)
 end
@@ -358,6 +366,24 @@ local function Lasts(left, warn, duration)
     return true
 end
 
+local function BagCooldown()
+    local start, duration, enable = C_Container.GetItemCooldown(SLEEPING_BAG)
+    if Secret(start) or Secret(duration) or Secret(enable) then return nil end
+    if enable ~= 1 or not duration or duration <= GCD then return 0 end
+    return math.max(start + duration - GetTime(), 0)
+end
+
+local function SleepingBag(list, buffs, zone)
+    if zone ~= "none" or IsResting() or UnitIsDeadOrGhost("player") then return end
+    if Level() >= MAX_LEVEL or C_Item.GetItemCount(SLEEPING_BAG) == 0 then return end
+    local cooldown = BagCooldown()
+    if not cooldown then return end
+    if cooldown > 0 then return Wake(cooldown) end
+    local aura = buffs[Camp.WELL_RESTED]
+    if aura and Lasts(Left(aura), BAG_WARN_MINUTES * SECONDS) then return end
+    list[#list + 1] = { icon = ItemIcon(SLEEPING_BAG), aura = aura, item = SLEEPING_BAG, key = "sleepingBag" }
+end
+
 local function SlotEnchanted(weaponSlot, warn)
     for _, enchant in pairs(C_Item.GetWeaponEnchantInfo(weaponSlot)) do
         if enchant.hasEnchant and Lasts(enchant.timeLeft / 1000, warn) then return true end
@@ -470,7 +496,8 @@ Reminders.Secret = Secret
 Reminders.ShowsHere = ShowsHere
 
 function Reminders.WatchesLevel()
-    return (S.Get("consumablesMaxHide") or S.Get("raidBuffsMaxHide") or S.Get("personalBuffsMaxHide"))
+    return (S.Get("consumablesMaxHide") or S.Get("raidBuffsMaxHide") or S.Get("personalBuffsMaxHide")
+        or S.Get("sleepingBag"))
         and UnitLevel("player") < MAX_LEVEL
 end
 
@@ -550,6 +577,10 @@ function Reminders.NoteImbueCast(spellID)
     return false
 end
 
+function Reminders.BagBusy()
+    return BagCooldown() ~= 0
+end
+
 function Reminders.NoteFoodCast(spellID)
     if not D.FOOD_SPELLS[spellID] then return false end
     local icon = FoodItemIcon(spellID) or C_Spell.GetSpellTexture(spellID)
@@ -622,6 +653,7 @@ function Reminders.Collect()
         Consumables(list, buffs)
         if S.Get("weaponEnhancements") then WeaponEnhancement(list, zone) end
     end
+    if S.Get("sleepingBag") then SleepingBag(list, buffs, zone) end
     if S.Get("personalBuffs") and ShowsHere("personalBuffs", zone) then PersonalBuffs(list, buffs) end
     if S.Get("raidBuffs") and ShowsHere("raidBuffs", zone) then RaidBuffs(list, buffs) end
     for i = #list, 1, -1 do
