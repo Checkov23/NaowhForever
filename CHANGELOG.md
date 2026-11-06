@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 1.2.8
+
+### Added
+- Glimmer: Corpses with Loot lights up a corpse that still has loot for you once the fight is over
+  (QoL > Glimmer > Objects, off by default).
 
 ## 1.2.7
 
