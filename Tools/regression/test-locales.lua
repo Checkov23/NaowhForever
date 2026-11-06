@@ -134,4 +134,61 @@ check("an old Language folder's pick moves into the account", Migrate({ locale =
 check("a pick already saved in the account stays", Migrate({ locale = "deDE" }, "frFR") == "frFR")
 check("no old folder: nothing changes", Migrate(nil, nil) == nil and Migrate(nil, "itIT") == "itIT")
 
+-- Every translation keeps its English text's placeholders: string.format raises on a missing or
+-- swapped %d. The game's format takes numbered placeholders (%2$s), so those may change places.
+local function Catalog(path, code)
+    local env = { NaowhForever = { LOCALE = code } }
+    env._G = env
+    local chunk = assert(loadstring(Read(path), path))
+    setfenv(chunk, env)
+    chunk()
+    return env.NaowhForeverTranslation or env.NaowhForeverLocale
+end
+
+local function Placeholders(text)
+    local list, n = {}, 0
+    for slot, kind in (text:gsub("%%%%", "")):gmatch("%%(%d*%$?)[-+#0]*%d*%.?%d*([cdeEfgGioqsuxX])") do
+        if slot:sub(-1) == "$" then
+            slot = tonumber(slot:sub(1, -2))
+        else
+            n = n + 1
+            slot = n
+        end
+        list[slot] = kind == "i" and "d" or kind
+    end
+    return list
+end
+
+local function SamePlaceholders(a, b)
+    a, b = Placeholders(a), Placeholders(b)
+    for slot, kind in pairs(a) do
+        if b[slot] ~= kind then return false end
+    end
+    for slot in pairs(b) do
+        if a[slot] == nil then return false end
+    end
+    return true
+end
+
+check("numbered placeholders may change places", SamePlaceholders("Sold %d for %s.", "%2$s: %1$d"))
+check("plain ones may not", not SamePlaceholders("Sold %d for %s.", "%s: %d"))
+check("none may go missing", not SamePlaceholders("%d of %d", "%d"))
+check("a percent sign in text is not a placeholder", SamePlaceholders("40% off, 5%% cut", "-40 % de 5%%"))
+
+local english = Catalog("Core/Locales/enUS.lua", "enUS")
+for _, code in ipairs(ns.LANGUAGES) do
+    if code ~= "enUS" then
+        local wrong = {}
+        for key, text in pairs(Catalog("NaowhForever_Locales/" .. code .. ".lua", code)) do
+            local source = english[key]
+            if type(text) == "string" and source ~= nil
+                and not SamePlaceholders(source == true and key or source, text) then
+                wrong[#wrong + 1] = key
+            end
+        end
+        table.sort(wrong)
+        check(code .. " keeps every placeholder: " .. table.concat(wrong, " | "), #wrong == 0)
+    end
+end
+
 print(checks .. " locale checks passed")

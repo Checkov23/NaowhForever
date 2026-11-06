@@ -13,43 +13,44 @@ local PERCENT = C.PERCENT
 local TRAINER_SCAN_DELAY = 0.2
 local NO_MAP = 0
 local HORDE, ALLIANCE, ANY = "H", "A", "-"
+local ENGLISH = "enUS"
 local NPC_NAME, NPC_FACTION, NPC_MAP, NPC_X, NPC_Y, NPC_PRICE = C.NPC_NAME, C.NPC_FACTION, C.NPC_MAP, C.NPC_X,
     C.NPC_Y, C.NPC_PRICE
 local DROP_MOB, DROP_AREA, DROP_MIN, DROP_MAX, DROP_CHANCE = 1, 2, 3, 4, 5
 local SOURCE_TAG = { trainer = ns.L("Trainer"), teacher = ns.L("Trainer"), vendor = ns.L("Vendor"), drop = ns.L("Drop"),
     quest = ns.L("Quest"), unknown = "?" }
 local DEFAULT_PROFESSION = ns.L("First Aid")
-local TEXT_FREE = "free"
+local TEXT_FREE = ns.L("free (price)")
 local TEXT_UNKNOWN = "?"
 local TEXT_MANUAL = ns.L("its manual")
 local TEXT_NPC = "%s - %s %.1f, %.1f%s"
-local TEXT_RANK_BOOK = "Your cap is %d.\nFirst read %s (needs skill %d):"
+local TEXT_RANK_BOOK = ns.L("Your cap is %d.\nFirst read %s (needs skill %d):")
 local TEXT_LEVEL_PART = ns.L("level %d, ")
-local TEXT_RANK_QUEST = "Your cap is %d.\nFirst do the quest %s%s|r (%sskill %d):"
-local TEXT_RANK_TRAIN = "Your cap is %d.\nFirst train %s (%s, needs skill %d):"
-local TEXT_RECIPE = "Recipe: "
+local TEXT_RANK_QUEST = ns.L("Your cap is %d.\nFirst do the quest %s%s|r (%sskill %d):")
+local TEXT_RANK_TRAIN = ns.L("Your cap is %d.\nFirst train %s (%s, needs skill %d):")
+local TEXT_RANK_NAME = ns.L("%s (%s)")
+local TEXT_RECIPE = ns.L("Recipe")
 local TEXT_QUEST_OTHER = ns.L("A quest reward for the other faction; try the Auction House.")
 local TEXT_QUEST_REWARD = ns.L("A reward from the quest ")
 local TEXT_QUEST_GIVER = ns.L("  (quest giver)")
-local TEXT_TRAINER = "Trainer: %s.%s Nearest:"
+local TEXT_TRAINER = ns.L("Trainer: %s.%s Nearest:")
 local TEXT_ALSO_QUEST = ns.L(" Also a reward from the quest ")
-local TEXT_TEACHER = "Taught for free by the Artisan doctor:"
-local TEXT_VENDOR_OTHER = "Recipe: %s\nOnly the other faction sells it; try the Auction House."
-local TEXT_SOLD_FOR = ns.L("Sold for ")
-local TEXT_SOLD = ns.L("Sold")
-local TEXT_SOLD_BY = "Recipe: %s\n%s%s by:"
-local TEXT_NEEDS = " (needs "
-local TEXT_DROPS_FROM = "Recipe: %s\nDrops from:"
+local TEXT_TEACHER = ns.L("Taught for free by the Artisan doctor:")
+local TEXT_VENDOR_OTHER = ns.L("%s\nOnly the other faction sells it; try the Auction House.")
+local TEXT_SOLD_FOR = ns.L("%s\nSold for %s%s by:")
+local TEXT_SOLD = ns.L("%s\nSold%s by:")
+local TEXT_NEEDS = ns.L(" (needs %s)")
+local TEXT_DROPS_FROM = ns.L("%s\nDrops from:")
 local TEXT_BOSS = "%s - %s"
-local TEXT_WORLD_DROP = "Recipe: %s\nA world drop%s. Also try the Auction House."
+local TEXT_WORLD_DROP = ns.L("%s\nA world drop%s. Also try the Auction House.")
 local TEXT_WORLD_LEVEL = ns.L(", from mobs around level ")
 local TEXT_CHESTS, TEXT_FISHING, TEXT_PICKPOCKET = ns.L("chests and lockboxes"), ns.L("fishing"), ns.L("pickpocketing")
 local TEXT_MOB_KINDS = ns.L("A world drop from %d kinds of mob")
 local TEXT_FOUND = ns.L("Found")
-local TEXT_THROUGH = " through "
+local TEXT_FOUND_THROUGH = ns.L("Found through %s")
 local TEXT_BEST_ODDS = ns.L(" Best odds:")
 local TEXT_DROP_LINE = "%s (%s) - %s, %.1f%%"
-local TEXT_DROP_RECIPE = "Recipe: %s\n%s%s.%s"
+local TEXT_DROP_RECIPE = ns.L("%s\n%s.%s")
 local TEXT_NOT_RECORDED = ns.L("Where it comes from is not recorded yet; try the Auction House.")
 local TEXT_REQUIREMENT = ns.L("%sRequires %s %d|r   %s(you: %d/%d)|r")
 
@@ -173,7 +174,7 @@ local function Nearest(npcs, n)
     return picked
 end
 
-local function ItemName(itemID)
+local function ItemName(itemID, fallback)
     local name = C_Item.GetItemNameByID(itemID)
     if name then return Hex(T.accent) .. name .. "|r" end
     if ns.ProfRequestItem then
@@ -181,7 +182,7 @@ local function ItemName(itemID)
     else
         C_Item.RequestLoadItemDataByID(itemID)
     end
-    return TEXT_MANUAL
+    return fallback or TEXT_MANUAL
 end
 
 local function Para(out, text)
@@ -208,7 +209,15 @@ local function QuestTitle(id, fallback)
 end
 
 local function RecipeLine(recipe)
-    return recipe and (TEXT_RECIPE .. ItemName(recipe) .. "\n") or ""
+    return recipe and (ItemName(recipe, TEXT_RECIPE) .. "\n") or ""
+end
+
+local function RankName(rank)
+    local name = ns.LOCALE ~= ENGLISH and rank.spell and C_Spell.GetSpellName(rank.spell)
+    if not name then return rank.name end
+    local title = C_Spell.GetSpellSubtext(rank.spell)
+    if title and title ~= "" then return TEXT_RANK_NAME:format(name, title) end
+    return name
 end
 
 local function DescribeRank(rank, out)
@@ -221,7 +230,7 @@ local function DescribeRank(rank, out)
             rank.level and TEXT_LEVEL_PART:format(rank.level) or "", rank.skill))
         for _, v in ipairs(Nearest(rank.teachers, 1)) do NpcLine(out, v) end
     else
-        Para(out, TEXT_RANK_TRAIN:format(state.max, rank.name, Money(rank.cost), rank.skill))
+        Para(out, TEXT_RANK_TRAIN:format(state.max, RankName(rank), Money(rank.cost), rank.skill))
         for _, v in ipairs(Nearest(rank.t and Rows(rank.t) or state.data.trainers, 1)) do NpcLine(out, v) end
     end
 end
@@ -261,23 +270,29 @@ end
 local function DescribeVendor(r, out)
     local sellers = Nearest(r.vendors)
     if #sellers == 0 then
-        Para(out, TEXT_VENDOR_OTHER:format(ItemName(r.recipe)))
+        Para(out, TEXT_VENDOR_OTHER:format(ItemName(r.recipe, TEXT_RECIPE)))
         return
     end
-    local price = sellers[1][NPC_PRICE] and (TEXT_SOLD_FOR .. Money(sellers[1][NPC_PRICE])) or TEXT_SOLD
-    Para(out, TEXT_SOLD_BY:format(ItemName(r.recipe), price, r.rep and (TEXT_NEEDS .. r.rep .. ")") or ""))
+    local name, price = ItemName(r.recipe, TEXT_RECIPE), sellers[1][NPC_PRICE]
+    local needs = r.rep and TEXT_NEEDS:format(r.rep) or ""
+    if price then
+        Para(out, TEXT_SOLD_FOR:format(name, Money(price), needs))
+    else
+        Para(out, TEXT_SOLD:format(name, needs))
+    end
     for i = 1, math.min(NEAREST, #sellers) do NpcLine(out, sellers[i]) end
 end
 
 local function DescribeBosses(r, out)
-    Para(out, TEXT_DROPS_FROM:format(ItemName(r.recipe)))
+    Para(out, TEXT_DROPS_FROM:format(ItemName(r.recipe, TEXT_RECIPE)))
     for _, b in ipairs(r.bosses) do
         out[#out + 1] = { text = TEXT_BOSS:format(b[1], b[2] and C_Map.GetAreaInfo(b[2]) or TEXT_UNKNOWN) }
     end
 end
 
 local function DescribeWorld(r, out)
-    Para(out, TEXT_WORLD_DROP:format(ItemName(r.recipe), r.world > 1 and (TEXT_WORLD_LEVEL .. r.world) or ""))
+    Para(out, TEXT_WORLD_DROP:format(ItemName(r.recipe, TEXT_RECIPE),
+        r.world > 1 and (TEXT_WORLD_LEVEL .. r.world) or ""))
 end
 
 local function DescribeDrops(r, out)
@@ -285,10 +300,14 @@ local function DescribeDrops(r, out)
     if r.chests then extra[#extra + 1] = TEXT_CHESTS end
     if r.fished then extra[#extra + 1] = TEXT_FISHING end
     if r.pickpocket then extra[#extra + 1] = TEXT_PICKPOCKET end
-    local mobs = (r.mobs or 0) > 0
-    local from = mobs and TEXT_MOB_KINDS:format(r.mobs) or TEXT_FOUND
-    Para(out, TEXT_DROP_RECIPE:format(ItemName(r.recipe), from,
-        #extra > 0 and (mobs and ", " or TEXT_THROUGH) .. table.concat(extra, ", ") or "",
+    local kinds = #extra > 0 and table.concat(extra, ", ")
+    local from
+    if (r.mobs or 0) > 0 then
+        from = TEXT_MOB_KINDS:format(r.mobs) .. (kinds and ", " .. kinds or "")
+    else
+        from = kinds and TEXT_FOUND_THROUGH:format(kinds) or TEXT_FOUND
+    end
+    Para(out, TEXT_DROP_RECIPE:format(ItemName(r.recipe, TEXT_RECIPE), from,
         #(r.drops or {}) > 0 and TEXT_BEST_ODDS or ""))
     for _, d in ipairs(r.drops or {}) do
         local low, high = d[DROP_MIN], d[DROP_MAX]

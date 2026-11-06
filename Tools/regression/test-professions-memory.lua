@@ -886,6 +886,31 @@ local before = #tipLines
 reagentRow.scripts.OnEnter(reagentRow)
 check("a reagent vendors do not sell gets no vendor line", #tipLines == before)
 
+-- The Learn pane's recipe text: the recipe item's own name, which carries its "Pattern:" word,
+-- heads the paragraph, and each sentence is one catalog line.
+env.GetMoneyString = function(copper) return "<money " .. copper .. ">" end
+local RF = ns.RecipeFinder
+RF.Unlearned()
+local RECIPE_ITEM = 4292
+local recipeName = ns.Professions.Text.Hex(ns.THEME.accent) .. ItemNameOf(RECIPE_ITEM) .. "|r"
+local function Learn(r)
+    r.spell, r.skill = 1, 1
+    return RF.Describe(r)[1].text
+end
+loaded[RECIPE_ITEM] = true
+check("a vendor's recipe starts with the item's name, then its price",
+    Learn({ source = "vendor", recipe = RECIPE_ITEM, vendors = { { 1, "Vendor", "A", 0, 0, 0, 500 } } })
+        == recipeName .. "\nSold for <money 500> by:")
+check("a vendor with no recorded price, behind a reputation",
+    Learn({ source = "vendor", recipe = RECIPE_ITEM, rep = "Argent Dawn - Honored",
+        vendors = { { 1, "Vendor", "A", 0, 0, 0 } } }) == recipeName .. "\nSold (needs Argent Dawn - Honored) by:")
+check("a recipe found only by fishing",
+    Learn({ source = "drop", recipe = RECIPE_ITEM, fished = true }) == recipeName .. "\nFound through fishing.")
+check("a recipe its trainer teaches for nothing", Learn({ source = "trainer", cost = 0 }):find("Trainer: free.", 1, true) == 1)
+loaded[RECIPE_ITEM] = nil
+check("a recipe item still loading is called a recipe",
+    Learn({ source = "drop", recipe = RECIPE_ITEM, bosses = {} }) == "Recipe\nDrops from:")
+
 if #failures > 0 then
     for _, label in ipairs(failures) do print("  FAIL " .. label) end
     error(("test-professions-memory: %d of %d checks failed"):format(#failures, checks))
