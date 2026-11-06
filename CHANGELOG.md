@@ -1,6 +1,27 @@
 # Changelog
 
-## Unreleased
+## 1.2.9
+
+### Added
+- Quest List: Riverglades now lists its 12 quests, such as Gnoll Infestation and WANTED: Trapclaw.
+  They have no map pins yet.
+- Layer Tracker (QoL > Questing & Group, off by default): a line on screen with the layer you are
+  on. How layering works on Forever: each zone is split into copies called layers, and you only see
+  the players, mobs, herbs, ore and rares on your own copy. The game writes that copy into the ID of
+  every NPC and mob, so Layer Tracker reads your layer from the ones you target, mouse over or see a
+  nameplate for, once two different ones agree. Each zone has its own layer numbers, so the number
+  changes when you change zones, and players carry no layer of their own.
+- Layer Tracker: when the game is about to move you to another layer (its "world refresh" warning),
+  the line counts down to the move, and chat names your new layer once you are there. Hover the line
+  for the layers seen in your zone.
+- Layer Tracker: Swap Layers With Others (off by default). On Forever you change layer by joining
+  the group of someone on the layer you want: the game then moves you to theirs, and you keep it
+  while you stay in that group. Click the line to ask the layer channel for an invite to another
+  layer of your zone; players using other layer addons can answer it too. When someone asks for your
+  layer, you get a prompt with an Invite button, never an automatic invite. A group that does not
+  move you within 15 seconds is left, unless a friend or guildmate invited you.
+- Discovery: Rares: a rare's tooltip names the layer of its last kill and marks it when that is your
+  layer, so you know another layer may still have it up.
 
 ## 1.2.8
 
