@@ -16,6 +16,7 @@
   ],
   "requires": {
     "19": {"drop": [98386], "why": "Tharil'zun and Blackrock Blockade are Marshal Marris's war on the Blackrock orcs; Alther's Mill is Foreman Oslow's spider job at the lumber mill (ForeverChanges' quest pages)."},
+    "92422": {"add": [99156], "why": "The Wrath of Rath'mael is offered once Rear Guard Patrol (356, then 99156) is done on live servers, where Beta had no prerequisite: Wowhead's news (5 Nov 2026) and its Forever dungeon quest guide, which marks it Pre and links Rear Guard Patrol where it starts."},
     "92470": {"drop": [92469], "why": "Aetheen of the Gales (92471) ends at Aetheen, who gives Foul Matriarch; Return to Rorian ends at Rorian (ForeverChanges' givers)."},
     "92644": {"drop": [98512], "why": "The Turncoat ends at the Dead Cultist, who gives Unfortunate News; Al'Aketh Assassins is Fendaal Windstone's quest for whoever passes (ForeverChanges' givers and text)."},
     "92744": {"add": [92742], "why": "Toxic Soil, in order: the game's quest line 6026 (QuestLineXQuest), Wowhead's Storyline and ForeverChanges' storyline."},
@@ -28,7 +29,8 @@
     "92752": {"add": [92751], "why": "Toxic Soil, in order: 'the bomb's ready to go! Careful with that detonator'."},
     "92753": {"add": [92752], "why": "Toxic Soil, in order."},
     "92819": {"add": [92753], "why": "Toxic Soil, in order: the last step."},
-    "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."}
+    "92911": {"add": [92910], "why": "Ozwin's text: 'I'll continue tinkering with the assembly you brought me', the Precessive Autocognition Assembly of 92910 (ForeverChanges)."},
+    "95216": {"add": [451], "why": "The New Plague is offered once A Recipe For Death (447, 450, then 451) is done on live servers, where Beta had no prerequisite: Wowhead's news (5 Nov 2026) and its Forever dungeon quest guide, which marks it Pre and links A Recipe For Death where it starts."}
   },
   "exclusive": [
     {"quests": [324, 526], "why": "The Lost Ingots (from the Waterlogged Chest) and Lightforge Ingots (from Glorin Steelbrow) are one task: gather 5 Lightforge Ingots for Glorin (ForeverChanges)."},

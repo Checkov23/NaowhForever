@@ -41,8 +41,8 @@ J.QuestData = {
     } },
     { name = "Ruins of Lordaeron", map = 2999, levels = { 15, 20 }, quests = {
         { 92401, "A Frightened Request", 15, "H", true, "Silverpine Forest, The Sepulcher - Tabitha Heartweaver (44.4, 42.8)", 1421, 44.4, 42.8 },
-        { 92422, "The Wrath of Rath'mael", 15, "H", true, "Tirisfal Glades, Brill - Deathguard Kristof (65.2, 60.2)", 1420, 65.2, 60.2 },
-        { 95216, "The New Plague", 16, "H", true, "Undercity, Theodore Griffs (46.3, 71.9)", 1458, 46.3, 71.9 },
+        { 92422, "The Wrath of Rath'mael", 15, "H", "pre", "Tirisfal Glades, Brill - Deathguard Kristof Prerequisite: Complete 2 quests, starting with Rear Guard Patrol from Deathguard Linnea (65.2, 60.2)", 1420, 65.2, 60.2 },
+        { 95216, "The New Plague", 16, "H", "pre", "Undercity, Theodore Griffs Prerequisite: Complete 3 quests, starting with A Recipe For Death from Apothecary Renferrel in Silverpine Forest (46.3, 71.9)", 1458, 46.3, 71.9 },
         { 92421, "Light's Justice", 15, "H", true, "Undercity, Morbin Lightbane (57.8, 89.8)", 1458, 57.8, 89.8 },
         { 97288, "Unending Torment", 15, "H", true, "Inside Dungeon - Abominable Head drop", steps = { 97289, 97290, 97291, 97292 } },
         { 95204, "Crest of Lordaeron", 16, "B", true, "Inside Dungeon - Crest of Lordaeron drop", alt = { 95189 } },
@@ -156,7 +156,10 @@ J.QuestData = {
         { 3523, "Scourge of the Downs", 32, "B", false, "Razorfen Downs, Murder Pens - Belnistrasz Entire party should complete before picking up next quest" },
         { 3525, "Extinguishing the Idol", 32, "B", false, "Razorfen Downs, Murder Pens - Belnistrasz Make sure entire party has finished Scourge of the Downs first or they won't get credit!" },
     } },
-    { name = "The Drowned City", map = nil, levels = { 35, 40 }, quests = {} },
+    { name = "The Drowned City", map = nil, levels = { 35, 40 }, quests = {
+        { 95775, "The Drowned City", 30, "H", true, "TBD" },
+        { 95788, "Magics of the Drowned City", 30, "A", true, "TBD" },
+    } },
     { name = "Uldaman", map = 70, levels = { 41, 51 }, quests = {
         { 2342, "Reclaimed Treasures", 33, "H", true, "Undercity, Center - Patrick Garrett (62.3, 48.6)", 1458, 62.3, 48.6 },
         { 2202, "Uldaman Reagent Run", 36, "H", "pre", "Badlands, Kargath - Jarkal Mossmeld Complete Badlands Reagent Run first (2.4, 46.1)", 1418, 2.4, 46.1 },

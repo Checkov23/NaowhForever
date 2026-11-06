@@ -284,7 +284,11 @@ the game's own tables, and what they can't settle is listed in the pull request 
   the Excavation Site's breadcrumbs, the Horde paladin's A Moon-Kissed Blade) are by hand from its
   quest pages (2026-11-03); its Return of the Ring and second Sparklematic quest are `steps`.
   Past Due, new in Forever and on neither guide, is by hand from its ForeverChanges page
-  (2026-11-04).
+  (2026-11-04). The prerequisite chains live servers added to The Wrath of Rath'mael and The
+  New Plague, and The Drowned City's two quests (no source has their givers yet), are by hand
+  from Wowhead's Forever news, guide and quest pages (2026-11-06). The guide now links those
+  chains where the quest starts, which `quest_chains.py` does not read, so they have no
+  `QuestPrereqs` entry.
 - Scarlet Monastery's four wings share one instance (189), each its own dungeon with classic's
   ranges. A quest goes under the wing it is done in: Hearts of Zeal (hearts from any wing) under
   the first, the two that kill Loksey, Herod, Mograine and Whitemane under the Cathedral.
